@@ -1,5 +1,5 @@
 
-package WMNKitClasses;
+package wmnkitnotation;
 
 /**
  *
@@ -21,4 +21,13 @@ public class Rest implements NotationElement {
         return this.duration;
     }
     
+    @Override
+    public boolean isRest() {
+        return true;
+    }
+    
+    @Override
+    public String toString() {
+        return "R" + this.duration.toString();
+    }
 }

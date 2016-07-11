@@ -1,5 +1,5 @@
 
-package WMNKitClasses;
+package wmnkitnotation;
 
 /**
  *
@@ -7,4 +7,5 @@ package WMNKitClasses;
  */
 public interface NotationElement {
     Duration getDuration();
+    boolean isRest();
 }
