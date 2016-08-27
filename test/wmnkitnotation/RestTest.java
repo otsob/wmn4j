@@ -5,8 +5,6 @@
  */
 package wmnkitnotation;
 
-import wmnkitnotation.Durations;
-import wmnkitnotation.Rest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,5 +37,15 @@ public class RestTest {
     public void testToString() {
         assertEquals( "R(1/4)", Rest.getRest(Durations.QUARTER).toString() );
         assertEquals( "R(1/12)", Rest.getRest(Durations.EIGHT_TRIPLET).toString() );
+    }
+    
+    @Test
+    public void testEquals() {
+        Rest quarter = Rest.getRest(Durations.QUARTER);
+        Rest half = Rest.getRest(Durations.HALF);
+        
+        assertTrue(quarter.equals(Rest.getRest(Durations.QUARTER)));
+        assertTrue(Rest.getRest(Durations.QUARTER).equals(quarter));
+        assertFalse(quarter.equals(half));
     }
 }

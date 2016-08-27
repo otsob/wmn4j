@@ -31,11 +31,6 @@ public class Note implements NotationElement {
     }
     
     private Note(Pitch pitch, Duration duration, Set<Articulation> articulations ) {
-        if(pitch == null)
-            throw new IllegalArgumentException("Pitch was null. Note must have a duration");
-        
-        if(duration == null)
-            throw new IllegalArgumentException("Duration was null. Note must have a duration");
         
         this.pitch = pitch;
         this.duration = duration;
@@ -43,6 +38,12 @@ public class Note implements NotationElement {
             this.articulations = new HashSet(articulations);
         else
             this.articulations = Collections.EMPTY_SET;
+        
+        if(this.pitch == null)
+            throw new NullPointerException("Pitch was null. Note must have a duration");
+        
+        if(this.duration == null)
+            throw new NullPointerException("Duration was null. Note must have a duration");
     }
     
     public Pitch getPitch() {
@@ -60,12 +61,7 @@ public class Note implements NotationElement {
     }
     
     public List<Articulation> getArticulations() {
-        ArrayList<Articulation> list = new ArrayList();
-        
-        if(this.articulations != null)
-            list.addAll(this.articulations);
-        
-        return list;
+        return new ArrayList(this.articulations);
     }
     
     public boolean hasArticulations() {
@@ -82,17 +78,20 @@ public class Note implements NotationElement {
     
     @Override
     public String toString() {
-        String noteAsString = this.pitch.toString() + this.duration.toString();
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append(this.pitch.toString()).append(this.duration.toString());
         
         if(!this.articulations.isEmpty()) {
-            noteAsString += "(";
-            for(Articulation articulation : this.articulations) 
-                noteAsString += articulation.toString() + " ";
             
-            noteAsString = noteAsString.trim();
-            noteAsString += ")";
+            strBuilder.append("(");
+            for(Articulation articulation : this.articulations) {
+                strBuilder.append(articulation.toString()).append(" ");
+            }
+            
+            strBuilder.replace(strBuilder.length() - 1, strBuilder.length(), "");
+            strBuilder.append(")");
         }
-        return noteAsString;
+        return strBuilder.toString();
     }
    
     @Override

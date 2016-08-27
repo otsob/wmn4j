@@ -24,6 +24,10 @@ public class Chord implements NotationElement, Iterable<Note> {
     }
     
     private Chord(List<Note> notes) {
+        
+        if(notes == null)
+            throw new NullPointerException();
+        
         this.notes = new ArrayList(notes);
         final Duration d = this.notes.get(0).getDuration();
                 
@@ -122,16 +126,17 @@ public class Chord implements NotationElement, Iterable<Note> {
     
     @Override
     public String toString() {
-        String chord = "[";
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("[");
         
         for(int i = 0; i < this.notes.size(); ++i) {
-            chord += this.notes.get(i).toString();
+            strBuilder.append(this.notes.get(i).toString());
             
             if(i != this.notes.size() - 1)
-                chord += ",";
+                strBuilder.append(",");
         }
-        chord += "]";
-        return chord;
+        strBuilder.append("]");
+        return strBuilder.toString();
     }
     
     @Override

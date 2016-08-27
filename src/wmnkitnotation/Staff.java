@@ -18,12 +18,13 @@ public class Staff {
     
     @Override
     public String toString() {
-        String contents = "Staff: " + this.name + "\n";
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("Staff: ").append(this.name).append("\n");
         
         for(int i = 0; i < measures.size(); ++i) {
-            contents += measures.get(i).toString() + "\n";
+            strBuilder.append(measures.get(i).toString()).append("\n");
         }
         
-        return contents;
+        return strBuilder.toString();
     }
 }

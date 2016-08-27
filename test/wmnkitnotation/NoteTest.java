@@ -93,7 +93,7 @@ public class NoteTest {
             assertTrue("No exception was thrown. Expected: IllegalArgumentException",false);
         }
         catch(Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
+            assertTrue(e instanceof NullPointerException);
         }
     }
     

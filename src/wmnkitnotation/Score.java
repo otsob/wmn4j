@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Score {
     
-    private List<Staff> staves;
+    private final List<Staff> staves;
     
     public Score(List<Staff> staves) {
         this.staves = staves;
@@ -21,14 +21,15 @@ public class Score {
     
     @Override
     public String toString() {
+        StringBuilder strBuilder = new StringBuilder();
         
-        String s = "";
         
         for(int i = 0; i < staves.size(); ++i) {
-            s += staves.get(i).toString();
+            strBuilder.append(staves.get(i).toString());
+            strBuilder.append("\n\n");
         }
      
-        return s;
+        return strBuilder.toString();
     }
     
 }
