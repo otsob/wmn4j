@@ -34,14 +34,14 @@ public class DurationTest {
     public void testGetDurationWithInvalidParameter() {
         try {
             Duration duration = Duration.getDuration(-1, 2);
-            assertTrue("No exception was thrown. Expected: IllegalArgumentException",false);
+            fail("No exception was thrown. Expected: IllegalArgumentException");
         }
         catch(Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
         }
         try {
             Duration duration = Duration.getDuration(1, 0);
-            assertTrue("No exception was thrown. Expected: IllegalArgumentException",false);
+            fail("No exception was thrown. Expected: IllegalArgumentException");
         }
         catch(Exception e) {
             assertTrue(e instanceof IllegalArgumentException);

@@ -1,6 +1,8 @@
 
 package wmnkitnotation;
 
+import java.util.Objects;
+
 /**
  *
  * @author Otso Björklund
@@ -117,6 +119,15 @@ public class Pitch implements Comparable<Pitch> {
             return false;
         
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 89 * hash + Objects.hashCode(this.pitchBase);
+        hash = 89 * hash + this.alter;
+        hash = 89 * hash + this.octave;
+        return hash;
     }
     
     @Override

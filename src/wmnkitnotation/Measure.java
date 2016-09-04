@@ -12,22 +12,35 @@ import java.util.NoSuchElementException;
  */
 public class Measure implements Iterable<NotationElement> {
     
+    public enum Barline { SINGLE, DOUBLE, REPEAT, FINAL }
+    
     private final int number;
     private final List<List<NotationElement>> layers;
+    private final MeasureInfo measureInfo;
     
-    public static Measure getMeasure(int number, List<List<NotationElement>> noteLayers) {
-        return new Measure(number, noteLayers);
+    public static Measure getMeasure(int number, List<List<NotationElement>> noteLayers, TimeSignature timeSig, KeySignature keySig, Barline barline, Clef clef) {
+        return getMeasure(number, noteLayers, MeasureInfo.getMeasureInfo(timeSig, keySig, barline, clef));
+    }
+
+    public static Measure getMeasure(int number, List<List<NotationElement>> noteLayers, TimeSignature timeSig, KeySignature keySig, Clef clef) {
+        return getMeasure(number, noteLayers, MeasureInfo.getMeasureInfo(timeSig, keySig, Barline.SINGLE, clef));
     }
     
-    public Measure(int number, List<List<NotationElement>> noteLayers) {
-        if(noteLayers == null)
-            throw new NullPointerException();
-        
-        if(number <= 0)
-            throw new IllegalArgumentException("Measure number must be positive");
-        
+    public static Measure getMeasure(int number, List<List<NotationElement>> noteLayers, MeasureInfo measureInfo) {
+        return new Measure(number, noteLayers, measureInfo);
+    }
+    
+    public Measure(int number, List<List<NotationElement>> noteLayers, MeasureInfo measureInfo) {
         this.number = number;
         this.layers = noteLayers;
+        
+        this.measureInfo = measureInfo;
+        
+        if(this.layers == null || this.measureInfo == null)
+            throw new NullPointerException();
+        
+        if(this.number <= 0)
+            throw new IllegalArgumentException("Measure number must be positive");
     }
     
     public List<NotationElement> getLayer(int layer) {
@@ -42,10 +55,29 @@ public class Measure implements Iterable<NotationElement> {
         return this.number;
     }
     
+    public TimeSignature getTimeSignature() {
+        return this.measureInfo.getTimeSignature();
+    }
+    
+    public KeySignature getKeySignature() {
+        return this.measureInfo.getKeySignature();
+    }
+    
+    public Barline getBarline() {
+        return this.measureInfo.getBarline();
+    }
+    
+    public Clef getClef() {
+        return this.measureInfo.getClef();
+    }
+    
     @Override
     public String toString() {
+        // Todo: add clef
+        
         StringBuilder strBuilder = new StringBuilder();
-        strBuilder.append("Measure ").append(this.number).append(":\n");
+        strBuilder.append("Measure ").append(this.number).append(", ")
+                    .append(this.measureInfo).append(":\n");
         
         for(int i = 0; i < layers.size(); ++i) {
             strBuilder.append("Layer ").append(i).append(": ");
@@ -57,6 +89,7 @@ public class Measure implements Iterable<NotationElement> {
             strBuilder.append("\n");
         }
         
+        strBuilder.append("Barline:").append(getBarline()).append("\n");
         return strBuilder.toString();
     }
 
@@ -68,12 +101,13 @@ public class Measure implements Iterable<NotationElement> {
             
             @Override
             public boolean hasNext() {
-                // If not on the last layer, then has next note
-                if(currentLayer < Measure.this.layers.size() - 1)
-                    return true;
-            
-                // If on last layer, then check that there are still notes left in the layer
-                if(currentLayer == Measure.this.layers.size() - 1) {
+                
+                // Skip empty layers
+                while(currentLayer < Measure.this.layers.size() && Measure.this.layers.get(currentLayer).isEmpty())
+                    ++currentLayer;
+                
+                // Check that there are still layers left and there are notes in the layer.
+                if(currentLayer < Measure.this.layers.size()) {
                     return positionInLayer < Measure.this.layers.get(currentLayer).size();
                 }
                 
@@ -84,15 +118,13 @@ public class Measure implements Iterable<NotationElement> {
             public NotationElement next() {
                 NotationElement next = null;
                 
-                if(currentLayer < Measure.this.layers.size()) {
-                    if(positionInLayer < Measure.this.layers.get(currentLayer).size()) {
-                        next = Measure.this.layers.get(currentLayer).get(positionInLayer);
-                        ++positionInLayer;
-                        
-                        if(positionInLayer == Measure.this.layers.get(currentLayer).size()) {
-                            positionInLayer = 0;
-                            ++currentLayer;
-                        }
+                if(hasNext()) {
+                    next = Measure.this.layers.get(currentLayer).get(positionInLayer);
+                    ++positionInLayer;
+
+                    if(positionInLayer == Measure.this.layers.get(currentLayer).size()) {
+                        positionInLayer = 0;
+                        ++currentLayer;
                     }
                 }
                 else
@@ -108,31 +140,5 @@ public class Measure implements Iterable<NotationElement> {
         }
         
         return new LayerWiseIterator();
-    }
-    
-    /**
-     * Iterates through the notes in a timewise manner, from the left of the measure to the right.
-     * If NotationElements on different layers occur at the same time, note from layer with smallest number comes first.
-     * 
-     * @return Iterator
-     */
-    public Iterator<NotationElement> timeWiseIterator() {
-        if(this.layers.size() == 1)
-            return iterator();
-        
-        class TimeWiseIterator implements Iterator<NotationElement> {
-
-            @Override
-            public boolean hasNext() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public NotationElement next() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        }
-        
-        return new TimeWiseIterator();
     }
 }

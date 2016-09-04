@@ -74,7 +74,7 @@ public class NoteTest {
         
         try {
             Note note = Note.getNote(Pitch.Base.C, 5, 1, Durations.QUARTER);
-            assertTrue("No exception was thrown. Expected: IllegalArgumentException",false);
+            fail("No exception was thrown. Expected: IllegalArgumentException");
         }
         catch(Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
@@ -82,7 +82,7 @@ public class NoteTest {
         
         try {
             Note note = Note.getNote(Pitch.Base.C, 0, 11, Durations.QUARTER);
-            assertTrue("No exception was thrown. Expected: IllegalArgumentException",false);
+            fail("No exception was thrown. Expected: IllegalArgumentException");
         }
         catch(Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
@@ -90,7 +90,7 @@ public class NoteTest {
                 
         try {
             Note note = Note.getNote(Pitch.Base.C, 0, 1, null);
-            assertTrue("No exception was thrown. Expected: IllegalArgumentException",false);
+            fail("No exception was thrown. Expected: IllegalArgumentException");
         }
         catch(Exception e) {
             assertTrue(e instanceof NullPointerException);

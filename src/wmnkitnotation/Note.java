@@ -1,7 +1,6 @@
 
 package wmnkitnotation;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -19,15 +18,15 @@ public class Note implements NotationElement {
     private final Set<Articulation> articulations; 
     
     public static Note getNote(Pitch.Base pitchName, int alter, int octave, Duration duration) {
-        return new Note(Pitch.getPitch(pitchName, alter, octave), duration, null);
+        return getNote(Pitch.getPitch(pitchName, alter, octave), duration, null);
+    }
+    
+    public static Note getNote(Pitch pitch, Duration duration) {
+        return getNote(pitch, duration, null);
     }
     
     public static Note getNote(Pitch pitch, Duration duration, Set<Articulation> articulations) {
         return new Note(pitch, duration, articulations);
-    }
-    
-    public static Note getNote(Pitch pitch, Duration duration) {
-        return new Note(pitch, duration, null);
     }
     
     private Note(Pitch pitch, Duration duration, Set<Articulation> articulations ) {

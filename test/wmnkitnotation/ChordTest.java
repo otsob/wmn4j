@@ -93,8 +93,8 @@ public class ChordTest {
             notes.add(a);
             notes.add(b);
             Chord c = Chord.getChord(notes);
-            assertTrue("Failed to throw IllegalArgumentException when "
-                        + "creating chord with notes whose durations are not the same", false);
+            fail("Failed to throw IllegalArgumentException when "
+                        + "creating chord with notes whose durations are not the same");
         } catch(IllegalArgumentException e) {
             assertTrue(true);
         }
@@ -177,7 +177,7 @@ public class ChordTest {
     
         try {
             Chord illegalCMaj = this.cMajor.addNote(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.EIGHT));
-            assertTrue("Failed to throw expected exception", false);
+            fail("Failed to throw expected exception");
         } 
         catch(IllegalArgumentException e) {
             assertTrue(e instanceof IllegalArgumentException);

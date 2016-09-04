@@ -1,6 +1,8 @@
 
 package wmnkitnotation;
 
+import java.util.Objects;
+
 /**
  *
  * @author Otso Björklund
@@ -25,5 +27,28 @@ public class TimeSignature {
     
     public Duration getBeatDuration() {
         return this.beatDuration;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof TimeSignature))
+            return false;
+        
+        TimeSignature other = (TimeSignature) o;
+        
+        return this.beatDuration.equals(other.beatDuration) && this.beats == other.beats;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + this.beats;
+        hash = 29 * hash + Objects.hashCode(this.beatDuration);
+        return hash;
+    }
+    
+    @Override
+    public String toString() {
+        return "Time(" + this.beats + "/" + this.beatDuration.getDenominator() + ")";
     }
 }
