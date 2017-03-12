@@ -8,8 +8,18 @@ public class MusicXmlTags {
 
     // Barline tags
     static final String BARLINE = "barline";
+    static final String BARLINE_ATTR_LOCATION = "location";
+    static final String BARLINE_REPEAT = "repeat";
+    static final String BARLINE_REPEAT_DIR = "direction";
+    static final String BARLINE_REPEAT_DIR_FORWARD = "forward";
+    static final String BARLINE_REPEAT_DIR_BACKWARD = "backward";
     static final String BARLINE_STYLE = "bar-style";
+    static final String BARLINE_STYLE_DASHED = "dashed";
+    static final String BARLINE_STYLE_HEAVY = "heavy";
+    static final String BARLINE_STYLE_HEAVY_LIGHT = "heavy-light";
+    static final String BARLINE_STYLE_INVISIBLE = "none";
     static final String BARLINE_STYLE_LIGHT_HEAVY = "light-heavy";
+    static final String BARLINE_STYLE_LIGHT_LIGHT = "light-light";
     
     // Clef tags
     static final String CLEF = "clef";

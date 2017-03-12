@@ -162,19 +162,19 @@ public class MusicXmlDomReader implements MusicXmlReader {
             Node measureNode = measureNodes.item(i);
             if(measureNode.getNodeName().equals(MusicXmlTags.MEASURE)) {
                 Node attributesNode = findChild(measureNode, MusicXmlTags.MEASURE_ATTRIBUTES);
-                Node barlineNode = findChild(measureNode, MusicXmlTags.BARLINE);
-
+                List<Node> barlineNodes = findChildren(measureNode, MusicXmlTags.BARLINE);
+                
                 if(attributesNode != null) {
                     Node divisionsNode = findChild(attributesNode, MusicXmlTags.MEAS_ATTR_DIVS);
                     if(divisionsNode != null)
                         divisions = Integer.parseInt(divisionsNode.getTextContent());
 
-                    measureInfo = getMeasureInfo(attributesNode, barlineNode, measureInfo);
+                    measureInfo = getMeasureInfo(attributesNode, barlineNodes, measureInfo);
                 } 
-                else if(barlineNode != null) {
+                else if(barlineNodes != null) {
                     measureInfo = MeasureInfo.getMeasureInfo(measureInfo.getTimeSignature(), 
                                                              measureInfo.getKeySignature(), 
-                                                             getBarline(barlineNode), 
+                                                             getBarline(barlineNodes), 
                                                              measureInfo.getClef());
                 }
 
@@ -185,8 +185,8 @@ public class MusicXmlDomReader implements MusicXmlReader {
         return measures;
     }
     
-    private MeasureInfo getMeasureInfo(Node attributesNode, Node barlineNode, MeasureInfo previous) {
-        Measure.Barline barline = getBarline(barlineNode);
+    private MeasureInfo getMeasureInfo(Node attributesNode, List<Node> barlineNodes, MeasureInfo previous) {
+        MeasureInfo.Barline barline = getBarline(barlineNodes);
         
         TimeSignature timeSig;
         Node timeSigNode = findChild(attributesNode, MusicXmlTags.MEAS_ATTR_TIME);
@@ -249,17 +249,46 @@ public class MusicXmlDomReader implements MusicXmlReader {
         return Clef.G_CLEF;
     }
     
-    private Measure.Barline getBarline(Node barlineNode) {
+    private MeasureInfo.Barline getBarline(List<Node> barlineNodes) {
+        List<MeasureInfo.Barline> barlines = new ArrayList();
+        
+        for(Node barlineNode : barlineNodes)
+            barlines.add(readBarlineNode(barlineNode));
+     
+        if(barlines.size() == 1)
+            return barlines.get(0);
+        else if(barlines.size() == 2) {
+            if(barlines.contains(MeasureInfo.Barline.REPEAT_LEFT) && barlines.contains(MeasureInfo.Barline.REPEAT_RIGHT))
+                return MeasureInfo.Barline.REPEAT_MEASURE;
+        }
+        
+        return MeasureInfo.Barline.SINGLE;
+    }
+    
+    private MeasureInfo.Barline readBarlineNode(Node barlineNode) {
         if(barlineNode != null) {
             Node barlineStyleNode = findChild(barlineNode, MusicXmlTags.BARLINE_STYLE);
             String barlineString = barlineStyleNode.getTextContent();
+            Node repeatNode = findChild(barlineNode, MusicXmlTags.BARLINE_REPEAT);
 
             switch(barlineString) {
-                case MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY: return Measure.Barline.FINAL;
+                case MusicXmlTags.BARLINE_STYLE_DASHED: return MeasureInfo.Barline.DASHED;
+                case MusicXmlTags.BARLINE_STYLE_HEAVY: return MeasureInfo.Barline.THICK;
+                // Todo: Can "heavy-light" be something other than left repeat?
+                case MusicXmlTags.BARLINE_STYLE_HEAVY_LIGHT: return MeasureInfo.Barline.REPEAT_LEFT;
+                case MusicXmlTags.BARLINE_STYLE_INVISIBLE: return MeasureInfo.Barline.INVISIBLE;
+                case MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY: {
+                    if(repeatNode == null)
+                        return MeasureInfo.Barline.FINAL;
+                    else
+                        return MeasureInfo.Barline.REPEAT_RIGHT;
+                }
+                case MusicXmlTags.BARLINE_STYLE_LIGHT_LIGHT: return MeasureInfo.Barline.DOUBLE;
+                default: return MeasureInfo.Barline.SINGLE;
             }
         }
         
-        return Measure.Barline.SINGLE;
+        return MeasureInfo.Barline.SINGLE;
     }
     
     private Measure createMeasure(Node measureNode, MeasureInfo measureInfo, int divisions) {
@@ -408,5 +437,20 @@ public class MusicXmlDomReader implements MusicXmlReader {
         }
         
         return null;
+    }
+
+    private List<Node> findChildren(Node parent, String childName) {
+        List<Node> foundChildren = new ArrayList();
+        
+        NodeList children = parent.getChildNodes();
+        for(int i = 0; i < children.getLength(); ++i) {
+            Node child = children.item(i);
+            if(child != null && child.getNodeName()!= null) {
+                if(children.item(i).getNodeName().equals(childName))
+                    foundChildren.add(child);
+            }
+        }
+        
+        return foundChildren;
     }
 }

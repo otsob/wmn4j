@@ -3,38 +3,79 @@ package wmnlibnotation;
 import java.math.BigInteger;
 
 /**
- * Defines a duration
+ * The <code>Duration</code> class represents the duration of a note, rest, or chord. 
+ * Durations are handled as rational 
+ * numbers that tell what fraction of a whole note the duration is just like in normal music terminology.
+ * For example, the duration of a quarter note is handled as the rational number 1/4.
+ * The rational number is always reduced to the lowest possible numerator and denominator.
+ * This class is immutable.
  * @author Otso Björklund
  */
 public class Duration implements Comparable<Duration> {
     
-    private final int nominator;
+    private final int numerator;
     private final int denominator;
     
-    public static Duration getDuration(int nominator, int denominator) {
-        return new Duration(nominator, denominator);
+    /**
+     * Returns a <code>Duration</code> object. The numerator and denominator must be at least 1.
+     * 
+     * @param numerator the numerator part of the duration.
+     * @param denominator the denominator part of the duration.
+     * @return a Duration object.
+     */
+    public static Duration getDuration(int numerator, int denominator) {
+        // Todo: Implement caching.
+        return new Duration(numerator, denominator);
     }
     
-    private Duration(int nominator, int denominator) {
-        if(nominator < 1)
-            throw new IllegalArgumentException("nominator must be at least 1");
+    /**
+     * Constructor for the class. The numerator and denominator must be at least 1. 
+     * The constructor is private, to get a Duration object use the static method 
+     * {@link #getDuration(int, int) getDuration}.
+     * @throws IllegalArgumentException.
+     * @param numerator the numerator part of the duration.
+     * @param denominator the denominator part of the duration.
+     */
+    private Duration(int numerator, int denominator) {
+        if(numerator < 1)
+            throw new IllegalArgumentException("numerator must be at least 1");
         if(denominator < 1)
             throw new IllegalArgumentException("denominator must be at least 1");
     
         // Todo: Come up with a more effective way of finding GCD
-        int gcd = BigInteger.valueOf(nominator).gcd(BigInteger.valueOf(denominator)).intValue();
-        this.nominator = nominator / gcd;
-        this.denominator = denominator / gcd;
+        if(numerator != 1) {
+            int gcd = BigInteger.valueOf(numerator).gcd(BigInteger.valueOf(denominator)).intValue();
+            this.numerator = numerator / gcd;
+            this.denominator = denominator / gcd;
+        }
+        else {
+            this.numerator = numerator;
+            this.denominator = denominator;
+        }
     }
     
-    public int getNominator() {
-        return this.nominator;
+    /**
+     * @return the numerator part of the duration.
+     */
+    public int getNumerator() {
+        return this.numerator;
     }
     
+    /**
+     * @return the denominator part of the duration.
+     */
     public int getDenominator() {
         return this.denominator;
     }
     
+    /**
+     * Compares this <code>Duration</code> to <code>Object o</code> for equality. 
+     * If <code>Object o</code> is of class <code>Duration</code> and has the 
+     * same numerator and denominator as this, then <code>o</code> is equal to this.
+     * @param o an object against which this Duration is compared for equality.
+     * @return true if <code>Object o</code> is a <code>Duration</code> with 
+     * the same numerator and denominator as this, false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if(this == o)
@@ -45,44 +86,129 @@ public class Duration implements Comparable<Duration> {
         
         Duration other = (Duration) o;
         
-        return (this.nominator == other.nominator) 
+        return (this.numerator == other.numerator) 
                 && (this.denominator == other.denominator);
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 83 * hash + this.nominator;
+        hash = 83 * hash + this.numerator;
         hash = 83 * hash + this.denominator;
         return hash;
     }
     
+    /**
+     * Durations are represented as strings of form <code>(numerator/denominator)</code>.
+     * @return string representation of this Duration.
+     */
     @Override 
     public String toString() {
-        return "(" + this.nominator + "/" + this.denominator + ")";
+        return "(" + this.numerator + "/" + this.denominator + ")";
+    }
+    
+    /**
+     * Extend this Duration by adding a dot (add half of this Duration to itself).
+     * Does not change this Duration.
+     * @return Duration that is this incremented by half of this.
+     */    
+    public Duration addDot() {
+        return this.add(Duration.getDuration(this.numerator, 2 * this.denominator));
+    }
+    
+    /**
+     * Return the fraction of the duration as a double.
+     * This should only be used for computation in analysis algorithms, such as 
+     * pitch profiles weighted by durations. Many common durations, such as triplets, 
+     * cannot be represented exactly as floating-point numbers which can cause 
+     * problems with cumulated durations not adding up to the expected durations. 
+     * For accurate arithmetic with Durations the methods provided by this class should be used.
+     * @return the fraction numerator/denominator as double.
+     */
+    public double toDouble() {
+        return (float) this.numerator / this.denominator;
     }
 
+    /**
+     * Returns a Duration that is the sum of this and duration. 
+     * Does not change this Duration (this class is immutable).
+     * @param duration the Duration to be added to this.
+     * @return a Duration that is the sum of this and duration.
+     */
     public Duration add(Duration duration) {
-        int nom = this.nominator * duration.denominator + this.denominator * duration.nominator;
+        int nom = this.numerator * duration.denominator + this.denominator * duration.numerator;
         int denom = this.denominator * duration.denominator;
         
         return getDuration(nom, denom);
     }
     
-    public boolean longerThan(Duration duration) {
-        return this.compareTo(duration) > 0;
+    /**
+     * Returns a Duration that is the this duration minus duration given as parameter.
+     * Does not change this Duration (this class is immutable).
+     * @param duration the Duration to be subtracted from this.
+     * @return a Duration that is this duration minus duration.
+     */
+    public Duration subtract(Duration duration) {
+        int nom = this.numerator * duration.denominator - this.denominator * duration.numerator;
+        int denom = this.denominator * duration.denominator;
+        
+        return getDuration(nom, denom);
     }
     
-    public boolean shorterThan(Duration duration) {
-        return this.compareTo(duration) < 0;
+    /**
+     * Returns a Duration that is this duration multiplied by multiplier.
+     * Multiplier must be at least 1.
+     * Does not change this Duration (this class is immutable).
+     * @throws IllegalArgumentException if multiplier is less than 1.
+     * @param multiplier the factor by which this duration should be multiplied.
+     * @return a Duration that is this duration multiplied by multiplier.
+     */
+    public Duration multiplyBy(int multiplier) {
+        if(multiplier < 1) 
+            throw new IllegalArgumentException("multiplier must be at least 1. Was " + multiplier);
+    
+        return getDuration(this.numerator * multiplier, this.denominator);
     }
     
-    public Duration addDot() {
-        return this.add(Duration.getDuration(this.nominator, 2 * this.denominator));
+    /**
+     * Returns a Duration that is this duration divided by divider.
+     * Divider must be at least 1.
+     * Does not change this Duration (this class is immutable).
+     * @throws IllegalArgumentException if divider is less than 1.
+     * @param divider the factor by which this duration should be divided.
+     * @return a Duration that is this duration divided by divider.
+     */
+    public Duration divideBy(int divider) {
+        if(divider < 1)
+            throw new IllegalArgumentException("divider must be at least 1. Was " + divider);
+    
+        return getDuration(this.numerator, this.denominator * divider);
     }
     
+    /**
+     * @param other Duration to which this is compared.
+     * @return true if this is longer than other, otherwise false.
+     */
+    public boolean longerThan(Duration other) {
+        return this.compareTo(other) > 0;
+    }
+    
+    /**
+     * @param other Duration to which this is compared.
+     * @return true if this is shorter than other, otherwise false.
+     */
+    public boolean shorterThan(Duration other) {
+        return this.compareTo(other) < 0;
+    }
+
+    /**
+     * Compare the length of this Duration and other. 
+     * @param other the Duration against which this is compared for length.
+     * @return negative integer if this is shorter than other, 
+     * positive integer if this is longer than other, 0 if this is equal to other.
+     */
     @Override
-    public int compareTo(Duration o) {
-        return this.nominator * o.denominator - o.nominator * this.denominator;
+    public int compareTo(Duration other) {
+        return this.numerator * other.denominator - other.numerator * this.denominator;
     }
 }

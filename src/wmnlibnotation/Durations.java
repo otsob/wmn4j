@@ -2,7 +2,7 @@
 package wmnlibnotation;
 
 /**
- * Collection of basic durations
+ * Collection of basic durations.
  * @author Otso Björklund
  */
 public class Durations {
@@ -14,7 +14,9 @@ public class Durations {
     public static final Duration THIRTYSECOND = Duration.getDuration(1, 32);
     public static final Duration SIXTYFOURTH = Duration.getDuration(1, 64);
     
+    public static final Duration QUARTER_TRIPLET = Duration.getDuration(1, 6);
     public static final Duration EIGHT_TRIPLET = Duration.getDuration(1, 12);
+    public static final Duration SIXTEENTH_TRIPLET = Duration.getDuration(1, 24);
     
     private Durations() {
         // Not meant to be instantiated.

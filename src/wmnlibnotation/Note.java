@@ -39,10 +39,10 @@ public class Note implements NotationElement {
             this.articulations = Collections.EMPTY_SET;
         
         if(this.pitch == null)
-            throw new NullPointerException("Pitch was null. Note must have a duration");
+            throw new NullPointerException("Pitch was null. Note must have a pitch.");
         
         if(this.duration == null)
-            throw new NullPointerException("Duration was null. Note must have a duration");
+            throw new NullPointerException("Duration was null. Note must have a duration.");
     }
     
     public Pitch getPitch() {

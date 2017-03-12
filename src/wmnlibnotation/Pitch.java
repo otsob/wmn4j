@@ -4,7 +4,10 @@ package wmnlibnotation;
 import java.util.Objects;
 
 /**
- *
+ * The <code>Pitch</code> class represents a pitch. Pitches consist of 
+ * the basic pitch letter <code>Pitch.Base</code>, alter number which tells by how 
+ * many half-steps the pitch is altered, and octave number which tells the octave of the note. 
+ * Octave number is based on <a href="http://en.wikipedia.org/wiki/Scientific_pitch_notation">scientific pitch notation</a>.
  * @author Otso Björklund
  */
 public class Pitch implements Comparable<Pitch> {
@@ -18,10 +21,28 @@ public class Pitch implements Comparable<Pitch> {
     private final int alter;
     private final int octave;
     
+    /**
+     * Returns a <code>Pitch</code> object.
+     * @param pitchName the letter on which the name of the pitch is based.
+     * @param alter by how many half-steps the pitch is altered up (positive values)
+     * or down (negative values).
+     * @param octave the octave of the pitch.
+     * @return Pitch object with the specified attributes.
+     */
     public static Pitch getPitch(Base pitchName, int alter, int octave) {
         return new Pitch(pitchName, alter, octave);
     }
     
+    /**
+     * Private constructor. To get a <code>Pitch</code> object use the method 
+     * {@link #getPitch(wmnlibnotation.Pitch.Base, int, int)  getPitch}.
+     * @throws IllegalArgumentException if alter is greater than 
+     * {@link #alterLimit alterLimit} of smaller than {@link #alterLimit -1*alterLimit}, 
+     * or if octave is negative or larger than {@link #maxOctave maxOctave}.
+     * @param pitchName the letter on which the name of the pitch is based.
+     * @param alter by how many half-steps the pitch is altered up or down.
+     * @param octave the octave of the pitch.
+     */
     private Pitch(Base pitchName, int alter, int octave) {
         if(alter > alterLimit || alter < -1 * alterLimit)
             throw new IllegalArgumentException("alter was " + alter + ". alter must be between -" + alterLimit + " and " + alterLimit);
@@ -34,18 +55,30 @@ public class Pitch implements Comparable<Pitch> {
         this.octave = octave;
     }
    
+    /**
+     * @return the letter on which the name of the pitch is based.
+     */
     public Base getBase() {
         return this.pitchBase;
     }
     
+    /**
+     * @return by how many half-steps the pitch is altered up or down. 
+     */
     public int getAlter() {
         return this.alter;
     }
     
+    /**
+     * @return octave number of this pitch.
+     */
     public int getOctave() {
         return this.octave;
     }
     
+    /**
+     * @return this Pitch as an integer. C4 (middle C) is 48.
+     */
     public int toInt() {
         int pitchAsInt;
         
@@ -71,10 +104,17 @@ public class Pitch implements Comparable<Pitch> {
         return pitchAsInt + this.alter + this.octave * 12;
     }
     
+    // TODO: Use class PitchClass for handling these two.
+    /**
+     * @return the <a href="http://en.wikipedia.org/wiki/Pitch_class">pitch class integer</a> of this Pitch.
+     */
     public int getPitchClass() {
         return this.toInt() % 12;
     }
     
+    /**
+     * @return the name of the pitch class as string.
+     */
     public String getPitchClassName() {
         String pitchName = this.pitchBase.toString();
         
@@ -90,10 +130,25 @@ public class Pitch implements Comparable<Pitch> {
         return pitchName;
     }
     
+    /**
+     * Test enharmonic equality.
+     * Compare this to other for 
+     * <a href="http://en.wikipedia.org/wiki/Enharmonic">enharmonic</a> equality.
+     * @param other Pitch against which this is compared.
+     * @return true if this is enharmonically equal to other, otherwise false.
+     */
     public boolean equalsEnharmonically(Pitch other) {
         return this.toInt() == other.toInt();
     }
     
+    /**
+     * String representation of <code>Pitch</code>.
+     * <code>Pitch</code> objects are represented as strings of form <code>bao</code>, 
+     * where <code>b</code> is the base letter in the pitch name, <code>a</code> is the 
+     * alteration (sharps # or flats b), and <code>o</code> is the 
+     * octave number. For example middle C-sharp is represented as the string <code>C#4</code>.
+     * @return the string representation of this Pitch.
+     */
     @Override
     public String toString() {
         return this.getPitchClassName() + octave;

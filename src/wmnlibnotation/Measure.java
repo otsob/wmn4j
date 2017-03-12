@@ -12,18 +12,16 @@ import java.util.NoSuchElementException;
  */
 public class Measure implements Iterable<NotationElement> {
     
-    public enum Barline { SINGLE, DOUBLE, REPEAT, FINAL }
-    
     private final int number;
     private final List<List<NotationElement>> layers;
     private final MeasureInfo measureInfo;
     
-    public static Measure getMeasure(int number, List<List<NotationElement>> noteLayers, TimeSignature timeSig, KeySignature keySig, Barline barline, Clef clef) {
+    public static Measure getMeasure(int number, List<List<NotationElement>> noteLayers, TimeSignature timeSig, KeySignature keySig, MeasureInfo.Barline barline, Clef clef) {
         return getMeasure(number, noteLayers, MeasureInfo.getMeasureInfo(timeSig, keySig, barline, clef));
     }
 
     public static Measure getMeasure(int number, List<List<NotationElement>> noteLayers, TimeSignature timeSig, KeySignature keySig, Clef clef) {
-        return getMeasure(number, noteLayers, MeasureInfo.getMeasureInfo(timeSig, keySig, Barline.SINGLE, clef));
+        return getMeasure(number, noteLayers, MeasureInfo.getMeasureInfo(timeSig, keySig, MeasureInfo.Barline.SINGLE, clef));
     }
     
     public static Measure getMeasure(int number, List<List<NotationElement>> noteLayers, MeasureInfo measureInfo) {
@@ -63,7 +61,7 @@ public class Measure implements Iterable<NotationElement> {
         return this.measureInfo.getKeySignature();
     }
     
-    public Barline getBarline() {
+    public MeasureInfo.Barline getBarline() {
         return this.measureInfo.getBarline();
     }
     

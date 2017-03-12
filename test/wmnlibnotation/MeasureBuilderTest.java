@@ -30,7 +30,7 @@ public class MeasureBuilderTest {
     
     @Test
     public void testBuildMeasure() {
-        MeasureBuilder builder = new MeasureBuilder(1, TimeSignatures.SIX_EIGHT, KeySignature.DFlatMaj_BFlatMin, Measure.Barline.DOUBLE, Clef.F_CLEF);
+        MeasureBuilder builder = new MeasureBuilder(1, TimeSignatures.SIX_EIGHT, KeySignature.DFlatMaj_BFlatMin, MeasureInfo.Barline.DOUBLE, Clef.F_CLEF);
         builder.addLayer();
         assertEquals(1, builder.getNumberOfLayers());
         builder.addToLayer(0, Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT))
@@ -39,7 +39,7 @@ public class MeasureBuilderTest {
           
         Measure measure = builder.build();
         assertTrue(measure != null);
-        assertEquals(Measure.Barline.DOUBLE, measure.getBarline());
+        assertEquals(MeasureInfo.Barline.DOUBLE, measure.getBarline());
         assertEquals(Clef.F_CLEF, measure.getClef());
         assertEquals(KeySignature.DFlatMaj_BFlatMin, measure.getKeySignature());
         assertEquals(TimeSignatures.SIX_EIGHT, measure.getTimeSignature());
@@ -54,7 +54,7 @@ public class MeasureBuilderTest {
     
     @Test
     public void testAdditionOfLayers() { 
-        MeasureBuilder builder = new MeasureBuilder(1, TimeSignatures.SIX_EIGHT, KeySignature.DFlatMaj_BFlatMin, Measure.Barline.DOUBLE, Clef.F_CLEF);
+        MeasureBuilder builder = new MeasureBuilder(1, TimeSignatures.SIX_EIGHT, KeySignature.DFlatMaj_BFlatMin, MeasureInfo.Barline.DOUBLE, Clef.F_CLEF);
         builder.addToLayer(1, Rest.getRest(Durations.EIGHT));
         assertEquals(2, builder.getNumberOfLayers());
         builder.addToLayer(3, Rest.getRest(Durations.EIGHT));

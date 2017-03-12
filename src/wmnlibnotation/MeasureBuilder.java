@@ -24,7 +24,7 @@ public class MeasureBuilder {
         this.measureInfo = measureInfo;
     }
     
-    public MeasureBuilder(int number, TimeSignature timeSig, KeySignature keySig, Measure.Barline barline, Clef clef) {
+    public MeasureBuilder(int number, TimeSignature timeSig, KeySignature keySig, MeasureInfo.Barline barline, Clef clef) {
         this.layers = new ArrayList();
         this.number = number;
         this.measureInfo = MeasureInfo.getMeasureInfo(timeSig, keySig, barline, clef);

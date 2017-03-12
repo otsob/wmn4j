@@ -13,16 +13,18 @@ import java.util.Objects;
  */
 public class MeasureInfo {
     
+    public enum Barline { SINGLE, DOUBLE, REPEAT_LEFT, REPEAT_RIGHT, REPEAT_MEASURE, FINAL, DASHED, THICK, INVISIBLE }
+    
     private final TimeSignature timeSig;
     private final KeySignature keySig;
-    private final Measure.Barline barline;
+    private final Barline barline;
     private final Clef clef;
     
-    public static MeasureInfo getMeasureInfo(TimeSignature timeSig, KeySignature keySig, Measure.Barline barline, Clef clef) {
+    public static MeasureInfo getMeasureInfo(TimeSignature timeSig, KeySignature keySig, Barline barline, Clef clef) {
         return new MeasureInfo(timeSig, keySig, barline, clef);
     }
     
-    private MeasureInfo(TimeSignature timeSig, KeySignature keySig, Measure.Barline barline, Clef clef) {
+    private MeasureInfo(TimeSignature timeSig, KeySignature keySig, Barline barline, Clef clef) {
         this.timeSig = timeSig;
         this.keySig = keySig;
         this.barline = barline;
@@ -49,7 +51,7 @@ public class MeasureInfo {
         return this.keySig;
     }
     
-    public Measure.Barline getBarline() {
+    public Barline getBarline() {
         return this.barline;
     }
     

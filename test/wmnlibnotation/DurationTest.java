@@ -28,7 +28,7 @@ public class DurationTest {
     public void testGetDurationWithValidParameter() {
         Duration duration = Duration.getDuration(1, 4);
         assertTrue(duration != null);
-        assertTrue(duration.getNominator() == 1);
+        assertTrue(duration.getNumerator() == 1);
         assertTrue(duration.getDenominator() == 4);
     }
     
@@ -52,12 +52,33 @@ public class DurationTest {
 
     @Test
     public void testEquals() {
-        Duration duration = Duration.getDuration(1, 4);
-        assertTrue(duration.equals(duration));
-        assertTrue(duration.equals(Durations.QUARTER));
-        assertTrue(duration.equals(Duration.getDuration(1, 4)));
+        Duration quarter = Duration.getDuration(1, 4);
+        assertTrue(quarter.equals(quarter));
+        assertTrue(quarter.equals(Durations.QUARTER));
+        assertTrue(quarter.equals(Duration.getDuration(1, 4)));
+        
+        Duration anotherQuarter = Duration.getDuration(2, 8);
+        assertTrue(quarter.equals(anotherQuarter));
+        assertTrue(quarter.equals(Durations.QUARTER));
+        assertTrue(quarter.equals(Duration.getDuration(1, 4)));
+        
+        Duration notQuarter = Duration.getDuration(1, 8);
+        assertFalse(notQuarter.equals(quarter));
+        
+        assertFalse(Durations.EIGHT_TRIPLET.equals(Durations.THIRTYSECOND));
     }
 
+    @Test
+    public void testRationalNumberReduced() {
+        Duration quarter = Duration.getDuration(3, 12);
+        assertEquals(1, quarter.getNumerator());
+        assertEquals(4, quarter.getDenominator());
+        
+        Duration quintuplet = Duration.getDuration(5, 100);
+        assertEquals(1, quintuplet.getNumerator());
+        assertEquals(20, quintuplet.getDenominator());
+    }
+    
     @Test
     public void testToString() {
         assertEquals("(1/4)", Duration.getDuration(1, 4).toString());
@@ -66,10 +87,38 @@ public class DurationTest {
     }
     
     @Test
+    public void testToDouble() {
+        assertTrue(new Double(0.25).equals(Durations.QUARTER.toDouble()));
+        assertTrue(new Double(0.5).equals(Durations.HALF.toDouble()));
+        assertFalse(new Double(0.49).equals(Durations.HALF.toDouble()));
+    }
+    
+    @Test
     public void testAdd() {
         assertEquals(Durations.EIGHT, Durations.SIXTEENTH.add(Durations.SIXTEENTH));
         assertEquals(Durations.QUARTER, Durations.EIGHT_TRIPLET.add(Durations.EIGHT_TRIPLET.add(Durations.EIGHT_TRIPLET)));
         assertEquals(Duration.getDuration(1, 8), Duration.getDuration(3, 32).add(Duration.getDuration(1, 32)));
+    }
+    
+    @Test 
+    public void testSubtract() {
+        assertEquals(Durations.EIGHT, Durations.QUARTER.subtract(Durations.EIGHT));
+        assertEquals(Durations.QUARTER.addDot(), Durations.HALF.subtract(Durations.EIGHT));
+        assertEquals(Duration.getDuration(2, 12), Durations.QUARTER.subtract(Durations.EIGHT_TRIPLET));
+    }
+    
+    @Test
+    public void testMultiplyBy() {
+        assertEquals(Durations.QUARTER, Durations.EIGHT.multiplyBy(2));
+        assertEquals(Durations.QUARTER, Durations.EIGHT_TRIPLET.multiplyBy(3));
+        assertEquals(Durations.EIGHT.addDot(), Durations.SIXTEENTH.multiplyBy(3));
+    }
+    
+    @Test
+    public void testDivideBy() {
+        assertEquals(Durations.EIGHT, Durations.QUARTER.divideBy(2));
+        assertEquals(Durations.QUARTER, Durations.WHOLE.divideBy(4));
+        assertEquals(Duration.getDuration(1, 20), Durations.QUARTER.divideBy(5));
     }
     
     @Test
