@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class MeasureBuilder {
    
+    // TODO: Keep track of cumulated durations of layers for faster checking of whether layer is full?
+    // TODO: Add method to check if layer is full?
     private final List<List<NotationElement>> layers;
     private final MeasureInfo measureInfo;
     private final int number;
@@ -51,6 +53,14 @@ public class MeasureBuilder {
     
     public int getNumberOfLayers() {
         return this.layers.size();
+    }
+    
+    public boolean isLayerFull(int layer) {
+        return true;
+    }
+    
+    public boolean isFull() {
+        return true;
     }
     
     public Measure build() {

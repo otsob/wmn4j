@@ -18,25 +18,13 @@ public class Duration implements Comparable<Duration> {
     
     /**
      * Returns a <code>Duration</code> object. The numerator and denominator must be at least 1.
-     * 
+     * @throws IllegalArgumentException if numerator or denominator are less than 1.
      * @param numerator the numerator part of the duration.
      * @param denominator the denominator part of the duration.
      * @return a Duration object.
      */
     public static Duration getDuration(int numerator, int denominator) {
-        // Todo: Implement caching.
-        return new Duration(numerator, denominator);
-    }
-    
-    /**
-     * Constructor for the class. The numerator and denominator must be at least 1. 
-     * The constructor is private, to get a Duration object use the static method 
-     * {@link #getDuration(int, int) getDuration}.
-     * @throws IllegalArgumentException.
-     * @param numerator the numerator part of the duration.
-     * @param denominator the denominator part of the duration.
-     */
-    private Duration(int numerator, int denominator) {
+        
         if(numerator < 1)
             throw new IllegalArgumentException("numerator must be at least 1");
         if(denominator < 1)
@@ -45,13 +33,23 @@ public class Duration implements Comparable<Duration> {
         // Todo: Come up with a more effective way of finding GCD
         if(numerator != 1) {
             int gcd = BigInteger.valueOf(numerator).gcd(BigInteger.valueOf(denominator)).intValue();
-            this.numerator = numerator / gcd;
-            this.denominator = denominator / gcd;
+            numerator = numerator / gcd;
+            denominator = denominator / gcd;
         }
-        else {
-            this.numerator = numerator;
-            this.denominator = denominator;
-        }
+        // Todo: Implement caching.
+        return new Duration(numerator, denominator);
+    }
+    
+    /**
+     * Constructor for the class.
+     * The constructor is private, to get a Duration object use the static method 
+     * {@link #getDuration(int, int) getDuration}.
+     * @param numerator the numerator part of the duration.
+     * @param denominator the denominator part of the duration.
+     */
+    private Duration(int numerator, int denominator) {
+        this.numerator = numerator;
+        this.denominator = denominator;
     }
     
     /**
@@ -130,27 +128,27 @@ public class Duration implements Comparable<Duration> {
     }
 
     /**
-     * Returns a Duration that is the sum of this and duration. 
+     * Returns a Duration that is the sum of this and other. 
      * Does not change this Duration (this class is immutable).
-     * @param duration the Duration to be added to this.
-     * @return a Duration that is the sum of this and duration.
+     * @param other the Duration to be added to this.
+     * @return a Duration that is the sum of this and other.
      */
-    public Duration add(Duration duration) {
-        int nom = this.numerator * duration.denominator + this.denominator * duration.numerator;
-        int denom = this.denominator * duration.denominator;
+    public Duration add(Duration other) {
+        int nom = this.numerator * other.denominator + this.denominator * other.numerator;
+        int denom = this.denominator * other.denominator;
         
         return getDuration(nom, denom);
     }
     
     /**
-     * Returns a Duration that is the this duration minus duration given as parameter.
+     * Returns a Duration that is the this other minus other given as parameter.
      * Does not change this Duration (this class is immutable).
-     * @param duration the Duration to be subtracted from this.
-     * @return a Duration that is this duration minus duration.
+     * @param other the Duration to be subtracted from this.
+     * @return a Duration that is this other minus other.
      */
-    public Duration subtract(Duration duration) {
-        int nom = this.numerator * duration.denominator - this.denominator * duration.numerator;
-        int denom = this.denominator * duration.denominator;
+    public Duration subtract(Duration other) {
+        int nom = this.numerator * other.denominator - this.denominator * other.numerator;
+        int denom = this.denominator * other.denominator;
         
         return getDuration(nom, denom);
     }

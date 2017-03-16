@@ -33,20 +33,18 @@ public class PitchTest {
 
     @Test
     public void testGetPitchClass() {
-        assertEquals(0, Pitch.getPitch(Pitch.Base.C, 0, 5).getPitchClass());
-        assertEquals(8, Pitch.getPitch(Pitch.Base.A, -1, 3).getPitchClass());
-        assertEquals(11, Pitch.getPitch(Pitch.Base.B, 0, 2).getPitchClass());
+        assertEquals(PitchClass.C, Pitch.getPitch(Pitch.Base.C, 0, 5).getPitchClass());
+        assertEquals(PitchClass.GSharpAFlat, Pitch.getPitch(Pitch.Base.A, -1, 3).getPitchClass());
+        assertEquals(PitchClass.B, Pitch.getPitch(Pitch.Base.B, 0, 2).getPitchClass());
     }
     
     @Test
-    public void testGetPitchClassName() {
-        assertEquals("D", Pitch.getPitch(Pitch.Base.D, 0, 4).getPitchClassName());
-        assertEquals("Eb", Pitch.getPitch(Pitch.Base.E, -1, 2).getPitchClassName());
-        assertEquals("F#", Pitch.getPitch(Pitch.Base.F, 1, 3).getPitchClassName());
-        assertEquals("Gbb", Pitch.getPitch(Pitch.Base.G, -2, 2).getPitchClassName());
-        assertEquals("C##", Pitch.getPitch(Pitch.Base.C, 2, 1).getPitchClassName());
+    public void testGetPCNumber() {
+        assertEquals(0, Pitch.getPitch(Pitch.Base.C, 0, 5).getPCNumber());
+        assertEquals(8, Pitch.getPitch(Pitch.Base.A, -1, 3).getPCNumber());
+        assertEquals(11, Pitch.getPitch(Pitch.Base.B, 0, 2).getPCNumber());
     }
-
+    
     @Test
     public void testToString() {
         assertEquals("F0", Pitch.getPitch(Pitch.Base.F, 0, 0).toString());

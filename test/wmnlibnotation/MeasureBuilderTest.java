@@ -70,4 +70,50 @@ public class MeasureBuilderTest {
         assertTrue(measure.getLayer(3).contains(Rest.getRest(Durations.EIGHT)));
     }
     
+    @Test
+    public void testIsLayerFull() {
+        MeasureBuilder builder = new MeasureBuilder(1, TimeSignatures.FOUR_FOUR, KeySignature.CMaj_Amin, MeasureInfo.Barline.SINGLE, Clef.G_CLEF);
+        builder.addToLayer(0, Rest.getRest(Durations.QUARTER));
+        assertFalse("Layer 0 is full for 4/4 measure after adding one quarter rest", builder.isLayerFull(0));
+        Note c = Note.getNote(Pitch.Base.C, 0, 2, Durations.QUARTER);
+        builder.addToLayer(0, c);
+        assertFalse("Layer 0 is full for 4/4 measure after adding two quarters", builder.isLayerFull(0));
+        builder.addToLayer(0, c);
+        builder.addToLayer(0, c);
+        assertTrue("Layer 0 is not full when 4 quarter durations added to 4/4", builder.isLayerFull(0));
+        
+        builder = new MeasureBuilder(1, TimeSignatures.SIX_EIGHT, KeySignature.CMaj_Amin, MeasureInfo.Barline.SINGLE, Clef.G_CLEF);
+        builder.addToLayer(0, Rest.getRest(Durations.QUARTER.addDot()))
+               .addToLayer(0, Rest.getRest(Durations.QUARTER))
+               .addToLayer(1, Rest.getRest(Durations.QUARTER.addDot()));
+        builder.addToLayer(0, Rest.getRest(Durations.SIXTEENTH_TRIPLET))
+               .addToLayer(0, Rest.getRest(Durations.SIXTEENTH_TRIPLET));
+        assertFalse("Layer 0 is full when 6/8 measure is lacking one sixteenth triplet", builder.isLayerFull(0));
+        builder.addToLayer(0, Rest.getRest(Durations.SIXTEENTH_TRIPLET));
+        assertTrue("Layer 0 is not full when 6/8 measure should be full.", builder.isLayerFull(0));
+        assertFalse("Layer 1 is full for 6/8 measure when it should not be", builder.isLayerFull(1));
+    }
+    
+    @Test
+    public void testIsFull() {
+        MeasureBuilder builder = new MeasureBuilder(1, TimeSignatures.FOUR_FOUR, KeySignature.CMaj_Amin, MeasureInfo.Barline.SINGLE, Clef.G_CLEF);
+        builder.addToLayer(0, Rest.getRest(Durations.QUARTER));
+        assertFalse("builder for 4/4 is full after adding one quarter rest", builder.isFull());
+        Note c = Note.getNote(Pitch.Base.C, 0, 2, Durations.QUARTER);
+        builder.addToLayer(0, c);
+        assertFalse("builder for 4/4 is full only after adding two quarters", builder.isFull());
+        builder.addToLayer(0, c);
+        builder.addToLayer(0, c);
+        assertTrue("builder is not full when 4 quarter durations added to 4/4", builder.isFull());
+        
+        builder = new MeasureBuilder(1, TimeSignatures.SIX_EIGHT, KeySignature.CMaj_Amin, MeasureInfo.Barline.SINGLE, Clef.G_CLEF);
+        builder.addToLayer(0, Rest.getRest(Durations.QUARTER.addDot()))
+               .addToLayer(0, Rest.getRest(Durations.QUARTER))
+               .addToLayer(1, Rest.getRest(Durations.QUARTER.addDot()));
+        builder.addToLayer(0, Rest.getRest(Durations.SIXTEENTH_TRIPLET))
+               .addToLayer(0, Rest.getRest(Durations.SIXTEENTH_TRIPLET));
+        assertFalse("builder is full when 6/8 measure is lacking one sixteenth triplet", builder.isFull());
+        builder.addToLayer(0, Rest.getRest(Durations.SIXTEENTH_TRIPLET));
+        assertTrue("builder is not full when 6/8 measure should be full.", builder.isFull());
+    }
 }
