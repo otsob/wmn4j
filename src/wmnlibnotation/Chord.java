@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author Otso Björklund
  */
-public class Chord implements NotationElement, Iterable<Note> {
+public class Chord implements Durational, Iterable<Note> {
     private final List<Note> notes;
  
     public static Chord getChord(Note... n) {   

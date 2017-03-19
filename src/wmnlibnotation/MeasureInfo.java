@@ -5,34 +5,50 @@
  */
 package wmnlibnotation;
 
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
- *
  * @author Otso Björklund
  */
 public class MeasureInfo {
     
-    public enum Barline { SINGLE, DOUBLE, REPEAT_LEFT, REPEAT_RIGHT, REPEAT_MEASURE, FINAL, DASHED, THICK, INVISIBLE }
-    
     private final TimeSignature timeSig;
     private final KeySignature keySig;
-    private final Barline barline;
+    private final Barline rightBarline;
+    private final Barline leftBarline;
     private final Clef clef;
+    private final Map<Duration, Clef> clefChanges;
     
-    public static MeasureInfo getMeasureInfo(TimeSignature timeSig, KeySignature keySig, Barline barline, Clef clef) {
-        return new MeasureInfo(timeSig, keySig, barline, clef);
+    public static MeasureInfo getMeasureInfo(TimeSignature timeSig, KeySignature keySig, Barline rightBarline, Clef clef) {
+        return getMeasureInfo(timeSig, keySig, rightBarline, Barline.SINGLE, clef);
     }
     
-    private MeasureInfo(TimeSignature timeSig, KeySignature keySig, Barline barline, Clef clef) {
+    public static MeasureInfo getMeasureInfo(TimeSignature timeSig, KeySignature keySig, Barline rightBarline, Barline leftBarline, Clef clef) {
+        // Todo: This should definitely use caching.
+        return new MeasureInfo(timeSig, keySig, rightBarline, leftBarline, clef);
+    }
+    
+    private MeasureInfo(TimeSignature timeSig, KeySignature keySig, Barline rightBarline, Barline leftBarline, Clef clef) {
         this.timeSig = timeSig;
         this.keySig = keySig;
-        this.barline = barline;
+        this.rightBarline = rightBarline;
+        this.leftBarline = leftBarline;
         this.clef = clef;
+        // Add this 
+        this.clefChanges = new HashMap();
         
-        if(this.barline == null)
-            throw new NullPointerException("barline is null");
-            
+        if(this.rightBarline == null)
+            throw new NullPointerException("right barline is null");
+        
+        if(this.leftBarline == null)
+            throw new NullPointerException("right barline is null");
+        
         if(this.timeSig == null)
             throw new NullPointerException("timeSig is null");
             
@@ -51,8 +67,12 @@ public class MeasureInfo {
         return this.keySig;
     }
     
-    public Barline getBarline() {
-        return this.barline;
+    public Barline getRightBarline() {
+        return this.rightBarline;
+    }
+    
+    public Barline getLeftBarline() {
+        return this.leftBarline;
     }
     
     public Clef getClef() {
@@ -67,7 +87,7 @@ public class MeasureInfo {
         MeasureInfo other = (MeasureInfo) o;
         
         return this.clef.equals(other.clef)
-                && this.barline.equals(other.barline)
+                && this.rightBarline.equals(other.rightBarline)
                 && this.timeSig.equals(other.timeSig)
                 && this.keySig.equals(other.keySig);
     }
@@ -77,7 +97,7 @@ public class MeasureInfo {
         int hash = 7;
         hash = 89 * hash + Objects.hashCode(this.timeSig);
         hash = 89 * hash + Objects.hashCode(this.keySig);
-        hash = 89 * hash + Objects.hashCode(this.barline);
+        hash = 89 * hash + Objects.hashCode(this.rightBarline);
         hash = 89 * hash + Objects.hashCode(this.clef);
         return hash;
     }

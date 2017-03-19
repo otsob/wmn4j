@@ -8,7 +8,7 @@ package wmnlibnotation;
 import wmnlibnotation.KeySignature;
 import wmnlibnotation.Staff;
 import wmnlibnotation.Measure;
-import wmnlibnotation.NotationElement;
+import wmnlibnotation.Durational;
 import wmnlibnotation.Clef;
 import wmnlibnotation.Durations;
 import wmnlibnotation.Pitch;
@@ -33,14 +33,14 @@ public class StaffTest {
     public void testGetMeasures() {
         List<Measure> origMeasures = new ArrayList();
         TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
-        List<List<NotationElement>> notes = new ArrayList();
+        List<List<Durational>> notes = new ArrayList();
         notes.add(new ArrayList());
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        origMeasures.add(Measure.getMeasure(1, notes, timeSig, KeySignature.CMaj_Amin, Clef.G_CLEF));
-        origMeasures.add(Measure.getMeasure(2, notes, timeSig, KeySignature.CMaj_Amin, Clef.G_CLEF));
+        origMeasures.add(Measure.getMeasure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(Measure.getMeasure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         Staff staff = new Staff("TestStaff", origMeasures);
         
         List<Measure> measures = staff.getMeasures();
@@ -48,14 +48,14 @@ public class StaffTest {
         assertEquals(origMeasures.size(), measures.size());
         
         try {
-            measures.add(Measure.getMeasure(2, notes, timeSig, KeySignature.CMaj_Amin, Clef.G_CLEF));
+            measures.add(Measure.getMeasure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
             assertTrue("Did not throw UnsupportedOperationException", false);
         } catch (Exception e) {
             assertTrue(e instanceof UnsupportedOperationException);
         }
         
         int sizeBeforeAddition = origMeasures.size();
-        origMeasures.add(Measure.getMeasure(3, notes, timeSig, KeySignature.CMaj_Amin, Clef.G_CLEF));
+        origMeasures.add(Measure.getMeasure(3, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         assertEquals(sizeBeforeAddition, staff.getMeasures().size());
     }
     
@@ -63,14 +63,14 @@ public class StaffTest {
     public void testGetName() {
         List<Measure> origMeasures = new ArrayList();
         TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
-        List<List<NotationElement>> notes = new ArrayList();
+        List<List<Durational>> notes = new ArrayList();
         notes.add(new ArrayList());
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        origMeasures.add(Measure.getMeasure(1, notes, timeSig, KeySignature.CMaj_Amin, Clef.G_CLEF));
-        origMeasures.add(Measure.getMeasure(2, notes, timeSig, KeySignature.CMaj_Amin, Clef.G_CLEF));
+        origMeasures.add(Measure.getMeasure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(Measure.getMeasure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         Staff staff = new Staff("TestStaff", origMeasures);
         
         assertEquals("TestStaff", staff.getName());
@@ -80,14 +80,14 @@ public class StaffTest {
     public void testIterator() {
         List<Measure> origMeasures = new ArrayList();
         TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
-        List<List<NotationElement>> notes = new ArrayList();
+        List<List<Durational>> notes = new ArrayList();
         notes.add(new ArrayList());
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        origMeasures.add(Measure.getMeasure(1, notes, timeSig, KeySignature.CMaj_Amin, Clef.G_CLEF));
-        origMeasures.add(Measure.getMeasure(2, notes, timeSig, KeySignature.CMaj_Amin, Clef.G_CLEF));
+        origMeasures.add(Measure.getMeasure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(Measure.getMeasure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         Staff staff = new Staff("TestStaff", origMeasures);
     
         int measureCount = 0;
@@ -106,14 +106,14 @@ public class StaffTest {
     public void testIteratorRemoveDisabled() {
         List<Measure> origMeasures = new ArrayList();
         TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
-        List<List<NotationElement>> notes = new ArrayList();
+        List<List<Durational>> notes = new ArrayList();
         notes.add(new ArrayList());
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        origMeasures.add(Measure.getMeasure(1, notes, timeSig, KeySignature.CMaj_Amin, Clef.G_CLEF));
-        origMeasures.add(Measure.getMeasure(2, notes, timeSig, KeySignature.CMaj_Amin, Clef.G_CLEF));
+        origMeasures.add(Measure.getMeasure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(Measure.getMeasure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         Staff staff = new Staff("TestStaff", origMeasures);
         
         try {

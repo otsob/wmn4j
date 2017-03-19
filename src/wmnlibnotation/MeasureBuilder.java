@@ -16,7 +16,7 @@ public class MeasureBuilder {
    
     // TODO: Keep track of cumulated durations of layers for faster checking of whether layer is full?
     // TODO: Add method to check if layer is full?
-    private final List<List<NotationElement>> layers;
+    private final List<List<Durational>> layers;
     private final MeasureInfo measureInfo;
     private final int number;
     
@@ -26,7 +26,7 @@ public class MeasureBuilder {
         this.measureInfo = measureInfo;
     }
     
-    public MeasureBuilder(int number, TimeSignature timeSig, KeySignature keySig, MeasureInfo.Barline barline, Clef clef) {
+    public MeasureBuilder(int number, TimeSignature timeSig, KeySignature keySig, Barline barline, Clef clef) {
         this.layers = new ArrayList();
         this.number = number;
         this.measureInfo = MeasureInfo.getMeasureInfo(timeSig, keySig, barline, clef);
@@ -37,12 +37,12 @@ public class MeasureBuilder {
         return this;
     }
     
-    public MeasureBuilder addLayer(List<NotationElement> layer) {
+    public MeasureBuilder addLayer(List<Durational> layer) {
         this.layers.add(layer);
         return this;
     }
      
-    public MeasureBuilder addToLayer(int layer, NotationElement elem) {
+    public MeasureBuilder addToLayer(int layer, Durational elem) {
         
         while(this.layers.size() <= layer)
             this.layers.add(new ArrayList());

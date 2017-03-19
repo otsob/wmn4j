@@ -6,6 +6,7 @@ import wmnlibnotation.Pitch;
 import wmnlibnotation.Note;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -104,7 +105,7 @@ public class NoteTest {
     @Test
     public void testHasArticulation() {
         Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
-        HashSet<Articulation> articulations = new HashSet();
+        Set<Articulation> articulations = new HashSet();
         articulations.add(Articulation.STACCATO);
         assertTrue(Note.getNote(pitch, Durations.EIGHT, articulations).hasArticulation(Articulation.STACCATO));
         assertFalse(Note.getNote(pitch, Durations.EIGHT).hasArticulation(Articulation.STACCATO));
@@ -124,7 +125,7 @@ public class NoteTest {
         Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
         assertTrue(Note.getNote(pitch, Durations.EIGHT).getArticulations().isEmpty());
         
-        HashSet<Articulation> articulations = new HashSet();
+        Set<Articulation> articulations = new HashSet();
         articulations.add(Articulation.STACCATO);
         articulations.add(Articulation.TENUTO);
         Note note = Note.getNote(pitch, Durations.EIGHT, articulations);

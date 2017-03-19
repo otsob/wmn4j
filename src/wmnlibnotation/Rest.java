@@ -3,9 +3,10 @@ package wmnlibnotation;
 
 /**
  * This class represents a rest. 
+ * This class is immutable.
  * @author Otso Björklund
  */
-public class Rest implements NotationElement {
+public class Rest implements Durational {
     private final Duration duration;
     
     /**
@@ -41,7 +42,7 @@ public class Rest implements NotationElement {
     }
     
     /**
-     * Method for checking if the NotationElement is a Rest.
+     * Method for checking if the Durational is a Rest.
      * @return true.
      */
     @Override

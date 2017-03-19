@@ -8,6 +8,7 @@ import java.util.Objects;
  * the basic pitch letter <code>Pitch.Base</code>, alter number which tells by how 
  * many half-steps the pitch is altered, and octave number which tells the octave of the note. 
  * Octave number is based on <a href="http://en.wikipedia.org/wiki/Scientific_pitch_notation">scientific pitch notation</a>.
+ * This class is immutable.
  * @author Otso Björklund
  */
 public class Pitch implements Comparable<Pitch> {

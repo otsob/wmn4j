@@ -10,7 +10,7 @@ import wmnlibnotation.KeySignature;
 import wmnlibnotation.Chord;
 import wmnlibnotation.Rest;
 import wmnlibnotation.Measure;
-import wmnlibnotation.NotationElement;
+import wmnlibnotation.Durational;
 import wmnlibnotation.Clef;
 import wmnlibnotation.Durations;
 import wmnlibnotation.Pitch;
@@ -27,10 +27,10 @@ import static org.junit.Assert.*;
  */
 public class MeasureTest {
     
-    List<List<NotationElement>> noteLayer;
-    List<List<NotationElement>> noteLayers;
+    List<List<Durational>> noteLayer;
+    List<List<Durational>> noteLayers;
     
-    KeySignature keySig = KeySignature.CMaj_Amin;
+    KeySignature keySig = KeySignatures.CMaj_Amin;
     
     Note C4 = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF);
     Note E4 = Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF);
@@ -54,18 +54,18 @@ public class MeasureTest {
     
     @Test
     public void testGetMeasure() {
-        assertTrue(Measure.getMeasure(1, this.noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF) != null);
+        assertTrue(Measure.getMeasure(1, this.noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G) != null);
         
         // Test exceptions thrown correctly for illegal arguments
         try {
-            Measure m = Measure.getMeasure(0, this.noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF);
+            Measure m = Measure.getMeasure(0, this.noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
             fail("Exception not thrown");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
         }
         
         try {
-            Measure m = Measure.getMeasure(1, null, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF);
+            Measure m = Measure.getMeasure(1, null, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
             fail("Exception not thrown");
         } catch (Exception e) {
             assertTrue(e instanceof NullPointerException);
@@ -74,11 +74,11 @@ public class MeasureTest {
     
     @Test
     public void testGetLayer() {
-        Measure m = Measure.getMeasure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF);
+        Measure m = Measure.getMeasure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         assertTrue(m.getLayer(1).contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF)));
         assertTrue(m.getLayer(0).contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
         
-        List<NotationElement> layer = m.getLayer(0);
+        List<Durational> layer = m.getLayer(0);
         try {
             layer.add(Rest.getRest(Durations.QUARTER));
             fail("Failed to throw exception for disabled adding");
@@ -88,17 +88,17 @@ public class MeasureTest {
 
     @Test
     public void testGetNumber() {
-        assertEquals(1, Measure.getMeasure(1, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF).getNumber());
-        assertEquals(512, Measure.getMeasure(512, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF).getNumber());
+        assertEquals(1, Measure.getMeasure(1, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clefs.G).getNumber());
+        assertEquals(512, Measure.getMeasure(512, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clefs.G).getNumber());
     }
 
     @Test
     public void testToString() {
-        Measure m = Measure.getMeasure(5, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF);
-        assertEquals("Measure 5, Time(4/4), CMaj_Amin, G_CLEF:\nLayer 0: C4(1/4), R(1/4), [C4(1/2),E4(1/2),G4(1/2)]\nBarline:SINGLE\n", m.toString());
+        Measure m = Measure.getMeasure(5, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+        assertEquals("Measure 5, Time(4/4), KeySig(), G-clef(2):\nLayer 0: C4(1/4), R(1/4), [C4(1/2),E4(1/2),G4(1/2)]\nBarline:SINGLE\n", m.toString());
         
-        Measure multiLayer = Measure.getMeasure(2, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF);
-        assertEquals("Measure 2, Time(4/4), CMaj_Amin, G_CLEF:\n"
+        Measure multiLayer = Measure.getMeasure(2, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+        assertEquals("Measure 2, Time(4/4), KeySig(), G-clef(2):\n"
                         + "Layer 0: C4(1/4), R(1/4), [C4(1/2),E4(1/2),G4(1/2)]\n"
                         + "Layer 1: R(1/4), C4(1/2), R(1/4)\nBarline:SINGLE\n", 
                         multiLayer.toString());
@@ -106,49 +106,49 @@ public class MeasureTest {
     
     @Test
     public void testIteratorWithSingleLayerMeasure() {
-        Measure singleLayerMeasure = Measure.getMeasure(1, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF);
+        Measure singleLayerMeasure = Measure.getMeasure(1, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         int noteCount = 0;
         
-        List<NotationElement> expected = noteLayer.get(0);
-        List<NotationElement> found = new ArrayList();
+        List<Durational> expected = noteLayer.get(0);
+        List<Durational> found = new ArrayList();
         
-        for(NotationElement e : singleLayerMeasure) {
+        for(Durational e : singleLayerMeasure) {
             found.add(e);
         }
         
         assertEquals(expected.size(), found.size());
         
-        for(NotationElement e : expected) 
+        for(Durational e : expected) 
             assertTrue(found.contains(e));
     }
     
     @Test
     public void testIteratorWithMultiLayerMeasure() {
-        Measure multiLayerMeasure = Measure.getMeasure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF);
+        Measure multiLayerMeasure = Measure.getMeasure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         int noteCount = 0;
 
-        List<NotationElement> expected = new ArrayList();
+        List<Durational> expected = new ArrayList();
         expected.addAll(noteLayers.get(0));
         expected.addAll(noteLayers.get(1));
         
-        List<NotationElement> found = new ArrayList();
+        List<Durational> found = new ArrayList();
         
-        for(NotationElement e : multiLayerMeasure) {
+        for(Durational e : multiLayerMeasure) {
             found.add(e);
         }
         
         assertEquals(expected.size(), found.size());
         
-        for(NotationElement e : expected)
+        for(Durational e : expected)
             assertTrue(found.contains(e));
     }
     
     @Test
     public void testIteratorRemoveDisabled() {
-        Measure m = Measure.getMeasure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF);
+        Measure m = Measure.getMeasure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
       
         try {
-            Iterator<NotationElement> iter = m.iterator();
+            Iterator<Durational> iter = m.iterator();
             iter.next();
             iter.remove();
             fail("Expected exception was not thrown");
@@ -160,13 +160,13 @@ public class MeasureTest {
     
     @Test
     public void testIteratorWithEmptyMeasure() {
-        List<List<NotationElement>> layers = new ArrayList();
+        List<List<Durational>> layers = new ArrayList();
         layers.add(new ArrayList());
-        Measure emptyMeasure = Measure.getMeasure(1, layers, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF);
+        Measure emptyMeasure = Measure.getMeasure(1, layers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         
         int noteElemCount = 0;
         
-        for(NotationElement n : emptyMeasure) {
+        for(Durational n : emptyMeasure) {
             ++noteElemCount;
             break;
         }
@@ -176,7 +176,7 @@ public class MeasureTest {
     
     @Test
     public void testIteratorMultipleLayersOneEmptyLayer() {
-        List<List<NotationElement>> layers = new ArrayList();
+        List<List<Durational>> layers = new ArrayList();
         layers.add(new ArrayList());
         layers.add(new ArrayList());
         
@@ -184,12 +184,12 @@ public class MeasureTest {
         layers.get(1).add(Rest.getRest(Durations.QUARTER));
         layers.get(1).add(Chord.getChord(C4, E4, G4));
         
-        Measure multiLayerWithEmptyLayer = Measure.getMeasure(1, layers, TimeSignatures.FOUR_FOUR, keySig, Clef.G_CLEF);
+        Measure multiLayerWithEmptyLayer = Measure.getMeasure(1, layers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         
         int noteElemCount = 0;
         int expectedNoteElemCount = layers.get(0).size() + layers.get(1).size();
         
-        for(NotationElement n : multiLayerWithEmptyLayer) {
+        for(Durational n : multiLayerWithEmptyLayer) {
             ++noteElemCount;
             assertTrue(noteElemCount <= expectedNoteElemCount);
         }

@@ -5,30 +5,31 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 /**
  * Class that defines a measure.
  * @author Otso Björklund
  */
-public class Measure implements Iterable<NotationElement> {
+public class Measure implements Iterable<Durational> {
     
     private final int number;
-    private final List<List<NotationElement>> layers;
+    private final List<List<Durational>> layers;
     private final MeasureInfo measureInfo;
     
-    public static Measure getMeasure(int number, List<List<NotationElement>> noteLayers, TimeSignature timeSig, KeySignature keySig, MeasureInfo.Barline barline, Clef clef) {
+    public static Measure getMeasure(int number, List<List<Durational>> noteLayers, TimeSignature timeSig, KeySignature keySig, Barline barline, Clef clef) {
         return getMeasure(number, noteLayers, MeasureInfo.getMeasureInfo(timeSig, keySig, barline, clef));
     }
 
-    public static Measure getMeasure(int number, List<List<NotationElement>> noteLayers, TimeSignature timeSig, KeySignature keySig, Clef clef) {
-        return getMeasure(number, noteLayers, MeasureInfo.getMeasureInfo(timeSig, keySig, MeasureInfo.Barline.SINGLE, clef));
+    public static Measure getMeasure(int number, List<List<Durational>> noteLayers, TimeSignature timeSig, KeySignature keySig, Clef clef) {
+        return getMeasure(number, noteLayers, MeasureInfo.getMeasureInfo(timeSig, keySig, Barline.SINGLE, clef));
     }
     
-    public static Measure getMeasure(int number, List<List<NotationElement>> noteLayers, MeasureInfo measureInfo) {
+    public static Measure getMeasure(int number, List<List<Durational>> noteLayers, MeasureInfo measureInfo) {
         return new Measure(number, noteLayers, measureInfo);
     }
     
-    public Measure(int number, List<List<NotationElement>> noteLayers, MeasureInfo measureInfo) {
+    public Measure(int number, List<List<Durational>> noteLayers, MeasureInfo measureInfo) {
         this.number = number;
         this.layers = noteLayers;
         
@@ -41,7 +42,7 @@ public class Measure implements Iterable<NotationElement> {
             throw new IllegalArgumentException("Measure number must be positive");
     }
     
-    public List<NotationElement> getLayer(int layer) {
+    public List<Durational> getLayer(int layer) {
         return Collections.unmodifiableList(this.layers.get(layer));
     }
     
@@ -61,8 +62,12 @@ public class Measure implements Iterable<NotationElement> {
         return this.measureInfo.getKeySignature();
     }
     
-    public MeasureInfo.Barline getBarline() {
-        return this.measureInfo.getBarline();
+    public Barline getRightBarline() {
+        return this.measureInfo.getRightBarline();
+    }
+    
+    public Barline getLeftBarline() {
+        return this.measureInfo.getLeftBarline();
     }
     
     public Clef getClef() {
@@ -87,13 +92,13 @@ public class Measure implements Iterable<NotationElement> {
             strBuilder.append("\n");
         }
         
-        strBuilder.append("Barline:").append(getBarline()).append("\n");
+        strBuilder.append("Barline:").append(getRightBarline()).append("\n");
         return strBuilder.toString();
     }
 
     @Override
-    public Iterator<NotationElement> iterator() {
-        class LayerWiseIterator implements Iterator<NotationElement> {
+    public Iterator<Durational> iterator() {
+        class LayerWiseIterator implements Iterator<Durational> {
             private int currentLayer = 0;
             private int positionInLayer = 0;
             
@@ -113,8 +118,8 @@ public class Measure implements Iterable<NotationElement> {
             }
 
             @Override
-            public NotationElement next() {
-                NotationElement next = null;
+            public Durational next() {
+                Durational next = null;
                 
                 if(hasNext()) {
                     next = Measure.this.layers.get(currentLayer).get(positionInLayer);

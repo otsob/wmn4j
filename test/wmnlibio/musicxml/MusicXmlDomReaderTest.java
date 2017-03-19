@@ -8,13 +8,15 @@ package wmnlibio.musicxml;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import wmnlibnotation.Barline;
 import wmnlibnotation.Chord;
 import wmnlibnotation.Clef;
+import wmnlibnotation.Clefs;
 import wmnlibnotation.Durations;
-import wmnlibnotation.KeySignature;
+import wmnlibnotation.KeySignatures;
 import wmnlibnotation.Measure;
 import wmnlibnotation.MeasureInfo;
-import wmnlibnotation.NotationElement;
+import wmnlibnotation.Durational;
 import wmnlibnotation.Note;
 import wmnlibnotation.Pitch;
 import wmnlibnotation.Rest;
@@ -59,11 +61,11 @@ public class MusicXmlDomReaderTest {
         assertEquals(1, measure.getNumber());
         assertEquals(1, measure.getNumberOfLayers());
         assertEquals(TimeSignatures.FOUR_FOUR, measure.getTimeSignature());
-        assertEquals(KeySignature.CMaj_Amin, measure.getKeySignature());
-        assertEquals(MeasureInfo.Barline.SINGLE, measure.getBarline());
-        assertEquals(Clef.G_CLEF, measure.getClef());
+        assertEquals(KeySignatures.CMaj_Amin, measure.getKeySignature());
+        assertEquals(Barline.SINGLE, measure.getRightBarline());
+        assertEquals(Clefs.G, measure.getClef());
         
-        List<NotationElement> layer = measure.getLayer(0);
+        List<Durational> layer = measure.getLayer(0);
         assertEquals(1, layer.size());
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE), layer.get(0));
     }
@@ -92,12 +94,12 @@ public class MusicXmlDomReaderTest {
         assertEquals(1, measureOne.getNumber());
         assertEquals(1, measureOne.getNumberOfLayers());
         assertEquals(TimeSignatures.FOUR_FOUR, measureOne.getTimeSignature());
-        assertEquals(KeySignature.CMaj_Amin, measureOne.getKeySignature());
-        assertEquals(MeasureInfo.Barline.SINGLE, measureOne.getBarline());
-        assertEquals(Clef.G_CLEF, measureOne.getClef());
+        assertEquals(KeySignatures.CMaj_Amin, measureOne.getKeySignature());
+        assertEquals(Barline.SINGLE, measureOne.getRightBarline());
+        assertEquals(Clefs.G, measureOne.getClef());
     
         // Verify notes of measure one
-        List<NotationElement> layerOne = measureOne.getLayer(0);
+        List<Durational> layerOne = measureOne.getLayer(0);
         assertEquals(8, layerOne.size());
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER), layerOne.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), layerOne.get(1));
@@ -116,9 +118,9 @@ public class MusicXmlDomReaderTest {
         assertEquals(2, measureTwo.getNumber());
         assertEquals(2, measureTwo.getNumberOfLayers());
         assertEquals(TimeSignatures.FOUR_FOUR, measureTwo.getTimeSignature());
-        assertEquals(KeySignature.CMaj_Amin, measureTwo.getKeySignature());
-        assertEquals(MeasureInfo.Barline.FINAL, measureTwo.getBarline());
-        assertEquals(Clef.G_CLEF, measureTwo.getClef());
+        assertEquals(KeySignatures.CMaj_Amin, measureTwo.getKeySignature());
+        assertEquals(Barline.FINAL, measureTwo.getRightBarline());
+        assertEquals(Clefs.G, measureTwo.getClef());
         
         // Verify notes of measure two
         layerOne = measureTwo.getLayer(0);
@@ -126,7 +128,7 @@ public class MusicXmlDomReaderTest {
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.HALF), layerOne.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.HALF), layerOne.get(1));
         
-        List<NotationElement> layerTwo = measureTwo.getLayer(1);
+        List<Durational> layerTwo = measureTwo.getLayer(1);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER), layerTwo.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER), layerTwo.get(1));
         assertEquals(Rest.getRest(Durations.QUARTER), layerTwo.get(2));
@@ -159,13 +161,13 @@ public class MusicXmlDomReaderTest {
         assertEquals(1, staffOneMeasureOne.getNumber());
         assertEquals(1, staffOneMeasureOne.getNumberOfLayers());
         assertEquals(TimeSignatures.THREE_FOUR, staffOneMeasureOne.getTimeSignature());
-        assertEquals(KeySignature.GMaj_Emin, staffOneMeasureOne.getKeySignature());
-        assertEquals(MeasureInfo.Barline.SINGLE, staffOneMeasureOne.getBarline());
-        assertEquals(Clef.G_CLEF, staffOneMeasureOne.getClef());
+        assertEquals(KeySignatures.GMaj_Emin, staffOneMeasureOne.getKeySignature());
+        assertEquals(Barline.SINGLE, staffOneMeasureOne.getRightBarline());
+        assertEquals(Clefs.G, staffOneMeasureOne.getClef());
     
         // Verify contents of measure one of staff one
         assertEquals(1, staffOneMeasureOne.getNumberOfLayers());
-        List<NotationElement> layerMOne = staffOneMeasureOne.getLayer(0);
+        List<Durational> layerMOne = staffOneMeasureOne.getLayer(0);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF), layerMOne.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.QUARTER), layerMOne.get(1));
         
@@ -174,13 +176,13 @@ public class MusicXmlDomReaderTest {
         assertEquals(2, staffOneMeasureTwo.getNumber());
         assertEquals(1, staffOneMeasureTwo.getNumberOfLayers());
         assertEquals(TimeSignatures.THREE_FOUR, staffOneMeasureTwo.getTimeSignature());
-        assertEquals(KeySignature.GMaj_Emin, staffOneMeasureTwo.getKeySignature());
-        assertEquals(MeasureInfo.Barline.FINAL, staffOneMeasureTwo.getBarline());
-        assertEquals(Clef.G_CLEF, staffOneMeasureTwo.getClef());
+        assertEquals(KeySignatures.GMaj_Emin, staffOneMeasureTwo.getKeySignature());
+        assertEquals(Barline.FINAL, staffOneMeasureTwo.getRightBarline());
+        assertEquals(Clefs.G, staffOneMeasureTwo.getClef());
     
         // Verify contents of measure one of staff one
         assertEquals(1, staffOneMeasureTwo.getNumberOfLayers());
-        List<NotationElement> layerM2 = staffOneMeasureTwo.getLayer(0);
+        List<Durational> layerM2 = staffOneMeasureTwo.getLayer(0);
         assertEquals(Rest.getRest(Durations.QUARTER), layerM2.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF), layerM2.get(1));
         
@@ -194,13 +196,13 @@ public class MusicXmlDomReaderTest {
         assertEquals(1, staffTwoMeasureOne.getNumber());
         assertEquals(1, staffTwoMeasureOne.getNumberOfLayers());
         assertEquals(TimeSignatures.THREE_FOUR, staffTwoMeasureOne.getTimeSignature());
-        assertEquals(KeySignature.GMaj_Emin, staffTwoMeasureOne.getKeySignature());
-        assertEquals(MeasureInfo.Barline.SINGLE, staffTwoMeasureOne.getBarline());
-        assertEquals(Clef.F_CLEF, staffTwoMeasureOne.getClef());
+        assertEquals(KeySignatures.GMaj_Emin, staffTwoMeasureOne.getKeySignature());
+        assertEquals(Barline.SINGLE, staffTwoMeasureOne.getRightBarline());
+        assertEquals(Clefs.F, staffTwoMeasureOne.getClef());
     
         // Verify contents of measure one of staff two
         assertEquals(1, staffTwoMeasureOne.getNumberOfLayers());
-        List<NotationElement> layerMOneS2 = staffTwoMeasureOne.getLayer(0);
+        List<Durational> layerMOneS2 = staffTwoMeasureOne.getLayer(0);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), layerMOneS2.get(0));
         
         // Verify data of measure two of staff two
@@ -208,13 +210,13 @@ public class MusicXmlDomReaderTest {
         assertEquals(2, staffTwoMeasureTwo.getNumber());
         assertEquals(1, staffTwoMeasureTwo.getNumberOfLayers());
         assertEquals(TimeSignatures.THREE_FOUR, staffTwoMeasureTwo.getTimeSignature());
-        assertEquals(KeySignature.GMaj_Emin, staffTwoMeasureTwo.getKeySignature());
-        assertEquals(MeasureInfo.Barline.FINAL, staffTwoMeasureTwo.getBarline());
-        assertEquals(Clef.F_CLEF, staffTwoMeasureTwo.getClef());
+        assertEquals(KeySignatures.GMaj_Emin, staffTwoMeasureTwo.getKeySignature());
+        assertEquals(Barline.FINAL, staffTwoMeasureTwo.getRightBarline());
+        assertEquals(Clefs.F, staffTwoMeasureTwo.getClef());
     
         // Verify contents of measure two of staff two
         assertEquals(1, staffTwoMeasureTwo.getNumberOfLayers());
-        List<NotationElement> layerM2S2 = staffTwoMeasureTwo.getLayer(0);
+        List<Durational> layerM2S2 = staffTwoMeasureTwo.getLayer(0);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), layerM2S2.get(0));
     }
     
@@ -234,14 +236,14 @@ public class MusicXmlDomReaderTest {
         Staff staff = score.getStaves().get(0);
         List<Measure> measures = staff.getMeasures();
         assertEquals(9, measures.size());
-        assertEquals(MeasureInfo.Barline.SINGLE, measures.get(0).getBarline());
-        assertEquals(MeasureInfo.Barline.DOUBLE, measures.get(1).getBarline());
-        assertEquals(MeasureInfo.Barline.THICK, measures.get(2).getBarline());
-        assertEquals(MeasureInfo.Barline.DASHED, measures.get(3).getBarline());
-        assertEquals(MeasureInfo.Barline.INVISIBLE, measures.get(4).getBarline());
-        assertEquals(MeasureInfo.Barline.REPEAT_LEFT, measures.get(5).getBarline());
-        assertEquals(MeasureInfo.Barline.REPEAT_RIGHT, measures.get(6).getBarline());
-        assertEquals(MeasureInfo.Barline.REPEAT_MEASURE, measures.get(7).getBarline());
-        assertEquals(MeasureInfo.Barline.FINAL, measures.get(8).getBarline());
+        assertEquals(Barline.SINGLE, measures.get(0).getRightBarline());
+        assertEquals(Barline.DOUBLE, measures.get(1).getRightBarline());
+        assertEquals(Barline.THICK, measures.get(2).getRightBarline());
+        assertEquals(Barline.DASHED, measures.get(3).getRightBarline());
+        assertEquals(Barline.INVISIBLE, measures.get(4).getRightBarline());
+        assertEquals(Barline.REPEAT_LEFT, measures.get(5).getRightBarline());
+        assertEquals(Barline.REPEAT_RIGHT, measures.get(6).getRightBarline());
+        assertEquals(Barline.REPEAT_MEASURE, measures.get(7).getRightBarline());
+        assertEquals(Barline.FINAL, measures.get(8).getRightBarline());
     }
 }

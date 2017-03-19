@@ -19,10 +19,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import wmnlibnotation.Barline;
 import wmnlibnotation.Chord;
 import wmnlibnotation.Clef;
+import wmnlibnotation.Clefs;
 import wmnlibnotation.Duration;
 import wmnlibnotation.KeySignature;
+import wmnlibnotation.KeySignatures;
 import wmnlibnotation.Measure;
 import wmnlibnotation.MeasureBuilder;
 import wmnlibnotation.MeasureInfo;
@@ -186,7 +189,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
     }
     
     private MeasureInfo getMeasureInfo(Node attributesNode, List<Node> barlineNodes, MeasureInfo previous) {
-        MeasureInfo.Barline barline = getBarline(barlineNodes);
+        Barline barline = getBarline(barlineNodes);
         
         TimeSignature timeSig;
         Node timeSigNode = findChild(attributesNode, MusicXmlTags.MEAS_ATTR_TIME);
@@ -221,36 +224,36 @@ public class MusicXmlDomReader implements MusicXmlReader {
     
     private KeySignature getKeySignature(int alterations) {
         switch(alterations) {    
-            case 0: return KeySignature.CMaj_Amin;
-            case 1: return KeySignature.GMaj_Emin;
-            case 2: return KeySignature.DMaj_Bmin;
-            case 3: return KeySignature.AMaj_FSharpMin;
-            case 4: return KeySignature.EMaj_CSharpMin;
-            case 5: return KeySignature.BMaj_GSharpMin;
-            case 6: return KeySignature.FSharpMaj_DSharpMin;
+            case 0: return KeySignatures.CMaj_Amin;
+            case 1: return KeySignatures.GMaj_Emin;
+            case 2: return KeySignatures.DMaj_Bmin;
+            case 3: return KeySignatures.AMaj_FSharpMin;
+            case 4: return KeySignatures.EMaj_CSharpMin;
+            case 5: return KeySignatures.BMaj_GSharpMin;
+            case 6: return KeySignatures.FSharpMaj_DSharpMin;
     
-            case -1: return KeySignature.FMaj_Dmin;
-            case -2: return KeySignature.BFlatMaj_Gmin;
-            case -3: return KeySignature.EFlatMaj_Cmin;
-            case -4: return KeySignature.AFlatMaj_Fmin;
-            case -5: return KeySignature.DFlatMaj_BFlatMin;
-            case -6: return KeySignature.GFlatMaj_EFlatMin;
+            case -1: return KeySignatures.FMaj_Dmin;
+            case -2: return KeySignatures.BFlatMaj_Gmin;
+            case -3: return KeySignatures.EFlatMaj_Cmin;
+            case -4: return KeySignatures.AFlatMaj_Fmin;
+            case -5: return KeySignatures.DFlatMaj_BFlatMin;
+            case -6: return KeySignatures.GFlatMaj_EFlatMin;
         }
         
-        return KeySignature.CMaj_Amin;
+        return KeySignatures.CMaj_Amin;
     }
     
     private Clef getClef(String clefName) {
         switch(clefName) {
-            case MusicXmlTags.CLEF_G: return Clef.G_CLEF;
-            case MusicXmlTags.CLEF_F: return Clef.F_CLEF;
+            case MusicXmlTags.CLEF_G: return Clefs.G;
+            case MusicXmlTags.CLEF_F: return Clefs.F;
         }
     
-        return Clef.G_CLEF;
+        return Clefs.G;
     }
     
-    private MeasureInfo.Barline getBarline(List<Node> barlineNodes) {
-        List<MeasureInfo.Barline> barlines = new ArrayList();
+    private Barline getBarline(List<Node> barlineNodes) {
+        List<Barline> barlines = new ArrayList();
         
         for(Node barlineNode : barlineNodes)
             barlines.add(readBarlineNode(barlineNode));
@@ -258,37 +261,37 @@ public class MusicXmlDomReader implements MusicXmlReader {
         if(barlines.size() == 1)
             return barlines.get(0);
         else if(barlines.size() == 2) {
-            if(barlines.contains(MeasureInfo.Barline.REPEAT_LEFT) && barlines.contains(MeasureInfo.Barline.REPEAT_RIGHT))
-                return MeasureInfo.Barline.REPEAT_MEASURE;
+            if(barlines.contains(Barline.REPEAT_LEFT) && barlines.contains(Barline.REPEAT_RIGHT))
+                return Barline.REPEAT_MEASURE;
         }
         
-        return MeasureInfo.Barline.SINGLE;
+        return Barline.SINGLE;
     }
     
-    private MeasureInfo.Barline readBarlineNode(Node barlineNode) {
+    private Barline readBarlineNode(Node barlineNode) {
         if(barlineNode != null) {
             Node barlineStyleNode = findChild(barlineNode, MusicXmlTags.BARLINE_STYLE);
             String barlineString = barlineStyleNode.getTextContent();
             Node repeatNode = findChild(barlineNode, MusicXmlTags.BARLINE_REPEAT);
 
             switch(barlineString) {
-                case MusicXmlTags.BARLINE_STYLE_DASHED: return MeasureInfo.Barline.DASHED;
-                case MusicXmlTags.BARLINE_STYLE_HEAVY: return MeasureInfo.Barline.THICK;
+                case MusicXmlTags.BARLINE_STYLE_DASHED: return Barline.DASHED;
+                case MusicXmlTags.BARLINE_STYLE_HEAVY: return Barline.THICK;
                 // Todo: Can "heavy-light" be something other than left repeat?
-                case MusicXmlTags.BARLINE_STYLE_HEAVY_LIGHT: return MeasureInfo.Barline.REPEAT_LEFT;
-                case MusicXmlTags.BARLINE_STYLE_INVISIBLE: return MeasureInfo.Barline.INVISIBLE;
+                case MusicXmlTags.BARLINE_STYLE_HEAVY_LIGHT: return Barline.REPEAT_LEFT;
+                case MusicXmlTags.BARLINE_STYLE_INVISIBLE: return Barline.INVISIBLE;
                 case MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY: {
                     if(repeatNode == null)
-                        return MeasureInfo.Barline.FINAL;
+                        return Barline.FINAL;
                     else
-                        return MeasureInfo.Barline.REPEAT_RIGHT;
+                        return Barline.REPEAT_RIGHT;
                 }
-                case MusicXmlTags.BARLINE_STYLE_LIGHT_LIGHT: return MeasureInfo.Barline.DOUBLE;
-                default: return MeasureInfo.Barline.SINGLE;
+                case MusicXmlTags.BARLINE_STYLE_LIGHT_LIGHT: return Barline.DOUBLE;
+                default: return Barline.SINGLE;
             }
         }
         
-        return MeasureInfo.Barline.SINGLE;
+        return Barline.SINGLE;
     }
     
     private Measure createMeasure(Node measureNode, MeasureInfo measureInfo, int divisions) {
