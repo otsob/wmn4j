@@ -6,7 +6,7 @@
 package wmnlibnotation;
 
 /**
- *
+ * Barline types.
  * @author Otso Björklund
  */
 public enum Barline {

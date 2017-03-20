@@ -6,7 +6,7 @@
 package wmnlibnotation;
 
 /**
- *
+ * Common time signatures.
  * @author Otso Björklund
  */
 public class TimeSignatures {

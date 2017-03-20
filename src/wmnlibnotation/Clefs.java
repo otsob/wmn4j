@@ -6,7 +6,7 @@
 package wmnlibnotation;
 
 /**
- *
+ * Commo clefs.
  * @author Otso Björklund
  */
 public class Clefs {
