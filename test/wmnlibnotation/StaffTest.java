@@ -39,8 +39,8 @@ public class StaffTest {
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        origMeasures.add(Measure.getMeasure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
-        origMeasures.add(Measure.getMeasure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(new Measure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(new Measure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         Staff staff = new Staff("TestStaff", origMeasures);
         
         List<Measure> measures = staff.getMeasures();
@@ -48,14 +48,14 @@ public class StaffTest {
         assertEquals(origMeasures.size(), measures.size());
         
         try {
-            measures.add(Measure.getMeasure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+            measures.add(new Measure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
             assertTrue("Did not throw UnsupportedOperationException", false);
         } catch (Exception e) {
             assertTrue(e instanceof UnsupportedOperationException);
         }
         
         int sizeBeforeAddition = origMeasures.size();
-        origMeasures.add(Measure.getMeasure(3, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(new Measure(3, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         assertEquals(sizeBeforeAddition, staff.getMeasures().size());
     }
     
@@ -69,8 +69,8 @@ public class StaffTest {
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        origMeasures.add(Measure.getMeasure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
-        origMeasures.add(Measure.getMeasure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(new Measure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(new Measure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         Staff staff = new Staff("TestStaff", origMeasures);
         
         assertEquals("TestStaff", staff.getName());
@@ -86,8 +86,8 @@ public class StaffTest {
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        origMeasures.add(Measure.getMeasure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
-        origMeasures.add(Measure.getMeasure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(new Measure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(new Measure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         Staff staff = new Staff("TestStaff", origMeasures);
     
         int measureCount = 0;
@@ -112,8 +112,8 @@ public class StaffTest {
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        origMeasures.add(Measure.getMeasure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
-        origMeasures.add(Measure.getMeasure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(new Measure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(new Measure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         Staff staff = new Staff("TestStaff", origMeasures);
         
         try {

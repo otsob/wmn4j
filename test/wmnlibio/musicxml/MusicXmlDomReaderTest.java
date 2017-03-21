@@ -15,7 +15,7 @@ import wmnlibnotation.Clefs;
 import wmnlibnotation.Durations;
 import wmnlibnotation.KeySignatures;
 import wmnlibnotation.Measure;
-import wmnlibnotation.MeasureInfo;
+import wmnlibnotation.MeasureAttributes;
 import wmnlibnotation.Durational;
 import wmnlibnotation.Note;
 import wmnlibnotation.Pitch;

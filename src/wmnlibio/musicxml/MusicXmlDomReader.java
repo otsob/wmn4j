@@ -28,7 +28,7 @@ import wmnlibnotation.KeySignature;
 import wmnlibnotation.KeySignatures;
 import wmnlibnotation.Measure;
 import wmnlibnotation.MeasureBuilder;
-import wmnlibnotation.MeasureInfo;
+import wmnlibnotation.MeasureAttributes;
 import wmnlibnotation.Note;
 import wmnlibnotation.Pitch;
 import wmnlibnotation.Rest;
@@ -156,7 +156,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
     
     private List<Measure> createMeasures(Node partNode) {
         List<Measure> measures = new ArrayList();
-        MeasureInfo measureInfo = null;
+        MeasureAttributes measureInfo = null;
         int divisions = 0;
         
         // Read measure node by node, create measure and add to list
@@ -175,7 +175,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
                     measureInfo = getMeasureInfo(attributesNode, barlineNodes, measureInfo);
                 } 
                 else if(barlineNodes != null) {
-                    measureInfo = MeasureInfo.getMeasureInfo(measureInfo.getTimeSignature(), 
+                    measureInfo = MeasureAttributes.getMeasureAttr(measureInfo.getTimeSignature(), 
                                                              measureInfo.getKeySignature(), 
                                                              getBarline(barlineNodes), 
                                                              measureInfo.getClef());
@@ -188,7 +188,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
         return measures;
     }
     
-    private MeasureInfo getMeasureInfo(Node attributesNode, List<Node> barlineNodes, MeasureInfo previous) {
+    private MeasureAttributes getMeasureInfo(Node attributesNode, List<Node> barlineNodes, MeasureAttributes previous) {
         Barline barline = getBarline(barlineNodes);
         
         TimeSignature timeSig;
@@ -219,7 +219,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
         else
             clef = previous.getClef();
         
-        return MeasureInfo.getMeasureInfo(timeSig, keySig, barline, clef);
+        return MeasureAttributes.getMeasureAttr(timeSig, keySig, barline, clef);
     }
     
     private KeySignature getKeySignature(int alterations) {
@@ -294,7 +294,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
         return Barline.SINGLE;
     }
     
-    private Measure createMeasure(Node measureNode, MeasureInfo measureInfo, int divisions) {
+    private Measure createMeasure(Node measureNode, MeasureAttributes measureInfo, int divisions) {
         
         int measureNumber = Integer.parseInt(measureNode.getAttributes().getNamedItem(MusicXmlTags.MEASURE_NUM).getTextContent());
         MeasureBuilder builder = new MeasureBuilder(measureNumber, measureInfo);

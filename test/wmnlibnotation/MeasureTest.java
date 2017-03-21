@@ -54,18 +54,18 @@ public class MeasureTest {
     
     @Test
     public void testGetMeasure() {
-        assertTrue(Measure.getMeasure(1, this.noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G) != null);
+        assertTrue(new Measure(1, this.noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G) != null);
         
         // Test exceptions thrown correctly for illegal arguments
         try {
-            Measure m = Measure.getMeasure(0, this.noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+            Measure m = new Measure(0, this.noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
             fail("Exception not thrown");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
         }
         
         try {
-            Measure m = Measure.getMeasure(1, null, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+            Measure m = new Measure(1, null, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
             fail("Exception not thrown");
         } catch (Exception e) {
             assertTrue(e instanceof NullPointerException);
@@ -74,7 +74,7 @@ public class MeasureTest {
     
     @Test
     public void testGetLayer() {
-        Measure m = Measure.getMeasure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+        Measure m = new Measure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         assertTrue(m.getLayer(1).contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF)));
         assertTrue(m.getLayer(0).contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
         
@@ -88,25 +88,13 @@ public class MeasureTest {
 
     @Test
     public void testGetNumber() {
-        assertEquals(1, Measure.getMeasure(1, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clefs.G).getNumber());
-        assertEquals(512, Measure.getMeasure(512, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clefs.G).getNumber());
-    }
-
-    @Test
-    public void testToString() {
-        Measure m = Measure.getMeasure(5, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
-        assertEquals("Measure 5, Time(4/4), KeySig(), G-clef(2):\nLayer 0: C4(1/4), R(1/4), [C4(1/2),E4(1/2),G4(1/2)]\nBarline:SINGLE\n", m.toString());
-        
-        Measure multiLayer = Measure.getMeasure(2, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
-        assertEquals("Measure 2, Time(4/4), KeySig(), G-clef(2):\n"
-                        + "Layer 0: C4(1/4), R(1/4), [C4(1/2),E4(1/2),G4(1/2)]\n"
-                        + "Layer 1: R(1/4), C4(1/2), R(1/4)\nBarline:SINGLE\n", 
-                        multiLayer.toString());
+        assertEquals(1, new Measure(1, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clefs.G).getNumber());
+        assertEquals(512, new Measure(512, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clefs.G).getNumber());
     }
     
     @Test
     public void testIteratorWithSingleLayerMeasure() {
-        Measure singleLayerMeasure = Measure.getMeasure(1, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+        Measure singleLayerMeasure = new Measure(1, noteLayer, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         int noteCount = 0;
         
         List<Durational> expected = noteLayer.get(0);
@@ -124,7 +112,7 @@ public class MeasureTest {
     
     @Test
     public void testIteratorWithMultiLayerMeasure() {
-        Measure multiLayerMeasure = Measure.getMeasure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+        Measure multiLayerMeasure = new Measure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         int noteCount = 0;
 
         List<Durational> expected = new ArrayList();
@@ -145,7 +133,7 @@ public class MeasureTest {
     
     @Test
     public void testIteratorRemoveDisabled() {
-        Measure m = Measure.getMeasure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+        Measure m = new Measure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
       
         try {
             Iterator<Durational> iter = m.iterator();
@@ -162,7 +150,7 @@ public class MeasureTest {
     public void testIteratorWithEmptyMeasure() {
         List<List<Durational>> layers = new ArrayList();
         layers.add(new ArrayList());
-        Measure emptyMeasure = Measure.getMeasure(1, layers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+        Measure emptyMeasure = new Measure(1, layers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         
         int noteElemCount = 0;
         
@@ -184,7 +172,7 @@ public class MeasureTest {
         layers.get(1).add(Rest.getRest(Durations.QUARTER));
         layers.get(1).add(Chord.getChord(C4, E4, G4));
         
-        Measure multiLayerWithEmptyLayer = Measure.getMeasure(1, layers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+        Measure multiLayerWithEmptyLayer = new Measure(1, layers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         
         int noteElemCount = 0;
         int expectedNoteElemCount = layers.get(0).size() + layers.get(1).size();

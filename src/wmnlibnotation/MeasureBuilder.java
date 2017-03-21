@@ -17,10 +17,10 @@ public class MeasureBuilder {
     // TODO: Keep track of cumulated durations of layers for faster checking of whether layer is full?
     // TODO: Add method to check if layer is full?
     private final List<List<Durational>> layers;
-    private final MeasureInfo measureInfo;
+    private final MeasureAttributes measureInfo;
     private final int number;
     
-    public MeasureBuilder(int number, MeasureInfo measureInfo) {
+    public MeasureBuilder(int number, MeasureAttributes measureInfo) {
         this.layers = new ArrayList();
         this.number = number;
         this.measureInfo = measureInfo;
@@ -29,7 +29,7 @@ public class MeasureBuilder {
     public MeasureBuilder(int number, TimeSignature timeSig, KeySignature keySig, Barline barline, Clef clef) {
         this.layers = new ArrayList();
         this.number = number;
-        this.measureInfo = MeasureInfo.getMeasureInfo(timeSig, keySig, barline, clef);
+        this.measureInfo = MeasureAttributes.getMeasureAttr(timeSig, keySig, barline, clef);
     }
     
     public MeasureBuilder addLayer() {
@@ -64,6 +64,6 @@ public class MeasureBuilder {
     }
     
     public Measure build() {
-        return Measure.getMeasure(this.number, this.layers, this.measureInfo);
+        return new Measure(this.number, this.layers, this.measureInfo);
     }
 }

@@ -57,14 +57,6 @@ public class ChordTest {
         DminorMaj9Notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 5), Durations.EIGHT));
         this.dMinorMaj9 = Chord.getChord(DminorMaj9Notes);
     }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
         
     @Test
     public void testGetNoteOrderCorrect() {
@@ -213,16 +205,25 @@ public class ChordTest {
         cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER));
         cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.QUARTER));
         
+        int noteCount = 0;
         for(Note note : this.cMajor) {
+            assertEquals(cMajorNotes.get(noteCount), note);
+            ++noteCount;
             assertTrue(cMajorNotes.contains(note));
         }
         
-        Iterator<Note> iterator = this.cMajor.iterator();
+        Chord cMaj = Chord.getChord(cMajorNotes);
+        Iterator<Note> iterator = cMaj.iterator();
         iterator.next();
-        iterator.remove();
-        
-        for(Note note : this.cMajor) {
-            assertTrue("Iterator violated immutability of Chord", cMajorNotes.contains(note));
+        try {
+            iterator.remove();
+        }
+        catch(Exception e) {
+            assertTrue(e instanceof UnsupportedOperationException);
+        }
+            
+        for(Note note : cMajorNotes) {
+            assertTrue("Iterator violated immutability of Chord", cMaj.contains(note));
         }
     }
 }
