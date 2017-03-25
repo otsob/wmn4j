@@ -37,6 +37,13 @@ public class TimeSignatureTest {
     }
     
     @Test
+    public void testGetTotalDuration() {
+        assertEquals(Durations.WHOLE, TimeSignatures.FOUR_FOUR.getTotalDuration());
+        assertEquals(Durations.EIGHT.multiplyBy(6), TimeSignatures.SIX_EIGHT.getTotalDuration());
+        assertEquals(Durations.EIGHT.multiplyBy(13), TimeSignature.getTimeSignature(13, Durations.EIGHT).getTotalDuration());
+    }
+    
+    @Test
     public void testEquals() {
         TimeSignature timeSigA = TimeSignature.getTimeSignature(4, 4);
         TimeSignature timeSigB = TimeSignature.getTimeSignature(4, 4);

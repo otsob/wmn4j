@@ -101,10 +101,10 @@ public class Note implements Durational {
     
     /**
      * Get the articulations of this <code>Note</code> as a <code>List</code>.
-     * @return the articulations of this <code>Note</code> as a <code>List</code>.
+     * @return the articulations of this <code>Note</code>.
      */
-    public List<Articulation> getArticulations() {
-        return new ArrayList(this.articulations);
+    public Set<Articulation> getArticulations() {
+        return Collections.unmodifiableSet(this.articulations);
     }
     
     /**

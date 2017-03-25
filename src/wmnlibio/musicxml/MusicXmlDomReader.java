@@ -172,7 +172,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
                     if(divisionsNode != null)
                         divisions = Integer.parseInt(divisionsNode.getTextContent());
 
-                    measureInfo = getMeasureInfo(attributesNode, barlineNodes, measureInfo);
+                    measureInfo = getMeasureAttr(attributesNode, barlineNodes, measureInfo);
                 } 
                 else if(barlineNodes != null) {
                     measureInfo = MeasureAttributes.getMeasureAttr(measureInfo.getTimeSignature(), 
@@ -188,7 +188,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
         return measures;
     }
     
-    private MeasureAttributes getMeasureInfo(Node attributesNode, List<Node> barlineNodes, MeasureAttributes previous) {
+    private MeasureAttributes getMeasureAttr(Node attributesNode, List<Node> barlineNodes, MeasureAttributes previous) {
         Barline barline = getBarline(barlineNodes);
         
         TimeSignature timeSig;

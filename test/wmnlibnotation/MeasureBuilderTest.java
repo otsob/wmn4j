@@ -28,9 +28,13 @@ public class MeasureBuilderTest {
     public MeasureBuilderTest() {
     }
     
+    
     @Test
-    public void testBuildMeasure() {
-        MeasureBuilder builder = new MeasureBuilder(1, TimeSignatures.SIX_EIGHT, KeySignatures.DFlatMaj_BFlatMin, Barline.DOUBLE, Clefs.F);
+    public void testBuildMeasureBySettingParameters() {
+        MeasureBuilder builder = new MeasureBuilder(1);
+        builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.DFlatMaj_BFlatMin);
+        builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
+        
         builder.addLayer();
         assertEquals(1, builder.getNumberOfLayers());
         builder.addToLayer(0, Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT))
@@ -53,8 +57,67 @@ public class MeasureBuilderTest {
     }
     
     @Test
+    public void testBuildMeasureWithGivenAttributes() {
+        MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.SIX_EIGHT, KeySignatures.DFlatMaj_BFlatMin, Barline.DOUBLE, Clefs.F);
+        MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
+        
+        builder.addLayer();
+        assertEquals(1, builder.getNumberOfLayers());
+        builder.addToLayer(0, Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT))
+               .addToLayer(0, Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT))
+               .addToLayer(0, Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
+          
+        Measure measure = builder.build();
+        assertTrue(measure != null);
+        assertEquals(Barline.DOUBLE, measure.getRightBarline());
+        assertEquals(Clefs.F, measure.getClef());
+        assertEquals(KeySignatures.DFlatMaj_BFlatMin, measure.getKeySignature());
+        assertEquals(TimeSignatures.SIX_EIGHT, measure.getTimeSignature());
+        assertEquals(1, measure.getNumber());
+        
+        assertEquals(1, measure.getNumberOfLayers());
+        List<Durational> layer = measure.getLayer(0);
+        assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), layer.get(0));
+        assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), layer.get(1));
+        assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT), layer.get(2));
+    }
+        
+    @Test
+    public void testSetParametersUsedOverMeasureAttributes() {
+        MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.THREE_EIGHT, KeySignatures.AMaj_FSharpMin, Barline.REPEAT_RIGHT, Clefs.ALTO);
+        MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
+        
+        builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.DFlatMaj_BFlatMin);
+        builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
+       
+        builder.addLayer();
+        assertEquals(1, builder.getNumberOfLayers());
+        builder.addToLayer(0, Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT))
+               .addToLayer(0, Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT))
+               .addToLayer(0, Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
+          
+        Measure measure = builder.build();
+        assertTrue(measure != null);
+        assertEquals(Barline.DOUBLE, measure.getRightBarline());
+        assertEquals(Clefs.F, measure.getClef());
+        assertEquals(KeySignatures.DFlatMaj_BFlatMin, measure.getKeySignature());
+        assertEquals(TimeSignatures.SIX_EIGHT, measure.getTimeSignature());
+        assertEquals(1, measure.getNumber());
+        
+        assertEquals(1, measure.getNumberOfLayers());
+        List<Durational> layer = measure.getLayer(0);
+        assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), layer.get(0));
+        assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), layer.get(1));
+        assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT), layer.get(2));
+    }
+    
+    
+    @Test
     public void testAdditionOfLayers() { 
-        MeasureBuilder builder = new MeasureBuilder(1, TimeSignatures.SIX_EIGHT, KeySignatures.DFlatMaj_BFlatMin, Barline.DOUBLE, Clefs.F);
+        MeasureBuilder builder = new MeasureBuilder(1);
+        builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.DFlatMaj_BFlatMin);
+        builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
+        
         builder.addToLayer(1, Rest.getRest(Durations.EIGHT));
         assertEquals(2, builder.getNumberOfLayers());
         builder.addToLayer(3, Rest.getRest(Durations.EIGHT));
@@ -72,7 +135,7 @@ public class MeasureBuilderTest {
     
     @Test
     public void testIsLayerFull() {
-        MeasureBuilder builder = new MeasureBuilder(1, TimeSignatures.FOUR_FOUR, KeySignatures.CMaj_Amin, Barline.SINGLE, Clefs.G);
+        MeasureBuilder builder = new MeasureBuilder(1);
         builder.addToLayer(0, Rest.getRest(Durations.QUARTER));
         assertFalse("Layer 0 is full for 4/4 measure after adding one quarter rest", builder.isLayerFull(0));
         Note c = Note.getNote(Pitch.Base.C, 0, 2, Durations.QUARTER);
@@ -82,7 +145,9 @@ public class MeasureBuilderTest {
         builder.addToLayer(0, c);
         assertTrue("Layer 0 is not full when 4 quarter durations added to 4/4", builder.isLayerFull(0));
         
-        builder = new MeasureBuilder(1, TimeSignatures.SIX_EIGHT, KeySignatures.CMaj_Amin, Barline.SINGLE, Clefs.G);
+        builder = new MeasureBuilder(1);
+        builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.CMaj_Amin);
+        
         builder.addToLayer(0, Rest.getRest(Durations.QUARTER.addDot()))
                .addToLayer(0, Rest.getRest(Durations.QUARTER))
                .addToLayer(1, Rest.getRest(Durations.QUARTER.addDot()));
@@ -96,7 +161,7 @@ public class MeasureBuilderTest {
     
     @Test
     public void testIsFull() {
-        MeasureBuilder builder = new MeasureBuilder(1, TimeSignatures.FOUR_FOUR, KeySignatures.CMaj_Amin, Barline.SINGLE, Clefs.G);
+        MeasureBuilder builder = new MeasureBuilder(1);
         builder.addToLayer(0, Rest.getRest(Durations.QUARTER));
         assertFalse("builder for 4/4 is full after adding one quarter rest", builder.isFull());
         Note c = Note.getNote(Pitch.Base.C, 0, 2, Durations.QUARTER);
@@ -106,7 +171,9 @@ public class MeasureBuilderTest {
         builder.addToLayer(0, c);
         assertTrue("builder is not full when 4 quarter durations added to 4/4", builder.isFull());
         
-        builder = new MeasureBuilder(1, TimeSignatures.SIX_EIGHT, KeySignatures.CMaj_Amin, Barline.SINGLE, Clefs.G);
+        builder = new MeasureBuilder(1);
+        builder.setTimeSig(TimeSignatures.SIX_EIGHT);
+        
         builder.addToLayer(0, Rest.getRest(Durations.QUARTER.addDot()))
                .addToLayer(0, Rest.getRest(Durations.QUARTER))
                .addToLayer(1, Rest.getRest(Durations.QUARTER.addDot()));

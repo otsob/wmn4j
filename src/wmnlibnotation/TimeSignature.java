@@ -63,6 +63,15 @@ public class TimeSignature {
     }
     
     /**
+     * Get the total duration of a measure with this time signature.
+     * For example for time signature 4/4 duration is one whole note.
+     * @return sum of beats of duration defined by beat duration.
+     */
+    public Duration getTotalDuration() {
+        return this.beatDuration.multiplyBy(this.beats);
+    }
+    
+    /**
      * Compare for equality.
      * @param o Object against which this is compared for equality.
      * @return true if o is an instance of TimeSignature and o has the same 

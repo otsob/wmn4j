@@ -39,7 +39,7 @@ public class Score implements Iterable<Staff> {
     }
     
     public List<Staff> getStaves() {
-        return this.staves;
+        return Collections.unmodifiableList(this.staves);
     }
     
     public String getComposerName() {

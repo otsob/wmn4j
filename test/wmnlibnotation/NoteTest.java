@@ -130,13 +130,16 @@ public class NoteTest {
         articulations.add(Articulation.TENUTO);
         Note note = Note.getNote(pitch, Durations.EIGHT, articulations);
        
-        List<Articulation> artic = note.getArticulations();
+        Set<Articulation> artic = note.getArticulations();
         assertEquals(2, artic.size());
         assertTrue(artic.contains(Articulation.STACCATO));
         assertTrue(artic.contains(Articulation.TENUTO));
-        artic.remove(0);
-        artic.remove(0);
+        try {
+            artic.remove(Articulation.STACCATO);
+            fail("Removing articulation succeeded, immutability violated");
+        }
+        catch(Exception e) { /* Do nothing */ }
+        
         assertTrue(note.hasArticulation(Articulation.STACCATO));
-        assertTrue(note.hasArticulation(Articulation.TENUTO));
     }
 }

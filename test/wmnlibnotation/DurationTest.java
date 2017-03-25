@@ -1,5 +1,7 @@
 package wmnlibnotation;
 
+import java.util.ArrayList;
+import java.util.List;
 import wmnlibnotation.Duration;
 import wmnlibnotation.Durations;
 import org.junit.AfterClass;
@@ -146,5 +148,28 @@ public class DurationTest {
     public void testAddDot() {
         assertEquals(Duration.getDuration(3, 8), Durations.QUARTER.addDot());
         assertEquals(Duration.getDuration(3, 4), Durations.HALF.addDot());
+    }
+    
+    @Test
+    public void testSumOf() {
+        List<Duration> durations = new ArrayList();
+        int numOfQuarters = 4;
+        for(int i = 0; i < numOfQuarters; ++i) 
+            durations.add(Durations.QUARTER);
+        
+        assertEquals("Four quarters did not add to whole note.", Durations.QUARTER.multiplyBy(numOfQuarters), Duration.sumOf(durations));
+        
+        durations = new ArrayList();
+        durations.add(Durations.EIGHT);
+        durations.add(Durations.SIXTEENTH);
+        durations.add(Durations.SIXTEENTH);
+        durations.add(Durations.QUARTER.addDot());
+        durations.add(Durations.SIXTEENTH_TRIPLET);
+        durations.add(Durations.SIXTEENTH_TRIPLET);
+        durations.add(Durations.SIXTEENTH_TRIPLET);
+        durations.add(Durations.EIGHT_TRIPLET);
+        durations.add(Durations.EIGHT_TRIPLET);
+        durations.add(Durations.EIGHT_TRIPLET);
+        assertEquals("Mixed durations did not add to whole note.", Durations.WHOLE, Duration.sumOf(durations));
     }
 }

@@ -106,7 +106,7 @@ public class MeasureAttributes {
     }
     
     public Map<Duration, Clef> getClefChanges() {
-        return new HashMap(this.clefChanges);
+        return Collections.unmodifiableMap(this.clefChanges);
     }
     
     @Override

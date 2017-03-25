@@ -1,6 +1,7 @@
 package wmnlibnotation;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * The <code>Duration</code> class represents the duration of a note, rest, or chord. 
@@ -208,5 +209,27 @@ public class Duration implements Comparable<Duration> {
     @Override
     public int compareTo(Duration other) {
         return this.numerator * other.denominator - other.numerator * this.denominator;
+    }
+    
+    /**
+     * Get the total summed duration of the durations in the List.
+     * @throws IllegalArgumentException if durations is empty.
+     * @param durations List of <code>Duration</code> objects.
+     * @return The sum of durations in List.
+     */
+    static Duration sumOf(List<Duration> durations) {
+        if(durations.isEmpty())
+            throw new IllegalArgumentException("Cannot compute sum of durations from empty list");
+        
+        if(durations.size() == 1)
+            return durations.get(0);
+        
+        // TODO: Optimize this. Although if durations are cached there will not be object creations...
+        Duration cumulatedDur = durations.get(0);
+        for(int i = 1; i < durations.size(); ++i) {
+            cumulatedDur = cumulatedDur.add(durations.get(i));
+        }
+        
+        return cumulatedDur;
     }
 }
