@@ -15,8 +15,10 @@ import wmnlibnotation.Pitch;
 import wmnlibnotation.Note;
 import wmnlibnotation.TimeSignature;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -33,15 +35,15 @@ public class StaffTest {
     public void testGetMeasures() {
         List<Measure> origMeasures = new ArrayList();
         TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
-        List<List<Durational>> notes = new ArrayList();
-        notes.add(new ArrayList());
+        Map<Integer, List<Durational>> notes = new HashMap();
+        notes.put(0, new ArrayList());
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         origMeasures.add(new Measure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         origMeasures.add(new Measure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
-        Staff staff = new Staff("TestStaff", origMeasures);
+        Staff staff = new Staff(origMeasures);
         
         List<Measure> measures = staff.getMeasures();
         
@@ -60,35 +62,18 @@ public class StaffTest {
     }
     
     @Test
-    public void testGetName() {
-        List<Measure> origMeasures = new ArrayList();
-        TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
-        List<List<Durational>> notes = new ArrayList();
-        notes.add(new ArrayList());
-        notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        origMeasures.add(new Measure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
-        origMeasures.add(new Measure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
-        Staff staff = new Staff("TestStaff", origMeasures);
-        
-        assertEquals("TestStaff", staff.getName());
-    }
-    
-    @Test
     public void testIterator() {
         List<Measure> origMeasures = new ArrayList();
         TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
-        List<List<Durational>> notes = new ArrayList();
-        notes.add(new ArrayList());
+        Map<Integer, List<Durational>> notes = new HashMap();
+        notes.put(0, new ArrayList());
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         origMeasures.add(new Measure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         origMeasures.add(new Measure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
-        Staff staff = new Staff("TestStaff", origMeasures);
+        Staff staff = new Staff(origMeasures);
     
         int measureCount = 0;
         int prevMeasureNum = 0;
@@ -106,15 +91,15 @@ public class StaffTest {
     public void testIteratorRemoveDisabled() {
         List<Measure> origMeasures = new ArrayList();
         TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
-        List<List<Durational>> notes = new ArrayList();
-        notes.add(new ArrayList());
+        Map<Integer, List<Durational>> notes = new HashMap();
+        notes.put(0, new ArrayList());
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         origMeasures.add(new Measure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
         origMeasures.add(new Measure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
-        Staff staff = new Staff("TestStaff", origMeasures);
+        Staff staff = new Staff(origMeasures);
         
         try {
             Iterator<Measure> iter = staff.iterator();

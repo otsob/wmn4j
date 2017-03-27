@@ -29,7 +29,7 @@ public class MeasureBuilder {
    
     private int number;
     // Todo: keep track of layer durations in some way to make checking if measure is full faster.
-    private List<List<Durational>> layers;
+    private Map<Integer, List<Durational>> layers;
     
     private TimeSignature timeSig = TimeSignatures.FOUR_FOUR;
     private KeySignature keySig = KeySignatures.CMaj_Amin;
@@ -44,7 +44,7 @@ public class MeasureBuilder {
      * @param measureAttr MeasureAttributes for measure.
      */
     public MeasureBuilder(int number, MeasureAttributes measureAttr) {
-        this.layers = new ArrayList();
+        this.layers = new HashMap();
         this.number = number;
         
         this.timeSig = measureAttr.getTimeSignature();
@@ -59,7 +59,7 @@ public class MeasureBuilder {
      * @param number Measure number for measure being built.
      */
     public MeasureBuilder(int number) {
-        this.layers = new ArrayList();
+        this.layers = new HashMap();
         this.number = number;
     }
 
@@ -186,7 +186,7 @@ public class MeasureBuilder {
      * @return reference to this builder.
      */
     public MeasureBuilder addLayer() {
-        this.layers.add(new ArrayList());
+        this.layers.put(this.layers.keySet().size(), new ArrayList());
         return this;
     }
     
@@ -196,7 +196,7 @@ public class MeasureBuilder {
      * @return reference to this builder.
      */
     public MeasureBuilder addLayer(List<Durational> layer) {
-        this.layers.add(layer);
+        this.layers.put(this.layers.keySet().size(), layer);
         return this;
     }
      
@@ -209,8 +209,8 @@ public class MeasureBuilder {
      */
     public MeasureBuilder addToLayer(int layer, Durational elem) {
         
-        while(this.layers.size() <= layer)
-            this.layers.add(new ArrayList());
+        if(!this.layers.keySet().contains(layer))
+            this.layers.put(layer, new ArrayList());
         
         this.layers.get(layer).add(elem);
         return this;

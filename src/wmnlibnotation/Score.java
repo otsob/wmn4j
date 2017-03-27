@@ -16,20 +16,20 @@ import java.util.Map;
  *
  * @author Otso Björklund
  */
-public class Score implements Iterable<Staff> {
+public class Score implements Iterable<SingleStaffPart> {
     
     enum Info { NAME, COMPOSER, ARRANGER, YEAR }
     
     private final Map<Info, String> scoreInfo;
-    private final List<Staff> staves;
+    private final List<SingleStaffPart> parts;
     
-    public Score(String name, String composerName, List<Staff> staves) {
-        this.staves = Collections.unmodifiableList(new ArrayList(staves));
+    public Score(String name, String composerName, List<SingleStaffPart> staves) {
+        this.parts = Collections.unmodifiableList(new ArrayList(staves));
         this.scoreInfo = new HashMap();
         this.scoreInfo.put(Info.NAME, name);
         this.scoreInfo.put(Info.COMPOSER, composerName);
         
-        if(this.staves == null)
+        if(this.parts == null)
             throw new NullPointerException("Cannot create score: staves was null");
     }
     
@@ -38,8 +38,8 @@ public class Score implements Iterable<Staff> {
         return (name != null) ? name : "";
     }
     
-    public List<Staff> getStaves() {
-        return Collections.unmodifiableList(this.staves);
+    public List<SingleStaffPart> getParts() {
+        return Collections.unmodifiableList(this.parts);
     }
     
     public String getComposerName() {
@@ -52,8 +52,8 @@ public class Score implements Iterable<Staff> {
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append("Score ").append(getName()).append("\n");
         
-        for(int i = 0; i < staves.size(); ++i) {
-            strBuilder.append(staves.get(i).toString());
+        for(int i = 0; i < parts.size(); ++i) {
+            strBuilder.append(parts.get(i).toString());
             strBuilder.append("\n\n");
         }
      
@@ -61,7 +61,7 @@ public class Score implements Iterable<Staff> {
     }
 
     @Override
-    public Iterator<Staff> iterator() {
-        return this.staves.iterator();
+    public Iterator<SingleStaffPart> iterator() {
+        return this.parts.iterator();
     }    
 }

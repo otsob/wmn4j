@@ -1,14 +1,18 @@
 
 package wmnlibnotation;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Class that defines a measure.
+ * A measure may contain multiple layers that are referred to using layer numbers.
  * This class is immutable. 
  * Use the MeasureBuilder class for easier creation of Measures.
  * @author Otso Björklund
@@ -16,7 +20,7 @@ import java.util.NoSuchElementException;
 public class Measure implements Iterable<Durational> {
     
     private final int number;
-    private final List<List<Durational>> layers;
+    private final SortedMap<Integer, List<Durational>> layers;
     private final MeasureAttributes measureAttr;
     
     /**
@@ -27,7 +31,7 @@ public class Measure implements Iterable<Durational> {
      * @param rightBarLine barline on the right side (left side is normal SINGLE by default).
      * @param clef Clef in effect in the measure.
      */
-    public Measure(int number, List<List<Durational>> noteLayers, TimeSignature timeSig, KeySignature keySig, Barline rightBarLine, Clef clef) {
+    public Measure(int number, Map<Integer, List<Durational>> noteLayers, TimeSignature timeSig, KeySignature keySig, Barline rightBarLine, Clef clef) {
         this(number, noteLayers, MeasureAttributes.getMeasureAttr(timeSig, keySig, rightBarLine, clef));
     }
     
@@ -38,7 +42,7 @@ public class Measure implements Iterable<Durational> {
      * @param keySig KeySignature in effect in the measure.
      * @param clef Clef in effect in the measure.
      */
-    public Measure(int number, List<List<Durational>> noteLayers, TimeSignature timeSig, KeySignature keySig, Clef clef) {
+    public Measure(int number, Map<Integer, List<Durational>> noteLayers, TimeSignature timeSig, KeySignature keySig, Clef clef) {
         this(number, noteLayers, MeasureAttributes.getMeasureAttr(timeSig, keySig, Barline.SINGLE, clef));
     }
     
@@ -47,9 +51,14 @@ public class Measure implements Iterable<Durational> {
      * @param noteLayers the notes on the different layers of the measure.
      * @param measureAttr the attributes of the measure.
      */
-    public Measure(int number, List<List<Durational>> noteLayers, MeasureAttributes measureAttr) {
+    public Measure(int number, Map<Integer, List<Durational>> noteLayers, MeasureAttributes measureAttr) {
         this.number = number;
-        this.layers = noteLayers;
+        SortedMap<Integer, List<Durational>> layersCopy = new TreeMap();
+        
+        for(Integer layerNum : noteLayers.keySet())
+            layersCopy.put(layerNum, Collections.unmodifiableList(new ArrayList(noteLayers.get(layerNum))));
+        
+        this.layers = Collections.unmodifiableSortedMap(layersCopy);
         
         this.measureAttr = measureAttr;
         
@@ -61,26 +70,35 @@ public class Measure implements Iterable<Durational> {
     }
     
     /**
-     * Get a layer of the measure.
-     * @param layer the index of the layer.
-     * @return the layer at the given index layer.
+     * Get the layer numbers in this measure.
+     * Layer numbers are not necessarily consecutive and do not begin from 0.
+     * @return list of the layer numbers used in this measure.
      */
-    public List<Durational> getLayer(int layer) {
-        return Collections.unmodifiableList(this.layers.get(layer));
+    public List<Integer> getLayerNumbers() {
+        return new ArrayList(this.layers.keySet());
+    }
+    
+    /**
+     * Get a layerNumber of the measure.
+     * @param layerNumber the number of the layer.
+     * @return the layerNumber at the given index layerNumber.
+     */
+    public List<Durational> getLayer(int layerNumber) {
+        return this.layers.get(layerNumber);
     }
     
     /**
      * @return number of layers in this measure.
      */
-    public int getNumberOfLayers() {
-        return this.layers.size();
+    public int getLayerCount() {
+        return this.layers.keySet().size();
     }
     
     /**
      * @return true if this measure only has one layer, false otherwise.
      */
     public boolean isSingleLayer() {
-        return this.getNumberOfLayers() == 1;
+        return this.getLayerCount() == 1;
     }
     
     /**
@@ -151,7 +169,7 @@ public class Measure implements Iterable<Durational> {
         strBuilder.append("Measure ").append(this.number).append(", ")
                   .append(this.measureAttr).append(":\n");
         
-        for(int i = 0; i < layers.size(); ++i) {
+        for(Integer i : this.layers.keySet()) {
             strBuilder.append("Layer ").append(i).append(": ");
             for(int j = 0; j < layers.get(i).size(); ++j) {
                 strBuilder.append(layers.get(i).get(j).toString());
@@ -166,43 +184,42 @@ public class Measure implements Iterable<Durational> {
 
     /**
      * Iterator for <code>Durational</code> objects in this <code>Measure</code>.
-     * The iterator iterates through the notes in the Measure starting from lowest 
-     * indexed layer and on each layer going from the earliest Durational in the layer to the last.
+     * The iterator iterates through the notes in the Measure layer by layer
+     * going from the earliest Durational in the layer to the last on each layer.
+     * The order of layers is unspecified.
      * The iterator does not support removing.
      * @return iterator that goes through the Measure layerwise.
      */
     @Override
     public Iterator<Durational> iterator() {
         class LayerWiseIterator implements Iterator<Durational> {
-            private int currentLayer = 0;
+            private List<Integer> layerNumbers = Measure.this.getLayerNumbers();
+            private int layerNumberIndex = 0;
             private int positionInLayer = 0;
             
             @Override
             public boolean hasNext() {
+                if(layerNumberIndex >= this.layerNumbers.size())
+                    return false;
                 
-                // Skip empty layers
-                while(currentLayer < Measure.this.layers.size() && Measure.this.layers.get(currentLayer).isEmpty())
-                    ++currentLayer;
+                int layerNumber = this.layerNumbers.get(this.layerNumberIndex);
+                if(Measure.this.layers.get(layerNumber).isEmpty())
+                    return false;
                 
-                // Check that there are still layers left and there are notes in the layer.
-                if(currentLayer < Measure.this.layers.size()) {
-                    return positionInLayer < Measure.this.layers.get(currentLayer).size();
-                }
-                
-                return false;
+                return true;
             }
 
             @Override
             public Durational next() {
                 Durational next = null;
                 
-                if(hasNext()) {
-                    next = Measure.this.layers.get(currentLayer).get(positionInLayer);
-                    ++positionInLayer;
-
-                    if(positionInLayer == Measure.this.layers.get(currentLayer).size()) {
-                        positionInLayer = 0;
-                        ++currentLayer;
+                if(this.hasNext()) {
+                    List<Durational> currentLayer = Measure.this.layers.get(this.layerNumbers.get(this.layerNumberIndex));
+                    next = currentLayer.get(this.positionInLayer);
+                    ++this.positionInLayer;
+                    if(this.positionInLayer == currentLayer.size()) {
+                        ++this.layerNumberIndex;
+                        this.positionInLayer = 0;
                     }
                 }
                 else

@@ -49,7 +49,7 @@ public class MeasureBuilderTest {
         assertEquals(TimeSignatures.SIX_EIGHT, measure.getTimeSignature());
         assertEquals(1, measure.getNumber());
         
-        assertEquals(1, measure.getNumberOfLayers());
+        assertEquals(1, measure.getLayerCount());
         List<Durational> layer = measure.getLayer(0);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), layer.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), layer.get(1));
@@ -75,7 +75,7 @@ public class MeasureBuilderTest {
         assertEquals(TimeSignatures.SIX_EIGHT, measure.getTimeSignature());
         assertEquals(1, measure.getNumber());
         
-        assertEquals(1, measure.getNumberOfLayers());
+        assertEquals(1, measure.getLayerCount());
         List<Durational> layer = measure.getLayer(0);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), layer.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), layer.get(1));
@@ -104,13 +104,12 @@ public class MeasureBuilderTest {
         assertEquals(TimeSignatures.SIX_EIGHT, measure.getTimeSignature());
         assertEquals(1, measure.getNumber());
         
-        assertEquals(1, measure.getNumberOfLayers());
+        assertEquals(1, measure.getLayerCount());
         List<Durational> layer = measure.getLayer(0);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), layer.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), layer.get(1));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT), layer.get(2));
     }
-    
     
     @Test
     public void testAdditionOfLayers() { 
@@ -119,16 +118,14 @@ public class MeasureBuilderTest {
         builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
         
         builder.addToLayer(1, Rest.getRest(Durations.EIGHT));
-        assertEquals(2, builder.getNumberOfLayers());
+        assertEquals(1, builder.getNumberOfLayers());
         builder.addToLayer(3, Rest.getRest(Durations.EIGHT));
-        assertEquals(4, builder.getNumberOfLayers());
+        assertEquals(2, builder.getNumberOfLayers());
         
         Measure measure = builder.build();
-        assertEquals(4, measure.getNumberOfLayers());
-        assertTrue(measure.getLayer(0).isEmpty());
+        assertEquals(2, measure.getLayerCount());
         assertTrue(measure.getLayer(1).size() == 1);
         assertTrue(measure.getLayer(1).contains(Rest.getRest(Durations.EIGHT)));
-        assertTrue(measure.getLayer(2).isEmpty());
         assertTrue(measure.getLayer(3).size() == 1);
         assertTrue(measure.getLayer(3).contains(Rest.getRest(Durations.EIGHT)));
     }

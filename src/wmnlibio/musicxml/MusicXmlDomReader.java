@@ -30,6 +30,7 @@ import wmnlibnotation.Measure;
 import wmnlibnotation.MeasureBuilder;
 import wmnlibnotation.MeasureAttributes;
 import wmnlibnotation.Note;
+import wmnlibnotation.SingleStaffPart;
 import wmnlibnotation.Pitch;
 import wmnlibnotation.Rest;
 import wmnlibnotation.Score;
@@ -99,15 +100,15 @@ public class MusicXmlDomReader implements MusicXmlReader {
         if(creatorNode != null)
             composerName = creatorNode.getTextContent();
         
-        List<Staff> staves = createStaves(doc);
+        List<SingleStaffPart> parts = createParts(doc);
         
-        return new Score(scoreName, composerName, staves);
+        return new Score(scoreName, composerName, parts);
     }
     
-    private List<Staff> createStaves(Document doc) {
+    private List<SingleStaffPart> createParts(Document doc) {
         
-        List<Staff> staves = new ArrayList();
-        Map<String, Map<Staff.Info, String>> partsInfo = new HashMap();
+        List<SingleStaffPart> parts = new ArrayList();
+       // Map<String, Map<Staff.Info, String>> partsInfo = new HashMap();
         
         // Read staff info from <part-list>
         Node partsList = doc.getElementsByTagName(MusicXmlTags.PART_LIST).item(0);
@@ -118,18 +119,18 @@ public class MusicXmlDomReader implements MusicXmlReader {
                 if(child.getNodeName().equals(MusicXmlTags.PLIST_SCORE_PART)) {
                     String partId = child.getAttributes().getNamedItem(MusicXmlTags.PART_ID).getTextContent();
                     
-                    if(partsInfo.get(partId) == null) {
-                        Map<Staff.Info, String> staffInfo = new HashMap();
-                        
-                        String staffName = "";
-                        
-                        Node partNameNode = findChild(child, MusicXmlTags.PART_NAME);
-                        if(partNameNode != null)
-                            staffName = partNameNode.getTextContent();
-                        
-                        staffInfo.put(Staff.Info.NAME, staffName);
-                        partsInfo.put(partId, staffInfo);
-                    }
+//                    if(partsInfo.get(partId) == null) {
+//                        Map<Staff.Info, String> staffInfo = new HashMap();
+//                        
+//                        String partName = "";
+//                        
+//                        Node partNameNode = findChild(child, MusicXmlTags.PART_NAME);
+//                        if(partNameNode != null)
+//                            partName = partNameNode.getTextContent();
+//                        
+//                        staffInfo.put(Staff.Info.NAME, partName);
+//                        partsInfo.put(partId, staffInfo);
+//                    }
                 }
             }
         }
@@ -140,18 +141,20 @@ public class MusicXmlDomReader implements MusicXmlReader {
             Node partNode = partNodes.item(i);
             String partId = partNode.getAttributes().getNamedItem(MusicXmlTags.PART_ID).getTextContent();
             List<Measure> measures = createMeasures(partNode);
+            List<Staff> staves = new ArrayList();
+            staves.add(new Staff(measures));
 
             // Create staff from staff info and measure list
             String staffName = "";
-            Map<Staff.Info, String> partInfo = partsInfo.get(partId);
+//            Map<Staff.Info, String> partInfo = partsInfo.get(partId);
             
-            if(partInfo != null)
-                staffName = partInfo.get(Staff.Info.NAME);
+//            if(partInfo != null)
+//                staffName = partInfo.get(Staff.Info.NAME);
             
-            staves.add(new Staff(staffName, measures));
+            parts.add(new SingleStaffPart(staffName, measures));
         }
         
-        return staves;
+        return parts;
     }
     
     private List<Measure> createMeasures(Node partNode) {

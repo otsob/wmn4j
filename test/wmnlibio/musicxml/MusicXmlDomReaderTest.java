@@ -18,6 +18,7 @@ import wmnlibnotation.Measure;
 import wmnlibnotation.MeasureAttributes;
 import wmnlibnotation.Durational;
 import wmnlibnotation.Note;
+import wmnlibnotation.SingleStaffPart;
 import wmnlibnotation.Pitch;
 import wmnlibnotation.Rest;
 import wmnlibnotation.Score;
@@ -51,15 +52,16 @@ public class MusicXmlDomReaderTest {
         assertTrue(score != null);
         assertEquals("Single C", score.getName());
         assertEquals("TestFile Composer", score.getComposerName());
-        assertEquals(1, score.getStaves().size());
+        assertEquals(1, score.getParts().size());
         
-        Staff staff = score.getStaves().get(0);
-        assertEquals("Staff1", staff.getName());
+        SingleStaffPart part = score.getParts().get(0);
+        Staff staff = part.getStaff();
+        assertEquals("Part1", part.getName());
         assertEquals(1, staff.getMeasures().size());
         
         Measure measure = staff.getMeasures().get(0);
         assertEquals(1, measure.getNumber());
-        assertEquals(1, measure.getNumberOfLayers());
+        assertEquals(1, measure.getLayerCount());
         assertEquals(TimeSignatures.FOUR_FOUR, measure.getTimeSignature());
         assertEquals(KeySignatures.CMaj_Amin, measure.getKeySignature());
         assertEquals(Barline.SINGLE, measure.getRightBarline());
@@ -83,16 +85,17 @@ public class MusicXmlDomReaderTest {
         
         assertEquals("Two bar sample", score.getName());
         assertEquals("TestFile Composer", score.getComposerName());
-        assertEquals(1, score.getStaves().size());
+        assertEquals(1, score.getParts().size());
         
-        Staff staff = score.getStaves().get(0);
-        assertEquals("Staff1", staff.getName());
+        SingleStaffPart part = score.getParts().get(0);
+        Staff staff = part.getStaff();
+        assertEquals("Part1", part.getName());
         assertEquals(2, staff.getMeasures().size());
         
         // Verify data of measure one
         Measure measureOne = staff.getMeasures().get(0);
         assertEquals(1, measureOne.getNumber());
-        assertEquals(1, measureOne.getNumberOfLayers());
+        assertEquals(1, measureOne.getLayerCount());
         assertEquals(TimeSignatures.FOUR_FOUR, measureOne.getTimeSignature());
         assertEquals(KeySignatures.CMaj_Amin, measureOne.getKeySignature());
         assertEquals(Barline.SINGLE, measureOne.getRightBarline());
@@ -116,7 +119,7 @@ public class MusicXmlDomReaderTest {
         // Verify data of measure two
         Measure measureTwo = staff.getMeasures().get(1);
         assertEquals(2, measureTwo.getNumber());
-        assertEquals(2, measureTwo.getNumberOfLayers());
+        assertEquals(2, measureTwo.getLayerCount());
         assertEquals(TimeSignatures.FOUR_FOUR, measureTwo.getTimeSignature());
         assertEquals(KeySignatures.CMaj_Amin, measureTwo.getKeySignature());
         assertEquals(Barline.FINAL, measureTwo.getRightBarline());
@@ -150,23 +153,24 @@ public class MusicXmlDomReaderTest {
         
         assertEquals("Multistaff test file", score.getName());
         assertEquals("TestFile Composer", score.getComposerName());
-        assertEquals(2, score.getStaves().size());
+        assertEquals(2, score.getParts().size());
         
-        Staff staffOne = score.getStaves().get(0);
-        assertEquals("Staff 1", staffOne.getName());
+        SingleStaffPart partOne = score.getParts().get(0);
+        Staff staffOne = partOne.getStaff();
+        assertEquals("Part1", partOne.getName());
         assertEquals(2, staffOne.getMeasures().size());
  
         // Verify data of measure one of staff one
         Measure staffOneMeasureOne = staffOne.getMeasures().get(0);        
         assertEquals(1, staffOneMeasureOne.getNumber());
-        assertEquals(1, staffOneMeasureOne.getNumberOfLayers());
+        assertEquals(1, staffOneMeasureOne.getLayerCount());
         assertEquals(TimeSignatures.THREE_FOUR, staffOneMeasureOne.getTimeSignature());
         assertEquals(KeySignatures.GMaj_Emin, staffOneMeasureOne.getKeySignature());
         assertEquals(Barline.SINGLE, staffOneMeasureOne.getRightBarline());
         assertEquals(Clefs.G, staffOneMeasureOne.getClef());
     
         // Verify contents of measure one of staff one
-        assertEquals(1, staffOneMeasureOne.getNumberOfLayers());
+        assertEquals(1, staffOneMeasureOne.getLayerCount());
         List<Durational> layerMOne = staffOneMeasureOne.getLayer(0);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF), layerMOne.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.QUARTER), layerMOne.get(1));
@@ -174,48 +178,48 @@ public class MusicXmlDomReaderTest {
         // Verify data of measure two of staff one
         Measure staffOneMeasureTwo = staffOne.getMeasures().get(1);        
         assertEquals(2, staffOneMeasureTwo.getNumber());
-        assertEquals(1, staffOneMeasureTwo.getNumberOfLayers());
+        assertEquals(1, staffOneMeasureTwo.getLayerCount());
         assertEquals(TimeSignatures.THREE_FOUR, staffOneMeasureTwo.getTimeSignature());
         assertEquals(KeySignatures.GMaj_Emin, staffOneMeasureTwo.getKeySignature());
         assertEquals(Barline.FINAL, staffOneMeasureTwo.getRightBarline());
         assertEquals(Clefs.G, staffOneMeasureTwo.getClef());
     
         // Verify contents of measure one of staff one
-        assertEquals(1, staffOneMeasureTwo.getNumberOfLayers());
+        assertEquals(1, staffOneMeasureTwo.getLayerCount());
         List<Durational> layerM2 = staffOneMeasureTwo.getLayer(0);
         assertEquals(Rest.getRest(Durations.QUARTER), layerM2.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF), layerM2.get(1));
         
-        
-        Staff staffTwo = score.getStaves().get(1);
-        assertEquals("Staff 2", staffTwo.getName());
+        SingleStaffPart partTwo = score.getParts().get(1);
+        Staff staffTwo = partTwo.getStaff();
+        assertEquals("Staff 2", partTwo.getName());
         assertEquals(2, staffTwo.getMeasures().size());
  
         // Verify data of measure one of staff two
         Measure staffTwoMeasureOne = staffTwo.getMeasures().get(0);        
         assertEquals(1, staffTwoMeasureOne.getNumber());
-        assertEquals(1, staffTwoMeasureOne.getNumberOfLayers());
+        assertEquals(1, staffTwoMeasureOne.getLayerCount());
         assertEquals(TimeSignatures.THREE_FOUR, staffTwoMeasureOne.getTimeSignature());
         assertEquals(KeySignatures.GMaj_Emin, staffTwoMeasureOne.getKeySignature());
         assertEquals(Barline.SINGLE, staffTwoMeasureOne.getRightBarline());
         assertEquals(Clefs.F, staffTwoMeasureOne.getClef());
     
         // Verify contents of measure one of staff two
-        assertEquals(1, staffTwoMeasureOne.getNumberOfLayers());
+        assertEquals(1, staffTwoMeasureOne.getLayerCount());
         List<Durational> layerMOneS2 = staffTwoMeasureOne.getLayer(0);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), layerMOneS2.get(0));
         
         // Verify data of measure two of staff two
         Measure staffTwoMeasureTwo = staffTwo.getMeasures().get(1);        
         assertEquals(2, staffTwoMeasureTwo.getNumber());
-        assertEquals(1, staffTwoMeasureTwo.getNumberOfLayers());
+        assertEquals(1, staffTwoMeasureTwo.getLayerCount());
         assertEquals(TimeSignatures.THREE_FOUR, staffTwoMeasureTwo.getTimeSignature());
         assertEquals(KeySignatures.GMaj_Emin, staffTwoMeasureTwo.getKeySignature());
         assertEquals(Barline.FINAL, staffTwoMeasureTwo.getRightBarline());
         assertEquals(Clefs.F, staffTwoMeasureTwo.getClef());
     
         // Verify contents of measure two of staff two
-        assertEquals(1, staffTwoMeasureTwo.getNumberOfLayers());
+        assertEquals(1, staffTwoMeasureTwo.getLayerCount());
         List<Durational> layerM2S2 = staffTwoMeasureTwo.getLayer(0);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), layerM2S2.get(0));
     }
@@ -232,8 +236,10 @@ public class MusicXmlDomReaderTest {
         }
         
         assertTrue(score != null);
-        assertEquals(1, score.getStaves().size());
-        Staff staff = score.getStaves().get(0);
+        assertEquals(1, score.getParts().size());
+        SingleStaffPart part = score.getParts().get(0);
+        Staff staff = part.getStaff();
+        assertEquals("Part1", part.getName());
         List<Measure> measures = staff.getMeasures();
         assertEquals(9, measures.size());
         assertEquals(Barline.SINGLE, measures.get(0).getRightBarline());

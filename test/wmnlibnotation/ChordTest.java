@@ -14,6 +14,7 @@ import wmnlibnotation.Note;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
@@ -25,25 +26,27 @@ import org.junit.Test;
  */
 public class ChordTest {
     
+    List<Note> cMajorNotes;
     Chord cMajor;
     Chord dMajor;
     Chord fMinor;
     Chord dMinorMaj9;
     
+    
     public ChordTest() {
-        ArrayList<Note> cMajorNotes = new ArrayList();
-        cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER));
-        cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.QUARTER));
-        this.cMajor = Chord.getChord(cMajorNotes);
+        this.cMajorNotes = new ArrayList();
+        this.cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
+        this.cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER));
+        this.cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.QUARTER));
+        this.cMajor = Chord.getChord(this.cMajorNotes);
         
-        ArrayList<Note> dMajorNotes = new ArrayList();
+        List<Note> dMajorNotes = new ArrayList();
         dMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 3), Durations.QUARTER));
         dMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.F, 1, 3), Durations.QUARTER));
         dMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.A, 0, 3), Durations.QUARTER));
         this.dMajor = Chord.getChord(dMajorNotes);
         
-        ArrayList<Note> fMinorNotes = new ArrayList();
+        List<Note> fMinorNotes = new ArrayList();
         fMinorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.F, 0, 4), Durations.QUARTER));
         fMinorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.A, -1, 4), Durations.QUARTER));
         fMinorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.QUARTER));
@@ -57,7 +60,19 @@ public class ChordTest {
         DminorMaj9Notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 5), Durations.EIGHT));
         this.dMinorMaj9 = Chord.getChord(DminorMaj9Notes);
     }
+     
+    @Test
+    public void testChordImmutable() {
+        List<Note> notes = new ArrayList(this.cMajorNotes);
+        Chord cMaj = Chord.getChord(notes);
+        assertEquals(this.cMajor, cMaj);
         
+        // Test that modifying the list of notes used to create the chord does not modify the chord.
+        notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.EIGHT));
+        assertEquals(3, cMaj.getNoteCount());
+        assertEquals(this.cMajor, cMaj);
+    }
+    
     @Test
     public void testGetNoteOrderCorrect() {
         for(int i = 0; i < cMajor.getNoteCount(); ++i) {

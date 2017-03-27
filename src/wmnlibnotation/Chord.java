@@ -46,21 +46,22 @@ public class Chord implements Durational, Iterable<Note> {
      */
     private Chord(List<Note> notes) {
         
-        if(notes == null)
+        List<Note> notesCopy = new ArrayList(notes);
+        Collections.sort(notesCopy, NotePitchComparator.INSTANCE);
+        
+        this.notes = Collections.unmodifiableList(notesCopy);
+        if(this.notes == null)
             throw new NullPointerException();
         
-        this.notes = new ArrayList(notes);
         final Duration d = this.notes.get(0).getDuration();
                 
-        for (Note n : notes) {
+        for (Note n : this.notes) {
             if(!d.equals(n.getDuration()))
                 throw new IllegalArgumentException("All notes in chord must be of same duration");
         }
         
         if (this.notes.isEmpty())
             throw new IllegalArgumentException("Chord cannot be constructed with an empty List of notes");
-        
-        Collections.sort(this.notes, NotePitchComparator.INSTANCE);
     }
     
     @Override
@@ -231,29 +232,30 @@ public class Chord implements Durational, Iterable<Note> {
      */
     @Override
     public Iterator<Note> iterator() {
-        class ChordIterator implements Iterator<Note> {
-            private final Iterator<Note> noteListIterator;
-            
-            public ChordIterator(Iterator<Note> noteListIterator) {
-                this.noteListIterator = noteListIterator;
-            }
-            
-            @Override
-            public boolean hasNext() {
-                return this.noteListIterator.hasNext();
-            }
-
-            @Override
-            public Note next() {
-                return this.noteListIterator.next();
-            }
-        
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("Removing from chord is not supported.");
-            }
-        }
-        
-        return new ChordIterator(this.notes.iterator());
+        return this.notes.iterator();
+//        class ChordIterator implements Iterator<Note> {
+//            private final Iterator<Note> noteListIterator;
+//            
+//            public ChordIterator(Iterator<Note> noteListIterator) {
+//                this.noteListIterator = noteListIterator;
+//            }
+//            
+//            @Override
+//            public boolean hasNext() {
+//                return this.noteListIterator.hasNext();
+//            }
+//
+//            @Override
+//            public Note next() {
+//                return this.noteListIterator.next();
+//            }
+//        
+//            @Override
+//            public void remove() {
+//                throw new UnsupportedOperationException("Removing from chord is not supported.");
+//            }
+//        }
+//        
+//        return new ChordIterator(this.notes.iterator());
     }
 }
