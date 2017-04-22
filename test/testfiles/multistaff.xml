@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
 <score-partwise version="3.0">
-  <movement-title>Multistaff test file</movement-title>
   <identification>
-    <creator type="composer">TestFile Composer</creator>
     <rights>©</rights>
     <encoding>
       <software>Finale 2014.5 for Mac</software>
       <software>Dolet Light for Finale 2014.5</software>
-      <encoding-date>2016-09-01</encoding-date>
+      <encoding-date>2017-04-22</encoding-date>
       <supports attribute="new-system" element="print" type="yes" value="yes"/>
       <supports attribute="new-page" element="print" type="yes" value="yes"/>
       <supports element="accidental" type="yes"/>
@@ -62,14 +60,6 @@
     <word-font font-family="Times New Roman" font-size="10.25"/>
   </defaults>
   <credit page="1">
-    <credit-type>title</credit-type>
-    <credit-words default-x="632" default-y="1475" font-size="24" justify="center" valign="top">Multistaff test file</credit-words>
-  </credit>
-  <credit page="1">
-    <credit-type>composer</credit-type>
-    <credit-words default-x="1122" default-y="1407" font-size="12" justify="right" valign="top">TestFile Composer</credit-words>
-  </credit>
-  <credit page="1">
     <credit-type>rights</credit-type>
     <credit-words default-x="632" default-y="53" font-size="10" justify="center" valign="bottom">©</credit-words>
   </credit>
@@ -77,49 +67,42 @@
     <credit-words default-x="140" default-y="1478" font-size="12" valign="top">Score</credit-words>
   </credit>
   <part-list>
-    <part-group number="1" type="start">
-      <group-symbol default-x="-5">bracket</group-symbol>
-      <group-barline>yes</group-barline>
-    </part-group>
     <score-part id="P1">
-      <part-name>Part1</part-name>
-      <score-instrument id="P1-I1">
+      <part-name>SingleStaff</part-name>
+      <score-instrument id="P1-I2">
         <instrument-name>ARIA Player</instrument-name>
         <virtual-instrument>
           <virtual-library>Garritan Instruments for Finale</virtual-library>
           <virtual-name>005. Keyboards/Steinway Piano</virtual-name>
         </virtual-instrument>
       </score-instrument>
-      <midi-device>Bank 1</midi-device>
-      <midi-instrument id="P1-I1">
+      <midi-device>Bank 2</midi-device>
+      <midi-instrument id="P1-I2">
         <midi-channel>1</midi-channel>
         <midi-program>1</midi-program>
         <volume>80</volume>
-        <pan>-70</pan>
+        <pan>0</pan>
       </midi-instrument>
     </score-part>
     <score-part id="P2">
-      <part-name>Part2</part-name>
-      <score-instrument id="P2-I2">
-        <instrument-name>ARIA Player</instrument-name>
-        <virtual-instrument>
-          <virtual-library>Garritan Instruments for Finale</virtual-library>
-          <virtual-name>005. Keyboards/Steinway Piano</virtual-name>
-        </virtual-instrument>
+      <part-name>MultiStaff</part-name>
+      <score-instrument id="P2-I1">
+        <instrument-name>SmartMusicSoftSynth</instrument-name>
+        <virtual-instrument/>
       </score-instrument>
       <midi-device>Bank 1</midi-device>
-      <midi-instrument id="P2-I2">
-        <midi-channel>2</midi-channel>
+      <midi-instrument id="P2-I1">
+        <midi-channel>1</midi-channel>
+        <midi-bank>15489</midi-bank>
         <midi-program>1</midi-program>
         <volume>80</volume>
-        <pan>80</pan>
+        <pan>0</pan>
       </midi-instrument>
     </score-part>
-    <part-group number="1" type="stop"/>
   </part-list>
   <!--=========================================================-->
   <part id="P1">
-    <measure number="1" width="505">
+    <measure number="1" width="352">
       <print>
         <system-layout>
           <system-margins>
@@ -133,11 +116,11 @@
       <attributes>
         <divisions>2</divisions>
         <key>
-          <fifths>1</fifths>
+          <fifths>0</fifths>
           <mode>major</mode>
         </key>
         <time>
-          <beats>3</beats>
+          <beats>4</beats>
           <beat-type>4</beat-type>
         </time>
         <clef>
@@ -146,44 +129,38 @@
         </clef>
       </attributes>
       <sound tempo="120"/>
-      <note default-x="111">
+      <note default-x="85">
         <pitch>
-          <step>G</step>
+          <step>A</step>
           <octave>4</octave>
         </pitch>
-        <duration>4</duration>
+        <duration>8</duration>
         <voice>1</voice>
-        <type>half</type>
-        <stem default-y="6">up</stem>
-      </note>
-      <note default-x="355">
-        <pitch>
-          <step>G</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem default-y="6">up</stem>
+        <type>whole</type>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="2" width="408">
-      <note default-x="14">
-        <rest/>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-      </note>
-      <note default-x="160">
+    <measure number="2" width="280">
+      <note default-x="13">
         <pitch>
-          <step>G</step>
+          <step>A</step>
           <octave>4</octave>
         </pitch>
-        <duration>4</duration>
+        <duration>8</duration>
         <voice>1</voice>
-        <type>half</type>
-        <stem default-y="6">up</stem>
+        <type>whole</type>
+      </note>
+    </measure>
+    <!--=======================================================-->
+    <measure number="3" width="281">
+      <note default-x="13">
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>8</duration>
+        <voice>1</voice>
+        <type>whole</type>
       </note>
       <barline location="right">
         <bar-style>light-heavy</bar-style>
@@ -192,50 +169,105 @@
   </part>
   <!--=========================================================-->
   <part id="P2">
-    <measure number="1" width="505">
+    <measure number="1" width="352">
       <print>
-        <measure-numbering>none</measure-numbering>
+        <measure-numbering>system</measure-numbering>
       </print>
       <attributes>
         <divisions>2</divisions>
         <key>
-          <fifths>1</fifths>
+          <fifths>0</fifths>
           <mode>major</mode>
         </key>
         <time>
-          <beats>3</beats>
+          <beats>4</beats>
           <beat-type>4</beat-type>
         </time>
-        <clef>
+        <staves>2</staves>
+        <clef number="1">
+          <sign>G</sign>
+          <line>2</line>
+        </clef>
+        <clef number="2">
           <sign>F</sign>
           <line>4</line>
         </clef>
       </attributes>
       <sound tempo="120"/>
-      <note default-x="111">
+      <note default-x="85">
         <pitch>
-          <step>G</step>
-          <octave>3</octave>
+          <step>A</step>
+          <octave>4</octave>
         </pitch>
-        <duration>6</duration>
+        <duration>8</duration>
         <voice>1</voice>
-        <type>half</type>
-        <dot/>
-        <stem default-y="-40">down</stem>
+        <type>whole</type>
+        <staff>1</staff>
+      </note>
+      <backup>
+        <duration>8</duration>
+      </backup>
+      <note default-x="85">
+        <pitch>
+          <step>A</step>
+          <octave>2</octave>
+        </pitch>
+        <duration>8</duration>
+        <voice>2</voice>
+        <type>whole</type>
+        <staff>2</staff>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="2" width="408">
-      <note default-x="14">
+    <measure number="2" width="280">
+      <note default-x="13">
         <pitch>
-          <step>G</step>
-          <octave>3</octave>
+          <step>A</step>
+          <octave>4</octave>
         </pitch>
-        <duration>6</duration>
+        <duration>8</duration>
         <voice>1</voice>
-        <type>half</type>
-        <dot/>
-        <stem default-y="-40">down</stem>
+        <type>whole</type>
+        <staff>1</staff>
+      </note>
+      <backup>
+        <duration>8</duration>
+      </backup>
+      <note default-x="13">
+        <pitch>
+          <step>A</step>
+          <octave>2</octave>
+        </pitch>
+        <duration>8</duration>
+        <voice>2</voice>
+        <type>whole</type>
+        <staff>2</staff>
+      </note>
+    </measure>
+    <!--=======================================================-->
+    <measure number="3" width="281">
+      <note default-x="13">
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>8</duration>
+        <voice>1</voice>
+        <type>whole</type>
+        <staff>1</staff>
+      </note>
+      <backup>
+        <duration>8</duration>
+      </backup>
+      <note default-x="13">
+        <pitch>
+          <step>A</step>
+          <octave>2</octave>
+        </pitch>
+        <duration>8</duration>
+        <voice>2</voice>
+        <type>whole</type>
+        <staff>2</staff>
       </note>
       <barline location="right">
         <bar-style>light-heavy</bar-style>

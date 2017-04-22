@@ -52,6 +52,14 @@ public class SingleStaffPartTest {
     }
 
     @Test
+    public void testImmutability() {
+        List<Measure> measuresCopy = new ArrayList(this.measures);
+        SingleStaffPart part = new SingleStaffPart("Test part", measuresCopy);
+        measuresCopy.set(0, null);
+        assertTrue("Modifying list used to create part modified part also.", part.getStaff().getMeasures().get(0) != null);
+    }
+    
+    @Test
     public void testGetName() {
         SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
         assertEquals("Test part", part.getName());
@@ -68,6 +76,13 @@ public class SingleStaffPartTest {
         SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
         Staff staff = part.getStaff();
         assertEquals(5, staff.getMeasures().size());
+    }
+    
+    @Test
+    public void getMeasure() {
+        SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
+        Measure m = part.getMeasure(1);
+        assertTrue(m == this.measures.get(0));
     }
 
     @Test

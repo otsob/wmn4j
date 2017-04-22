@@ -30,6 +30,7 @@ import wmnlibnotation.Measure;
 import wmnlibnotation.MeasureBuilder;
 import wmnlibnotation.MeasureAttributes;
 import wmnlibnotation.Note;
+import wmnlibnotation.Part;
 import wmnlibnotation.SingleStaffPart;
 import wmnlibnotation.Pitch;
 import wmnlibnotation.Rest;
@@ -100,14 +101,14 @@ public class MusicXmlDomReader implements MusicXmlReader {
         if(creatorNode != null)
             composerName = creatorNode.getTextContent();
         
-        List<SingleStaffPart> parts = createParts(doc);
+        List<Part> parts = createParts(doc);
         
-        return new Score(scoreName, composerName, parts);
+        return null; //new Score(scoreName, composerName, parts);
     }
     
-    private List<SingleStaffPart> createParts(Document doc) {
+    private List<Part> createParts(Document doc) {
         
-        List<SingleStaffPart> parts = new ArrayList();
+        List<Part> parts = new ArrayList();
        // Map<String, Map<Staff.Info, String>> partsInfo = new HashMap();
         
         // Read staff info from <part-list>

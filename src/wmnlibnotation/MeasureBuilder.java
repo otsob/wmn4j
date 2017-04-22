@@ -34,7 +34,7 @@ public class MeasureBuilder {
     private TimeSignature timeSig = TimeSignatures.FOUR_FOUR;
     private KeySignature keySig = KeySignatures.CMaj_Amin;
     private Clef clef = Clefs.G;
-    private Barline leftBarline = Barline.SINGLE;
+    private Barline leftBarline = Barline.NONE;
     private Barline rightBarline = Barline.SINGLE;
     private Map<Duration, Clef> clefChanges = Collections.EMPTY_MAP;
     

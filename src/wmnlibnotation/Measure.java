@@ -28,7 +28,7 @@ public class Measure implements Iterable<Durational> {
      * @param noteLayers the notes on the different layers of the measure.
      * @param timeSig TimeSignature of the measure.
      * @param keySig KeySignature in effect in the measure.
-     * @param rightBarLine barline on the right side (left side is normal SINGLE by default).
+     * @param rightBarLine barline on the right side (left side is NONE by default).
      * @param clef Clef in effect in the measure.
      */
     public Measure(int number, Map<Integer, List<Durational>> noteLayers, TimeSignature timeSig, KeySignature keySig, Barline rightBarLine, Clef clef) {

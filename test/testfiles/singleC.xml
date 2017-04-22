@@ -70,7 +70,7 @@
   </credit>
   <part-list>
     <score-part id="P1">
-      <part-name>Staff1</part-name>
+      <part-name>Part1</part-name>
       <score-instrument id="P1-I1">
         <instrument-name>MusicXML Default 1</instrument-name>
       </score-instrument>

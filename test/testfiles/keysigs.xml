@@ -75,7 +75,7 @@
   </part-list>
   <!--=========================================================-->
   <part id="P1">
-    <measure number="1" width="192">
+    <measure number="1" width="511">
       <print>
         <system-layout>
           <system-margins>
@@ -107,14 +107,17 @@
         <duration>8</duration>
         <voice>1</voice>
       </note>
+      <barline location="right">
+        <bar-style>light-light</bar-style>
+      </barline>
     </measure>
     <!--=======================================================-->
-    <measure number="2" width="290">
+    <measure number="2" width="217">
       <attributes>
-        <clef>
-          <sign>C</sign>
-          <line>3</line>
-        </clef>
+        <key>
+          <fifths>1</fifths>
+          <mode>minor</mode>
+        </key>
       </attributes>
       <note>
         <rest measure="yes"/>
@@ -123,83 +126,14 @@
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="3" width="290">
+    <measure number="3" width="255">
       <attributes>
-        <clef>
-          <sign>C</sign>
-          <line>4</line>
-        </clef>
+        <key>
+          <cancel>1</cancel>
+          <fifths>-4</fifths>
+          <mode>major</mode>
+        </key>
       </attributes>
-      <note>
-        <rest measure="yes"/>
-        <duration>8</duration>
-        <voice>1</voice>
-      </note>
-    </measure>
-    <!--=======================================================-->
-    <measure number="4" width="212">
-      <note default-x="14">
-        <pitch>
-          <step>A</step>
-          <octave>3</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem default-y="-55">down</stem>
-      </note>
-      <attributes>
-        <clef>
-          <sign>F</sign>
-          <line>4</line>
-        </clef>
-      </attributes>
-      <note default-x="64">
-        <pitch>
-          <step>G</step>
-          <octave>3</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem default-y="-40">down</stem>
-      </note>
-      <note default-x="113">
-        <pitch>
-          <step>G</step>
-          <octave>3</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem default-y="-40">down</stem>
-      </note>
-      <note default-x="161">
-        <pitch>
-          <step>G</step>
-          <octave>3</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem default-y="-40">down</stem>
-      </note>
-      <backup>
-        <duration>0</duration>
-      </backup>
-      <attributes>
-        <clef>
-          <sign>percussion</sign>
-        </clef>
-      </attributes>
-    </measure>
-    <!--=======================================================-->
-    <measure number="5" width="1054">
-      <print new-system="yes">
-        <system-layout>
-          <system-distance>114</system-distance>
-        </system-layout>
-      </print>
       <note>
         <rest measure="yes"/>
         <duration>8</duration>

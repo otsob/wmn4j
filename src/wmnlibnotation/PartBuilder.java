@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Builder for building <code>Part</code> objects.
  * @author Otso Björklund
  */
 public class PartBuilder {
@@ -44,9 +44,12 @@ public class PartBuilder {
     public Part build() {
         if(this.staveContents.size() == 1) 
             return new SingleStaffPart(this.name, this.staveContents.get(0));
-        else 
-            return null;
+        else {
+            Map<Integer, Staff> staves = new HashMap();
+            for(int staffNumber : this.staveContents.keySet())
+                staves.put(staffNumber, new Staff(this.staveContents.get(staffNumber)));
+            
+            return new MultiStaffPart(this.name, staves);
+        }
     }
-    
-    
 }

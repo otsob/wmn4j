@@ -28,7 +28,7 @@ public class MeasureAttributes {
     private final Map<Duration, Clef> clefChanges;
     
     public static MeasureAttributes getMeasureAttr(TimeSignature timeSig, KeySignature keySig, Barline rightBarline, Clef clef) {
-        return getMeasureAttr(timeSig, keySig, rightBarline, Barline.SINGLE, clef);
+        return getMeasureAttr(timeSig, keySig, rightBarline, Barline.NONE, clef);
     }
     
     public static MeasureAttributes getMeasureAttr(TimeSignature timeSig, 

@@ -6,18 +6,22 @@
 package wmnlibio.musicxml;
 
 import java.util.List;
+import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import wmnlibnotation.Barline;
 import wmnlibnotation.Chord;
 import wmnlibnotation.Clef;
 import wmnlibnotation.Clefs;
+import wmnlibnotation.Duration;
 import wmnlibnotation.Durations;
 import wmnlibnotation.KeySignatures;
 import wmnlibnotation.Measure;
 import wmnlibnotation.MeasureAttributes;
 import wmnlibnotation.Durational;
+import wmnlibnotation.MultiStaffPart;
 import wmnlibnotation.Note;
+import wmnlibnotation.Part;
 import wmnlibnotation.SingleStaffPart;
 import wmnlibnotation.Pitch;
 import wmnlibnotation.Rest;
@@ -39,23 +43,32 @@ public class MusicXmlDomReaderTest {
     public MusicXmlReader getMusicXmlReader() {
         return new MusicXmlDomReader();
     }
-
-    @Test
-    public void testReadScoreWithSingleNote() {
+    
+    public Score readScore(String testFileName) {
         MusicXmlReader reader = getMusicXmlReader();
         Score score = null;
+        
         try {
-            score = reader.readScore(testFilePath + "singleC.xml");
+            score = reader.readScore(testFilePath + testFileName);
         } catch(Exception e) {
             fail("Parsing failed with exception " + e);
         }
-        assertTrue(score != null);
+        
+        assertTrue("score is null", score != null);
+        return score;
+    } 
+
+    @Test
+    public void testReadScoreWithSingleNote() {
+        Score score = readScore("singleC.xml");
+        
         assertEquals("Single C", score.getName());
-        assertEquals("TestFile Composer", score.getComposerName());
         assertEquals(1, score.getParts().size());
         
-        SingleStaffPart part = score.getParts().get(0);
-        Staff staff = part.getStaff();
+        Part part = score.getParts().get(0);
+        assertTrue(part instanceof SingleStaffPart);
+        SingleStaffPart spart = (SingleStaffPart) part;
+        Staff staff = spart.getStaff();
         assertEquals("Part1", part.getName());
         assertEquals(1, staff.getMeasures().size());
         
@@ -73,22 +86,17 @@ public class MusicXmlDomReaderTest {
     }
     
     @Test
-    public void testReadScoreWithOneStaff() {
-        MusicXmlReader reader = getMusicXmlReader();
-        Score score = null;
-        try {
-            score = reader.readScore(testFilePath + "twoMeasures.xml");
-        } catch(Exception e) {
-            fail("Parsing failed with exception " + e);
-        }
-        assertTrue(score != null);
+    public void testChordsAndMultipleLayers() {
+        Score score = readScore("twoMeasures.xml");
         
         assertEquals("Two bar sample", score.getName());
-        assertEquals("TestFile Composer", score.getComposerName());
+        assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
         assertEquals(1, score.getParts().size());
         
-        SingleStaffPart part = score.getParts().get(0);
-        Staff staff = part.getStaff();
+        Part part = score.getParts().get(0);
+        assertTrue(part instanceof SingleStaffPart);
+        SingleStaffPart spart = (SingleStaffPart) part;
+        Staff staff = spart.getStaff();
         assertEquals("Part1", part.getName());
         assertEquals(2, staff.getMeasures().size());
         
@@ -140,22 +148,13 @@ public class MusicXmlDomReaderTest {
     
     @Test
     public void testReadScoreWithMultipleStaves() {
-        MusicXmlReader reader = getMusicXmlReader();
-        
-        Score score = null;
-        try {
-            score = reader.readScore(testFilePath + "twoStavesAndMeasures.xml");
-        } catch(Exception e) {
-            fail("Parsing failed with exception " + e);
-        }
-        
-        assertTrue(score != null);
-        
+        Score score = readScore("twoStavesAndMeasures.xml");
+
         assertEquals("Multistaff test file", score.getName());
-        assertEquals("TestFile Composer", score.getComposerName());
+        assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
         assertEquals(2, score.getParts().size());
         
-        SingleStaffPart partOne = score.getParts().get(0);
+        SingleStaffPart partOne = (SingleStaffPart) score.getParts().get(0);
         Staff staffOne = partOne.getStaff();
         assertEquals("Part1", partOne.getName());
         assertEquals(2, staffOne.getMeasures().size());
@@ -190,7 +189,7 @@ public class MusicXmlDomReaderTest {
         assertEquals(Rest.getRest(Durations.QUARTER), layerM2.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF), layerM2.get(1));
         
-        SingleStaffPart partTwo = score.getParts().get(1);
+        SingleStaffPart partTwo = (SingleStaffPart) score.getParts().get(1);
         Staff staffTwo = partTwo.getStaff();
         assertEquals("Staff 2", partTwo.getName());
         assertEquals(2, staffTwo.getMeasures().size());
@@ -226,30 +225,108 @@ public class MusicXmlDomReaderTest {
     
     @Test
     public void testBarlines() {
-        MusicXmlReader reader = getMusicXmlReader();
+        Score score = readScore("barlines.xml");
         
-        Score score = null;
-        try {
-            score = reader.readScore(testFilePath + "barlines.xml");
-        } catch(Exception e) {
-            fail("Parsing failed with exception " + e);
-        }
-        
-        assertTrue(score != null);
         assertEquals(1, score.getParts().size());
-        SingleStaffPart part = score.getParts().get(0);
+        SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
         Staff staff = part.getStaff();
         assertEquals("Part1", part.getName());
-        List<Measure> measures = staff.getMeasures();
-        assertEquals(9, measures.size());
-        assertEquals(Barline.SINGLE, measures.get(0).getRightBarline());
-        assertEquals(Barline.DOUBLE, measures.get(1).getRightBarline());
-        assertEquals(Barline.THICK, measures.get(2).getRightBarline());
-        assertEquals(Barline.DASHED, measures.get(3).getRightBarline());
-        assertEquals(Barline.INVISIBLE, measures.get(4).getRightBarline());
-        assertEquals(Barline.REPEAT_LEFT, measures.get(5).getRightBarline());
-        assertEquals(Barline.REPEAT_RIGHT, measures.get(6).getRightBarline());
-        assertEquals(Barline.REPEAT_MEASURE, measures.get(7).getRightBarline());
-        assertEquals(Barline.FINAL, measures.get(8).getRightBarline());
+        
+        assertEquals(Barline.SINGLE, part.getMeasure(1).getRightBarline());
+        assertEquals(Barline.NONE, part.getMeasure(1).getLeftBarline());
+        
+        assertEquals(Barline.DOUBLE, part.getMeasure(2).getRightBarline());
+        assertEquals(Barline.NONE, part.getMeasure(2).getLeftBarline());
+        
+        assertEquals(Barline.THICK, part.getMeasure(3).getRightBarline());
+        assertEquals(Barline.NONE, part.getMeasure(3).getLeftBarline());
+        
+        assertEquals(Barline.DASHED, part.getMeasure(4).getRightBarline());
+        assertEquals(Barline.NONE, part.getMeasure(4).getLeftBarline());
+        
+        assertEquals(Barline.INVISIBLE, part.getMeasure(5).getRightBarline());
+        assertEquals(Barline.NONE, part.getMeasure(5).getLeftBarline());
+        
+        assertEquals(Barline.SINGLE, part.getMeasure(6).getRightBarline());
+        assertEquals(Barline.REPEAT_LEFT, part.getMeasure(6).getLeftBarline());
+        
+        assertEquals(Barline.REPEAT_RIGHT, part.getMeasure(7).getRightBarline());
+        assertEquals(Barline.NONE, part.getMeasure(7).getLeftBarline());
+        
+        assertEquals(Barline.REPEAT_RIGHT, part.getMeasure(8).getRightBarline());
+        assertEquals(Barline.REPEAT_LEFT, part.getMeasure(8).getLeftBarline());
+        
+        assertEquals(Barline.FINAL, part.getMeasure(9).getRightBarline());
+        assertEquals(Barline.NONE, part.getMeasure(9).getLeftBarline());
+    }
+    
+    @Test
+    public void testClefs() {
+        Score score = readScore("clefs.xml");
+        SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+        
+        assertEquals(Clefs.G, part.getMeasure(1).getClef());
+        assertTrue(part.getMeasure(1).containsClefChanges());
+        assertEquals(1, part.getMeasure(1).getClefChanges().size());
+        assertEquals(Clefs.ALTO, part.getMeasure(1).getClefChanges().get(Durations.WHOLE));
+        
+        assertEquals(Clefs.ALTO, part.getMeasure(2).getClef());
+        assertTrue(part.getMeasure(2).containsClefChanges());
+        assertEquals(1, part.getMeasure(2).getClefChanges().size());
+        assertEquals(Clef.getClef(Clef.Type.C, 4), part.getMeasure(2).getClefChanges().get(Durations.WHOLE));
+    
+        assertEquals(Clef.getClef(Clef.Type.C, 4), part.getMeasure(3).getClef());
+        assertFalse(part.getMeasure(3).containsClefChanges());
+        
+        assertEquals(Clef.getClef(Clef.Type.C, 4), part.getMeasure(4).getClef());
+        assertTrue(part.getMeasure(4).containsClefChanges());
+        Map<Duration, Clef> clefChanges = part.getMeasure(4).getClefChanges();
+        assertEquals(2, clefChanges.size());
+        assertEquals(Clefs.F, clefChanges.get(Durations.QUARTER));
+        assertEquals(Clefs.PERCUSSION, clefChanges.get(Durations.WHOLE));
+        
+        assertEquals(Clefs.PERCUSSION, part.getMeasure(5).getClef());
+        assertFalse(part.getMeasure(5).containsClefChanges());
+    }
+    
+    @Test
+    public void testKeySignatures() {
+        Score score = readScore("keysigs.xml");
+        
+        SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+        
+        assertEquals(KeySignatures.CMaj_Amin, part.getMeasure(1).getKeySignature());
+        assertEquals(KeySignatures.GMaj_Emin, part.getMeasure(2).getKeySignature());
+        assertEquals(KeySignatures.AFlatMaj_Fmin, part.getMeasure(3).getKeySignature());
+    }
+    
+    @Test
+    public void testMultiStaffPart() {
+        Score score = readScore("multistaff.xml");
+        assertEquals(2, score.getPartCount());
+        MultiStaffPart multiStaff = null;
+        SingleStaffPart singleStaff = null;
+        for(Part part : score) {
+            if(part.getName().equals("MultiStaff"))
+                multiStaff = (MultiStaffPart) part;
+            if(part.getName().equals("SingleStaff"))
+                singleStaff = (SingleStaffPart) part;
+        }
+        
+        assertTrue(multiStaff != null);
+        assertTrue(singleStaff != null);
+        
+        assertEquals(3, singleStaff.getMeasureCount());
+        assertEquals(3, multiStaff.getMeasureCount());
+        
+        assertEquals(2, multiStaff.getStaffCount());
+        
+        // TODO: check the contents of MultiStaffPart.
+        fail("Test no finished");
+        
+        
+        
+        
+        
     }
 }

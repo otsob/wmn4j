@@ -77,4 +77,29 @@ public class PartBuilderTest {
         assertTrue(part instanceof SingleStaffPart);
         assertFalse(part.isMultiStaff());
     }
+    
+    @Test
+    public void testBuildMultiStaffPart() {
+        int measureCount = 5;
+        PartBuilder builder = new PartBuilder("");
+        for(int i = 1; i <= measureCount; ++i) {
+            builder.addMeasureToStaff(1, new Measure(i, this.measureContents, this.measureAttr));
+            builder.addMeasureToStaff(2, new Measure(i, this.measureContents, this.measureAttr));
+        }
+        
+        Part part = builder.build();
+        assertTrue(part.isMultiStaff());
+        assertTrue(part instanceof MultiStaffPart);
+        MultiStaffPart mpart = (MultiStaffPart) part;
+        List<Integer> staffNumbers = mpart.getStaffNumbers();
+        assertTrue(staffNumbers.size() == 2);
+        assertTrue(staffNumbers.contains(1));
+        assertTrue(staffNumbers.contains(2));
+        
+        Staff staff1 = mpart.getStaff(1);
+        assertTrue(staff1.getMeasureCount() == 5);
+        
+        Staff staff2 = mpart.getStaff(2);
+        assertTrue(staff2.getMeasureCount() == 5);
+    }
 }

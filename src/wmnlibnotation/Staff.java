@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Class for representing a staff in a score.
+ * Class for representing a staff in a score. This class is immutable.
  * @author Otso Björklund
  */
 public class Staff implements Iterable<Measure> {
@@ -14,14 +14,34 @@ public class Staff implements Iterable<Measure> {
     /**
      * Type of staff.
      */
-    enum Type { NORMAL, SINGLE_LINE };
+    public enum Type { NORMAL, SINGLE_LINE };
     
     private final List<Measure> measures;
     private final Type type;
     
+    /**
+     * Constructor
+     * @param measures the measures in the staff.
+     */
     public Staff(List<Measure> measures) {
         this.type = Type.NORMAL;
         this.measures = Collections.unmodifiableList(new ArrayList(measures));
+    }
+    
+    /**
+     * Get <code>Measure</code> by measure number.
+     * @param number the number of the measure to get from this staff.
+     * @return the measure with number
+     */
+    public Measure getMeasure(int number) {
+        return this.measures.get(number - 1);
+    }
+    
+    /**
+     * @return number of measures in this <code>Staff</code>.
+     */
+    public int getMeasureCount() {
+        return this.measures.size();
     }
     
     /**
@@ -29,6 +49,13 @@ public class Staff implements Iterable<Measure> {
      */
     public List<Measure> getMeasures() {
         return this.measures;
+    }
+    
+    /**
+     * @return type of this <code>Staff</code>.
+     */
+    public Type getType() {
+        return this.type;
     }
     
     @Override
@@ -43,6 +70,9 @@ public class Staff implements Iterable<Measure> {
         return strBuilder.toString();
     }
 
+    /**
+     * @return iterator that does not support modifying this <code>Staff</code>.
+     */
     @Override
     public Iterator<Measure> iterator() {
         return this.measures.iterator();

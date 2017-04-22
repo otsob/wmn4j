@@ -13,38 +13,60 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Class that describes a score. 
+ * This class is immutable. <code>ScoreBuilder</code> 
+ * can be used for creating <code>Score</code> objects.
  * @author Otso Björklund
  */
-public class Score implements Iterable<SingleStaffPart> {
+public class Score implements Iterable<Part> {
     
-    enum Info { NAME, COMPOSER, ARRANGER, YEAR }
+    /**
+     * Type for the different text attributes a score can have.
+     */
+    public enum Attribute { NAME, COMPOSER, ARRANGER, YEAR }
     
-    private final Map<Info, String> scoreInfo;
-    private final List<SingleStaffPart> parts;
+    private final Map<Attribute, String> scoreAttr;
+    private final List<Part> parts;
     
-    public Score(String name, String composerName, List<SingleStaffPart> staves) {
-        this.parts = Collections.unmodifiableList(new ArrayList(staves));
-        this.scoreInfo = new HashMap();
-        this.scoreInfo.put(Info.NAME, name);
-        this.scoreInfo.put(Info.COMPOSER, composerName);
+    public Score(Map<Attribute, String> attributes, List<Part> parts) {
+        this.parts = Collections.unmodifiableList(new ArrayList(parts));
+        this.scoreAttr = Collections.unmodifiableMap(new HashMap(attributes));
         
         if(this.parts == null)
             throw new NullPointerException("Cannot create score: staves was null");
     }
     
+    /**
+     * @return Name of this <code>Score</code>.
+     */
     public String getName() {
-        String name = this.scoreInfo.get(Info.NAME);
-        return (name != null) ? name : "";
+        return this.getAttribute(Attribute.NAME);
     }
     
-    public List<SingleStaffPart> getParts() {
-        return Collections.unmodifiableList(this.parts);
+    /**
+     * @return number of parts in this <code>Score</code>.
+     */
+    public int getPartCount() {
+        return this.parts.size();
     }
     
-    public String getComposerName() {
-        String name = this.scoreInfo.get(Info.COMPOSER);
-        return (name != null) ? name : "";
+    /**
+     * @return the parts in this <code>Score</code> as list in no particular order.
+     */
+    public List<Part> getParts() {
+        return this.parts;
+    }
+    
+    /**
+     * @param attribute the type of the attribute.
+     * @return the text associated with attribute if the attribute is set. 
+     * Empty string otherwise.
+     */
+    public String getAttribute(Attribute attribute) {
+        if(this.scoreAttr.containsKey(attribute))
+            return this.scoreAttr.get(attribute);
+        
+        return "";
     }
     
     @Override
@@ -60,8 +82,11 @@ public class Score implements Iterable<SingleStaffPart> {
         return strBuilder.toString();
     }
 
+    /**
+     * @return iterator that does not support modifying the <code>Score</code>.
+     */
     @Override
-    public Iterator<SingleStaffPart> iterator() {
+    public Iterator<Part> iterator() {
         return this.parts.iterator();
     }    
 }
