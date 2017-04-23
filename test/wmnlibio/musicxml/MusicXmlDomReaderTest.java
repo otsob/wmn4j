@@ -27,6 +27,7 @@ import wmnlibnotation.Pitch;
 import wmnlibnotation.Rest;
 import wmnlibnotation.Score;
 import wmnlibnotation.Staff;
+import wmnlibnotation.TimeSignature;
 import wmnlibnotation.TimeSignatures;
 
 /**
@@ -35,7 +36,7 @@ import wmnlibnotation.TimeSignatures;
  */
 public class MusicXmlDomReaderTest {
     
-    static final String testFilePath = "test/testfiles/";
+    static final String testFilePath = "test/testfiles/musicxml/";
     
     public MusicXmlDomReaderTest() {
     }
@@ -191,7 +192,7 @@ public class MusicXmlDomReaderTest {
         
         SingleStaffPart partTwo = (SingleStaffPart) score.getParts().get(1);
         Staff staffTwo = partTwo.getStaff();
-        assertEquals("Staff 2", partTwo.getName());
+        assertEquals("Part2", partTwo.getName());
         assertEquals(2, staffTwo.getMeasures().size());
  
         // Verify data of measure one of staff two
@@ -230,7 +231,6 @@ public class MusicXmlDomReaderTest {
         assertEquals(1, score.getParts().size());
         SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
         Staff staff = part.getStaff();
-        assertEquals("Part1", part.getName());
         
         assertEquals(Barline.SINGLE, part.getMeasure(1).getRightBarline());
         assertEquals(Barline.NONE, part.getMeasure(1).getLeftBarline());
@@ -321,12 +321,28 @@ public class MusicXmlDomReaderTest {
         
         assertEquals(2, multiStaff.getStaffCount());
         
-        // TODO: check the contents of MultiStaffPart.
-        fail("Test no finished");
+        int measureCount = 0;
+        Note expectedNote = Note.getNote(Pitch.getPitch(Pitch.Base.A, 0, 4), Durations.WHOLE);
         
+        for(Measure measure : multiStaff) {
+            assertTrue(measure.isSingleLayer());
+            List<Durational> layer = measure.getLayer(measure.getLayerNumbers().get(0));
+            assertEquals(1, layer.size());
+            assertTrue(layer.get(0).equals(expectedNote));
+            ++measureCount;
+        }
         
-        
-        
-        
+        assertEquals("Incorrect number of measures in multistaff part", 6, measureCount);
+    }
+    
+    @Test
+    public void testTimeSignatures() {
+        Score score = readScore("timesigs.xml");
+        assertEquals(1, score.getPartCount());
+        SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+        assertEquals(TimeSignature.getTimeSignature(2, 2), part.getMeasure(1).getTimeSignature());
+        assertEquals(TimeSignature.getTimeSignature(3, 4), part.getMeasure(2).getTimeSignature());
+        assertEquals(TimeSignature.getTimeSignature(6, 8), part.getMeasure(3).getTimeSignature());
+        assertEquals(TimeSignature.getTimeSignature(15, 16), part.getMeasure(4).getTimeSignature());
     }
 }
