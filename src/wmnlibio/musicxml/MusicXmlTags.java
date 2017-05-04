@@ -8,7 +8,9 @@ public class MusicXmlTags {
 
     // Barline tags
     static final String BARLINE = "barline";
-    static final String BARLINE_ATTR_LOCATION = "location";
+    static final String BARLINE_LOCATION = "location";
+    static final String BARLINE_LOCATION_LEFT = "left";
+    static final String BARLINE_LOCATION_RIGHT = "right";
     static final String BARLINE_REPEAT = "repeat";
     static final String BARLINE_REPEAT_DIR = "direction";
     static final String BARLINE_REPEAT_DIR_FORWARD = "forward";

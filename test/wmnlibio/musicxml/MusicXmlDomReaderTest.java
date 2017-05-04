@@ -266,27 +266,25 @@ public class MusicXmlDomReaderTest {
         SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
         
         assertEquals(Clefs.G, part.getMeasure(1).getClef());
-        assertTrue(part.getMeasure(1).containsClefChanges());
-        assertEquals(1, part.getMeasure(1).getClefChanges().size());
-        assertEquals(Clefs.ALTO, part.getMeasure(1).getClefChanges().get(Durations.WHOLE));
+        assertFalse(part.getMeasure(1).containsClefChanges());
         
         assertEquals(Clefs.ALTO, part.getMeasure(2).getClef());
-        assertTrue(part.getMeasure(2).containsClefChanges());
-        assertEquals(1, part.getMeasure(2).getClefChanges().size());
-        assertEquals(Clef.getClef(Clef.Type.C, 4), part.getMeasure(2).getClefChanges().get(Durations.WHOLE));
-    
+        assertFalse(part.getMeasure(2).containsClefChanges());
+        
         assertEquals(Clef.getClef(Clef.Type.C, 4), part.getMeasure(3).getClef());
         assertFalse(part.getMeasure(3).containsClefChanges());
         
         assertEquals(Clef.getClef(Clef.Type.C, 4), part.getMeasure(4).getClef());
         assertTrue(part.getMeasure(4).containsClefChanges());
         Map<Duration, Clef> clefChanges = part.getMeasure(4).getClefChanges();
-        assertEquals(2, clefChanges.size());
+        assertEquals(1, clefChanges.size());
         assertEquals(Clefs.F, clefChanges.get(Durations.QUARTER));
-        assertEquals(Clefs.PERCUSSION, clefChanges.get(Durations.WHOLE));
         
         assertEquals(Clefs.PERCUSSION, part.getMeasure(5).getClef());
-        assertFalse(part.getMeasure(5).containsClefChanges());
+        assertTrue(part.getMeasure(5).containsClefChanges());
+        assertEquals(2, part.getMeasure(5).getClefChanges().size());
+        assertEquals(Clefs.G, part.getMeasure(5).getClefChanges().get(Durations.QUARTER));
+        assertEquals(Clefs.F, part.getMeasure(5).getClefChanges().get(Durations.HALF.addDot()));
     }
     
     @Test

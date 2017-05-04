@@ -13,5 +13,5 @@ import wmnlibnotation.Score;
  * @author Otso Björklund
  */
 public interface MusicXmlReader {
-    public Score readScore(String fileName)  throws IOException ;
+    public Score readScore(String fileName) throws IOException;
 }

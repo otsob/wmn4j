@@ -5,7 +5,7 @@
     <encoding>
       <software>Finale 2014.5 for Mac</software>
       <software>Dolet Light for Finale 2014.5</software>
-      <encoding-date>2017-04-22</encoding-date>
+      <encoding-date>2017-05-04</encoding-date>
       <supports attribute="new-system" element="print" type="yes" value="yes"/>
       <supports attribute="new-page" element="print" type="yes" value="yes"/>
       <supports element="accidental" type="yes"/>
@@ -200,10 +200,57 @@
           <system-distance>114</system-distance>
         </system-layout>
       </print>
-      <note>
-        <rest measure="yes"/>
-        <duration>8</duration>
+      <note default-x="37">
+        <pitch>
+          <step>B</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>2</duration>
         <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="-55">down</stem>
+      </note>
+      <attributes>
+        <clef>
+          <sign>G</sign>
+          <line>2</line>
+        </clef>
+      </attributes>
+      <note default-x="288">
+        <pitch>
+          <step>B</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>2</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="-55">down</stem>
+      </note>
+      <note default-x="540">
+        <pitch>
+          <step>B</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>2</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="-55">down</stem>
+      </note>
+      <attributes>
+        <clef>
+          <sign>F</sign>
+          <line>4</line>
+        </clef>
+      </attributes>
+      <note default-x="792">
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>2</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="-20">down</stem>
       </note>
       <barline location="right">
         <bar-style>light-heavy</bar-style>

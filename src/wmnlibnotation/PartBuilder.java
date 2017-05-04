@@ -18,6 +18,7 @@ public class PartBuilder {
     
     private final Map<Integer, List<Measure>> staveContents = new HashMap();
     private String name;
+    private static final int singleStaffNumber = 1;
     
     public PartBuilder(String name) {
         this.name = name;
@@ -28,7 +29,7 @@ public class PartBuilder {
     }
     
     public void addMeasure(Measure measure) {
-        this.addMeasureToStaff(0, measure);
+        this.addMeasureToStaff(singleStaffNumber, measure);
     }
     
     public void addMeasureToStaff(int staffNumber, Measure measure) {
@@ -43,7 +44,7 @@ public class PartBuilder {
  
     public Part build() {
         if(this.staveContents.size() == 1) 
-            return new SingleStaffPart(this.name, this.staveContents.get(0));
+            return new SingleStaffPart(this.name, this.staveContents.get(singleStaffNumber));
         else {
             Map<Integer, Staff> staves = new HashMap();
             for(int staffNumber : this.staveContents.keySet())

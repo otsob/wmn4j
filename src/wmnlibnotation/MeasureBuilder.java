@@ -146,7 +146,7 @@ public class MeasureBuilder {
     /**
      * @return right barline currently set for this builder.
      */
-    public Barline getRighBarline() {
+    public Barline getRightBarline() {
         return rightBarline;
     }
 

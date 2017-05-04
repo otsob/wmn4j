@@ -16,6 +16,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -31,10 +32,12 @@ import wmnlibnotation.MeasureBuilder;
 import wmnlibnotation.MeasureAttributes;
 import wmnlibnotation.Note;
 import wmnlibnotation.Part;
+import wmnlibnotation.PartBuilder;
 import wmnlibnotation.SingleStaffPart;
 import wmnlibnotation.Pitch;
 import wmnlibnotation.Rest;
 import wmnlibnotation.Score;
+import wmnlibnotation.ScoreBuilder;
 import wmnlibnotation.Staff;
 import wmnlibnotation.TimeSignature;
 
@@ -89,29 +92,29 @@ public class MusicXmlDomReader implements MusicXmlReader {
     }
     
     private Score createScore(Document doc) {
-        
+        ScoreBuilder scoreBuilder = new ScoreBuilder();
+        readScoreAttributes(scoreBuilder, doc);
+        createParts(scoreBuilder, doc);
+        return scoreBuilder.build();
+    }
+    
+    private void readScoreAttributes(ScoreBuilder scoreBuilder, Document doc) {
         Node movementTitle = doc.getElementsByTagName(MusicXmlTags.SCORE_MOVEMENT_TITLE).item(0);
-        String scoreName = "";
         if(movementTitle != null)
-            scoreName = movementTitle.getTextContent();
+            scoreBuilder.setAttribute(Score.Attribute.NAME, movementTitle.getTextContent());
         
         Node identification = doc.getElementsByTagName(MusicXmlTags.SCORE_IDENTIFICATION).item(0);
         Node creatorNode = findChild(identification, MusicXmlTags.SCORE_IDENTIFICATION_CREATOR);
-        String composerName = "";
+        
         if(creatorNode != null)
-            composerName = creatorNode.getTextContent();
-        
-        List<Part> parts = createParts(doc);
-        
-        return null; //new Score(scoreName, composerName, parts);
+            scoreBuilder.setAttribute(Score.Attribute.COMPOSER, creatorNode.getTextContent());
     }
     
-    private List<Part> createParts(Document doc) {
+    private void createParts(ScoreBuilder scoreBuilder, Document doc) {
+
+        Map<String, String> partNames = new HashMap();
         
-        List<Part> parts = new ArrayList();
-       // Map<String, Map<Staff.Info, String>> partsInfo = new HashMap();
-        
-        // Read staff info from <part-list>
+        // Read part info from <part-list>
         Node partsList = doc.getElementsByTagName(MusicXmlTags.PART_LIST).item(0);
         if(partsList != null) {
             NodeList scoreParts = partsList.getChildNodes();
@@ -119,48 +122,31 @@ public class MusicXmlDomReader implements MusicXmlReader {
                 Node child = scoreParts.item(i);
                 if(child.getNodeName().equals(MusicXmlTags.PLIST_SCORE_PART)) {
                     String partId = child.getAttributes().getNamedItem(MusicXmlTags.PART_ID).getTextContent();
-                    
-//                    if(partsInfo.get(partId) == null) {
-//                        Map<Staff.Info, String> staffInfo = new HashMap();
-//                        
-//                        String partName = "";
-//                        
-//                        Node partNameNode = findChild(child, MusicXmlTags.PART_NAME);
-//                        if(partNameNode != null)
-//                            partName = partNameNode.getTextContent();
-//                        
-//                        staffInfo.put(Staff.Info.NAME, partName);
-//                        partsInfo.put(partId, staffInfo);
-//                    }
+                        
+                    String partName = partId;
+                    Node partNameNode = findChild(child, MusicXmlTags.PART_NAME);
+                    if(partNameNode != null)
+                        partName = partNameNode.getTextContent();
+
+                    partNames.put(partId, partName);
                 }
             }
         }
         
-        // Read part nodes and create measures list
         NodeList partNodes = doc.getElementsByTagName(MusicXmlTags.PART);
         for(int i = 0; i < partNodes.getLength(); ++i) {
             Node partNode = partNodes.item(i);
             String partId = partNode.getAttributes().getNamedItem(MusicXmlTags.PART_ID).getTextContent();
-            List<Measure> measures = createMeasures(partNode);
-            List<Staff> staves = new ArrayList();
-            staves.add(new Staff(measures));
-
-            // Create staff from staff info and measure list
-            String staffName = "";
-//            Map<Staff.Info, String> partInfo = partsInfo.get(partId);
             
-//            if(partInfo != null)
-//                staffName = partInfo.get(Staff.Info.NAME);
+            PartBuilder partBuilder = new PartBuilder(partNames.get(partId));
             
-            parts.add(new SingleStaffPart(staffName, measures));
+            createMeasures(partBuilder, partNode);
+            scoreBuilder.addPart(partBuilder.build());
         }
-        
-        return parts;
     }
     
-    private List<Measure> createMeasures(Node partNode) {
-        List<Measure> measures = new ArrayList();
-        MeasureAttributes measureInfo = null;
+    private void createMeasures(PartBuilder partBuilder, Node partNode) {
+        MeasureAttributes measureAttr = null;
         int divisions = 0;
         
         // Read measure node by node, create measure and add to list
@@ -168,32 +154,47 @@ public class MusicXmlDomReader implements MusicXmlReader {
         for(int i = 0; i < measureNodes.getLength(); ++i) {
             Node measureNode = measureNodes.item(i);
             if(measureNode.getNodeName().equals(MusicXmlTags.MEASURE)) {
-                Node attributesNode = findChild(measureNode, MusicXmlTags.MEASURE_ATTRIBUTES);
+                List<Node> attributesNodes = findChildren(measureNode, MusicXmlTags.MEASURE_ATTRIBUTES);
                 List<Node> barlineNodes = findChildren(measureNode, MusicXmlTags.BARLINE);
                 
-                if(attributesNode != null) {
-                    Node divisionsNode = findChild(attributesNode, MusicXmlTags.MEAS_ATTR_DIVS);
-                    if(divisionsNode != null)
-                        divisions = Integer.parseInt(divisionsNode.getTextContent());
+                divisions = getDivisions(attributesNodes, divisions);
+                measureAttr = getMeasureAttr(attributesNodes, barlineNodes, measureAttr);
 
-                    measureInfo = getMeasureAttr(attributesNode, barlineNodes, measureInfo);
-                } 
-                else if(barlineNodes != null) {
-                    measureInfo = MeasureAttributes.getMeasureAttr(measureInfo.getTimeSignature(), 
-                                                             measureInfo.getKeySignature(), 
-                                                             getBarline(barlineNodes), 
-                                                             measureInfo.getClef());
-                }
-
-                measures.add(createMeasure(measureNode, measureInfo, divisions));
+                // TODO: Check to which staff measure should be added.
+                partBuilder.addMeasure(createMeasure(measureNode, measureAttr, divisions));
             }
         }
-        
-        return measures;
     }
     
-    private MeasureAttributes getMeasureAttr(Node attributesNode, List<Node> barlineNodes, MeasureAttributes previous) {
-        Barline barline = getBarline(barlineNodes);
+    private int getDivisions(List<Node> attributesNodes, int previousDivisions) {
+        
+        if(!attributesNodes.isEmpty()) {
+            Node attributesNode = attributesNodes.get(0);
+            Node divisionsNode = findChild(attributesNode, MusicXmlTags.MEAS_ATTR_DIVS);
+            if(divisionsNode != null)
+                return Integer.parseInt(divisionsNode.getTextContent());
+        }
+        
+        return previousDivisions;
+    }
+    
+    private MeasureAttributes getMeasureAttr(List<Node> attributesNodes, List<Node> barlineNodes, MeasureAttributes previous) {
+        if(attributesNodes.isEmpty() && barlineNodes.isEmpty())
+            return previous;
+        
+        Node attributesNode = attributesNodes.get(0);
+        
+        Barline rightBarline = getRightBarline(barlineNodes);
+        Barline leftBarline = getLeftBarline(barlineNodes);
+        
+        if(attributesNodes.isEmpty() && !barlineNodes.isEmpty()) {
+            // TODO: Correct the handling of barlines
+            return MeasureAttributes.getMeasureAttr(previous.getTimeSignature(), 
+                                                    previous.getKeySignature(), 
+                                                    rightBarline,
+                                                    leftBarline,
+                                                    previous.getClef());
+        }
         
         TimeSignature timeSig;
         Node timeSigNode = findChild(attributesNode, MusicXmlTags.MEAS_ATTR_TIME);
@@ -223,7 +224,9 @@ public class MusicXmlDomReader implements MusicXmlReader {
         else
             clef = previous.getClef();
         
-        return MeasureAttributes.getMeasureAttr(timeSig, keySig, barline, clef);
+        // TODO: Handle clef changes.
+        
+        return MeasureAttributes.getMeasureAttr(timeSig, keySig, rightBarline, leftBarline, clef);
     }
     
     private KeySignature getKeySignature(int alterations) {
@@ -256,20 +259,31 @@ public class MusicXmlDomReader implements MusicXmlReader {
         return Clefs.G;
     }
     
-    private Barline getBarline(List<Node> barlineNodes) {
-        List<Barline> barlines = new ArrayList();
+    private Barline getRightBarline(List<Node> barlineNodes) {
+        Barline barline = getBarline(barlineNodes, MusicXmlTags.BARLINE_LOCATION_RIGHT);
+        if(barline == null)
+            return Barline.SINGLE;
         
-        for(Node barlineNode : barlineNodes)
-            barlines.add(readBarlineNode(barlineNode));
-     
-        if(barlines.size() == 1)
-            return barlines.get(0);
-        else if(barlines.size() == 2) {
-            if(barlines.contains(Barline.REPEAT_LEFT) && barlines.contains(Barline.REPEAT_RIGHT))
-                return Barline.REPEAT_MEASURE;
+        return barline;
+    }
+    
+    private Barline getLeftBarline(List<Node> barlineNodes) {
+        Barline barline = getBarline(barlineNodes, MusicXmlTags.BARLINE_LOCATION_LEFT);
+        if(barline == null)
+            return Barline.NONE;
+    
+        return barline;
+    }
+    
+    private Barline getBarline(List<Node> barlineNodes, String location) {
+        for(Node barlineNode : barlineNodes) {
+            Node locationNode = barlineNode.getAttributes().getNamedItem(MusicXmlTags.BARLINE_LOCATION);
+            if(locationNode.getTextContent().equals(location)) {
+                return readBarlineNode(barlineNode);
+            }
         }
         
-        return Barline.SINGLE;
+        return null;
     }
     
     private Barline readBarlineNode(Node barlineNode) {
@@ -281,7 +295,6 @@ public class MusicXmlDomReader implements MusicXmlReader {
             switch(barlineString) {
                 case MusicXmlTags.BARLINE_STYLE_DASHED: return Barline.DASHED;
                 case MusicXmlTags.BARLINE_STYLE_HEAVY: return Barline.THICK;
-                // Todo: Can "heavy-light" be something other than left repeat?
                 case MusicXmlTags.BARLINE_STYLE_HEAVY_LIGHT: return Barline.REPEAT_LEFT;
                 case MusicXmlTags.BARLINE_STYLE_INVISIBLE: return Barline.INVISIBLE;
                 case MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY: {
@@ -295,7 +308,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
             }
         }
         
-        return Barline.SINGLE;
+        return Barline.NONE;
     }
     
     private Measure createMeasure(Node measureNode, MeasureAttributes measureInfo, int divisions) {
