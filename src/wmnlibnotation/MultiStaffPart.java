@@ -71,6 +71,10 @@ public class MultiStaffPart implements Part {
             return "";
     }
 
+    public Measure getMeasure(int measureNumber, int staffNumber) {
+        return this.staves.get(staffNumber).getMeasure(measureNumber);
+    }
+    
     /**
      * Iterates through the measures by going through all staves for a certain 
      * measure number before going on to the next measure. 

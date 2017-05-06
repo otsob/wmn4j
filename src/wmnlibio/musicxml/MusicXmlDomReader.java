@@ -25,6 +25,7 @@ import wmnlibnotation.Chord;
 import wmnlibnotation.Clef;
 import wmnlibnotation.Clefs;
 import wmnlibnotation.Duration;
+import wmnlibnotation.Durations;
 import wmnlibnotation.KeySignature;
 import wmnlibnotation.KeySignatures;
 import wmnlibnotation.Measure;
@@ -146,56 +147,142 @@ public class MusicXmlDomReader implements MusicXmlReader {
     }
     
     private void createMeasures(PartBuilder partBuilder, Node partNode) {
-        MeasureAttributes measureAttr = null;
-        int divisions = 0;
+        
+        ContextDependents context = new ContextDependents();
         
         // Read measure node by node, create measure and add to list
         NodeList measureNodes = partNode.getChildNodes();
         for(int i = 0; i < measureNodes.getLength(); ++i) {
             Node measureNode = measureNodes.item(i);
             if(measureNode.getNodeName().equals(MusicXmlTags.MEASURE)) {
-                List<Node> attributesNodes = findChildren(measureNode, MusicXmlTags.MEASURE_ATTRIBUTES);
-                List<Node> barlineNodes = findChildren(measureNode, MusicXmlTags.BARLINE);
-                
-                divisions = getDivisions(attributesNodes, divisions);
-                measureAttr = getMeasureAttr(attributesNodes, barlineNodes, measureAttr);
-
-                // TODO: Check to which staff measure should be added.
-                partBuilder.addMeasure(createMeasure(measureNode, measureAttr, divisions));
+                createMeasure(partBuilder, measureNode, context);
             }
         }
     }
     
-    private int getDivisions(List<Node> attributesNodes, int previousDivisions) {
+    private void createMeasure(PartBuilder partBuilder, Node measureNode, ContextDependents context) {
         
-        if(!attributesNodes.isEmpty()) {
-            Node attributesNode = attributesNodes.get(0);
-            Node divisionsNode = findChild(attributesNode, MusicXmlTags.MEAS_ATTR_DIVS);
-            if(divisionsNode != null)
-                return Integer.parseInt(divisionsNode.getTextContent());
+        int measureNumber = Integer.parseInt(measureNode.getAttributes().getNamedItem(MusicXmlTags.MEASURE_NUM).getTextContent());
+        MeasureBuilder builder = new MeasureBuilder(measureNumber);
+        List<Pair<Note, Integer>> chordBuffer = new ArrayList();
+        List<Duration> offset = new ArrayList();
+        List<Node> barlineNodes = new ArrayList();
+        Clef lastClef = context.getClef();
+        
+        NodeList measureChildren = measureNode.getChildNodes();
+        for(int i = 0; i < measureChildren.getLength(); ++i) {
+            Node node = measureChildren.item(i);
+            
+            // Handle measure attributes that occur in the beginning of measure
+            if(offset.isEmpty() && node.getNodeName().equals(MusicXmlTags.MEASURE_ATTRIBUTES)) {
+                updateContext(node, context);
+                lastClef = context.getClef();
+            }
+            
+            // Handle note
+            if(node.getNodeName().equals(MusicXmlTags.NOTE) && !isGraceNote(node)) {
+                
+                // Need to handle note, attributes, and barline
+                
+                int layer = getLayer(node);
+                Duration duration = getDuration(node, context.getDivision(), context.getTimeSig().getBeatDuration().getDenominator());
+                offset.add(duration);
+                
+                // Todo: add handling articulations etc.
+                
+                if(isRest(node)) {
+                    handleChordBuffer(builder, chordBuffer);
+                    builder.addToLayer(layer, Rest.getRest(duration));
+                }
+                else {
+                    Pitch pitch = getPitch(node);
+                    
+                    if(hasChordTag(node)) {
+                        chordBuffer.add(new Pair(Note.getNote(pitch, duration), layer));
+                    } 
+                    else {
+                        handleChordBuffer(builder, chordBuffer);
+                        chordBuffer.add(new Pair(Note.getNote(pitch, duration), layer));
+                    }
+                }
+            }
+            
+            // Handle clef changes
+            if(node.getNodeName().equals(MusicXmlTags.MEASURE_ATTRIBUTES)) {
+                Clef clef = null;
+                Node clefNode = findChild(node, MusicXmlTags.CLEF);
+                if(clefNode != null) {
+                    clef = getClef(clefNode);
+                }
+                if(clef != null && !offset.isEmpty()) {
+                    Duration cumulatedDur = Duration.sumOf(offset);
+                    builder.addClefChange(cumulatedDur, clef);
+                    lastClef = clef;
+                }
+            }
+            
+            // Handle bar lines
+            if(node.getNodeName().equals(MusicXmlTags.BARLINE)) {
+                barlineNodes.add(node);
+            }
+            
         }
+        handleChordBuffer(builder, chordBuffer);
+        
+        if(!barlineNodes.isEmpty()) {
+            builder.setRightBarline(getRightBarline(barlineNodes));
+            builder.setLeftBarline(getLeftBarline(barlineNodes));
+        }
+        
+        builder.setClef(context.getClef());
+        builder.setTimeSig(context.getTimeSig());
+        builder.setKeySig(context.getKeySig());
+        context.setClef(lastClef);
+        partBuilder.addMeasure(builder.build());
+    }
+    
+    private void updateContext(Node attributesNode, ContextDependents context) {
+        context.setDivision(getDivisions(attributesNode, context.getDivision()));
+        context.setTimeSig(readTimeSig(attributesNode, context));
+        context.setKeySig(readKeySig(attributesNode, context));
+        context.setClef(readClef(attributesNode, context));
+    }
+    
+    private Clef readClef(Node attributesNode, ContextDependents previous) {
+        Clef clef;
+        Node clefNode = findChild(attributesNode, MusicXmlTags.CLEF);
+        if(clefNode != null) {
+            clef = getClef(clefNode);
+        }
+        else
+            clef = previous.getClef();
+        
+        return clef;
+    }
+    
+    private int getDivisions(Node attributesNode, int previousDivisions) {
+        Node divisionsNode = findChild(attributesNode, MusicXmlTags.MEAS_ATTR_DIVS);
+        if(divisionsNode != null)
+            return Integer.parseInt(divisionsNode.getTextContent());
+
         
         return previousDivisions;
     }
-    
-    private MeasureAttributes getMeasureAttr(List<Node> attributesNodes, List<Node> barlineNodes, MeasureAttributes previous) {
-        if(attributesNodes.isEmpty() && barlineNodes.isEmpty())
-            return previous;
         
-        Node attributesNode = attributesNodes.get(0);
-        
-        Barline rightBarline = getRightBarline(barlineNodes);
-        Barline leftBarline = getLeftBarline(barlineNodes);
-        
-        if(attributesNodes.isEmpty() && !barlineNodes.isEmpty()) {
-            // TODO: Correct the handling of barlines
-            return MeasureAttributes.getMeasureAttr(previous.getTimeSignature(), 
-                                                    previous.getKeySignature(), 
-                                                    rightBarline,
-                                                    leftBarline,
-                                                    previous.getClef());
+    private KeySignature readKeySig(Node attributesNode, ContextDependents previous) {
+        KeySignature keySig;
+        Node keySigNode = findChild(attributesNode, MusicXmlTags.MEAS_ATTR_KEY);
+        if(keySigNode != null) {
+            int fifths = Integer.parseInt(findChild(keySigNode, MusicXmlTags.MEAS_ATTR_KEY_FIFTHS).getTextContent());
+            keySig = getKeySignature(fifths);
         }
-        
+        else
+            keySig = previous.getKeySig();
+    
+        return keySig;
+    }
+    
+    private TimeSignature readTimeSig(Node attributesNode, ContextDependents previous) {
         TimeSignature timeSig;
         Node timeSigNode = findChild(attributesNode, MusicXmlTags.MEAS_ATTR_TIME);
         if(timeSigNode != null) {
@@ -204,29 +291,9 @@ public class MusicXmlDomReader implements MusicXmlReader {
             timeSig = TimeSignature.getTimeSignature(beats, beatType);
         }
         else
-            timeSig = previous.getTimeSignature();
+            timeSig = previous.getTimeSig();
         
-        KeySignature keySig;
-        Node keySigNode = findChild(attributesNode, MusicXmlTags.MEAS_ATTR_KEY);
-        if(keySigNode != null) {
-            int fifths = Integer.parseInt(findChild(keySigNode, MusicXmlTags.MEAS_ATTR_KEY_FIFTHS).getTextContent());
-            keySig = getKeySignature(fifths);
-        }
-        else
-            keySig = previous.getKeySignature();
-        
-        Clef clef;
-        Node clefNode = findChild(attributesNode, MusicXmlTags.CLEF);
-        if(clefNode != null) {
-            Node clefSignNode = findChild(clefNode, MusicXmlTags.CLEG_SIGN);
-            clef = getClef(clefSignNode.getTextContent());
-        }
-        else
-            clef = previous.getClef();
-        
-        // TODO: Handle clef changes.
-        
-        return MeasureAttributes.getMeasureAttr(timeSig, keySig, rightBarline, leftBarline, clef);
+        return timeSig;
     }
     
     private KeySignature getKeySignature(int alterations) {
@@ -250,13 +317,24 @@ public class MusicXmlDomReader implements MusicXmlReader {
         return KeySignatures.CMaj_Amin;
     }
     
-    private Clef getClef(String clefName) {
+    private Clef getClef(Node clefNode) {
+        Node clefSignNode = findChild(clefNode, MusicXmlTags.CLEG_SIGN);
+        String clefName = clefSignNode.getTextContent();
+        
+        Node clefLineNode = findChild(clefNode, MusicXmlTags.CLEF_LINE);
+        int clefLine = 3;
+        if(clefLineNode != null)
+            clefLine = Integer.parseInt(clefLineNode.getTextContent());
+        
+        Clef.Type type = Clef.Type.G;
         switch(clefName) {
-            case MusicXmlTags.CLEF_G: return Clefs.G;
-            case MusicXmlTags.CLEF_F: return Clefs.F;
+            case MusicXmlTags.CLEF_G: type = Clef.Type.G; break;
+            case MusicXmlTags.CLEF_F: type = Clef.Type.F; break;
+            case MusicXmlTags.CLEF_C: type = Clef.Type.C; break;
+            case MusicXmlTags.CLEF_PERC: type = Clef.Type.PERCUSSION; break;
         }
     
-        return Clefs.G;
+        return Clef.getClef(type, clefLine);
     }
     
     private Barline getRightBarline(List<Node> barlineNodes) {
@@ -311,43 +389,6 @@ public class MusicXmlDomReader implements MusicXmlReader {
         return Barline.NONE;
     }
     
-    private Measure createMeasure(Node measureNode, MeasureAttributes measureInfo, int divisions) {
-        
-        int measureNumber = Integer.parseInt(measureNode.getAttributes().getNamedItem(MusicXmlTags.MEASURE_NUM).getTextContent());
-        MeasureBuilder builder = new MeasureBuilder(measureNumber, measureInfo);
-        List<Pair<Note, Integer>> chordBuffer = new ArrayList();
-        
-        NodeList measureChildren = measureNode.getChildNodes();
-        for(int i = 0; i < measureChildren.getLength(); ++i) {
-            Node node = measureChildren.item(i);
-            if(node.getNodeName().equals(MusicXmlTags.NOTE) && !isGraceNote(node)) {
-                int layer = getLayer(node);
-                Duration duration = getDuration(node, divisions, measureInfo.getTimeSignature().getBeatDuration().getDenominator());
-                
-                // Todo: add handling articulations etc.
-                
-                if(isRest(node)) {
-                    handleChordBuffer(builder, chordBuffer);
-                    builder.addToLayer(layer, Rest.getRest(duration));
-                }
-                else {
-                    Pitch pitch = getPitch(node);
-                    
-                    if(hasChordTag(node)) {
-                        chordBuffer.add(new Pair(Note.getNote(pitch, duration), layer));
-                    } 
-                    else {
-                        handleChordBuffer(builder, chordBuffer);
-                        chordBuffer.add(new Pair(Note.getNote(pitch, duration), layer));
-                    }
-                }
-            }
-        }
-        handleChordBuffer(builder, chordBuffer);
-        
-        return builder.build();
-    }
-    
     private boolean isGraceNote(Node noteNode) {
         return findChild(noteNode, MusicXmlTags.NOTE_GRACE_NOTE) != null;
     }
@@ -381,11 +422,11 @@ public class MusicXmlDomReader implements MusicXmlReader {
     }
     
     private int getLayer(Node noteNode) {
-        int layer = 0;
+        int layer = 1;
         
         Node voiceNode = findChild(noteNode, MusicXmlTags.NOTE_VOICE);
         if(voiceNode != null) {
-            layer = Integer.parseInt(voiceNode.getTextContent()) - 1;
+            layer = Integer.parseInt(voiceNode.getTextContent());
         }
         
         return layer;
@@ -472,5 +513,49 @@ public class MusicXmlDomReader implements MusicXmlReader {
         }
         
         return foundChildren;
+    }
+    
+    private class ContextDependents {
+
+        private int division;
+        private KeySignature keySig;
+        private TimeSignature timeSig;
+        private Clef clef;
+        
+        public ContextDependents() {
+        
+        }
+        
+        public int getDivision() {
+            return division;
+        }
+
+        public void setDivision(int division) {
+            this.division = division;
+        }
+
+        public KeySignature getKeySig() {
+            return keySig;
+        }
+
+        public void setKeySig(KeySignature keySig) {
+            this.keySig = keySig;
+        }
+
+        public TimeSignature getTimeSig() {
+            return timeSig;
+        }
+
+        public void setTimeSig(TimeSignature timeSig) {
+            this.timeSig = timeSig;
+        }
+
+        public Clef getClef() {
+            return clef;
+        }
+
+        public void setClef(Clef clef) {
+            this.clef = clef;
+        }
     }
 }

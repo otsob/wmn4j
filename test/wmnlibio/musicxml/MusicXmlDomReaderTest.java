@@ -81,7 +81,7 @@ public class MusicXmlDomReaderTest {
         assertEquals(Barline.SINGLE, measure.getRightBarline());
         assertEquals(Clefs.G, measure.getClef());
         
-        List<Durational> layer = measure.getLayer(0);
+        List<Durational> layer = measure.getLayer(1);
         assertEquals(1, layer.size());
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE), layer.get(0));
     }
@@ -111,7 +111,7 @@ public class MusicXmlDomReaderTest {
         assertEquals(Clefs.G, measureOne.getClef());
     
         // Verify notes of measure one
-        List<Durational> layerOne = measureOne.getLayer(0);
+        List<Durational> layerOne = measureOne.getLayer(1);
         assertEquals(8, layerOne.size());
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER), layerOne.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), layerOne.get(1));
@@ -135,12 +135,12 @@ public class MusicXmlDomReaderTest {
         assertEquals(Clefs.G, measureTwo.getClef());
         
         // Verify notes of measure two
-        layerOne = measureTwo.getLayer(0);
+        layerOne = measureTwo.getLayer(1);
         assertEquals(2, layerOne.size());
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.HALF), layerOne.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.HALF), layerOne.get(1));
         
-        List<Durational> layerTwo = measureTwo.getLayer(1);
+        List<Durational> layerTwo = measureTwo.getLayer(2);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER), layerTwo.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER), layerTwo.get(1));
         assertEquals(Rest.getRest(Durations.QUARTER), layerTwo.get(2));
@@ -171,7 +171,7 @@ public class MusicXmlDomReaderTest {
     
         // Verify contents of measure one of staff one
         assertEquals(1, staffOneMeasureOne.getLayerCount());
-        List<Durational> layerMOne = staffOneMeasureOne.getLayer(0);
+        List<Durational> layerMOne = staffOneMeasureOne.getLayer(1);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF), layerMOne.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.QUARTER), layerMOne.get(1));
         
@@ -186,7 +186,7 @@ public class MusicXmlDomReaderTest {
     
         // Verify contents of measure one of staff one
         assertEquals(1, staffOneMeasureTwo.getLayerCount());
-        List<Durational> layerM2 = staffOneMeasureTwo.getLayer(0);
+        List<Durational> layerM2 = staffOneMeasureTwo.getLayer(1);
         assertEquals(Rest.getRest(Durations.QUARTER), layerM2.get(0));
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF), layerM2.get(1));
         
@@ -206,7 +206,7 @@ public class MusicXmlDomReaderTest {
     
         // Verify contents of measure one of staff two
         assertEquals(1, staffTwoMeasureOne.getLayerCount());
-        List<Durational> layerMOneS2 = staffTwoMeasureOne.getLayer(0);
+        List<Durational> layerMOneS2 = staffTwoMeasureOne.getLayer(1);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), layerMOneS2.get(0));
         
         // Verify data of measure two of staff two
@@ -220,7 +220,7 @@ public class MusicXmlDomReaderTest {
     
         // Verify contents of measure two of staff two
         assertEquals(1, staffTwoMeasureTwo.getLayerCount());
-        List<Durational> layerM2S2 = staffTwoMeasureTwo.getLayer(0);
+        List<Durational> layerM2S2 = staffTwoMeasureTwo.getLayer(1);
         assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), layerM2S2.get(0));
     }
     
@@ -277,14 +277,43 @@ public class MusicXmlDomReaderTest {
         assertEquals(Clef.getClef(Clef.Type.C, 4), part.getMeasure(4).getClef());
         assertTrue(part.getMeasure(4).containsClefChanges());
         Map<Duration, Clef> clefChanges = part.getMeasure(4).getClefChanges();
-        assertEquals(1, clefChanges.size());
+        assertEquals(2, clefChanges.size());
         assertEquals(Clefs.F, clefChanges.get(Durations.QUARTER));
+        assertEquals(Clefs.PERCUSSION, clefChanges.get(Durations.WHOLE));
         
         assertEquals(Clefs.PERCUSSION, part.getMeasure(5).getClef());
         assertTrue(part.getMeasure(5).containsClefChanges());
         assertEquals(2, part.getMeasure(5).getClefChanges().size());
         assertEquals(Clefs.G, part.getMeasure(5).getClefChanges().get(Durations.QUARTER));
         assertEquals(Clefs.F, part.getMeasure(5).getClefChanges().get(Durations.HALF.addDot()));
+    }
+    
+    @Test
+    public void testMultiStaffClefs() {
+        Score score = readScore("multiStaffClefs.xml");
+        MultiStaffPart part = (MultiStaffPart) score.getParts().get(0);
+        Staff upper = part.getStaff(1);
+        Staff lower = part.getStaff(2);
+        
+        // Check upper staff
+        assertEquals("Incorrect clef measure 1 upper staff beginning", Clefs.G, upper.getMeasure(1).getClef());
+        assertTrue("Upper staff measure 1 does not contain a clef change", upper.getMeasure(1).containsClefChanges());
+        assertEquals("Incorrect number of clef changes", 1, upper.getMeasure(1).getClefChanges().size());
+        assertEquals("Incorrect clef change", Clefs.ALTO, upper.getMeasure(1).getClefChanges().get(Durations.HALF.addDot()));
+        
+        assertEquals("Incorrect clef measure 2 upper staff.", Clefs.ALTO, upper.getMeasure(2).getClef());
+        assertFalse("Upper staff measure 2 contains a clef change", upper.getMeasure(2).containsClefChanges());
+        
+        // Check lower staff
+        assertEquals("Incorrect clef in measure 2 lower staff", Clefs.F, lower.getMeasure(1).getClef());
+        assertTrue("Lower staff measure 1 does not contain a clef change", lower.getMeasure(1).containsClefChanges());
+        Map<Duration, Clef> clefChanges = lower.getMeasure(1).getClefChanges();
+        assertEquals("Incorrect number of clef changes", 1, clefChanges.size());
+        Duration offset = Durations.HALF.add(Durations.SIXTEENTH.multiplyBy(3));
+        assertEquals("Incorrect clef change", Clefs.G, clefChanges.get(offset));
+        
+        assertEquals("Incorrect clef measure 2 of lower staff", Clefs.G, lower.getMeasure(2).getClef());
+        assertFalse("Lower staff measure 2 contians clef changes", lower.getMeasure(2).containsClefChanges());
     }
     
     @Test

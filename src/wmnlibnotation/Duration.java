@@ -217,7 +217,7 @@ public class Duration implements Comparable<Duration> {
      * @param durations List of <code>Duration</code> objects.
      * @return The sum of durations in List.
      */
-    static Duration sumOf(List<Duration> durations) {
+    public static Duration sumOf(List<Duration> durations) {
         if(durations.isEmpty())
             throw new IllegalArgumentException("Cannot compute sum of durations from empty list");
         

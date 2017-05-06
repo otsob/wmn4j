@@ -36,7 +36,7 @@ public class MeasureBuilder {
     private Clef clef = Clefs.G;
     private Barline leftBarline = Barline.NONE;
     private Barline rightBarline = Barline.SINGLE;
-    private Map<Duration, Clef> clefChanges = Collections.EMPTY_MAP;
+    private Map<Duration, Clef> clefChanges = new HashMap();
     
     /**
      * Create a <code>MeasureBuilder</code> with the given <code>MeasureAttributes</code>.
@@ -52,7 +52,7 @@ public class MeasureBuilder {
         this.clef = measureAttr.getClef();
         this.leftBarline = measureAttr.getLeftBarline();
         this.rightBarline = measureAttr.getRightBarline();
-        this.clefChanges = measureAttr.getClefChanges();
+        this.clefChanges = new HashMap(measureAttr.getClefChanges());
     }
     
     /**
@@ -174,9 +174,6 @@ public class MeasureBuilder {
      * @return reference to this builder.
      */
     public MeasureBuilder addClefChange(Duration offset, Clef clef) {
-        if(this.clefChanges == Collections.EMPTY_MAP)
-            this.clefChanges = new HashMap();
-        
         this.clefChanges.put(offset, clef);
         return this;
     }
