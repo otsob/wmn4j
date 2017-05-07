@@ -31,6 +31,7 @@ public class MusicXmlTags {
     static final String CLEF_F = "F";
     static final String CLEF_C = "C";
     static final String CLEF_PERC = "percussion";
+    static final String CLEF_STAFF = "number";
     
     // Measure tags
     static final String MEASURE = "measure";
@@ -42,6 +43,8 @@ public class MusicXmlTags {
     static final String MEAS_ATTR_BEATS = "beats";
     static final String MEAS_ATTR_KEY = "key";
     static final String MEAS_ATTR_KEY_FIFTHS = "fifths";
+    static final String MEAS_ATTR_STAVES = "staves";
+    static final String MEAS_ATTR_STAFF_NUMBER = "number";
    
     // Note tags
     static final String NOTE = "note";
@@ -51,6 +54,7 @@ public class MusicXmlTags {
     static final String NOTE_VOICE = "voice";
     static final String NOTE_CHORD = "chord";
     static final String NOTE_GRACE_NOTE = "grace";
+    static final String NOTE_STAFF = "staff";
     
     // Part tags
     static final String PART = "part";

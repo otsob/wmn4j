@@ -305,7 +305,7 @@ public class MusicXmlDomReaderTest {
         assertFalse("Upper staff measure 2 contains a clef change", upper.getMeasure(2).containsClefChanges());
         
         // Check lower staff
-        assertEquals("Incorrect clef in measure 2 lower staff", Clefs.F, lower.getMeasure(1).getClef());
+        assertEquals("Incorrect clef in measure 1 lower staff", Clefs.F, lower.getMeasure(1).getClef());
         assertTrue("Lower staff measure 1 does not contain a clef change", lower.getMeasure(1).containsClefChanges());
         Map<Duration, Clef> clefChanges = lower.getMeasure(1).getClefChanges();
         assertEquals("Incorrect number of clef changes", 1, clefChanges.size());
@@ -349,7 +349,7 @@ public class MusicXmlDomReaderTest {
         assertEquals(2, multiStaff.getStaffCount());
         
         int measureCount = 0;
-        Note expectedNote = Note.getNote(Pitch.getPitch(Pitch.Base.A, 0, 4), Durations.WHOLE);
+        Note expectedNote = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
         
         for(Measure measure : multiStaff) {
             assertTrue(measure.isSingleLayer());

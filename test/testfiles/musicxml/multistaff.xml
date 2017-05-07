@@ -6,7 +6,7 @@
     <encoding>
       <software>Finale 2014.5 for Mac</software>
       <software>Dolet Light for Finale 2014.5</software>
-      <encoding-date>2017-04-22</encoding-date>
+      <encoding-date>2017-05-07</encoding-date>
       <supports attribute="new-system" element="print" type="yes" value="yes"/>
       <supports attribute="new-page" element="print" type="yes" value="yes"/>
       <supports element="accidental" type="yes"/>
@@ -129,9 +129,9 @@
         </clef>
       </attributes>
       <sound tempo="120"/>
-      <note default-x="85">
+      <note default-x="88">
         <pitch>
-          <step>A</step>
+          <step>C</step>
           <octave>4</octave>
         </pitch>
         <duration>8</duration>
@@ -141,9 +141,9 @@
     </measure>
     <!--=======================================================-->
     <measure number="2" width="280">
-      <note default-x="13">
+      <note default-x="16">
         <pitch>
-          <step>A</step>
+          <step>C</step>
           <octave>4</octave>
         </pitch>
         <duration>8</duration>
@@ -153,9 +153,9 @@
     </measure>
     <!--=======================================================-->
     <measure number="3" width="281">
-      <note default-x="13">
+      <note default-x="16">
         <pitch>
-          <step>A</step>
+          <step>C</step>
           <octave>4</octave>
         </pitch>
         <duration>8</duration>
@@ -194,9 +194,9 @@
         </clef>
       </attributes>
       <sound tempo="120"/>
-      <note default-x="85">
+      <note default-x="88">
         <pitch>
-          <step>A</step>
+          <step>C</step>
           <octave>4</octave>
         </pitch>
         <duration>8</duration>
@@ -207,10 +207,10 @@
       <backup>
         <duration>8</duration>
       </backup>
-      <note default-x="85">
+      <note default-x="88">
         <pitch>
-          <step>A</step>
-          <octave>2</octave>
+          <step>C</step>
+          <octave>4</octave>
         </pitch>
         <duration>8</duration>
         <voice>2</voice>
@@ -220,9 +220,9 @@
     </measure>
     <!--=======================================================-->
     <measure number="2" width="280">
-      <note default-x="13">
+      <note default-x="16">
         <pitch>
-          <step>A</step>
+          <step>C</step>
           <octave>4</octave>
         </pitch>
         <duration>8</duration>
@@ -233,10 +233,10 @@
       <backup>
         <duration>8</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="16">
         <pitch>
-          <step>A</step>
-          <octave>2</octave>
+          <step>C</step>
+          <octave>4</octave>
         </pitch>
         <duration>8</duration>
         <voice>2</voice>
@@ -246,9 +246,9 @@
     </measure>
     <!--=======================================================-->
     <measure number="3" width="281">
-      <note default-x="13">
+      <note default-x="16">
         <pitch>
-          <step>A</step>
+          <step>C</step>
           <octave>4</octave>
         </pitch>
         <duration>8</duration>
@@ -259,10 +259,10 @@
       <backup>
         <duration>8</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="16">
         <pitch>
-          <step>A</step>
-          <octave>2</octave>
+          <step>C</step>
+          <octave>4</octave>
         </pitch>
         <duration>8</duration>
         <voice>2</voice>
