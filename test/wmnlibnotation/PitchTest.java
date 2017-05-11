@@ -26,9 +26,10 @@ public class PitchTest {
 
     @Test
     public void testToInt() {
-        assertEquals(0, Pitch.getPitch(Pitch.Base.C, 0, 0).toInt());
-        assertEquals(54, Pitch.getPitch(Pitch.Base.F, 1, 4).toInt());
-        assertEquals(39, Pitch.getPitch(Pitch.Base.E, -1, 3).toInt());
+        assertEquals(12, Pitch.getPitch(Pitch.Base.C, 0, 0).toInt());
+        assertEquals(60, Pitch.getPitch(Pitch.Base.C, 0, 4).toInt());
+        assertEquals(66, Pitch.getPitch(Pitch.Base.F, 1, 4).toInt());
+        assertEquals(51, Pitch.getPitch(Pitch.Base.E, -1, 3).toInt());
     }
 
     @Test

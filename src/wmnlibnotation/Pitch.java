@@ -91,14 +91,15 @@ public class Pitch implements Comparable<Pitch> {
     }
     
     /**
-     * Get an integer representation of this <code>Pitch</code>.
+     * Get an integer representation of this <code>Pitch</code>. 
+     * This is the MIDI number of the pitch (middle-C, C4, being 60).
      * A <code>Pitch</code> is transformed into an integer using the formula 
-     * <code> pitchAsInteger = base + alter + octave * 12 </code>, 
+     * <code> pitchAsInteger = base + alter + (octave + 1) * 12 </code>, 
      * where base is defined by the letter in the pitch name: 
      * C = 0, D = 2, E = 4, F = 5, G = 7, A = 9, B = 11.
      * Alter is the number of sharps, or the number of flats * -1.
-     * For example, <code>C#4 = 0 + 1 + 4 * 12 = 49</code> 
-     * and <code>Db4 = 2 - 1 + 4 * 12 = 49</code>.
+     * For example, <code>C#4 = 0 + 1 + 5 * 12 = 61</code> 
+     * and <code>Db4 = 2 - 1 + 5 * 12 = 61</code>.
      * @return this Pitch as an integer. 
      */
     public int toInt() {
@@ -123,7 +124,7 @@ public class Pitch implements Comparable<Pitch> {
                 pitchAsInt = 0;
         }
         
-        return pitchAsInt + this.alter + this.octave * 12;
+        return pitchAsInt + this.alter + (this.octave + 1) * 12;
     }
     
     /**
