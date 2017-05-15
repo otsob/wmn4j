@@ -74,6 +74,43 @@ public class MultiStaffPartTest {
     }
     
     @Test
+    public void testIteratorWithPickupMeasure() {
+        Map<Integer, Staff> staves = new HashMap();
+        List<Measure> measures = new ArrayList();
+        for(int i = 0; i <= 4; ++i)
+            measures.add(TestHelper.getTestMeasure(i));
+        
+        staves.put(1, new Staff(measures));
+        staves.put(2, new Staff(measures));
+        
+        MultiStaffPart part = new MultiStaffPart("Test Staff", staves);
+        
+        int expectedCount = 10;
+        int count = 0;
+        int prevMeasureNumber = 0;
+        
+        int staffIndex = 1;
+        int measureNumber = 0;
+        
+        for(Measure m : part) {
+            ++count;
+            assertTrue(m.getNumber() >= prevMeasureNumber);
+            prevMeasureNumber = m.getNumber();
+            
+            assertTrue(m == staves.get(staffIndex).getMeasure(measureNumber));
+            
+            if(staffIndex == 2) {
+                staffIndex = 1;
+                ++measureNumber;
+            }
+            else
+                staffIndex = 2;
+        }
+        
+        assertEquals("Iterator went through an unexpected number of measures.", expectedCount, count);
+    }
+    
+    @Test
     public void testIteratorImmutability() {
         MultiStaffPart part = new MultiStaffPart("Test staff", this.testStaves);
         Iterator<Measure> iterator = part.iterator();

@@ -65,8 +65,8 @@ public class Measure implements Iterable<Durational> {
         if(this.layers == null || this.measureAttr == null)
             throw new NullPointerException();
         
-        if(this.number <= 0)
-            throw new IllegalArgumentException("Measure number must be positive");
+        if(this.number < 0)
+            throw new IllegalArgumentException("Measure number must be at least 0");
     }
     
     /**

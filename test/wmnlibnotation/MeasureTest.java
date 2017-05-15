@@ -48,7 +48,7 @@ public class MeasureTest {
     public void testCreatingIllegalMeasureThrowsException() {
         // Test exceptions thrown correctly for illegal arguments
         try {
-            Measure m = new Measure(0, this.multipleNoteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+            Measure m = new Measure(-1, this.multipleNoteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
             fail("Exception not thrown");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);

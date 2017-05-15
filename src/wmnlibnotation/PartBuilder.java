@@ -17,11 +17,11 @@ import java.util.Map;
 public class PartBuilder {
     
     private final Map<Integer, List<Measure>> staveContents = new HashMap();
-    private String name;
+    private final Map<Part.Attribute, String> partAttributes = new HashMap();
     private static final int singleStaffNumber = 1;
     
     public PartBuilder(String name) {
-        this.name = name;
+        this.partAttributes.put(Part.Attribute.NAME, name);
     }
     
     public int getStaffCount() {
@@ -42,15 +42,23 @@ public class PartBuilder {
         this.staveContents.get(staffNumber).add(measure);
     }
  
+    public void setAttribute(Part.Attribute attribute, String value) {
+        this.partAttributes.put(attribute, value);
+    }
+    
+    public String getName() {
+        return this.partAttributes.get(Part.Attribute.NAME);
+    }
+    
     public Part build() {
         if(this.staveContents.size() == 1) 
-            return new SingleStaffPart(this.name, this.staveContents.get(singleStaffNumber));
+            return new SingleStaffPart(this.partAttributes, this.staveContents.get(singleStaffNumber));
         else {
             Map<Integer, Staff> staves = new HashMap();
             for(int staffNumber : this.staveContents.keySet())
                 staves.put(staffNumber, new Staff(this.staveContents.get(staffNumber)));
             
-            return new MultiStaffPart(this.name, staves);
+            return new MultiStaffPart(this.partAttributes, staves);
         }
     }
 }

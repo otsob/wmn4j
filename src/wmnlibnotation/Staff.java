@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Class for representing a staff in a score. This class is immutable.
@@ -25,7 +26,16 @@ public class Staff implements Iterable<Measure> {
      */
     public Staff(List<Measure> measures) {
         this.type = Type.NORMAL;
-        this.measures = Collections.unmodifiableList(new ArrayList(measures));
+        
+        List<Measure> tmpMeasures = new ArrayList();
+        
+        // Add placeholder for pickup if there is none.
+        if(measures.get(0).getNumber() != 0)
+            tmpMeasures.add(null);
+        
+        tmpMeasures.addAll(measures);
+        
+        this.measures = Collections.unmodifiableList(tmpMeasures);
     }
     
     /**
@@ -34,21 +44,47 @@ public class Staff implements Iterable<Measure> {
      * @return the measure with number
      */
     public Measure getMeasure(int number) {
-        return this.measures.get(number - 1);
+        if(!this.hasPickupMeasure() && number < 1)
+            throw new NoSuchElementException();
+        
+        return this.measures.get(number);
     }
     
     /**
      * @return number of measures in this <code>Staff</code>.
      */
     public int getMeasureCount() {
-        return this.measures.size();
+        int measureCount = this.getFullMeasureCount();
+        
+        if(this.hasPickupMeasure())
+            ++measureCount;
+        
+        return measureCount;
+    }
+    
+    /**
+     * @return number of full measures in this <code>Staff</code>. 
+     * Pickup measure is not included.
+     */
+    public int getFullMeasureCount() {
+        return this.measures.size() - 1;
     }
     
     /**
      * @return List of measures in this staff in order from first measure to last.
      */
     public List<Measure> getMeasures() {
+        if(!this.hasPickupMeasure())
+            return this.measures.subList(1, this.measures.size());
+        
         return this.measures;
+    }
+    
+    /**
+     * @return true if this staff begins with a pickup measure. false otherwise. 
+     */
+    public boolean hasPickupMeasure() {
+        return this.measures.get(0) != null;
     }
     
     /**
@@ -63,8 +99,8 @@ public class Staff implements Iterable<Measure> {
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append("Staff: ").append("\n");
         
-        for(int i = 0; i < measures.size(); ++i) {
-            strBuilder.append(measures.get(i).toString()).append("\n");
+        for(Measure measure : this) {
+            strBuilder.append(measure.toString()).append("\n");
         }
         
         return strBuilder.toString();
@@ -75,6 +111,12 @@ public class Staff implements Iterable<Measure> {
      */
     @Override
     public Iterator<Measure> iterator() {
-        return this.measures.iterator();
+        Iterator<Measure> iter = this.measures.iterator();
+        
+        // If there is no pickup measure go to next
+        if(!this.hasPickupMeasure())
+            iter.next();
+        
+        return iter;
     }
 }

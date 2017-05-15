@@ -55,6 +55,10 @@ public class MultiStaffPart implements Part {
         return this.staves.get(this.getStaffNumbers().get(0)).getMeasureCount();
     }
     
+    public int getFullMeasureCount() {
+        return this.staves.get(this.getStaffNumbers().get(0)).getFullMeasureCount();
+    }
+    
     public Staff getStaff(int number) {
         return this.staves.get(number);
     }
@@ -86,13 +90,24 @@ public class MultiStaffPart implements Part {
     public Iterator<Measure> iterator() {
         class MultiStaffIterator implements Iterator<Measure> {
 
-            private int keyIndex = 0;
-            private List<Integer> keys = new ArrayList(MultiStaffPart.this.getStaffNumbers());
-            private int measureNumber = 1;
+            private int keyIndex;
+            private List<Integer> keys;
+            private int measureNumber;
+            
+            
+            public MultiStaffIterator() {
+                this.keyIndex = 0;
+                this.keys = MultiStaffPart.this.getStaffNumbers();
+                this.measureNumber = 1;
+                
+                // If there is a pickup measure start from measure 0.
+                if(MultiStaffPart.this.staves.get(this.keys.get(0)).hasPickupMeasure())
+                    this.measureNumber = 0;
+            }
             
             @Override
             public boolean hasNext() {
-                if(this.measureNumber > MultiStaffPart.this.getMeasureCount())
+                if(this.measureNumber > MultiStaffPart.this.getFullMeasureCount())
                     return false;
                 
                 return true;
