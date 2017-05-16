@@ -55,6 +55,9 @@ public class MusicXmlTags {
     static final String NOTE_CHORD = "chord";
     static final String NOTE_GRACE_NOTE = "grace";
     static final String NOTE_STAFF = "staff";
+    static final String NOTE_UNPITCHED = "unpitched";
+    static final String UNPITCHED_STEP = "display-step";
+    static final String UNPITCHED_OCTAVE = "display-octave";
     
     // Part tags
     static final String PART = "part";

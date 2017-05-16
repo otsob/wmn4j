@@ -6,7 +6,6 @@
 package wmnlibnotation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class MeasureBuilder {
    
     private int number;
     // Todo: keep track of layer durations in some way to make checking if measure is full faster.
-    private Map<Integer, List<Durational>> layers;
+    private final Map<Integer, List<Durational>> layers;
     
     private TimeSignature timeSig = TimeSignatures.FOUR_FOUR;
     private KeySignature keySig = KeySignatures.CMaj_Amin;

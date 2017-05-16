@@ -56,8 +56,7 @@ public class Note implements Durational {
      * @param duration the duration of the note.
      * @param articulations a set of Articulations associated with the note.
      */
-    private Note(Pitch pitch, Duration duration, Set<Articulation> articulations ) {
-        
+    private Note(Pitch pitch, Duration duration, Set<Articulation> articulations) {
         this.pitch = pitch;
         this.duration = duration;
         if(articulations != null && !articulations.isEmpty())

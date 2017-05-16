@@ -330,13 +330,13 @@ public class MusicXmlDomReader implements MusicXmlReader {
     
     private void updateContexts(Node attributesNode, Map<Integer, Context> contexts) {
         
-        // TODO: Key and time signature can also be staff specific.
         for(Integer staff : contexts.keySet()) {
             Context context = contexts.get(staff);
             
             // Divisions are the same for all staves.
             context.setDivisions(getDivisions(attributesNode, context.getDivisions()));
             
+            // TODO:
             // Time and key signatures can be different for different staves but
             // that's not necessarily handled in the attributes nodes.
             context.setTimeSig(getTimeSig(attributesNode, context, staff));
@@ -494,26 +494,6 @@ public class MusicXmlDomReader implements MusicXmlReader {
         return findChild(noteNode, MusicXmlTags.NOTE_GRACE_NOTE) != null;
     }
     
-    private void handleChordBuffer(MeasureBuilder builder, List<Pair<Note, Integer>> chordBuffer) {
-        if(!chordBuffer.isEmpty()) {
-            if(chordBuffer.size() > 1) {
-                List<Note> notes = new ArrayList();
-                int layer = chordBuffer.get(0).getValue();
-                for(Pair<Note, Integer> pair : chordBuffer)
-                    notes.add(pair.getKey());
-                
-                builder.addToLayer(layer, Chord.getChord(notes));
-            }
-            else if(chordBuffer.size() == 1) {
-                int layer = chordBuffer.get(0).getValue();
-                Note note = chordBuffer.get(0).getKey();
-                builder.addToLayer(layer, note);
-            }
-
-            chordBuffer.clear();
-        }
-    }
-    
     private boolean hasChordTag(Node noteNode) {
         return findChild(noteNode, MusicXmlTags.NOTE_CHORD) != null;
     }
@@ -555,6 +535,19 @@ public class MusicXmlDomReader implements MusicXmlReader {
                 alter = Integer.parseInt(alterNode.getTextContent());
             
             pitch = Pitch.getPitch(pitchBase, alter, octave);
+        }
+        else {
+            Node unpitchedNode = findChild(noteNode, MusicXmlTags.NOTE_UNPITCHED);
+            if(unpitchedNode != null) {
+                Node stepNode = findChild(unpitchedNode, MusicXmlTags.UNPITCHED_STEP);
+                Node octaveNode = findChild(unpitchedNode, MusicXmlTags.UNPITCHED_OCTAVE);
+                
+                if(stepNode != null && octaveNode != null) {
+                    Pitch.Base pitchBase = getPitchBase(stepNode);
+                    int octave = Integer.parseInt(octaveNode.getTextContent());
+                    pitch = Pitch.getPitch(pitchBase, 0, octave);
+                }
+            }
         }
         
         return pitch;
