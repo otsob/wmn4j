@@ -159,6 +159,13 @@ public class Measure implements Iterable<Durational> {
     }
     
     /**
+     * @return true if this <code>Measure</code> is a pickup measure.
+     */
+    public boolean isPickUp() {
+        return this.getNumber() == 0;
+    }
+    
+    /**
      * String representation of <code>Measure</code>.
      * This is subject to change.
      * @return string representation of measure.
