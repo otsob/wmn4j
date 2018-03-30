@@ -1,5 +1,5 @@
 
-package wmnlibanalysis;
+package wmnlibanalysis.harmony;
 
 import wmnlibnotation.Score;
 

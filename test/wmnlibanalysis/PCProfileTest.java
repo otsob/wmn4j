@@ -5,6 +5,8 @@
  */
 package wmnlibanalysis;
 
+import wmnlibanalysis.harmony.DurationWeighter;
+import wmnlibanalysis.harmony.PCProfile;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;

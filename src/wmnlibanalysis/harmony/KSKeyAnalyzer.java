@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package wmnlibanalysis;
+package wmnlibanalysis.harmony;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -58,7 +58,7 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
             keyStrings.put(key.toString(), key);
         
         try {
-            File keyProfilesFile = new File(KSKeyAnalyzer.class.getResource("resources/KSKeyProfiles.csv").getPath());
+            File keyProfilesFile = new File(KSKeyAnalyzer.class.getResource("../resources/KSKeyProfiles.csv").getPath());
             keyProfilesFile.setReadOnly();
             
             BufferedReader br = new BufferedReader(new FileReader(keyProfilesFile));
