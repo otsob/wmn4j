@@ -233,29 +233,5 @@ public class Chord implements Durational, Iterable<Note> {
     @Override
     public Iterator<Note> iterator() {
         return this.notes.iterator();
-//        class ChordIterator implements Iterator<Note> {
-//            private final Iterator<Note> noteListIterator;
-//            
-//            public ChordIterator(Iterator<Note> noteListIterator) {
-//                this.noteListIterator = noteListIterator;
-//            }
-//            
-//            @Override
-//            public boolean hasNext() {
-//                return this.noteListIterator.hasNext();
-//            }
-//
-//            @Override
-//            public Note next() {
-//                return this.noteListIterator.next();
-//            }
-//        
-//            @Override
-//            public void remove() {
-//                throw new UnsupportedOperationException("Removing from chord is not supported.");
-//            }
-//        }
-//        
-//        return new ChordIterator(this.notes.iterator());
     }
 }

@@ -31,13 +31,13 @@ public class Duration implements Comparable<Duration> {
         if(denominator < 1)
             throw new IllegalArgumentException("denominator must be at least 1");
     
-        // Todo: Come up with a more effective way of finding GCD
+        // TODO: Come up with a more effective way of finding GCD
         if(numerator != 1) {
             int gcd = BigInteger.valueOf(numerator).gcd(BigInteger.valueOf(denominator)).intValue();
             numerator = numerator / gcd;
             denominator = denominator / gcd;
         }
-        // Todo: Implement caching.
+        // TODO: Implement caching instead of creating new.
         return new Duration(numerator, denominator);
     }
     
@@ -224,7 +224,7 @@ public class Duration implements Comparable<Duration> {
         if(durations.size() == 1)
             return durations.get(0);
         
-        // TODO: Optimize this. Although if durations are cached there will not be object creations...
+        // TODO: Optimize this. 
         Duration cumulatedDur = durations.get(0);
         for(int i = 1; i < durations.size(); ++i) {
             cumulatedDur = cumulatedDur.add(durations.get(i));

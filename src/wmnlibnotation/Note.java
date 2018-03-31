@@ -97,7 +97,7 @@ public class Note implements Durational {
     }
     
     /**
-     * Get the articulations of this <code>Note</code> as a <code>List</code>.
+     * Get the articulations of this <code>Note</code> as a <code>Set</code>.
      * @return the articulations of this <code>Note</code>.
      */
     public Set<Articulation> getArticulations() {

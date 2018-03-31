@@ -16,6 +16,7 @@ public class Pitch implements Comparable<Pitch> {
     /**
      * The letter in a pitch name.
      */
+    // TODO: Add the number to the enum.
     public enum Base { C, D, E, F, G, A, B }
 
     /**
@@ -104,7 +105,7 @@ public class Pitch implements Comparable<Pitch> {
      */
     public int toInt() {
         int pitchAsInt;
-        
+        // TODO: Instead of using the switch statement, add number to enum.
         switch(this.pitchBase) {
             case C: pitchAsInt = 0;
                     break;

@@ -51,18 +51,28 @@ public class MultiStaffPart implements Part {
         return this.staves.keySet().size();
     }
     
+    @Override
     public int getMeasureCount() {
         return this.staves.get(this.getStaffNumbers().get(0)).getMeasureCount();
     }
     
+    @Override
     public int getFullMeasureCount() {
         return this.staves.get(this.getStaffNumbers().get(0)).getFullMeasureCount();
     }
     
+    /**
+     * Returns the <code>Staff</code> with the number.
+     * @param number number of staff.
+     * @return <code>Staff</code> associated with the number.
+     */
     public Staff getStaff(int number) {
         return this.staves.get(number);
     }
     
+    /**
+     * @return the numbers of the staves in the part.
+     */
     public List<Integer> getStaffNumbers() {
         return new ArrayList(this.staves.keySet());
     }
@@ -74,7 +84,13 @@ public class MultiStaffPart implements Part {
         else
             return "";
     }
-
+    
+    /**
+     * Returns the <code>Measure</code> from the staff.
+     * @param measureNumber the number of the measure.
+     * @param staffNumber number of staff.
+     * @return measure with measureNumber in staff associated with staffNumber.
+     */
     public Measure getMeasure(int measureNumber, int staffNumber) {
         return this.staves.get(staffNumber).getMeasure(measureNumber);
     }

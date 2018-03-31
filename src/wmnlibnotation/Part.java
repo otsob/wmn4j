@@ -43,7 +43,15 @@ public interface Part extends Iterable<Measure> {
      * Get the number of measures in the part.
      * The count is based on the measure numbers, so even if a part has multiple staves
      * its measure count is the largest measure number.
-     * @return number of measures in the part.
+     * @return number of measures in the part. 
+     * If there is a pickup measure, it is included in the count.
      */
     public int getMeasureCount();
+    
+    /**
+     * Get the number of complete measures.
+     * @return the number of measures excluding the pickup measure.
+     */
+    public int getFullMeasureCount();
+    
 }

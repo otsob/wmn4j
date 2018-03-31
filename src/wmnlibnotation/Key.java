@@ -5,36 +5,34 @@
  */
 package wmnlibnotation;
 
-import java.util.Objects;
-
 /**
- *
+ * Major and MINOR keys.
  * @author Otso Björklund
  */
 public enum Key {
-   C_major, 
-   Dflat_major,
-   D_major,
-   Eflat_major,
-   E_major,
-   F_major,
-   Fsharp_major,
-   G_major,
-   Aflat_major,
-   A_major,
-   Bflat_major,
-   B_major,
+   C_MAJOR, 
+   DFLAT_MAJOR,
+   D_MAJOR,
+   EFLAT_MAJOR,
+   E_MAJOR,
+   F_MAJOR,
+   FSHARP_MAJOR,
+   G_MAJOR,
+   AFLAT_MAJOR,
+   A_MAJOR,
+   BFLAT_MAJOR,
+   B_MAJOR,
     
-   C_minor, 
-   Csharp_minor,
-   D_minor,
-   Dsharp_minor,
-   E_minor,
-   F_minor,
-   Fsharp_minor,
-   G_minor,
-   Gsharp_minor,
-   A_minor,
-   Bflat_minor,
-   B_minor
+   C_MINOR, 
+   CSHARP_MINOR,
+   D_MINOR,
+   DSHARP_MINOR,
+   E_MINOR,
+   F_MINOR,
+   FSHARP_MINOR,
+   G_MINOR,
+   GSHARP_MINOR,
+   A_MINOR,
+   BFLAT_MINOR,
+   B_MINOR
 }

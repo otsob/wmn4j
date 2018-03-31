@@ -28,6 +28,10 @@ public class Score implements Iterable<Part> {
     private final Map<Attribute, String> scoreAttr;
     private final List<Part> parts;
     
+    /**
+     * @param attributes The attributes of the score.
+     * @param parts The parts in the score.
+     */
     public Score(Map<Attribute, String> attributes, List<Part> parts) {
         this.parts = Collections.unmodifiableList(new ArrayList(parts));
         this.scoreAttr = Collections.unmodifiableMap(new HashMap(attributes));

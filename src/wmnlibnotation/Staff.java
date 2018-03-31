@@ -25,6 +25,7 @@ public class Staff implements Iterable<Measure> {
      * @param measures the measures in the staff.
      */
     public Staff(List<Measure> measures) {
+        // TODO: Add constructor that allows setting staff type.
         this.type = Type.NORMAL;
         
         List<Measure> tmpMeasures = new ArrayList();

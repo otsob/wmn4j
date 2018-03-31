@@ -41,14 +41,17 @@ public class SingleStaffPart implements Part {
         this.partAttributes = Collections.unmodifiableMap(new HashMap(partAttributes));
     }
     
+    @Override
     public String getName() {
         return this.getPartAttribute(Attribute.NAME);
     }
     
+    @Override
     public boolean isMultiStaff() {
         return false;
     }
     
+    @Override
     public int getStaffCount() {
         return 1;
     }
@@ -85,6 +88,11 @@ public class SingleStaffPart implements Part {
     @Override
     public int getMeasureCount() {
         return this.staff.getMeasureCount();
+    }
+    
+    @Override
+    public int getFullMeasureCount() {
+        return this.staff.getFullMeasureCount();
     }
     
     @Override

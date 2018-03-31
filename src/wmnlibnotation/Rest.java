@@ -19,6 +19,7 @@ public class Rest implements Durational {
         if(duration == null)
             throw new NullPointerException();
         
+        // TODO: Use interner pattern for caching.
         return new Rest(duration);
     }
     

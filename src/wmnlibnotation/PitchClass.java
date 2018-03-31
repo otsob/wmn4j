@@ -6,25 +6,25 @@
 package wmnlibnotation;
 
 /**
- *
+ * Represents the 12 pitch classes in equal-temperament tuning.
  * @author Otso Björklund
  */
 public enum PitchClass {
     C(0), 
-    CSharpDFlat(1), 
+    CSHARP_DFLAT(1), 
     D(2), 
-    DSharpEFlat(3), 
+    DSHARP_EFLAT(3), 
     E(4), 
     F(5), 
-    FSharpGFlat(6), 
+    FSHARP_GFLAT(6), 
     G(7), 
-    GSharpAFlat(8), 
+    GSHARP_AFLAT(8), 
     A(9), 
-    ASharpBFlat(10), 
+    ASHARP_BFLAT(10), 
     B(11);
     
     static private final PitchClass pcs[]
-            = {C, CSharpDFlat, D, DSharpEFlat, E, F, FSharpGFlat, G, GSharpAFlat, A, ASharpBFlat, B};
+            = {C, CSHARP_DFLAT, D, DSHARP_EFLAT, E, F, FSHARP_GFLAT, G, GSHARP_AFLAT, A, ASHARP_BFLAT, B};
     
     private final int number;
     
@@ -32,10 +32,18 @@ public enum PitchClass {
         this.number = number;
     }
     
+    /**
+     * @return the <a href="http://en.wikipedia.org/wiki/Pitch_class">pitch class number</a> of this pitch class.
+     */
     public int toInt() {
         return this.number;
     }
     
+    /**
+     * Computes the pitch class from the pitch number.
+     * @param pitchNumber The MIDI number of the pitch.
+     * @return pitch class corresponding to the pitchNumber.
+     */
     public static PitchClass fromInt(int pitchNumber) {
         if(pitchNumber < 0)
             throw new IllegalArgumentException("pitchNumber must be non-negative.");

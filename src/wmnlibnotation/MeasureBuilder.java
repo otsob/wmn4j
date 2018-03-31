@@ -27,11 +27,11 @@ import java.util.Map;
 public class MeasureBuilder {
    
     private int number;
-    // Todo: keep track of layer durations in some way to make checking if measure is full faster.
+    // TODO: Keep track of layer durations in some way to make checking if measure is full faster.
     private final Map<Integer, List<Durational>> layers;
     
     private TimeSignature timeSig = TimeSignatures.FOUR_FOUR;
-    private KeySignature keySig = KeySignatures.CMaj_Amin;
+    private KeySignature keySig = KeySignatures.CMAJ_AMIN;
     private Clef clef = Clefs.G;
     private Barline leftBarline = Barline.NONE;
     private Barline rightBarline = Barline.SINGLE;
@@ -267,6 +267,8 @@ public class MeasureBuilder {
     public Measure build() {
         MeasureAttributes measureAttr
                 = MeasureAttributes.getMeasureAttr(this.timeSig, this.keySig, this.rightBarline, this.leftBarline, this.clef, this.clefChanges);
+        
+        // TODO: Check that layers are full. If not, pad them with rests.
         
         return new Measure(this.number, this.layers, measureAttr);
     }

@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Class containing the attributes of measures that typically remain unchanged.
+ * Class containing the attributes of measures that typically remain unchanged
+ * from one measure to the next.
  * @author Otso Björklund
  */
 public class MeasureAttributes {
@@ -41,7 +42,7 @@ public class MeasureAttributes {
                                                    Barline leftBarline, 
                                                    Clef clef,
                                                    Map<Duration, Clef> clefChanges) {
-        // Todo: This should definitely use caching.
+        // TODO: Potentially use interner pattern or similar for caching.
         return new MeasureAttributes(timeSig, keySig, rightBarline, leftBarline, clef, clefChanges);
     }
     

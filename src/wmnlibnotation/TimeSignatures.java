@@ -18,5 +18,8 @@ public class TimeSignatures {
     public static final TimeSignature THREE_EIGHT = TimeSignature.getTimeSignature(3, 8);
     public static final TimeSignature SIX_EIGHT = TimeSignature.getTimeSignature(6, 8);
     
-    private TimeSignatures() {}
+    private TimeSignatures() {
+        // Not meant to be instantiated.
+        throw new AssertionError();
+    }
 }
