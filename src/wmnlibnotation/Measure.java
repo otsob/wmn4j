@@ -166,6 +166,25 @@ public class Measure implements Iterable<Durational> {
     }
     
     /**
+     * Returns the <code>Durational</code> at the given index on the given layer
+     * number.
+     * @param layerNumber Number of the layer from which to get the element.
+     * @param index index of element on the layer.
+     * @return <code>Durational</code> at the given index on the given layer.
+     * @throws NoSuchElementException 
+     */
+    public Durational get(int layerNumber, int index) throws NoSuchElementException {
+        if(!this.layers.keySet().contains(layerNumber))
+            throw new NoSuchElementException();
+        
+        List<Durational> layer = this.layers.get(layerNumber);
+        if(index < 0 || index >= layer.size())
+            throw new NoSuchElementException();
+        
+        return layer.get(index);
+    }
+    
+    /**
      * String representation of <code>Measure</code>.
      * This is subject to change.
      * @return string representation of measure.
@@ -190,57 +209,90 @@ public class Measure implements Iterable<Durational> {
     }
 
     /**
-     * Iterator for <code>Durational</code> objects in this <code>Measure</code>.
+     * @return iterator that goes through the Measure layer wise.
+     */
+    @Override
+    public Iterator<Durational> iterator() {
+        return this.getMeasureIterator();
+    }
+    
+    /**
+     * Get an iterator as <code>Measure.Iter</code>.
+     * @return an iterator of type <code>Measure.Iter</code>.
+     */
+    public Measure.Iter getMeasureIterator() {
+        return new Iter(this);
+    }
+    
+    /**
+     * Iterator for <code>Durational</code> objects in a <code>Measure</code>.
      * The iterator iterates through the notes in the Measure layer by layer
      * going from the earliest Durational in the layer to the last on each layer.
      * The order of layers is unspecified.
      * The iterator does not support removing.
-     * @return iterator that goes through the Measure layerwise.
      */
-    @Override
-    public Iterator<Durational> iterator() {
-        class LayerWiseIterator implements Iterator<Durational> {
-            private List<Integer> layerNumbers = Measure.this.getLayerNumbers();
-            private int layerNumberIndex = 0;
-            private int positionInLayer = 0;
-            
-            @Override
-            public boolean hasNext() {
-                if(layerNumberIndex >= this.layerNumbers.size())
-                    return false;
-                
-                int layerNumber = this.layerNumbers.get(this.layerNumberIndex);
-                if(Measure.this.layers.get(layerNumber).isEmpty())
-                    return false;
-                
-                return true;
-            }
+    public static class Iter implements Iterator<Durational> {
+        private final List<Integer> layerNumbers;
+        private final Measure measure;
+        private int layerNumberIndex = 0;
+        private int positionInLayer = 0;
+        private int prevLayerNumber = 0;
+        private int prevPositionInLayer = 0;
 
-            @Override
-            public Durational next() {
-                Durational next = null;
-                
-                if(this.hasNext()) {
-                    List<Durational> currentLayer = Measure.this.layers.get(this.layerNumbers.get(this.layerNumberIndex));
-                    next = currentLayer.get(this.positionInLayer);
-                    ++this.positionInLayer;
-                    if(this.positionInLayer == currentLayer.size()) {
-                        ++this.layerNumberIndex;
-                        this.positionInLayer = 0;
-                    }
-                }
-                else
-                    throw new NoSuchElementException();
-                
-                return next;
+        public Iter(Measure measure) {
+            this.measure = measure;
+            this.layerNumbers = measure.getLayerNumbers();
+        }
+
+        /**
+         * @return The layer of the <code>Durational</code> that was returned
+         * by the last call of {@link #next() next}. If next has not been called,
+         * return value is useless.
+         */
+        public int getLayerOfPrevious() {
+            return this.prevLayerNumber;
+        }
+
+        /**
+         * @return The index of the <code>Durational</code> that was returned
+         * by the last call of {@link #next() next}. If next has not been called,
+         * return value is useless.
+         */
+        public int getIndexOfPrevious() {
+            return this.prevPositionInLayer;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if(layerNumberIndex >= this.layerNumbers.size())
+                return false;
+
+            int layerNumber = this.layerNumbers.get(this.layerNumberIndex);
+            return !this.measure.getLayer(layerNumber).isEmpty();
+        }
+
+        @Override
+        public Durational next() {
+            if(!this.hasNext())
+                throw new NoSuchElementException();
+            
+            this.prevLayerNumber = this.layerNumbers.get(this.layerNumberIndex);
+            List<Durational> currentLayer = this.measure.getLayer(this.prevLayerNumber);
+            this.prevPositionInLayer = this.positionInLayer;
+            Durational next = currentLayer.get(this.prevPositionInLayer);
+            
+            ++this.positionInLayer;
+            if(this.positionInLayer == currentLayer.size()) {
+                ++this.layerNumberIndex;
+                this.positionInLayer = 0;
             }
             
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("Removing not supported.");
-            }
+            return next;
         }
-        
-        return new LayerWiseIterator();
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Removing not supported.");
+        }
     }
 }

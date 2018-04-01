@@ -1,6 +1,3 @@
-/*
- * DOM parser for MusicXML.
- */
 package wmnlibio.musicxml;
 
 import java.io.File;
@@ -36,14 +33,14 @@ import wmnlibnotation.ScoreBuilder;
 import wmnlibnotation.TimeSignature;
 
 /**
- *
+ * A parser for MusicXML files. Creates a <code>Score</code>.
  * @author Otso Björklund
  */
 public class MusicXmlDomReader implements MusicXmlReader {
     
     private DocumentBuilder docBuilder;
     
-    // Todo: make parses configurable
+    // TODO: make parses configurable
     // -Validation
     // -scorewise/partwise
     public MusicXmlDomReader() {
@@ -58,7 +55,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
     
     private void configure() throws ParserConfigurationException {
         
-        // Todo: make parser configurable
+        // TODO: make parser configurable
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setValidating(false);
         dbf.setNamespaceAware(true);
@@ -423,23 +420,23 @@ public class MusicXmlDomReader implements MusicXmlReader {
      */
     private KeySignature keyFromAlterations(int alterations) {
         switch(alterations) {    
-            case 0: return KeySignatures.CMaj_Amin;
-            case 1: return KeySignatures.GMaj_Emin;
-            case 2: return KeySignatures.DMaj_Bmin;
-            case 3: return KeySignatures.AMaj_FSharpMin;
-            case 4: return KeySignatures.EMaj_CSharpMin;
-            case 5: return KeySignatures.BMaj_GSharpMin;
-            case 6: return KeySignatures.FSharpMaj_DSharpMin;
+            case 0: return KeySignatures.CMAJ_AMIN;
+            case 1: return KeySignatures.GMAJ_EMIN;
+            case 2: return KeySignatures.DMAJ_BMIN;
+            case 3: return KeySignatures.AMAJ_FSHARPMIN;
+            case 4: return KeySignatures.EMAJ_CSHARPMIN;
+            case 5: return KeySignatures.BMAJ_GSHARPMIN;
+            case 6: return KeySignatures.FSHARPMAJ_DSHARPMIN;
     
-            case -1: return KeySignatures.FMaj_Dmin;
-            case -2: return KeySignatures.BFlatMaj_Gmin;
-            case -3: return KeySignatures.EFlatMaj_Cmin;
-            case -4: return KeySignatures.AFlatMaj_Fmin;
-            case -5: return KeySignatures.DFlatMaj_BFlatMin;
-            case -6: return KeySignatures.GFlatMaj_EFlatMin;
+            case -1: return KeySignatures.FMAJ_DMIN;
+            case -2: return KeySignatures.BFLATMAJ_GMIN;
+            case -3: return KeySignatures.EFLATMAJ_CMIN;
+            case -4: return KeySignatures.AFLATMAJ_FMIN;
+            case -5: return KeySignatures.DFLATMAJ_BFLATMIN;
+            case -6: return KeySignatures.GFLATMAJ_EFLATMIN;
         }
         
-        return KeySignatures.CMaj_Amin;
+        return KeySignatures.CMAJ_AMIN;
     }
     
     /**

@@ -35,7 +35,7 @@ public class PitchTest {
     @Test
     public void testGetPitchClass() {
         assertEquals(PitchClass.C, Pitch.getPitch(Pitch.Base.C, 0, 5).getPitchClass());
-        assertEquals(PitchClass.GSharpAFlat, Pitch.getPitch(Pitch.Base.A, -1, 3).getPitchClass());
+        assertEquals(PitchClass.GSHARP_AFLAT, Pitch.getPitch(Pitch.Base.A, -1, 3).getPitchClass());
         assertEquals(PitchClass.B, Pitch.getPitch(Pitch.Base.B, 0, 2).getPitchClass());
     }
     

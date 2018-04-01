@@ -5,6 +5,9 @@
  */
 package wmnlibnotation;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * Interface for parts in a score.
  * The class <code>PartBuilder</code> can be used for constructing <code>Part</code> objects.
@@ -54,4 +57,35 @@ public interface Part extends Iterable<Measure> {
      */
     public int getFullMeasureCount();
     
+    /**
+     * Returns the measure with the staff and measure number.
+     * @param staffNumber Number of staff. Is not used when accessing a single 
+     * staff part.
+     * @param measureNumber the number of the measure.
+     * @return the measure with measureNumber from the staff with staffNumber.
+     */
+    public Measure getMeasure(int staffNumber, int measureNumber) throws NoSuchElementException;
+    
+    /**
+     * @return An iterator that implements the Part.Iter interface.
+     */
+    public Part.Iter getPartIterator();
+    
+    /**
+     * Interface for Part Iterators.
+     */
+    public interface Iter extends Iterator<Measure> {
+        
+        /**
+         * @return The number of the <code>Staff</code> from which the 
+         * <code>Measure</code> on the previous call of next was returned.
+         */
+        public int getStaffNumberOfPrevious();
+        
+        /**
+         * @return The number of the 
+         * <code>Measure</code> that was returned by the previous call of next.
+         */
+        public int getMeasureNumberOfPrevious();
+    }
 }

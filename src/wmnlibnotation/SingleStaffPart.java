@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Class for representing a part consisting of a single staff in a score.
@@ -18,6 +19,7 @@ import java.util.Map;
  */
 public class SingleStaffPart implements Part {
     
+    public static final int STAFF_NUMBER = 1;
     private final Map<Part.Attribute, String> partAttributes;
     private final Staff staff;
     
@@ -65,6 +67,11 @@ public class SingleStaffPart implements Part {
         return this.staff.getMeasure(number);
     }
     
+    @Override
+    public Measure getMeasure(int staffNumber, int measureNumber) {
+        return this.getMeasure(measureNumber);
+    }
+    
     /**
      * @return the only staff in this part.
      */
@@ -73,8 +80,13 @@ public class SingleStaffPart implements Part {
     }
 
     @Override
+    public Part.Iter getPartIterator() {
+        return new SingleStaffPart.Iter(this);
+    }
+    
+    @Override
     public Iterator<Measure> iterator() {
-        return this.staff.iterator();
+        return this.getPartIterator();
     }
 
     @Override
@@ -107,5 +119,50 @@ public class SingleStaffPart implements Part {
             builder.append("\n").append(m.toString());
         
         return builder.toString();
+    }
+    
+    /**
+     * Iterator for <code>SingleStaffPart</code>.
+     * Iterates through measures starting from smallest measure number.
+     * Does not support removing.
+     */
+    public static class Iter implements Part.Iter {
+
+        private final Iterator<Measure> staffIterator;
+        private int prevMeasureNumber = 0;
+        
+        public Iter(SingleStaffPart part) {
+            this.staffIterator = part.getStaff().iterator();
+        }
+        
+        @Override
+        public int getStaffNumberOfPrevious() {
+            return SingleStaffPart.STAFF_NUMBER;
+        }
+
+        @Override
+        public int getMeasureNumberOfPrevious() {
+            return this.prevMeasureNumber;
+        }
+        
+        @Override
+        public boolean hasNext() {
+            return this.staffIterator.hasNext();
+        }
+
+        @Override
+        public Measure next() {
+            if(!this.hasNext())
+                throw new NoSuchElementException();
+            
+            Measure next = this.staffIterator.next();
+            this.prevMeasureNumber = next.getNumber();
+            return next;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Removing is not supported.");
+        }    
     }
 }

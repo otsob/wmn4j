@@ -19,7 +19,7 @@ public class TestHelper {
     private static Map<Integer, List<Durational>> singleNoteLayer = new HashMap();
     private static Map<Integer, List<Durational>> multipleNoteLayers = new HashMap();
     
-    private static KeySignature keySig = KeySignatures.CMaj_Amin;
+    private static KeySignature keySig = KeySignatures.CMAJ_AMIN;
     
     private static Note C4 = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF);
     private static Note E4 = Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF);

@@ -36,7 +36,7 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
         
         profile.normalize();
         
-        Key bestKey = Key.C_major;
+        Key bestKey = Key.C_MAJOR;
         double maxCorrelation = -2.0;
         
         for(Key key : this.keyProfiles.keySet()) {

@@ -30,11 +30,11 @@ public class MeasureAttributesTest {
     @Test
     public void testGetMeasureInfo() {
         MeasureAttributes attr 
-                = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMaj_Amin, Barline.SINGLE, Barline.SINGLE, Clefs.G);
+                = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Barline.SINGLE, Barline.SINGLE, Clefs.G);
      
         assertFalse(attr == null);
         assertEquals(TimeSignatures.FOUR_FOUR, attr.getTimeSignature());
-        assertEquals(KeySignatures.CMaj_Amin, attr.getKeySignature());
+        assertEquals(KeySignatures.CMAJ_AMIN, attr.getKeySignature());
         assertEquals(Barline.SINGLE, attr.getRightBarline());
         assertEquals(Barline.SINGLE, attr.getLeftBarline());
         assertEquals(Clefs.G, attr.getClef());
@@ -45,7 +45,7 @@ public class MeasureAttributesTest {
         
         try {
             MeasureAttributes attr 
-                = MeasureAttributes.getMeasureAttr(null, KeySignatures.CMaj_Amin, Barline.SINGLE, Barline.SINGLE, Clefs.G);
+                = MeasureAttributes.getMeasureAttr(null, KeySignatures.CMAJ_AMIN, Barline.SINGLE, Barline.SINGLE, Clefs.G);
      
             fail("Did not throw exception with null TimeSignature");
         } 
@@ -65,7 +65,7 @@ public class MeasureAttributesTest {
         
         try {
             MeasureAttributes attr 
-                = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMaj_Amin, null, Barline.SINGLE, Clefs.G);
+                = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, null, Barline.SINGLE, Clefs.G);
      
             fail("Did not throw exception with null right barline");
         } 
@@ -75,7 +75,7 @@ public class MeasureAttributesTest {
     
         try {
             MeasureAttributes attr 
-                = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMaj_Amin, Barline.SINGLE, Barline.SINGLE, null);
+                = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Barline.SINGLE, Barline.SINGLE, null);
      
             fail("Did not throw exception with null Clef");
         } 
@@ -87,14 +87,14 @@ public class MeasureAttributesTest {
     @Test
     public void testEquals() {
         MeasureAttributes attr 
-                = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMaj_Amin, Barline.SINGLE, Barline.SINGLE, Clefs.G);
+                = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Barline.SINGLE, Barline.SINGLE, Clefs.G);
         
         MeasureAttributes other 
-                = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMaj_Amin, Barline.SINGLE, Barline.SINGLE, Clefs.G);
+                = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Barline.SINGLE, Barline.SINGLE, Clefs.G);
      
         
         MeasureAttributes different 
-                = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMaj_Amin, Barline.SINGLE, Barline.DOUBLE, Clefs.G);
+                = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Barline.SINGLE, Barline.DOUBLE, Clefs.G);
      
         assertTrue(attr.equals(attr));
         assertTrue(attr.equals(other));

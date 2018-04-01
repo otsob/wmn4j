@@ -85,77 +85,19 @@ public class MultiStaffPart implements Part {
             return "";
     }
     
-    /**
-     * Returns the <code>Measure</code> from the staff.
-     * @param measureNumber the number of the measure.
-     * @param staffNumber number of staff.
-     * @return measure with measureNumber in staff associated with staffNumber.
-     */
-    public Measure getMeasure(int measureNumber, int staffNumber) {
+    @Override
+    public Measure getMeasure(int staffNumber, int measureNumber) {
         return this.staves.get(staffNumber).getMeasure(measureNumber);
     }
+
+    @Override
+    public Part.Iter getPartIterator() {
+        return new MultiStaffPart.Iter(this);
+    }
     
-    /**
-     * Iterates through the measures by going through all staves for a certain 
-     * measure number before going on to the next measure. 
-     * Staves are iterated through from smallest staff number to greatest.
-     * Does not support removing.
-     * @return iterator.
-     */
     @Override
     public Iterator<Measure> iterator() {
-        class MultiStaffIterator implements Iterator<Measure> {
-
-            private int keyIndex;
-            private List<Integer> keys;
-            private int measureNumber;
-            
-            
-            public MultiStaffIterator() {
-                this.keyIndex = 0;
-                this.keys = MultiStaffPart.this.getStaffNumbers();
-                this.measureNumber = 1;
-                
-                // If there is a pickup measure start from measure 0.
-                if(MultiStaffPart.this.staves.get(this.keys.get(0)).hasPickupMeasure())
-                    this.measureNumber = 0;
-            }
-            
-            @Override
-            public boolean hasNext() {
-                if(this.measureNumber > MultiStaffPart.this.getFullMeasureCount())
-                    return false;
-                
-                return true;
-            }
-
-            @Override
-            public Measure next() {
-                Measure measure = null;
-                
-                if(this.hasNext()) {
-                    int key = this.keys.get(keyIndex);
-                    measure = MultiStaffPart.this.staves.get(key).getMeasure(measureNumber);
-                    
-                    ++keyIndex;
-                    if(keyIndex == this.keys.size()) {
-                        keyIndex = 0;
-                        ++this.measureNumber;
-                    }
-                }
-                else
-                    throw new NoSuchElementException();
-                
-                return measure;
-            }
-            
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("Removing not supported.");
-            }
-        }
-        
-        return new MultiStaffIterator();
+        return this.getPartIterator();
     }
 
     @Override
@@ -170,6 +112,74 @@ public class MultiStaffPart implements Part {
             builder.append("\n").append(m.toString());
         
         return builder.toString();
+    }
+    
+    /**
+     * Iterator for <code>MultiStaffPart</code>
+     * Iterates through the measures by going through all staves for a certain 
+     * measure number before going on to the next measure. 
+     * Staves are iterated through from smallest staff number to greatest.
+     * Does not support removing.
+     */
+    public static class Iter implements Part.Iter {
+        private final MultiStaffPart part;
+        private int keyIndex;
+        private final List<Integer> keys;
+        private int measureNumber;
+        private int prevStaffNumber = 0;
+        private int prevMeasureNumber = 0;
+
+        public Iter(MultiStaffPart part) {
+            this.part = part;
+            this.keyIndex = 0;
+            this.keys = this.part.getStaffNumbers();
+            this.measureNumber = 1;
+
+            // If there is a pickup measure start from measure 0.
+            if(this.part.staves.get(this.keys.get(0)).hasPickupMeasure())
+                this.measureNumber = 0;
+        }
+        
+        @Override
+        public int getStaffNumberOfPrevious() {
+            return this.prevStaffNumber;
+        }
+        
+        @Override
+        public int getMeasureNumberOfPrevious() {
+            return this.prevMeasureNumber;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.measureNumber <= this.part.getFullMeasureCount();
+        }
+
+        @Override
+        public Measure next() {
+            Measure measure = null;
+
+            if(this.hasNext()) {
+                this.prevStaffNumber = this.keys.get(keyIndex);
+                this.prevMeasureNumber = this.measureNumber;
+                measure = this.part.staves.get(this.prevStaffNumber).getMeasure(this.prevMeasureNumber);
+
+                ++keyIndex;
+                if(keyIndex == this.keys.size()) {
+                    keyIndex = 0;
+                    ++this.measureNumber;
+                }
+            }
+            else
+                throw new NoSuchElementException();
+
+            return measure;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Removing not supported.");
+        }
     }
 }
 

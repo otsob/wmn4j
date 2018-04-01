@@ -23,7 +23,7 @@ public class SingleStaffPartTest {
     final List<Measure> measures;
     final int measureCount = 5;
     
-    KeySignature keySig = KeySignatures.CMaj_Amin;
+    KeySignature keySig = KeySignatures.CMAJ_AMIN;
     
     Note C4 = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF);
     Note E4 = Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF);

@@ -22,7 +22,7 @@ public class MeasureTest {
     Map<Integer, List<Durational>> singleNoteLayer = new HashMap();
     Map<Integer, List<Durational>> multipleNoteLayers = new HashMap();
     
-    KeySignature keySig = KeySignatures.CMaj_Amin;
+    KeySignature keySig = KeySignatures.CMAJ_AMIN;
     
     Note C4 = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF);
     Note E4 = Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF);

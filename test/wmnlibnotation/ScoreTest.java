@@ -10,8 +10,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import wmnlibio.musicxml.MusicXmlDomReader;
 
 /**
  *
@@ -102,4 +104,50 @@ public class ScoreTest {
         }
     }
     
+    @Test
+    public void testGetAtPositionLimits() {
+        MusicXmlDomReader reader = new MusicXmlDomReader();
+        Score score = null;
+        try {
+            score = reader.readScore("test/testfiles/musicxml/scoreIteratorTesting.xml");
+        } 
+        catch(Exception e) {
+            System.out.println(e);
+            fail("Failed to read score");
+        }
+        
+        try {
+            score.getAtPosition(new ScorePosition(0, 1, 1, 5, 0));
+            fail("Did not throw exception");
+        } 
+        catch (Exception e) {
+            assertTrue("Exception: " + e, e instanceof NoSuchElementException);
+        }
+        
+        // Test first note.
+        assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER), score.getAtPosition(new ScorePosition(0, 1, 1, 1, 0)));
+        
+        // Test last note.
+        assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 3), Durations.WHOLE), score.getAtPosition(new ScorePosition(1, 2, 3, 2, 0)));
+    }
+    
+    @Test
+    public void testIteratorAndGetAtPosition() {
+        MusicXmlDomReader reader = new MusicXmlDomReader();
+        Score score = null;
+        try {
+            score = reader.readScore("test/testfiles/musicxml/scoreIteratorTesting.xml");
+        } 
+        catch(Exception e) {
+            System.out.println(e);
+            fail("Failed to read score");
+        }
+        
+        ScoreIterator iterator = new PartWiseScoreIterator(score);
+        while(iterator.hasNext()) {
+            Durational elem = iterator.next();
+            ScorePosition position = iterator.positionOfPrevious();
+            assertEquals(elem, score.getAtPosition(position));
+        }
+    }
 }

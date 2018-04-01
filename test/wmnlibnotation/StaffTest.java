@@ -40,8 +40,8 @@ public class StaffTest {
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-        measures.add(new Measure(1, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
-        measures.add(new Measure(2, notes, timeSig, KeySignatures.CMaj_Amin, Clefs.G));
+        measures.add(new Measure(1, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
+        measures.add(new Measure(2, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
         return measures;
     }
     
@@ -66,7 +66,7 @@ public class StaffTest {
         layer.add(Rest.getRest(Durations.WHOLE));
         Map<Integer, List<Durational>> notes = new HashMap();
         notes.put(1, layer);
-        origMeasures.add(new Measure(3, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMaj_Amin, Clefs.G));
+        origMeasures.add(new Measure(3, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
         assertEquals(sizeBeforeAddition, staff.getMeasures().size());
     }
     
@@ -122,7 +122,7 @@ public class StaffTest {
         layer.add(Rest.getRest(Durations.WHOLE));
         Map<Integer, List<Durational>> notes = new HashMap();
         notes.put(1, layer);
-        measures.add(new Measure(0, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMaj_Amin, Clefs.G));
+        measures.add(new Measure(0, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
         measures.addAll(getTestMeasures());
         
         Staff staff = new Staff(measures);

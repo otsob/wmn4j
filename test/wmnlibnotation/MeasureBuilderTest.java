@@ -32,7 +32,7 @@ public class MeasureBuilderTest {
     @Test
     public void testBuildMeasureBySettingParameters() {
         MeasureBuilder builder = new MeasureBuilder(1);
-        builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.DFlatMaj_BFlatMin);
+        builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.DFLATMAJ_BFLATMIN);
         builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
         
         builder.addLayer();
@@ -45,7 +45,7 @@ public class MeasureBuilderTest {
         assertTrue(measure != null);
         assertEquals(Barline.DOUBLE, measure.getRightBarline());
         assertEquals(Clefs.F, measure.getClef());
-        assertEquals(KeySignatures.DFlatMaj_BFlatMin, measure.getKeySignature());
+        assertEquals(KeySignatures.DFLATMAJ_BFLATMIN, measure.getKeySignature());
         assertEquals(TimeSignatures.SIX_EIGHT, measure.getTimeSignature());
         assertEquals(1, measure.getNumber());
         
@@ -58,7 +58,7 @@ public class MeasureBuilderTest {
     
     @Test
     public void testBuildMeasureWithGivenAttributes() {
-        MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.SIX_EIGHT, KeySignatures.DFlatMaj_BFlatMin, Barline.DOUBLE, Clefs.F);
+        MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.SIX_EIGHT, KeySignatures.DFLATMAJ_BFLATMIN, Barline.DOUBLE, Clefs.F);
         MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
         
         builder.addLayer();
@@ -71,7 +71,7 @@ public class MeasureBuilderTest {
         assertTrue(measure != null);
         assertEquals(Barline.DOUBLE, measure.getRightBarline());
         assertEquals(Clefs.F, measure.getClef());
-        assertEquals(KeySignatures.DFlatMaj_BFlatMin, measure.getKeySignature());
+        assertEquals(KeySignatures.DFLATMAJ_BFLATMIN, measure.getKeySignature());
         assertEquals(TimeSignatures.SIX_EIGHT, measure.getTimeSignature());
         assertEquals(1, measure.getNumber());
         
@@ -84,10 +84,10 @@ public class MeasureBuilderTest {
         
     @Test
     public void testSetParametersUsedOverMeasureAttributes() {
-        MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.THREE_EIGHT, KeySignatures.AMaj_FSharpMin, Barline.REPEAT_RIGHT, Clefs.ALTO);
+        MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.THREE_EIGHT, KeySignatures.AMAJ_FSHARPMIN, Barline.REPEAT_RIGHT, Clefs.ALTO);
         MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
         
-        builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.DFlatMaj_BFlatMin);
+        builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.DFLATMAJ_BFLATMIN);
         builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
        
         builder.addLayer();
@@ -100,7 +100,7 @@ public class MeasureBuilderTest {
         assertTrue(measure != null);
         assertEquals(Barline.DOUBLE, measure.getRightBarline());
         assertEquals(Clefs.F, measure.getClef());
-        assertEquals(KeySignatures.DFlatMaj_BFlatMin, measure.getKeySignature());
+        assertEquals(KeySignatures.DFLATMAJ_BFLATMIN, measure.getKeySignature());
         assertEquals(TimeSignatures.SIX_EIGHT, measure.getTimeSignature());
         assertEquals(1, measure.getNumber());
         
@@ -114,7 +114,7 @@ public class MeasureBuilderTest {
     @Test
     public void testAdditionOfLayers() { 
         MeasureBuilder builder = new MeasureBuilder(1);
-        builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.DFlatMaj_BFlatMin);
+        builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.DFLATMAJ_BFLATMIN);
         builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
         
         builder.addToLayer(1, Rest.getRest(Durations.EIGHT));
@@ -143,7 +143,7 @@ public class MeasureBuilderTest {
         assertTrue("Layer 0 is not full when 4 quarter durations added to 4/4", builder.isLayerFull(0));
         
         builder = new MeasureBuilder(1);
-        builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.CMaj_Amin);
+        builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.CMAJ_AMIN);
         
         builder.addToLayer(0, Rest.getRest(Durations.QUARTER.addDot()))
                .addToLayer(0, Rest.getRest(Durations.QUARTER))

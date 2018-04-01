@@ -22,7 +22,7 @@ public class PartBuilderTest {
     private final Map<Integer, List<Durational>> measureContents;
     private final MeasureAttributes measureAttr;
     
-    KeySignature keySig = KeySignatures.CMaj_Amin;
+    KeySignature keySig = KeySignatures.CMAJ_AMIN;
     
     Note C4 = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF);
     Note E4 = Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF);
@@ -44,7 +44,7 @@ public class PartBuilderTest {
         noteLayers.get(1).add(Rest.getRest(Durations.QUARTER));
     
         this.measureContents = Collections.unmodifiableMap(noteLayers);
-        this.measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMaj_Amin, Barline.SINGLE, Clefs.G);
+        this.measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Barline.SINGLE, Clefs.G);
     }
 
     @Test

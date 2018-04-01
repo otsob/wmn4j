@@ -33,7 +33,7 @@ public class KeySignatureTest {
     public void testGetKeySigExceptions() {
         try {
             List<Pitch.Base> sharps = Arrays.asList(Pitch.Base.C);
-            KeySignature illegalCustomKeySig = KeySignature.getKeySig(sharps, sharps);
+            KeySignature illegalCustomKeySig = new KeySignature(sharps, sharps);
             fail("A KeySignature with the same note as sharp and flat was created without exception.");
         } catch (Exception e) {
             assertTrue("Exception was of incorrect type.", e instanceof IllegalArgumentException);
@@ -42,27 +42,27 @@ public class KeySignatureTest {
  
     @Test
     public void testGetNumSharps() {
-        assertEquals(0, KeySignatures.CMaj_Amin.getNumSharps());
-        assertEquals(1, KeySignatures.GMaj_Emin.getNumSharps());
-        assertEquals(2, KeySignatures.DMaj_Bmin.getNumSharps());
+        assertEquals(0, KeySignatures.CMAJ_AMIN.getNumSharps());
+        assertEquals(1, KeySignatures.GMAJ_EMIN.getNumSharps());
+        assertEquals(2, KeySignatures.DMAJ_BMIN.getNumSharps());
     }
     
     @Test
     public void testGetNumFlats() {
-        assertEquals(0, KeySignatures.CMaj_Amin.getNumFlats());
-        assertEquals(4, KeySignatures.AFlatMaj_Fmin.getNumFlats());
+        assertEquals(0, KeySignatures.CMAJ_AMIN.getNumFlats());
+        assertEquals(4, KeySignatures.AFLATMAJ_FMIN.getNumFlats());
     }
 
     @Test
     public void testEquals() {
-        assertTrue(KeySignatures.CMaj_Amin.equals(KeySignatures.CMaj_Amin));
-        assertTrue(KeySignatures.EMaj_CSharpMin.equals(KeySignatures.EMaj_CSharpMin));
-        assertTrue(KeySignatures.EFlatMaj_Cmin.equals(KeySignatures.EFlatMaj_Cmin));
+        assertTrue(KeySignatures.CMAJ_AMIN.equals(KeySignatures.CMAJ_AMIN));
+        assertTrue(KeySignatures.EMAJ_CSHARPMIN.equals(KeySignatures.EMAJ_CSHARPMIN));
+        assertTrue(KeySignatures.EFLATMAJ_CMIN.equals(KeySignatures.EFLATMAJ_CMIN));
         
-        KeySignature customSig = KeySignature.getKeySig(Arrays.asList(Pitch.Base.C),  Arrays.asList(Pitch.Base.B));
-        assertTrue(customSig.equals(KeySignature.getKeySig(Arrays.asList(Pitch.Base.C),  Arrays.asList(Pitch.Base.B))));
+        KeySignature customSig = new KeySignature(Arrays.asList(Pitch.Base.C),  Arrays.asList(Pitch.Base.B));
+        assertTrue(customSig.equals(new KeySignature(Arrays.asList(Pitch.Base.C),  Arrays.asList(Pitch.Base.B))));
         
-        assertFalse(KeySignatures.CMaj_Amin.equals(KeySignatures.FMaj_Dmin));
+        assertFalse(KeySignatures.CMAJ_AMIN.equals(KeySignatures.FMAJ_DMIN));
     }
     
 }

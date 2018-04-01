@@ -3,12 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package wmnlibanalysis;
+package wmnlibanalysis.harmony;
 
-import wmnlibanalysis.harmony.DurationWeighter;
-import wmnlibanalysis.harmony.PCProfile;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import wmnlibnotation.Durations;
@@ -52,9 +48,9 @@ public class PCProfileTest {
         PCProfile profile = new PCProfile();
         profile.add(C4);
         assertEquals("Incorrect value for C", 1.0, profile.getValue(PitchClass.C), EPS);
-        assertEquals("Incorrect value for Csharp", 0.0, profile.getValue(PitchClass.CSharpDFlat), EPS);
+        assertEquals("Incorrect value for Csharp", 0.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
         profile.add(Csharp4);
-        assertEquals("Incorrect value for Csharp", 1.0, profile.getValue(PitchClass.CSharpDFlat), EPS);
+        assertEquals("Incorrect value for Csharp", 1.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
     }
     
     @Test
@@ -62,9 +58,9 @@ public class PCProfileTest {
         PCProfile profile = new PCProfile(DurationWeighter.getInstance());
         profile.add(C4);
         assertEquals("Incorrect value for C", 0.25, profile.getValue(PitchClass.C), EPS);
-        assertEquals("Incorrect value for Csharp", 0.0, profile.getValue(PitchClass.CSharpDFlat), EPS);
+        assertEquals("Incorrect value for Csharp", 0.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
         profile.add(Csharp4);
-        assertEquals("Incorrect value for Csharp", 1.0/16.0, profile.getValue(PitchClass.CSharpDFlat), EPS);
+        assertEquals("Incorrect value for Csharp", 1.0/16.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
         profile.add(C4);
         assertEquals("Incorrect value for C", 0.5, profile.getValue(PitchClass.C), EPS);
     }
@@ -88,13 +84,13 @@ public class PCProfileTest {
         
         assertEquals("Incorrect value for C before normalization", C4Count, profile.getValue(PitchClass.C), EPS);
         assertEquals("Incorrect value for G before normalization", G4Count, profile.getValue(PitchClass.G), EPS);
-        assertEquals("Incorrect value for C sharp before normalization", CsharpCount, profile.getValue(PitchClass.CSharpDFlat), EPS);
+        assertEquals("Incorrect value for C sharp before normalization", CsharpCount, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
         
         profile = profile.normalize();
         
         assertEquals("Incorrect value for C before normalization", 1.0, profile.getValue(PitchClass.C), EPS);
         assertEquals("Incorrect value for G before normalization", 3.0/5.0, profile.getValue(PitchClass.G), EPS);
-        assertEquals("Incorrect value for C sharp before normalization", 2.0/5.0, profile.getValue(PitchClass.CSharpDFlat), EPS);
+        assertEquals("Incorrect value for C sharp before normalization", 2.0/5.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
     }
     
     public static PCProfile getTestProfile(double ... values) {

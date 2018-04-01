@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Class that describes a score. 
@@ -62,6 +63,14 @@ public class Score implements Iterable<Part> {
     }
     
     /**
+     * @param index the number of the <code>Part</code> in the <code>Score</code>.
+     * @return <code>Part</code> associated with index.
+     */
+    public Part getPart(int index) {
+        return this.parts.get(index);
+    }
+    
+    /**
      * @param attribute the type of the attribute.
      * @return the text associated with attribute if the attribute is set. 
      * Empty string otherwise.
@@ -71,6 +80,18 @@ public class Score implements Iterable<Part> {
             return this.scoreAttr.get(attribute);
         
         return "";
+    }
+    
+    /**
+     * Get the <code>Durational</code> at position.
+     * @param position the <code>ScorePosition</code> from which to get the element.
+     * @return the <code>Durational</code> at position.
+     * @throws NoSuchElementException if the position is not found.
+     */
+    public Durational getAtPosition(ScorePosition position) throws NoSuchElementException {
+        Part part = this.parts.get(position.getPartNumber());
+        Measure measure = part.getMeasure(position.getStaffNumber(), position.getMeasureNumber());
+        return measure.get(position.getLayerNumber(), position.getIndexInLayer());
     }
     
     @Override

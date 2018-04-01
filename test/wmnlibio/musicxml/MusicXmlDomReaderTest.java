@@ -77,7 +77,7 @@ public class MusicXmlDomReaderTest {
         assertEquals(1, measure.getNumber());
         assertEquals(1, measure.getLayerCount());
         assertEquals(TimeSignatures.FOUR_FOUR, measure.getTimeSignature());
-        assertEquals(KeySignatures.CMaj_Amin, measure.getKeySignature());
+        assertEquals(KeySignatures.CMAJ_AMIN, measure.getKeySignature());
         assertEquals(Barline.SINGLE, measure.getRightBarline());
         assertEquals(Clefs.G, measure.getClef());
         
@@ -106,7 +106,7 @@ public class MusicXmlDomReaderTest {
         assertEquals(1, measureOne.getNumber());
         assertEquals(1, measureOne.getLayerCount());
         assertEquals(TimeSignatures.FOUR_FOUR, measureOne.getTimeSignature());
-        assertEquals(KeySignatures.CMaj_Amin, measureOne.getKeySignature());
+        assertEquals(KeySignatures.CMAJ_AMIN, measureOne.getKeySignature());
         assertEquals(Barline.SINGLE, measureOne.getRightBarline());
         assertEquals(Clefs.G, measureOne.getClef());
     
@@ -130,7 +130,7 @@ public class MusicXmlDomReaderTest {
         assertEquals(2, measureTwo.getNumber());
         assertEquals(2, measureTwo.getLayerCount());
         assertEquals(TimeSignatures.FOUR_FOUR, measureTwo.getTimeSignature());
-        assertEquals(KeySignatures.CMaj_Amin, measureTwo.getKeySignature());
+        assertEquals(KeySignatures.CMAJ_AMIN, measureTwo.getKeySignature());
         assertEquals(Barline.FINAL, measureTwo.getRightBarline());
         assertEquals(Clefs.G, measureTwo.getClef());
         
@@ -165,7 +165,7 @@ public class MusicXmlDomReaderTest {
         assertEquals(1, staffOneMeasureOne.getNumber());
         assertEquals(1, staffOneMeasureOne.getLayerCount());
         assertEquals(TimeSignatures.THREE_FOUR, staffOneMeasureOne.getTimeSignature());
-        assertEquals(KeySignatures.GMaj_Emin, staffOneMeasureOne.getKeySignature());
+        assertEquals(KeySignatures.GMAJ_EMIN, staffOneMeasureOne.getKeySignature());
         assertEquals(Barline.SINGLE, staffOneMeasureOne.getRightBarline());
         assertEquals(Clefs.G, staffOneMeasureOne.getClef());
     
@@ -180,7 +180,7 @@ public class MusicXmlDomReaderTest {
         assertEquals(2, staffOneMeasureTwo.getNumber());
         assertEquals(1, staffOneMeasureTwo.getLayerCount());
         assertEquals(TimeSignatures.THREE_FOUR, staffOneMeasureTwo.getTimeSignature());
-        assertEquals(KeySignatures.GMaj_Emin, staffOneMeasureTwo.getKeySignature());
+        assertEquals(KeySignatures.GMAJ_EMIN, staffOneMeasureTwo.getKeySignature());
         assertEquals(Barline.FINAL, staffOneMeasureTwo.getRightBarline());
         assertEquals(Clefs.G, staffOneMeasureTwo.getClef());
     
@@ -200,7 +200,7 @@ public class MusicXmlDomReaderTest {
         assertEquals(1, staffTwoMeasureOne.getNumber());
         assertEquals(1, staffTwoMeasureOne.getLayerCount());
         assertEquals(TimeSignatures.THREE_FOUR, staffTwoMeasureOne.getTimeSignature());
-        assertEquals(KeySignatures.GMaj_Emin, staffTwoMeasureOne.getKeySignature());
+        assertEquals(KeySignatures.GMAJ_EMIN, staffTwoMeasureOne.getKeySignature());
         assertEquals(Barline.SINGLE, staffTwoMeasureOne.getRightBarline());
         assertEquals(Clefs.F, staffTwoMeasureOne.getClef());
     
@@ -214,7 +214,7 @@ public class MusicXmlDomReaderTest {
         assertEquals(2, staffTwoMeasureTwo.getNumber());
         assertEquals(1, staffTwoMeasureTwo.getLayerCount());
         assertEquals(TimeSignatures.THREE_FOUR, staffTwoMeasureTwo.getTimeSignature());
-        assertEquals(KeySignatures.GMaj_Emin, staffTwoMeasureTwo.getKeySignature());
+        assertEquals(KeySignatures.GMAJ_EMIN, staffTwoMeasureTwo.getKeySignature());
         assertEquals(Barline.FINAL, staffTwoMeasureTwo.getRightBarline());
         assertEquals(Clefs.F, staffTwoMeasureTwo.getClef());
     
@@ -322,9 +322,9 @@ public class MusicXmlDomReaderTest {
         
         SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
         
-        assertEquals(KeySignatures.CMaj_Amin, part.getMeasure(1).getKeySignature());
-        assertEquals(KeySignatures.GMaj_Emin, part.getMeasure(2).getKeySignature());
-        assertEquals(KeySignatures.AFlatMaj_Fmin, part.getMeasure(3).getKeySignature());
+        assertEquals(KeySignatures.CMAJ_AMIN, part.getMeasure(1).getKeySignature());
+        assertEquals(KeySignatures.GMAJ_EMIN, part.getMeasure(2).getKeySignature());
+        assertEquals(KeySignatures.AFLATMAJ_FMIN, part.getMeasure(3).getKeySignature());
     }
     
     @Test
@@ -371,5 +371,13 @@ public class MusicXmlDomReaderTest {
         assertEquals(TimeSignature.getTimeSignature(3, 4), part.getMeasure(2).getTimeSignature());
         assertEquals(TimeSignature.getTimeSignature(6, 8), part.getMeasure(3).getTimeSignature());
         assertEquals(TimeSignature.getTimeSignature(15, 16), part.getMeasure(4).getTimeSignature());
+    }
+    
+    @Test
+    public void testTimeSignatureChange() {
+        Score score = readScore("scoreIteratorTesting.xml");
+        SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+        Durational n = part.getMeasure(2).getLayer(1).get(0);
+        assertEquals(Durations.EIGHT, n.getDuration());
     }
 }
