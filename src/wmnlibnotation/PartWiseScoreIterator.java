@@ -6,7 +6,6 @@
 package wmnlibnotation;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -34,6 +33,7 @@ public class PartWiseScoreIterator implements ScoreIterator {
      */
     public PartWiseScoreIterator(Score score) {
         this.scoreIterator = score.iterator();
+        // TODO: Consider a better way to handle iterating Parts and part index handling.
         this.prevPart = this.scoreIterator.next();
         this.prevPartIndex = 0;
         this.currentPartIterator = this.prevPart.getPartIterator();

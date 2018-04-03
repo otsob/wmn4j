@@ -6,7 +6,8 @@
 package wmnlibnotation;
 
 /**
- *
+ * Defines the position of a <code>Durational</code> in a <code>Score</code>.
+ * Is immutable.
  * @author Otso Björklund
  */
 public class ScorePosition {
@@ -18,42 +19,78 @@ public class ScorePosition {
     private final int indexInLayer;
     
     /**
-     * 
-     * @param partNumber
-     * @param staff
-     * @param measure
-     * @param layer
-     * @param indexInLayer 
+     * @param partNumber The number (index) of the part in the <code>Score</code>.
+     * @param staffNumber The number of the staff in the <code>Part</code>. 
+     * For <code>SingleStaffPart</code> objects use the constructor without the staffNumber parameter.
+     * @param measureNumber The measure number.
+     * @param layerNumber The layer number in the measure.
+     * @param indexInLayer The index in the layer specified by layerNumber.
      */
-    public ScorePosition(int partNumber, int staff, int measure, int layer, int indexInLayer) {
-        
+    public ScorePosition(int partNumber, int staffNumber, int measureNumber, int layerNumber, int indexInLayer) {
         this.partNumber = partNumber;
-        this.staffNumber = staff;
-        this.measureNumber = measure;
-        this.layerNumber = layer;
+        this.staffNumber = staffNumber;
+        this.measureNumber = measureNumber;
+        this.layerNumber = layerNumber;
+        this.indexInLayer = indexInLayer;
+    }
+
+    /**
+     * @param partNumber The number (index) of the part in the <code>Score</code>.
+     * @param measureNumber The measure number.
+     * @param layerNumber The layer number in the measure.
+     * @param indexInLayer The index in the layer specified by layerNumber.
+     */
+    public ScorePosition(int partNumber, int measureNumber, int layerNumber, int indexInLayer) {
+        this.partNumber = partNumber;
+        this.staffNumber = SingleStaffPart.STAFF_NUMBER;
+        this.measureNumber = measureNumber;
+        this.layerNumber = layerNumber;
         this.indexInLayer = indexInLayer;
     }
     
+    /**
+     * @return The number (index) of the part in the score.
+     */
     public int getPartNumber() {
         return this.partNumber;
     }
 
+    /**
+     * @return The number of the staff in the part.
+     */
     public int getStaffNumber() {
         return this.staffNumber;
     }
 
+    /**
+     * @return The measure number specified by this position.
+     */
     public int getMeasureNumber() {
         return this.measureNumber;
     }
 
+    /**
+     * @return The number of the layer in the measure.
+     */
     public int getLayerNumber() {
         return this.layerNumber;
     }
 
+    /**
+     * @return The index of the <code>Durational</code> in the layer.
+     */
     public int getIndexInLayer() {
         return this.indexInLayer;
     }
     
+    /**
+     * Compares this <code>ScorePosition</code> with equality against 
+     * <code>Object o</code>. 
+     * Two positions are equal if and only if all of their properties are 
+     * equal.
+     * @param o
+     * @return 
+     */
     @Override
     public boolean equals(Object o) {
         if(o == this)
@@ -64,11 +101,9 @@ public class ScorePosition {
         
         ScorePosition other = (ScorePosition) o;
         
-        // Part must be same instance.
         if(this.partNumber != other.getPartNumber())
             return false;
         
-        // Staff number matters only for MultiStaffParts
         if(this.staffNumber != other.getStaffNumber())
             return false;
         

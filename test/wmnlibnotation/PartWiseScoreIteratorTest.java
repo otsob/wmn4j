@@ -109,10 +109,5 @@ public class PartWiseScoreIteratorTest {
         next = moveIterSteps(5);
         ScorePosition fourth = new ScorePosition(bottomPartNumber, 1, 3, 1, 0);
         assertEquals(fourth, this.iter.positionOfPrevious());
-    }
-    
-    @Test
-    public void testOffsetFromBeginning() {
-    }
-    
+    }  
 }

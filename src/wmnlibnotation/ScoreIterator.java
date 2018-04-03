@@ -5,6 +5,8 @@
  */
 package wmnlibnotation;
 
+import java.util.NoSuchElementException;
+
 /**
  * Interface for iterators that iterate through the <code>Durational</code>
  * objects in a <code>Score</code>.
@@ -22,8 +24,9 @@ public interface ScoreIterator {
      * Get the next <code>Durational</code> from the score.
      * Order of iteration depends on the implementation.
      * @return next <code>Durational</code>.
+     * @throws NoSuchElementException if next <code>Durational</code> is not available.
      */
-    public Durational next();
+    public Durational next() throws NoSuchElementException;
     
     /**
      * Returns the position of the <code>Durational</code> returned by the 
