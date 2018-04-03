@@ -22,6 +22,10 @@ public class TEC {
         this.translators = translators;
     }
     
+    public Pattern getPattern() {
+        return this.pattern;
+    }
+    
     @Override
     public String toString() {
         StringBuilder strBuilder = new StringBuilder();

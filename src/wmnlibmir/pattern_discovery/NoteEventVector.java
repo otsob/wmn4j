@@ -5,6 +5,8 @@
  */
 package wmnlibmir.pattern_discovery;
 
+import wmnlibnotation.ScorePosition;
+
 
 /**
  * 
@@ -14,10 +16,19 @@ public class NoteEventVector implements Comparable<NoteEventVector> {
     
     private final double[] components;
     private final int hash;
+    private final ScorePosition scorePosition;
     
     public NoteEventVector(double[] components) {
         this.components = new double[components.length];
         System.arraycopy(components, 0, this.components, 0, components.length);
+        this.scorePosition = null;
+        this.hash = computeHash();
+    }
+    
+    public NoteEventVector(double[] components, ScorePosition scorePosition) {
+        this.components = new double[components.length];
+        System.arraycopy(components, 0, this.components, 0, components.length);
+        this.scorePosition = scorePosition;
         this.hash = computeHash();
     }
     
@@ -27,6 +38,14 @@ public class NoteEventVector implements Comparable<NoteEventVector> {
     
     public double getComponent(int index) {
         return this.components[index];
+    }
+    
+    public boolean hasPosition() {
+        return this.scorePosition != null;
+    }
+    
+    public ScorePosition getPosition() {
+        return this.scorePosition;
     }
     
     public NoteEventVector add(NoteEventVector other) {
@@ -106,6 +125,10 @@ public class NoteEventVector implements Comparable<NoteEventVector> {
             strBuilder.append(Double.toString(this.components[i])).append(", ");
         }
         strBuilder.append(Double.toString(this.components[this.components.length-1])).append(")");
+        
+        if(this.scorePosition != null)
+            strBuilder.append(" at ").append(scorePosition);
+        
         return strBuilder.toString();
     }
 }

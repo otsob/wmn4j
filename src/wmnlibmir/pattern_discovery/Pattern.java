@@ -24,6 +24,10 @@ public class Pattern {
         this.hash = computeHash();
     }
     
+    public int getSize() {
+        return this.points.size();
+    }
+    
     public List<NoteEventVector> getPoints() {
         return Collections.unmodifiableList(this.points);
     }
