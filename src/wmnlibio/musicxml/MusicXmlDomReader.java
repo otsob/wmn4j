@@ -249,7 +249,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
                 
                 int layer = getLayer(node);
                 
-                Duration duration = getDuration(node, context.getDivisions(), context.getTimeSig().getBeatDuration().getDenominator());
+                Duration duration = getDuration(node, context.getDivisions());
                 offsets.get(staffNumber).add(duration);
                 
                 // Todo: add handling articulations etc.
@@ -568,11 +568,13 @@ public class MusicXmlDomReader implements MusicXmlReader {
         return null;
     }
     
-    private Duration getDuration(Node noteNode, int divisions, int beatType) {
+    private Duration getDuration(Node noteNode, int divisions) {
         Node durationNode = findChild(noteNode, MusicXmlTags.NOTE_DURATION);
         if(durationNode != null) {
             int nominator = Integer.parseInt(durationNode.getTextContent());
-            return Duration.getDuration(nominator, divisions * beatType);
+            // In MusicXml divisions is the number of parts into which a quarter note 
+            // is divided. Therefore divisions needs to be multiplied by 4.
+            return Duration.getDuration(nominator, divisions * 4);
         }
         
         return null;

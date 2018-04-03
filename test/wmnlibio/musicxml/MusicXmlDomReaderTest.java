@@ -17,7 +17,6 @@ import wmnlibnotation.Duration;
 import wmnlibnotation.Durations;
 import wmnlibnotation.KeySignatures;
 import wmnlibnotation.Measure;
-import wmnlibnotation.MeasureAttributes;
 import wmnlibnotation.Durational;
 import wmnlibnotation.MultiStaffPart;
 import wmnlibnotation.Note;
