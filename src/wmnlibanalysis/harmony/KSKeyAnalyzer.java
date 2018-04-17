@@ -30,7 +30,7 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
     }
     
     public Key analyzeKey(List<Durational> durationals) {
-        PCProfile profile = new PCProfile(DurationWeighter.getInstance());
+        PCProfile profile = PCProfile.getDurationWeightedProfile();
         for(Durational durational : durationals)
             profile.add(durational);
         

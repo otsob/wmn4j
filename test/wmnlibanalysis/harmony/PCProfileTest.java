@@ -55,7 +55,7 @@ public class PCProfileTest {
     
     @Test
     public void testAddWithDurationWeightFunction() {
-        PCProfile profile = new PCProfile(DurationWeighter.getInstance());
+        PCProfile profile = PCProfile.getDurationWeightedProfile();
         profile.add(C4);
         assertEquals("Incorrect value for C", 0.25, profile.getValue(PitchClass.C), EPS);
         assertEquals("Incorrect value for Csharp", 0.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);

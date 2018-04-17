@@ -4,8 +4,6 @@
  */
 package wmnlibnotation;
 
-import wmnlibnotation.Rest;
-import wmnlibnotation.Durations;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

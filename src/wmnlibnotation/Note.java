@@ -125,6 +125,16 @@ public class Note implements Durational {
     }
     
     /**
+     * Compare notes by pitch.
+     * @param other
+     * @return negative integer if this note is lower than other, 
+     * positive integer if this is higher than other, 0 if notes are (enharmonically) of same height.
+     */
+    public int compareByPitch(Note other) {
+        return this.pitch.compareTo(other.getPitch());
+    }
+    
+    /**
      * Returns a string representation of this <code>Note</code>.
      * The string representation of a note is of form <code>PDA</code>, 
      * where <code>P</code> is the string representation of this note's pitch,

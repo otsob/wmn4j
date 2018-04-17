@@ -20,13 +20,44 @@ import wmnlibnotation.PitchClass;
  * 
  * By default the value of a note is 1.0 meaning that the pitch class profile 
  * is based on the counts of pitch classes. When creating the profile a 
- * <code>PCProfileWeighter</code> can be given to calculate the value of a note differently.
+ * <code>PCProfile.Weighter</code> can be given to calculate the value of a note differently.
  * @author Otso Björklund
  */
 public class PCProfile {
     
-    private final PCProfileWeighter pw;
+    /**
+     * Interface for weighing the pitch class of a <code>Note</code>.
+     */
+    public interface Weighter {
+        /**
+         * Calculates the coefficient for the pitch class of the note.
+         * Used for adding notes to <code>PCProfile</code> objects.
+         * @param note note for which weight is calculated.
+         * @return weight of the pitch class of the note.
+         */
+        double weight(Note note);
+    }
+    
+    private final PCProfile.Weighter pw;
     private final Map<PitchClass, Double> profile;
+    
+    /**
+     * Using this constructor the profile is based on the counts of pitch classes.
+     */
+    public PCProfile() {
+        this.pw = note -> 1.0;
+        this.profile = new TreeMap();
+        this.initialize();
+    }
+    
+    /**
+     * Creates a <code>PCProfile</code> where the weight of a note's pitch class
+     * is weighted using the duration of the note. 
+     * @return a PCProfile where pitch classes are weighted using note durations.
+     */
+    public static PCProfile getDurationWeightedProfile() {
+        return new PCProfile(note -> note.getDuration().toDouble());
+    }
     
     /**
      * Constructor that allows specifying how the value of a note is computed 
@@ -34,17 +65,8 @@ public class PCProfile {
      * @param weighter used for computing the value of a note when 
      * the note is added to this profile.
      */
-    public PCProfile(PCProfileWeighter weighter) {
+    public PCProfile(PCProfile.Weighter weighter) {
         this.pw = weighter;
-        this.profile = new TreeMap();
-        this.initialize();
-    }
-    
-    /**
-     * Using this constructor the profile is based on the counts of pitch classes.
-     */
-    public PCProfile() {
-        this.pw = ConstantWeight.INSTANCE;
         this.profile = new TreeMap();
         this.initialize();
     }
@@ -61,6 +83,7 @@ public class PCProfile {
      * @param value a non-negative value.
      */
     public void setValue(PitchClass pc, double value) {
+        // TODO: Reconsider if this has to be only non-negative
         if(value < 0.0)
             throw new IllegalArgumentException("value must be at least 0.0");
         
@@ -148,23 +171,6 @@ public class PCProfile {
         
         strBuilder.replace(strBuilder.length() - 2, strBuilder.length(), "");
         return strBuilder.toString();
-    }
-    
-    /**
-     * The default weighter. 
-     * Using this the value of a pitch class is based on 
-     * the count of notes with the pitch class.
-     */
-    private static class ConstantWeight implements PCProfileWeighter {
-        
-        static private final ConstantWeight INSTANCE = new PCProfile.ConstantWeight();
-        
-        @Override
-        public double weight(Note note) {
-            return 1.0;
-        }
-        
-        private ConstantWeight() {}
     }
     
     /**

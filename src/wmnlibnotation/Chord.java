@@ -50,7 +50,7 @@ public class Chord implements Durational, Iterable<Note> {
     private Chord(List<Note> notes) {
         
         List<Note> notesCopy = new ArrayList(notes);
-        Collections.sort(notesCopy, NotePitchComparator.INSTANCE);
+        notesCopy.sort(Note::compareByPitch);
         
         this.notes = Collections.unmodifiableList(notesCopy);
         if(this.notes == null)

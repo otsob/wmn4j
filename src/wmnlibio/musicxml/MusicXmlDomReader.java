@@ -37,7 +37,7 @@ import wmnlibnotation.ScoreBuilder;
 import wmnlibnotation.TimeSignature;
 
 /**
- * A parser for MusicXML files. Creates a <code>Score</code>.
+ * A parser for MusicXML files.
  * @author Otso Björklund
  */
 public class MusicXmlDomReader implements MusicXmlReader {
@@ -71,6 +71,12 @@ public class MusicXmlDomReader implements MusicXmlReader {
         this.docBuilder = dbf.newDocumentBuilder();
     }
     
+    /**
+     * Create a <code>Score</code> from a MusicXML file.
+     * @param filePath Path of the MusicXML file.
+     * @return Score from the file.
+     * @throws IOException 
+     */
     public Score readScore(String filePath) throws IOException {
     
         Score score = null;
@@ -102,7 +108,6 @@ public class MusicXmlDomReader implements MusicXmlReader {
      */
     private void readScoreAttributesToBuilder(ScoreBuilder scoreBuilder, Document doc) {
         // TODO: Extend this when the attributes of a score are increased.
-        
         Node movementTitle = doc.getElementsByTagName(MusicXmlTags.SCORE_MOVEMENT_TITLE).item(0);
         if(movementTitle != null)
             scoreBuilder.setAttribute(Score.Attribute.NAME, movementTitle.getTextContent());
@@ -198,7 +203,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
                         staves = Integer.parseInt(stavesNode.getTextContent());
                     }
                     
-                    // In the number of staves is not defined in the first attributes node,
+                    // If the number of staves is not defined in the first attributes node,
                     // then assume that the part has 1 staff.
                     break;
                 }
@@ -355,17 +360,6 @@ public class MusicXmlDomReader implements MusicXmlReader {
             Context context = contexts.get(staffNumber);
             context.setClef(MusicXmlDomReader.this.getClef(clefNode));
         }
-    }
-    
-    /**
-     * Get Clef from the Node containing measure attributes.
-     */
-    private Clef getClef(Node attributesNode, Context previous) {
-        Node clefNode = findChild(attributesNode, MusicXmlTags.CLEF);
-        if(clefNode != null)
-            return MusicXmlDomReader.this.getClef(clefNode);
-        else
-            return previous.getClef();
     }
     
     /**
@@ -623,7 +617,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
      * Class for handling the reading of chords.
      */
     private class ChordBuffer {
-        private List<Pair<Note, Integer>> chordBuffer = new ArrayList();
+        private final List<Pair<Note, Integer>> chordBuffer = new ArrayList();
         
         public ChordBuffer() {}
         

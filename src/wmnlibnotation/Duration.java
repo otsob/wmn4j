@@ -8,7 +8,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * The <code>Duration</code> class represents the duration of a note, rest, or chord. 
+ * The <code>Duration</code> class represents the duration of any musical object with 
+ * a duration such as a note or a rest. 
  * Durations are handled as rational 
  * numbers that tell what fraction of a whole note the duration is just like in normal music terminology.
  * For example, the duration of a quarter note is handled as the rational number 1/4.

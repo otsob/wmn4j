@@ -4,15 +4,6 @@
  */
 package wmnlibnotation;
 
-import wmnlibnotation.KeySignature;
-import wmnlibnotation.Staff;
-import wmnlibnotation.Measure;
-import wmnlibnotation.Durational;
-import wmnlibnotation.Clef;
-import wmnlibnotation.Durations;
-import wmnlibnotation.Pitch;
-import wmnlibnotation.Note;
-import wmnlibnotation.TimeSignature;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
