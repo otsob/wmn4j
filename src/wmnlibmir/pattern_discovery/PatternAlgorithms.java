@@ -22,7 +22,7 @@ public class PatternAlgorithms {
     public static List<TEC> computeTecs(PointSet dataset) {
         
         dataset.sortLexicographically();
-        Map<NoteEventVector, List<Pair<Integer, Integer>>> mtpMap = new HashMap();
+        Map<NoteEventVector, List<Pair<Integer, Integer>>> mtpMap = new HashMap<>();
         
         for(int i = 0; i < dataset.size() - 1; ++i) {
             
@@ -32,19 +32,19 @@ public class PatternAlgorithms {
                 NoteEventVector diff = dataset.get(j).subtract(origin);
                 
                 if(!mtpMap.containsKey(diff))
-                    mtpMap.put(diff, new ArrayList());
+                    mtpMap.put(diff, new ArrayList<>());
                 
-                mtpMap.get(diff).add(new Pair(i, j));
+                mtpMap.get(diff).add(new Pair<>(i, j));
             }
         }
         
-        List<TEC> tecs = new ArrayList();
-        Set<Pattern> patternVecs = new HashSet();
+        List<TEC> tecs = new ArrayList<>();
+        Set<Pattern> patternVecs = new HashSet<>();
         
         for(NoteEventVector diff : mtpMap.keySet()) {
             List<Pair<Integer, Integer>> indexPairs = mtpMap.get(diff);
             
-            List<NoteEventVector> patternPoints = new ArrayList();
+            List<NoteEventVector> patternPoints = new ArrayList<>();
             for(Pair<Integer, Integer> indexPair : indexPairs) {
                 patternPoints.add(dataset.get(indexPair.getKey()));
             }
@@ -53,7 +53,7 @@ public class PatternAlgorithms {
             Pattern vec = pattern.getVectorizedRepresentation();
             
             if(!patternVecs.contains(vec)) {
-                List<NoteEventVector> translators = new ArrayList();
+                List<NoteEventVector> translators = new ArrayList<>();
                 if(pattern.getPoints().size() == 1) {
                     for(int i = 0; i < dataset.size(); ++i) {
                         translators.add(pattern.getPoints().get(0).subtract(dataset.get(i)));
@@ -72,7 +72,7 @@ public class PatternAlgorithms {
     }
     
     public static List<NoteEventVector> findTranslators(Pattern pattern, Map<NoteEventVector, List<Pair<Integer, Integer>>> mtpMap, PointSet dataset) {
-        List<Integer> pointIndices = new ArrayList();
+        List<Integer> pointIndices = new ArrayList<>();
         List<NoteEventVector> vecPatternPoints = pattern.getVectorizedRepresentation().getPoints();
         NoteEventVector vec = vecPatternPoints.get(0);
         
@@ -82,7 +82,7 @@ public class PatternAlgorithms {
         for(int i = 1; i < vecPatternPoints.size(); ++i) {
             vec = vecPatternPoints.get(i);
             List<Pair<Integer, Integer>> indexPairs = mtpMap.get(vec);
-            List<Integer> tmpPointIndices = new ArrayList();
+            List<Integer> tmpPointIndices = new ArrayList<>();
             int j = 0;
             int k = 0;
             while(j < pointIndices.size() && k < indexPairs.size()) {
@@ -101,7 +101,7 @@ public class PatternAlgorithms {
             pointIndices = tmpPointIndices;
         }
         
-        List<NoteEventVector> translators = new ArrayList();
+        List<NoteEventVector> translators = new ArrayList<>();
         NoteEventVector lastPoint = pattern.getPoints().get(pattern.getPoints().size() - 1);
         
         for(Integer i : pointIndices) {

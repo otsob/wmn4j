@@ -25,14 +25,14 @@ public class MultiStaffPart implements Part {
     private final SortedMap<Integer, Staff> staves;
     
     public MultiStaffPart(String name, Map<Integer, Staff> staves) {
-        this.partAttributes = new HashMap();
+        this.partAttributes = new HashMap<>();
         this.partAttributes.put(Part.Attribute.NAME, name);
-        this.staves = Collections.unmodifiableSortedMap(new TreeMap(staves));
+        this.staves = Collections.unmodifiableSortedMap(new TreeMap<>(staves));
     }
     
     public MultiStaffPart(Map<Part.Attribute, String> attributes, Map<Integer, Staff> staves) {
-        this.partAttributes = Collections.unmodifiableMap(new HashMap(attributes));
-        this.staves = Collections.unmodifiableSortedMap(new TreeMap(staves));
+        this.partAttributes = Collections.unmodifiableMap(new HashMap<>(attributes));
+        this.staves = Collections.unmodifiableSortedMap(new TreeMap<>(staves));
     }
     
     @Override
@@ -73,7 +73,7 @@ public class MultiStaffPart implements Part {
      * @return the numbers of the staves in the part.
      */
     public List<Integer> getStaffNumbers() {
-        return new ArrayList(this.staves.keySet());
+        return new ArrayList<>(this.staves.keySet());
     }
     
     @Override

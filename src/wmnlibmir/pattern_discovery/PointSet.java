@@ -24,7 +24,7 @@ public class PointSet {
     private final List<NoteEventVector> points;
     
     public PointSet(List<NoteEventVector> points) {
-        this.points = new ArrayList(points);
+        this.points = new ArrayList<>(points);
     }
     
     public PointSet(Score score) {
@@ -45,7 +45,7 @@ public class PointSet {
     
     private List<NoteEventVector> pointsFromCsv(String csvPath) {
         // TODO
-        return new ArrayList();
+        return new ArrayList<>();
     }
     
     private List<NoteEventVector> pointsFromScore(Score score) {
@@ -54,7 +54,7 @@ public class PointSet {
         ScorePosition prevPos = null;
         double offsetToEndOfLastMeasure = 0.0;
         double offsetWithinMeasure = 0.0;
-        List<NoteEventVector> noteEvents = new ArrayList();
+        List<NoteEventVector> noteEvents = new ArrayList<>();
         
         while(scoreIterator.hasNext()) {
             Durational dur = scoreIterator.next();

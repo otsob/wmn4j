@@ -125,7 +125,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
      */
     private void readPartsIntoScoreBuilder(ScoreBuilder scoreBuilder, Document doc) {
 
-        Map<String, PartBuilder> partBuilders = new HashMap();
+        Map<String, PartBuilder> partBuilders = new HashMap<>();
         
         // Read part attributes.
         Node partsList = doc.getElementsByTagName(MusicXmlTags.PART_LIST).item(0);
@@ -165,7 +165,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
     private void readMeasuresIntoPartBuilder(PartBuilder partBuilder, Node partNode) {
         
         int staves = getNumberOfStaves(partNode);
-        Map<Integer, Context> contexts = new HashMap();
+        Map<Integer, Context> contexts = new HashMap<>();
         
         // Create the context containers for the staves.
         for(int staffNumber = 1; staffNumber <= staves; ++staffNumber)
@@ -221,16 +221,16 @@ public class MusicXmlDomReader implements MusicXmlReader {
         
         int measureNumber = Integer.parseInt(measureNode.getAttributes().getNamedItem(MusicXmlTags.MEASURE_NUM).getTextContent());
         
-        Map<Integer, MeasureBuilder> measureBuilders = new HashMap();
-        Map<Integer, ChordBuffer> chordBuffers = new HashMap();
-        Map<Integer, List<Duration>> offsets = new HashMap();
-        Map<Integer, Clef> lastClefs = new HashMap();
+        Map<Integer, MeasureBuilder> measureBuilders = new HashMap<>();
+        Map<Integer, ChordBuffer> chordBuffers = new HashMap<>();
+        Map<Integer, List<Duration>> offsets = new HashMap<>();
+        Map<Integer, Clef> lastClefs = new HashMap<>();
         
         // Initialize the helper data structures.
         for(int staff = 1; staff <= staves; ++staff) {
             measureBuilders.put(staff, new MeasureBuilder(measureNumber));
             chordBuffers.put(staff, new ChordBuffer());
-            offsets.put(staff, new ArrayList());
+            offsets.put(staff, new ArrayList<>());
             lastClefs.put(staff, contexts.get(staff).getClef());
         }
         
@@ -599,7 +599,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
      * Find all children with given name from Node parent. 
      */
     private List<Node> findChildren(Node parent, String childName) {
-        List<Node> foundChildren = new ArrayList();
+        List<Node> foundChildren = new ArrayList<>();
         
         NodeList children = parent.getChildNodes();
         for(int i = 0; i < children.getLength(); ++i) {
@@ -617,18 +617,18 @@ public class MusicXmlDomReader implements MusicXmlReader {
      * Class for handling the reading of chords.
      */
     private class ChordBuffer {
-        private final List<Pair<Note, Integer>> chordBuffer = new ArrayList();
+        private final List<Pair<Note, Integer>> chordBuffer = new ArrayList<>();
         
         public ChordBuffer() {}
         
         public void addNote(Note note, int layer) {
-            this.chordBuffer.add(new Pair(note, layer));
+            this.chordBuffer.add(new Pair<>(note, layer));
         }
         
         public void contentsToBuilder(MeasureBuilder builder) {
             if(!this.chordBuffer.isEmpty()) {
                 if(this.chordBuffer.size() > 1) {
-                    List<Note> notes = new ArrayList();
+                    List<Note> notes = new ArrayList<>();
                     int layer = this.chordBuffer.get(0).getValue();
                     for(Pair<Note, Integer> pair : this.chordBuffer)
                         notes.add(pair.getKey());

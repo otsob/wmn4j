@@ -32,7 +32,7 @@ public class Staff implements Iterable<Measure> {
         // TODO: Add constructor that allows setting staff type.
         this.type = Type.NORMAL;
         
-        List<Measure> tmpMeasures = new ArrayList();
+        List<Measure> tmpMeasures = new ArrayList<>();
         
         // Add placeholder for pickup if there is none.
         if(measures.get(0).getNumber() != 0)

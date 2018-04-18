@@ -19,8 +19,8 @@ public class ScoreBuilder {
     private List<Part> parts;
     
     public ScoreBuilder() {
-        this.scoreAttr = new HashMap();
-        this.parts = new ArrayList();
+        this.scoreAttr = new HashMap<>();
+        this.parts = new ArrayList<>();
     }
     
     /**

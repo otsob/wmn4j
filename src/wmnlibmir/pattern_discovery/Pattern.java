@@ -32,7 +32,7 @@ public class Pattern {
     }
     
     public Pattern getVectorizedRepresentation() {
-        List<NoteEventVector> vecPoints = new ArrayList();
+        List<NoteEventVector> vecPoints = new ArrayList<>();
         
         for(int i = 1; i < this.points.size(); ++i) {
             vecPoints.add(this.points.get(i).subtract(this.points.get(i - 1)));

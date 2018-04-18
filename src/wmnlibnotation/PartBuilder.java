@@ -15,8 +15,8 @@ import java.util.Map;
  */
 public class PartBuilder {
     
-    private final Map<Integer, List<Measure>> staveContents = new HashMap();
-    private final Map<Part.Attribute, String> partAttributes = new HashMap();
+    private final Map<Integer, List<Measure>> staveContents = new HashMap<>();
+    private final Map<Part.Attribute, String> partAttributes = new HashMap<>();
     private static final int SINGLE_STAFF_NUMBER = 1;
     
     /**
@@ -53,7 +53,7 @@ public class PartBuilder {
             throw new NullPointerException("Cannot add null to staff");
         
         if(!this.staveContents.containsKey(staffNumber))
-            this.staveContents.put(staffNumber, new ArrayList());
+            this.staveContents.put(staffNumber, new ArrayList<>());
         
         this.staveContents.get(staffNumber).add(measure);
     }
@@ -82,7 +82,7 @@ public class PartBuilder {
         if(this.staveContents.size() == 1) 
             return new SingleStaffPart(this.partAttributes, this.staveContents.get(SINGLE_STAFF_NUMBER));
         else {
-            Map<Integer, Staff> staves = new HashMap();
+            Map<Integer, Staff> staves = new HashMap<>();
             for(int staffNumber : this.staveContents.keySet())
                 staves.put(staffNumber, new Staff(this.staveContents.get(staffNumber)));
             

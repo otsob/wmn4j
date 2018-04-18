@@ -18,7 +18,7 @@ public enum RandomMultiplierProvider {
     private final List<Long> multipliers;
     
     private RandomMultiplierProvider() {
-        this.multipliers = new ArrayList();
+        this.multipliers = new ArrayList<>();
         this.generateMultipliers(100);
     }
     

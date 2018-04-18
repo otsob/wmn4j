@@ -57,9 +57,9 @@ public class MeasureAttributes {
         this.leftBarline = leftBarline;
         this.clef = clef;
         if(clefChanges != null && !clefChanges.isEmpty())
-            this.clefChanges = new HashMap(clefChanges);
+            this.clefChanges = new HashMap<>(clefChanges);
         else
-            this.clefChanges = Collections.EMPTY_MAP;
+            this.clefChanges = Collections.<Duration, Clef>emptyMap();
         
         if(this.rightBarline == null)
             throw new NullPointerException("right barline is null");

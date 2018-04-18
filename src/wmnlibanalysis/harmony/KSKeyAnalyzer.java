@@ -25,16 +25,13 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
     private final Map<Key, PCProfile> keyProfiles;
     
     public KSKeyAnalyzer() {
-        this.keyProfiles = new HashMap();
+        this.keyProfiles = new HashMap<>();
         this.readKeyProfiles();
     }
     
     public Key analyzeKey(List<Durational> durationals) {
         PCProfile profile = PCProfile.getDurationWeightedProfile();
-        for(Durational durational : durationals)
-            profile.add(durational);
-        
-        profile.normalize();
+        durationals.forEach(durational -> profile.add(durational));
         
         Key bestKey = Key.C_MAJOR;
         double maxCorrelation = -2.0;
@@ -53,7 +50,7 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
     
     private void readKeyProfiles() {
         
-        Map<String,Key> keyStrings = new HashMap();
+        Map<String,Key> keyStrings = new HashMap<>();
         for(Key key : Key.values())
             keyStrings.put(key.toString(), key);
         
@@ -70,7 +67,7 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
                     String cleanedKeyString = lineContents[0].trim();
                     Key key = keyStrings.get(cleanedKeyString);
                     
-                    List<Double> values = new ArrayList();
+                    List<Double> values = new ArrayList<>();
                     for(int i = 1; i < lineContents.length; ++i) {
                         String cleanedString = lineContents[i].trim();
                         values.add(Double.parseDouble(cleanedString));

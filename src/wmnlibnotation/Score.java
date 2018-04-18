@@ -33,8 +33,8 @@ public class Score implements Iterable<Part> {
      * @param parts The parts in the score.
      */
     public Score(Map<Attribute, String> attributes, List<Part> parts) {
-        this.parts = Collections.unmodifiableList(new ArrayList(parts));
-        this.scoreAttr = Collections.unmodifiableMap(new HashMap(attributes));
+        this.parts = Collections.unmodifiableList(new ArrayList<>(parts));
+        this.scoreAttr = Collections.unmodifiableMap(new HashMap<>(attributes));
         
         if(this.parts == null)
             throw new NullPointerException("Cannot create score: staves was null");

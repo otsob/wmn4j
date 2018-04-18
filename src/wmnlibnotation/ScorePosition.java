@@ -119,6 +119,17 @@ public class ScorePosition {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + this.partNumber;
+        hash = 53 * hash + this.staffNumber;
+        hash = 53 * hash + this.measureNumber;
+        hash = 53 * hash + this.layerNumber;
+        hash = 53 * hash + this.indexInLayer;
+        return hash;
+    }
+
+    @Override
     public String toString() {
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append("Part: ").append(this.partNumber)

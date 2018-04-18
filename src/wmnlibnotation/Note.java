@@ -65,7 +65,7 @@ public class Note implements Durational {
         if(articulations != null && !articulations.isEmpty())
             this.articulations = EnumSet.copyOf(articulations);
         else
-            this.articulations = Collections.EMPTY_SET;
+            this.articulations = Collections.emptySet();
         
         if(this.pitch == null)
             throw new NullPointerException("Pitch was null. Note must have a pitch.");

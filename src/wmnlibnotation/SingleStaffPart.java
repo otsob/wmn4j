@@ -28,7 +28,7 @@ public class SingleStaffPart implements Part {
      */
     public SingleStaffPart(String name, List<Measure> measures) {
         this.staff = new Staff(measures);
-        Map<Part.Attribute, String> attributes = new HashMap();
+        Map<Part.Attribute, String> attributes = new HashMap<>();
         attributes.put(Attribute.NAME, name);
         this.partAttributes = Collections.unmodifiableMap(attributes);
     }
@@ -39,7 +39,7 @@ public class SingleStaffPart implements Part {
      */
     public SingleStaffPart(Map<Part.Attribute, String> partAttributes, List<Measure> measures) {
         this.staff = new Staff(measures);
-        this.partAttributes = Collections.unmodifiableMap(new HashMap(partAttributes));
+        this.partAttributes = Collections.unmodifiableMap(new HashMap<>(partAttributes));
     }
     
     @Override

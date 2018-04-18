@@ -49,7 +49,7 @@ public class Chord implements Durational, Iterable<Note> {
      */
     private Chord(List<Note> notes) {
         
-        List<Note> notesCopy = new ArrayList(notes);
+        List<Note> notesCopy = new ArrayList<>(notes);
         notesCopy.sort(Note::compareByPitch);
         
         this.notes = Collections.unmodifiableList(notesCopy);
@@ -114,7 +114,7 @@ public class Chord implements Durational, Iterable<Note> {
      * @return Chord with the notes of this and the added note.
      */
     public Chord addNote(Note note) {
-        ArrayList<Note> noteList = new ArrayList(this.notes);
+        ArrayList<Note> noteList = new ArrayList<>(this.notes);
         noteList.add(note);
         return Chord.getChord(noteList);
     }
@@ -125,7 +125,7 @@ public class Chord implements Durational, Iterable<Note> {
      * @return Chord without the given note.
      */
     public Chord removeNote(Note note) {
-        ArrayList<Note> noteList = new ArrayList(this.notes);
+        ArrayList<Note> noteList = new ArrayList<>(this.notes);
         noteList.remove(note);
         return Chord.getChord(noteList);
     }
@@ -160,7 +160,7 @@ public class Chord implements Durational, Iterable<Note> {
      */
     public Chord removePitch(Pitch pitch) {
         if(this.contains(pitch)) {
-            List<Note> newNotes = new ArrayList(this.notes);
+            List<Note> newNotes = new ArrayList<>(this.notes);
             newNotes.remove(Note.getNote(pitch, this.getDuration()));
             return Chord.getChord(newNotes);
         }

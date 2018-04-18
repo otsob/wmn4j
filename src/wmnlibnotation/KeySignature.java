@@ -30,16 +30,16 @@ public class KeySignature {
      */
     public KeySignature(List<Pitch.Base> sharps, List<Pitch.Base> flats) {
         if(sharps != null && !sharps.isEmpty()) {
-            this.sharps = new ArrayList(sharps);
+            this.sharps = new ArrayList<>(sharps);
         }
         else {
-            this.sharps = Collections.EMPTY_LIST;
+            this.sharps = Collections.emptyList();
         }
         if(flats != null && !flats.isEmpty()) {
-            this.flats = new ArrayList(flats);
+            this.flats = new ArrayList<>(flats);
         }
         else {
-            this.flats = Collections.EMPTY_LIST;
+            this.flats = Collections.emptyList();
         }
         
         // Check that there are no conflicts and throw exception if there are.
@@ -72,14 +72,14 @@ public class KeySignature {
      * @return a copy of the sharps in this KeySignature.
      */
     public List<Pitch.Base> getSharps() {
-        return new ArrayList(this.sharps);
+        return new ArrayList<>(this.sharps);
     }
     
     /**
      * @return a copy of the flats in this KeySignature.
      */
     public List<Pitch.Base> getFlats() {
-        return new ArrayList(this.flats);
+        return new ArrayList<>(this.flats);
     }
     
     /**

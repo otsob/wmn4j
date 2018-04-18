@@ -46,7 +46,7 @@ public class PCProfile {
      */
     public PCProfile() {
         this.pw = note -> 1.0;
-        this.profile = new TreeMap();
+        this.profile = new TreeMap<>();
         this.initialize();
     }
     
@@ -67,7 +67,7 @@ public class PCProfile {
      */
     public PCProfile(PCProfile.Weighter weighter) {
         this.pw = weighter;
-        this.profile = new TreeMap();
+        this.profile = new TreeMap<>();
         this.initialize();
     }
     

@@ -34,7 +34,7 @@ public class MeasureBuilder {
     private Clef clef = Clefs.G;
     private Barline leftBarline = Barline.NONE;
     private Barline rightBarline = Barline.SINGLE;
-    private Map<Duration, Clef> clefChanges = new HashMap();
+    private Map<Duration, Clef> clefChanges = new HashMap<>();
     
     /**
      * Create a <code>MeasureBuilder</code> with the given <code>MeasureAttributes</code>.
@@ -42,7 +42,7 @@ public class MeasureBuilder {
      * @param measureAttr MeasureAttributes for measure.
      */
     public MeasureBuilder(int number, MeasureAttributes measureAttr) {
-        this.layers = new HashMap();
+        this.layers = new HashMap<>();
         this.number = number;
         
         this.timeSig = measureAttr.getTimeSignature();
@@ -50,14 +50,14 @@ public class MeasureBuilder {
         this.clef = measureAttr.getClef();
         this.leftBarline = measureAttr.getLeftBarline();
         this.rightBarline = measureAttr.getRightBarline();
-        this.clefChanges = new HashMap(measureAttr.getClefChanges());
+        this.clefChanges = new HashMap<>(measureAttr.getClefChanges());
     }
     
     /**
      * @param number Measure number for measure being built.
      */
     public MeasureBuilder(int number) {
-        this.layers = new HashMap();
+        this.layers = new HashMap<>();
         this.number = number;
     }
 
@@ -181,7 +181,7 @@ public class MeasureBuilder {
      * @return reference to this builder.
      */
     public MeasureBuilder addLayer() {
-        this.layers.put(this.layers.keySet().size(), new ArrayList());
+        this.layers.put(this.layers.keySet().size(), new ArrayList<>());
         return this;
     }
     
@@ -205,7 +205,7 @@ public class MeasureBuilder {
     public MeasureBuilder addToLayer(int layer, Durational elem) {
         
         if(!this.layers.keySet().contains(layer))
-            this.layers.put(layer, new ArrayList());
+            this.layers.put(layer, new ArrayList<>());
         
         this.layers.get(layer).add(elem);
         return this;
@@ -224,7 +224,7 @@ public class MeasureBuilder {
      * @return Sum of the durations of the <code>Durational</code> objects on the layer.
      */
     public Duration totalDurationOfLayer(int layer) {
-        List<Duration> durations = new ArrayList();
+        List<Duration> durations = new ArrayList<>();
         for(Durational d : this.layers.get(layer))
             durations.add(d.getDuration());
         

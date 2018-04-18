@@ -56,10 +56,10 @@ public class Measure implements Iterable<Durational> {
      */
     public Measure(int number, Map<Integer, List<Durational>> noteLayers, MeasureAttributes measureAttr) {
         this.number = number;
-        SortedMap<Integer, List<Durational>> layersCopy = new TreeMap();
+        SortedMap<Integer, List<Durational>> layersCopy = new TreeMap<>();
         
         for(Integer layerNum : noteLayers.keySet())
-            layersCopy.put(layerNum, Collections.unmodifiableList(new ArrayList(noteLayers.get(layerNum))));
+            layersCopy.put(layerNum, Collections.unmodifiableList(new ArrayList<>(noteLayers.get(layerNum))));
         
         this.layers = Collections.unmodifiableSortedMap(layersCopy);
         
@@ -78,7 +78,7 @@ public class Measure implements Iterable<Durational> {
      * @return list of the layer numbers used in this measure.
      */
     public List<Integer> getLayerNumbers() {
-        return new ArrayList(this.layers.keySet());
+        return new ArrayList<>(this.layers.keySet());
     }
     
     /**
