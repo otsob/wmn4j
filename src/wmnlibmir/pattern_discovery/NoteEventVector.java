@@ -4,7 +4,7 @@
  */
 package wmnlibmir.pattern_discovery;
 
-import wmnlibnotation.ScorePosition;
+import wmnlibnotation.noteobjects.ScorePosition;
 
 
 /**

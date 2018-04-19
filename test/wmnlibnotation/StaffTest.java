@@ -4,6 +4,17 @@
  */
 package wmnlibnotation;
 
+import wmnlibnotation.noteobjects.Note;
+import wmnlibnotation.noteobjects.Pitch;
+import wmnlibnotation.noteobjects.Rest;
+import wmnlibnotation.noteobjects.TimeSignatures;
+import wmnlibnotation.noteobjects.TimeSignature;
+import wmnlibnotation.noteobjects.Staff;
+import wmnlibnotation.noteobjects.Durations;
+import wmnlibnotation.noteobjects.Clefs;
+import wmnlibnotation.noteobjects.Durational;
+import wmnlibnotation.noteobjects.Measure;
+import wmnlibnotation.noteobjects.KeySignatures;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

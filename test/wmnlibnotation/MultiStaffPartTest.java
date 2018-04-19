@@ -4,6 +4,9 @@
  */
 package wmnlibnotation;
 
+import wmnlibnotation.noteobjects.MultiStaffPart;
+import wmnlibnotation.noteobjects.Staff;
+import wmnlibnotation.noteobjects.Measure;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

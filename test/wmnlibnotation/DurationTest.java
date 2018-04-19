@@ -6,8 +6,8 @@ package wmnlibnotation;
 
 import java.util.ArrayList;
 import java.util.List;
-import wmnlibnotation.Duration;
-import wmnlibnotation.Durations;
+import wmnlibnotation.noteobjects.Duration;
+import wmnlibnotation.noteobjects.Durations;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

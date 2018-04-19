@@ -8,10 +8,10 @@ package wmnlibanalysis.harmony;
 import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.TreeMap;
-import wmnlibnotation.Chord;
-import wmnlibnotation.Durational;
-import wmnlibnotation.Note;
-import wmnlibnotation.PitchClass;
+import wmnlibnotation.noteobjects.Chord;
+import wmnlibnotation.noteobjects.Durational;
+import wmnlibnotation.noteobjects.Note;
+import wmnlibnotation.noteobjects.PitchClass;
 
 /**
  * Pitch class profile in twelve-tone equal-temperament (TET).

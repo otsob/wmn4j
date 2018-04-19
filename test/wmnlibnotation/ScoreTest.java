@@ -4,6 +4,16 @@
  */
 package wmnlibnotation;
 
+import wmnlibnotation.iterators.ScoreIterator;
+import wmnlibnotation.iterators.PartWiseScoreIterator;
+import wmnlibnotation.builders.PartBuilder;
+import wmnlibnotation.noteobjects.Part;
+import wmnlibnotation.noteobjects.Note;
+import wmnlibnotation.noteobjects.Pitch;
+import wmnlibnotation.noteobjects.Score;
+import wmnlibnotation.noteobjects.ScorePosition;
+import wmnlibnotation.noteobjects.Durations;
+import wmnlibnotation.noteobjects.Durational;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

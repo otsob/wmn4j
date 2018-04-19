@@ -4,6 +4,13 @@
  */
 package wmnlibnotation;
 
+import wmnlibnotation.builders.NoteBuilder;
+import wmnlibnotation.noteobjects.MultiNoteArticulation;
+import wmnlibnotation.noteobjects.Note;
+import wmnlibnotation.noteobjects.Pitch;
+import wmnlibnotation.noteobjects.ScorePosition;
+import wmnlibnotation.noteobjects.Durations;
+import wmnlibnotation.noteobjects.Articulation;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;

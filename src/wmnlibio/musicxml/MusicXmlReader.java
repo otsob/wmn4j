@@ -5,7 +5,7 @@
 package wmnlibio.musicxml;
 
 import java.io.IOException;
-import wmnlibnotation.Score;
+import wmnlibnotation.noteobjects.Score;
 
 /**
  *

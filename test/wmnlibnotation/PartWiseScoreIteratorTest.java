@@ -4,6 +4,13 @@
  */
 package wmnlibnotation;
 
+import wmnlibnotation.iterators.PartWiseScoreIterator;
+import wmnlibnotation.noteobjects.Note;
+import wmnlibnotation.noteobjects.Pitch;
+import wmnlibnotation.noteobjects.Score;
+import wmnlibnotation.noteobjects.ScorePosition;
+import wmnlibnotation.noteobjects.Durations;
+import wmnlibnotation.noteobjects.Durational;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;

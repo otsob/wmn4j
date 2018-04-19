@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import wmnlibnotation.Durational;
-import wmnlibnotation.Key;
-import wmnlibnotation.PitchClass;
+import wmnlibnotation.noteobjects.Durational;
+import wmnlibnotation.noteobjects.Key;
+import wmnlibnotation.noteobjects.PitchClass;
 
 /**
  * Implements Krumhansl-Schmuckler algorithm

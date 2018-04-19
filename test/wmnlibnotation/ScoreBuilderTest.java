@@ -4,6 +4,9 @@
  */
 package wmnlibnotation;
 
+import wmnlibnotation.builders.ScoreBuilder;
+import wmnlibnotation.noteobjects.Part;
+import wmnlibnotation.noteobjects.Score;
 import java.util.List;
 import java.util.Map;
 import org.junit.Test;

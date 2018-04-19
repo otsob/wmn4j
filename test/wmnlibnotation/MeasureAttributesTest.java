@@ -4,6 +4,11 @@
  */
 package wmnlibnotation;
 
+import wmnlibnotation.noteobjects.TimeSignatures;
+import wmnlibnotation.noteobjects.MeasureAttributes;
+import wmnlibnotation.noteobjects.Clefs;
+import wmnlibnotation.noteobjects.Barline;
+import wmnlibnotation.noteobjects.KeySignatures;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

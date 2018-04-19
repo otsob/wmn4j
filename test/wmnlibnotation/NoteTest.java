@@ -4,6 +4,11 @@
  */
 package wmnlibnotation;
 
+import wmnlibnotation.builders.NoteBuilder;
+import wmnlibnotation.noteobjects.Note;
+import wmnlibnotation.noteobjects.Pitch;
+import wmnlibnotation.noteobjects.Durations;
+import wmnlibnotation.noteobjects.Articulation;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

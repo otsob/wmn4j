@@ -4,12 +4,12 @@
  */
 package wmnlibnotation;
 
-import wmnlibnotation.Articulation;
-import wmnlibnotation.Duration;
-import wmnlibnotation.Chord;
-import wmnlibnotation.Durations;
-import wmnlibnotation.Pitch;
-import wmnlibnotation.Note;
+import wmnlibnotation.noteobjects.Articulation;
+import wmnlibnotation.noteobjects.Duration;
+import wmnlibnotation.noteobjects.Chord;
+import wmnlibnotation.noteobjects.Durations;
+import wmnlibnotation.noteobjects.Pitch;
+import wmnlibnotation.noteobjects.Note;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;

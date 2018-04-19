@@ -1,7 +1,7 @@
 
 package wmnlibanalysis.harmony;
 
-import wmnlibnotation.Score;
+import wmnlibnotation.noteobjects.Score;
 
 /**
  * 

@@ -4,6 +4,8 @@
  */
 package wmnlibnotation;
 
+import wmnlibnotation.noteobjects.Pitch;
+import wmnlibnotation.noteobjects.PitchClass;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

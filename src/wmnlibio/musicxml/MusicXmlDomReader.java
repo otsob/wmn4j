@@ -21,20 +21,20 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import wmnlibnotation.Barline;
-import wmnlibnotation.Chord;
-import wmnlibnotation.Clef;
-import wmnlibnotation.Duration;
-import wmnlibnotation.KeySignature;
-import wmnlibnotation.KeySignatures;
-import wmnlibnotation.MeasureBuilder;
-import wmnlibnotation.Note;
-import wmnlibnotation.PartBuilder;
-import wmnlibnotation.Pitch;
-import wmnlibnotation.Rest;
-import wmnlibnotation.Score;
-import wmnlibnotation.ScoreBuilder;
-import wmnlibnotation.TimeSignature;
+import wmnlibnotation.noteobjects.Barline;
+import wmnlibnotation.noteobjects.Chord;
+import wmnlibnotation.noteobjects.Clef;
+import wmnlibnotation.noteobjects.Duration;
+import wmnlibnotation.noteobjects.KeySignature;
+import wmnlibnotation.noteobjects.KeySignatures;
+import wmnlibnotation.builders.MeasureBuilder;
+import wmnlibnotation.noteobjects.Note;
+import wmnlibnotation.builders.PartBuilder;
+import wmnlibnotation.noteobjects.Pitch;
+import wmnlibnotation.noteobjects.Rest;
+import wmnlibnotation.noteobjects.Score;
+import wmnlibnotation.builders.ScoreBuilder;
+import wmnlibnotation.noteobjects.TimeSignature;
 
 /**
  * A parser for MusicXML files.

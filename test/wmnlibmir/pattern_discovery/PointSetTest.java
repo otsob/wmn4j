@@ -9,7 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import wmnlibio.musicxml.MusicXmlDomReader;
 import wmnlibio.musicxml.MusicXmlReader;
-import wmnlibnotation.Score;
+import wmnlibnotation.noteobjects.Score;
 
 /**
  *

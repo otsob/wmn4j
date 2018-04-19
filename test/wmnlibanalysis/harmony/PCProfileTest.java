@@ -7,10 +7,10 @@ package wmnlibanalysis.harmony;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import wmnlibnotation.Durations;
-import wmnlibnotation.Note;
-import wmnlibnotation.Pitch;
-import wmnlibnotation.PitchClass;
+import wmnlibnotation.noteobjects.Durations;
+import wmnlibnotation.noteobjects.Note;
+import wmnlibnotation.noteobjects.Pitch;
+import wmnlibnotation.noteobjects.PitchClass;
 
 /**
  *

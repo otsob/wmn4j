@@ -4,6 +4,9 @@
  */
 package wmnlibnotation;
 
+import wmnlibnotation.noteobjects.TimeSignatures;
+import wmnlibnotation.noteobjects.TimeSignature;
+import wmnlibnotation.noteobjects.Durations;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
