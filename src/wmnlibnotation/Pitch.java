@@ -25,11 +25,11 @@ public class Pitch implements Comparable<Pitch> {
     /**
      * The limit for altering notes in half-steps (=3).
      */
-    private static final int alterLimit = 3;
+    public static final int ALTER_LIMIT = 3;
     /**
      * Highest allowed octave number (=10).
      */
-    private static final int maxOctave = 10;
+    public static final int MAX_OCTAVE = 10;
     
     private final Base pitchBase;
     private final int alter;
@@ -38,8 +38,8 @@ public class Pitch implements Comparable<Pitch> {
     /**
      * Returns a <code>Pitch</code> object.
      * @throws IllegalArgumentException if alter is greater than 
-     * {@link #alterLimit alterLimit} of smaller than {@link #alterLimit -1*alterLimit}, 
-     * or if octave is negative or larger than {@link #maxOctave maxOctave}.
+     * {@link #ALTER_LIMIT ALTER_LIMIT} of smaller than {@link #ALTER_LIMIT -1*ALTER_LIMIT}, 
+     * or if octave is negative or larger than {@link #MAX_OCTAVE MAX_OCTAVE}.
      * @param pitchName the letter on which the name of the pitch is based.
      * @param alter by how many half-steps the pitch is altered up (positive values)
      * or down (negative values).
@@ -47,11 +47,11 @@ public class Pitch implements Comparable<Pitch> {
      * @return Pitch object with the specified attributes.
      */
     public static Pitch getPitch(Base pitchName, int alter, int octave) {
-        if(alter > alterLimit || alter < -1 * alterLimit)
-            throw new IllegalArgumentException("alter was " + alter + ". alter must be between -" + alterLimit + " and " + alterLimit);
+        if(alter > ALTER_LIMIT || alter < -1 * ALTER_LIMIT)
+            throw new IllegalArgumentException("alter was " + alter + ". alter must be between -" + ALTER_LIMIT + " and " + ALTER_LIMIT);
         
-        if(octave < 0 || octave > maxOctave)
-            throw new IllegalArgumentException("octave was " + octave + ". octave must be between 0 and " + maxOctave);
+        if(octave < 0 || octave > MAX_OCTAVE)
+            throw new IllegalArgumentException("octave was " + octave + ". octave must be between 0 and " + MAX_OCTAVE);
  
         return new Pitch(pitchName, alter, octave);
     }

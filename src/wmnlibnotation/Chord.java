@@ -50,21 +50,22 @@ public class Chord implements Durational, Iterable<Note> {
     private Chord(List<Note> notes) {
         
         List<Note> notesCopy = new ArrayList<>(notes);
-        notesCopy.sort(Note::compareByPitch);
         
+        if(notesCopy.isEmpty())
+            throw new IllegalArgumentException("Chord cannot be constructed with an empty List of notes");
+        
+        notesCopy.sort(Note::compareByPitch);
         this.notes = Collections.unmodifiableList(notesCopy);
+        
         if(this.notes == null)
             throw new NullPointerException();
         
         final Duration d = this.notes.get(0).getDuration();
                 
-        for (Note n : this.notes) {
+        for(Note n : this.notes) {
             if(!d.equals(n.getDuration()))
                 throw new IllegalArgumentException("All notes in chord must be of same duration");
         }
-        
-        if (this.notes.isEmpty())
-            throw new IllegalArgumentException("Chord cannot be constructed with an empty List of notes");
     }
     
     @Override

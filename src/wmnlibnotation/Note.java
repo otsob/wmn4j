@@ -3,8 +3,10 @@
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package wmnlibnotation;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,7 +19,8 @@ public class Note implements Durational {
     
     private final Pitch pitch;
     private final Duration duration;
-    private final Set<Articulation> articulations; 
+    private final Set<Articulation> articulations;
+    private final List<MultiNoteArticulation> multiNoteArticulations;
     
     /**
      * Get a <code>Note</code> object with specified parameters.
@@ -49,7 +52,22 @@ public class Note implements Durational {
      * @return a Note object with the given parameters.
      */
     public static Note getNote(Pitch pitch, Duration duration, Set<Articulation> articulations) {
-        return new Note(pitch, duration, articulations);
+        return new Note(pitch, duration, articulations, null);
+    }
+    
+    /**
+     * Get a <code>Note</code> object with specified parameters.
+     * @param pitch the pitch of the note. Must not be null.
+     * @param duration the duration of the note. Must not be null.
+     * @param articulations a set of Articulations associated with the note.
+     * @param multiNoteArticulations list of the MultiNoteArticulations for the note.
+     * @return a Note object with the given parameters.
+     */
+    public static Note getNote(Pitch pitch, 
+                                Duration duration, 
+                                Set<Articulation> articulations, 
+                                List<MultiNoteArticulation> multiNoteArticulations) {
+        return new Note(pitch, duration, articulations, multiNoteArticulations);
     }
     
     /**
@@ -59,13 +77,18 @@ public class Note implements Durational {
      * @param duration the duration of the note.
      * @param articulations a set of Articulations associated with the note.
      */
-    private Note(Pitch pitch, Duration duration, Set<Articulation> articulations) {
+    private Note(Pitch pitch, Duration duration, Set<Articulation> articulations, List<MultiNoteArticulation> multiNoteArticulations) {
         this.pitch = pitch;
         this.duration = duration;
         if(articulations != null && !articulations.isEmpty())
-            this.articulations = EnumSet.copyOf(articulations);
+            this.articulations = Collections.unmodifiableSet(EnumSet.copyOf(articulations));
         else
             this.articulations = Collections.emptySet();
+        
+        if(multiNoteArticulations != null && !multiNoteArticulations.isEmpty())
+            this.multiNoteArticulations = Collections.unmodifiableList(new ArrayList<>(multiNoteArticulations));
+        else
+            this.multiNoteArticulations = Collections.emptyList();
         
         if(this.pitch == null)
             throw new NullPointerException("Pitch was null. Note must have a pitch.");
@@ -104,7 +127,7 @@ public class Note implements Durational {
      * @return the articulations of this <code>Note</code>.
      */
     public Set<Articulation> getArticulations() {
-        return Collections.unmodifiableSet(this.articulations);
+        return this.articulations;
     }
     
     /**
@@ -122,6 +145,28 @@ public class Note implements Durational {
      */
     public boolean hasArticulation(Articulation articulation) {
         return this.articulations.contains(articulation);
+    }
+    
+    /**
+     * @return True if this note is tied to a following note.
+     */
+    public boolean isTiedToFollowing() {
+        return this.multiNoteArticulations.stream().anyMatch(a -> a.getType() == MultiNoteArticulation.Type.TIE);
+    }
+    
+    /**
+     * @return The <code>MultiNoteArticulation</code> objects of this <code>Note</code>.
+     */
+    public List<MultiNoteArticulation> getMultiNoteArticulations() {
+        return this.multiNoteArticulations;
+    }
+    
+    /**
+     * @return true if this <code>Note</code> has any <code>MultiNoteArticulations</code>, 
+     * false otherwise.
+     */
+    public boolean hasMultiNoteArticulations() {
+        return !this.multiNoteArticulations.isEmpty();
     }
     
     /**
