@@ -378,4 +378,10 @@ public class MusicXmlDomReaderTest {
         Durational n = part.getMeasure(2).getLayer(1).get(0);
         assertEquals(Durations.EIGHT, n.getDuration());
     }
+    
+    @Test
+    public void testTiedNotes() {
+        
+    
+    }
 }

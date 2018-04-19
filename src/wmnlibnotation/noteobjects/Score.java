@@ -4,7 +4,7 @@
  */
 package wmnlibnotation.noteobjects;
 
-import wmnlibnotation.noteobjects.ScorePosition;
+import wmnlibnotation.iterators.ScorePosition;
 import wmnlibnotation.noteobjects.Measure;
 import wmnlibnotation.noteobjects.Durational;
 import java.util.ArrayList;

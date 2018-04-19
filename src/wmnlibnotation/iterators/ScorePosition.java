@@ -2,7 +2,9 @@
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package wmnlibnotation.noteobjects;
+package wmnlibnotation.iterators;
+
+import wmnlibnotation.noteobjects.SingleStaffPart;
 
 /**
  * Defines the position of a <code>Durational</code> in a <code>Score</code>.
@@ -87,8 +89,8 @@ public class ScorePosition {
      * <code>Object o</code>. 
      * Two positions are equal if and only if all of their properties are 
      * equal.
-     * @param o
-     * @return 
+     * @param o Object with which this is compared for equality.
+     * @return True if o is equal to this, false otherwise.
      */
     @Override
     public boolean equals(Object o) {

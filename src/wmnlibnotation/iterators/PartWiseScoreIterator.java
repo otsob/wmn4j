@@ -6,7 +6,6 @@ package wmnlibnotation.iterators;
 
 import wmnlibnotation.noteobjects.Part;
 import wmnlibnotation.noteobjects.Score;
-import wmnlibnotation.noteobjects.ScorePosition;
 import wmnlibnotation.noteobjects.Measure;
 import wmnlibnotation.noteobjects.Durational;
 import java.util.Iterator;

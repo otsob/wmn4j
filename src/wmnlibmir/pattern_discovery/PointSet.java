@@ -13,7 +13,7 @@ import wmnlibnotation.noteobjects.Measure;
 import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.iterators.PartWiseScoreIterator;
 import wmnlibnotation.noteobjects.Score;
-import wmnlibnotation.noteobjects.ScorePosition;
+import wmnlibnotation.iterators.ScorePosition;
 
 /**
  *

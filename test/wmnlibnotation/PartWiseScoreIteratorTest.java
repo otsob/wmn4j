@@ -8,7 +8,7 @@ import wmnlibnotation.iterators.PartWiseScoreIterator;
 import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.Score;
-import wmnlibnotation.noteobjects.ScorePosition;
+import wmnlibnotation.iterators.ScorePosition;
 import wmnlibnotation.noteobjects.Durations;
 import wmnlibnotation.noteobjects.Durational;
 import org.junit.Test;

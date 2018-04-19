@@ -4,7 +4,6 @@
  */
 package wmnlibnotation.iterators;
 
-import wmnlibnotation.noteobjects.ScorePosition;
 import wmnlibnotation.noteobjects.Durational;
 import java.util.NoSuchElementException;
 
