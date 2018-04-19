@@ -12,7 +12,11 @@ import java.util.Set;
 
 /**
  * Class that defines a note.
- * This class is immutable.
+ * This class is immutable. The <code>NoteBuilder</code> class can be used
+ * for creating <code>Note</code> objects.
+ * Notes have pitch, duration, articulations, and can be tied.
+ * A sequence of tied notes functions like a singly linked list where 
+ * a previous note keeps track of the following tied note.
  * @author otsobjorklund
  */
 public class Note implements Durational {
@@ -21,6 +25,9 @@ public class Note implements Durational {
     private final Duration duration;
     private final Set<Articulation> articulations;
     private final List<MultiNoteArticulation> multiNoteArticulations;
+    
+    private final Note tiedTo;
+    private final boolean isTiedFrom;
     
     /**
      * Get a <code>Note</code> object with specified parameters.
@@ -52,7 +59,7 @@ public class Note implements Durational {
      * @return a Note object with the given parameters.
      */
     public static Note getNote(Pitch pitch, Duration duration, Set<Articulation> articulations) {
-        return new Note(pitch, duration, articulations, null);
+        return new Note(pitch, duration, articulations, null, null, false);
     }
     
     /**
@@ -67,17 +74,43 @@ public class Note implements Durational {
                                 Duration duration, 
                                 Set<Articulation> articulations, 
                                 List<MultiNoteArticulation> multiNoteArticulations) {
-        return new Note(pitch, duration, articulations, multiNoteArticulations);
+        return new Note(pitch, duration, articulations, multiNoteArticulations, null, false);
     }
     
     /**
-     * Private constructor. Use the static <code>getNote</code> methods to get an instance.
+     * Get a <code>Note</code> object with specified parameters.
+     * @param pitch the pitch of the note. Must not be null.
+     * @param duration the duration of the note. Must not be null.
+     * @param articulations a set of Articulations associated with the note.
+     * @param multiNoteArticulations list of the MultiNoteArticulations for the note.
+     * @param tiedTo A tie from a previous note that ends in this.
+     * @param isTiedFromPrevious A tie that originates from this note.
+     * @return a Note object with the given parameters.
+     */
+    public static Note getNote(Pitch pitch, 
+                                Duration duration, 
+                                Set<Articulation> articulations, 
+                                List<MultiNoteArticulation> multiNoteArticulations, 
+                                Note tiedTo,
+                                boolean isTiedFromPrevious) {
+        return new Note(pitch, duration, articulations, multiNoteArticulations, tiedTo, isTiedFromPrevious);
+    }
+    
+    /**
+     * Private constructor. Use the static <code>getNote</code> methods
+     * or <code>NoteBuilder</code> to get an instance.
      * @throws NullPointerException if duration or pitch is null.
      * @param pitch the pitch of the note.
      * @param duration the duration of the note.
      * @param articulations a set of Articulations associated with the note.
      */
-    private Note(Pitch pitch, Duration duration, Set<Articulation> articulations, List<MultiNoteArticulation> multiNoteArticulations) {
+    private Note(Pitch pitch, 
+            Duration duration, 
+            Set<Articulation> articulations, 
+            List<MultiNoteArticulation> multiNoteArticulations,
+            Note tiedTo,
+            boolean isTiedFromPrevious) {
+        
         this.pitch = pitch;
         this.duration = duration;
         if(articulations != null && !articulations.isEmpty())
@@ -95,6 +128,9 @@ public class Note implements Durational {
         
         if(this.duration == null)
             throw new NullPointerException("Duration was null. Note must have a duration.");
+        
+        this.tiedTo = tiedTo;
+        this.isTiedFrom = isTiedFromPrevious;
     }
     
     /**
@@ -148,13 +184,6 @@ public class Note implements Durational {
     }
     
     /**
-     * @return True if this note is tied to a following note.
-     */
-    public boolean isTiedToFollowing() {
-        return this.multiNoteArticulations.stream().anyMatch(a -> a.getType() == MultiNoteArticulation.Type.TIE);
-    }
-    
-    /**
      * @return The <code>MultiNoteArticulation</code> objects of this <code>Note</code>.
      */
     public List<MultiNoteArticulation> getMultiNoteArticulations() {
@@ -167,6 +196,58 @@ public class Note implements Durational {
      */
     public boolean hasMultiNoteArticulations() {
         return !this.multiNoteArticulations.isEmpty();
+    }
+   
+    /**
+     * @return True if this note is tied to a following note. False otherwise.
+     */
+    public boolean isTiedToFollowing() {
+        return this.tiedTo != null;
+    }
+    
+    /**
+     * @return True if this note is the end of a tie originating from a 
+     * previous note. False otherwise.
+     */
+    public boolean isTiedFromPrevious() {
+        return this.isTiedFrom;
+    }
+    
+    /**
+     * @return True if there are any ties attached to this note. False otherwise.
+     */
+    public boolean isTied() {
+        return this.isTiedFromPrevious() || this.isTiedToFollowing();
+    }
+    
+    /**
+     * Get the total duration of tied notes starting from 
+     * the onset of this note.
+     * For example, if three quarter notes are tied together, 
+     * then the tied duration of the first note is a dotted half note.
+     * For a note that is not tied to a following note this is equal
+     * to the note's duration.
+     * @return The total duration of consecutive tied notes starting 
+     * from the onset of this <code>Note</code>.
+     */
+    public Duration getTiedDuration() {
+        List<Duration> tiedDurations = new ArrayList<>(); 
+        
+        Note currentNote = this;
+        while(currentNote != null) {
+            tiedDurations.add(currentNote.getDuration());
+            currentNote = currentNote.getFollowingTiedNote();
+        }
+        
+        return Duration.sumOf(tiedDurations);
+    }
+
+    /**
+     * @return The following <code>Note</code> that this is tied to.
+     * returns null if this note is not tied to a following note.
+     */
+    public Note getFollowingTiedNote() {
+        return this.tiedTo;
     }
     
     /**
@@ -209,6 +290,16 @@ public class Note implements Durational {
     }
    
     /**
+     * Compare this to other <code>Note</code> for equality of pitch and 
+     * duration.
+     * @param other Note with which this is compared.
+     * @return True if pitch and duration are equal, false otherwise.
+     */
+    public boolean equalsInPitchAndDuration(Note other) {
+        return this.pitch.equals(other.pitch) && this.duration.equals(other.duration);
+    }
+    
+    /**
      * Check this <code>Note</code> for equality against <code>Object o</code>.
      * Notes are equal if they have the same Pitch, Duration, and set of Articulations.
      * @param o the Object against which this Note is compared for equality.
@@ -225,20 +316,20 @@ public class Note implements Durational {
        
         Note other = (Note) o;
         
-        if(!this.pitch.equals(other.pitch))
+        if(!this.equalsInPitchAndDuration(other))
             return false;
         
-        if(!this.duration.equals(other.duration))
-            return false;
-
         if(!this.articulations.equals(other.articulations))
             return false;
+        
+        // TODO: Effect of ties and MultiNoteArticulations.
         
         return true;
     }
 
     @Override
     public int hashCode() {
+        // TODO: if equals is changed update this.
         int hash = 3;
         hash = 79 * hash + Objects.hashCode(this.pitch);
         hash = 79 * hash + Objects.hashCode(this.duration);

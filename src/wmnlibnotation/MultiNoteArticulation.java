@@ -6,26 +6,31 @@ package wmnlibnotation;
 
 /**
  * Class that represents markings that span across multiple notes, such
- * as ties and slurs. Is immutable.
+ * as slurs and glissando. Is immutable.
  * @author Otso Björklund
  */
 public class MultiNoteArticulation {
-    public enum Type { TIE, SLUR, GLISSANDO }
+    
+    /**
+     * The type of the articulation.
+     */
+    public enum Type { SLUR, GLISSANDO }
     
     private final Type type;
-
-    private final ScorePosition target;
+    // TODO: Keep track of all notes and positions that are affected by this.
     
-    public MultiNoteArticulation(Type type, ScorePosition target) {
+    /**
+     * @param type Type of articulation.
+     */
+    public MultiNoteArticulation(Type type) {
         this.type = type;
-        this.target = target;
     }
     
+    /**
+     * @return The type of this.
+     */
     public Type getType() {
         return type;
     }
 
-    public ScorePosition getTarget() {
-        return target;
-    }
 }

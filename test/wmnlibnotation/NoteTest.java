@@ -4,10 +4,7 @@
  */
 package wmnlibnotation;
 
-import wmnlibnotation.Articulation;
-import wmnlibnotation.Durations;
-import wmnlibnotation.Pitch;
-import wmnlibnotation.Note;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -145,5 +142,53 @@ public class NoteTest {
         catch(Exception e) { /* Do nothing */ }
         
         assertTrue(note.hasArticulation(Articulation.STACCATO));
+    }
+    
+    @Test
+    public void testTies() {
+        List<NoteBuilder> builders = new ArrayList<>();
+        
+        NoteBuilder firstBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+        builders.add(firstBuilder);
+        
+        NoteBuilder secondBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
+        builders.add(secondBuilder);
+        
+        List<Note> notes = NoteBuilder.buildTiedNotes(builders);
+        
+        Note firstNote = notes.get(0);
+        assertTrue(firstNote.isTied());
+        assertTrue(firstNote.getFollowingTiedNote() != null);
+        assertFalse(firstNote.isTiedFromPrevious());
+        
+        Note secondNote = notes.get(1);
+        assertTrue(secondNote.isTied());
+        assertTrue(secondNote.getFollowingTiedNote() == null);
+        assertTrue(secondNote.isTiedFromPrevious());
+    }
+    
+    @Test
+    public void testTiedDuration() {
+        Note untied = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+        assertEquals(Durations.QUARTER, untied.getTiedDuration());
+        
+        List<NoteBuilder> builders = new ArrayList<>();
+        NoteBuilder firstBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+        builders.add(firstBuilder);
+        
+        NoteBuilder secondBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
+        builders.add(secondBuilder);
+        
+        List<Note> twoNoteSequence = NoteBuilder.buildTiedNotes(builders);
+        assertEquals(Durations.QUARTER.addDot(), twoNoteSequence.get(0).getTiedDuration());
+        assertEquals(Durations.EIGHT, twoNoteSequence.get(1).getTiedDuration());
+        
+        NoteBuilder thirdBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
+        builders.add(thirdBuilder);
+        
+        List<Note> threeNoteSequence = NoteBuilder.buildTiedNotes(builders);
+        assertEquals(Durations.HALF, threeNoteSequence.get(0).getTiedDuration());
+        assertEquals(Durations.QUARTER, threeNoteSequence.get(1).getTiedDuration());
+        assertEquals(Durations.EIGHT, threeNoteSequence.get(2).getTiedDuration());
     }
 }
