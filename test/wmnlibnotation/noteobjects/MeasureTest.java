@@ -2,19 +2,8 @@
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package wmnlibnotation;
+package wmnlibnotation.noteobjects;
 
-import wmnlibnotation.noteobjects.Note;
-import wmnlibnotation.noteobjects.Pitch;
-import wmnlibnotation.noteobjects.Rest;
-import wmnlibnotation.noteobjects.TimeSignatures;
-import wmnlibnotation.noteobjects.KeySignature;
-import wmnlibnotation.noteobjects.Durations;
-import wmnlibnotation.noteobjects.Clefs;
-import wmnlibnotation.noteobjects.Durational;
-import wmnlibnotation.noteobjects.Measure;
-import wmnlibnotation.noteobjects.Chord;
-import wmnlibnotation.noteobjects.KeySignatures;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,8 +18,8 @@ import static org.junit.Assert.*;
  */
 public class MeasureTest {
     
-    Map<Integer, List<Durational>> singleNoteLayer = new HashMap();
-    Map<Integer, List<Durational>> multipleNoteLayers = new HashMap();
+    Map<Integer, List<Durational>> singleNoteLayer = new HashMap<>();
+    Map<Integer, List<Durational>> multipleNoteLayers = new HashMap<>();
     
     KeySignature keySig = KeySignatures.CMAJ_AMIN;
     
@@ -40,15 +29,15 @@ public class MeasureTest {
     Note C4Quarter = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
     
     public MeasureTest() {
-        List<Durational> layerContents = new ArrayList();
+        List<Durational> layerContents = new ArrayList<>();
         layerContents.add(C4Quarter);
         layerContents.add(Rest.getRest(Durations.QUARTER));
         layerContents.add(Chord.getChord(C4, E4, G4));
         this.singleNoteLayer.put(0, layerContents);
         
-        this.multipleNoteLayers = new HashMap();
+        this.multipleNoteLayers = new HashMap<>();
         this.multipleNoteLayers.put(0, layerContents);
-        this.multipleNoteLayers.put(1, new ArrayList());
+        this.multipleNoteLayers.put(1, new ArrayList<>());
         this.multipleNoteLayers.get(1).add(Rest.getRest(Durations.QUARTER));
         this.multipleNoteLayers.get(1).add(C4);
         this.multipleNoteLayers.get(1).add(Rest.getRest(Durations.QUARTER));
@@ -74,8 +63,8 @@ public class MeasureTest {
     
     @Test
     public void testLayersImmutable() {
-        Map<Integer, List<Durational>> layers = new HashMap();
-        List<Durational> layer = new ArrayList();
+        Map<Integer, List<Durational>> layers = new HashMap<>();
+        List<Durational> layer = new ArrayList<>();
         layer.add(C4);
         layers.put(0, layer);
         
@@ -112,7 +101,7 @@ public class MeasureTest {
         int noteCount = 0;
         
         List<Durational> expected = singleNoteLayer.get(0);
-        List<Durational> found = new ArrayList();
+        List<Durational> found = new ArrayList<>();
         
         for(Durational e : singleLayerMeasure) {
             found.add(e);
@@ -129,11 +118,11 @@ public class MeasureTest {
         Measure multiLayerMeasure = new Measure(1, multipleNoteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         int noteCount = 0;
 
-        List<Durational> expected = new ArrayList();
+        List<Durational> expected = new ArrayList<>();
         expected.addAll(multipleNoteLayers.get(0));
         expected.addAll(multipleNoteLayers.get(1));
         
-        List<Durational> found = new ArrayList();
+        List<Durational> found = new ArrayList<>();
         
         for(Durational e : multiLayerMeasure) {
             found.add(e);
@@ -162,8 +151,8 @@ public class MeasureTest {
     
     @Test
     public void testIteratorWithEmptyMeasure() {
-        Map<Integer, List<Durational>> layers = new HashMap();
-        layers.put(0, new ArrayList());
+        Map<Integer, List<Durational>> layers = new HashMap<>();
+        layers.put(0, new ArrayList<>());
         Measure emptyMeasure = new Measure(1, layers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         
         int noteElemCount = 0;
@@ -179,13 +168,13 @@ public class MeasureTest {
     @Test
     public void testIteratorWithNonContiguousLayerNumbers() {
         List<Durational> noteList = this.singleNoteLayer.get(0);
-        Map<Integer, List<Durational>> noteLayers = new HashMap();
+        Map<Integer, List<Durational>> noteLayers = new HashMap<>();
         noteLayers.put(1, noteList);
         noteLayers.put(3, noteList);
         
         Measure measure = new Measure(1, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
         
-        List<Durational> expected = new ArrayList(noteList);
+        List<Durational> expected = new ArrayList<>(noteList);
         for(Durational d : noteList)
             expected.add(d);
         

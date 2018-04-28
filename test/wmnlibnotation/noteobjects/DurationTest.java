@@ -2,12 +2,10 @@
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package wmnlibnotation;
+package wmnlibnotation.noteobjects;
 
 import java.util.ArrayList;
 import java.util.List;
-import wmnlibnotation.noteobjects.Duration;
-import wmnlibnotation.noteobjects.Durations;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -156,14 +154,14 @@ public class DurationTest {
     
     @Test
     public void testSumOf() {
-        List<Duration> durations = new ArrayList();
+        List<Duration> durations = new ArrayList<>();
         int numOfQuarters = 4;
         for(int i = 0; i < numOfQuarters; ++i) 
             durations.add(Durations.QUARTER);
         
         assertEquals("Four quarters did not add to whole note.", Durations.QUARTER.multiplyBy(numOfQuarters), Duration.sumOf(durations));
         
-        durations = new ArrayList();
+        durations = new ArrayList<>();
         durations.add(Durations.EIGHT);
         durations.add(Durations.SIXTEENTH);
         durations.add(Durations.SIXTEENTH);

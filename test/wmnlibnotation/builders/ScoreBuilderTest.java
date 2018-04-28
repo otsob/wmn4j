@@ -5,13 +5,11 @@
 package wmnlibnotation.builders;
 
 import java.util.ArrayList;
-import wmnlibnotation.builders.ScoreBuilder;
-import wmnlibnotation.noteobjects.Part;
 import wmnlibnotation.noteobjects.Score;
 import java.util.List;
 import java.util.Map;
 import org.junit.Test;
-import wmnlibnotation.ScoreTest;
+import wmnlibnotation.noteobjects.ScoreTest;
 import static org.junit.Assert.*;
 import wmnlibnotation.TestHelper;
 
@@ -25,7 +23,7 @@ public class ScoreBuilderTest {
     }
 
     public static List<PartBuilder> getTestPartBuilders(int partCount, int measureCount) {
-        List<PartBuilder> partBuilders = new ArrayList();
+        List<PartBuilder> partBuilders = new ArrayList<>();
         
         for(int p = 1; p <= partCount; ++p) {
             PartBuilder partBuilder = new PartBuilder("Part" + p);

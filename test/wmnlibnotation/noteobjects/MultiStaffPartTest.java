@@ -2,17 +2,15 @@
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package wmnlibnotation;
+package wmnlibnotation.noteobjects;
 
-import wmnlibnotation.noteobjects.MultiStaffPart;
-import wmnlibnotation.noteobjects.Staff;
-import wmnlibnotation.noteobjects.Measure;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.junit.Test;
+import wmnlibnotation.TestHelper;
 import static org.junit.Assert.*;
 
 /**
@@ -21,11 +19,11 @@ import static org.junit.Assert.*;
  */
 public class MultiStaffPartTest {
     
-    private Map<Integer, Staff> testStaves;
+    private final Map<Integer, Staff> testStaves;
     
     public MultiStaffPartTest() {
-        this.testStaves = new HashMap();
-        List<Measure> measures = new ArrayList();
+        this.testStaves = new HashMap<>();
+        List<Measure> measures = new ArrayList<>();
         for(int i = 1; i <= 5; ++i)
             measures.add(TestHelper.getTestMeasure(i));
         
@@ -35,12 +33,12 @@ public class MultiStaffPartTest {
 
     @Test
     public void testImmutability() {
-        Map<Integer, Staff> testStaves = new HashMap(this.testStaves);
-        MultiStaffPart part = new MultiStaffPart("Test staff", testStaves);
+        Map<Integer, Staff> testStavesCopy = new HashMap<>(this.testStaves);
+        MultiStaffPart part = new MultiStaffPart("Test staff", testStavesCopy);
         
-        List<Measure> testMeasures = new ArrayList();
+        List<Measure> testMeasures = new ArrayList<>();
         testMeasures.add(TestHelper.getTestMeasure(1));
-        testStaves.put(1, new Staff(testMeasures));
+        testStavesCopy.put(1, new Staff(testMeasures));
         
         assertTrue("Modifying map that was used to create MultiStaffPart changed the MultiStaffPart.",
                     part.getStaff(1).getMeasure(1) == this.testStaves.get(1).getMeasure(1));
@@ -77,8 +75,8 @@ public class MultiStaffPartTest {
     
     @Test
     public void testIteratorWithPickupMeasure() {
-        Map<Integer, Staff> staves = new HashMap();
-        List<Measure> measures = new ArrayList();
+        Map<Integer, Staff> staves = new HashMap<>();
+        List<Measure> measures = new ArrayList<>();
         for(int i = 0; i <= 4; ++i)
             measures.add(TestHelper.getTestMeasure(i));
         

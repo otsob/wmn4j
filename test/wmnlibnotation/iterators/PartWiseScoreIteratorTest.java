@@ -2,13 +2,11 @@
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package wmnlibnotation;
+package wmnlibnotation.iterators;
 
-import wmnlibnotation.iterators.PartWiseScoreIterator;
 import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.Score;
-import wmnlibnotation.iterators.ScorePosition;
 import wmnlibnotation.noteobjects.Durations;
 import wmnlibnotation.noteobjects.Durational;
 import org.junit.Test;

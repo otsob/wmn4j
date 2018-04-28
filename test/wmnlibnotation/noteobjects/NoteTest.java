@@ -2,13 +2,9 @@
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package wmnlibnotation;
+package wmnlibnotation.noteobjects;
 
 import wmnlibnotation.builders.NoteBuilder;
-import wmnlibnotation.noteobjects.Note;
-import wmnlibnotation.noteobjects.Pitch;
-import wmnlibnotation.noteobjects.Durations;
-import wmnlibnotation.noteobjects.Articulation;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -41,7 +37,7 @@ public class NoteTest {
         assertEquals( "Fb5(1/8)", Note.getNote(Pitch.getPitch( Pitch.Base.F, -1, 5), Durations.EIGHT).toString() );
         
         Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
-        HashSet<Articulation> articulations = new HashSet();
+        HashSet<Articulation> articulations = new HashSet<>();
         articulations.add(Articulation.STACCATO);
         assertEquals( "C1(1/8)(STACCATO)", Note.getNote(pitch, Durations.EIGHT, articulations).toString());
         articulations.add(Articulation.TENUTO);
@@ -67,7 +63,7 @@ public class NoteTest {
         assertTrue(C4.equals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
         
         Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
-        HashSet<Articulation> articulations = new HashSet();
+        HashSet<Articulation> articulations = new HashSet<>();
         articulations.add(Articulation.STACCATO);
         Note note1 = Note.getNote(pitch, Durations.EIGHT, articulations);
         articulations.add(Articulation.TENUTO);
@@ -111,7 +107,7 @@ public class NoteTest {
     @Test
     public void testHasArticulation() {
         Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
-        Set<Articulation> articulations = new HashSet();
+        Set<Articulation> articulations = new HashSet<>();
         articulations.add(Articulation.STACCATO);
         assertTrue(Note.getNote(pitch, Durations.EIGHT, articulations).hasArticulation(Articulation.STACCATO));
         assertFalse(Note.getNote(pitch, Durations.EIGHT).hasArticulation(Articulation.STACCATO));
@@ -120,7 +116,7 @@ public class NoteTest {
     @Test
     public void testHasArticulations() {
         Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
-        HashSet<Articulation> articulations = new HashSet();
+        HashSet<Articulation> articulations = new HashSet<>();
         articulations.add(Articulation.STACCATO);
         assertTrue(Note.getNote(pitch, Durations.EIGHT, articulations).hasArticulations());
         assertFalse(Note.getNote(pitch, Durations.EIGHT).hasArticulations());
@@ -131,7 +127,7 @@ public class NoteTest {
         Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
         assertTrue(Note.getNote(pitch, Durations.EIGHT).getArticulations().isEmpty());
         
-        Set<Articulation> articulations = new HashSet();
+        Set<Articulation> articulations = new HashSet<>();
         articulations.add(Articulation.STACCATO);
         articulations.add(Articulation.TENUTO);
         Note note = Note.getNote(pitch, Durations.EIGHT, articulations);

@@ -19,7 +19,7 @@ public class PatternAlgorithmsTest {
     }
 
     private List<NoteEventVector> getDataset() {
-        List<NoteEventVector> dataset = new ArrayList();
+        List<NoteEventVector> dataset = new ArrayList<>();
         double[] components1 = {3,2};
         dataset.add(new NoteEventVector(components1));
         

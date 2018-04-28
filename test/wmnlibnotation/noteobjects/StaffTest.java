@@ -2,19 +2,8 @@
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package wmnlibnotation;
+package wmnlibnotation.noteobjects;
 
-import wmnlibnotation.noteobjects.Note;
-import wmnlibnotation.noteobjects.Pitch;
-import wmnlibnotation.noteobjects.Rest;
-import wmnlibnotation.noteobjects.TimeSignatures;
-import wmnlibnotation.noteobjects.TimeSignature;
-import wmnlibnotation.noteobjects.Staff;
-import wmnlibnotation.noteobjects.Durations;
-import wmnlibnotation.noteobjects.Clefs;
-import wmnlibnotation.noteobjects.Durational;
-import wmnlibnotation.noteobjects.Measure;
-import wmnlibnotation.noteobjects.KeySignatures;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,10 +22,10 @@ public class StaffTest {
     }
     
     static List<Measure> getTestMeasures() {
-        List<Measure> measures = new ArrayList();
+        List<Measure> measures = new ArrayList<>();
         TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
-        Map<Integer, List<Durational>> notes = new HashMap();
-        notes.put(0, new ArrayList());
+        Map<Integer, List<Durational>> notes = new HashMap<>();
+        notes.put(0, new ArrayList<>());
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
         notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
@@ -63,9 +52,9 @@ public class StaffTest {
         }
         
         int sizeBeforeAddition = origMeasures.size();
-        List<Durational> layer = new ArrayList();
+        List<Durational> layer = new ArrayList<>();
         layer.add(Rest.getRest(Durations.WHOLE));
-        Map<Integer, List<Durational>> notes = new HashMap();
+        Map<Integer, List<Durational>> notes = new HashMap<>();
         notes.put(1, layer);
         origMeasures.add(new Measure(3, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
         assertEquals(sizeBeforeAddition, staff.getMeasures().size());
@@ -118,10 +107,10 @@ public class StaffTest {
     
     @Test
     public void testGetMeasureWithPickup() {
-        List<Measure> measures = new ArrayList();
-        List<Durational> layer = new ArrayList();
+        List<Measure> measures = new ArrayList<>();
+        List<Durational> layer = new ArrayList<>();
         layer.add(Rest.getRest(Durations.WHOLE));
-        Map<Integer, List<Durational>> notes = new HashMap();
+        Map<Integer, List<Durational>> notes = new HashMap<>();
         notes.put(1, layer);
         measures.add(new Measure(0, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
         measures.addAll(getTestMeasures());

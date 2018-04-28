@@ -11,7 +11,6 @@ import wmnlibnotation.noteobjects.KeySignatures;
 import wmnlibnotation.noteobjects.TimeSignatures;
 import wmnlibnotation.noteobjects.Rest;
 import wmnlibnotation.noteobjects.Measure;
-import wmnlibnotation.builders.MeasureBuilder;
 import wmnlibnotation.noteobjects.Durational;
 import wmnlibnotation.noteobjects.Durations;
 import wmnlibnotation.noteobjects.Pitch;
@@ -19,8 +18,6 @@ import wmnlibnotation.noteobjects.Note;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import wmnlibnotation.builders.NoteBuilder;
-import wmnlibnotation.builders.RestBuilder;
 
 /**
  *
@@ -30,7 +27,6 @@ public class MeasureBuilderTest {
     
     public MeasureBuilderTest() {
     }
-    
     
     @Test
     public void testBuildMeasureBySettingParameters() {
@@ -182,5 +178,21 @@ public class MeasureBuilderTest {
         assertFalse("builder is full when 6/8 measure is lacking one sixteenth triplet", builder.isFull());
         builder.addToLayer(0, new RestBuilder(Durations.SIXTEENTH_TRIPLET));
         assertTrue("builder is not full when 6/8 measure should be full.", builder.isFull());
+    }
+    
+    @Test
+    public void testBuildingMeasureWithTiedNotes() {
+        MeasureBuilder builder = new MeasureBuilder(1);
+        NoteBuilder first = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 2), Durations.HALF);
+        NoteBuilder second = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 2), Durations.HALF);
+        
+        // TODO: Setting of tied.
+        builder.addToLayer(1, first).addToLayer(1, second);
+        Measure measure = builder.build();
+        
+        Note firstNote = (Note) measure.get(1, 0);
+        Note secondNote = (Note) measure.get(1, 1);
+        assertEquals(secondNote, firstNote.getFollowingTiedNote());
+        assertTrue(secondNote.isTiedFromPrevious());
     }
 }

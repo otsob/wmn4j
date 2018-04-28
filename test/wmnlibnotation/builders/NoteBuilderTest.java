@@ -4,7 +4,6 @@
  */
 package wmnlibnotation.builders;
 
-import wmnlibnotation.builders.NoteBuilder;
 import wmnlibnotation.noteobjects.MultiNoteArticulation;
 import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.noteobjects.Pitch;

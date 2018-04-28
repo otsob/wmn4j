@@ -2,21 +2,8 @@
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package wmnlibnotation;
+package wmnlibnotation.noteobjects;
 
-import wmnlibnotation.noteobjects.Note;
-import wmnlibnotation.noteobjects.Pitch;
-import wmnlibnotation.noteobjects.Rest;
-import wmnlibnotation.noteobjects.TimeSignatures;
-import wmnlibnotation.noteobjects.SingleStaffPart;
-import wmnlibnotation.noteobjects.Staff;
-import wmnlibnotation.noteobjects.KeySignature;
-import wmnlibnotation.noteobjects.Durations;
-import wmnlibnotation.noteobjects.Clefs;
-import wmnlibnotation.noteobjects.Durational;
-import wmnlibnotation.noteobjects.Measure;
-import wmnlibnotation.noteobjects.Chord;
-import wmnlibnotation.noteobjects.KeySignatures;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,20 +30,20 @@ public class SingleStaffPartTest {
     Note C4Quarter = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
     
     public SingleStaffPartTest() {
-        Map<Integer, List<Durational>> noteLayer = new HashMap();
-        noteLayer.put(0, new ArrayList());
+        Map<Integer, List<Durational>> noteLayer = new HashMap<>();
+        noteLayer.put(0, new ArrayList<>());
         noteLayer.get(0).add(C4Quarter);
         noteLayer.get(0).add(Rest.getRest(Durations.QUARTER));
         noteLayer.get(0).add(Chord.getChord(C4, E4, G4));
         
-        Map<Integer, List<Durational>> noteLayers = new HashMap();
+        Map<Integer, List<Durational>> noteLayers = new HashMap<>();
         noteLayers.put(0, noteLayer.get(0));
-        noteLayers.put(1, new ArrayList());
+        noteLayers.put(1, new ArrayList<>());
         noteLayers.get(1).add(Rest.getRest(Durations.QUARTER));
         noteLayers.get(1).add(C4);
         noteLayers.get(1).add(Rest.getRest(Durations.QUARTER));
     
-        List<Measure> measureList = new ArrayList();
+        List<Measure> measureList = new ArrayList<>();
         for(int i = 1; i <= this.measureCount; ++i)
             measureList.add(new Measure(i, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G));
         
@@ -65,7 +52,7 @@ public class SingleStaffPartTest {
 
     @Test
     public void testImmutability() {
-        List<Measure> measuresCopy = new ArrayList(this.measures);
+        List<Measure> measuresCopy = new ArrayList<>(this.measures);
         SingleStaffPart part = new SingleStaffPart("Test part", measuresCopy);
         measuresCopy.set(0, null);
         assertTrue("Modifying list used to create part modified part also.", part.getStaff().getMeasures().get(0) != null);

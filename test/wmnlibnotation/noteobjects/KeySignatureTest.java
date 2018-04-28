@@ -2,11 +2,8 @@
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package wmnlibnotation;
+package wmnlibnotation.noteobjects;
 
-import wmnlibnotation.noteobjects.Pitch;
-import wmnlibnotation.noteobjects.KeySignature;
-import wmnlibnotation.noteobjects.KeySignatures;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.AfterClass;

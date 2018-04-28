@@ -41,8 +41,8 @@ public class PartBuilderTest {
     NoteBuilder C4Quarter = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
     
     public PartBuilderTest() {
-        Map<Integer, List<DurationalBuilder>> noteLayer = new HashMap();
-        noteLayer.put(0, new ArrayList());
+        Map<Integer, List<DurationalBuilder>> noteLayer = new HashMap<>();
+        noteLayer.put(0, new ArrayList<>());
         noteLayer.get(0).add(C4Quarter);
         noteLayer.get(0).add(new RestBuilder(Durations.QUARTER));
         ChordBuilder chordBuilder = new ChordBuilder(C4.getDuration());
@@ -50,9 +50,9 @@ public class PartBuilderTest {
         
         noteLayer.get(0).add(chordBuilder);
         
-        Map<Integer, List<DurationalBuilder>> noteLayers = new HashMap();
+        Map<Integer, List<DurationalBuilder>> noteLayers = new HashMap<>();
         noteLayers.put(0, noteLayer.get(0));
-        noteLayers.put(1, new ArrayList());
+        noteLayers.put(1, new ArrayList<>());
         noteLayers.get(1).add(new RestBuilder(Durations.QUARTER));
         noteLayers.get(1).add(C4);
         noteLayers.get(1).add(new RestBuilder(Durations.QUARTER));

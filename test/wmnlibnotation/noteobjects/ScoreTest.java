@@ -2,18 +2,12 @@
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package wmnlibnotation;
+package wmnlibnotation.noteobjects;
 
 import wmnlibnotation.iterators.ScoreIterator;
 import wmnlibnotation.iterators.PartWiseScoreIterator;
 import wmnlibnotation.builders.PartBuilder;
-import wmnlibnotation.noteobjects.Part;
-import wmnlibnotation.noteobjects.Note;
-import wmnlibnotation.noteobjects.Pitch;
-import wmnlibnotation.noteobjects.Score;
 import wmnlibnotation.iterators.ScorePosition;
-import wmnlibnotation.noteobjects.Durations;
-import wmnlibnotation.noteobjects.Durational;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +17,7 @@ import java.util.NoSuchElementException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import wmnlibio.musicxml.MusicXmlReaderDom;
+import wmnlibnotation.TestHelper;
 
 /**
  *
@@ -37,14 +32,14 @@ public class ScoreTest {
     }
     
     public static Map<Score.Attribute, String> getTestAttributes() {
-        Map<Score.Attribute, String> attributes = new HashMap();
+        Map<Score.Attribute, String> attributes = new HashMap<>();
         attributes.put(Score.Attribute.NAME, scoreName);
         attributes.put(Score.Attribute.COMPOSER, composerName);
         return attributes;
     }
     
     public static List<Part> getTestParts(int partCount, int measureCount) {
-        List<Part> parts = new ArrayList();
+        List<Part> parts = new ArrayList<>();
         
         for(int p = 1; p <= partCount; ++p) {
             PartBuilder partBuilder = new PartBuilder("Part" + p);
