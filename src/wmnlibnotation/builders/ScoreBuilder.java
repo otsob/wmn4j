@@ -18,11 +18,11 @@ import java.util.Map;
 public class ScoreBuilder {
     
     private Map<Score.Attribute, String> scoreAttr;
-    private List<Part> parts;
+    private List<PartBuilder> partBuilders;
     
     public ScoreBuilder() {
         this.scoreAttr = new HashMap<>();
-        this.parts = new ArrayList<>();
+        this.partBuilders = new ArrayList<>();
     }
     
     /**
@@ -35,11 +35,11 @@ public class ScoreBuilder {
     }
     
     /**
-     * Add <code>Part</code> to builder.
-     * @param part part to added to this builder.
+     * Add <code>PartBuilder</code> to builder.
+     * @param partBuilder partBuilder to added to this builder.
      */
-    public void addPart(Part part) {
-        this.parts.add(part);
+    public void addPart(PartBuilder partBuilder) {
+        this.partBuilders.add(partBuilder);
     }
     
     /**
@@ -47,6 +47,8 @@ public class ScoreBuilder {
      * @return a <code>Score</code> with the values specified in this builder.
      */
     public Score build() {
-        return new Score(this.scoreAttr, this.parts);
+        List<Part> parts = new ArrayList<>();
+        this.partBuilders.forEach((builder) -> parts.add(builder.build()));
+        return new Score(this.scoreAttr, parts);
     }
 }

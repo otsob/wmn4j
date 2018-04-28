@@ -2,7 +2,7 @@
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package wmnlibnotation;
+package wmnlibnotation.builders;
 
 import wmnlibnotation.builders.NoteBuilder;
 import wmnlibnotation.noteobjects.MultiNoteArticulation;

@@ -161,7 +161,7 @@ public class MusicXmlReaderDom implements MusicXmlReader {
             PartBuilder partBuilder = partBuilders.get(partId);
             
             readMeasuresIntoPartBuilder(partBuilder, partNode);
-            scoreBuilder.addPart(partBuilder.build());
+            scoreBuilder.addPart(partBuilder);
         }
     }
     
@@ -342,7 +342,7 @@ public class MusicXmlReaderDom implements MusicXmlReader {
             builder.setKeySig(context.getKeySig());
             context.setClef(lastClefs.get(staffNumber));
             
-            partBuilder.addMeasureToStaff(staffNumber, builder.build());
+            partBuilder.addMeasureBuilderToStaff(staffNumber, builder);
         }
     }
     

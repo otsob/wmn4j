@@ -207,7 +207,7 @@ public class MeasureBuilder {
     }
      
     /**
-     * Append <code>Durational</code> object to layer with index <code>layer</code>.
+     * Append <code>DurationalBuilder</code> object to layer with index <code>layer</code>.
      * If layer does not exist it is created.
      * @param layer index of layer to which builder is appended.
      * @param builder DurationalBuilder object to be appended to layer.
@@ -254,7 +254,7 @@ public class MeasureBuilder {
     
     /**
      * Check if layer is full.
-     * A layer is considered full when it contains <code>Durational</code> objects 
+     * A layer is considered full when it contains <code>DurationalBuilder</code> objects 
      * whose combined duration is enough to fill a measure that has the time 
      * signature that is set for this builder.
      * @param layer index of layer that is checked.
@@ -281,8 +281,9 @@ public class MeasureBuilder {
     
     /**
      * Create a <code>Measure</code> with the contents of this builder.
-     * @return Measure that has the set attributes and contains the 
-     * <code>Durational</code> objects on the layers of this builder.
+     * @return Measure that has the set attributes and contains 
+     * <code>Durational</code> objects built using the contained
+     * <code>DurationalBuilder</code> objects.
      */
     public Measure build() {
         MeasureAttributes measureAttr

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import wmnlibnotation.noteobjects.Chord;
 import wmnlibnotation.noteobjects.Duration;
-import wmnlibnotation.noteobjects.Durational;
 import wmnlibnotation.noteobjects.Note;
 
 /**
@@ -30,8 +29,9 @@ public class ChordBuilder implements DurationalBuilder {
         this.noteBuilders = new ArrayList<>(noteBuilders);
     }
     
-    public void addNoteBuilder(NoteBuilder noteBuilder) {
+    public ChordBuilder add(NoteBuilder noteBuilder) {
         this.noteBuilders.add(noteBuilder);
+        return this;
     }
     
     @Override

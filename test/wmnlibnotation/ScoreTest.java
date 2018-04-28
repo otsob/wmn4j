@@ -49,7 +49,7 @@ public class ScoreTest {
         for(int p = 1; p <= partCount; ++p) {
             PartBuilder partBuilder = new PartBuilder("Part" + p);
             for(int m = 1; m <= measureCount; ++m) {
-                partBuilder.addMeasure(TestHelper.getTestMeasure(m));
+                partBuilder.addMeasureBuilder(TestHelper.getTestMeasureBuilder(m));
             }
             
             parts.add(partBuilder.build());

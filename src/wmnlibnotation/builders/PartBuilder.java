@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class PartBuilder {
     
-    private final Map<Integer, List<Measure>> staveContents = new HashMap<>();
+    private final Map<Integer, List<MeasureBuilder>> staveContents = new HashMap<>();
     private final Map<Part.Attribute, String> partAttributes = new HashMap<>();
     private static final int SINGLE_STAFF_NUMBER = 1;
     
@@ -39,28 +39,27 @@ public class PartBuilder {
     }
     
     /**
-     * Adds a measure. This is used for building parts with a single staff.
-     * If no staff exists yet, then it is created.
-     * @param measure The measure that is added to the end of the staff.
+     * Adds a <code>MeasureBuilder</code>. This is used for building parts with a single staff.
+     * @param measureBuilder The measureBuilder that is added to the end of the staff.
      */
-    public void addMeasure(Measure measure) {
-        this.addMeasureToStaff(SINGLE_STAFF_NUMBER, measure);
+    public void addMeasureBuilder(MeasureBuilder measureBuilder) {
+        this.addMeasureBuilderToStaff(SINGLE_STAFF_NUMBER, measureBuilder);
     }
     
     /**
-     * Adds a measure to staff. This is used for building parts with multiple
-     * staves. If no staff with staffNumber exists, a new staff is created.
-     * @param staffNumber The number of the staff to which measure is added.
-     * @param measure The measure that is added to the end of the staff.
+     * Adds a <code>MeasureBuilder</code> to staff. This is used for building parts with multiple
+     * staves.
+     * @param staffNumber The number of the staff to which measureBuilder is added.
+     * @param measureBuilder The measureBuilder that is added to the end of the staff.
      */
-    public void addMeasureToStaff(int staffNumber, Measure measure) {
-        if(measure == null)
+    public void addMeasureBuilderToStaff(int staffNumber, MeasureBuilder measureBuilder) {
+        if(measureBuilder == null)
             throw new NullPointerException("Cannot add null to staff");
         
         if(!this.staveContents.containsKey(staffNumber))
             this.staveContents.put(staffNumber, new ArrayList<>());
         
-        this.staveContents.get(staffNumber).add(measure);
+        this.staveContents.get(staffNumber).add(measureBuilder);
     }
  
     /**
@@ -79,17 +78,24 @@ public class PartBuilder {
     }
     
     /**
-     * Creates a part from the measures.
+     * Creates a part using the contained <code>MeasureBuilder</code> objects.
      * @return A <code>Part</code> with the measures and attributes in the builder.
      * The type of the part depends on the number of staves.
      */
     public Part build() {
-        if(this.staveContents.size() == 1) 
-            return new SingleStaffPart(this.partAttributes, this.staveContents.get(SINGLE_STAFF_NUMBER));
+        if(this.staveContents.size() == 1) {
+            List<Measure> measures = new ArrayList<>();
+            this.staveContents.get(SINGLE_STAFF_NUMBER).forEach((builder) -> measures.add(builder.build()));
+            return new SingleStaffPart(this.partAttributes, measures);
+        
+        }
         else {
             Map<Integer, Staff> staves = new HashMap<>();
-            for(int staffNumber : this.staveContents.keySet())
-                staves.put(staffNumber, new Staff(this.staveContents.get(staffNumber)));
+            for(int staffNumber : this.staveContents.keySet()) {
+                List<Measure> measures = new ArrayList<>();
+                this.staveContents.get(staffNumber).forEach((builder) -> measures.add(builder.build()));
+                staves.put(staffNumber, new Staff(measures));
+            }
             
             return new MultiStaffPart(this.partAttributes, staves);
         }
