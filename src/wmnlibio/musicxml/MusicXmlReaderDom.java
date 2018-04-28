@@ -21,6 +21,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import wmnlibnotation.builders.ChordBuilder;
 import wmnlibnotation.noteobjects.Barline;
 import wmnlibnotation.noteobjects.Chord;
 import wmnlibnotation.noteobjects.Clef;
@@ -31,6 +32,7 @@ import wmnlibnotation.builders.MeasureBuilder;
 import wmnlibnotation.builders.NoteBuilder;
 import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.builders.PartBuilder;
+import wmnlibnotation.builders.RestBuilder;
 import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.Rest;
 import wmnlibnotation.noteobjects.Score;
@@ -269,7 +271,7 @@ public class MusicXmlReaderDom implements MusicXmlReader {
                 
                 if(isRest(node)) {
                     chordBuffers.get(staffNumber).contentsToBuilder(builder);
-                    builder.addToLayer(layer, Rest.getRest(duration));
+                    builder.addToLayer(layer, new RestBuilder(duration));
                 }
                 else {
                     Pitch pitch = getPitch(node);
@@ -281,11 +283,11 @@ public class MusicXmlReaderDom implements MusicXmlReader {
                         noteBuilder.setIsTiedFromPrevious(true);
                     
                     if(hasChordTag(node)) {
-                        chordBuffers.get(staffNumber).addNote(noteBuilder.build(), layer);
+                        chordBuffers.get(staffNumber).addNote(noteBuilder, layer);
                     } 
                     else {
                         chordBuffers.get(staffNumber).contentsToBuilder(builder);
-                        chordBuffers.get(staffNumber).addNote(noteBuilder.build(), layer);
+                        chordBuffers.get(staffNumber).addNote(noteBuilder, layer);
                     }
                 }
             }
@@ -645,28 +647,28 @@ public class MusicXmlReaderDom implements MusicXmlReader {
      * Class for handling the reading of chords.
      */
     private class ChordBuffer {
-        private final List<Pair<Note, Integer>> chordBuffer = new ArrayList<>();
+        private final List<Pair<NoteBuilder, Integer>> chordBuffer = new ArrayList<>();
         
         public ChordBuffer() {}
         
-        public void addNote(Note note, int layer) {
-            this.chordBuffer.add(new Pair<>(note, layer));
+        public void addNote(NoteBuilder noteBuilder, int layer) {
+            this.chordBuffer.add(new Pair<>(noteBuilder, layer));
         }
         
         public void contentsToBuilder(MeasureBuilder builder) {
             if(!this.chordBuffer.isEmpty()) {
                 if(this.chordBuffer.size() > 1) {
-                    List<Note> notes = new ArrayList<>();
+                    List<NoteBuilder> notes = new ArrayList<>();
                     int layer = this.chordBuffer.get(0).getValue();
-                    for(Pair<Note, Integer> pair : this.chordBuffer)
+                    for(Pair<NoteBuilder, Integer> pair : this.chordBuffer)
                         notes.add(pair.getKey());
 
-                    builder.addToLayer(layer, Chord.getChord(notes));
+                    builder.addToLayer(layer, new ChordBuilder(notes));
                 }
                 else if(this.chordBuffer.size() == 1) {
                     int layer = this.chordBuffer.get(0).getValue();
-                    Note note = this.chordBuffer.get(0).getKey();
-                    builder.addToLayer(layer, note);
+                    NoteBuilder noteBuilder = this.chordBuffer.get(0).getKey();
+                    builder.addToLayer(layer, noteBuilder);
             }
 
                 this.chordBuffer.clear();

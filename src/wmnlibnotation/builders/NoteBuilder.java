@@ -18,7 +18,7 @@ import java.util.Set;
  * Class for building <code>Note</code> objects.
  * @author Otso Björklund
  */
-public class NoteBuilder {
+public class NoteBuilder implements DurationalBuilder {
     
     private Pitch pitch;
     private Duration duration;
@@ -110,6 +110,7 @@ public class NoteBuilder {
     /**
      * @return <code>Note</code> instance with the values set in this builder.
      */
+    @Override
     public Note build() {
         return Note.getNote(this.pitch, this.duration, this.articulations, this.multiNoteArticulations, this.tiedTo, this.isTiedFromPrevious);
     }

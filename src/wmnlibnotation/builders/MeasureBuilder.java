@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
  * Class for building <code>Measure</code> objects.
- * The builder does not ensure that the <code>Durational</code> objects in the 
+ * The builder does not ensure that the <code>DurationalBuilder</code> objects in the 
  * builder fill up exactly a measure that has the set time signature. 
  * The methods {@link #isFull() isFull} and {@link #isLayerFull(int) isLayerFull} should be used for checking if the durations add up to the correct 
  * 
@@ -38,7 +38,7 @@ public class MeasureBuilder {
    
     private int number;
     // TODO: Keep track of layer durations in some way to make checking if measure is full faster.
-    private final Map<Integer, List<Durational>> layers;
+    private final Map<Integer, List<DurationalBuilder>> layers;
     
     private TimeSignature timeSig = TimeSignatures.FOUR_FOUR;
     private KeySignature keySig = KeySignatures.CMAJ_AMIN;
@@ -201,7 +201,7 @@ public class MeasureBuilder {
      * @param layer new layer to be added to this.
      * @return reference to this builder.
      */
-    public MeasureBuilder addLayer(List<Durational> layer) {
+    public MeasureBuilder addLayer(List<DurationalBuilder> layer) {
         this.layers.put(this.layers.keySet().size(), layer);
         return this;
     }
@@ -209,16 +209,16 @@ public class MeasureBuilder {
     /**
      * Append <code>Durational</code> object to layer with index <code>layer</code>.
      * If layer does not exist it is created.
-     * @param layer index of layer to which elem is appended.
-     * @param elem Durational object to be appended to layer.
+     * @param layer index of layer to which builder is appended.
+     * @param builder DurationalBuilder object to be appended to layer.
      * @return reference to this builder.
      */
-    public MeasureBuilder addToLayer(int layer, Durational elem) {
+    public MeasureBuilder addToLayer(int layer, DurationalBuilder builder) {
         
         if(!this.layers.keySet().contains(layer))
             this.layers.put(layer, new ArrayList<>());
         
-        this.layers.get(layer).add(elem);
+        this.layers.get(layer).add(builder);
         return this;
     }
     
@@ -233,10 +233,10 @@ public class MeasureBuilder {
      * Set the element at specified location to given value.
      * @param layer the number of the layer to be modified.
      * @param index the index in the layer.
-     * @param elem element to be placed in index on layer.
+     * @param builder element to be placed in index on layer.
      */
-    public void setElement(int layer, int index, Durational elem) {
-        this.layers.get(layer).set(index, elem);
+    public void setElement(int layer, int index, DurationalBuilder builder) {
+        this.layers.get(layer).set(index, builder);
     }
     
     /**
@@ -246,7 +246,7 @@ public class MeasureBuilder {
      */
     public Duration totalDurationOfLayer(int layer) {
         List<Duration> durations = new ArrayList<>();
-        for(Durational d : this.layers.get(layer))
+        for(DurationalBuilder d : this.layers.get(layer))
             durations.add(d.getDuration());
         
         return Duration.sumOf(durations);
@@ -289,7 +289,13 @@ public class MeasureBuilder {
                 = MeasureAttributes.getMeasureAttr(this.timeSig, this.keySig, this.rightBarline, this.leftBarline, this.clef, this.clefChanges);
         
         // TODO: Check that layers are full. If not, pad them with rests.
+        Map<Integer, List<Durational>> builtLayers = new HashMap<>();
+        for(Integer layerNumber : this.layers.keySet()) {
+            List<Durational> durationalsOnLayer = new ArrayList<>();
+            this.layers.get(layerNumber).forEach((builder) -> durationalsOnLayer.add(builder.build()));
+            builtLayers.put(layerNumber, durationalsOnLayer);
+        }
         
-        return new Measure(this.number, this.layers, measureAttr);
+        return new Measure(this.number, builtLayers, measureAttr);
     }
 }
