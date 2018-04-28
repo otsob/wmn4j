@@ -28,32 +28,36 @@ import wmnlibnotation.noteobjects.Duration;
 import wmnlibnotation.noteobjects.KeySignature;
 import wmnlibnotation.noteobjects.KeySignatures;
 import wmnlibnotation.builders.MeasureBuilder;
+import wmnlibnotation.builders.NoteBuilder;
 import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.builders.PartBuilder;
 import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.Rest;
 import wmnlibnotation.noteobjects.Score;
 import wmnlibnotation.builders.ScoreBuilder;
+import wmnlibnotation.noteobjects.SingleStaffPart;
 import wmnlibnotation.noteobjects.TimeSignature;
 
 /**
  * A parser for MusicXML files.
  * @author Otso Björklund
  */
-public class MusicXmlDomReader implements MusicXmlReader {
+public class MusicXmlReaderDom implements MusicXmlReader {
+    
+    private static final int MIN_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
     
     private DocumentBuilder docBuilder;
     
     // TODO: make parses configurable
     // -Validation
     // -scorewise/partwise
-    public MusicXmlDomReader() {
+    public MusicXmlReaderDom() {
         
         try {
             configure();
         } catch (ParserConfigurationException ex) {
             // Todo: Where and how to log parsing errors?
-            Logger.getLogger(MusicXmlDomReader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MusicXmlReaderDom.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -86,7 +90,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
             Document musicXmlDoc = this.docBuilder.parse(musicXmlFile);
             score = createScore(musicXmlDoc);
         } catch (SAXException ex) {
-            Logger.getLogger(MusicXmlDomReader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MusicXmlReaderDom.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
         return score;
@@ -168,7 +172,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
         Map<Integer, Context> contexts = new HashMap<>();
         
         // Create the context containers for the staves.
-        for(int staffNumber = 1; staffNumber <= staves; ++staffNumber)
+        for(int staffNumber = MIN_STAFF_NUMBER; staffNumber < staves + MIN_STAFF_NUMBER; ++staffNumber)
             contexts.put(staffNumber, new Context());
             
         // Read measure node by node, create measure and add to list
@@ -227,7 +231,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
         Map<Integer, Clef> lastClefs = new HashMap<>();
         
         // Initialize the helper data structures.
-        for(int staff = 1; staff <= staves; ++staff) {
+        for(int staff = SingleStaffPart.STAFF_NUMBER; staff <= staves; ++staff) {
             measureBuilders.put(staff, new MeasureBuilder(measureNumber));
             chordBuffers.put(staff, new ChordBuffer());
             offsets.put(staff, new ArrayList<>());
@@ -248,7 +252,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
             
             // Handle note
             if(node.getNodeName().equals(MusicXmlTags.NOTE) && !isGraceNote(node)) {
-                int staffNumber = 1;
+                int staffNumber = MIN_STAFF_NUMBER;
                 Node staffNode = findChild(node, MusicXmlTags.NOTE_STAFF);
                 if(staffNode != null)
                     staffNumber = Integer.parseInt(staffNode.getTextContent());
@@ -261,7 +265,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
                 Duration duration = getDuration(node, context.getDivisions());
                 offsets.get(staffNumber).add(duration);
                 
-                // Todo: add handling articulations etc.
+                // TODO: add handling articulations etc.
                 
                 if(isRest(node)) {
                     chordBuffers.get(staffNumber).contentsToBuilder(builder);
@@ -269,13 +273,19 @@ public class MusicXmlDomReader implements MusicXmlReader {
                 }
                 else {
                     Pitch pitch = getPitch(node);
+                    NoteBuilder noteBuilder = new NoteBuilder(pitch, duration);
+                    
+                    // Read articulations etc.
+                    
+                    if(endsTie(node))
+                        noteBuilder.setIsTiedFromPrevious(true);
                     
                     if(hasChordTag(node)) {
-                        chordBuffers.get(staffNumber).addNote(Note.getNote(pitch, duration), layer);
+                        chordBuffers.get(staffNumber).addNote(noteBuilder.build(), layer);
                     } 
                     else {
                         chordBuffers.get(staffNumber).contentsToBuilder(builder);
-                        chordBuffers.get(staffNumber).addNote(Note.getNote(pitch, duration), layer);
+                        chordBuffers.get(staffNumber).addNote(noteBuilder.build(), layer);
                     }
                 }
             }
@@ -288,7 +298,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
                 int clefStaff = 1;
                 
                 if(clefNode != null) {
-                    clef = MusicXmlDomReader.this.getClef(clefNode);
+                    clef = MusicXmlReaderDom.this.getClef(clefNode);
                     NamedNodeMap clefAttributes = clefNode.getAttributes();
                     Node clefStaffNode = clefAttributes.getNamedItem(MusicXmlTags.CLEF_STAFF);
                     if(clefStaffNode != null)
@@ -319,7 +329,7 @@ public class MusicXmlDomReader implements MusicXmlReader {
             }
         }
         
-        for(int staffNumber = 1; staffNumber <= staves; ++staffNumber) {
+        for(int staffNumber = MIN_STAFF_NUMBER; staffNumber < staves + MIN_STAFF_NUMBER; ++staffNumber) {
             MeasureBuilder builder = measureBuilders.get(staffNumber);
             Context context = contexts.get(staffNumber);
             
@@ -352,13 +362,13 @@ public class MusicXmlDomReader implements MusicXmlReader {
         List<Node> clefNodes = findChildren(attributesNode, MusicXmlTags.CLEF);
         
         for(Node clefNode : clefNodes) {
-            int staffNumber = 1;
+            int staffNumber = MIN_STAFF_NUMBER;
             Node clefStaffNode = clefNode.getAttributes().getNamedItem(MusicXmlTags.CLEF_STAFF);
             if(clefStaffNode != null)
                 staffNumber = Integer.parseInt(clefStaffNode.getTextContent());
             
             Context context = contexts.get(staffNumber);
-            context.setClef(MusicXmlDomReader.this.getClef(clefNode));
+            context.setClef(MusicXmlReaderDom.this.getClef(clefNode));
         }
     }
     
@@ -491,6 +501,24 @@ public class MusicXmlDomReader implements MusicXmlReader {
     
     private boolean hasChordTag(Node noteNode) {
         return findChild(noteNode, MusicXmlTags.NOTE_CHORD) != null;
+    }
+    
+    private boolean startsTie(Node noteNode) {
+        Node tieNode = findChild(noteNode, MusicXmlTags.TIE);
+        if(tieNode == null)
+            return false;
+        
+        String tieType = tieNode.getAttributes().getNamedItem(MusicXmlTags.TIE_TYPE).getTextContent();
+        return tieType.equals(MusicXmlTags.TIE_START);
+    }
+    
+    private boolean endsTie(Node noteNode) {
+        Node tieNode = findChild(noteNode, MusicXmlTags.TIE);
+        if(tieNode == null)
+            return false;
+        
+        String tieType = tieNode.getAttributes().getNamedItem(MusicXmlTags.TIE_TYPE).getTextContent();
+        return tieType.equals(MusicXmlTags.TIE_STOP);
     }
     
     private boolean isRest(Node noteNode) {

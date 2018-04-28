@@ -13,12 +13,12 @@ import java.util.Objects;
  *
  * @author Otso Björklund
  */
-public class Pattern {
+public class PointPattern {
     
     private final List<NoteEventVector> points;
     private final int hash;
     
-    public Pattern(List<NoteEventVector> points) {
+    public PointPattern(List<NoteEventVector> points) {
         this.points = points;
         this.hash = computeHash();
     }
@@ -31,14 +31,14 @@ public class Pattern {
         return Collections.unmodifiableList(this.points);
     }
     
-    public Pattern getVectorizedRepresentation() {
+    public PointPattern getVectorizedRepresentation() {
         List<NoteEventVector> vecPoints = new ArrayList<>();
         
         for(int i = 1; i < this.points.size(); ++i) {
             vecPoints.add(this.points.get(i).subtract(this.points.get(i - 1)));
         }
         
-        return new Pattern(vecPoints);
+        return new PointPattern(vecPoints);
     }
     
     @Override
@@ -46,10 +46,10 @@ public class Pattern {
         if(o == this)
             return true;
         
-        if(!(o instanceof Pattern))
+        if(!(o instanceof PointPattern))
             return false;
         
-        Pattern other = (Pattern) o;
+        PointPattern other = (PointPattern) o;
         List<NoteEventVector> otherPoints = other.getPoints();
         if(this.points.size() != otherPoints.size())
             return false;

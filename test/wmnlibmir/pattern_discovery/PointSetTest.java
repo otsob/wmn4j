@@ -7,7 +7,7 @@ package wmnlibmir.pattern_discovery;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import wmnlibio.musicxml.MusicXmlDomReader;
+import wmnlibio.musicxml.MusicXmlReaderDom;
 import wmnlibio.musicxml.MusicXmlReader;
 import wmnlibnotation.noteobjects.Score;
 
@@ -26,7 +26,7 @@ public class PointSetTest {
 
     @Test
     public void testCreatingFromSingleStaffScore() {
-        MusicXmlReader reader = new MusicXmlDomReader();
+        MusicXmlReader reader = new MusicXmlReaderDom();
         try {
             Score score = reader.readScore("test/testfiles/musicxml/twoMeasures.xml");
             PointSet pointset = new PointSet(score);

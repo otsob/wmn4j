@@ -230,6 +230,16 @@ public class MeasureBuilder {
     }
     
     /**
+     * Set the element at specified location to given value.
+     * @param layer the number of the layer to be modified.
+     * @param index the index in the layer.
+     * @param elem element to be placed in index on layer.
+     */
+    public void setElement(int layer, int index, Durational elem) {
+        this.layers.get(layer).set(index, elem);
+    }
+    
+    /**
      * Get the sum of durations on a layer.
      * @param layer the index of the layer.
      * @return Sum of the durations of the <code>Durational</code> objects on the layer.

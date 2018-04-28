@@ -91,6 +91,14 @@ public class Measure implements Iterable<Durational> {
     }
     
     /**
+     * @param layerNumber 
+     * @return the number of elements on the layer with layerNumber.
+     */
+    public int getLayerSize(int layerNumber) {
+        return this.layers.get(layerNumber).size();
+    }
+    
+    /**
      * @return number of layers in this measure.
      */
     public int getLayerCount() {

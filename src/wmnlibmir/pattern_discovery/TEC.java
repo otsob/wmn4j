@@ -13,15 +13,15 @@ import java.util.List;
  */
 public class TEC {
     
-    private final Pattern pattern;
+    private final PointPattern pattern;
     private final List<NoteEventVector> translators;
     
-    public TEC(Pattern pattern, List<NoteEventVector> translators) {
+    public TEC(PointPattern pattern, List<NoteEventVector> translators) {
         this.pattern = pattern;
         this.translators = translators;
     }
     
-    public Pattern getPattern() {
+    public PointPattern getPattern() {
         return this.pattern;
     }
     

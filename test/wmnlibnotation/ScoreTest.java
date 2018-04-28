@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import wmnlibio.musicxml.MusicXmlDomReader;
+import wmnlibio.musicxml.MusicXmlReaderDom;
 
 /**
  *
@@ -115,7 +115,7 @@ public class ScoreTest {
     
     @Test
     public void testGetAtPositionLimits() {
-        MusicXmlDomReader reader = new MusicXmlDomReader();
+        MusicXmlReaderDom reader = new MusicXmlReaderDom();
         Score score = null;
         try {
             score = reader.readScore("test/testfiles/musicxml/scoreIteratorTesting.xml");
@@ -142,7 +142,7 @@ public class ScoreTest {
     
     @Test
     public void testIteratorAndGetAtPosition() {
-        MusicXmlDomReader reader = new MusicXmlDomReader();
+        MusicXmlReaderDom reader = new MusicXmlReaderDom();
         Score score = null;
         try {
             score = reader.readScore("test/testfiles/musicxml/scoreIteratorTesting.xml");

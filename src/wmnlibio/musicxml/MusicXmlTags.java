@@ -62,6 +62,10 @@ public class MusicXmlTags {
     static final String NOTE_UNPITCHED = "unpitched";
     static final String UNPITCHED_STEP = "display-step";
     static final String UNPITCHED_OCTAVE = "display-octave";
+    static final String TIE = "tie";
+    static final String TIE_TYPE = "type";
+    static final String TIE_START = "start";
+    static final String TIE_STOP = "stop";
     
     // Part tags
     static final String PART = "part";

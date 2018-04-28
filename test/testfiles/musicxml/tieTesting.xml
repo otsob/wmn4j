@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
 <score-partwise version="3.0">
+  <movement-title>Tie test</movement-title>
   <identification>
     <rights>©</rights>
     <encoding>
       <software>Finale 2014.5 for Mac</software>
       <software>Dolet Light for Finale 2014.5</software>
-      <encoding-date>2018-04-18</encoding-date>
+      <encoding-date>2018-04-19</encoding-date>
       <supports attribute="new-system" element="print" type="yes" value="yes"/>
       <supports attribute="new-page" element="print" type="yes" value="yes"/>
       <supports element="accidental" type="yes"/>
@@ -57,6 +58,10 @@
     <word-font font-family="Times New Roman" font-size="10.25"/>
   </defaults>
   <credit page="1">
+    <credit-type>title</credit-type>
+    <credit-words default-x="632" default-y="1475" font-size="24" justify="center" valign="top">Tie test</credit-words>
+  </credit>
+  <credit page="1">
     <credit-type>rights</credit-type>
     <credit-words default-x="632" default-y="53" font-size="10" justify="center" valign="bottom">©</credit-words>
   </credit>
@@ -84,7 +89,7 @@
   </part-list>
   <!--=========================================================-->
   <part id="P1">
-    <measure number="1" width="540">
+    <measure number="1" width="271">
       <print>
         <system-layout>
           <system-margins>
@@ -125,7 +130,7 @@
           <tied type="start"/>
         </notations>
       </note>
-      <note default-x="200">
+      <note default-x="137">
         <pitch>
           <step>C</step>
           <octave>4</octave>
@@ -139,59 +144,115 @@
           <tied type="stop"/>
         </notations>
       </note>
-      <note default-x="313">
-        <pitch>
-          <step>C</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem default-y="-14">up</stem>
-        <notations>
-          <slur number="1" placement="below" type="start"/>
-        </notations>
-      </note>
-      <note default-x="426">
+      <note default-x="188">
         <pitch>
           <step>D</step>
           <octave>4</octave>
         </pitch>
-        <duration>2</duration>
+        <duration>4</duration>
+        <tie type="start"/>
         <voice>1</voice>
-        <type>quarter</type>
+        <type>half</type>
         <stem default-y="-9.5">up</stem>
         <notations>
-          <slur number="1" type="stop"/>
+          <tied type="start"/>
         </notations>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="2" width="373">
-      <note default-x="13">
+    <measure number="2" width="144">
+      <note default-x="14">
         <pitch>
-          <step>E</step>
+          <step>D</step>
           <octave>4</octave>
         </pitch>
-        <duration>4</duration>
+        <duration>8</duration>
+        <tie type="stop"/>
         <voice>1</voice>
-        <type>half</type>
-        <stem default-y="-4.5">up</stem>
+        <type>whole</type>
         <notations>
-          <glissando line-type="wavy" number="1" type="start"/>
+          <tied type="stop"/>
         </notations>
       </note>
-      <note default-x="188">
+    </measure>
+    <!--=======================================================-->
+    <measure number="3" width="210">
+      <note default-x="13">
         <pitch>
-          <step>G</step>
+          <step>F</step>
           <octave>4</octave>
         </pitch>
-        <duration>4</duration>
+        <duration>2</duration>
         <voice>1</voice>
-        <type>half</type>
-        <stem default-y="6">up</stem>
+        <type>quarter</type>
+        <stem default-y="0">up</stem>
+      </note>
+      <note default-x="63">
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>2</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="0">up</stem>
+      </note>
+      <note default-x="111">
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>2</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="0">up</stem>
+      </note>
+      <note default-x="161">
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>2</duration>
+        <tie type="start"/>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="0">up</stem>
         <notations>
-          <glissando line-type="wavy" number="1" type="stop"/>
+          <tied type="start"/>
+        </notations>
+      </note>
+    </measure>
+    <!--=======================================================-->
+    <measure number="4" width="144">
+      <note default-x="13">
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>8</duration>
+        <tie type="stop"/>
+        <tie type="start"/>
+        <voice>1</voice>
+        <type>whole</type>
+        <notations>
+          <tied type="stop"/>
+          <tied type="start"/>
+        </notations>
+      </note>
+    </measure>
+    <!--=======================================================-->
+    <measure number="5" width="144">
+      <note default-x="13">
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>8</duration>
+        <tie type="stop"/>
+        <voice>1</voice>
+        <type>whole</type>
+        <notations>
+          <tied type="stop"/>
         </notations>
       </note>
       <barline location="right">

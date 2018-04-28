@@ -43,11 +43,6 @@ public class PointSet {
         return this.points.get(index);
     }
     
-    private List<NoteEventVector> pointsFromCsv(String csvPath) {
-        // TODO
-        return new ArrayList<>();
-    }
-    
     private List<NoteEventVector> pointsFromScore(Score score) {
         
         PartWiseScoreIterator scoreIterator = new PartWiseScoreIterator(score);
@@ -76,7 +71,8 @@ public class PointSet {
                 offsetWithinMeasure = 0.0;
             }
             
-            if(!dur.isRest()) {
+            
+            if(isOnset(dur)) {
                 double totalOffset = offsetToEndOfLastMeasure + offsetWithinMeasure;
                 Durational atPosition = score.getAtPosition(pos);
                 
@@ -101,6 +97,19 @@ public class PointSet {
         }
         
         return noteEvents;
+    }
+    
+    private boolean isOnset(Durational dur) {
+        if(dur.isRest())
+            return false;
+        
+        if(dur instanceof Note) {
+            Note note = (Note) dur;
+            if(note.isTiedFromPrevious())
+                return false;
+        }
+        
+        return true;
     }
     
     @Override

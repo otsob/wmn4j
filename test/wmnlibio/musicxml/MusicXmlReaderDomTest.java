@@ -32,15 +32,15 @@ import wmnlibnotation.noteobjects.TimeSignatures;
  *
  * @author Otso Björklund
  */
-public class MusicXmlDomReaderTest {
+public class MusicXmlReaderDomTest {
     
     static final String testFilePath = "test/testfiles/musicxml/";
     
-    public MusicXmlDomReaderTest() {
+    public MusicXmlReaderDomTest() {
     }
     
     public MusicXmlReader getMusicXmlReader() {
-        return new MusicXmlDomReader();
+        return new MusicXmlReaderDom();
     }
     
     public Score readScore(String testFileName) {
@@ -381,7 +381,43 @@ public class MusicXmlDomReaderTest {
     
     @Test
     public void testTiedNotes() {
+        Score score = readScore("tieTesting.xml");
+        SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
         
-    
+        Measure firstMeasure = part.getMeasure(1);
+        Note first = (Note) firstMeasure.get(1, 0);
+        assertTrue(first.isTiedToFollowing());
+        assertEquals(Pitch.getPitch(Pitch.Base.C, 0, 4), first.getFollowingTiedNote().getPitch());
+        
+        Note second = (Note) firstMeasure.get(1, 1);
+        assertTrue(second.isTiedFromPrevious());
+        assertFalse(second.isTiedToFollowing());
+        
+        Note third = (Note) firstMeasure.get(0, 2);
+        assertTrue(third.isTiedToFollowing());
+        assertFalse(third.isTiedFromPrevious());
+        
+        Measure secondMeasure = part.getMeasure(2);
+        Note fourth = (Note) secondMeasure.get(1, 0);
+        assertEquals(fourth, third.getFollowingTiedNote());
+        assertTrue(fourth.isTiedFromPrevious());
+        assertFalse(fourth.isTiedToFollowing());
+        
+        Measure thirdMeasure = part.getMeasure(3);
+        Note fifth = (Note) thirdMeasure.get(1, 0);
+        assertFalse(fifth.isTied());
+        Note sixth = (Note) thirdMeasure.get(1, 1);
+        assertFalse(sixth.isTied());
+        Note seventh = (Note) thirdMeasure.get(1, 2);
+        assertFalse(seventh.isTied());
+        
+        Note eight = (Note) thirdMeasure.get(1, 3);
+        assertTrue(eight.isTiedToFollowing());
+        assertEquals(Durations.WHOLE.multiplyBy(2).add(Durations.QUARTER), eight.getTiedDuration());
+        
+        Measure fourthMeasure = part.getMeasure(4);
+        Note ninth = (Note) fourthMeasure.get(1, 0);
+        assertTrue(ninth.isTiedFromPrevious());
+        assertTrue(ninth.isTiedToFollowing());
     }
 }
