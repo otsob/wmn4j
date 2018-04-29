@@ -41,7 +41,6 @@ public class NoteBuilderTest {
         ScorePosition position = new ScorePosition(1,1,1,1);
         
         builder.setTiedTo(tiedNote);
-        builder.setIsTiedFromPrevious(false);
         
         Note expected = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), 
                                         Durations.QUARTER, 
@@ -61,27 +60,23 @@ public class NoteBuilderTest {
         NoteBuilder second = new NoteBuilder(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER);
         NoteBuilder third = new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER);
 
+        first.addTieToFollowing(second);
+        second.addTieToFollowing(third);
         
-        List<NoteBuilder> builders = new ArrayList<>();
-        builders.add(first);
-        builders.add(second);
-        builders.add(third);
+        Note firstNote = first.build();
+        Note secondNote = second.build();
+        Note thirdNote = third.build();
         
-        List<Note> tiedNotes = NoteBuilder.buildTiedNotes(builders);
-        
-        Note firstNote = tiedNotes.get(0);
         assertEquals(Pitch.getPitch(Pitch.Base.C, 0, 4), firstNote.getPitch());
         assertTrue(firstNote.isTiedToFollowing());
         assertFalse(firstNote.isTiedFromPrevious());
         assertEquals(Pitch.getPitch(Pitch.Base.D, 0, 4), firstNote.getFollowingTiedNote().getPitch());
         
-        Note secondNote = tiedNotes.get(1);
         assertEquals(Pitch.getPitch(Pitch.Base.D, 0, 4), secondNote.getPitch());
         assertTrue(secondNote.isTiedToFollowing());
         assertTrue(secondNote.isTiedFromPrevious());
         assertEquals(Pitch.getPitch(Pitch.Base.E, 0, 4), secondNote.getFollowingTiedNote().getPitch());
         
-        Note thirdNote = tiedNotes.get(2);
         assertEquals(Pitch.getPitch(Pitch.Base.E, 0, 4), thirdNote.getPitch());
         assertFalse(thirdNote.isTiedToFollowing());
         assertTrue(thirdNote.isTiedFromPrevious());

@@ -41,9 +41,11 @@ public class PartBuilder {
     /**
      * Adds a <code>MeasureBuilder</code>. This is used for building parts with a single staff.
      * @param measureBuilder The measureBuilder that is added to the end of the staff.
+     * @return reference to this.
      */
-    public void addMeasureBuilder(MeasureBuilder measureBuilder) {
-        this.addMeasureBuilderToStaff(SINGLE_STAFF_NUMBER, measureBuilder);
+    public PartBuilder add(MeasureBuilder measureBuilder) {
+        this.addToStaff(SINGLE_STAFF_NUMBER, measureBuilder);
+        return this;
     }
     
     /**
@@ -51,8 +53,9 @@ public class PartBuilder {
      * staves.
      * @param staffNumber The number of the staff to which measureBuilder is added.
      * @param measureBuilder The measureBuilder that is added to the end of the staff.
+     * @return reference to this.
      */
-    public void addMeasureBuilderToStaff(int staffNumber, MeasureBuilder measureBuilder) {
+    public PartBuilder addToStaff(int staffNumber, MeasureBuilder measureBuilder) {
         if(measureBuilder == null)
             throw new NullPointerException("Cannot add null to staff");
         
@@ -60,6 +63,7 @@ public class PartBuilder {
             this.staveContents.put(staffNumber, new ArrayList<>());
         
         this.staveContents.get(staffNumber).add(measureBuilder);
+        return this;
     }
  
     /**

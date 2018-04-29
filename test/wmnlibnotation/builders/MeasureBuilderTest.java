@@ -186,7 +186,7 @@ public class MeasureBuilderTest {
         NoteBuilder first = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 2), Durations.HALF);
         NoteBuilder second = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 2), Durations.HALF);
         
-        // TODO: Setting of tied.
+        first.addTieToFollowing(second);
         builder.addToLayer(1, first).addToLayer(1, second);
         Measure measure = builder.build();
         

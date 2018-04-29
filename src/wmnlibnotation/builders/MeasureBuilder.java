@@ -16,9 +16,11 @@ import wmnlibnotation.noteobjects.KeySignatures;
 import wmnlibnotation.noteobjects.MeasureAttributes;
 import wmnlibnotation.noteobjects.Barline;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Class for building <code>Measure</code> objects.
@@ -46,6 +48,8 @@ public class MeasureBuilder {
     private Barline leftBarline = Barline.NONE;
     private Barline rightBarline = Barline.SINGLE;
     private Map<Duration, Clef> clefChanges = new HashMap<>();
+    
+    // TODO: If MeasureAttributes are given, then use those.
     
     /**
      * Create a <code>MeasureBuilder</code> with the given <code>MeasureAttributes</code>.
@@ -230,6 +234,15 @@ public class MeasureBuilder {
     }
     
     /**
+     * Get the layer numbers.
+     * Layer numbers do not have to be contiguous.
+     * @return the set of layer numbers in this builder.
+     */
+    public Set<Integer> getLayerNumbers() {
+        return Collections.unmodifiableSet(this.layers.keySet());
+    }
+    
+    /**
      * Set the element at specified location to given value.
      * @param layer the number of the layer to be modified.
      * @param index the index in the layer.
@@ -237,6 +250,18 @@ public class MeasureBuilder {
      */
     public void setElement(int layer, int index, DurationalBuilder builder) {
         this.layers.get(layer).set(index, builder);
+    }
+    
+    /**
+     * Get a reference to the <code>DurationalBuilder</code> at the 
+     * specified position.
+     * @param layer the number of the layer from which to get the object.
+     * @param index index in the layer.
+     * @return reference to the <code>DurationalBuilder</code> at the position
+     * specified by the parameters.
+     */
+    public DurationalBuilder get(int layer, int index) {
+        return this.layers.get(layer).get(index);
     }
     
     /**
@@ -279,6 +304,31 @@ public class MeasureBuilder {
         return false;
     }
     
+    private List<Durational> buildLayer(List<DurationalBuilder> buildersForLayer) {
+        List<Durational> layer = new ArrayList<>();
+        
+        buildersForLayer.forEach((builder) -> layer.add(builder.build()));
+        
+        
+        return layer;
+    }
+    
+    private Map<Integer, List<Durational>> getBuiltLayers() {
+        
+        // TODO: Check that layers are full. If not, pad them with rests.
+        
+        Map<Integer, List<Durational>> builtLayers = new HashMap<>();
+        for(Integer layerNumber : this.getLayerNumbers()) {
+            List<DurationalBuilder> builders = this.layers.get(layerNumber);
+            List<Durational> layer = new ArrayList<>();
+            builders.forEach((builder) -> layer.add(builder.build()));
+            builtLayers.put(layerNumber, layer);
+        }
+        
+        return builtLayers;
+    }
+    
+    
     /**
      * Create a <code>Measure</code> with the contents of this builder.
      * @return Measure that has the set attributes and contains 
@@ -289,14 +339,6 @@ public class MeasureBuilder {
         MeasureAttributes measureAttr
                 = MeasureAttributes.getMeasureAttr(this.timeSig, this.keySig, this.rightBarline, this.leftBarline, this.clef, this.clefChanges);
         
-        // TODO: Check that layers are full. If not, pad them with rests.
-        Map<Integer, List<Durational>> builtLayers = new HashMap<>();
-        for(Integer layerNumber : this.layers.keySet()) {
-            List<Durational> durationalsOnLayer = new ArrayList<>();
-            this.layers.get(layerNumber).forEach((builder) -> durationalsOnLayer.add(builder.build()));
-            builtLayers.put(layerNumber, durationalsOnLayer);
-        }
-        
-        return new Measure(this.number, builtLayers, measureAttr);
+        return new Measure(this.number, this.getBuiltLayers(), measureAttr);
     }
 }

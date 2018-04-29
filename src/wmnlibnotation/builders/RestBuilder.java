@@ -8,18 +8,32 @@ import wmnlibnotation.noteobjects.Duration;
 import wmnlibnotation.noteobjects.Rest;
 
 /**
- *
+ * Class for building <code>Rest</code> objects.
  * @author Otso Björklund
  */
 public class RestBuilder implements DurationalBuilder {
 
     private Duration duration;
     
+    /**
+     * Create a new instance.
+     * @param duration The 
+     */
     public RestBuilder(Duration duration) {
+        if(duration == null)
+            throw new NullPointerException("duration was null.");
+        
         this.duration = duration;
     }
     
+    /**
+     * Set the duration of the <code>Rest</code>.
+     * @param duration 
+     */
     public void setDuration(Duration duration) {
+        if(duration == null)
+            throw new NullPointerException("duration was null.");
+        
         this.duration = duration;
     }
     

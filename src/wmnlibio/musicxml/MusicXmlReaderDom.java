@@ -342,7 +342,7 @@ public class MusicXmlReaderDom implements MusicXmlReader {
             builder.setKeySig(context.getKeySig());
             context.setClef(lastClefs.get(staffNumber));
             
-            partBuilder.addMeasureBuilderToStaff(staffNumber, builder);
+            partBuilder.addToStaff(staffNumber, builder);
         }
     }
     

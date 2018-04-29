@@ -16,6 +16,8 @@ import java.util.Set;
 
 /**
  * Class for building <code>Note</code> objects.
+ * The built note is cached. This is used for ensuring that 
+ * sequences of tied notes are built correctly. 
  * @author Otso Björklund
  */
 public class NoteBuilder implements DurationalBuilder {
@@ -26,6 +28,10 @@ public class NoteBuilder implements DurationalBuilder {
     private List<MultiNoteArticulation> multiNoteArticulations;
     private Note tiedTo;
     private boolean isTiedFromPrevious;
+    private NoteBuilder followingTied;
+    private NoteBuilder prevTied;
+    
+    private Note cachedNote;
     
     /**
      * @param pitch The pitch set in this builder.
@@ -56,6 +62,7 @@ public class NoteBuilder implements DurationalBuilder {
     /**
      * @return The duration currently set in this builder.
      */
+    @Override
     public Duration getDuration() {
         return duration;
     }
@@ -90,7 +97,22 @@ public class NoteBuilder implements DurationalBuilder {
     public void setMultiNoteArticulations(List<MultiNoteArticulation> multiNoteArticulations) {
         this.multiNoteArticulations = multiNoteArticulations;
     }
-
+    
+    /**
+     * Tie this builder to a following builder.
+     * The builder that this is tied to should be built before this.
+     * When the notes are built the <code>Note</code> returned
+     * by the call of {@link #build build} on this will be tied to
+     * the <code>Note</code> built by builder.
+     * @param builder The builder for the following note that this is to
+     * be tied to.
+     */
+    public void addTieToFollowing(NoteBuilder builder) {
+        this.followingTied = builder;
+        builder.setIsTiedFromPrevious(true);
+        builder.setPreviousTied(this);
+    }
+    
     public Note getTiedTo() {
         return tiedTo;
     }
@@ -106,38 +128,40 @@ public class NoteBuilder implements DurationalBuilder {
     public void setIsTiedFromPrevious(boolean isTiedFromPrevious) {
         this.isTiedFromPrevious = isTiedFromPrevious;
     }
+    
+    private void setPreviousTied(NoteBuilder builder) {
+        this.prevTied = builder;
+    }
+    
+    /**
+     * Removes the cached <code>Note</code> that was built on the 
+     * previous call of {@link #build build}.
+     */
+    public void clearCache() {
+        this.cachedNote = null;
+    }
 
     /**
+     * Creates a <code>Note</code> with the values set in this builder.
+     * This method has side effects. The method calls {@link #build build} recursively
+     * on the following <code>NoteBuilder</code> objects to which this is tied.
+     * Calling this method to create the first note in a sequence of tied notes
+     * builds all the tied notes. The <code>Note</code> objects are cached
+     * in the builders. In case of tied notes, the temporally first one should
+     * be built first.
      * @return <code>Note</code> instance with the values set in this builder.
      */
     @Override
     public Note build() {
-        return Note.getNote(this.pitch, this.duration, this.articulations, this.multiNoteArticulations, this.tiedTo, this.isTiedFromPrevious);
-    }
-    
-    /**
-     * Get a sequence of <code>Note</code> objects that are tied together 
-     * from builders.
-     * @param noteBuilders
-     * @return List of notes, such that the first is tied to the second, second
-     * to third and so on.
-     */
-    public static List<Note> buildTiedNotes(List<NoteBuilder> noteBuilders) {
-        List<Note> notes = new ArrayList<>();
         
-        Note tieTargetNote = null;
-        for(int i = noteBuilders.size() - 1; i >= 0; --i) {
-            NoteBuilder builder = noteBuilders.get(i);
+        if(this.cachedNote == null) {
+            if(this.followingTied != null) {
+                this.tiedTo = this.followingTied.build();
+            }
             
-            if(i != 0)
-                builder.setIsTiedFromPrevious(true);
-            
-            builder.setTiedTo(tieTargetNote);
-            Note note = builder.build();
-            tieTargetNote = note;
-            notes.add(0, note);
+            this.cachedNote = Note.getNote(this.pitch, this.duration, this.articulations, this.multiNoteArticulations, this.tiedTo, this.isTiedFromPrevious);
         }
         
-        return notes;
+        return this.cachedNote;
     }
 }

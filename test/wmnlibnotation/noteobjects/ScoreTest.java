@@ -25,16 +25,16 @@ import wmnlibnotation.TestHelper;
  */
 public class ScoreTest {
     
-    public static final String scoreName = "TestScore";
-    public static final String composerName = "TestComposer";
+    public static final String SCORE_NAME = "TestScore";
+    public static final String COMPOSER_NAME = "TestComposer";
     
     public ScoreTest() {
     }
     
     public static Map<Score.Attribute, String> getTestAttributes() {
         Map<Score.Attribute, String> attributes = new HashMap<>();
-        attributes.put(Score.Attribute.NAME, scoreName);
-        attributes.put(Score.Attribute.COMPOSER, composerName);
+        attributes.put(Score.Attribute.NAME, SCORE_NAME);
+        attributes.put(Score.Attribute.COMPOSER, COMPOSER_NAME);
         return attributes;
     }
     
@@ -44,7 +44,7 @@ public class ScoreTest {
         for(int p = 1; p <= partCount; ++p) {
             PartBuilder partBuilder = new PartBuilder("Part" + p);
             for(int m = 1; m <= measureCount; ++m) {
-                partBuilder.addMeasureBuilder(TestHelper.getTestMeasureBuilder(m));
+                partBuilder.add(TestHelper.getTestMeasureBuilder(m));
             }
             
             parts.add(partBuilder.build());
@@ -56,8 +56,8 @@ public class ScoreTest {
     @Test
     public void testGetAttribute() {
         Score score = new Score(getTestAttributes(), getTestParts(5, 5));
-        assertEquals(scoreName, score.getAttribute(Score.Attribute.NAME));
-        assertEquals(composerName, score.getAttribute(Score.Attribute.COMPOSER));
+        assertEquals(SCORE_NAME, score.getAttribute(Score.Attribute.NAME));
+        assertEquals(COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
         assertEquals("", score.getAttribute(Score.Attribute.ARRANGER));
     }
     
@@ -71,9 +71,9 @@ public class ScoreTest {
         parts.add(parts.get(0));
         assertEquals("Adding part to the list used for creating score changed score.", 5, score.getPartCount());
         
-        assertEquals("Score name was incorrect before trying to modify", scoreName, score.getName());
+        assertEquals("Score name was incorrect before trying to modify", SCORE_NAME, score.getName());
         attributes.put(Score.Attribute.NAME, "ModifiedName");
-        assertEquals("Score name was changed by modifying map used for creating score", scoreName, score.getName());
+        assertEquals("Score name was changed by modifying map used for creating score", SCORE_NAME, score.getName());
     
         List<Part> scoreParts = score.getParts();
         try {

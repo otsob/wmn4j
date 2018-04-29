@@ -28,7 +28,7 @@ public class ScoreBuilderTest {
         for(int p = 1; p <= partCount; ++p) {
             PartBuilder partBuilder = new PartBuilder("Part" + p);
             for(int m = 1; m <= measureCount; ++m) {
-                partBuilder.addMeasureBuilder(TestHelper.getTestMeasureBuilder(m));
+                partBuilder.add(TestHelper.getTestMeasureBuilder(m));
             }
             
             partBuilders.add(partBuilder);
@@ -50,8 +50,8 @@ public class ScoreBuilderTest {
             builder.addPart(partBuilder);
         
         Score score = builder.build();
-        assertEquals(ScoreTest.scoreName, score.getName());
-        assertEquals(ScoreTest.composerName, score.getAttribute(Score.Attribute.COMPOSER));
+        assertEquals(ScoreTest.SCORE_NAME, score.getName());
+        assertEquals(ScoreTest.COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
         
         assertEquals(5, score.getPartCount());
     }

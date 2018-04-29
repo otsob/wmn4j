@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import wmnlibnotation.noteobjects.Note;
 
 /**
  *
@@ -45,8 +46,8 @@ public class PartBuilderTest {
         noteLayer.put(0, new ArrayList<>());
         noteLayer.get(0).add(C4Quarter);
         noteLayer.get(0).add(new RestBuilder(Durations.QUARTER));
-        ChordBuilder chordBuilder = new ChordBuilder(C4.getDuration());
-        chordBuilder.add(C4).add(E4).add(G4);
+        ChordBuilder chordBuilder = new ChordBuilder(C4);
+        chordBuilder.add(E4).add(G4);
         
         noteLayer.get(0).add(chordBuilder);
         
@@ -76,13 +77,13 @@ public class PartBuilderTest {
         PartBuilder builder = new PartBuilder("");
         for(int i = 1; i <= measureCount; ++i) {
             MeasureBuilder m = getMeasureBuilder(i);
-            builder.addMeasureBuilderToStaff(0, m);
+            builder.addToStaff(0, m);
         }
         assertEquals(1, builder.getStaffCount());
     
         for(int i = 1; i <= measureCount; ++i) { 
             MeasureBuilder m = getMeasureBuilder(i);
-            builder.addMeasureBuilderToStaff(1, m);
+            builder.addToStaff(1, m);
         }
         assertEquals(2, builder.getStaffCount());
     }
@@ -93,7 +94,7 @@ public class PartBuilderTest {
         PartBuilder builder = new PartBuilder("");
         for(int i = 1; i <= measureCount; ++i) {
              MeasureBuilder m = getMeasureBuilder(i);
-            builder.addMeasureBuilder(m);
+            builder.add(m);
         }
         
         Part part = builder.build();
@@ -106,8 +107,8 @@ public class PartBuilderTest {
         int measureCount = 5;
         PartBuilder builder = new PartBuilder("");
         for(int i = 1; i <= measureCount; ++i) {
-            builder.addMeasureBuilderToStaff(1, getMeasureBuilder(i));
-            builder.addMeasureBuilderToStaff(2, getMeasureBuilder(i));
+            builder.addToStaff(1, getMeasureBuilder(i));
+            builder.addToStaff(2, getMeasureBuilder(i));
         }
         
         Part part = builder.build();
@@ -124,5 +125,28 @@ public class PartBuilderTest {
         
         Staff staff2 = mpart.getStaff(2);
         assertTrue(staff2.getMeasureCount() == 5);
+    }
+    
+    @Test
+    public void testBuildPartWithTieBetweenMeasures() {
+        
+        MeasureBuilder firstMeasureBuilder = new MeasureBuilder(1);
+        NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
+        firstMeasureBuilder.addToLayer(1, firstNoteBuilder);
+    
+        MeasureBuilder secondMeasureBuilder = new MeasureBuilder(2);
+        NoteBuilder secondNoteBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
+        firstNoteBuilder.addTieToFollowing(secondNoteBuilder);
+        secondMeasureBuilder.addToLayer(1, secondNoteBuilder);
+        
+        PartBuilder partBuilder = new PartBuilder("TiedMeasures");
+        partBuilder.add(firstMeasureBuilder).add(secondMeasureBuilder);
+        Part part = partBuilder.build();
+        
+        Note firstNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 1).get(1, 0);
+        Note secondNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 2).get(1, 0);
+        
+        assertEquals(secondNote, firstNote.getFollowingTiedNote());
+        assertTrue(secondNote.isTiedFromPrevious());
     }
 }

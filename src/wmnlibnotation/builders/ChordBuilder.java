@@ -11,7 +11,7 @@ import wmnlibnotation.noteobjects.Duration;
 import wmnlibnotation.noteobjects.Note;
 
 /**
- *
+ * Class for building <code>Chord</code> objects.
  * @author Otso Björklund
  */
 public class ChordBuilder implements DurationalBuilder {
@@ -19,20 +19,31 @@ public class ChordBuilder implements DurationalBuilder {
     private final List<NoteBuilder> noteBuilders;
     private Duration duration;
     
-    public ChordBuilder(Duration duration) {
-        this.duration = duration;
+    public ChordBuilder(NoteBuilder noteBuilder) {
+        this.duration = noteBuilder.getDuration();
         this.noteBuilders = new ArrayList<>();
+        this.noteBuilders.add(noteBuilder);
     }
     
     public ChordBuilder(List<NoteBuilder> noteBuilders) {
+        // TODO: Make copies of the noteBuilders in the list.
         this.duration = noteBuilders.get(0).getDuration();
         this.noteBuilders = new ArrayList<>(noteBuilders);
     }
     
     public ChordBuilder add(NoteBuilder noteBuilder) {
+        // TODO: Make a copy of the NoteBuilder.
         this.noteBuilders.add(noteBuilder);
         return this;
     }
+    
+    // TODO: Add methods for:
+    // Removing 
+    // Setting at index
+    // Getting at index
+    // Changing duration.
+    
+    // TODO: Add tests.
     
     @Override
     public Duration getDuration() {

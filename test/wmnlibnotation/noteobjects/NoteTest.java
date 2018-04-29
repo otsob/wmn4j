@@ -147,25 +147,20 @@ public class NoteTest {
     
     @Test
     public void testTies() {
-        List<NoteBuilder> builders = new ArrayList<>();
-        
         NoteBuilder firstBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
-        builders.add(firstBuilder);
-        
         NoteBuilder secondBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
-        builders.add(secondBuilder);
-        
-        List<Note> notes = NoteBuilder.buildTiedNotes(builders);
-        
-        Note firstNote = notes.get(0);
+        firstBuilder.addTieToFollowing(secondBuilder);
+    
+        Note secondNote = secondBuilder.build();
+        assertTrue(secondNote.isTied());
+        assertTrue(secondNote.getFollowingTiedNote() == null);
+        assertTrue(secondNote.isTiedFromPrevious());
+    
+        Note firstNote = firstBuilder.build();
         assertTrue(firstNote.isTied());
         assertTrue(firstNote.getFollowingTiedNote() != null);
         assertFalse(firstNote.isTiedFromPrevious());
         
-        Note secondNote = notes.get(1);
-        assertTrue(secondNote.isTied());
-        assertTrue(secondNote.getFollowingTiedNote() == null);
-        assertTrue(secondNote.isTiedFromPrevious());
     }
     
     @Test
@@ -173,23 +168,28 @@ public class NoteTest {
         Note untied = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
         assertEquals(Durations.QUARTER, untied.getTiedDuration());
         
-        List<NoteBuilder> builders = new ArrayList<>();
         NoteBuilder firstBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
-        builders.add(firstBuilder);
-        
         NoteBuilder secondBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
-        builders.add(secondBuilder);
+        firstBuilder.addTieToFollowing(secondBuilder);
         
-        List<Note> twoNoteSequence = NoteBuilder.buildTiedNotes(builders);
-        assertEquals(Durations.QUARTER.addDot(), twoNoteSequence.get(0).getTiedDuration());
-        assertEquals(Durations.EIGHT, twoNoteSequence.get(1).getTiedDuration());
+        Note firstNote = firstBuilder.build();
+        Note secondNote = secondBuilder.build();
+        
+        assertEquals(Durations.QUARTER.addDot(), firstNote.getTiedDuration());
+        assertEquals(Durations.EIGHT, secondNote.getTiedDuration());
+        
+        firstBuilder.clearCache();
+        secondBuilder.clearCache();
         
         NoteBuilder thirdBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
-        builders.add(thirdBuilder);
+        secondBuilder.addTieToFollowing(thirdBuilder);
         
-        List<Note> threeNoteSequence = NoteBuilder.buildTiedNotes(builders);
-        assertEquals(Durations.HALF, threeNoteSequence.get(0).getTiedDuration());
-        assertEquals(Durations.QUARTER, threeNoteSequence.get(1).getTiedDuration());
-        assertEquals(Durations.EIGHT, threeNoteSequence.get(2).getTiedDuration());
+        firstNote = firstBuilder.build();
+        secondNote = secondBuilder.build();
+        Note thirdNote = thirdBuilder.build();
+        
+        assertEquals(Durations.HALF, firstNote.getTiedDuration());
+        assertEquals(Durations.QUARTER, secondNote.getTiedDuration());
+        assertEquals(Durations.EIGHT, thirdNote.getTiedDuration());
     }
 }

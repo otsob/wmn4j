@@ -31,8 +31,8 @@ public class TestHelper {
         
         builder.addToLayer(0, C4Quarter);
         builder.addToLayer(0, new RestBuilder(Durations.QUARTER));
-        ChordBuilder chordBuilder = new ChordBuilder(C4.getDuration());
-        chordBuilder.add(C4).add(E4).add(G4);
+        ChordBuilder chordBuilder = new ChordBuilder(C4);
+        chordBuilder.add(E4).add(G4);
         builder.addToLayer(0, chordBuilder);
         
         builder.addToLayer(1, new RestBuilder(Durations.QUARTER));
