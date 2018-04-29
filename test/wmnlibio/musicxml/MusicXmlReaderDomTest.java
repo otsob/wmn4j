@@ -4,6 +4,9 @@
  */
 package wmnlibio.musicxml;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import org.junit.Test;
@@ -34,7 +37,7 @@ import wmnlibnotation.noteobjects.TimeSignatures;
  */
 public class MusicXmlReaderDomTest {
     
-    static final String testFilePath = "test/testfiles/musicxml/";
+    static final String TESTFILE_PATH = "test/testfiles/musicxml/";
     
     public MusicXmlReaderDomTest() {
     }
@@ -46,10 +49,11 @@ public class MusicXmlReaderDomTest {
     public Score readScore(String testFileName) {
         MusicXmlReader reader = getMusicXmlReader();
         Score score = null;
+        Path path = Paths.get(TESTFILE_PATH + testFileName);
         
         try {
-            score = reader.readScore(testFilePath + testFileName);
-        } catch(Exception e) {
+            score = reader.readScore(path);
+        } catch(IOException e) {
             fail("Parsing failed with exception " + e);
         }
         
@@ -382,6 +386,7 @@ public class MusicXmlReaderDomTest {
     @Test
     public void testTiedNotes() {
         Score score = readScore("tieTesting.xml");
+        System.out.println(score);
         SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
         
         Measure firstMeasure = part.getMeasure(1);
@@ -393,7 +398,7 @@ public class MusicXmlReaderDomTest {
         assertTrue(second.isTiedFromPrevious());
         assertFalse(second.isTiedToFollowing());
         
-        Note third = (Note) firstMeasure.get(0, 2);
+        Note third = (Note) firstMeasure.get(1, 2);
         assertTrue(third.isTiedToFollowing());
         assertFalse(third.isTiedFromPrevious());
         

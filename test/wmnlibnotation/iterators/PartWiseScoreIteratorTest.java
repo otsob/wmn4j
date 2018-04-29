@@ -4,6 +4,7 @@
  */
 package wmnlibnotation.iterators;
 
+import java.nio.file.Paths;
 import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.Score;
@@ -27,7 +28,7 @@ public class PartWiseScoreIteratorTest {
     public PartWiseScoreIteratorTest() {
         MusicXmlReader reader = new MusicXmlReaderDom();
         try {
-            this.score = reader.readScore("test/testfiles/musicxml/scoreIteratorTesting.xml");
+            this.score = reader.readScore(Paths.get("test/testfiles/musicxml/scoreIteratorTesting.xml"));
         }
         catch(Exception e) {
             System.out.println(e);

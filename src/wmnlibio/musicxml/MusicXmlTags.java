@@ -66,6 +66,8 @@ public class MusicXmlTags {
     static final String TIE_TYPE = "type";
     static final String TIE_START = "start";
     static final String TIE_STOP = "stop";
+    static final String NOTATIONS = "notations";
+    static final String NOTE_ARTICULATIONS = "articulations";
     
     // Part tags
     static final String PART = "part";

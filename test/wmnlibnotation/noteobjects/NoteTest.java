@@ -5,9 +5,7 @@
 package wmnlibnotation.noteobjects;
 
 import wmnlibnotation.builders.NoteBuilder;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -31,20 +29,6 @@ public class NoteTest {
     public static void tearDownClass() {
     }
 
-    @Test
-    public void testToString() {
-        assertEquals( "C#4(1/4)", Note.getNote(Pitch.getPitch( Pitch.Base.C, 1, 4), Durations.QUARTER).toString());
-        assertEquals( "Fb5(1/8)", Note.getNote(Pitch.getPitch( Pitch.Base.F, -1, 5), Durations.EIGHT).toString() );
-        
-        Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
-        HashSet<Articulation> articulations = new HashSet<>();
-        articulations.add(Articulation.STACCATO);
-        assertEquals( "C1(1/8)(STACCATO)", Note.getNote(pitch, Durations.EIGHT, articulations).toString());
-        articulations.add(Articulation.TENUTO);
-        assertTrue(Note.getNote(pitch, Durations.EIGHT, articulations).toString().equals("C1(1/8)(STACCATO TENUTO)")
-                    ||Note.getNote(pitch, Durations.EIGHT, articulations).toString().equals("C1(1/8)(TENUTO STACCATO)"));
-    }
-    
     @Test
     public void testEquals() {
         Note A1 = Note.getNote(Pitch.Base.A, 0, 1, Durations.QUARTER);

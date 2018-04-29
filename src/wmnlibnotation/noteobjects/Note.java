@@ -3,10 +3,6 @@
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package wmnlibnotation.noteobjects;
-import wmnlibnotation.noteobjects.Pitch;
-import wmnlibnotation.noteobjects.Durational;
-import wmnlibnotation.noteobjects.Duration;
-import wmnlibnotation.noteobjects.Articulation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -266,18 +262,16 @@ public class Note implements Durational {
     
     /**
      * Returns a string representation of this <code>Note</code>.
-     * The string representation of a note is of form <code>PDA</code>, 
-     * where <code>P</code> is the string representation of this note's pitch,
-     * <code>D</code> is the string representation of this note's duration, 
-     * and <code>A</code> is the set of articulations in parentheses and separated by spaces.
-     * For example, for a Note with articulations STACCATO and ACCENT <code>A</code> 
-     * will be <code>(ACCENT STACCATO)</code>. 
-     * The order of articulations in the string representation is not specified.
      * @return string representation of this Note.
      */
     @Override
     public String toString() {
         StringBuilder strBuilder = new StringBuilder();
+                
+        if(this.isTiedFromPrevious()) {
+            strBuilder.append("->");
+        }
+        
         strBuilder.append(this.pitch.toString()).append(this.duration.toString());
         
         if(!this.articulations.isEmpty()) {
@@ -290,6 +284,11 @@ public class Note implements Durational {
             strBuilder.replace(strBuilder.length() - 1, strBuilder.length(), "");
             strBuilder.append(")");
         }
+
+        if(this.isTiedToFollowing()) {
+            strBuilder.append("->");
+        }
+        
         return strBuilder.toString();
     }
    

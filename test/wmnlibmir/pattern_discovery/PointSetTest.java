@@ -4,6 +4,7 @@
  */
 package wmnlibmir.pattern_discovery;
 
+import java.nio.file.Paths;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -28,7 +29,7 @@ public class PointSetTest {
     public void testCreatingFromSingleStaffScore() {
         MusicXmlReader reader = new MusicXmlReaderDom();
         try {
-            Score score = reader.readScore("test/testfiles/musicxml/twoMeasures.xml");
+            Score score = reader.readScore(Paths.get("test/testfiles/musicxml/twoMeasures.xml"));
             PointSet pointset = new PointSet(score);
             System.out.println(score);
             System.out.println(pointset);

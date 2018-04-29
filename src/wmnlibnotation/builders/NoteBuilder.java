@@ -29,7 +29,6 @@ public class NoteBuilder implements DurationalBuilder {
     private Note tiedTo;
     private boolean isTiedFromPrevious;
     private NoteBuilder followingTied;
-    private NoteBuilder prevTied;
     
     private Note cachedNote;
     
@@ -110,7 +109,6 @@ public class NoteBuilder implements DurationalBuilder {
     public void addTieToFollowing(NoteBuilder builder) {
         this.followingTied = builder;
         builder.setIsTiedFromPrevious(true);
-        builder.setPreviousTied(this);
     }
     
     public Note getTiedTo() {
@@ -128,11 +126,7 @@ public class NoteBuilder implements DurationalBuilder {
     public void setIsTiedFromPrevious(boolean isTiedFromPrevious) {
         this.isTiedFromPrevious = isTiedFromPrevious;
     }
-    
-    private void setPreviousTied(NoteBuilder builder) {
-        this.prevTied = builder;
-    }
-    
+
     /**
      * Removes the cached <code>Note</code> that was built on the 
      * previous call of {@link #build build}.
