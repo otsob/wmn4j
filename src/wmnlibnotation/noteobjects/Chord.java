@@ -49,6 +49,9 @@ public class Chord implements Durational, Iterable<Note> {
      */
     private Chord(List<Note> notes) {
         
+        if(notes == null)
+            throw new NullPointerException();
+        
         List<Note> notesCopy = new ArrayList<>(notes);
         
         if(notesCopy.isEmpty())
@@ -56,9 +59,6 @@ public class Chord implements Durational, Iterable<Note> {
         
         notesCopy.sort(Note::compareByPitch);
         this.notes = Collections.unmodifiableList(notesCopy);
-        
-        if(this.notes == null)
-            throw new NullPointerException();
         
         final Duration d = this.notes.get(0).getDuration();
                 
