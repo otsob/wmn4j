@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Class for building <code>Measure</code> objects.
@@ -320,9 +321,7 @@ public class MeasureBuilder {
         Map<Integer, List<Durational>> builtLayers = new HashMap<>();
         for(Integer layerNumber : this.getLayerNumbers()) {
             List<DurationalBuilder> builders = this.layers.get(layerNumber);
-            List<Durational> layer = new ArrayList<>();
-            builders.forEach((builder) -> layer.add(builder.build()));
-            builtLayers.put(layerNumber, layer);
+            builtLayers.put(layerNumber, builders.stream().map(DurationalBuilder::build).collect(Collectors.toList()));
         }
         
         return builtLayers;

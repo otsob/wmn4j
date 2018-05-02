@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Builder for building <code>Part</code> objects.
@@ -22,7 +23,7 @@ public class PartBuilder {
     
     private final Map<Integer, List<MeasureBuilder>> staveContents = new HashMap<>();
     private final Map<Part.Attribute, String> partAttributes = new HashMap<>();
-    private static final int SINGLE_STAFF_NUMBER = 1;
+    private static final int SINGLE_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
     
     /**
      * @param name Name of the <code>Part</code> to be built.
@@ -81,6 +82,10 @@ public class PartBuilder {
         return this.partAttributes.get(Part.Attribute.NAME);
     }
     
+    private List<Measure> getBuiltMeasures(List<MeasureBuilder> builders) {
+        return builders.stream().map(MeasureBuilder::build).collect(Collectors.toList());
+    }
+    
     /**
      * Creates a part using the contained <code>MeasureBuilder</code> objects.
      * @return A <code>Part</code> with the measures and attributes in the builder.
@@ -88,17 +93,12 @@ public class PartBuilder {
      */
     public Part build() {
         if(this.staveContents.size() == 1) {
-            List<Measure> measures = new ArrayList<>();
-            this.staveContents.get(SINGLE_STAFF_NUMBER).forEach((builder) -> measures.add(builder.build()));
-            return new SingleStaffPart(this.partAttributes, measures);
-        
+            return new SingleStaffPart(this.partAttributes, getBuiltMeasures(this.staveContents.get(SINGLE_STAFF_NUMBER)));
         }
         else {
             Map<Integer, Staff> staves = new HashMap<>();
             for(int staffNumber : this.staveContents.keySet()) {
-                List<Measure> measures = new ArrayList<>();
-                this.staveContents.get(staffNumber).forEach((builder) -> measures.add(builder.build()));
-                staves.put(staffNumber, new Staff(measures));
+                staves.put(staffNumber, new Staff(getBuiltMeasures(this.staveContents.get(staffNumber))));
             }
             
             return new MultiStaffPart(this.partAttributes, staves);
