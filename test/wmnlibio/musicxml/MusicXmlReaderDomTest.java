@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import wmnlibnotation.noteobjects.Articulation;
 import wmnlibnotation.noteobjects.Barline;
 import wmnlibnotation.noteobjects.Chord;
 import wmnlibnotation.noteobjects.Clef;
@@ -386,7 +387,6 @@ public class MusicXmlReaderDomTest {
     @Test
     public void testTiedNotes() {
         Score score = readScore("tieTesting.xml");
-        System.out.println(score);
         SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
         
         Measure firstMeasure = part.getMeasure(1);
@@ -424,5 +424,30 @@ public class MusicXmlReaderDomTest {
         Note ninth = (Note) fourthMeasure.get(1, 0);
         assertTrue(ninth.isTiedFromPrevious());
         assertTrue(ninth.isTiedToFollowing());
+    }
+    
+    @Test
+    public void testReadingScoreWithArticulations() {
+        Score score = readScore("articulations.xml");
+        
+        System.out.println(score);
+        
+        Measure measure = score.getPart(0).getMeasure(0, 1);
+        assertTrue(((Note) measure.get(1, 0)).hasArticulation(Articulation.STACCATO));
+        assertTrue(((Note) measure.get(1, 1)).hasArticulation(Articulation.ACCENT));
+        assertTrue(((Note) measure.get(1, 2)).hasArticulation(Articulation.TENUTO));
+        assertTrue(((Note) measure.get(1, 3)).hasArticulation(Articulation.FERMATA));
+    }
+    
+    @Test
+    public void testReadingIncorrectXmlFile() {
+        MusicXmlReader reader = new MusicXmlReaderDom(true);
+        try {
+            Score score = reader.readScore(Paths.get(TESTFILE_PATH + "singleCinvalid.xml"));
+            fail("No exception was thrown when trying to read incorrectly formatted XML file");
+        } catch (IOException e) {
+            
+        }
+        
     }
 }

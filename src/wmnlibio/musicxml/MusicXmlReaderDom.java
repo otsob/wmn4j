@@ -11,17 +11,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.util.Pair;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import wmnlibio.IOLogger;
 import wmnlibnotation.builders.ChordBuilder;
 import wmnlibnotation.noteobjects.Barline;
 import wmnlibnotation.noteobjects.Clef;
@@ -48,49 +52,57 @@ public class MusicXmlReaderDom implements MusicXmlReader {
     private static final int MIN_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
     private static final int DEFAULT_STAFF_COUNT = 1;
     
-    private DocumentBuilder docBuilder;
+    private final IOLogger logger = new IOLogger();
+    private final boolean validateInput;
     
-    // TODO: make parses configurable
-    // -Validation
-    // -scorewise/partwise
+    /**
+     * By default <code>MusicXmlReaderDom</code> does not validate 
+     * the input files for being valid MusicXML.
+     */
     public MusicXmlReaderDom() {
-        
-        try {
-            configure();
-        } catch (ParserConfigurationException ex) {
-            // Todo: Where and how to log parsing errors?
-            Logger.getLogger(MusicXmlReaderDom.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    private void configure() throws ParserConfigurationException {
-        
-        // TODO: make parser configurable
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setValidating(false);
-        dbf.setNamespaceAware(true);
-        dbf.setFeature("http://xml.org/sax/features/namespaces", false);
-        dbf.setFeature("http://xml.org/sax/features/validation", false);    
-        dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-        dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-
-        this.docBuilder = dbf.newDocumentBuilder();
+        this(false);
     }
     
     /**
-     * Create a <code>Score</code> from a MusicXML file.
-     * @param filePath Path of the MusicXML file.
-     * @return Score from the file.
-     * @throws IOException 
+     * Constructor that allows setting validation.
+     * @param validateInput Whether this validates MusicXML files given as input.
      */
+    public MusicXmlReaderDom(boolean validateInput) {
+        this.validateInput = validateInput;
+    }
+    
+    private DocumentBuilder createAndConfigureDocBuilder() throws ParserConfigurationException {
+        
+        // TODO: Check the parser configuration.
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setValidating(false);
+        dbf.setNamespaceAware(true);
+        dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+        dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+        return dbf.newDocumentBuilder();
+    }
+    
+    private boolean isMusicXmlFileValid(File musicXmlFile) {
+        
+        // TODO: Make this work.
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        try {
+            Schema schema = schemaFactory.newSchema(MusicXmlReader.SCHEMA.toFile());
+            
+            Validator validator = schema.newValidator();
+            validator.validate(new StreamSource(musicXmlFile));
+        } catch (IOException | SAXException e) {
+            this.logger.log(musicXmlFile.toString() + " is NOT valid reason:" + e);
+            return false;
+        } 
+        
+        return true;
+    }
+    
     @Override
     public Score readScore(Path filePath) throws IOException {
-    
-        ScoreBuilder builder = this.scoreBuilderFromFile(filePath);
-        if(builder != null)
-            return builder.build();
-        
-        return null;
+        return scoreBuilderFromFile(filePath).build();
     }
     
     @Override
@@ -98,12 +110,22 @@ public class MusicXmlReaderDom implements MusicXmlReader {
         ScoreBuilder scoreBuilder = new ScoreBuilder();
         File musicXmlFile = filePath.toFile();
         
+        if(this.validateInput && !isMusicXmlFileValid(musicXmlFile)) {
+            throw new IOException("File at " + filePath.toString() +  " is not a valid MusicXML file");
+        }
+        
         try {
-            Document musicXmlDoc = this.docBuilder.parse(musicXmlFile);
-            readScoreToBuilder(scoreBuilder, musicXmlDoc);
-        } catch (SAXException ex) {
-            Logger.getLogger(MusicXmlReaderDom.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+            DocumentBuilder docBuilder = createAndConfigureDocBuilder();
+            
+            try {
+                Document musicXmlDoc = docBuilder.parse(musicXmlFile);
+                readScoreToBuilder(scoreBuilder, musicXmlDoc);
+            } catch (SAXException ex) {
+                throw new IOException("Parsing failed with exception " + ex.toString());
+            } 
+        } catch(ParserConfigurationException e) {
+            throw new IOException("Parser configuration failed");
+        }
         
         return scoreBuilder;
     }
@@ -405,19 +427,34 @@ public class MusicXmlReaderDom implements MusicXmlReader {
     }
     
     private void addNotations(Node notationsNode, NoteBuilder noteBuilder) {
-        List<Node> articulationNodes = findChildren(notationsNode, MusicXmlTags.NOTE_ARTICULATIONS);
+        Node articulationsNode = findChild(notationsNode, MusicXmlTags.NOTE_ARTICULATIONS);
         
-        for(Node articulationNode : articulationNodes) {
-            Articulation articulation = getArticulation(articulationNode.getNodeName());
-            if(articulation != null)
-                noteBuilder.addArticulation(articulation);
+        if(articulationsNode != null) {
+            for(int i = 0; i < articulationsNode.getChildNodes().getLength(); ++i) {
+                Node articulationNode = articulationsNode.getChildNodes().item(i);
+                Articulation articulation = getArticulation(articulationNode.getNodeName());
+                if(articulation != null) {
+                    noteBuilder.addArticulation(articulation);
+                }
+                else {
+                    this.logger.log("No Articulation for node with name " + articulationNode.getNodeName());
+                }
+            }
         }
         
-        // TODO: Read other notations.
+        Node fermataNode = findChild(notationsNode, MusicXmlTags.FERMATA);
+        if(fermataNode != null) {
+            noteBuilder.addArticulation(Articulation.FERMATA);
+        }
     }
     
     private Articulation getArticulation(String articulationString) {
-        // TODO: Implement
+        switch(articulationString) {
+            case MusicXmlTags.ACCENT: return Articulation.ACCENT;
+            case MusicXmlTags.STACCATO: return Articulation.STACCATO;
+            case MusicXmlTags.TENUTO: return Articulation.TENUTO;
+        }
+        
         return null;
     }
     

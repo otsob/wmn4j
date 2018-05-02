@@ -69,6 +69,12 @@ public class MusicXmlTags {
     static final String NOTATIONS = "notations";
     static final String NOTE_ARTICULATIONS = "articulations";
     
+    // Articulations
+    static final String STACCATO = "staccato";
+    static final String ACCENT = "accent";
+    static final String TENUTO = "tenuto";
+    static final String FERMATA = "fermata";
+    
     // Part tags
     static final String PART = "part";
     static final String PART_ID = "id";

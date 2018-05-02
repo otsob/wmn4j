@@ -6,6 +6,7 @@ package wmnlibio.musicxml;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import wmnlibnotation.builders.ScoreBuilder;
 import wmnlibnotation.noteobjects.Score;
 
@@ -14,6 +15,9 @@ import wmnlibnotation.noteobjects.Score;
  * @author Otso Björklund
  */
 public interface MusicXmlReader {
+    
+    static final Path SCHEMA = Paths.get("src/wmnlibio/musicxml/musicxml.xsd");
+    
     /**
      * Reads the MusicXML file at the path specified by filePath
      * and creates a <code>Score</code>.
