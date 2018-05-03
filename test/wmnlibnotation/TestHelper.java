@@ -4,6 +4,10 @@
  */
 package wmnlibnotation;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import wmnlibio.musicxml.MusicXmlReader;
+import wmnlibio.musicxml.MusicXmlReaderDom;
 import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.KeySignature;
 import wmnlibnotation.noteobjects.Durations;
@@ -13,6 +17,7 @@ import wmnlibnotation.builders.ChordBuilder;
 import wmnlibnotation.builders.MeasureBuilder;
 import wmnlibnotation.builders.NoteBuilder;
 import wmnlibnotation.builders.RestBuilder;
+import wmnlibnotation.noteobjects.Score;
 
 /**
  *
@@ -44,5 +49,19 @@ public class TestHelper {
     
     public static Measure getTestMeasure(int number) {
         return getTestMeasureBuilder(number).build();
+    }
+    
+    public static Score readScore(Path path) {
+        Score score = null;
+        
+        MusicXmlReader reader = new MusicXmlReaderDom();
+
+        try {
+            score = reader.readScore(path);
+        } catch (IOException e) {
+            System.out.println("Failed to read score with exception: " + e);
+        }
+        
+        return score;
     }
 }

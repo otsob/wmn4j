@@ -138,15 +138,8 @@ public class ScoreTest {
     
     @Test
     public void testIteratorAndGetAtPosition() {
-        MusicXmlReaderDom reader = new MusicXmlReaderDom();
-        Score score = null;
-        try {
-            score = reader.readScore(Paths.get("test/testfiles/musicxml/scoreIteratorTesting.xml"));
-        } 
-        catch(Exception e) {
-            System.out.println(e);
-            fail("Failed to read score");
-        }
+        Score score = TestHelper.readScore(Paths.get("test/testfiles/musicxml/scoreIteratorTesting.xml"));
+        assertTrue(score != null);
         
         ScoreIterator iterator = new PartWiseScoreIterator(score);
         while(iterator.hasNext()) {
@@ -154,5 +147,17 @@ public class ScoreTest {
             ScorePosition position = iterator.positionOfPrevious();
             assertEquals(elem, score.getAtPosition(position));
         }
+    }
+    
+    @Test
+    public void testGetAtPositionInChord() {
+        Score score = TestHelper.readScore(Paths.get("test/testfiles/musicxml/positionInChord.xml"));
+        assertTrue(score != null);
+        System.out.println(score);
+    
+        // Get the middle note (E) from the chord in the score.
+        ScorePosition position = new ScorePosition(0, 1, 1, 1, 1, 1);
+        Note noteInChord = (Note) score.getAtPosition(position);
+        assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF), noteInChord);
     }
 }
