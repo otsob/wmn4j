@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,11 +19,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
+
 import wmnlibnotation.iterators.PartWiseScoreIterator;
 import wmnlibnotation.iterators.ScoreIterator;
 import wmnlibnotation.noteobjects.Chord;
@@ -30,13 +31,11 @@ import wmnlibnotation.noteobjects.Duration;
 import wmnlibnotation.noteobjects.Durational;
 import wmnlibnotation.noteobjects.Durations;
 import wmnlibnotation.noteobjects.Measure;
-import wmnlibnotation.noteobjects.MeasureAttributes;
 import wmnlibnotation.noteobjects.MultiStaffPart;
 import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.noteobjects.Part;
 import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.Rest;
-
 import wmnlibnotation.noteobjects.Score;
 import wmnlibnotation.noteobjects.SingleStaffPart;
 

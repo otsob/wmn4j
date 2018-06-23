@@ -4,12 +4,13 @@
  */
 package wmnlibnotation.builders;
 
-import wmnlibnotation.noteobjects.Part;
-import wmnlibnotation.noteobjects.Score;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import wmnlibnotation.noteobjects.Part;
+import wmnlibnotation.noteobjects.Score;
 
 /**
  * Class for building <code>Score</code> objects.

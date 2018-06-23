@@ -4,30 +4,36 @@
  */
 package wmnlibio.musicxml;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 import wmnlibnotation.noteobjects.Articulation;
 import wmnlibnotation.noteobjects.Barline;
 import wmnlibnotation.noteobjects.Chord;
 import wmnlibnotation.noteobjects.Clef;
 import wmnlibnotation.noteobjects.Clefs;
 import wmnlibnotation.noteobjects.Duration;
+import wmnlibnotation.noteobjects.Durational;
 import wmnlibnotation.noteobjects.Durations;
 import wmnlibnotation.noteobjects.KeySignatures;
 import wmnlibnotation.noteobjects.Measure;
-import wmnlibnotation.noteobjects.Durational;
 import wmnlibnotation.noteobjects.MultiStaffPart;
 import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.noteobjects.Part;
-import wmnlibnotation.noteobjects.SingleStaffPart;
 import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.Rest;
 import wmnlibnotation.noteobjects.Score;
+import wmnlibnotation.noteobjects.SingleStaffPart;
 import wmnlibnotation.noteobjects.Staff;
 import wmnlibnotation.noteobjects.TimeSignature;
 import wmnlibnotation.noteobjects.TimeSignatures;

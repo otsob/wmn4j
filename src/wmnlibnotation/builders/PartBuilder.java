@@ -4,16 +4,17 @@
  */
 package wmnlibnotation.builders;
 
-import wmnlibnotation.noteobjects.Part;
-import wmnlibnotation.noteobjects.MultiStaffPart;
-import wmnlibnotation.noteobjects.Staff;
-import wmnlibnotation.noteobjects.SingleStaffPart;
-import wmnlibnotation.noteobjects.Measure;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import wmnlibnotation.noteobjects.Measure;
+import wmnlibnotation.noteobjects.MultiStaffPart;
+import wmnlibnotation.noteobjects.Part;
+import wmnlibnotation.noteobjects.SingleStaffPart;
+import wmnlibnotation.noteobjects.Staff;
 
 /**
  * Builder for building <code>Part</code> objects.

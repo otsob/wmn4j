@@ -4,7 +4,6 @@
  */
 package wmnlibnotation.noteobjects;
 
-import wmnlibnotation.noteobjects.Duration;
 import java.util.Objects;
 
 /**

@@ -4,12 +4,15 @@
  */
 package wmnlibmir.pattern_discovery;
 
+import static org.junit.Assert.fail;
+
 import java.nio.file.Paths;
+
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import wmnlibio.musicxml.MusicXmlReaderDom;
+
 import wmnlibio.musicxml.MusicXmlReader;
+import wmnlibio.musicxml.MusicXmlReaderDom;
 import wmnlibnotation.noteobjects.Score;
 
 /**

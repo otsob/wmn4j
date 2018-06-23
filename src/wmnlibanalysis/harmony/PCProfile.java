@@ -8,6 +8,7 @@ package wmnlibanalysis.harmony;
 import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.TreeMap;
+
 import wmnlibnotation.noteobjects.Chord;
 import wmnlibnotation.noteobjects.Durational;
 import wmnlibnotation.noteobjects.Note;

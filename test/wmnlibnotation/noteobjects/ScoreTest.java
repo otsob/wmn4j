@@ -4,21 +4,26 @@
  */
 package wmnlibnotation.noteobjects;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.nio.file.Paths;
-import wmnlibnotation.iterators.ScoreIterator;
-import wmnlibnotation.iterators.PartWiseScoreIterator;
-import wmnlibnotation.builders.PartBuilder;
-import wmnlibnotation.iterators.ScorePosition;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 import wmnlibio.musicxml.MusicXmlReaderDom;
 import wmnlibnotation.TestHelper;
+import wmnlibnotation.builders.PartBuilder;
+import wmnlibnotation.iterators.PartWiseScoreIterator;
+import wmnlibnotation.iterators.ScoreIterator;
+import wmnlibnotation.iterators.ScorePosition;
 
 /**
  *

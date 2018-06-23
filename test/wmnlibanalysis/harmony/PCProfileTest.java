@@ -5,8 +5,12 @@
  */
 package wmnlibanalysis.harmony;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 import wmnlibnotation.noteobjects.Durations;
 import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.noteobjects.Pitch;

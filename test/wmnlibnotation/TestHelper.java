@@ -6,17 +6,18 @@ package wmnlibnotation;
 
 import java.io.IOException;
 import java.nio.file.Path;
+
 import wmnlibio.musicxml.MusicXmlReader;
 import wmnlibio.musicxml.MusicXmlReaderDom;
-import wmnlibnotation.noteobjects.Pitch;
-import wmnlibnotation.noteobjects.KeySignature;
-import wmnlibnotation.noteobjects.Durations;
-import wmnlibnotation.noteobjects.Measure;
-import wmnlibnotation.noteobjects.KeySignatures;
 import wmnlibnotation.builders.ChordBuilder;
 import wmnlibnotation.builders.MeasureBuilder;
 import wmnlibnotation.builders.NoteBuilder;
 import wmnlibnotation.builders.RestBuilder;
+import wmnlibnotation.noteobjects.Durations;
+import wmnlibnotation.noteobjects.KeySignature;
+import wmnlibnotation.noteobjects.KeySignatures;
+import wmnlibnotation.noteobjects.Measure;
+import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.Score;
 
 /**

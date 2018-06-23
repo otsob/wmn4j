@@ -4,12 +4,13 @@
  */
 package wmnlibnotation.iterators;
 
-import wmnlibnotation.noteobjects.Part;
-import wmnlibnotation.noteobjects.Score;
-import wmnlibnotation.noteobjects.Measure;
-import wmnlibnotation.noteobjects.Durational;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import wmnlibnotation.noteobjects.Durational;
+import wmnlibnotation.noteobjects.Measure;
+import wmnlibnotation.noteobjects.Part;
+import wmnlibnotation.noteobjects.Score;
 
 /**
  * Iterates through a <code>Score</code> in part wise order. Starts by iterating

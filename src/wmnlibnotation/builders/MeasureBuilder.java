@@ -4,17 +4,6 @@
  */
 package wmnlibnotation.builders;
 
-import wmnlibnotation.noteobjects.TimeSignatures;
-import wmnlibnotation.noteobjects.TimeSignature;
-import wmnlibnotation.noteobjects.Measure;
-import wmnlibnotation.noteobjects.Clef;
-import wmnlibnotation.noteobjects.Durational;
-import wmnlibnotation.noteobjects.Duration;
-import wmnlibnotation.noteobjects.Clefs;
-import wmnlibnotation.noteobjects.KeySignature;
-import wmnlibnotation.noteobjects.KeySignatures;
-import wmnlibnotation.noteobjects.MeasureAttributes;
-import wmnlibnotation.noteobjects.Barline;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,6 +11,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import wmnlibnotation.noteobjects.Barline;
+import wmnlibnotation.noteobjects.Clef;
+import wmnlibnotation.noteobjects.Clefs;
+import wmnlibnotation.noteobjects.Duration;
+import wmnlibnotation.noteobjects.Durational;
+import wmnlibnotation.noteobjects.KeySignature;
+import wmnlibnotation.noteobjects.KeySignatures;
+import wmnlibnotation.noteobjects.Measure;
+import wmnlibnotation.noteobjects.MeasureAttributes;
+import wmnlibnotation.noteobjects.TimeSignature;
+import wmnlibnotation.noteobjects.TimeSignatures;
 
 /**
  * Class for building <code>Measure</code> objects. The builder does not ensure

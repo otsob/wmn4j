@@ -4,9 +4,6 @@
  */
 package wmnlibnotation.noteobjects;
 
-import wmnlibnotation.iterators.ScorePosition;
-import wmnlibnotation.noteobjects.Measure;
-import wmnlibnotation.noteobjects.Durational;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import wmnlibnotation.iterators.ScorePosition;
 
 /**
  * Class that describes a score. This class is immutable.

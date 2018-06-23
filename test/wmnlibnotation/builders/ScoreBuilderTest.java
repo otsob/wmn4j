@@ -4,14 +4,17 @@
  */
 package wmnlibnotation.builders;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
-import wmnlibnotation.noteobjects.Score;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.Test;
-import wmnlibnotation.noteobjects.ScoreTest;
-import static org.junit.Assert.*;
+
 import wmnlibnotation.TestHelper;
+import wmnlibnotation.noteobjects.Score;
+import wmnlibnotation.noteobjects.ScoreTest;
 
 /**
  *

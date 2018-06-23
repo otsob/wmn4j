@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javafx.util.Pair;
+
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,26 +20,29 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import javafx.util.Pair;
 import wmnlibio.IOLogger;
 import wmnlibnotation.builders.ChordBuilder;
+import wmnlibnotation.builders.MeasureBuilder;
+import wmnlibnotation.builders.NoteBuilder;
+import wmnlibnotation.builders.PartBuilder;
+import wmnlibnotation.builders.RestBuilder;
+import wmnlibnotation.builders.ScoreBuilder;
+import wmnlibnotation.noteobjects.Articulation;
 import wmnlibnotation.noteobjects.Barline;
 import wmnlibnotation.noteobjects.Clef;
 import wmnlibnotation.noteobjects.Duration;
 import wmnlibnotation.noteobjects.KeySignature;
 import wmnlibnotation.noteobjects.KeySignatures;
-import wmnlibnotation.builders.MeasureBuilder;
-import wmnlibnotation.builders.NoteBuilder;
-import wmnlibnotation.builders.PartBuilder;
-import wmnlibnotation.builders.RestBuilder;
 import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.Score;
-import wmnlibnotation.builders.ScoreBuilder;
-import wmnlibnotation.noteobjects.Articulation;
 import wmnlibnotation.noteobjects.SingleStaffPart;
 import wmnlibnotation.noteobjects.TimeSignature;
 

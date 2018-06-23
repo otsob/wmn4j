@@ -4,20 +4,25 @@
  */
 package wmnlibnotation.builders;
 
-import wmnlibnotation.noteobjects.MeasureAttributes;
-import wmnlibnotation.noteobjects.Clefs;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.junit.Test;
+
 import wmnlibnotation.noteobjects.Barline;
-import wmnlibnotation.noteobjects.KeySignatures;
-import wmnlibnotation.noteobjects.TimeSignatures;
-import wmnlibnotation.noteobjects.Rest;
-import wmnlibnotation.noteobjects.Measure;
+import wmnlibnotation.noteobjects.Clefs;
 import wmnlibnotation.noteobjects.Durational;
 import wmnlibnotation.noteobjects.Durations;
-import wmnlibnotation.noteobjects.Pitch;
+import wmnlibnotation.noteobjects.KeySignatures;
+import wmnlibnotation.noteobjects.Measure;
+import wmnlibnotation.noteobjects.MeasureAttributes;
 import wmnlibnotation.noteobjects.Note;
-import java.util.List;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import wmnlibnotation.noteobjects.Pitch;
+import wmnlibnotation.noteobjects.Rest;
+import wmnlibnotation.noteobjects.TimeSignatures;
 
 /**
  *

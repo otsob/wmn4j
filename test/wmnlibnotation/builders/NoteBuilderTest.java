@@ -4,17 +4,20 @@
  */
 package wmnlibnotation.builders;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.EnumSet;
+
+import org.junit.Test;
+
+import wmnlibnotation.iterators.ScorePosition;
+import wmnlibnotation.noteobjects.Articulation;
+import wmnlibnotation.noteobjects.Durations;
 import wmnlibnotation.noteobjects.MultiNoteArticulation;
 import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.noteobjects.Pitch;
-import wmnlibnotation.iterators.ScorePosition;
-import wmnlibnotation.noteobjects.Durations;
-import wmnlibnotation.noteobjects.Articulation;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class NoteBuilderTest {
 

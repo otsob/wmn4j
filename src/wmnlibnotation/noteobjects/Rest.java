@@ -4,9 +4,6 @@
  */
 package wmnlibnotation.noteobjects;
 
-import wmnlibnotation.noteobjects.Durational;
-import wmnlibnotation.noteobjects.Duration;
-
 /**
  * This class represents a rest. This class is immutable.
  * 

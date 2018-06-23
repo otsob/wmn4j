@@ -4,7 +4,6 @@
  */
 package wmnlibmir.pattern_discovery;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

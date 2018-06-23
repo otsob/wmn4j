@@ -4,15 +4,16 @@
  */
 package wmnlibnotation.builders;
 
-import wmnlibnotation.noteobjects.Note;
-import wmnlibnotation.noteobjects.MultiNoteArticulation;
-import wmnlibnotation.noteobjects.Pitch;
-import wmnlibnotation.noteobjects.Duration;
-import wmnlibnotation.noteobjects.Articulation;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+
+import wmnlibnotation.noteobjects.Articulation;
+import wmnlibnotation.noteobjects.Duration;
+import wmnlibnotation.noteobjects.MultiNoteArticulation;
+import wmnlibnotation.noteobjects.Note;
+import wmnlibnotation.noteobjects.Pitch;
 
 /**
  * Class for building <code>Note</code> objects. The built note is cached. This

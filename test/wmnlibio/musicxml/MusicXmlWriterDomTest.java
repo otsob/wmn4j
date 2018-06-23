@@ -5,8 +5,9 @@
 package wmnlibio.musicxml;
 
 import java.nio.file.Paths;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 import wmnlibnotation.TestHelper;
 import wmnlibnotation.noteobjects.Score;
 

@@ -7,13 +7,14 @@ package wmnlibmir.pattern_discovery;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import wmnlibnotation.iterators.PartWiseScoreIterator;
+import wmnlibnotation.iterators.ScorePosition;
 import wmnlibnotation.noteobjects.Chord;
 import wmnlibnotation.noteobjects.Durational;
 import wmnlibnotation.noteobjects.Measure;
 import wmnlibnotation.noteobjects.Note;
-import wmnlibnotation.iterators.PartWiseScoreIterator;
 import wmnlibnotation.noteobjects.Score;
-import wmnlibnotation.iterators.ScorePosition;
 
 /**
  *

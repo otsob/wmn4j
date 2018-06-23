@@ -4,17 +4,22 @@
  */
 package wmnlibnotation.iterators;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.nio.file.Paths;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import wmnlibio.musicxml.MusicXmlReader;
+import wmnlibio.musicxml.MusicXmlReaderDom;
+import wmnlibnotation.noteobjects.Durational;
+import wmnlibnotation.noteobjects.Durations;
 import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.Score;
-import wmnlibnotation.noteobjects.Durations;
-import wmnlibnotation.noteobjects.Durational;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import wmnlibio.musicxml.MusicXmlReaderDom;
-import wmnlibio.musicxml.MusicXmlReader;
 
 /**
  *

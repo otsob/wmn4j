@@ -4,8 +4,9 @@
  */
 package wmnlibnotation.iterators;
 
-import wmnlibnotation.noteobjects.Durational;
 import java.util.NoSuchElementException;
+
+import wmnlibnotation.noteobjects.Durational;
 
 /**
  * Interface for iterators that iterate through the <code>Durational</code>

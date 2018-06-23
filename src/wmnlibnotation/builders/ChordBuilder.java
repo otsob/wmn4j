@@ -6,6 +6,7 @@ package wmnlibnotation.builders;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import wmnlibnotation.noteobjects.Chord;
 import wmnlibnotation.noteobjects.Duration;
 import wmnlibnotation.noteobjects.Note;

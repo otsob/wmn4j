@@ -4,26 +4,31 @@
  */
 package wmnlibnotation.builders;
 
-import wmnlibnotation.noteobjects.Part;
-import wmnlibnotation.noteobjects.MultiStaffPart;
-import wmnlibnotation.noteobjects.Pitch;
-import wmnlibnotation.noteobjects.TimeSignatures;
-import wmnlibnotation.noteobjects.SingleStaffPart;
-import wmnlibnotation.noteobjects.Staff;
-import wmnlibnotation.noteobjects.KeySignature;
-import wmnlibnotation.noteobjects.Durations;
-import wmnlibnotation.noteobjects.MeasureAttributes;
-import wmnlibnotation.noteobjects.Clefs;
-import wmnlibnotation.noteobjects.Barline;
-import wmnlibnotation.noteobjects.KeySignatures;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import wmnlibnotation.noteobjects.Barline;
+import wmnlibnotation.noteobjects.Clefs;
+import wmnlibnotation.noteobjects.Durations;
+import wmnlibnotation.noteobjects.KeySignature;
+import wmnlibnotation.noteobjects.KeySignatures;
+import wmnlibnotation.noteobjects.MeasureAttributes;
+import wmnlibnotation.noteobjects.MultiStaffPart;
 import wmnlibnotation.noteobjects.Note;
+import wmnlibnotation.noteobjects.Part;
+import wmnlibnotation.noteobjects.Pitch;
+import wmnlibnotation.noteobjects.SingleStaffPart;
+import wmnlibnotation.noteobjects.Staff;
+import wmnlibnotation.noteobjects.TimeSignatures;
 
 /**
  *

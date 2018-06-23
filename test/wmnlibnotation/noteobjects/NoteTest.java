@@ -4,13 +4,19 @@
  */
 package wmnlibnotation.noteobjects;
 
-import wmnlibnotation.builders.NoteBuilder;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.HashSet;
 import java.util.Set;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import wmnlibnotation.builders.NoteBuilder;
 
 /**
  * Unit tests for Note class.

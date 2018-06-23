@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import wmnlibnotation.iterators.ScorePosition;
 import wmnlibnotation.noteobjects.Chord;
 import wmnlibnotation.noteobjects.Durational;

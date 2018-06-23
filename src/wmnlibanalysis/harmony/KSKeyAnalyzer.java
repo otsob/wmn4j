@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import wmnlibnotation.noteobjects.Durational;
 import wmnlibnotation.noteobjects.Key;
 import wmnlibnotation.noteobjects.PitchClass;
@@ -81,6 +82,8 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
 
 				line = br.readLine();
 			}
+
+			br.close();
 
 		} catch (Exception e) {
 			System.out.println(e);
