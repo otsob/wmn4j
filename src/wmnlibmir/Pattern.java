@@ -11,7 +11,7 @@ import java.util.List;
  * @author Otso Björklund
  */
 public interface Pattern {
-    
-    public List<PatternOccurrence> getOccurrences();
-    
+
+	public List<PatternOccurrence> getOccurrences();
+
 }

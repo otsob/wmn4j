@@ -6,8 +6,9 @@ package wmnlibnotation.noteobjects;
 
 /**
  * Barline types.
+ * 
  * @author Otso Björklund
  */
 public enum Barline {
-    NONE, SINGLE, DOUBLE, REPEAT_LEFT, REPEAT_RIGHT, FINAL, DASHED, THICK, INVISIBLE
+	NONE, SINGLE, DOUBLE, REPEAT_LEFT, REPEAT_RIGHT, FINAL, DASHED, THICK, INVISIBLE
 }

@@ -13,28 +13,28 @@ import java.util.Random;
  * @author Otso Björklund
  */
 public enum RandomMultiplierProvider {
-    INSTANCE;
-    
-    private final List<Long> multipliers;
-    
-    private RandomMultiplierProvider() {
-        this.multipliers = new ArrayList<>();
-        this.generateMultipliers(100);
-    }
-    
-    private void generateMultipliers(int count) {
-        Random random = new Random();
-        for(int i = 0; i < count; ++i) {
-            
-            this.multipliers.add(random.nextLong());
-        }
-    }
-    
-    public long getMultiplier(int i) {
-        
-        while(this.multipliers.size() < i + 10)
-            this.generateMultipliers(10);
-        
-        return this.multipliers.get(i);
-    }
+	INSTANCE;
+
+	private final List<Long> multipliers;
+
+	private RandomMultiplierProvider() {
+		this.multipliers = new ArrayList<>();
+		this.generateMultipliers(100);
+	}
+
+	private void generateMultipliers(int count) {
+		Random random = new Random();
+		for (int i = 0; i < count; ++i) {
+
+			this.multipliers.add(random.nextLong());
+		}
+	}
+
+	public long getMultiplier(int i) {
+
+		while (this.multipliers.size() < i + 10)
+			this.generateMultipliers(10);
+
+		return this.multipliers.get(i);
+	}
 }

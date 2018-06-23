@@ -14,14 +14,14 @@ import wmnlibnotation.iterators.ScorePosition;
  * @author Otso Björklund
  */
 public class PatternOccurrence {
-    
-    private final List<ScorePosition> positions;
-    
-    public PatternOccurrence(List<ScorePosition> positions) {
-        this.positions = Collections.unmodifiableList(new ArrayList<>(positions));
-    }
-    
-    public List<ScorePosition> getPositions() {
-        return this.positions;
-    }
+
+	private final List<ScorePosition> positions;
+
+	public PatternOccurrence(List<ScorePosition> positions) {
+		this.positions = Collections.unmodifiableList(new ArrayList<>(positions));
+	}
+
+	public List<ScorePosition> getPositions() {
+		return this.positions;
+	}
 }

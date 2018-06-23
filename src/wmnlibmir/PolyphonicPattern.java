@@ -12,9 +12,10 @@ import java.util.List;
  */
 public class PolyphonicPattern implements Pattern {
 
-    @Override
-    public List<PatternOccurrence> getOccurrences() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+	@Override
+	public List<PatternOccurrence> getOccurrences() {
+		throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+																		// Tools | Templates.
+	}
+
 }

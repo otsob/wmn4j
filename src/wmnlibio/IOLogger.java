@@ -9,9 +9,9 @@ package wmnlibio;
  * @author Otso Björklund
  */
 public class IOLogger {
-    
-    public void log(String message) {
-        System.out.println(message);
-    }
-    
+
+	public void log(String message) {
+		System.out.println(message);
+	}
+
 }

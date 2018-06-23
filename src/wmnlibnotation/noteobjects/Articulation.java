@@ -6,11 +6,9 @@ package wmnlibnotation.noteobjects;
 
 /**
  * Note specific articulations.
+ * 
  * @author Otso Björklund
  */
 public enum Articulation {
-    ACCENT,
-    STACCATO,
-    TENUTO,
-    FERMATA
+	ACCENT, STACCATO, TENUTO, FERMATA
 }

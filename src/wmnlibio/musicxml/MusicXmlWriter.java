@@ -4,12 +4,11 @@
  */
 package wmnlibio.musicxml;
 
-
 /**
  *
  * @author Otso Björklund
  */
 public interface MusicXmlWriter {
-    
-    public void writeToFile(String path);
+
+	public void writeToFile(String path);
 }
