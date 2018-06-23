@@ -13,16 +13,16 @@ import static org.junit.Assert.*;
  * @author Otso Björklund
  */
 public class MonophonicPatternTest {
-    
-    public MonophonicPatternTest() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
 
-    @Test
-    public void testGetContents() {
-    }
-    
+	public MonophonicPatternTest() {
+	}
+
+	@Before
+	public void setUp() {
+	}
+
+	@Test
+	public void testGetContents() {
+	}
+
 }

@@ -17,28 +17,27 @@ import wmnlibnotation.noteobjects.Score;
  * @author Otso Björklund
  */
 public class PointSetTest {
-    
-    public PointSetTest() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
 
-    @Test
-    public void testCreatingFromSingleStaffScore() {
-        MusicXmlReader reader = new MusicXmlReaderDom();
-        try {
-            Score score = reader.readScore(Paths.get("test/testfiles/musicxml/twoMeasures.xml"));
-            PointSet pointset = new PointSet(score);
-            System.out.println(score);
-            System.out.println(pointset);
-            fail("This test is not implemented yet");
-            
-        }
-        catch(Exception e) {
-            System.out.println(e);
-        }
-    }
-    
+	public PointSetTest() {
+	}
+
+	@Before
+	public void setUp() {
+	}
+
+	@Test
+	public void testCreatingFromSingleStaffScore() {
+		MusicXmlReader reader = new MusicXmlReaderDom();
+		try {
+			Score score = reader.readScore(Paths.get("test/testfiles/musicxml/twoMeasures.xml"));
+			PointSet pointset = new PointSet(score);
+			System.out.println(score);
+			System.out.println(pointset);
+			fail("This test is not implemented yet");
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
 }

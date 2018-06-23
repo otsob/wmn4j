@@ -15,18 +15,17 @@ import wmnlibnotation.noteobjects.Score;
  * @author Otso Björklund
  */
 public class MusicXmlWriterDomTest {
-    
-    public MusicXmlWriterDomTest() {
-    }
-    
-    private Score readScore(String path) {
-        return TestHelper.readScore(Paths.get(path));
-    }
 
-    @Test
-    public void testWritingSingleC() {
-        
-        
-    }
-    
+	public MusicXmlWriterDomTest() {
+	}
+
+	private Score readScore(String path) {
+		return TestHelper.readScore(Paths.get(path));
+	}
+
+	@Test
+	public void testWritingSingleC() {
+
+	}
+
 }
