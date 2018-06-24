@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import wmnlibio.musicxml.MusicXmlReader;
-import wmnlibio.musicxml.MusicXmlReaderDom;
 import wmnlibnotation.noteobjects.Durational;
 import wmnlibnotation.noteobjects.Durations;
 import wmnlibnotation.noteobjects.Note;
@@ -31,7 +30,7 @@ public class PartWiseScoreIteratorTest {
 	private PartWiseScoreIterator iter = null;
 
 	public PartWiseScoreIteratorTest() {
-		MusicXmlReader reader = new MusicXmlReaderDom();
+		MusicXmlReader reader = MusicXmlReader.getReader(false);
 		try {
 			this.score = reader.readScore(Paths.get("test/testfiles/musicxml/scoreIteratorTesting.xml"));
 		} catch (Exception e) {

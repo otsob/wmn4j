@@ -8,7 +8,7 @@ package wmnlibio.musicxml;
  *
  * @author Otso Björklund
  */
-public class MusicXmlTags {
+class MusicXmlTags {
 
 	// Barline tags
 	static final String BARLINE = "barline";

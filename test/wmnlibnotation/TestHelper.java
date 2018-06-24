@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import wmnlibio.musicxml.MusicXmlReader;
-import wmnlibio.musicxml.MusicXmlReaderDom;
 import wmnlibnotation.builders.ChordBuilder;
 import wmnlibnotation.builders.MeasureBuilder;
 import wmnlibnotation.builders.NoteBuilder;
@@ -55,7 +54,7 @@ public class TestHelper {
 	public static Score readScore(Path path) {
 		Score score = null;
 
-		MusicXmlReader reader = new MusicXmlReaderDom();
+		MusicXmlReader reader = MusicXmlReader.getReader(false);
 
 		try {
 			score = reader.readScore(path);

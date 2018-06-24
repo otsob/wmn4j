@@ -50,7 +50,7 @@ public class MusicXmlReaderDomTest {
 	}
 
 	public MusicXmlReader getMusicXmlReader() {
-		return new MusicXmlReaderDom();
+		return MusicXmlReader.getReader(false);
 	}
 
 	public Score readScore(String testFileName) {

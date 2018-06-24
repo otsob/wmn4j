@@ -18,7 +18,6 @@ import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
-import wmnlibio.musicxml.MusicXmlReaderDom;
 import wmnlibnotation.TestHelper;
 import wmnlibnotation.builders.PartBuilder;
 import wmnlibnotation.iterators.PartWiseScoreIterator;
@@ -116,14 +115,7 @@ public class ScoreTest {
 
 	@Test
 	public void testGetAtPositionLimits() {
-		MusicXmlReaderDom reader = new MusicXmlReaderDom();
-		Score score = null;
-		try {
-			score = reader.readScore(Paths.get("test/testfiles/musicxml/scoreIteratorTesting.xml"));
-		} catch (Exception e) {
-			System.out.println(e);
-			fail("Failed to read score");
-		}
+		Score score = TestHelper.readScore(Paths.get("test/testfiles/musicxml/scoreIteratorTesting.xml"));
 
 		try {
 			score.getAtPosition(new ScorePosition(0, 1, 1, 5, 0));

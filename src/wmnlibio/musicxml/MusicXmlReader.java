@@ -20,6 +20,10 @@ public interface MusicXmlReader {
 
 	static final Path SCHEMA = Paths.get("src/wmnlibio/musicxml/musicxml.xsd");
 
+	static MusicXmlReader getReader(boolean validate) {
+		return new MusicXmlReaderDom(validate);
+	}
+
 	/**
 	 * Reads the MusicXML file at the path specified by filePath and creates a
 	 * <code>Score</code>.

@@ -4,11 +4,18 @@
  */
 package wmnlibio.musicxml;
 
+import wmnlibnotation.noteobjects.Score;
+
 /**
  *
  * @author Otso Björklund
  */
 public interface MusicXmlWriter {
 
-	public void writeToFile(String path);
+	static MusicXmlWriter getWriter(Score score) {
+		return new MusicXmlWriterDom(score);
+	}
+
+	void writeToFile(String path);
+
 }

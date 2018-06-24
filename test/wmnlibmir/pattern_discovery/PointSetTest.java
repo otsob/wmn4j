@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import wmnlibio.musicxml.MusicXmlReader;
-import wmnlibio.musicxml.MusicXmlReaderDom;
 import wmnlibnotation.noteobjects.Score;
 
 /**
@@ -30,7 +29,7 @@ public class PointSetTest {
 
 	@Test
 	public void testCreatingFromSingleStaffScore() {
-		MusicXmlReader reader = new MusicXmlReaderDom();
+		MusicXmlReader reader = MusicXmlReader.getReader(false);
 		try {
 			Score score = reader.readScore(Paths.get("test/testfiles/musicxml/twoMeasures.xml"));
 			PointSet pointset = new PointSet(score);

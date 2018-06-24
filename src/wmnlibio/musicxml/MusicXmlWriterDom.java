@@ -43,7 +43,7 @@ import wmnlibnotation.noteobjects.SingleStaffPart;
  * 
  * @author Otso Björklund
  */
-public class MusicXmlWriterDom implements MusicXmlWriter {
+class MusicXmlWriterDom implements MusicXmlWriter {
 
 	private Document doc;
 	private final Score score;

@@ -51,21 +51,13 @@ import wmnlibnotation.noteobjects.TimeSignature;
  * 
  * @author Otso Björklund
  */
-public class MusicXmlReaderDom implements MusicXmlReader {
+class MusicXmlReaderDom implements MusicXmlReader {
 
 	private static final int MIN_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
 	private static final int DEFAULT_STAFF_COUNT = 1;
 
 	private final IOLogger logger = new IOLogger();
 	private final boolean validateInput;
-
-	/**
-	 * By default <code>MusicXmlReaderDom</code> does not validate the input files
-	 * for being valid MusicXML.
-	 */
-	public MusicXmlReaderDom() {
-		this(false);
-	}
 
 	/**
 	 * Constructor that allows setting validation.
