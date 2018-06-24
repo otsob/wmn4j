@@ -6,6 +6,7 @@ package wmnlibnotation.noteobjects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -22,11 +23,18 @@ public class Chord implements Durational, Iterable<Note> {
 	private final List<Note> notes;
 
 	/**
-	 * Get an instance of <code>Chord</code> with the given <code>Note</code>s.
+	 * Get an instance of <code>Chord</code> with the given <code>Note</code>
+	 * objects.
 	 * 
 	 * @param n
-	 *            Notes.
+	 *            A non-empty and non-null array of <code>Note</code> objects.
 	 * @return a chord with the given notes.
+	 * 
+	 * @throws NullPointerException
+	 *             if notes is null.
+	 * @throws IllegalArgumentException
+	 *             if notes is empty or all Note objects in notes are not of same
+	 *             duration.
 	 */
 	public static Chord getChord(Note... n) {
 		return new Chord(Arrays.asList(n));
@@ -36,10 +44,16 @@ public class Chord implements Durational, Iterable<Note> {
 	 * Get an instance of <code>Chord</code> with the given <code>Note</code>s.
 	 * 
 	 * @param notes
-	 *            Notes.
+	 *            A non-empty and non-null Collection of <code>Note</code> objects.
 	 * @return a chord with the given notes.
+	 * 
+	 * @throws NullPointerException
+	 *             if notes is null.
+	 * @throws IllegalArgumentException
+	 *             if notes is empty or all Note objects in notes are not of same
+	 *             duration.
 	 */
-	public static Chord getChord(List<Note> notes) {
+	public static Chord getChord(Collection<Note> notes) {
 		return new Chord(notes);
 	}
 
@@ -52,8 +66,9 @@ public class Chord implements Durational, Iterable<Note> {
 	 *             if notes is empty or all Note objects in notes are not of same
 	 *             duration.
 	 * @param notes
+	 *            the notes that are put in this Chord.
 	 */
-	private Chord(List<Note> notes) {
+	private Chord(Collection<Note> notes) {
 
 		if (notes == null)
 			throw new NullPointerException();
@@ -245,9 +260,6 @@ public class Chord implements Durational, Iterable<Note> {
 		return strBuilder.toString();
 	}
 
-	/**
-	 * @return false.
-	 */
 	@Override
 	public boolean isRest() {
 		return false;
