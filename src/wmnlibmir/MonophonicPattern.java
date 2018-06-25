@@ -7,9 +7,7 @@ package wmnlibmir;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import wmnlibnotation.iterators.ScorePosition;
 import wmnlibnotation.noteobjects.Chord;
 import wmnlibnotation.noteobjects.Durational;
 
@@ -23,13 +21,8 @@ import wmnlibnotation.noteobjects.Durational;
 public final class MonophonicPattern implements Pattern {
 
 	private final List<Durational> contents;
-	private final List<PatternOccurrence> occurrences;
 
 	public MonophonicPattern(List<Durational> contents) {
-		this(contents, null);
-	}
-
-	public MonophonicPattern(List<Durational> contents, List<List<ScorePosition>> occurrences) {
 		this.contents = Collections.unmodifiableList(new ArrayList<>(contents));
 		if (this.contents == null)
 			throw new NullPointerException("Cannot create pattern with null contents");
@@ -37,17 +30,6 @@ public final class MonophonicPattern implements Pattern {
 			throw new IllegalArgumentException("Cannote create pattern with empty contents");
 		if (this.contents.stream().anyMatch((dur) -> (dur instanceof Chord)))
 			throw new IllegalArgumentException("Contents contain a Chord. Contents must be monophonic");
-
-		if (occurrences == null || occurrences.isEmpty()) {
-			this.occurrences = Collections.emptyList();
-		} else {
-			List<PatternOccurrence> occurrenceCopy = occurrences.stream().map((list) -> new PatternOccurrence(list))
-					.collect(Collectors.toList());
-
-			// TODO: Sort in ascending order of occurrence.
-
-			this.occurrences = Collections.unmodifiableList(occurrenceCopy);
-		}
 	}
 
 	public List<Durational> getContents() {
