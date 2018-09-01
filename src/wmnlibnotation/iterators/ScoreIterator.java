@@ -35,10 +35,13 @@ public interface ScoreIterator {
 
 	/**
 	 * Returns the position of the <code>Durational</code> returned by the last call
-	 * of {@link #next() next}. If next has not been called returns null.
+	 * of {@link #next() next}. This method should only be called after
+	 * {@link #next() next} has been called.
 	 * 
 	 * @return <code>ScorePosition</code> of the previously returned
 	 *         <code>Durational</code>.
+	 * @throws IllegalStateException if {@link #next() next} has not been called on
+	 *                               the iterator
 	 */
-	public ScorePosition positionOfPrevious();
+	public ScorePosition positionOfPrevious() throws IllegalStateException;
 }
