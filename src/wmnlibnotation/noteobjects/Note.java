@@ -33,15 +33,11 @@ public class Note implements Durational {
 	/**
 	 * Get a <code>Note</code> object with specified parameters.
 	 * 
-	 * @param pitchName
-	 *            the letter in the pitch name.
-	 * @param alter
-	 *            how many half-steps the pitch is altered up (positive) or down
-	 *            (negative).
-	 * @param octave
-	 *            octave number of the pitch.
-	 * @param duration
-	 *            the duration of the note. Must not be null.
+	 * @param pitchName the letter in the pitch name.
+	 * @param alter     how many half-steps the pitch is altered up (positive) or
+	 *                  down (negative).
+	 * @param octave    octave number of the pitch.
+	 * @param duration  the duration of the note. Must not be null.
 	 * @return a Note object with the given parameters.
 	 */
 	public static Note getNote(Pitch.Base pitchName, int alter, int octave, Duration duration) {
@@ -51,10 +47,8 @@ public class Note implements Durational {
 	/**
 	 * Get a <code>Note</code> object with specified parameters.
 	 * 
-	 * @param pitch
-	 *            the pitch of the note. Must not be null.
-	 * @param duration
-	 *            the duration of the note. Must not be null.
+	 * @param pitch    the pitch of the note. Must not be null.
+	 * @param duration the duration of the note. Must not be null.
 	 * @return a Note object with the given parameters.
 	 */
 	public static Note getNote(Pitch pitch, Duration duration) {
@@ -64,12 +58,9 @@ public class Note implements Durational {
 	/**
 	 * Get a <code>Note</code> object with specified parameters.
 	 * 
-	 * @param pitch
-	 *            the pitch of the note. Must not be null.
-	 * @param duration
-	 *            the duration of the note. Must not be null.
-	 * @param articulations
-	 *            a set of Articulations associated with the note.
+	 * @param pitch         the pitch of the note. Must not be null.
+	 * @param duration      the duration of the note. Must not be null.
+	 * @param articulations a set of Articulations associated with the note.
 	 * @return a Note object with the given parameters.
 	 */
 	public static Note getNote(Pitch pitch, Duration duration, Set<Articulation> articulations) {
@@ -79,14 +70,12 @@ public class Note implements Durational {
 	/**
 	 * Get a <code>Note</code> object with specified parameters.
 	 * 
-	 * @param pitch
-	 *            the pitch of the note. Must not be null.
-	 * @param duration
-	 *            the duration of the note. Must not be null.
-	 * @param articulations
-	 *            a set of Articulations associated with the note.
-	 * @param multiNoteArticulations
-	 *            list of the MultiNoteArticulations for the note.
+	 * @param pitch                  the pitch of the note. Must not be null.
+	 * @param duration               the duration of the note. Must not be null.
+	 * @param articulations          a set of Articulations associated with the
+	 *                               note.
+	 * @param multiNoteArticulations list of the MultiNoteArticulations for the
+	 *                               note.
 	 * @return a Note object with the given parameters.
 	 */
 	public static Note getNote(Pitch pitch, Duration duration, Set<Articulation> articulations,
@@ -97,18 +86,14 @@ public class Note implements Durational {
 	/**
 	 * Get a <code>Note</code> object with specified parameters.
 	 * 
-	 * @param pitch
-	 *            the pitch of the note. Must not be null.
-	 * @param duration
-	 *            the duration of the note. Must not be null.
-	 * @param articulations
-	 *            a set of Articulations associated with the note.
-	 * @param multiNoteArticulations
-	 *            list of the MultiNoteArticulations for the note.
-	 * @param tiedTo
-	 *            A tie from a previous note that ends in this.
-	 * @param isTiedFromPrevious
-	 *            A tie that originates from this note.
+	 * @param pitch                  the pitch of the note. Must not be null.
+	 * @param duration               the duration of the note. Must not be null.
+	 * @param articulations          a set of Articulations associated with the
+	 *                               note.
+	 * @param multiNoteArticulations list of the MultiNoteArticulations for the
+	 *                               note.
+	 * @param tiedTo                 A tie from a previous note that ends in this.
+	 * @param isTiedFromPrevious     A tie that originates from this note.
 	 * @return a Note object with the given parameters.
 	 */
 	public static Note getNote(Pitch pitch, Duration duration, Set<Articulation> articulations,
@@ -120,20 +105,16 @@ public class Note implements Durational {
 	 * Private constructor. Use the static <code>getNote</code> methods or
 	 * <code>NoteBuilder</code> to get an instance.
 	 * 
-	 * @throws NullPointerException
-	 *             if duration or pitch is null.
-	 * @param pitch
-	 *            the pitch of the note.
-	 * @param duration
-	 *            the duration of the note.
-	 * @param articulations
-	 *            a set of Articulations associated with the note.
+	 * @throws NullPointerException if duration or pitch is null.
+	 * @param pitch         the pitch of the note.
+	 * @param duration      the duration of the note.
+	 * @param articulations a set of Articulations associated with the note.
 	 */
 	private Note(Pitch pitch, Duration duration, Set<Articulation> articulations,
 			List<MultiNoteArticulation> multiNoteArticulations, Note tiedTo, boolean isTiedFromPrevious) {
 
-		this.pitch = pitch;
-		this.duration = duration;
+		this.pitch = Objects.requireNonNull(pitch);
+		this.duration = Objects.requireNonNull(duration);
 		if (articulations != null && !articulations.isEmpty())
 			this.articulations = Collections.unmodifiableSet(EnumSet.copyOf(articulations));
 		else
@@ -143,12 +124,6 @@ public class Note implements Durational {
 			this.multiNoteArticulations = Collections.unmodifiableList(new ArrayList<>(multiNoteArticulations));
 		else
 			this.multiNoteArticulations = Collections.emptyList();
-
-		if (this.pitch == null)
-			throw new NullPointerException("Pitch was null. Note must have a pitch.");
-
-		if (this.duration == null)
-			throw new NullPointerException("Duration was null. Note must have a duration.");
 
 		this.tiedTo = tiedTo;
 		this.isTiedFrom = isTiedFromPrevious;
@@ -202,8 +177,7 @@ public class Note implements Durational {
 	/**
 	 * Check if this <code>Note</code> has a particular articulation.
 	 * 
-	 * @param articulation
-	 *            the articulation whose presence is checked.
+	 * @param articulation the articulation whose presence is checked.
 	 * @return true if this Note has the given articulation, otherwise false.
 	 */
 	public boolean hasArticulation(Articulation articulation) {
@@ -325,8 +299,7 @@ public class Note implements Durational {
 	/**
 	 * Compare this to other <code>Note</code> for equality of pitch and duration.
 	 * 
-	 * @param other
-	 *            Note with which this is compared.
+	 * @param other Note with which this is compared.
 	 * @return True if pitch and duration are equal, false otherwise.
 	 */
 	public boolean equalsInPitchAndDuration(Note other) {
@@ -338,8 +311,7 @@ public class Note implements Durational {
 	 * Notes are equal if they have the same Pitch, Duration, and set of
 	 * Articulations.
 	 * 
-	 * @param o
-	 *            the Object against which this Note is compared for equality.
+	 * @param o the Object against which this Note is compared for equality.
 	 * @return true if Object o is of class Note and has the same Pitch, Duration,
 	 *         and Articulations as this Node. false otherwise.
 	 */

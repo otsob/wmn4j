@@ -4,6 +4,8 @@
  */
 package wmnlibnotation.builders;
 
+import java.util.Objects;
+
 import wmnlibnotation.noteobjects.Duration;
 import wmnlibnotation.noteobjects.Rest;
 
@@ -12,21 +14,17 @@ import wmnlibnotation.noteobjects.Rest;
  * 
  * @author Otso Björklund
  */
-public class RestBuilder implements DurationalBuilder {
+public final class RestBuilder implements DurationalBuilder {
 
 	private Duration duration;
 
 	/**
 	 * Create a new instance.
 	 * 
-	 * @param duration
-	 *            The
+	 * @param duration The
 	 */
 	public RestBuilder(Duration duration) {
-		if (duration == null)
-			throw new NullPointerException("duration was null.");
-
-		this.duration = duration;
+		setDuration(duration);
 	}
 
 	/**
@@ -35,10 +33,7 @@ public class RestBuilder implements DurationalBuilder {
 	 * @param duration
 	 */
 	public void setDuration(Duration duration) {
-		if (duration == null)
-			throw new NullPointerException("duration was null.");
-
-		this.duration = duration;
+		this.duration = Objects.requireNonNull(duration);
 	}
 
 	@Override

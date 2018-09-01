@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import wmnlibnotation.noteobjects.Measure;
@@ -28,8 +29,7 @@ public class PartBuilder {
 	private static final int SINGLE_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
 
 	/**
-	 * @param name
-	 *            Name of the <code>Part</code> to be built.
+	 * @param name Name of the <code>Part</code> to be built.
 	 */
 	public PartBuilder(String name) {
 		this.partAttributes.put(Part.Attribute.NAME, name);
@@ -46,8 +46,8 @@ public class PartBuilder {
 	 * Adds a <code>MeasureBuilder</code>. This is used for building parts with a
 	 * single staff.
 	 * 
-	 * @param measureBuilder
-	 *            The measureBuilder that is added to the end of the staff.
+	 * @param measureBuilder The measureBuilder that is added to the end of the
+	 *                       staff.
 	 * @return reference to this.
 	 */
 	public PartBuilder add(MeasureBuilder measureBuilder) {
@@ -59,28 +59,23 @@ public class PartBuilder {
 	 * Adds a <code>MeasureBuilder</code> to staff. This is used for building parts
 	 * with multiple staves.
 	 * 
-	 * @param staffNumber
-	 *            The number of the staff to which measureBuilder is added.
-	 * @param measureBuilder
-	 *            The measureBuilder that is added to the end of the staff.
+	 * @param staffNumber    The number of the staff to which measureBuilder is
+	 *                       added.
+	 * @param measureBuilder The measureBuilder that is added to the end of the
+	 *                       staff.
 	 * @return reference to this.
 	 */
 	public PartBuilder addToStaff(int staffNumber, MeasureBuilder measureBuilder) {
-		if (measureBuilder == null)
-			throw new NullPointerException("Cannot add null to staff");
-
 		if (!this.staveContents.containsKey(staffNumber))
 			this.staveContents.put(staffNumber, new ArrayList<>());
 
-		this.staveContents.get(staffNumber).add(measureBuilder);
+		this.staveContents.get(staffNumber).add(Objects.requireNonNull(measureBuilder));
 		return this;
 	}
 
 	/**
-	 * @param attribute
-	 *            The attribute to be set.
-	 * @param value
-	 *            The value that will be set for the attribute.
+	 * @param attribute The attribute to be set.
+	 * @param value     The value that will be set for the attribute.
 	 */
 	public void setAttribute(Part.Attribute attribute, String value) {
 		this.partAttributes.put(attribute, value);

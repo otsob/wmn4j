@@ -4,6 +4,8 @@
  */
 package wmnlibnotation.noteobjects;
 
+import java.util.Objects;
+
 /**
  * This class represents a rest. This class is immutable.
  * 
@@ -16,18 +18,14 @@ public class Rest implements Durational {
 	 * Get a <code>Rest</code> with duration specified by
 	 * <code>Duration duration</code>.
 	 * 
-	 * @throws NullPointerException
-	 *             if duration is null.
-	 * @param duration
-	 *            the duration of the rest.
+	 * @throws NullPointerException if duration is null.
+	 * @param duration the duration of the rest.
 	 * @return Rest with specified duration.
 	 */
 	public static Rest getRest(Duration duration) {
-		if (duration == null)
-			throw new NullPointerException();
 
 		// TODO: Use interner pattern for caching.
-		return new Rest(duration);
+		return new Rest(Objects.requireNonNull(duration));
 	}
 
 	/**
@@ -35,8 +33,7 @@ public class Rest implements Durational {
 	 * {@link #getRest(wmnlibnotation.Duration) getRest} to get a <code>Rest</code>
 	 * object.
 	 * 
-	 * @param duration
-	 *            the duration of the rest.
+	 * @param duration the duration of the rest.
 	 */
 	private Rest(Duration duration) {
 		this.duration = duration;
@@ -76,8 +73,7 @@ public class Rest implements Durational {
 	/**
 	 * Compare this <code>Rest</code> for equality against <code>Object o</code>.
 	 * 
-	 * @param o
-	 *            Object against which this is compared for equality.
+	 * @param o Object against which this is compared for equality.
 	 * @return true if Object o is a Rest and the Duration of o is equal to the
 	 *         Duration of this.
 	 */

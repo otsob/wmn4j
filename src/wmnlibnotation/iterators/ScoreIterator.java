@@ -28,8 +28,8 @@ public interface ScoreIterator {
 	 * depends on the implementation.
 	 * 
 	 * @return next <code>Durational</code>.
-	 * @throws NoSuchElementException
-	 *             if next <code>Durational</code> is not available.
+	 * @throws NoSuchElementException if next <code>Durational</code> is not
+	 *                                available.
 	 */
 	public Durational next() throws NoSuchElementException;
 

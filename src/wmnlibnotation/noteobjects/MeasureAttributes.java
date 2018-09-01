@@ -42,30 +42,16 @@ public class MeasureAttributes {
 
 	private MeasureAttributes(TimeSignature timeSig, KeySignature keySig, Barline rightBarline, Barline leftBarline,
 			Clef clef, Map<Duration, Clef> clefChanges) {
-		this.timeSig = timeSig;
-		this.keySig = keySig;
-		this.rightBarline = rightBarline;
-		this.leftBarline = leftBarline;
-		this.clef = clef;
+		this.timeSig = Objects.requireNonNull(timeSig);
+		this.keySig = Objects.requireNonNull(keySig);
+		this.rightBarline = Objects.requireNonNull(rightBarline);
+		this.leftBarline = Objects.requireNonNull(leftBarline);
+		this.clef = Objects.requireNonNull(clef);
+
 		if (clefChanges != null && !clefChanges.isEmpty())
 			this.clefChanges = new HashMap<>(clefChanges);
 		else
 			this.clefChanges = Collections.<Duration, Clef>emptyMap();
-
-		if (this.rightBarline == null)
-			throw new NullPointerException("right barline is null");
-
-		if (this.leftBarline == null)
-			throw new NullPointerException("right barline is null");
-
-		if (this.timeSig == null)
-			throw new NullPointerException("timeSig is null");
-
-		if (this.keySig == null)
-			throw new NullPointerException("keySig is null");
-
-		if (this.clef == null)
-			throw new NullPointerException("clef is null");
 	}
 
 	public TimeSignature getTimeSignature() {

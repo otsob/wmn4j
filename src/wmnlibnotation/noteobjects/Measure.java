@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -27,18 +28,12 @@ public class Measure implements Iterable<Durational> {
 	private final MeasureAttributes measureAttr;
 
 	/**
-	 * @param number
-	 *            number of the measure.
-	 * @param noteVoices
-	 *            the notes on the different voices of the measure.
-	 * @param timeSig
-	 *            TimeSignature of the measure.
-	 * @param keySig
-	 *            KeySignature in effect in the measure.
-	 * @param rightBarLine
-	 *            barline on the right side (left side is NONE by default).
-	 * @param clef
-	 *            Clef in effect in the measure.
+	 * @param number       number of the measure.
+	 * @param noteVoices   the notes on the different voices of the measure.
+	 * @param timeSig      TimeSignature of the measure.
+	 * @param keySig       KeySignature in effect in the measure.
+	 * @param rightBarLine barline on the right side (left side is NONE by default).
+	 * @param clef         Clef in effect in the measure.
 	 */
 	public Measure(int number, Map<Integer, List<Durational>> noteVoices, TimeSignature timeSig, KeySignature keySig,
 			Barline rightBarLine, Clef clef) {
@@ -46,16 +41,11 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * @param number
-	 *            number of the measure.
-	 * @param noteVoices
-	 *            the notes on the different voices of the measure.
-	 * @param timeSig
-	 *            TimeSignature of the measure.
-	 * @param keySig
-	 *            KeySignature in effect in the measure.
-	 * @param clef
-	 *            Clef in effect in the measure.
+	 * @param number     number of the measure.
+	 * @param noteVoices the notes on the different voices of the measure.
+	 * @param timeSig    TimeSignature of the measure.
+	 * @param keySig     KeySignature in effect in the measure.
+	 * @param clef       Clef in effect in the measure.
 	 */
 	public Measure(int number, Map<Integer, List<Durational>> noteVoices, TimeSignature timeSig, KeySignature keySig,
 			Clef clef) {
@@ -63,12 +53,9 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * @param number
-	 *            number of the measure.
-	 * @param noteVoices
-	 *            the notes on the different voices of the measure.
-	 * @param measureAttr
-	 *            the attributes of the measure.
+	 * @param number      number of the measure.
+	 * @param noteVoices  the notes on the different voices of the measure.
+	 * @param measureAttr the attributes of the measure.
 	 */
 	public Measure(int number, Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttr) {
 		this.number = number;
@@ -79,10 +66,7 @@ public class Measure implements Iterable<Durational> {
 
 		this.voices = Collections.unmodifiableSortedMap(voicesCopy);
 
-		this.measureAttr = measureAttr;
-
-		if (this.voices == null || this.measureAttr == null)
-			throw new NullPointerException();
+		this.measureAttr = Objects.requireNonNull(measureAttr);
 
 		if (this.number < 0)
 			throw new IllegalArgumentException("Measure number must be at least 0");
@@ -101,8 +85,7 @@ public class Measure implements Iterable<Durational> {
 	/**
 	 * Get a voiceNumber of the measure.
 	 * 
-	 * @param voiceNumber
-	 *            the number of the voice.
+	 * @param voiceNumber the number of the voice.
 	 * @return the voiceNumber at the given index voiceNumber.
 	 */
 	public List<Durational> getVoice(int voiceNumber) {
@@ -199,10 +182,8 @@ public class Measure implements Iterable<Durational> {
 	 * Returns the <code>Durational</code> at the given index on the given voice
 	 * number.
 	 * 
-	 * @param voiceNumber
-	 *            Number of the voice from which to get the element.
-	 * @param index
-	 *            index of element on the voice.
+	 * @param voiceNumber Number of the voice from which to get the element.
+	 * @param index       index of element on the voice.
 	 * @return <code>Durational</code> at the given index on the given voice.
 	 * @throws NoSuchElementException
 	 */

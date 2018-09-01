@@ -25,7 +25,7 @@ public class PartWiseScoreIterator implements ScoreIterator {
 
 	private Part.Iter currentPartIterator;
 	private Measure.Iter currentMeasureIterator;
-	private Part prevPart = null;
+	private Part prevPart;
 	private int prevPartIndex;
 	private int prevStaffNumber;
 	private int prevMeasureNumber;
@@ -33,8 +33,7 @@ public class PartWiseScoreIterator implements ScoreIterator {
 	private int prevIndex;
 
 	/**
-	 * @param score
-	 *            The score that this iterates through.
+	 * @param score The score that this iterates through.
 	 */
 	public PartWiseScoreIterator(Score score) {
 		this.scoreIterator = score.iterator();

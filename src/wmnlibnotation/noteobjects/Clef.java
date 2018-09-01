@@ -25,25 +25,19 @@ public class Clef {
 	/**
 	 * Get an instance of <code>Clef</code>.
 	 * 
-	 * @throws IllegalArgumentException
-	 *             if line is smaller than 1.
-	 * @throws NullPointerException
-	 *             if type is null.
-	 * @param type
-	 *            type of the clef.
-	 * @param line
-	 *            counting from the bottom line, the line on which the clef is
-	 *            centered.
+	 * @throws IllegalArgumentException if line is smaller than 1.
+	 * @throws NullPointerException     if type is null.
+	 * @param type type of the clef.
+	 * @param line counting from the bottom line, the line on which the clef is
+	 *             centered.
 	 * @return a Clef with the specified properties.
 	 */
 	public static Clef getClef(Type type, int line) {
-		if (type == null)
-			throw new NullPointerException("clef is null");
 
 		if (line < 1)
 			throw new IllegalArgumentException("line is smaller than 1");
 
-		return new Clef(type, line);
+		return new Clef(Objects.requireNonNull(type), line);
 	}
 
 	private Clef(Type type, int line) {
@@ -59,8 +53,7 @@ public class Clef {
 	/**
 	 * Compare this <code>Clef</code> with <code>Object o</code> for equality.
 	 * 
-	 * @param o
-	 *            the Object against which this is compared for equality.
+	 * @param o the Object against which this is compared for equality.
 	 * @return true if o is an instance of Clef and has the same type and position
 	 *         as this.
 	 */

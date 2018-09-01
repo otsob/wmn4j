@@ -27,24 +27,22 @@ public class Score implements Iterable<Part> {
 	 * Type for the different text attributes a score can have.
 	 */
 	public enum Attribute {
-		NAME, COMPOSER, ARRANGER, YEAR
+	NAME, COMPOSER, ARRANGER, YEAR
 	}
 
 	private final Map<Attribute, String> scoreAttr;
 	private final List<Part> parts;
 
 	/**
-	 * @param attributes
-	 *            The attributes of the score.
-	 * @param parts
-	 *            The parts in the score.
+	 * @param attributes The attributes of the score.
+	 * @param parts      The parts in the score.
 	 */
 	public Score(Map<Attribute, String> attributes, List<Part> parts) {
 		this.parts = Collections.unmodifiableList(new ArrayList<>(parts));
 		this.scoreAttr = Collections.unmodifiableMap(new HashMap<>(attributes));
 
-		if (this.parts == null)
-			throw new NullPointerException("Cannot create score: staves was null");
+		if (this.parts.isEmpty())
+			throw new IllegalArgumentException("Cannot create score: parts is empty");
 	}
 
 	/**
@@ -69,8 +67,7 @@ public class Score implements Iterable<Part> {
 	}
 
 	/**
-	 * @param index
-	 *            the number of the <code>Part</code> in the <code>Score</code>.
+	 * @param index the number of the <code>Part</code> in the <code>Score</code>.
 	 * @return <code>Part</code> associated with index.
 	 */
 	public Part getPart(int index) {
@@ -78,8 +75,7 @@ public class Score implements Iterable<Part> {
 	}
 
 	/**
-	 * @param attribute
-	 *            the type of the attribute.
+	 * @param attribute the type of the attribute.
 	 * @return the text associated with attribute if the attribute is set. Empty
 	 *         string otherwise.
 	 */
@@ -93,11 +89,9 @@ public class Score implements Iterable<Part> {
 	/**
 	 * Get the <code>Durational</code> at position.
 	 * 
-	 * @param position
-	 *            the <code>ScorePosition</code> from which to get the element.
+	 * @param position the <code>ScorePosition</code> from which to get the element.
 	 * @return the <code>Durational</code> at position.
-	 * @throws NoSuchElementException
-	 *             if the position is not found.
+	 * @throws NoSuchElementException if the position is not found.
 	 */
 	public Durational getAtPosition(ScorePosition position) throws NoSuchElementException {
 		Part part = this.parts.get(position.getPartNumber());

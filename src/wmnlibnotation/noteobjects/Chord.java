@@ -26,15 +26,12 @@ public class Chord implements Durational, Iterable<Note> {
 	 * Get an instance of <code>Chord</code> with the given <code>Note</code>
 	 * objects.
 	 * 
-	 * @param n
-	 *            A non-empty and non-null array of <code>Note</code> objects.
+	 * @param n A non-empty and non-null array of <code>Note</code> objects.
 	 * @return a chord with the given notes.
 	 * 
-	 * @throws NullPointerException
-	 *             if notes is null.
-	 * @throws IllegalArgumentException
-	 *             if notes is empty or all Note objects in notes are not of same
-	 *             duration.
+	 * @throws NullPointerException     if notes is null.
+	 * @throws IllegalArgumentException if notes is empty or all Note objects in
+	 *                                  notes are not of same duration.
 	 */
 	public static Chord getChord(Note... n) {
 		return new Chord(Arrays.asList(n));
@@ -43,15 +40,13 @@ public class Chord implements Durational, Iterable<Note> {
 	/**
 	 * Get an instance of <code>Chord</code> with the given <code>Note</code>s.
 	 * 
-	 * @param notes
-	 *            A non-empty and non-null Collection of <code>Note</code> objects.
+	 * @param notes A non-empty and non-null Collection of <code>Note</code>
+	 *              objects.
 	 * @return a chord with the given notes.
 	 * 
-	 * @throws NullPointerException
-	 *             if notes is null.
-	 * @throws IllegalArgumentException
-	 *             if notes is empty or all Note objects in notes are not of same
-	 *             duration.
+	 * @throws NullPointerException     if notes is null.
+	 * @throws IllegalArgumentException if notes is empty or all Note objects in
+	 *                                  notes are not of same duration.
 	 */
 	public static Chord getChord(Collection<Note> notes) {
 		return new Chord(notes);
@@ -60,20 +55,14 @@ public class Chord implements Durational, Iterable<Note> {
 	/**
 	 * Private constructor. Use static getters for getting an instance.
 	 * 
-	 * @throws NullPointerException
-	 *             if notes is null.
-	 * @throws IllegalArgumentException
-	 *             if notes is empty or all Note objects in notes are not of same
-	 *             duration.
-	 * @param notes
-	 *            the notes that are put in this Chord.
+	 * @throws NullPointerException     if notes is null.
+	 * @throws IllegalArgumentException if notes is empty or all Note objects in
+	 *                                  notes are not of same duration.
+	 * @param notes the notes that are put in this Chord.
 	 */
 	private Chord(Collection<Note> notes) {
 
-		if (notes == null)
-			throw new NullPointerException();
-
-		List<Note> notesCopy = new ArrayList<>(notes);
+		List<Note> notesCopy = new ArrayList<>(Objects.requireNonNull(notes));
 
 		if (notesCopy.isEmpty())
 			throw new IllegalArgumentException("Chord cannot be constructed with an empty List of notes");
@@ -98,11 +87,9 @@ public class Chord implements Durational, Iterable<Note> {
 	 * Get the <code>Note</code> with the fromLowest lowest pitch from this
 	 * <code>Chord</code>.
 	 * 
-	 * @throws IllegalArgumentException
-	 *             if fromLowest is smaller than 0 or at least the number of notes
-	 *             in this Chord.
-	 * @param fromLowest
-	 *            index of note, 0 being the lowest note in the chord.
+	 * @throws IllegalArgumentException if fromLowest is smaller than 0 or at least
+	 *                                  the number of notes in this Chord.
+	 * @param fromLowest index of note, 0 being the lowest note in the chord.
 	 * @return the note from index fromLowest.
 	 */
 	public Note getNote(int fromLowest) {
@@ -137,8 +124,7 @@ public class Chord implements Durational, Iterable<Note> {
 	/**
 	 * Get a Chord with the added note.
 	 * 
-	 * @param note
-	 *            note to be Added.
+	 * @param note note to be Added.
 	 * @return Chord with the notes of this and the added note.
 	 */
 	public Chord addNote(Note note) {
@@ -150,8 +136,7 @@ public class Chord implements Durational, Iterable<Note> {
 	/**
 	 * Get a Chord with the given note removed.
 	 * 
-	 * @param note
-	 *            note to be removed.
+	 * @param note note to be removed.
 	 * @return Chord without the given note.
 	 */
 	public Chord removeNote(Note note) {
@@ -163,8 +148,7 @@ public class Chord implements Durational, Iterable<Note> {
 	/**
 	 * Check if this contains the given pitch.
 	 * 
-	 * @param pitch
-	 *            pitch whose presence in this Chord is checked.
+	 * @param pitch pitch whose presence in this Chord is checked.
 	 * @return true if this contains the given pitch, false otherwise.
 	 */
 	public boolean contains(Pitch pitch) {
@@ -179,8 +163,7 @@ public class Chord implements Durational, Iterable<Note> {
 	/**
 	 * Check if this contains the given note.
 	 * 
-	 * @param note
-	 *            Note whose presence in this Chord is checked.
+	 * @param note Note whose presence in this Chord is checked.
 	 * @return true if this contains the given note, false otherwise.
 	 */
 	public boolean contains(Note note) {
@@ -190,8 +173,7 @@ public class Chord implements Durational, Iterable<Note> {
 	/**
 	 * Get a Chord with the given pitch removed.
 	 * 
-	 * @param pitch
-	 *            pitch of the note to be removed.
+	 * @param pitch pitch of the note to be removed.
 	 * @return a chord without a note with the given pitch.
 	 */
 	public Chord removePitch(Pitch pitch) {
@@ -207,8 +189,7 @@ public class Chord implements Durational, Iterable<Note> {
 	/**
 	 * Check equality against <code>Object o</code>.
 	 * 
-	 * @param o
-	 *            Object against which this is compared for equality.
+	 * @param o Object against which this is compared for equality.
 	 * @return true if o is an instance of Chord and contains all and no other notes
 	 *         than the ones in this Chord.
 	 */
