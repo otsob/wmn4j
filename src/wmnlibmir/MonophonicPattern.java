@@ -14,7 +14,7 @@ import wmnlibnotation.noteobjects.Durational;
 /**
  * A class for representing monophonic musical patterns. In a monophonic pattern
  * no notes occur simultaneously. The pattern cannot contain chords and does not
- * consist of multiple layers. This class is immutable.
+ * consist of multiple voices. This class is immutable.
  * 
  * @author Otso Björklund
  */
@@ -27,7 +27,7 @@ public final class MonophonicPattern implements Pattern {
 		if (this.contents == null)
 			throw new NullPointerException("Cannot create pattern with null contents");
 		if (this.contents.isEmpty())
-			throw new IllegalArgumentException("Cannote create pattern with empty contents");
+			throw new IllegalArgumentException("Cannot create pattern with empty contents");
 		if (this.contents.stream().anyMatch((dur) -> (dur instanceof Chord)))
 			throw new IllegalArgumentException("Contents contain a Chord. Contents must be monophonic");
 	}

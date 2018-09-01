@@ -57,10 +57,10 @@ public class StaffTest {
 		}
 
 		int sizeBeforeAddition = origMeasures.size();
-		List<Durational> layer = new ArrayList<>();
-		layer.add(Rest.getRest(Durations.WHOLE));
+		List<Durational> voice = new ArrayList<>();
+		voice.add(Rest.getRest(Durations.WHOLE));
 		Map<Integer, List<Durational>> notes = new HashMap<>();
-		notes.put(1, layer);
+		notes.put(1, voice);
 		origMeasures.add(new Measure(3, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
 		assertEquals(sizeBeforeAddition, staff.getMeasures().size());
 	}
@@ -112,10 +112,10 @@ public class StaffTest {
 	@Test
 	public void testGetMeasureWithPickup() {
 		List<Measure> measures = new ArrayList<>();
-		List<Durational> layer = new ArrayList<>();
-		layer.add(Rest.getRest(Durations.WHOLE));
+		List<Durational> voice = new ArrayList<>();
+		voice.add(Rest.getRest(Durations.WHOLE));
 		Map<Integer, List<Durational>> notes = new HashMap<>();
-		notes.put(1, layer);
+		notes.put(1, voice);
 		measures.add(new Measure(0, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
 		measures.addAll(getTestMeasures());
 

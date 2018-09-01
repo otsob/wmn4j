@@ -176,19 +176,19 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			Element attributes = createMeasureAttributesElement(measure, null);
 		}
 
-		List<Integer> layerNumber = measure.getLayerNumbers();
-		for (Integer num : layerNumber) {
-			for (Durational dur : measure.getLayer(num)) {
+		List<Integer> voiceNumber = measure.getVoiceNumbers();
+		for (Integer voiceNumbers : voiceNumber) {
+			for (Durational dur : measure.getVoice(voiceNumbers)) {
 				if (dur instanceof Rest)
-					measureElement.appendChild(createRestElement((Rest) dur, num, 0));
+					measureElement.appendChild(createRestElement((Rest) dur, voiceNumbers, 0));
 
 				if (dur instanceof Note)
-					measureElement.appendChild(createNoteElement((Note) dur, num, 0, false));
+					measureElement.appendChild(createNoteElement((Note) dur, voiceNumbers, 0, false));
 
 				if (dur instanceof Chord) {
 					boolean useChordTag = false;
 					for (Note note : (Chord) dur) {
-						measureElement.appendChild(createNoteElement(note, num, 0, useChordTag));
+						measureElement.appendChild(createNoteElement(note, voiceNumbers, 0, useChordTag));
 						useChordTag = true;
 					}
 				}

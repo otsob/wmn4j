@@ -28,7 +28,7 @@ import wmnlibnotation.noteobjects.TimeSignatures;
  * Class for building <code>Measure</code> objects. The builder does not ensure
  * that the <code>DurationalBuilder</code> objects in the builder fill up
  * exactly a measure that has the set time signature. The methods
- * {@link #isFull() isFull} and {@link #isLayerFull(int) isLayerFull} should be
+ * {@link #isFull() isFull} and {@link #isVoiceFull(int) isVoiceFull} should be
  * used for checking if the durations add up to the correct
  * 
  * Default values: TimeSignature : 4/4 KeySignature : C-major/a-minor Clef: G
@@ -39,9 +39,9 @@ import wmnlibnotation.noteobjects.TimeSignatures;
 public class MeasureBuilder {
 
 	private int number;
-	// TODO: Keep track of layer durations in some way to make checking if measure
+	// TODO: Keep track of voice durations in some way to make checking if measure
 	// is full faster.
-	private final Map<Integer, List<DurationalBuilder>> layers;
+	private final Map<Integer, List<DurationalBuilder>> voices;
 
 	private TimeSignature timeSig = TimeSignatures.FOUR_FOUR;
 	private KeySignature keySig = KeySignatures.CMAJ_AMIN;
@@ -62,7 +62,7 @@ public class MeasureBuilder {
 	 *            MeasureAttributes for measure.
 	 */
 	public MeasureBuilder(int number, MeasureAttributes measureAttr) {
-		this.layers = new HashMap<>();
+		this.voices = new HashMap<>();
 		this.number = number;
 
 		this.timeSig = measureAttr.getTimeSignature();
@@ -78,7 +78,7 @@ public class MeasureBuilder {
 	 *            Measure number for measure being built.
 	 */
 	public MeasureBuilder(int number) {
-		this.layers = new HashMap<>();
+		this.voices = new HashMap<>();
 		this.number = number;
 	}
 
@@ -207,130 +207,130 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * Add new empty layer to this <code>MeasureBuilder</code>.
+	 * Add new empty voice to this <code>MeasureBuilder</code>.
 	 * 
 	 * @return reference to this builder.
 	 */
-	public MeasureBuilder addLayer() {
-		this.layers.put(this.layers.keySet().size(), new ArrayList<>());
+	public MeasureBuilder addVoice() {
+		this.voices.put(this.voices.keySet().size(), new ArrayList<>());
 		return this;
 	}
 
 	/**
-	 * Add possibly non-empty layer to this <code>MeasureBuilder</code>.
+	 * Add possibly non-empty voice to this <code>MeasureBuilder</code>.
 	 * 
-	 * @param layer
-	 *            new layer to be added to this.
+	 * @param voice
+	 *            new voice to be added to this.
 	 * @return reference to this builder.
 	 */
-	public MeasureBuilder addLayer(List<DurationalBuilder> layer) {
-		this.layers.put(this.layers.keySet().size(), layer);
+	public MeasureBuilder addVoice(List<DurationalBuilder> voice) {
+		this.voices.put(this.voices.keySet().size(), voice);
 		return this;
 	}
 
 	/**
-	 * Append <code>DurationalBuilder</code> object to layer with index
-	 * <code>layer</code>. If layer does not exist it is created.
+	 * Append <code>DurationalBuilder</code> object to voice with index
+	 * <code>voice</code>. If voice does not exist it is created.
 	 * 
-	 * @param layer
-	 *            index of layer to which builder is appended.
+	 * @param voice
+	 *            index of voice to which builder is appended.
 	 * @param builder
-	 *            DurationalBuilder object to be appended to layer.
+	 *            DurationalBuilder object to be appended to voice.
 	 * @return reference to this builder.
 	 */
-	public MeasureBuilder addToLayer(int layer, DurationalBuilder builder) {
+	public MeasureBuilder addToVoice(int voice, DurationalBuilder builder) {
 
-		if (!this.layers.keySet().contains(layer))
-			this.layers.put(layer, new ArrayList<>());
+		if (!this.voices.keySet().contains(voice))
+			this.voices.put(voice, new ArrayList<>());
 
-		this.layers.get(layer).add(builder);
+		this.voices.get(voice).add(builder);
 		return this;
 	}
 
 	/**
-	 * @return number or layers in this builder.
+	 * @return number or voices in this builder.
 	 */
-	public int getNumberOfLayers() {
-		return this.layers.size();
+	public int getNumberOfVoices() {
+		return this.voices.size();
 	}
 
 	/**
-	 * Get the layer numbers. Layer numbers do not have to be contiguous.
+	 * Get the voice numbers. Voice numbers do not have to be contiguous.
 	 * 
-	 * @return the set of layer numbers in this builder.
+	 * @return the set of voice numbers in this builder.
 	 */
-	public Set<Integer> getLayerNumbers() {
-		return Collections.unmodifiableSet(this.layers.keySet());
+	public Set<Integer> getVoiceNumbers() {
+		return Collections.unmodifiableSet(this.voices.keySet());
 	}
 
 	/**
 	 * Set the element at specified location to given value.
 	 * 
-	 * @param layer
-	 *            the number of the layer to be modified.
+	 * @param voice
+	 *            the number of the voice to be modified.
 	 * @param index
-	 *            the index in the layer.
+	 *            the index in the voice.
 	 * @param builder
-	 *            element to be placed in index on layer.
+	 *            element to be placed in index on voice.
 	 */
-	public void setElement(int layer, int index, DurationalBuilder builder) {
-		this.layers.get(layer).set(index, builder);
+	public void setElement(int voice, int index, DurationalBuilder builder) {
+		this.voices.get(voice).set(index, builder);
 	}
 
 	/**
 	 * Get a reference to the <code>DurationalBuilder</code> at the specified
 	 * position.
 	 * 
-	 * @param layer
-	 *            the number of the layer from which to get the object.
+	 * @param voice
+	 *            the number of the voice from which to get the object.
 	 * @param index
-	 *            index in the layer.
+	 *            index in the voice.
 	 * @return reference to the <code>DurationalBuilder</code> at the position
 	 *         specified by the parameters.
 	 */
-	public DurationalBuilder get(int layer, int index) {
-		return this.layers.get(layer).get(index);
+	public DurationalBuilder get(int voice, int index) {
+		return this.voices.get(voice).get(index);
 	}
 
 	/**
-	 * Get the sum of durations on a layer.
+	 * Get the sum of durations on a voice.
 	 * 
-	 * @param layer
-	 *            the index of the layer.
+	 * @param voice
+	 *            the index of the voice.
 	 * @return Sum of the durations of the <code>Durational</code> objects on the
-	 *         layer.
+	 *         voice.
 	 */
-	public Duration totalDurationOfLayer(int layer) {
+	public Duration totalDurationOfVoice(int voice) {
 		List<Duration> durations = new ArrayList<>();
-		for (DurationalBuilder d : this.layers.get(layer))
+		for (DurationalBuilder d : this.voices.get(voice))
 			durations.add(d.getDuration());
 
 		return Duration.sumOf(durations);
 	}
 
 	/**
-	 * Check if layer is full. A layer is considered full when it contains
+	 * Check if voice is full. A voice is considered full when it contains
 	 * <code>DurationalBuilder</code> objects whose combined duration is enough to
 	 * fill a measure that has the time signature that is set for this builder.
 	 * 
-	 * @param layer
-	 *            index of layer that is checked.
-	 * @return true if the durations in the layer add up to fill a measure. False
+	 * @param voice
+	 *            index of voice that is checked.
+	 * @return true if the durations in the voice add up to fill a measure. False
 	 *         otherwise.
 	 */
-	public boolean isLayerFull(int layer) {
-		Duration layerDuration = this.totalDurationOfLayer(layer);
-		return !layerDuration.shorterThan(this.timeSig.getTotalDuration());
+	public boolean isVoiceFull(int voice) {
+		Duration voiceDuration = this.totalDurationOfVoice(voice);
+		return !voiceDuration.shorterThan(this.timeSig.getTotalDuration());
 	}
 
 	/**
-	 * Check if any layer in this builder is full.
+	 * Check if any voice in this builder is full.
 	 * 
-	 * @return true if even a single layer is full. False otherwise.
+	 * @return true if even a single voice is full. False otherwise.
 	 */
 	public boolean isFull() {
-		for (int layer = 0; layer < this.layers.size(); ++layer) {
-			if (this.isLayerFull(layer)) {
+		for (int voice = 0; voice < this.voices.size(); ++voice) {
+			if (this.isVoiceFull(voice)) {
 				return true;
 			}
 		}
@@ -338,25 +338,25 @@ public class MeasureBuilder {
 		return false;
 	}
 
-	private List<Durational> buildLayer(List<DurationalBuilder> buildersForLayer) {
-		List<Durational> layer = new ArrayList<>();
+	private List<Durational> buildVoice(List<DurationalBuilder> buildersForVoice) {
+		List<Durational> voice = new ArrayList<>();
 
-		buildersForLayer.forEach((builder) -> layer.add(builder.build()));
+		buildersForVoice.forEach((builder) -> voice.add(builder.build()));
 
-		return layer;
+		return voice;
 	}
 
-	private Map<Integer, List<Durational>> getBuiltLayers() {
+	private Map<Integer, List<Durational>> getBuiltVoices() {
 
-		// TODO: Check that layers are full. If not, pad them with rests.
+		// TODO: Check that voices are full. If not, pad them with rests.
 
-		Map<Integer, List<Durational>> builtLayers = new HashMap<>();
-		for (Integer layerNumber : this.getLayerNumbers()) {
-			List<DurationalBuilder> builders = this.layers.get(layerNumber);
-			builtLayers.put(layerNumber, builders.stream().map(DurationalBuilder::build).collect(Collectors.toList()));
+		Map<Integer, List<Durational>> builtVoices = new HashMap<>();
+		for (Integer voiceNumber : this.getVoiceNumbers()) {
+			List<DurationalBuilder> builders = this.voices.get(voiceNumber);
+			builtVoices.put(voiceNumber, builders.stream().map(DurationalBuilder::build).collect(Collectors.toList()));
 		}
 
-		return builtLayers;
+		return builtVoices;
 	}
 
 	/**
@@ -370,6 +370,6 @@ public class MeasureBuilder {
 		MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(this.timeSig, this.keySig, this.rightBarline,
 				this.leftBarline, this.clef, this.clefChanges);
 
-		return new Measure(this.number, this.getBuiltLayers(), measureAttr);
+		return new Measure(this.number, this.getBuiltVoices(), measureAttr);
 	}
 }

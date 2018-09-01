@@ -34,15 +34,15 @@ public class TestHelper {
 	public static MeasureBuilder getTestMeasureBuilder(int number) {
 		MeasureBuilder builder = new MeasureBuilder(number);
 
-		builder.addToLayer(0, C4Quarter);
-		builder.addToLayer(0, new RestBuilder(Durations.QUARTER));
+		builder.addToVoice(0, C4Quarter);
+		builder.addToVoice(0, new RestBuilder(Durations.QUARTER));
 		ChordBuilder chordBuilder = new ChordBuilder(C4);
 		chordBuilder.add(E4).add(G4);
-		builder.addToLayer(0, chordBuilder);
+		builder.addToVoice(0, chordBuilder);
 
-		builder.addToLayer(1, new RestBuilder(Durations.QUARTER));
-		builder.addToLayer(1, C4);
-		builder.addToLayer(1, new RestBuilder(Durations.QUARTER));
+		builder.addToVoice(1, new RestBuilder(Durations.QUARTER));
+		builder.addToVoice(1, C4);
+		builder.addToVoice(1, new RestBuilder(Durations.QUARTER));
 
 		return builder;
 	}

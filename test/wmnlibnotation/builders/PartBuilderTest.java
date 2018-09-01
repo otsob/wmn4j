@@ -47,31 +47,31 @@ public class PartBuilderTest {
 	NoteBuilder C4Quarter = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
 	public PartBuilderTest() {
-		Map<Integer, List<DurationalBuilder>> noteLayer = new HashMap<>();
-		noteLayer.put(0, new ArrayList<>());
-		noteLayer.get(0).add(C4Quarter);
-		noteLayer.get(0).add(new RestBuilder(Durations.QUARTER));
+		Map<Integer, List<DurationalBuilder>> noteVoice = new HashMap<>();
+		noteVoice.put(0, new ArrayList<>());
+		noteVoice.get(0).add(C4Quarter);
+		noteVoice.get(0).add(new RestBuilder(Durations.QUARTER));
 		ChordBuilder chordBuilder = new ChordBuilder(C4);
 		chordBuilder.add(E4).add(G4);
 
-		noteLayer.get(0).add(chordBuilder);
+		noteVoice.get(0).add(chordBuilder);
 
-		Map<Integer, List<DurationalBuilder>> noteLayers = new HashMap<>();
-		noteLayers.put(0, noteLayer.get(0));
-		noteLayers.put(1, new ArrayList<>());
-		noteLayers.get(1).add(new RestBuilder(Durations.QUARTER));
-		noteLayers.get(1).add(C4);
-		noteLayers.get(1).add(new RestBuilder(Durations.QUARTER));
+		Map<Integer, List<DurationalBuilder>> noteVoices = new HashMap<>();
+		noteVoices.put(0, noteVoice.get(0));
+		noteVoices.put(1, new ArrayList<>());
+		noteVoices.get(1).add(new RestBuilder(Durations.QUARTER));
+		noteVoices.get(1).add(C4);
+		noteVoices.get(1).add(new RestBuilder(Durations.QUARTER));
 
-		this.measureContents = Collections.unmodifiableMap(noteLayers);
+		this.measureContents = Collections.unmodifiableMap(noteVoices);
 		this.measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Clefs.G);
 	}
 
 	private MeasureBuilder getMeasureBuilder(int number) {
 		MeasureBuilder builder = new MeasureBuilder(number, this.measureAttr);
-		for (Integer layerNum : this.measureContents.keySet()) {
-			builder.addLayer(this.measureContents.get(layerNum));
+		for (Integer voiceNum : this.measureContents.keySet()) {
+			builder.addVoice(this.measureContents.get(voiceNum));
 		}
 
 		return builder;
@@ -138,12 +138,12 @@ public class PartBuilderTest {
 
 		MeasureBuilder firstMeasureBuilder = new MeasureBuilder(1);
 		NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
-		firstMeasureBuilder.addToLayer(1, firstNoteBuilder);
+		firstMeasureBuilder.addToVoice(1, firstNoteBuilder);
 
 		MeasureBuilder secondMeasureBuilder = new MeasureBuilder(2);
 		NoteBuilder secondNoteBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
 		firstNoteBuilder.addTieToFollowing(secondNoteBuilder);
-		secondMeasureBuilder.addToLayer(1, secondNoteBuilder);
+		secondMeasureBuilder.addToVoice(1, secondNoteBuilder);
 
 		PartBuilder partBuilder = new PartBuilder("TiedMeasures");
 		partBuilder.add(firstMeasureBuilder).add(secondMeasureBuilder);

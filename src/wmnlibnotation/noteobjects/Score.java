@@ -102,7 +102,7 @@ public class Score implements Iterable<Part> {
 	public Durational getAtPosition(ScorePosition position) throws NoSuchElementException {
 		Part part = this.parts.get(position.getPartNumber());
 		Measure measure = part.getMeasure(position.getStaffNumber(), position.getMeasureNumber());
-		Durational dur = measure.get(position.getLayerNumber(), position.getIndexInLayer());
+		Durational dur = measure.get(position.getVoiceNumber(), position.getIndexInVoice());
 
 		if (position.isInChord()) {
 			if (dur instanceof Chord) {

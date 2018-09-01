@@ -17,8 +17,8 @@ public class ScorePosition {
 	private final int partNumber;
 	private final int staffNumber;
 	private final int measureNumber;
-	private final int layerNumber;
-	private final int indexInLayer;
+	private final int voiceNumber;
+	private final int indexInVoice;
 	private final int indexInChord;
 
 	private static final int NOT_IN_CHORD = -1;
@@ -34,17 +34,17 @@ public class ScorePosition {
 	 *            the staffNumber parameter.
 	 * @param measureNumber
 	 *            The measure number.
-	 * @param layerNumber
-	 *            The layer number in the measure.
-	 * @param indexInLayer
-	 *            The index in the layer specified by layerNumber.
+	 * @param voiceNumber
+	 *            The voice number in the measure.
+	 * @param indexInVoice
+	 *            The index in the voice specified by voiceNumber.
 	 */
-	public ScorePosition(int partNumber, int staffNumber, int measureNumber, int layerNumber, int indexInLayer) {
+	public ScorePosition(int partNumber, int staffNumber, int measureNumber, int voiceNumber, int indexInVoice) {
 		this.partNumber = partNumber;
 		this.staffNumber = staffNumber;
 		this.measureNumber = measureNumber;
-		this.layerNumber = layerNumber;
-		this.indexInLayer = indexInLayer;
+		this.voiceNumber = voiceNumber;
+		this.indexInVoice = indexInVoice;
 		this.indexInChord = NOT_IN_CHORD;
 	}
 
@@ -60,20 +60,20 @@ public class ScorePosition {
 	 *            the staffNumber parameter.
 	 * @param measureNumber
 	 *            The measure number.
-	 * @param layerNumber
-	 *            The layer number in the measure.
-	 * @param indexInLayer
-	 *            The index in the layer specified by layerNumber.
+	 * @param voiceNumber
+	 *            The voice number in the measure.
+	 * @param indexInVoice
+	 *            The index in the voice specified by voiceNumber.
 	 * @param indexInChord
 	 *            Starting from the bottom of the chord, the index of the Note.
 	 */
-	public ScorePosition(int partNumber, int staffNumber, int measureNumber, int layerNumber, int indexInLayer,
+	public ScorePosition(int partNumber, int staffNumber, int measureNumber, int voiceNumber, int indexInVoice,
 			int indexInChord) {
 		this.partNumber = partNumber;
 		this.staffNumber = staffNumber;
 		this.measureNumber = measureNumber;
-		this.layerNumber = layerNumber;
-		this.indexInLayer = indexInLayer;
+		this.voiceNumber = voiceNumber;
+		this.indexInVoice = indexInVoice;
 		this.indexInChord = indexInChord;
 	}
 
@@ -84,17 +84,17 @@ public class ScorePosition {
 	 *            The number (index) of the part in the <code>Score</code>.
 	 * @param measureNumber
 	 *            The measure number.
-	 * @param layerNumber
-	 *            The layer number in the measure.
-	 * @param indexInLayer
-	 *            The index in the layer specified by layerNumber.
+	 * @param voiceNumber
+	 *            The voice number in the measure.
+	 * @param indexInVoice
+	 *            The index in the voice specified by voiceNumber.
 	 */
-	public ScorePosition(int partNumber, int measureNumber, int layerNumber, int indexInLayer) {
+	public ScorePosition(int partNumber, int measureNumber, int voiceNumber, int indexInVoice) {
 		this.partNumber = partNumber;
 		this.staffNumber = SingleStaffPart.STAFF_NUMBER;
 		this.measureNumber = measureNumber;
-		this.layerNumber = layerNumber;
-		this.indexInLayer = indexInLayer;
+		this.voiceNumber = voiceNumber;
+		this.indexInVoice = indexInVoice;
 		this.indexInChord = NOT_IN_CHORD;
 	}
 
@@ -120,17 +120,17 @@ public class ScorePosition {
 	}
 
 	/**
-	 * @return The number of the layer in the measure.
+	 * @return The number of the voice in the measure.
 	 */
-	public int getLayerNumber() {
-		return this.layerNumber;
+	public int getVoiceNumber() {
+		return this.voiceNumber;
 	}
 
 	/**
-	 * @return The index of the <code>Durational</code> in the layer.
+	 * @return The index of the <code>Durational</code> in the voice.
 	 */
-	public int getIndexInLayer() {
-		return this.indexInLayer;
+	public int getIndexInVoice() {
+		return this.indexInVoice;
 	}
 
 	/**
@@ -180,10 +180,10 @@ public class ScorePosition {
 		if (other.getMeasureNumber() != this.measureNumber)
 			return false;
 
-		if (other.getLayerNumber() != this.layerNumber)
+		if (other.getVoiceNumber() != this.voiceNumber)
 			return false;
 
-		if (other.getIndexInLayer() != this.indexInLayer)
+		if (other.getIndexInVoice() != this.indexInVoice)
 			return false;
 
 		return true;
@@ -195,8 +195,8 @@ public class ScorePosition {
 		hash = 53 * hash + this.partNumber;
 		hash = 53 * hash + this.staffNumber;
 		hash = 53 * hash + this.measureNumber;
-		hash = 53 * hash + this.layerNumber;
-		hash = 53 * hash + this.indexInLayer;
+		hash = 53 * hash + this.voiceNumber;
+		hash = 53 * hash + this.indexInVoice;
 		return hash;
 	}
 
@@ -204,8 +204,8 @@ public class ScorePosition {
 	public String toString() {
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("Part: ").append(this.partNumber).append(", Staff: ").append(this.staffNumber)
-				.append(", Measure: ").append(this.measureNumber).append(", Layer: ").append(this.layerNumber)
-				.append(", Index: ").append(this.indexInLayer);
+				.append(", Measure: ").append(this.measureNumber).append(", Voice: ").append(this.voiceNumber)
+				.append(", Index: ").append(this.indexInVoice);
 
 		return strBuilder.toString();
 	}

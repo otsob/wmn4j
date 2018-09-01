@@ -35,22 +35,22 @@ public class SingleStaffPartTest {
 	Note C4Quarter = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
 	public SingleStaffPartTest() {
-		Map<Integer, List<Durational>> noteLayer = new HashMap<>();
-		noteLayer.put(0, new ArrayList<>());
-		noteLayer.get(0).add(C4Quarter);
-		noteLayer.get(0).add(Rest.getRest(Durations.QUARTER));
-		noteLayer.get(0).add(Chord.getChord(C4, E4, G4));
+		Map<Integer, List<Durational>> noteVoice = new HashMap<>();
+		noteVoice.put(0, new ArrayList<>());
+		noteVoice.get(0).add(C4Quarter);
+		noteVoice.get(0).add(Rest.getRest(Durations.QUARTER));
+		noteVoice.get(0).add(Chord.getChord(C4, E4, G4));
 
-		Map<Integer, List<Durational>> noteLayers = new HashMap<>();
-		noteLayers.put(0, noteLayer.get(0));
-		noteLayers.put(1, new ArrayList<>());
-		noteLayers.get(1).add(Rest.getRest(Durations.QUARTER));
-		noteLayers.get(1).add(C4);
-		noteLayers.get(1).add(Rest.getRest(Durations.QUARTER));
+		Map<Integer, List<Durational>> noteVoices = new HashMap<>();
+		noteVoices.put(0, noteVoice.get(0));
+		noteVoices.put(1, new ArrayList<>());
+		noteVoices.get(1).add(Rest.getRest(Durations.QUARTER));
+		noteVoices.get(1).add(C4);
+		noteVoices.get(1).add(Rest.getRest(Durations.QUARTER));
 
 		List<Measure> measureList = new ArrayList<>();
 		for (int i = 1; i <= this.measureCount; ++i)
-			measureList.add(new Measure(i, noteLayers, TimeSignatures.FOUR_FOUR, keySig, Clefs.G));
+			measureList.add(new Measure(i, noteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G));
 
 		this.measures = Collections.unmodifiableList(measureList);
 	}

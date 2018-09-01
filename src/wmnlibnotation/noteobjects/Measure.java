@@ -14,8 +14,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * Class that defines a measure. A measure may contain multiple layers that are
- * referred to using layer numbers. This class is immutable. Use the
+ * Class that defines a measure. A measure may contain multiple voices that are
+ * referred to using voice numbers. This class is immutable. Use the
  * MeasureBuilder class for easier creation of Measures.
  * 
  * @author Otso Björklund
@@ -23,14 +23,14 @@ import java.util.TreeMap;
 public class Measure implements Iterable<Durational> {
 
 	private final int number;
-	private final SortedMap<Integer, List<Durational>> layers;
+	private final SortedMap<Integer, List<Durational>> voices;
 	private final MeasureAttributes measureAttr;
 
 	/**
 	 * @param number
 	 *            number of the measure.
-	 * @param noteLayers
-	 *            the notes on the different layers of the measure.
+	 * @param noteVoices
+	 *            the notes on the different voices of the measure.
 	 * @param timeSig
 	 *            TimeSignature of the measure.
 	 * @param keySig
@@ -40,16 +40,16 @@ public class Measure implements Iterable<Durational> {
 	 * @param clef
 	 *            Clef in effect in the measure.
 	 */
-	public Measure(int number, Map<Integer, List<Durational>> noteLayers, TimeSignature timeSig, KeySignature keySig,
+	public Measure(int number, Map<Integer, List<Durational>> noteVoices, TimeSignature timeSig, KeySignature keySig,
 			Barline rightBarLine, Clef clef) {
-		this(number, noteLayers, MeasureAttributes.getMeasureAttr(timeSig, keySig, rightBarLine, clef));
+		this(number, noteVoices, MeasureAttributes.getMeasureAttr(timeSig, keySig, rightBarLine, clef));
 	}
 
 	/**
 	 * @param number
 	 *            number of the measure.
-	 * @param noteLayers
-	 *            the notes on the different layers of the measure.
+	 * @param noteVoices
+	 *            the notes on the different voices of the measure.
 	 * @param timeSig
 	 *            TimeSignature of the measure.
 	 * @param keySig
@@ -57,31 +57,31 @@ public class Measure implements Iterable<Durational> {
 	 * @param clef
 	 *            Clef in effect in the measure.
 	 */
-	public Measure(int number, Map<Integer, List<Durational>> noteLayers, TimeSignature timeSig, KeySignature keySig,
+	public Measure(int number, Map<Integer, List<Durational>> noteVoices, TimeSignature timeSig, KeySignature keySig,
 			Clef clef) {
-		this(number, noteLayers, MeasureAttributes.getMeasureAttr(timeSig, keySig, Barline.SINGLE, clef));
+		this(number, noteVoices, MeasureAttributes.getMeasureAttr(timeSig, keySig, Barline.SINGLE, clef));
 	}
 
 	/**
 	 * @param number
 	 *            number of the measure.
-	 * @param noteLayers
-	 *            the notes on the different layers of the measure.
+	 * @param noteVoices
+	 *            the notes on the different voices of the measure.
 	 * @param measureAttr
 	 *            the attributes of the measure.
 	 */
-	public Measure(int number, Map<Integer, List<Durational>> noteLayers, MeasureAttributes measureAttr) {
+	public Measure(int number, Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttr) {
 		this.number = number;
-		SortedMap<Integer, List<Durational>> layersCopy = new TreeMap<>();
+		SortedMap<Integer, List<Durational>> voicesCopy = new TreeMap<>();
 
-		for (Integer layerNum : noteLayers.keySet())
-			layersCopy.put(layerNum, Collections.unmodifiableList(new ArrayList<>(noteLayers.get(layerNum))));
+		for (Integer voiceNum : noteVoices.keySet())
+			voicesCopy.put(voiceNum, Collections.unmodifiableList(new ArrayList<>(noteVoices.get(voiceNum))));
 
-		this.layers = Collections.unmodifiableSortedMap(layersCopy);
+		this.voices = Collections.unmodifiableSortedMap(voicesCopy);
 
 		this.measureAttr = measureAttr;
 
-		if (this.layers == null || this.measureAttr == null)
+		if (this.voices == null || this.measureAttr == null)
 			throw new NullPointerException();
 
 		if (this.number < 0)
@@ -89,46 +89,46 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * Get the layer numbers in this measure. Layer numbers are not necessarily
+	 * Get the voice numbers in this measure. Voice numbers are not necessarily
 	 * consecutive and do not begin from 0.
 	 * 
-	 * @return list of the layer numbers used in this measure.
+	 * @return list of the voice numbers used in this measure.
 	 */
-	public List<Integer> getLayerNumbers() {
-		return new ArrayList<>(this.layers.keySet());
+	public List<Integer> getVoiceNumbers() {
+		return new ArrayList<>(this.voices.keySet());
 	}
 
 	/**
-	 * Get a layerNumber of the measure.
+	 * Get a voiceNumber of the measure.
 	 * 
-	 * @param layerNumber
-	 *            the number of the layer.
-	 * @return the layerNumber at the given index layerNumber.
+	 * @param voiceNumber
+	 *            the number of the voice.
+	 * @return the voiceNumber at the given index voiceNumber.
 	 */
-	public List<Durational> getLayer(int layerNumber) {
-		return this.layers.get(layerNumber);
+	public List<Durational> getVoice(int voiceNumber) {
+		return this.voices.get(voiceNumber);
 	}
 
 	/**
-	 * @param layerNumber
-	 * @return the number of elements on the layer with layerNumber.
+	 * @param voiceNumber
+	 * @return the number of elements on the voice with voiceNumber.
 	 */
-	public int getLayerSize(int layerNumber) {
-		return this.layers.get(layerNumber).size();
+	public int getVoiceSize(int voiceNumber) {
+		return this.voices.get(voiceNumber).size();
 	}
 
 	/**
-	 * @return number of layers in this measure.
+	 * @return number of voices in this measure.
 	 */
-	public int getLayerCount() {
-		return this.layers.keySet().size();
+	public int getVoiceCount() {
+		return this.voices.keySet().size();
 	}
 
 	/**
-	 * @return true if this measure only has one layer, false otherwise.
+	 * @return true if this measure only has one voice, false otherwise.
 	 */
-	public boolean isSingleLayer() {
-		return this.getLayerCount() == 1;
+	public boolean isSingleVoice() {
+		return this.getVoiceCount() == 1;
 	}
 
 	/**
@@ -196,25 +196,25 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * Returns the <code>Durational</code> at the given index on the given layer
+	 * Returns the <code>Durational</code> at the given index on the given voice
 	 * number.
 	 * 
-	 * @param layerNumber
-	 *            Number of the layer from which to get the element.
+	 * @param voiceNumber
+	 *            Number of the voice from which to get the element.
 	 * @param index
-	 *            index of element on the layer.
-	 * @return <code>Durational</code> at the given index on the given layer.
+	 *            index of element on the voice.
+	 * @return <code>Durational</code> at the given index on the given voice.
 	 * @throws NoSuchElementException
 	 */
-	public Durational get(int layerNumber, int index) throws NoSuchElementException {
-		if (!this.layers.keySet().contains(layerNumber))
+	public Durational get(int voiceNumber, int index) throws NoSuchElementException {
+		if (!this.voices.keySet().contains(voiceNumber))
 			throw new NoSuchElementException();
 
-		List<Durational> layer = this.layers.get(layerNumber);
-		if (index < 0 || index >= layer.size())
+		List<Durational> voice = this.voices.get(voiceNumber);
+		if (index < 0 || index >= voice.size())
 			throw new NoSuchElementException();
 
-		return layer.get(index);
+		return voice.get(index);
 	}
 
 	/**
@@ -227,11 +227,11 @@ public class Measure implements Iterable<Durational> {
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("Measure ").append(this.number).append(", ").append(this.measureAttr).append(":\n");
 
-		for (Integer i : this.layers.keySet()) {
-			strBuilder.append("Layer ").append(i).append(": ");
-			for (int j = 0; j < layers.get(i).size(); ++j) {
-				strBuilder.append(layers.get(i).get(j).toString());
-				if (j != layers.get(i).size() - 1)
+		for (Integer i : this.voices.keySet()) {
+			strBuilder.append("Voice ").append(i).append(": ");
+			for (int j = 0; j < voices.get(i).size(); ++j) {
+				strBuilder.append(voices.get(i).get(j).toString());
+				if (j != voices.get(i).size() - 1)
 					strBuilder.append(", ");
 			}
 			strBuilder.append("\n");
@@ -241,7 +241,7 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * @return iterator that goes through the Measure layer wise.
+	 * @return iterator that goes through the Measure voice wise.
 	 */
 	@Override
 	public Iterator<Durational> iterator() {
@@ -259,30 +259,30 @@ public class Measure implements Iterable<Durational> {
 
 	/**
 	 * Iterator for <code>Durational</code> objects in a <code>Measure</code>. The
-	 * iterator iterates through the notes in the Measure layer by layer going from
-	 * the earliest Durational in the layer to the last on each layer. The order of
-	 * layers is unspecified. The iterator does not support removing.
+	 * iterator iterates through the notes in the Measure voice by voice going from
+	 * the earliest Durational in the voice to the last on each voice. The order of
+	 * voices is unspecified. The iterator does not support removing.
 	 */
 	public static class Iter implements Iterator<Durational> {
-		private final List<Integer> layerNumbers;
+		private final List<Integer> voiceNumbers;
 		private final Measure measure;
-		private int layerNumberIndex = 0;
-		private int positionInLayer = 0;
-		private int prevLayerNumber = 0;
-		private int prevPositionInLayer = 0;
+		private int voiceNumberIndex = 0;
+		private int positionInVoice = 0;
+		private int prevVoiceNumber = 0;
+		private int prevPositionInVoice = 0;
 
 		public Iter(Measure measure) {
 			this.measure = measure;
-			this.layerNumbers = measure.getLayerNumbers();
+			this.voiceNumbers = measure.getVoiceNumbers();
 		}
 
 		/**
-		 * @return The layer of the <code>Durational</code> that was returned by the
+		 * @return The voice of the <code>Durational</code> that was returned by the
 		 *         last call of {@link #next() next}. If next has not been called,
 		 *         return value is useless.
 		 */
-		public int getLayerOfPrevious() {
-			return this.prevLayerNumber;
+		public int getVoiceOfPrevious() {
+			return this.prevVoiceNumber;
 		}
 
 		/**
@@ -291,16 +291,16 @@ public class Measure implements Iterable<Durational> {
 		 *         return value is useless.
 		 */
 		public int getIndexOfPrevious() {
-			return this.prevPositionInLayer;
+			return this.prevPositionInVoice;
 		}
 
 		@Override
 		public boolean hasNext() {
-			if (layerNumberIndex >= this.layerNumbers.size())
+			if (voiceNumberIndex >= this.voiceNumbers.size())
 				return false;
 
-			int layerNumber = this.layerNumbers.get(this.layerNumberIndex);
-			return !this.measure.getLayer(layerNumber).isEmpty();
+			int voiceNumber = this.voiceNumbers.get(this.voiceNumberIndex);
+			return !this.measure.getVoice(voiceNumber).isEmpty();
 		}
 
 		@Override
@@ -308,15 +308,15 @@ public class Measure implements Iterable<Durational> {
 			if (!this.hasNext())
 				throw new NoSuchElementException();
 
-			this.prevLayerNumber = this.layerNumbers.get(this.layerNumberIndex);
-			List<Durational> currentLayer = this.measure.getLayer(this.prevLayerNumber);
-			this.prevPositionInLayer = this.positionInLayer;
-			Durational next = currentLayer.get(this.prevPositionInLayer);
+			this.prevVoiceNumber = this.voiceNumbers.get(this.voiceNumberIndex);
+			List<Durational> currentVoice = this.measure.getVoice(this.prevVoiceNumber);
+			this.prevPositionInVoice = this.positionInVoice;
+			Durational next = currentVoice.get(this.prevPositionInVoice);
 
-			++this.positionInLayer;
-			if (this.positionInLayer == currentLayer.size()) {
-				++this.layerNumberIndex;
-				this.positionInLayer = 0;
+			++this.positionInVoice;
+			if (this.positionInVoice == currentVoice.size()) {
+				++this.voiceNumberIndex;
+				this.positionInVoice = 0;
 			}
 
 			return next;

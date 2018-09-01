@@ -67,8 +67,8 @@ public class PointSet {
 				double prevMeasureDuration = prevMeasure.getTimeSignature().getTotalDuration().toDouble();
 				offsetToEndOfLastMeasure += prevMeasureDuration;
 				offsetWithinMeasure = 0.0;
-			} // Layer or staff changes
-			else if (prevPos != null && (prevPos.getLayerNumber() != pos.getLayerNumber()
+			} // Voice or staff changes
+			else if (prevPos != null && (prevPos.getVoiceNumber() != pos.getVoiceNumber()
 					|| prevPos.getStaffNumber() != pos.getStaffNumber())) {
 				offsetWithinMeasure = 0.0;
 			}

@@ -379,13 +379,13 @@ class MusicXmlReaderDom implements MusicXmlReader {
 		Context context = contexts.get(staffNumber);
 		MeasureBuilder builder = measureBuilders.get(staffNumber);
 
-		int layer = getLayer(node);
+		int voice = getVoice(node);
 		Duration duration = getDuration(node, context.getDivisions());
 		offsets.get(staffNumber).add(duration);
 
 		if (isRest(node)) {
 			chordBuffers.get(staffNumber).contentsToBuilder(builder);
-			builder.addToLayer(layer, new RestBuilder(duration));
+			builder.addToVoice(voice, new RestBuilder(duration));
 		} else {
 			Pitch pitch = getPitch(node);
 			NoteBuilder noteBuilder = new NoteBuilder(pitch, duration);
@@ -408,10 +408,10 @@ class MusicXmlReaderDom implements MusicXmlReader {
 				addNotations(notationsNode, noteBuilder);
 
 			if (hasChordTag(node)) {
-				chordBuffers.get(staffNumber).addNote(noteBuilder, layer);
+				chordBuffers.get(staffNumber).addNote(noteBuilder, voice);
 			} else {
 				chordBuffers.get(staffNumber).contentsToBuilder(builder);
-				chordBuffers.get(staffNumber).addNote(noteBuilder, layer);
+				chordBuffers.get(staffNumber).addNote(noteBuilder, voice);
 			}
 		}
 	}
@@ -658,15 +658,15 @@ class MusicXmlReaderDom implements MusicXmlReader {
 		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_REST) != null;
 	}
 
-	private int getLayer(Node noteNode) {
-		int layer = 1;
+	private int getVoice(Node noteNode) {
+		int voice = 1;
 
 		Node voiceNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_VOICE);
 		if (voiceNode != null) {
-			layer = Integer.parseInt(voiceNode.getTextContent());
+			voice = Integer.parseInt(voiceNode.getTextContent());
 		}
 
-		return layer;
+		return voice;
 	}
 
 	private Pitch getPitch(Node noteNode) {
@@ -754,23 +754,23 @@ class MusicXmlReaderDom implements MusicXmlReader {
 		public ChordBuffer() {
 		}
 
-		public void addNote(NoteBuilder noteBuilder, int layer) {
-			this.chordBuffer.add(new Pair<>(noteBuilder, layer));
+		public void addNote(NoteBuilder noteBuilder, int voice) {
+			this.chordBuffer.add(new Pair<>(noteBuilder, voice));
 		}
 
 		public void contentsToBuilder(MeasureBuilder builder) {
 			if (!this.chordBuffer.isEmpty()) {
 				if (this.chordBuffer.size() > 1) {
 					List<NoteBuilder> notes = new ArrayList<>();
-					int layer = this.chordBuffer.get(0).getValue();
+					int voice = this.chordBuffer.get(0).getValue();
 					for (Pair<NoteBuilder, Integer> pair : this.chordBuffer)
 						notes.add(pair.getKey());
 
-					builder.addToLayer(layer, new ChordBuilder(notes));
+					builder.addToVoice(voice, new ChordBuilder(notes));
 				} else if (this.chordBuffer.size() == 1) {
-					int layer = this.chordBuffer.get(0).getValue();
+					int voice = this.chordBuffer.get(0).getValue();
 					NoteBuilder noteBuilder = this.chordBuffer.get(0).getKey();
-					builder.addToLayer(layer, noteBuilder);
+					builder.addToVoice(voice, noteBuilder);
 				}
 
 				this.chordBuffer.clear();

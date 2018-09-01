@@ -15,7 +15,7 @@ import wmnlibnotation.noteobjects.Score;
 /**
  * Iterates through a <code>Score</code> in part wise order. Starts by iterating
  * through the part with the smallest number. Iterates through parts starting
- * from smallest measure number. Iterates through measure layer by layer.
+ * from smallest measure number. Iterates through measure voice by voice.
  * 
  * @author Otso Björklund
  */
@@ -29,7 +29,7 @@ public class PartWiseScoreIterator implements ScoreIterator {
 	private int prevPartIndex;
 	private int prevStaffNumber;
 	private int prevMeasureNumber;
-	private int prevLayer;
+	private int prevVoice;
 	private int prevIndex;
 
 	/**
@@ -70,7 +70,7 @@ public class PartWiseScoreIterator implements ScoreIterator {
 		Durational next = this.currentMeasureIterator.next();
 		this.prevStaffNumber = this.currentPartIterator.getStaffNumberOfPrevious();
 		this.prevMeasureNumber = this.currentPartIterator.getMeasureNumberOfPrevious();
-		this.prevLayer = this.currentMeasureIterator.getLayerOfPrevious();
+		this.prevVoice = this.currentMeasureIterator.getVoiceOfPrevious();
 		this.prevIndex = this.currentMeasureIterator.getIndexOfPrevious();
 
 		return next;
@@ -81,7 +81,7 @@ public class PartWiseScoreIterator implements ScoreIterator {
 		if (this.prevPart == null)
 			return null;
 
-		return new ScorePosition(this.prevPartIndex, this.prevStaffNumber, this.prevMeasureNumber, this.prevLayer,
+		return new ScorePosition(this.prevPartIndex, this.prevStaffNumber, this.prevMeasureNumber, this.prevVoice,
 				this.prevIndex);
 	}
 }

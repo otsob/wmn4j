@@ -70,7 +70,7 @@
     <score-part id="P1">
       <part-name>SingleStaff</part-name>
       <score-instrument id="P1-I2">
-        <instrument-name>ARIA Player</instrument-name>
+        <instrument-name>ARIA Pvoice</instrument-name>
         <virtual-instrument>
           <virtual-library>Garritan Instruments for Finale</virtual-library>
           <virtual-name>005. Keyboards/Steinway Piano</virtual-name>

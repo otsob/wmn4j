@@ -14,7 +14,7 @@ import java.util.Objects;
 
 /**
  * Class for chords. This class should be used for chords where the notes are
- * all of same length. For polyphonic textures add layers to the Measure. This
+ * all of same length. For polyphonic textures add voices to the Measure. This
  * class is immutable.
  * 
  * @author Otso Björklund
