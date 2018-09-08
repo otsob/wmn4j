@@ -12,8 +12,7 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import wmnlibnotation.noteobjects.Chord;
 import wmnlibnotation.noteobjects.Durational;
