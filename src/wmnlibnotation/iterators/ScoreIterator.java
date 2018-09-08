@@ -4,6 +4,7 @@
  */
 package wmnlibnotation.iterators;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import wmnlibnotation.noteobjects.Durational;
@@ -14,7 +15,7 @@ import wmnlibnotation.noteobjects.Durational;
  * 
  * @author Otso Björklund
  */
-public interface ScoreIterator {
+public interface ScoreIterator extends Iterator<Durational> {
 
 	/**
 	 * Checks if the <code>ScoreIterator</code> is at the end of the score.
