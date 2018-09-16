@@ -124,7 +124,7 @@ public class NoteBuilder implements DurationalBuilder {
 		this.tiedTo = tiedTo;
 	}
 
-	public boolean isIsTiedFromPrevious() {
+	public boolean isTiedFromPrevious() {
 		return isTiedFromPrevious;
 	}
 
