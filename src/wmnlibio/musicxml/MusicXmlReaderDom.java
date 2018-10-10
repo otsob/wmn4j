@@ -200,7 +200,7 @@ class MusicXmlReaderDom implements MusicXmlReader {
 		}
 
 		return partBuilders;
-}
+	}
 
 	/**
 	 * Go through the measures in the part and add them to the PartBuilder.

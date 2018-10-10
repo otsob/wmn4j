@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -234,10 +235,10 @@ public class Note implements Durational {
 	public Duration getTiedDuration() {
 		List<Duration> tiedDurations = new ArrayList<>();
 
-		Note currentNote = this;
-		while (currentNote != null) {
-			tiedDurations.add(currentNote.getDuration());
-			currentNote = currentNote.getFollowingTiedNote();
+		Optional<Note> currentNote = Optional.of(this);
+		while (currentNote.isPresent()) {
+			tiedDurations.add(currentNote.get().getDuration());
+			currentNote = currentNote.get().getFollowingTiedNote();
 		}
 
 		return Duration.sumOf(tiedDurations);
@@ -248,8 +249,8 @@ public class Note implements Durational {
 	 *         in an <code>Optional</code>. Returns empty <code>Optional</code> 
 	 *         if this note is not tied to a following note.
 	 */
-	public Note getFollowingTiedNote() {
-		return this.tiedTo;
+	public Optional<Note> getFollowingTiedNote() {
+		return Optional.ofNullable(this.tiedTo);
 	}
 
 	/**

@@ -29,7 +29,7 @@ class DocHelper {
 			Node child = children.item(i);
 			if (child != null && child.getNodeName() != null) {
 				if (child.getNodeName().equals(childName))
-				return Optional.of(child);
+					return Optional.of(child);
 			}
 		}
 
