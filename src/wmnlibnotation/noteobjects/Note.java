@@ -244,8 +244,9 @@ public class Note implements Durational {
 	}
 
 	/**
-	 * @return The following <code>Note</code> that this is tied to. returns null if
-	 *         this note is not tied to a following note.
+	 * @return The following <code>Note</code> that this is tied to wrapped 
+	 *         in an <code>Optional</code>. Returns empty <code>Optional</code> 
+	 *         if this note is not tied to a following note.
 	 */
 	public Note getFollowingTiedNote() {
 		return this.tiedTo;
