@@ -29,7 +29,7 @@ class MusicXmlTags {
 
 	// Clef tags
 	static final String CLEF = "clef";
-	static final String CLEG_SIGN = "sign";
+	static final String CLEF_SIGN = "sign";
 	static final String CLEF_LINE = "line";
 	static final String CLEF_G = "G";
 	static final String CLEF_F = "F";

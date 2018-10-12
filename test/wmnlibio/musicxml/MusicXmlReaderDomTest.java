@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
@@ -399,7 +399,7 @@ public class MusicXmlReaderDomTest {
 		Measure firstMeasure = part.getMeasure(1);
 		Note first = (Note) firstMeasure.get(1, 0);
 		assertTrue(first.isTiedToFollowing());
-		assertEquals(Pitch.getPitch(Pitch.Base.C, 0, 4), first.getFollowingTiedNote().getPitch());
+		assertEquals(Pitch.getPitch(Pitch.Base.C, 0, 4), first.getFollowingTiedNote().get().getPitch());
 
 		Note second = (Note) firstMeasure.get(1, 1);
 		assertTrue(second.isTiedFromPrevious());
@@ -411,7 +411,7 @@ public class MusicXmlReaderDomTest {
 
 		Measure secondMeasure = part.getMeasure(2);
 		Note fourth = (Note) secondMeasure.get(1, 0);
-		assertEquals(fourth, third.getFollowingTiedNote());
+		assertEquals(fourth, third.getFollowingTiedNote().get());
 		assertTrue(fourth.isTiedFromPrevious());
 		assertFalse(fourth.isTiedToFollowing());
 

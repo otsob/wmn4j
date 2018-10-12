@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -147,10 +148,9 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			scoreBuilder.setAttribute(Score.Attribute.NAME, movementTitle.getTextContent());
 
 		Node identification = doc.getElementsByTagName(MusicXmlTags.SCORE_IDENTIFICATION).item(0);
-		Node creatorNode = DocHelper.findChild(identification, MusicXmlTags.SCORE_IDENTIFICATION_CREATOR);
 
-		if (creatorNode != null)
-			scoreBuilder.setAttribute(Score.Attribute.COMPOSER, creatorNode.getTextContent());
+		DocHelper.findChild(identification, MusicXmlTags.SCORE_IDENTIFICATION_CREATOR)
+				.ifPresent(creatorNode -> scoreBuilder.setAttribute(Score.Attribute.COMPOSER, creatorNode.getTextContent()));
 	}
 
 	/**
@@ -189,10 +189,9 @@ class MusicXmlReaderDom implements MusicXmlReader {
 				if (child.getNodeName().equals(MusicXmlTags.PLIST_SCORE_PART)) {
 					String partId = child.getAttributes().getNamedItem(MusicXmlTags.PART_ID).getTextContent();
 
-					String partName = partId;
-					Node partNameNode = DocHelper.findChild(child, MusicXmlTags.PART_NAME);
-					if (partNameNode != null)
-						partName = partNameNode.getTextContent();
+					String partName = DocHelper.findChild(child, MusicXmlTags.PART_NAME)
+							.map(partNameNode -> partNameNode.getTextContent())
+							.orElse(partId);
 
 					partBuilders.put(partId, new PartBuilder(partName));
 					// TODO: read the other part attributes into the partBuilder.
@@ -246,16 +245,11 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			Node measureNode = measureNodes.item(i);
 
 			if (measureNode.getNodeName().equals(MusicXmlTags.MEASURE)) {
-
-				Node attributesNode = DocHelper.findChild(measureNode, MusicXmlTags.MEASURE_ATTRIBUTES);
-				if (attributesNode != null) {
-					Node stavesNode = DocHelper.findChild(attributesNode, MusicXmlTags.MEAS_ATTR_STAVES);
-					if (stavesNode != null) {
-						staves = Integer.parseInt(stavesNode.getTextContent());
-					}
-
-					break;
-				}
+				staves = DocHelper.findChild(measureNode, MusicXmlTags.MEASURE_ATTRIBUTES)
+						.flatMap(attributesNode -> DocHelper.findChild(attributesNode, MusicXmlTags.MEAS_ATTR_STAVES))
+						.map(stavesNode -> Integer.parseInt(stavesNode.getTextContent()))
+						.orElse(DEFAULT_STAFF_COUNT);
+				break;
 			}
 		}
 
@@ -332,12 +326,12 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	private void addClefChange(Node node, Map<Integer, MeasureBuilder> measureBuilders,
 			Map<Integer, List<Duration>> offsets, Map<Integer, Clef> lastClefs) {
 		Clef clef = null;
-		Node clefNode = DocHelper.findChild(node, MusicXmlTags.CLEF);
+		Optional<Node> clefNode = DocHelper.findChild(node, MusicXmlTags.CLEF);
 		int clefStaff = 1;
 
-		if (clefNode != null) {
-			clef = MusicXmlReaderDom.this.getClef(clefNode);
-			NamedNodeMap clefAttributes = clefNode.getAttributes();
+		if (clefNode.isPresent()) {
+			clef = MusicXmlReaderDom.this.getClef(clefNode.get());
+			NamedNodeMap clefAttributes = clefNode.get().getAttributes();
 			Node clefStaffNode = clefAttributes.getNamedItem(MusicXmlTags.CLEF_STAFF);
 			if (clefStaffNode != null)
 				clefStaff = Integer.parseInt(clefStaffNode.getTextContent());
@@ -371,10 +365,9 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	private void handleNoteElement(Node node, Map<Integer, MeasureBuilder> measureBuilders,
 			Map<Integer, ChordBuffer> chordBuffers, Map<Integer, List<Duration>> offsets,
 			Map<Integer, Context> contexts, TieBeginningContainer tieBeginnings) {
-		int staffNumber = MIN_STAFF_NUMBER;
-		Node staffNode = DocHelper.findChild(node, MusicXmlTags.NOTE_STAFF);
-		if (staffNode != null)
-			staffNumber = Integer.parseInt(staffNode.getTextContent());
+		int staffNumber = DocHelper.findChild(node, MusicXmlTags.NOTE_STAFF)
+				.map(staffNode -> Integer.parseInt(staffNode.getTextContent()))
+				.orElse(MIN_STAFF_NUMBER);
 
 		Context context = contexts.get(staffNumber);
 		MeasureBuilder builder = measureBuilders.get(staffNumber);
@@ -403,9 +396,8 @@ class MusicXmlReaderDom implements MusicXmlReader {
 				tieBeginnings.addToStaff(staffNumber, noteBuilder);
 			}
 
-			Node notationsNode = DocHelper.findChild(node, MusicXmlTags.NOTATIONS);
-			if (notationsNode != null)
-				addNotations(notationsNode, noteBuilder);
+			DocHelper.findChild(node, MusicXmlTags.NOTATIONS)
+					.ifPresent(notationsNode -> addNotations(notationsNode, noteBuilder));
 
 			if (hasChordTag(node)) {
 				chordBuffers.get(staffNumber).addNote(noteBuilder, voice);
@@ -417,11 +409,11 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	}
 
 	private void addNotations(Node notationsNode, NoteBuilder noteBuilder) {
-		Node articulationsNode = DocHelper.findChild(notationsNode, MusicXmlTags.NOTE_ARTICULATIONS);
+		Optional<Node> articulationsNode = DocHelper.findChild(notationsNode, MusicXmlTags.NOTE_ARTICULATIONS);
 
-		if (articulationsNode != null) {
-			for (int i = 0; i < articulationsNode.getChildNodes().getLength(); ++i) {
-				Node articulationNode = articulationsNode.getChildNodes().item(i);
+		if (articulationsNode.isPresent()) {
+			for (int i = 0; i < articulationsNode.get().getChildNodes().getLength(); ++i) {
+				Node articulationNode = articulationsNode.get().getChildNodes().item(i);
 				Articulation articulation = getArticulation(articulationNode.getNodeName());
 				if (articulation != null) {
 					noteBuilder.addArticulation(articulation);
@@ -431,10 +423,8 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			}
 		}
 
-		Node fermataNode = DocHelper.findChild(notationsNode, MusicXmlTags.FERMATA);
-		if (fermataNode != null) {
-			noteBuilder.addArticulation(Articulation.FERMATA);
-		}
+		DocHelper.findChild(notationsNode, MusicXmlTags.FERMATA)
+				.ifPresent(fermataNode -> noteBuilder.addArticulation(Articulation.FERMATA));
 	}
 
 	private Articulation getArticulation(String articulationString) {
@@ -482,24 +472,19 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	 * Get the number of divisions from the Node.
 	 */
 	private int getDivisions(Node attributesNode, int previousDivisions) {
-		Node divisionsNode = DocHelper.findChild(attributesNode, MusicXmlTags.MEAS_ATTR_DIVS);
-		if (divisionsNode != null)
-			return Integer.parseInt(divisionsNode.getTextContent());
-
-		return previousDivisions;
+		return DocHelper.findChild(attributesNode, MusicXmlTags.MEAS_ATTR_DIVS)
+				.map(node -> Integer.parseInt(node.getTextContent()))
+				.orElse(previousDivisions);
 	}
 
 	/**
 	 * Get the KeySignature defined in the Node.
 	 */
 	private KeySignature getKeySig(Node attributesNode, Context previous) {
-		Node keySigNode = DocHelper.findChild(attributesNode, MusicXmlTags.MEAS_ATTR_KEY);
-		if (keySigNode != null) {
-			int fifths = Integer
-					.parseInt(DocHelper.findChild(keySigNode, MusicXmlTags.MEAS_ATTR_KEY_FIFTHS).getTextContent());
-			return keyFromAlterations(fifths);
-		} else
-			return previous.getKeySig();
+		return DocHelper.findChild(attributesNode, MusicXmlTags.MEAS_ATTR_KEY)
+				.flatMap(keySigNode -> DocHelper.findChild(keySigNode, MusicXmlTags.MEAS_ATTR_KEY_FIFTHS))
+				.map(fifthsNode -> keyFromAlterations(Integer.parseInt(fifthsNode.getTextContent())))
+				.orElse(previous.getKeySig());
 	}
 
 	/**
@@ -507,14 +492,17 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	 */
 	private TimeSignature getTimeSig(Node attributesNode, Context previous, int staffNumber) {
 		TimeSignature timeSig;
-		Node timeSigNode = DocHelper.findChild(attributesNode, MusicXmlTags.MEAS_ATTR_TIME);
-		if (timeSigNode != null) {
-			int beats = Integer
-					.parseInt(DocHelper.findChild(timeSigNode, MusicXmlTags.MEAS_ATTR_BEATS).getTextContent());
-			int beatType = Integer
-					.parseInt(DocHelper.findChild(timeSigNode, MusicXmlTags.MEAS_ATTR_BEAT_TYPE).getTextContent());
+		Optional<Node> timeSigNode = DocHelper.findChild(attributesNode, MusicXmlTags.MEAS_ATTR_TIME);
+		if (timeSigNode.isPresent()) {
+			int beats = DocHelper.findChild(timeSigNode.get(), MusicXmlTags.MEAS_ATTR_BEATS)
+					.map(beatsNode -> Integer.parseInt(beatsNode.getTextContent()))
+					.orElse(null);
 
-			Node staffNumberNode = timeSigNode.getAttributes().getNamedItem(MusicXmlTags.MEAS_ATTR_STAFF_NUMBER);
+			int beatType = DocHelper.findChild(timeSigNode.get(), MusicXmlTags.MEAS_ATTR_BEAT_TYPE)
+					.map(beatTypeNode -> Integer.parseInt(beatTypeNode.getTextContent()))
+					.orElse(null);
+
+			Node staffNumberNode = timeSigNode.get().getAttributes().getNamedItem(MusicXmlTags.MEAS_ATTR_STAFF_NUMBER);
 			if (staffNumberNode != null) {
 				int staffNumberAttr = Integer.parseInt(staffNumberNode.getTextContent());
 				if (staffNumberAttr == staffNumber)
@@ -570,13 +558,13 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	 * Get Clef from clefNode.
 	 */
 	private Clef getClef(Node clefNode) {
-		Node clefSignNode = DocHelper.findChild(clefNode, MusicXmlTags.CLEG_SIGN);
-		String clefName = clefSignNode.getTextContent();
+		String clefName = DocHelper.findChild(clefNode, MusicXmlTags.CLEF_SIGN)
+				.map(clefSignNode -> clefSignNode.getTextContent())
+				.orElse(MusicXmlTags.CLEF_G);
 
-		Node clefLineNode = DocHelper.findChild(clefNode, MusicXmlTags.CLEF_LINE);
-		int clefLine = 3;
-		if (clefLineNode != null)
-			clefLine = Integer.parseInt(clefLineNode.getTextContent());
+		int clefLine = DocHelper.findChild(clefNode, MusicXmlTags.CLEF_LINE)
+				.map(clefLineNode -> Integer.parseInt(clefLineNode.getTextContent()))
+				.orElse(3);
 
 		Clef.Type type = Clef.Type.G;
 		switch (clefName) {
@@ -599,9 +587,11 @@ class MusicXmlReaderDom implements MusicXmlReader {
 
 	private Barline getBarline(Node barlineNode) {
 		if (barlineNode != null) {
-			Node barlineStyleNode = DocHelper.findChild(barlineNode, MusicXmlTags.BARLINE_STYLE);
-			String barlineString = barlineStyleNode.getTextContent();
-			Node repeatNode = DocHelper.findChild(barlineNode, MusicXmlTags.BARLINE_REPEAT);
+			String barlineString = DocHelper.findChild(barlineNode, MusicXmlTags.BARLINE_STYLE)
+					.map(barlineStyleNode -> barlineStyleNode.getTextContent())
+					.orElse("");
+
+			Optional<Node> repeatNode = DocHelper.findChild(barlineNode, MusicXmlTags.BARLINE_REPEAT);
 
 			switch (barlineString) {
 			case MusicXmlTags.BARLINE_STYLE_DASHED:
@@ -613,7 +603,7 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			case MusicXmlTags.BARLINE_STYLE_INVISIBLE:
 				return Barline.INVISIBLE;
 			case MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY: {
-				if (repeatNode == null)
+				if (!repeatNode.isPresent())
 					return Barline.FINAL;
 				else
 					return Barline.REPEAT_RIGHT;
@@ -629,11 +619,11 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	}
 
 	private boolean isGraceNote(Node noteNode) {
-		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_GRACE_NOTE) != null;
+		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_GRACE_NOTE).isPresent();
 	}
 
 	private boolean hasChordTag(Node noteNode) {
-		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_CHORD) != null;
+		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_CHORD).isPresent();
 	}
 
 	private boolean startsTie(Node noteNode) {
@@ -655,51 +645,43 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	}
 
 	private boolean isRest(Node noteNode) {
-		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_REST) != null;
+		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_REST).isPresent();
 	}
 
 	private int getVoice(Node noteNode) {
-		int voice = 1;
-
-		Node voiceNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_VOICE);
-		if (voiceNode != null) {
-			voice = Integer.parseInt(voiceNode.getTextContent());
-		}
-
-		return voice;
+		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_VOICE)
+				.map(voiceNode -> Integer.parseInt(voiceNode.getTextContent()))
+				.orElse(1);
 	}
 
 	private Pitch getPitch(Node noteNode) {
 		Pitch pitch = null;
 
-		Node pitchNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_PITCH);
-		if (pitchNode != null) {
-			Pitch.Base pitchBase = null;
-			int alter = 0;
-			int octave = 0;
+		Optional<Node> pitchNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_PITCH);
 
-			Node stepNode = DocHelper.findChild(pitchNode, MusicXmlTags.PITCH_STEP);
-			if (stepNode != null)
-				pitchBase = getPitchBase(stepNode);
+		if (pitchNode.isPresent()) {
+			Pitch.Base pitchBase = DocHelper.findChild(pitchNode.get(), MusicXmlTags.PITCH_STEP)
+					.map(stepNode -> getPitchBase(stepNode))
+					.orElse(null);
 
-			Node octaveNode = DocHelper.findChild(pitchNode, MusicXmlTags.PITCH_OCT);
-			if (octaveNode != null)
-				octave = Integer.parseInt(octaveNode.getTextContent());
+			int octave = DocHelper.findChild(pitchNode.get(), MusicXmlTags.PITCH_OCT)
+					.map(octaveNode -> Integer.parseInt(octaveNode.getTextContent()))
+					.orElse(0);
 
-			Node alterNode = DocHelper.findChild(pitchNode, MusicXmlTags.PITCH_ALTER);
-			if (alterNode != null)
-				alter = Integer.parseInt(alterNode.getTextContent());
+			int alter = DocHelper.findChild(pitchNode.get(), MusicXmlTags.PITCH_ALTER)
+					.map(alterNode -> Integer.parseInt(alterNode.getTextContent()))
+					.orElse(0);
 
 			pitch = Pitch.getPitch(pitchBase, alter, octave);
 		} else {
-			Node unpitchedNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_UNPITCHED);
-			if (unpitchedNode != null) {
-				Node stepNode = DocHelper.findChild(unpitchedNode, MusicXmlTags.UNPITCHED_STEP);
-				Node octaveNode = DocHelper.findChild(unpitchedNode, MusicXmlTags.UNPITCHED_OCTAVE);
+			Optional<Node> unpitchedNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_UNPITCHED);
+			if (unpitchedNode.isPresent()) {
+				Optional<Node> stepNode = DocHelper.findChild(unpitchedNode.get(), MusicXmlTags.UNPITCHED_STEP);
+				Optional<Node> octaveNode = DocHelper.findChild(unpitchedNode.get(), MusicXmlTags.UNPITCHED_OCTAVE);
 
-				if (stepNode != null && octaveNode != null) {
-					Pitch.Base pitchBase = getPitchBase(stepNode);
-					int octave = Integer.parseInt(octaveNode.getTextContent());
+				if (stepNode.isPresent() && octaveNode.isPresent()) {
+					Pitch.Base pitchBase = getPitchBase(stepNode.get());
+					int octave = Integer.parseInt(octaveNode.get().getTextContent());
 					pitch = Pitch.getPitch(pitchBase, 0, octave);
 				}
 			}
@@ -734,9 +716,9 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	}
 
 	private Duration getDuration(Node noteNode, int divisions) {
-		Node durationNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_DURATION);
-		if (durationNode != null) {
-			int nominator = Integer.parseInt(durationNode.getTextContent());
+		Optional<Node> durationNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_DURATION);
+		if (durationNode.isPresent()) {
+			int nominator = Integer.parseInt(durationNode.get().getTextContent());
 			// In MusicXml divisions is the number of parts into which a quarter note
 			// is divided. Therefore divisions needs to be multiplied by 4.
 			return Duration.getDuration(nominator, divisions * 4);

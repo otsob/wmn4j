@@ -6,6 +6,7 @@ package wmnlibio.musicxml;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -18,20 +19,21 @@ import org.w3c.dom.NodeList;
  */
 class DocHelper {
 	/**
-	 * Find the child with childName from the children of Node parent. return null
-	 * if no child with given name is found.
+	 * Find the child with childName from the children of Node parent.
+	 * @return <code>Optional</code> that contains the child <code>Node</code> 
+	 * if it is found, otherwise an empty <code>Optional</code>.
 	 */
-	static Node findChild(Node parent, String childName) {
+	static Optional<Node> findChild(Node parent, String childName) {
 		NodeList children = parent.getChildNodes();
 		for (int i = 0; i < children.getLength(); ++i) {
 			Node child = children.item(i);
 			if (child != null && child.getNodeName() != null) {
 				if (child.getNodeName().equals(childName))
-					return child;
+					return Optional.of(child);
 			}
 		}
 
-		return null;
+		return Optional.empty();
 	}
 
 	/**

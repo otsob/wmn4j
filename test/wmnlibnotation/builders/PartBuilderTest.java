@@ -152,7 +152,7 @@ public class PartBuilderTest {
 		Note firstNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 1).get(1, 0);
 		Note secondNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 2).get(1, 0);
 
-		assertEquals(secondNote, firstNote.getFollowingTiedNote());
+		assertEquals(secondNote, firstNote.getFollowingTiedNote().get());
 		assertTrue(secondNote.isTiedFromPrevious());
 	}
 }

@@ -141,7 +141,7 @@ public class NoteTest {
 
 		Note secondNote = secondBuilder.build();
 		assertTrue(secondNote.isTied());
-		assertTrue(secondNote.getFollowingTiedNote() == null);
+		assertTrue(!secondNote.getFollowingTiedNote().isPresent());
 		assertTrue(secondNote.isTiedFromPrevious());
 
 		Note firstNote = firstBuilder.build();

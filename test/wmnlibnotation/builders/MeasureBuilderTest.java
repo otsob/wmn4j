@@ -199,7 +199,7 @@ public class MeasureBuilderTest {
 
 		Note firstNote = (Note) measure.get(1, 0);
 		Note secondNote = (Note) measure.get(1, 1);
-		assertEquals(secondNote, firstNote.getFollowingTiedNote());
+		assertEquals(secondNote, firstNote.getFollowingTiedNote().get());
 		assertTrue(secondNote.isTiedFromPrevious());
 	}
 }

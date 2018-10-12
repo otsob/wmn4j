@@ -72,12 +72,12 @@ public class NoteBuilderTest {
 		assertEquals(Pitch.getPitch(Pitch.Base.C, 0, 4), firstNote.getPitch());
 		assertTrue(firstNote.isTiedToFollowing());
 		assertFalse(firstNote.isTiedFromPrevious());
-		assertEquals(Pitch.getPitch(Pitch.Base.D, 0, 4), firstNote.getFollowingTiedNote().getPitch());
+		assertEquals(Pitch.getPitch(Pitch.Base.D, 0, 4), firstNote.getFollowingTiedNote().get().getPitch());
 
 		assertEquals(Pitch.getPitch(Pitch.Base.D, 0, 4), secondNote.getPitch());
 		assertTrue(secondNote.isTiedToFollowing());
 		assertTrue(secondNote.isTiedFromPrevious());
-		assertEquals(Pitch.getPitch(Pitch.Base.E, 0, 4), secondNote.getFollowingTiedNote().getPitch());
+		assertEquals(Pitch.getPitch(Pitch.Base.E, 0, 4), secondNote.getFollowingTiedNote().get().getPitch());
 
 		assertEquals(Pitch.getPitch(Pitch.Base.E, 0, 4), thirdNote.getPitch());
 		assertFalse(thirdNote.isTiedToFollowing());
