@@ -4,8 +4,6 @@
  */
 package wmnlibio.musicxml;
 
-import java.nio.file.Paths;
-
 import org.junit.Test;
 
 import wmnlibnotation.TestHelper;
@@ -21,7 +19,7 @@ public class MusicXmlWriterDomTest {
 	}
 
 	private Score readScore(String path) {
-		return TestHelper.readScore(Paths.get(path));
+		return TestHelper.readScore(path);
 	}
 
 	@Test

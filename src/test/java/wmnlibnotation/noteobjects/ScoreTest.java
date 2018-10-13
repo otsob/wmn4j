@@ -8,7 +8,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -115,7 +114,7 @@ public class ScoreTest {
 
 	@Test
 	public void testGetAtPositionLimits() {
-		Score score = TestHelper.readScore(Paths.get("test/testfiles/musicxml/scoreIteratorTesting.xml"));
+		Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 
 		try {
 			score.getAtPosition(new ScorePosition(0, 1, 1, 5, 0));
@@ -135,7 +134,7 @@ public class ScoreTest {
 
 	@Test
 	public void testIteratorAndGetAtPosition() {
-		Score score = TestHelper.readScore(Paths.get("test/testfiles/musicxml/scoreIteratorTesting.xml"));
+		Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 		assertTrue(score != null);
 
 		ScoreIterator iterator = new PartWiseScoreIterator(score);
@@ -148,7 +147,7 @@ public class ScoreTest {
 
 	@Test
 	public void testGetAtPositionInChord() {
-		Score score = TestHelper.readScore(Paths.get("test/testfiles/musicxml/positionInChord.xml"));
+		Score score = TestHelper.readScore("musicxml/positionInChord.xml");
 		assertTrue(score != null);
 		System.out.println(score);
 

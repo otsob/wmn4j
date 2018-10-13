@@ -8,12 +8,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.nio.file.Paths;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import wmnlibio.musicxml.MusicXmlReader;
+import wmnlibnotation.TestHelper;
 import wmnlibnotation.noteobjects.Durational;
 import wmnlibnotation.noteobjects.Durations;
 import wmnlibnotation.noteobjects.Note;
@@ -30,12 +28,7 @@ public class PartWiseScoreIteratorTest {
 	private PartWiseScoreIterator iter = null;
 
 	public PartWiseScoreIteratorTest() {
-		MusicXmlReader reader = MusicXmlReader.getReader(false);
-		try {
-			this.score = reader.readScore(Paths.get("test/testfiles/musicxml/scoreIteratorTesting.xml"));
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		this.score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 	}
 
 	@Before

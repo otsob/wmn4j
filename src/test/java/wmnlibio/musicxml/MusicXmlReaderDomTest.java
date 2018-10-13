@@ -1,7 +1,7 @@
- /*
- * Copyright 2018 Otso Björklund.
- * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
- */
+/*
+* Copyright 2018 Otso Björklund.
+* Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+*/
 package wmnlibio.musicxml;
 
 import static org.junit.Assert.assertEquals;
@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import wmnlibnotation.TestHelper;
 import wmnlibnotation.noteobjects.Articulation;
 import wmnlibnotation.noteobjects.Barline;
 import wmnlibnotation.noteobjects.Chord;
@@ -44,7 +45,7 @@ import wmnlibnotation.noteobjects.TimeSignatures;
  */
 public class MusicXmlReaderDomTest {
 
-	static final String TESTFILE_PATH = "test/testfiles/musicxml/";
+	static final String MUSICXML_FILE_PATH = "musicxml/";
 
 	public MusicXmlReaderDomTest() {
 	}
@@ -56,7 +57,7 @@ public class MusicXmlReaderDomTest {
 	public Score readScore(String testFileName) {
 		MusicXmlReader reader = getMusicXmlReader();
 		Score score = null;
-		Path path = Paths.get(TESTFILE_PATH + testFileName);
+		Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
 
 		try {
 			score = reader.readScore(path);
@@ -450,7 +451,7 @@ public class MusicXmlReaderDomTest {
 	public void testReadingIncorrectXmlFile() {
 		MusicXmlReader reader = new MusicXmlReaderDom(true);
 		try {
-			Score score = reader.readScore(Paths.get(TESTFILE_PATH + "singleCinvalid.xml"));
+			Score score = reader.readScore(Paths.get(MUSICXML_FILE_PATH + "singleCinvalid.xml"));
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
 		} catch (IOException e) {
 

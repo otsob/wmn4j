@@ -6,6 +6,7 @@ package wmnlibnotation;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import wmnlibio.musicxml.MusicXmlReader;
 import wmnlibnotation.builders.ChordBuilder;
@@ -13,8 +14,6 @@ import wmnlibnotation.builders.MeasureBuilder;
 import wmnlibnotation.builders.NoteBuilder;
 import wmnlibnotation.builders.RestBuilder;
 import wmnlibnotation.noteobjects.Durations;
-import wmnlibnotation.noteobjects.KeySignature;
-import wmnlibnotation.noteobjects.KeySignatures;
 import wmnlibnotation.noteobjects.Measure;
 import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.Score;
@@ -24,7 +23,8 @@ import wmnlibnotation.noteobjects.Score;
  * @author Otso Björklund
  */
 public class TestHelper {
-	private static final KeySignature keySig = KeySignatures.CMAJ_AMIN;
+
+	public static final String TESTFILE_PATH = "src/test/resources/";
 
 	private static final NoteBuilder C4 = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF);
 	private static final NoteBuilder E4 = new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF);
@@ -51,15 +51,17 @@ public class TestHelper {
 		return getTestMeasureBuilder(number).build();
 	}
 
-	public static Score readScore(Path path) {
+	public static Score readScore(String pathString) {
 		Score score = null;
 
 		MusicXmlReader reader = MusicXmlReader.getReader(false);
 
+		Path path = Paths.get(TESTFILE_PATH, pathString);
+
 		try {
 			score = reader.readScore(path);
 		} catch (IOException e) {
-			System.out.println("Failed to read score with exception: " + e);
+			System.out.println("Failed to read score from " + path.toString() + " with exception: " + e);
 		}
 
 		return score;

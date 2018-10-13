@@ -57,8 +57,7 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
 			keyStrings.put(key.toString(), key);
 
 		try {
-			File keyProfilesFile = new File(
-					KSKeyAnalyzer.class.getResource("../resources/KSKeyProfiles.csv").getPath());
+			File keyProfilesFile = new File(KSKeyAnalyzer.class.getResource("KSKeyProfiles.csv").getPath());
 			keyProfilesFile.setReadOnly();
 
 			BufferedReader br = new BufferedReader(new FileReader(keyProfilesFile));

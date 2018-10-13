@@ -58,6 +58,7 @@ public class ChordTest {
 
 	@Test
 	public void testChordImmutable() {
+
 		List<Note> notes = new ArrayList<>(this.cMajorNotes);
 		Chord cMaj = Chord.getChord(notes);
 		assertEquals(this.cMajor, cMaj);
