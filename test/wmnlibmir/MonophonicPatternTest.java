@@ -12,6 +12,7 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.junit.Test;
 
 import wmnlibnotation.noteobjects.Chord;
@@ -21,7 +22,7 @@ import wmnlibnotation.noteobjects.Note;
 import wmnlibnotation.noteobjects.Pitch;
 import wmnlibnotation.noteobjects.Rest;
 
-class MonophonicPatternTest {
+public class MonophonicPatternTest {
 
 	final List<Durational> referenceNotes;
 
@@ -41,7 +42,7 @@ class MonophonicPatternTest {
 	 * {@link wmnlibmir.MonophonicPattern#MonophonicPattern(java.util.List)}.
 	 */
 	@Test
-	void testMonophonicPatternListOfDurational() {
+	public void testMonophonicPatternListOfDurational() {
 		try {
 			new MonophonicPattern(null);
 			fail("Was able to create pattern with null contents");
@@ -75,7 +76,7 @@ class MonophonicPatternTest {
 	 * {@link wmnlibmir.MonophonicPattern#equals(wmnlibmir.Pattern)}.
 	 */
 	@Test
-	void testEqualsPattern() {
+	public void testEqualsPattern() {
 		MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 		MonophonicPattern pattern2 = new MonophonicPattern(this.referenceNotes);
 
@@ -92,7 +93,7 @@ class MonophonicPatternTest {
 	 * {@link wmnlibmir.MonophonicPattern#equalsInPitch(wmnlibmir.Pattern)}.
 	 */
 	@Test
-	void testEqualsInPitch() {
+	public void testEqualsInPitch() {
 		MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 
 		List<Durational> notes = new ArrayList<>();
@@ -119,7 +120,7 @@ class MonophonicPatternTest {
 	 * {@link wmnlibmir.MonophonicPattern#equalsEnharmonicallyInPitch(wmnlibmir.Pattern)}.
 	 */
 	@Test
-	void testEqualsEnharmonicallyInPitch() {
+	public void testEqualsEnharmonicallyInPitch() {
 		MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 
 		List<Durational> notes = new ArrayList<>();
@@ -137,7 +138,7 @@ class MonophonicPatternTest {
 	 * {@link wmnlibmir.MonophonicPattern#equalsInTransposedPitch(wmnlibmir.Pattern)}.
 	 */
 	@Test
-	void testEqualsInTransposedPitch() {
+	public void testEqualsInTransposedPitch() {
 		fail("Not yet implemented");
 	}
 
@@ -146,7 +147,7 @@ class MonophonicPatternTest {
 	 * {@link wmnlibmir.MonophonicPattern#equalsInRhythm(wmnlibmir.Pattern)}.
 	 */
 	@Test
-	void testEqualsInRhythm() {
+	public void testEqualsInRhythm() {
 		fail("Not yet implemented");
 	}
 
@@ -155,7 +156,7 @@ class MonophonicPatternTest {
 	 * {@link wmnlibmir.MonophonicPattern#equalsInOnsets(wmnlibmir.Pattern)}.
 	 */
 	@Test
-	void testEqualsInOnsets() {
+	public void testEqualsInOnsets() {
 		fail("Not yet implemented");
 	}
 
