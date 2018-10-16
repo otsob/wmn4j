@@ -3,7 +3,6 @@ wmnlibio
 wmnlibio.musicxml
 wmnlibmir
 wmnlibmir.pattern_discovery
-wmnlibnotation
 wmnlibnotation.builders
 wmnlibnotation.iterators
 wmnlibnotation.noteobjects
