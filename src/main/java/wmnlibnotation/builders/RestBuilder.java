@@ -30,7 +30,7 @@ public final class RestBuilder implements DurationalBuilder {
 	/**
 	 * Set the duration of the <code>Rest</code>.
 	 * 
-	 * @param duration
+	 * @param duration the duration that is set to this builder
 	 */
 	public void setDuration(Duration duration) {
 		this.duration = Objects.requireNonNull(duration);
