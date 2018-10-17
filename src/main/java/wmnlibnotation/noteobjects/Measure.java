@@ -93,7 +93,7 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * @param voiceNumber
+	 * @param voiceNumber the voice for which the number of elements is returned
 	 * @return the number of elements on the voice with voiceNumber.
 	 */
 	public int getVoiceSize(int voiceNumber) {
@@ -185,7 +185,8 @@ public class Measure implements Iterable<Durational> {
 	 * @param voiceNumber Number of the voice from which to get the element.
 	 * @param index       index of element on the voice.
 	 * @return <code>Durational</code> at the given index on the given voice.
-	 * @throws NoSuchElementException
+	 * @throws NoSuchElementException if there is no voice with the given number of
+	 *                                if the index is out of range
 	 */
 	public Durational get(int voiceNumber, int index) throws NoSuchElementException {
 		if (!this.voices.keySet().contains(voiceNumber))

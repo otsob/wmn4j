@@ -245,9 +245,9 @@ public class Note implements Durational {
 	}
 
 	/**
-	 * @return The following <code>Note</code> that this is tied to wrapped 
-	 *         in an <code>Optional</code>. Returns empty <code>Optional</code> 
-	 *         if this note is not tied to a following note.
+	 * @return The following <code>Note</code> that this is tied to wrapped in an
+	 *         <code>Optional</code>. Returns empty <code>Optional</code> if this
+	 *         note is not tied to a following note.
 	 */
 	public Optional<Note> getFollowingTiedNote() {
 		return Optional.ofNullable(this.tiedTo);
@@ -256,7 +256,7 @@ public class Note implements Durational {
 	/**
 	 * Compare notes by pitch.
 	 * 
-	 * @param other
+	 * @param other the note to which this is compared
 	 * @return negative integer if this note is lower than other, positive integer
 	 *         if this is higher than other, 0 if notes are (enharmonically) of same
 	 *         height.
