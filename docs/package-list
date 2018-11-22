@@ -1,8 +1,8 @@
-wmnlibanalysis.harmony
-wmnlibio
-wmnlibio.musicxml
-wmnlibmir
-wmnlibmir.pattern_discovery
-wmnlibnotation.builders
-wmnlibnotation.iterators
-wmnlibnotation.noteobjects
+wmn4janalysis.harmony
+wmn4jio
+wmn4jio.musicxml
+wmn4jmir
+wmn4jmir.pattern_discovery
+wmn4jnotation.builders
+wmn4jnotation.iterators
+wmn4jnotation.noteobjects
