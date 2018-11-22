@@ -1,8 +1,8 @@
-# Western Music Notation library
+# Western Music Notation for Java (wmn4j)
 
-A Java class library for handling western music notation.
+A Java API for handling western music notation.
 
-[API Documentation](https://otsob.github.io/wmnlib/index.html)
+[API Documentation](https://otsob.github.io/wmn4j/index.html)
 
 ## Building the project
 
