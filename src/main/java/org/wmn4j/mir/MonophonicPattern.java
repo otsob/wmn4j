@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.wmn4j.notation.noteobjects.Chord;
-import org.wmn4j.notation.noteobjects.Durational;
+import org.wmn4j.notation.elements.Chord;
+import org.wmn4j.notation.elements.Durational;
 
 /**
  * A class for representing monophonic musical patterns. In a monophonic pattern

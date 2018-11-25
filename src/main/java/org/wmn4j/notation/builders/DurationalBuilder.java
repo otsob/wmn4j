@@ -4,8 +4,8 @@
  */
 package org.wmn4j.notation.builders;
 
-import org.wmn4j.notation.noteobjects.Duration;
-import org.wmn4j.notation.noteobjects.Durational;
+import org.wmn4j.notation.elements.Duration;
+import org.wmn4j.notation.elements.Durational;
 
 /**
  * Interface for builders that build <code>Durational</code> objects.

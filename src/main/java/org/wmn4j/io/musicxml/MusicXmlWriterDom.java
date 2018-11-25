@@ -23,20 +23,20 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
+import org.wmn4j.notation.elements.Chord;
+import org.wmn4j.notation.elements.Duration;
+import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.elements.Durations;
+import org.wmn4j.notation.elements.Measure;
+import org.wmn4j.notation.elements.MultiStaffPart;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.Part;
+import org.wmn4j.notation.elements.Pitch;
+import org.wmn4j.notation.elements.Rest;
+import org.wmn4j.notation.elements.Score;
+import org.wmn4j.notation.elements.SingleStaffPart;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 import org.wmn4j.notation.iterators.ScoreIterator;
-import org.wmn4j.notation.noteobjects.Chord;
-import org.wmn4j.notation.noteobjects.Duration;
-import org.wmn4j.notation.noteobjects.Durational;
-import org.wmn4j.notation.noteobjects.Durations;
-import org.wmn4j.notation.noteobjects.Measure;
-import org.wmn4j.notation.noteobjects.MultiStaffPart;
-import org.wmn4j.notation.noteobjects.Note;
-import org.wmn4j.notation.noteobjects.Part;
-import org.wmn4j.notation.noteobjects.Pitch;
-import org.wmn4j.notation.noteobjects.Rest;
-import org.wmn4j.notation.noteobjects.Score;
-import org.wmn4j.notation.noteobjects.SingleStaffPart;
 
 /**
  * 

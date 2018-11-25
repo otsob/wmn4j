@@ -11,10 +11,10 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.wmn4j.analysis.harmony.PCProfile;
-import org.wmn4j.notation.noteobjects.Durations;
-import org.wmn4j.notation.noteobjects.Note;
-import org.wmn4j.notation.noteobjects.Pitch;
-import org.wmn4j.notation.noteobjects.PitchClass;
+import org.wmn4j.notation.elements.Durations;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.Pitch;
+import org.wmn4j.notation.elements.PitchClass;
 
 /**
  *

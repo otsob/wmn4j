@@ -6,7 +6,7 @@ package org.wmn4j.io.musicxml;
 
 import org.junit.Test;
 import org.wmn4j.notation.TestHelper;
-import org.wmn4j.notation.noteobjects.Score;
+import org.wmn4j.notation.elements.Score;
 
 /**
  *

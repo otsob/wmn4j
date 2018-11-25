@@ -7,10 +7,10 @@ package org.wmn4j.notation.iterators;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.wmn4j.notation.noteobjects.Durational;
-import org.wmn4j.notation.noteobjects.Measure;
-import org.wmn4j.notation.noteobjects.Part;
-import org.wmn4j.notation.noteobjects.Score;
+import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.elements.Measure;
+import org.wmn4j.notation.elements.Part;
+import org.wmn4j.notation.elements.Score;
 
 /**
  * Iterates through a <code>Score</code> in part wise order. Starts by iterating

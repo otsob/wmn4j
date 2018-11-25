@@ -12,17 +12,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.wmn4j.notation.noteobjects.Barline;
-import org.wmn4j.notation.noteobjects.Clef;
-import org.wmn4j.notation.noteobjects.Clefs;
-import org.wmn4j.notation.noteobjects.Duration;
-import org.wmn4j.notation.noteobjects.Durational;
-import org.wmn4j.notation.noteobjects.KeySignature;
-import org.wmn4j.notation.noteobjects.KeySignatures;
-import org.wmn4j.notation.noteobjects.Measure;
-import org.wmn4j.notation.noteobjects.MeasureAttributes;
-import org.wmn4j.notation.noteobjects.TimeSignature;
-import org.wmn4j.notation.noteobjects.TimeSignatures;
+import org.wmn4j.notation.elements.Barline;
+import org.wmn4j.notation.elements.Clef;
+import org.wmn4j.notation.elements.Clefs;
+import org.wmn4j.notation.elements.Duration;
+import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.elements.KeySignature;
+import org.wmn4j.notation.elements.KeySignatures;
+import org.wmn4j.notation.elements.Measure;
+import org.wmn4j.notation.elements.MeasureAttributes;
+import org.wmn4j.notation.elements.TimeSignature;
+import org.wmn4j.notation.elements.TimeSignatures;
 
 /**
  * Class for building <code>Measure</code> objects. The builder does not ensure

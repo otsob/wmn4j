@@ -16,12 +16,12 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.wmn4j.mir.MonophonicPattern;
-import org.wmn4j.notation.noteobjects.Chord;
-import org.wmn4j.notation.noteobjects.Durational;
-import org.wmn4j.notation.noteobjects.Durations;
-import org.wmn4j.notation.noteobjects.Note;
-import org.wmn4j.notation.noteobjects.Pitch;
-import org.wmn4j.notation.noteobjects.Rest;
+import org.wmn4j.notation.elements.Chord;
+import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.elements.Durations;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.Pitch;
+import org.wmn4j.notation.elements.Rest;
 
 @Ignore("These tests are unfinished and should be unignored once the logic is implemented")
 public class MonophonicPatternTest {

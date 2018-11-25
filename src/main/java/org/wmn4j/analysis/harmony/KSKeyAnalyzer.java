@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.wmn4j.notation.noteobjects.Durational;
-import org.wmn4j.notation.noteobjects.Key;
-import org.wmn4j.notation.noteobjects.PitchClass;
+import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.elements.Key;
+import org.wmn4j.notation.elements.PitchClass;
 
 /**
  * Implements Krumhansl-Schmuckler algorithm

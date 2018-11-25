@@ -21,19 +21,19 @@ import org.wmn4j.notation.builders.MeasureBuilder;
 import org.wmn4j.notation.builders.NoteBuilder;
 import org.wmn4j.notation.builders.PartBuilder;
 import org.wmn4j.notation.builders.RestBuilder;
-import org.wmn4j.notation.noteobjects.Barline;
-import org.wmn4j.notation.noteobjects.Clefs;
-import org.wmn4j.notation.noteobjects.Durations;
-import org.wmn4j.notation.noteobjects.KeySignature;
-import org.wmn4j.notation.noteobjects.KeySignatures;
-import org.wmn4j.notation.noteobjects.MeasureAttributes;
-import org.wmn4j.notation.noteobjects.MultiStaffPart;
-import org.wmn4j.notation.noteobjects.Note;
-import org.wmn4j.notation.noteobjects.Part;
-import org.wmn4j.notation.noteobjects.Pitch;
-import org.wmn4j.notation.noteobjects.SingleStaffPart;
-import org.wmn4j.notation.noteobjects.Staff;
-import org.wmn4j.notation.noteobjects.TimeSignatures;
+import org.wmn4j.notation.elements.Barline;
+import org.wmn4j.notation.elements.Clefs;
+import org.wmn4j.notation.elements.Durations;
+import org.wmn4j.notation.elements.KeySignature;
+import org.wmn4j.notation.elements.KeySignatures;
+import org.wmn4j.notation.elements.MeasureAttributes;
+import org.wmn4j.notation.elements.MultiStaffPart;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.Part;
+import org.wmn4j.notation.elements.Pitch;
+import org.wmn4j.notation.elements.SingleStaffPart;
+import org.wmn4j.notation.elements.Staff;
+import org.wmn4j.notation.elements.TimeSignatures;
 
 /**
  *

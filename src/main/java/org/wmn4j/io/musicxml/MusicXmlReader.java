@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.wmn4j.notation.builders.ScoreBuilder;
-import org.wmn4j.notation.noteobjects.Score;
+import org.wmn4j.notation.elements.Score;
 
 /**
  * Interface for MusicXML readers.

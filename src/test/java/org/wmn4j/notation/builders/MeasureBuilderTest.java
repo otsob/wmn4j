@@ -14,17 +14,17 @@ import org.junit.Test;
 import org.wmn4j.notation.builders.MeasureBuilder;
 import org.wmn4j.notation.builders.NoteBuilder;
 import org.wmn4j.notation.builders.RestBuilder;
-import org.wmn4j.notation.noteobjects.Barline;
-import org.wmn4j.notation.noteobjects.Clefs;
-import org.wmn4j.notation.noteobjects.Durational;
-import org.wmn4j.notation.noteobjects.Durations;
-import org.wmn4j.notation.noteobjects.KeySignatures;
-import org.wmn4j.notation.noteobjects.Measure;
-import org.wmn4j.notation.noteobjects.MeasureAttributes;
-import org.wmn4j.notation.noteobjects.Note;
-import org.wmn4j.notation.noteobjects.Pitch;
-import org.wmn4j.notation.noteobjects.Rest;
-import org.wmn4j.notation.noteobjects.TimeSignatures;
+import org.wmn4j.notation.elements.Barline;
+import org.wmn4j.notation.elements.Clefs;
+import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.elements.Durations;
+import org.wmn4j.notation.elements.KeySignatures;
+import org.wmn4j.notation.elements.Measure;
+import org.wmn4j.notation.elements.MeasureAttributes;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.Pitch;
+import org.wmn4j.notation.elements.Rest;
+import org.wmn4j.notation.elements.TimeSignatures;
 
 /**
  *

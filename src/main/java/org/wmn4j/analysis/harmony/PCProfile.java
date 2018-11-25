@@ -9,10 +9,10 @@ import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.wmn4j.notation.noteobjects.Chord;
-import org.wmn4j.notation.noteobjects.Durational;
-import org.wmn4j.notation.noteobjects.Note;
-import org.wmn4j.notation.noteobjects.PitchClass;
+import org.wmn4j.notation.elements.Chord;
+import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.PitchClass;
 
 /**
  * Pitch class profile in twelve-tone equal-temperament (TET). Contains a bin

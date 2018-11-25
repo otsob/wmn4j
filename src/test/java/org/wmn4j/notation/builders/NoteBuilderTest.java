@@ -12,12 +12,12 @@ import java.util.EnumSet;
 
 import org.junit.Test;
 import org.wmn4j.notation.builders.NoteBuilder;
+import org.wmn4j.notation.elements.Articulation;
+import org.wmn4j.notation.elements.Durations;
+import org.wmn4j.notation.elements.MultiNoteArticulation;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.iterators.ScorePosition;
-import org.wmn4j.notation.noteobjects.Articulation;
-import org.wmn4j.notation.noteobjects.Durations;
-import org.wmn4j.notation.noteobjects.MultiNoteArticulation;
-import org.wmn4j.notation.noteobjects.Note;
-import org.wmn4j.notation.noteobjects.Pitch;
 
 public class NoteBuilderTest {
 

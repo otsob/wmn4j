@@ -13,7 +13,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.wmn4j.io.musicxml.MusicXmlReader;
 import org.wmn4j.mir.pattern_discovery.PointSet;
-import org.wmn4j.notation.noteobjects.Score;
+import org.wmn4j.notation.elements.Score;
 
 /**
  *

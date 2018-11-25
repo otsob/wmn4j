@@ -14,8 +14,8 @@ import org.junit.Test;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.builders.PartBuilder;
 import org.wmn4j.notation.builders.ScoreBuilder;
-import org.wmn4j.notation.noteobjects.Score;
-import org.wmn4j.notation.noteobjects.ScoreTest;
+import org.wmn4j.notation.elements.Score;
+import org.wmn4j.notation.elements.ScoreTest;
 
 /**
  *

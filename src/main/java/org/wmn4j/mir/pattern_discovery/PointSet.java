@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.wmn4j.notation.elements.Chord;
+import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.elements.Measure;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 import org.wmn4j.notation.iterators.ScorePosition;
-import org.wmn4j.notation.noteobjects.Chord;
-import org.wmn4j.notation.noteobjects.Durational;
-import org.wmn4j.notation.noteobjects.Measure;
-import org.wmn4j.notation.noteobjects.Note;
-import org.wmn4j.notation.noteobjects.Score;
 
 /**
  *

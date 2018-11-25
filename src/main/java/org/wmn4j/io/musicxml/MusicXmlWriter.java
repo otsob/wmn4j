@@ -4,7 +4,7 @@
  */
 package org.wmn4j.io.musicxml;
 
-import org.wmn4j.notation.noteobjects.Score;
+import org.wmn4j.notation.elements.Score;
 
 /**
  *

@@ -6,8 +6,8 @@ package org.wmn4j.notation.builders;
 
 import java.util.Objects;
 
-import org.wmn4j.notation.noteobjects.Duration;
-import org.wmn4j.notation.noteobjects.Rest;
+import org.wmn4j.notation.elements.Duration;
+import org.wmn4j.notation.elements.Rest;
 
 /**
  * Class for building <code>Rest</code> objects.

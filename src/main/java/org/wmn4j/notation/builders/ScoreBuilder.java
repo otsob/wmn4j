@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.wmn4j.notation.noteobjects.Part;
-import org.wmn4j.notation.noteobjects.Score;
+import org.wmn4j.notation.elements.Part;
+import org.wmn4j.notation.elements.Score;
 
 /**
  * Class for building <code>Score</code> objects.

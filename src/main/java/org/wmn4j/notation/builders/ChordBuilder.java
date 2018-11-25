@@ -7,9 +7,9 @@ package org.wmn4j.notation.builders;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.wmn4j.notation.noteobjects.Chord;
-import org.wmn4j.notation.noteobjects.Duration;
-import org.wmn4j.notation.noteobjects.Note;
+import org.wmn4j.notation.elements.Chord;
+import org.wmn4j.notation.elements.Duration;
+import org.wmn4j.notation.elements.Note;
 
 /**
  * Class for building <code>Chord</code> objects.

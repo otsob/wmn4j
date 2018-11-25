@@ -7,7 +7,7 @@ package org.wmn4j.notation.iterators;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.wmn4j.notation.noteobjects.Durational;
+import org.wmn4j.notation.elements.Durational;
 
 /**
  * Interface for iterators that iterate through the <code>Durational</code>

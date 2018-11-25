@@ -11,11 +11,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import org.wmn4j.notation.noteobjects.Measure;
-import org.wmn4j.notation.noteobjects.MultiStaffPart;
-import org.wmn4j.notation.noteobjects.Part;
-import org.wmn4j.notation.noteobjects.SingleStaffPart;
-import org.wmn4j.notation.noteobjects.Staff;
+import org.wmn4j.notation.elements.Measure;
+import org.wmn4j.notation.elements.MultiStaffPart;
+import org.wmn4j.notation.elements.Part;
+import org.wmn4j.notation.elements.SingleStaffPart;
+import org.wmn4j.notation.elements.Staff;
 
 /**
  * Builder for building <code>Part</code> objects.

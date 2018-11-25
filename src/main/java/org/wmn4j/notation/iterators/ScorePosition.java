@@ -4,7 +4,7 @@
  */
 package org.wmn4j.notation.iterators;
 
-import org.wmn4j.notation.noteobjects.SingleStaffPart;
+import org.wmn4j.notation.elements.SingleStaffPart;
 
 /**
  * Defines the position of a <code>Durational</code> in a <code>Score</code>. Is

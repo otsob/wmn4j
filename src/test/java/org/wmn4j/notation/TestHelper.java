@@ -13,10 +13,10 @@ import org.wmn4j.notation.builders.ChordBuilder;
 import org.wmn4j.notation.builders.MeasureBuilder;
 import org.wmn4j.notation.builders.NoteBuilder;
 import org.wmn4j.notation.builders.RestBuilder;
-import org.wmn4j.notation.noteobjects.Durations;
-import org.wmn4j.notation.noteobjects.Measure;
-import org.wmn4j.notation.noteobjects.Pitch;
-import org.wmn4j.notation.noteobjects.Score;
+import org.wmn4j.notation.elements.Durations;
+import org.wmn4j.notation.elements.Measure;
+import org.wmn4j.notation.elements.Pitch;
+import org.wmn4j.notation.elements.Score;
 
 /**
  *

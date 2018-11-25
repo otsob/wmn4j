@@ -9,11 +9,11 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import org.wmn4j.notation.noteobjects.Articulation;
-import org.wmn4j.notation.noteobjects.Duration;
-import org.wmn4j.notation.noteobjects.MultiNoteArticulation;
-import org.wmn4j.notation.noteobjects.Note;
-import org.wmn4j.notation.noteobjects.Pitch;
+import org.wmn4j.notation.elements.Articulation;
+import org.wmn4j.notation.elements.Duration;
+import org.wmn4j.notation.elements.MultiNoteArticulation;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.Pitch;
 
 /**
  * Class for building <code>Note</code> objects. The built note is cached. This
