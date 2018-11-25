@@ -6,5 +6,5 @@ A Java API for handling western music notation.
 
 ## Building the project
 
-WMNLib uses Maven and the project can be built as any Maven project.
+wmn4j uses Maven and the project can be built as any Maven project.
 Javadocs can be updated using the command _mvn javadoc:javadoc_.
