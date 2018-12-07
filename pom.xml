@@ -44,6 +44,7 @@
 				<configuration>
 					<reportOutputDirectory>docs</reportOutputDirectory>
 					<destDir>docs</destDir>
+					<locale>en_US</locale>
 				</configuration>
 			</plugin>
 		</plugins>
