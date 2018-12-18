@@ -21,9 +21,14 @@ public class Pitch implements Comparable<Pitch> {
 	/**
 	 * The letter in a pitch name.
 	 */
-	// TODO: Add the number to the enum.
 	public enum Base {
-		C, D, E, F, G, A, B
+		C(0), D(2), E(4), F(5), G(7), A(9), B(11);
+		
+		private final int pitchAsInt;
+		
+		Base(int pitchAsInt) {
+			this.pitchAsInt = pitchAsInt;
+		}
 	}
 
 	/**
@@ -124,35 +129,7 @@ public class Pitch implements Comparable<Pitch> {
 	 * @return this Pitch as an integer.
 	 */
 	public int toInt() {
-		int pitchAsInt;
-		// TODO: Instead of using the switch statement, add number to enum.
-		switch (this.pitchBase) {
-		case C:
-			pitchAsInt = 0;
-			break;
-		case D:
-			pitchAsInt = 2;
-			break;
-		case E:
-			pitchAsInt = 4;
-			break;
-		case F:
-			pitchAsInt = 5;
-			break;
-		case G:
-			pitchAsInt = 7;
-			break;
-		case A:
-			pitchAsInt = 9;
-			break;
-		case B:
-			pitchAsInt = 11;
-			break;
-		default:
-			pitchAsInt = 0;
-		}
-
-		return pitchAsInt + this.alter + (this.octave + 1) * 12;
+		return this.pitchBase.pitchAsInt + this.alter + (this.octave + 1) * 12;
 	}
 
 	/**
