@@ -37,9 +37,10 @@ public class ChordBuilder implements DurationalBuilder {
 	 * @param noteBuilders the note builders that are placed into this builder
 	 */
 	public ChordBuilder(List<NoteBuilder> noteBuilders) {
-		// TODO: Make copies of the noteBuilders in the list.
-		this.duration = noteBuilders.get(0).getDuration();
-		this.noteBuilders = new ArrayList<>(noteBuilders);
+		List<NoteBuilder> noteBuildersCopy = new ArrayList<>();
+		noteBuilders.forEach(builder -> noteBuildersCopy.add(new NoteBuilder(builder)));
+		this.noteBuilders = noteBuildersCopy;
+		this.duration = noteBuilders.get(0).getDuration();	
 	}
 
 	/**
