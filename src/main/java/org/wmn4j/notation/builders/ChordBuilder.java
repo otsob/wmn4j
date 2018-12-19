@@ -28,7 +28,7 @@ public class ChordBuilder implements DurationalBuilder {
 	public ChordBuilder(NoteBuilder noteBuilder) {
 		this.duration = noteBuilder.getDuration();
 		this.noteBuilders = new ArrayList<>();
-		this.noteBuilders.add(noteBuilder);
+		this.noteBuilders.add(new NoteBuilder(noteBuilder));
 	}
 
 	/**
