@@ -65,4 +65,21 @@ public class ChordBuilderTest {
 		assertEquals(1, chord.getNoteCount());
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 	}
+	
+	@Test
+	public void testAddNoteBuilderCopiesNoteBuilder() {
+		List<NoteBuilder> cMajor = getCMajorAsNoteBuilders();
+		ChordBuilder builder = new ChordBuilder(cMajor);
+		
+		NoteBuilder note = new NoteBuilder(Pitch.getPitch(Pitch.Base.B, 0, 4), Durations.QUARTER);
+		builder.add(note);
+		note.setPitch(Pitch.getPitch(Pitch.Base.A, 0, 4));
+		
+		Chord chord = builder.build();		
+		assertEquals(4, chord.getNoteCount());
+		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.B, 0, 4), Durations.QUARTER)));
+	}
 }

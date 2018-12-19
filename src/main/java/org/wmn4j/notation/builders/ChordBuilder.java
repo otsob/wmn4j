@@ -50,8 +50,7 @@ public class ChordBuilder implements DurationalBuilder {
 	 * @return reference to this
 	 */
 	public ChordBuilder add(NoteBuilder noteBuilder) {
-		// TODO: Make a copy of the NoteBuilder.
-		this.noteBuilders.add(noteBuilder);
+		this.noteBuilders.add(new NoteBuilder(noteBuilder));
 		return this;
 	}
 
