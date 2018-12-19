@@ -9,9 +9,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.EnumSet;
+import static org.junit.Assert.assertNotSame;
 
 import org.junit.Test;
-import org.wmn4j.notation.builders.NoteBuilder;
 import org.wmn4j.notation.elements.Articulation;
 import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.MultiNoteArticulation;
@@ -82,6 +82,58 @@ public class NoteBuilderTest {
 		assertEquals(Pitch.getPitch(Pitch.Base.E, 0, 4), thirdNote.getPitch());
 		assertFalse(thirdNote.isTiedToFollowing());
 		assertTrue(thirdNote.isTiedFromPrevious());
+	}
+	
+	@Test
+	public void testCopyConstructor() {
+		NoteBuilder builder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		NoteBuilder copy = new NoteBuilder(builder);
+		assertNotSame(builder, copy);
+		
+		assertEquals(Durations.QUARTER, copy.getDuration());
+		assertEquals(Pitch.getPitch(Pitch.Base.C, 0, 4), copy.getPitch());
+		
+		builder.setDuration(Durations.HALF);
+		assertEquals(Durations.QUARTER, copy.getDuration());
+		
+		builder.setPitch(Pitch.getPitch(Pitch.Base.D, 0, 4));
+		assertEquals(Pitch.getPitch(Pitch.Base.C, 0, 4), copy.getPitch());
+	}
+	
+	@Test
+	public void testCopyConstructorArticulations() {
+		NoteBuilder builder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		builder.addArticulation(Articulation.STACCATO);
+		
+		NoteBuilder copy = new NoteBuilder(builder);
+		
+		builder.addArticulation(Articulation.FERMATA);
+		assertTrue(copy.getArticulations().size() == 1);
+		assertTrue(copy.getArticulations().contains(Articulation.STACCATO));
+	}
+	
+	@Test
+	public void testCopyConstructorMultiNoteArticulations() {
+		NoteBuilder builder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		MultiNoteArticulation glissando = new MultiNoteArticulation(MultiNoteArticulation.Type.GLISSANDO);
+		builder.addMultiNoteArticulation(glissando);
+		
+		NoteBuilder copy = new NoteBuilder(builder);
+		
+		builder.addMultiNoteArticulation(new MultiNoteArticulation(MultiNoteArticulation.Type.SLUR));
+		assertTrue(copy.getMultiNoteArticulations().size() == 1);
+		assertTrue(copy.getMultiNoteArticulations().contains(glissando));
+	}
+	
+	@Test
+	public void testCopyConstructorsFollowingTiedIsCopiedAsWell() {
+		NoteBuilder builder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		NoteBuilder following = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF);
+		builder.addTieToFollowing(following);
+		
+		NoteBuilder copy = new NoteBuilder(builder);
+		assertNotSame(builder.getFollowingTied().get(), copy.getFollowingTied().get());
+		assertEquals(Durations.HALF, copy.getFollowingTied().get().getDuration());
 	}
 
 }
