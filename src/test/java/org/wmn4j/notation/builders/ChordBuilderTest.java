@@ -93,4 +93,15 @@ public class ChordBuilderTest {
 		}
 		assertEquals(3, builders);
 	}
+	
+	@Test
+	public void testSetDuration() {
+		ChordBuilder chordBuilder = new ChordBuilder(getCMajorAsNoteBuilders());
+		chordBuilder.setDuration(Durations.HALF);
+		
+		for (NoteBuilder noteBuilder : chordBuilder) {
+			assertEquals(Durations.HALF, noteBuilder.getDuration());
+		}
+		assertEquals(Durations.HALF, chordBuilder.getDuration());
+	}
 }
