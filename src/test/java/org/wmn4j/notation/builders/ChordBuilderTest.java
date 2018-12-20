@@ -82,4 +82,15 @@ public class ChordBuilderTest {
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.B, 0, 4), Durations.QUARTER)));
 	}
+	
+	@Test
+	public void testIterator() {
+		ChordBuilder builder = new ChordBuilder(getCMajorAsNoteBuilders());
+		
+		int builders = 0;
+		for (NoteBuilder noteBuilder : builder) {
+			builders++;
+		}
+		assertEquals(3, builders);
+	}
 }

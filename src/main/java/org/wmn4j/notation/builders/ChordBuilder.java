@@ -5,6 +5,7 @@
 package org.wmn4j.notation.builders;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.wmn4j.notation.elements.Chord;
@@ -14,7 +15,7 @@ import org.wmn4j.notation.elements.Note;
 /**
  * Class for building <code>Chord</code> objects.
  */
-public class ChordBuilder implements DurationalBuilder {
+public class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
 
 	private final List<NoteBuilder> noteBuilders;
 	private Duration duration;
@@ -65,6 +66,11 @@ public class ChordBuilder implements DurationalBuilder {
 	@Override
 	public Duration getDuration() {
 		return this.duration;
+	}
+	
+	@Override
+	public Iterator<NoteBuilder> iterator() {
+		return this.noteBuilders.iterator();
 	}
 
 	@Override
