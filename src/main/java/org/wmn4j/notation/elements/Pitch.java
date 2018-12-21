@@ -13,8 +13,6 @@ import java.util.Objects;
  * the note. Octave number is based on
  * <a href="http://en.wikipedia.org/wiki/Scientific_pitch_notation">scientific
  * pitch notation</a>. This class is immutable.
- *
- * @author Otso Björklund
  */
 public final class Pitch implements Comparable<Pitch> {
 
@@ -22,7 +20,40 @@ public final class Pitch implements Comparable<Pitch> {
 	 * The letter in a pitch name.
 	 */
 	public enum Base {
-		C(0), D(2), E(4), F(5), G(7), A(9), B(11);
+	/**
+	 * The base letter C in the pitch name.
+	 */
+	C(0),
+
+	/**
+	 * The base letter D in the pitch name.
+	 */
+	D(2),
+
+	/**
+	 * The base letter E in the pitch name.
+	 */
+	E(4),
+
+	/**
+	 * The base letter F in the pitch name.
+	 */
+	F(5),
+
+	/**
+	 * The base letter G in the pitch name.
+	 */
+	G(7),
+
+	/**
+	 * The base letter A in the pitch name.
+	 */
+	A(9),
+
+	/**
+	 * The base letter B in the pitch name.
+	 */
+	B(11);
 
 		private final int pitchAsInt;
 

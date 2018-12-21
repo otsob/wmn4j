@@ -16,7 +16,15 @@ public class MultiNoteArticulation {
 	 * The type of the articulation.
 	 */
 	public enum Type {
-		SLUR, GLISSANDO
+	/**
+	 * Specifies a slur.
+	 */
+	SLUR,
+
+	/**
+	 * Specifies a glissando marking.
+	 */
+	GLISSANDO
 	}
 
 	private final Type type;

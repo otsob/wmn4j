@@ -10,5 +10,23 @@ package org.wmn4j.notation.elements;
  * @author Otso Björklund
  */
 public enum Articulation {
-	ACCENT, STACCATO, TENUTO, FERMATA
+	/**
+	 * Specifies an accent marking.
+	 */
+	ACCENT,
+
+	/**
+	 * Specifies a staccato marking.
+	 */
+	STACCATO,
+
+	/**
+	 * Specifies a tenuto marking.
+	 */
+	TENUTO,
+
+	/**
+	 * Specifies a fermata.
+	 */
+	FERMATA
 }

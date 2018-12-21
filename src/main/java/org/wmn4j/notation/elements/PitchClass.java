@@ -10,9 +10,65 @@ package org.wmn4j.notation.elements;
  * @author Otso Björklund
  */
 public enum PitchClass {
-	C(0), CSHARP_DFLAT(1), D(2), DSHARP_EFLAT(3), E(4), F(5), FSHARP_GFLAT(6), G(7), GSHARP_AFLAT(8), A(
-			9),
-	ASHARP_BFLAT(10), B(11);
+	/**
+	 * The pitch class C.
+	 */
+	C(0),
+
+	/**
+	 * The pitch class C#/Db.
+	 */
+	CSHARP_DFLAT(1),
+
+	/**
+	 * The pitch class D.
+	 */
+	D(2),
+
+	/**
+	 * The pitch class D#/Eb.
+	 */
+	DSHARP_EFLAT(3),
+
+	/**
+	 * The pitch class E.
+	 */
+	E(4),
+
+	/**
+	 * The pitch class F.
+	 */
+	F(5),
+
+	/**
+	 * The pitch class F#/Gb.
+	 */
+	FSHARP_GFLAT(6),
+
+	/**
+	 * The pitch class G.
+	 */
+	G(7),
+
+	/**
+	 * The pitch class G#/Ab.
+	 */
+	GSHARP_AFLAT(8),
+
+	/**
+	 * The pitch class A.
+	 */
+	A(9),
+
+	/**
+	 * The pitch class A#/Bb.
+	 */
+	ASHARP_BFLAT(10),
+
+	/**
+	 * The pitch class B.
+	 */
+	B(11);
 
 	private static final PitchClass PITCH_CLASSES[] = { C, CSHARP_DFLAT, D, DSHARP_EFLAT, E, F, FSHARP_GFLAT, G,
 			GSHARP_AFLAT, A,

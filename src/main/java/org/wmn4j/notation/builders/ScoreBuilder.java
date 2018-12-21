@@ -22,6 +22,9 @@ public class ScoreBuilder {
 	private Map<Score.Attribute, String> scoreAttr;
 	private List<PartBuilder> partBuilders;
 
+	/**
+	 * Constructor that creates an empty ScoreBuilder.
+	 */
 	public ScoreBuilder() {
 		this.scoreAttr = new HashMap<>();
 		this.partBuilders = new ArrayList<>();

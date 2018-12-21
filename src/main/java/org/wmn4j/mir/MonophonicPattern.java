@@ -22,6 +22,12 @@ public final class MonophonicPattern implements Pattern {
 
 	private final List<Durational> contents;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param contents the notation elements in temporal order that make up the
+	 *                 pattern
+	 */
 	public MonophonicPattern(List<Durational> contents) {
 		this.contents = Collections.unmodifiableList(new ArrayList<>(contents));
 		if (this.contents == null) {
@@ -35,6 +41,11 @@ public final class MonophonicPattern implements Pattern {
 		}
 	}
 
+	/**
+	 * Returns the notation elements in temporal order that make up the pattern.
+	 *
+	 * @return the notation elements in temporal order that make up the pattern
+	 */
 	public List<Durational> getContents() {
 		return this.contents;
 	}
@@ -49,77 +60,42 @@ public final class MonophonicPattern implements Pattern {
 		return strBuilder.toString();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equals(wmnlibmir.Pattern)
-	 */
 	@Override
 	public boolean equals(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#isMonophonic()
-	 */
 	@Override
 	public boolean isMonophonic() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equalsInPitch(wmnlibmir.Pattern)
-	 */
 	@Override
 	public boolean equalsInPitch(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equalsEnharmonicallyInPitch(wmnlibmir.Pattern)
-	 */
 	@Override
 	public boolean equalsEnharmonicallyInPitch(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equalsInTransposedPitch(wmnlibmir.Pattern)
-	 */
 	@Override
 	public boolean equalsInTransposedPitch(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equalsInRhythm(wmnlibmir.Pattern)
-	 */
 	@Override
 	public boolean equalsInRhythm(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equalsInOnsets(wmnlibmir.Pattern)
-	 */
 	@Override
 	public boolean equalsInOnsets(Pattern other) {
 		// TODO Auto-generated method stub

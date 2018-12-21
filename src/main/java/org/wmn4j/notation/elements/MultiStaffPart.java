@@ -25,12 +25,26 @@ public class MultiStaffPart implements Part {
 	private final Map<Part.Attribute, String> partAttributes;
 	private final SortedMap<Integer, Staff> staves;
 
+	/**
+	 * Constructor. The staves are associated with numbers which are to be given as
+	 * keys in the map parameter.
+	 *
+	 * @param name   the name of the part
+	 * @param staves the staves in the part
+	 */
 	public MultiStaffPart(String name, Map<Integer, Staff> staves) {
 		this.partAttributes = new HashMap<>();
 		this.partAttributes.put(Part.Attribute.NAME, name);
 		this.staves = Collections.unmodifiableSortedMap(new TreeMap<>(staves));
 	}
 
+	/**
+	 * Constructor. The staves are associated with numbers which are to be given as
+	 * keys in the map parameter.
+	 *
+	 * @param attributes the attributes of the part
+	 * @param staves     the staves in the part
+	 */
 	public MultiStaffPart(Map<Part.Attribute, String> attributes, Map<Integer, Staff> staves) {
 		this.partAttributes = Collections.unmodifiableMap(new HashMap<>(attributes));
 		this.staves = Collections.unmodifiableSortedMap(new TreeMap<>(staves));
@@ -132,6 +146,11 @@ public class MultiStaffPart implements Part {
 		private int prevStaffNumber = 0;
 		private int prevMeasureNumber = 0;
 
+		/**
+		 * Constructor.
+		 *
+		 * @param part the part for which the iterator is created
+		 */
 		public Iter(MultiStaffPart part) {
 			this.part = part;
 			this.keyIndex = 0;
