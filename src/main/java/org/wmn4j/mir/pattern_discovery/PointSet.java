@@ -20,27 +20,27 @@ import org.wmn4j.notation.iterators.ScorePosition;
  *
  * @author Otso Björklund
  */
-public class PointSet {
+class PointSet {
 
 	private final List<NoteEventVector> points;
 
-	public PointSet(List<NoteEventVector> points) {
+	PointSet(List<NoteEventVector> points) {
 		this.points = new ArrayList<>(points);
 	}
 
-	public PointSet(Score score) {
+	PointSet(Score score) {
 		this.points = this.pointsFromScore(score);
 	}
 
-	public void sortLexicographically() {
+	void sortLexicographically() {
 		this.points.sort(Comparator.naturalOrder());
 	}
 
-	public int size() {
+	int size() {
 		return this.points.size();
 	}
 
-	public NoteEventVector get(int index) {
+	NoteEventVector get(int index) {
 		return this.points.get(index);
 	}
 

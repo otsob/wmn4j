@@ -12,25 +12,25 @@ import java.util.List;
  *
  * @author Otso Björklund
  */
-public class PointPattern {
+class PointPattern {
 
 	private final List<NoteEventVector> points;
 	private final int hash;
 
-	public PointPattern(List<NoteEventVector> points) {
+	PointPattern(List<NoteEventVector> points) {
 		this.points = points;
 		this.hash = computeHash();
 	}
 
-	public int getSize() {
+	int getSize() {
 		return this.points.size();
 	}
 
-	public List<NoteEventVector> getPoints() {
+	List<NoteEventVector> getPoints() {
 		return Collections.unmodifiableList(this.points);
 	}
 
-	public PointPattern getVectorizedRepresentation() {
+	PointPattern getVectorizedRepresentation() {
 		List<NoteEventVector> vecPoints = new ArrayList<>();
 
 		for (int i = 1; i < this.points.size(); ++i) {
