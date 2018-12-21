@@ -204,18 +204,6 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	private Element createMeasureAttributesElement(Measure measure, Measure prevMeasure) {
 		Element attrElement = this.doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
 
-		if (prevMeasure == null || !measure.getClef().equals(prevMeasure.getClef())) {
-
-		}
-
-		if (prevMeasure == null || measure.getKeySignature() != prevMeasure.getKeySignature()) {
-
-		}
-
-		if (prevMeasure == null || measure.getTimeSignature() != prevMeasure.getTimeSignature()) {
-
-		}
-
 		return attrElement;
 	}
 
