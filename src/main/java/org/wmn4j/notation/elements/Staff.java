@@ -21,14 +21,21 @@ public class Staff implements Iterable<Measure> {
 	 * Type of staff.
 	 */
 	public enum Type {
-		NORMAL, SINGLE_LINE
+	/**
+	 * Normal five line staff.
+	 */
+	NORMAL,
+	/**
+	 * A single line percussion staff.
+	 */
+	SINGLE_LINE
 	};
 
 	private final List<Measure> measures;
 	private final Type type;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
 	 * @param measures the measures in the staff.
 	 */

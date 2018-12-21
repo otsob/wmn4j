@@ -11,17 +11,27 @@ import java.util.List;
 import org.wmn4j.notation.iterators.ScorePosition;
 
 /**
- *
- * @author Otso Björklund
+ * Class that represents an occurrence of a pattern in a score.
  */
 public class PatternOccurrence {
 
 	private final List<ScorePosition> positions;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param positions the positions in which the elements of the pattern occur in
+	 *                  a score.
+	 */
 	public PatternOccurrence(List<ScorePosition> positions) {
 		this.positions = Collections.unmodifiableList(new ArrayList<>(positions));
 	}
 
+	/**
+	 * Returns the positions in which the elements of the pattern occur in a score.
+	 *
+	 * @return the positions in which the elements of the pattern occur in a score
+	 */
 	public List<ScorePosition> getPositions() {
 		return this.positions;
 	}

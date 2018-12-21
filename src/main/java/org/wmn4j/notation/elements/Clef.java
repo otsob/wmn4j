@@ -15,7 +15,25 @@ import java.util.Objects;
  */
 public final class Clef {
 	public enum Type {
-		G, F, C, PERCUSSION
+		/**
+		 * The G clef.
+		 */
+		G,
+
+		/**
+		 * The F clef.
+		 */
+		F,
+
+		/**
+		 * The C clef.
+		 */
+		C,
+
+		/**
+		 * The percussion clef.
+		 */
+		PERCUSSION
 	}
 
 	private final Type type;

@@ -258,6 +258,11 @@ public class Measure implements Iterable<Durational> {
 		private int prevVoiceNumber = 0;
 		private int prevPositionInVoice = 0;
 
+		/**
+		 * Constructor.
+		 *
+		 * @param measure the measure for which the iterator is created
+		 */
 		public Iter(Measure measure) {
 			this.measure = measure;
 			this.voiceNumbers = measure.getVoiceNumbers();

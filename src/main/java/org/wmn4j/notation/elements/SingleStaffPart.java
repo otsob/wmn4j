@@ -19,11 +19,16 @@ import java.util.NoSuchElementException;
  */
 public class SingleStaffPart implements Part {
 
+	/**
+	 * The default staff number for the staff in a single staff part.
+	 */
 	public static final int STAFF_NUMBER = 1;
 	private final Map<Part.Attribute, String> partAttributes;
 	private final Staff staff;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param name     the name of the part.
 	 * @param measures the measures in this part.
 	 */
@@ -35,6 +40,8 @@ public class SingleStaffPart implements Part {
 	}
 
 	/**
+	 * Constructor.
+	 *
 	 * @param partAttributes a map of attributes to be set for this part.
 	 * @param measures       the measures in this part.
 	 */
@@ -74,6 +81,8 @@ public class SingleStaffPart implements Part {
 	}
 
 	/**
+	 * Returns the staff in this part.
+	 *
 	 * @return the only staff in this part.
 	 */
 	public Staff getStaff() {
@@ -134,6 +143,11 @@ public class SingleStaffPart implements Part {
 		private final Iterator<Measure> staffIterator;
 		private int prevMeasureNumber = 0;
 
+		/**
+		 * Constructor.
+		 *
+		 * @param part the part for which the iterator is created
+		 */
 		public Iter(SingleStaffPart part) {
 			this.staffIterator = part.getStaff().iterator();
 		}

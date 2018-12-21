@@ -13,13 +13,21 @@ import org.wmn4j.notation.elements.Score;
 
 /**
  * Interface for MusicXML readers.
- *
- * @author Otso Björklund
  */
 public interface MusicXmlReader {
 
+	/**
+	 * The path to the local MusicXML schema.
+	 */
 	Path SCHEMA = Paths.get("src/wmnlibio/musicxml/musicxml.xsd");
 
+	/**
+	 * Returns a reader object with the given configuration.
+	 *
+	 * @param validate specifies whether the returned reader should validate input
+	 *                 files for complying to MusicXML schema
+	 * @return a reader object with the given configuration
+	 */
 	static MusicXmlReader getReader(boolean validate) {
 		return new MusicXmlReaderDom(validate);
 	}

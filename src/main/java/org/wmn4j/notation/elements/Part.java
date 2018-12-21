@@ -19,7 +19,7 @@ public interface Part extends Iterable<Measure> {
 	 * Attribute types that a <code>Part</code> can have.
 	 */
 	enum Attribute {
-		NAME, ABBR_NAME
+	NAME, ABBR_NAME
 	};
 
 	/**
@@ -66,8 +66,10 @@ public interface Part extends Iterable<Measure> {
 	 *
 	 * @param staffNumber   Number of staff. Is not used when accessing a single
 	 *                      staff part.
-	 * @param measureNumber the number of the measure.
-	 * @return the measure with measureNumber from the staff with staffNumber.
+	 * @param measureNumber the number of the measure
+	 * @return the measure with measureNumber from the staff with staffNumber
+	 * @throws NoSuchElementException if there is no staff of measure with the given
+	 *                                number in this part
 	 */
 	Measure getMeasure(int staffNumber, int measureNumber) throws NoSuchElementException;
 

@@ -27,7 +27,23 @@ public class Score implements Iterable<Part> {
 	 * Type for the different text attributes a score can have.
 	 */
 	public enum Attribute {
-		NAME, COMPOSER, ARRANGER, YEAR
+	/**
+	 * The name (main title) of the score.
+	 */
+	NAME,
+	/**
+	 * The composer name.
+	 */
+	COMPOSER,
+
+	/**
+	 * The arranger.
+	 */
+	ARRANGER,
+	/**
+	 * The year of publication.
+	 */
+	YEAR
 	}
 
 	private final Map<Attribute, String> scoreAttr;

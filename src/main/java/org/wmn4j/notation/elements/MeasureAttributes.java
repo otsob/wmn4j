@@ -24,16 +24,47 @@ public final class MeasureAttributes {
 	private final Clef clef;
 	private final Map<Duration, Clef> clefChanges;
 
+	/**
+	 * Returns a MeasureAttributes instance with the given values. The left barline
+	 * type will be set to none.
+	 *
+	 * @param timeSig      the time signature
+	 * @param keySig       the key signature
+	 * @param rightBarline the type of the right barline
+	 * @param clef         the clef in effect at the beginning of the measure
+	 * @return a MeasureAttributes instance with the given values
+	 */
 	public static MeasureAttributes getMeasureAttr(TimeSignature timeSig, KeySignature keySig, Barline rightBarline,
 			Clef clef) {
 		return getMeasureAttr(timeSig, keySig, rightBarline, Barline.NONE, clef);
 	}
 
+	/**
+	 * Returns a MeasureAttributes instance with the given values.
+	 *
+	 * @param timeSig      the time signature
+	 * @param keySig       the key signature
+	 * @param rightBarline the type of the right barline
+	 * @param leftBarline  the type of the left barline
+	 * @param clef         the clef in effect at the beginning of the measure
+	 * @return a MeasureAttributes instance with the given values
+	 */
 	public static MeasureAttributes getMeasureAttr(TimeSignature timeSig, KeySignature keySig, Barline rightBarline,
 			Barline leftBarline, Clef clef) {
 		return getMeasureAttr(timeSig, keySig, rightBarline, leftBarline, clef, null);
 	}
 
+	/**
+	 * Returns a MeasureAttributes instance with the given values.
+	 *
+	 * @param timeSig      the time signature
+	 * @param keySig       the key signature
+	 * @param rightBarline the type of the right barline
+	 * @param leftBarline  the type of the left barline
+	 * @param clef         the clef in effect at the beginning of the measure
+	 * @param clefChanges  the clef changes within the measure
+	 * @return a MeasureAttributes instance with the given values
+	 */
 	public static MeasureAttributes getMeasureAttr(TimeSignature timeSig, KeySignature keySig, Barline rightBarline,
 			Barline leftBarline, Clef clef, Map<Duration, Clef> clefChanges) {
 		// TODO: Potentially use interner pattern or similar for caching.
@@ -55,30 +86,66 @@ public final class MeasureAttributes {
 		}
 	}
 
+	/**
+	 * Returns the time signature specified in the attributes.
+	 *
+	 * @return the time signature specified in the attributes
+	 */
 	public TimeSignature getTimeSignature() {
 		return this.timeSig;
 	}
 
+	/**
+	 * Returns the key signature specified in the attributes.
+	 *
+	 * @return the key signature specified in the attributes
+	 */
 	public KeySignature getKeySignature() {
 		return this.keySig;
 	}
 
+	/**
+	 * Returns the type of the right barline specified in the attributes.
+	 *
+	 * @return the type of the right barline specified in the attributes
+	 */
 	public Barline getRightBarline() {
 		return this.rightBarline;
 	}
 
+	/**
+	 * Returns the type of the left barline specified in the attributes.
+	 *
+	 * @return the type of the left barline specified in the attributes
+	 */
 	public Barline getLeftBarline() {
 		return this.leftBarline;
 	}
 
+	/**
+	 * Returns the clef in effect at the beginning of the measure.
+	 *
+	 * @return the clef in effect at the beginning of the measure
+	 */
 	public Clef getClef() {
 		return this.clef;
 	}
 
+	/**
+	 * Returns true if there are clef changes specified in the attributes.
+	 *
+	 * @return true if there are clef changes specified in the attributes
+	 */
 	public boolean containsClefChanges() {
 		return !this.clefChanges.isEmpty();
 	}
 
+	/**
+	 * Returns the clef chagnes specified in the attributes. The keys in the map are
+	 * the offsets of the clef changes from the beginning of the measure.
+	 *
+	 * @return the clef chagnes specified in the attributes
+	 */
 	public Map<Duration, Clef> getClefChanges() {
 		return Collections.unmodifiableMap(this.clefChanges);
 	}

@@ -13,26 +13,41 @@ import org.wmn4j.notation.elements.Note;
 
 /**
  * Class for building <code>Chord</code> objects.
- *
- * @author Otso Björklund
  */
 public class ChordBuilder implements DurationalBuilder {
 
 	private final List<NoteBuilder> noteBuilders;
 	private Duration duration;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param noteBuilder the note builder that specifies the first note in this
+	 *                    builder
+	 */
 	public ChordBuilder(NoteBuilder noteBuilder) {
 		this.duration = noteBuilder.getDuration();
 		this.noteBuilders = new ArrayList<>();
 		this.noteBuilders.add(noteBuilder);
 	}
 
+	/**
+	 * Constructor.
+	 *
+	 * @param noteBuilders the note builders that are placed into this builder
+	 */
 	public ChordBuilder(List<NoteBuilder> noteBuilders) {
 		// TODO: Make copies of the noteBuilders in the list.
 		this.duration = noteBuilders.get(0).getDuration();
 		this.noteBuilders = new ArrayList<>(noteBuilders);
 	}
 
+	/**
+	 * Adds the given NoteBuilder into this builder.
+	 *
+	 * @param noteBuilder the note builder that is added to this builder
+	 * @return reference to this
+	 */
 	public ChordBuilder add(NoteBuilder noteBuilder) {
 		// TODO: Make a copy of the NoteBuilder.
 		this.noteBuilders.add(noteBuilder);
