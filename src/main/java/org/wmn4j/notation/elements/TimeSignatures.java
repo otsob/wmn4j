@@ -6,10 +6,10 @@ package org.wmn4j.notation.elements;
 
 /**
  * Common time signatures.
- * 
+ *
  * @author Otso Björklund
  */
-public class TimeSignatures {
+public final class TimeSignatures {
 
 	public static final TimeSignature FOUR_FOUR = TimeSignature.getTimeSignature(4, 4);
 	public static final TimeSignature THREE_FOUR = TimeSignature.getTimeSignature(3, 4);

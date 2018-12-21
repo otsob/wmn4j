@@ -6,10 +6,10 @@ package org.wmn4j.notation.elements;
 
 /**
  * Collection of basic durations.
- * 
+ *
  * @author Otso Björklund
  */
-public class Durations {
+public final class Durations {
 	public static final Duration WHOLE = Duration.getDuration(1, 1);
 	public static final Duration HALF = Duration.getDuration(1, 2);
 	public static final Duration QUARTER = Duration.getDuration(1, 4);

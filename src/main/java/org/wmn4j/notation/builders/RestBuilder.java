@@ -11,7 +11,7 @@ import org.wmn4j.notation.elements.Rest;
 
 /**
  * Class for building <code>Rest</code> objects.
- * 
+ *
  * @author Otso Björklund
  */
 public final class RestBuilder implements DurationalBuilder {
@@ -20,7 +20,7 @@ public final class RestBuilder implements DurationalBuilder {
 
 	/**
 	 * Create a new instance.
-	 * 
+	 *
 	 * @param duration The
 	 */
 	public RestBuilder(Duration duration) {
@@ -29,7 +29,7 @@ public final class RestBuilder implements DurationalBuilder {
 
 	/**
 	 * Set the duration of the <code>Rest</code>.
-	 * 
+	 *
 	 * @param duration the duration that is set to this builder
 	 */
 	public void setDuration(Duration duration) {

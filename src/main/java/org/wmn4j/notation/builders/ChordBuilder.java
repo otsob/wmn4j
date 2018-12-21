@@ -13,7 +13,7 @@ import org.wmn4j.notation.elements.Note;
 
 /**
  * Class for building <code>Chord</code> objects.
- * 
+ *
  * @author Otso Björklund
  */
 public class ChordBuilder implements DurationalBuilder {

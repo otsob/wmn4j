@@ -16,19 +16,19 @@ import java.util.Objects;
  * Class for chords. This class should be used for chords where the notes are
  * all of same length. For polyphonic textures add voices to the Measure. This
  * class is immutable.
- * 
+ *
  * @author Otso Björklund
  */
-public class Chord implements Durational, Iterable<Note> {
+public final class Chord implements Durational, Iterable<Note> {
 	private final List<Note> notes;
 
 	/**
 	 * Get an instance of <code>Chord</code> with the given <code>Note</code>
 	 * objects.
-	 * 
+	 *
 	 * @param n A non-empty and non-null array of <code>Note</code> objects.
 	 * @return a chord with the given notes.
-	 * 
+	 *
 	 * @throws NullPointerException     if notes is null.
 	 * @throws IllegalArgumentException if notes is empty or all Note objects in
 	 *                                  notes are not of same duration.
@@ -39,11 +39,11 @@ public class Chord implements Durational, Iterable<Note> {
 
 	/**
 	 * Get an instance of <code>Chord</code> with the given <code>Note</code>s.
-	 * 
+	 *
 	 * @param notes A non-empty and non-null Collection of <code>Note</code>
 	 *              objects.
 	 * @return a chord with the given notes.
-	 * 
+	 *
 	 * @throws NullPointerException     if notes is null.
 	 * @throws IllegalArgumentException if notes is empty or all Note objects in
 	 *                                  notes are not of same duration.
@@ -54,7 +54,7 @@ public class Chord implements Durational, Iterable<Note> {
 
 	/**
 	 * Private constructor. Use static getters for getting an instance.
-	 * 
+	 *
 	 * @throws NullPointerException     if notes is null.
 	 * @throws IllegalArgumentException if notes is empty or all Note objects in
 	 *                                  notes are not of same duration.
@@ -64,8 +64,9 @@ public class Chord implements Durational, Iterable<Note> {
 
 		List<Note> notesCopy = new ArrayList<>(Objects.requireNonNull(notes));
 
-		if (notesCopy.isEmpty())
+		if (notesCopy.isEmpty()) {
 			throw new IllegalArgumentException("Chord cannot be constructed with an empty List of notes");
+		}
 
 		notesCopy.sort(Note::compareByPitch);
 		this.notes = Collections.unmodifiableList(notesCopy);
@@ -73,8 +74,9 @@ public class Chord implements Durational, Iterable<Note> {
 		final Duration d = this.notes.get(0).getDuration();
 
 		for (Note n : this.notes) {
-			if (!d.equals(n.getDuration()))
+			if (!d.equals(n.getDuration())) {
 				throw new IllegalArgumentException("All notes in chord must be of same duration");
+			}
 		}
 	}
 
@@ -86,16 +88,17 @@ public class Chord implements Durational, Iterable<Note> {
 	/**
 	 * Get the <code>Note</code> with the fromLowest lowest pitch from this
 	 * <code>Chord</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException if fromLowest is smaller than 0 or at least
 	 *                                  the number of notes in this Chord.
 	 * @param fromLowest index of note, 0 being the lowest note in the chord.
 	 * @return the note from index fromLowest.
 	 */
 	public Note getNote(int fromLowest) {
-		if (fromLowest < 0 || fromLowest >= this.notes.size())
+		if (fromLowest < 0 || fromLowest >= this.notes.size()) {
 			throw new IllegalArgumentException(
 					"Tried to get note with invalid index: " + fromLowest + "from chord: " + this);
+		}
 
 		return this.notes.get(fromLowest);
 	}
@@ -123,7 +126,7 @@ public class Chord implements Durational, Iterable<Note> {
 
 	/**
 	 * Get a Chord with the added note.
-	 * 
+	 *
 	 * @param note note to be Added.
 	 * @return Chord with the notes of this and the added note.
 	 */
@@ -135,7 +138,7 @@ public class Chord implements Durational, Iterable<Note> {
 
 	/**
 	 * Get a Chord with the given note removed.
-	 * 
+	 *
 	 * @param note note to be removed.
 	 * @return Chord without the given note.
 	 */
@@ -147,14 +150,15 @@ public class Chord implements Durational, Iterable<Note> {
 
 	/**
 	 * Check if this contains the given pitch.
-	 * 
+	 *
 	 * @param pitch pitch whose presence in this Chord is checked.
 	 * @return true if this contains the given pitch, false otherwise.
 	 */
 	public boolean contains(Pitch pitch) {
 		for (Note note : this.notes) {
-			if (note.getPitch().equals(pitch))
+			if (note.getPitch().equals(pitch)) {
 				return true;
+			}
 		}
 
 		return false;
@@ -162,7 +166,7 @@ public class Chord implements Durational, Iterable<Note> {
 
 	/**
 	 * Check if this contains the given note.
-	 * 
+	 *
 	 * @param note Note whose presence in this Chord is checked.
 	 * @return true if this contains the given note, false otherwise.
 	 */
@@ -172,7 +176,7 @@ public class Chord implements Durational, Iterable<Note> {
 
 	/**
 	 * Get a Chord with the given pitch removed.
-	 * 
+	 *
 	 * @param pitch pitch of the note to be removed.
 	 * @return a chord without a note with the given pitch.
 	 */
@@ -188,26 +192,30 @@ public class Chord implements Durational, Iterable<Note> {
 
 	/**
 	 * Check equality against <code>Object o</code>.
-	 * 
+	 *
 	 * @param o Object against which this is compared for equality.
 	 * @return true if o is an instance of Chord and contains all and no other notes
 	 *         than the ones in this Chord.
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof Chord))
+		if (!(o instanceof Chord)) {
 			return false;
+		}
 
 		Chord other = (Chord) o;
 
-		if (!this.getDuration().equals(other.getDuration()))
+		if (!this.getDuration().equals(other.getDuration())) {
 			return false;
+		}
 
-		if (this.getNoteCount() != other.getNoteCount())
+		if (this.getNoteCount() != other.getNoteCount()) {
 			return false;
+		}
 
-		if (!this.notes.equals(other.notes))
+		if (!this.notes.equals(other.notes)) {
 			return false;
+		}
 
 		return true;
 	}
@@ -223,7 +231,7 @@ public class Chord implements Durational, Iterable<Note> {
 	 * Get a String representation of this <code>Chord</code>. The string
 	 * representation of chord is of form: <code>[Note0, Note1, ...]</code> where
 	 * the notes are in order increasing order of pitch.
-	 * 
+	 *
 	 * @return string representation of this chord.
 	 */
 	@Override
@@ -234,8 +242,9 @@ public class Chord implements Durational, Iterable<Note> {
 		for (int i = 0; i < this.notes.size(); ++i) {
 			strBuilder.append(this.notes.get(i).toString());
 
-			if (i != this.notes.size() - 1)
+			if (i != this.notes.size() - 1) {
 				strBuilder.append(",");
+			}
 		}
 		strBuilder.append("]");
 		return strBuilder.toString();

@@ -6,7 +6,7 @@ package org.wmn4j.notation.elements;
 
 /**
  * Barline types.
- * 
+ *
  * @author Otso Björklund
  */
 public enum Barline {

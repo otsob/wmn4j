@@ -9,7 +9,7 @@ import org.wmn4j.notation.elements.SingleStaffPart;
 /**
  * Defines the position of a <code>Durational</code> in a <code>Score</code>. Is
  * immutable.
- * 
+ *
  * @author Otso Björklund
  */
 public class ScorePosition {
@@ -25,19 +25,15 @@ public class ScorePosition {
 
 	/**
 	 * Constructor for <code>ScorePosition</code> for parts with multiple staves.
-	 * 
-	 * @param partNumber
-	 *            The number (index) of the part in the <code>Score</code>.
-	 * @param staffNumber
-	 *            The number of the staff in the <code>Part</code>. For
-	 *            <code>SingleStaffPart</code> objects use the constructor without
-	 *            the staffNumber parameter.
-	 * @param measureNumber
-	 *            The measure number.
-	 * @param voiceNumber
-	 *            The voice number in the measure.
-	 * @param indexInVoice
-	 *            The index in the voice specified by voiceNumber.
+	 *
+	 * @param partNumber    The number (index) of the part in the
+	 *                      <code>Score</code>.
+	 * @param staffNumber   The number of the staff in the <code>Part</code>. For
+	 *                      <code>SingleStaffPart</code> objects use the constructor
+	 *                      without the staffNumber parameter.
+	 * @param measureNumber The measure number.
+	 * @param voiceNumber   The voice number in the measure.
+	 * @param indexInVoice  The index in the voice specified by voiceNumber.
 	 */
 	public ScorePosition(int partNumber, int staffNumber, int measureNumber, int voiceNumber, int indexInVoice) {
 		this.partNumber = partNumber;
@@ -51,21 +47,17 @@ public class ScorePosition {
 	/**
 	 * Constructor for <code>ScorePosition</code> that can be used to access a note
 	 * in a chord.
-	 * 
-	 * @param partNumber
-	 *            The number (index) of the part in the <code>Score</code>.
-	 * @param staffNumber
-	 *            The number of the staff in the <code>Part</code>. For
-	 *            <code>SingleStaffPart</code> objects use the constructor without
-	 *            the staffNumber parameter.
-	 * @param measureNumber
-	 *            The measure number.
-	 * @param voiceNumber
-	 *            The voice number in the measure.
-	 * @param indexInVoice
-	 *            The index in the voice specified by voiceNumber.
-	 * @param indexInChord
-	 *            Starting from the bottom of the chord, the index of the Note.
+	 *
+	 * @param partNumber    The number (index) of the part in the
+	 *                      <code>Score</code>.
+	 * @param staffNumber   The number of the staff in the <code>Part</code>. For
+	 *                      <code>SingleStaffPart</code> objects use the constructor
+	 *                      without the staffNumber parameter.
+	 * @param measureNumber The measure number.
+	 * @param voiceNumber   The voice number in the measure.
+	 * @param indexInVoice  The index in the voice specified by voiceNumber.
+	 * @param indexInChord  Starting from the bottom of the chord, the index of the
+	 *                      Note.
 	 */
 	public ScorePosition(int partNumber, int staffNumber, int measureNumber, int voiceNumber, int indexInVoice,
 			int indexInChord) {
@@ -79,15 +71,12 @@ public class ScorePosition {
 
 	/**
 	 * Constructor for position in a part with only a single staff.
-	 * 
-	 * @param partNumber
-	 *            The number (index) of the part in the <code>Score</code>.
-	 * @param measureNumber
-	 *            The measure number.
-	 * @param voiceNumber
-	 *            The voice number in the measure.
-	 * @param indexInVoice
-	 *            The index in the voice specified by voiceNumber.
+	 *
+	 * @param partNumber    The number (index) of the part in the
+	 *                      <code>Score</code>.
+	 * @param measureNumber The measure number.
+	 * @param voiceNumber   The voice number in the measure.
+	 * @param indexInVoice  The index in the voice specified by voiceNumber.
 	 */
 	public ScorePosition(int partNumber, int measureNumber, int voiceNumber, int indexInVoice) {
 		this.partNumber = partNumber;
@@ -135,7 +124,7 @@ public class ScorePosition {
 
 	/**
 	 * Check if this position refers to note in a chord.
-	 * 
+	 *
 	 * @return true if this position is for a note in a chord.
 	 */
 	public boolean isInChord() {
@@ -144,7 +133,7 @@ public class ScorePosition {
 
 	/**
 	 * Get the index of the note in a chord specified by this position.
-	 * 
+	 *
 	 * @return the index, counting from the bottom of the chord, of a note in a
 	 *         chord.
 	 */
@@ -156,35 +145,41 @@ public class ScorePosition {
 	 * Compares this <code>ScorePosition</code> with equality against
 	 * <code>Object o</code>. Two positions are equal if and only if all of their
 	 * properties are equal.
-	 * 
-	 * @param o
-	 *            Object with which this is compared for equality.
+	 *
+	 * @param o Object with which this is compared for equality.
 	 * @return True if o is equal to this, false otherwise.
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
+		if (o == this) {
 			return true;
+		}
 
-		if (!(o instanceof ScorePosition))
+		if (!(o instanceof ScorePosition)) {
 			return false;
+		}
 
 		ScorePosition other = (ScorePosition) o;
 
-		if (this.partNumber != other.getPartNumber())
+		if (this.partNumber != other.getPartNumber()) {
 			return false;
+		}
 
-		if (this.staffNumber != other.getStaffNumber())
+		if (this.staffNumber != other.getStaffNumber()) {
 			return false;
+		}
 
-		if (other.getMeasureNumber() != this.measureNumber)
+		if (other.getMeasureNumber() != this.measureNumber) {
 			return false;
+		}
 
-		if (other.getVoiceNumber() != this.voiceNumber)
+		if (other.getVoiceNumber() != this.voiceNumber) {
 			return false;
+		}
 
-		if (other.getIndexInVoice() != this.indexInVoice)
+		if (other.getIndexInVoice() != this.indexInVoice) {
 			return false;
+		}
 
 		return true;
 	}
@@ -204,8 +199,8 @@ public class ScorePosition {
 	public String toString() {
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("Part: ").append(this.partNumber).append(", Staff: ").append(this.staffNumber)
-				.append(", Measure: ").append(this.measureNumber).append(", Voice: ").append(this.voiceNumber)
-				.append(", Index: ").append(this.indexInVoice);
+		.append(", Measure: ").append(this.measureNumber).append(", Voice: ").append(this.voiceNumber)
+		.append(", Index: ").append(this.indexInVoice);
 
 		return strBuilder.toString();
 	}

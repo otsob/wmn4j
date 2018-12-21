@@ -10,17 +10,17 @@ import java.util.Objects;
  * Class for time signatures. Time signatures consist of the number of beats and
  * the duration of each beat. For example, for the time signature 4/4 the number
  * of beats is 4 and the duration of beat is <code>Durations.QUARTER</code>.
- * 
+ *
  * @author Otso Björklund
  */
-public class TimeSignature {
+public final class TimeSignature {
 
 	private final int beats;
 	private final Duration beatDuration;
 
 	/**
 	 * Get an instance of <code>TimeSignature</code>.
-	 * 
+	 *
 	 * @param numerator   the top number of the time signature.
 	 * @param denominator the bottom number of the time signature.
 	 * @return a TimeSignature with the specified properties.
@@ -31,7 +31,7 @@ public class TimeSignature {
 
 	/**
 	 * Get an instance of <code>TimeSignature</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException if beats is less than 1.
 	 * @throws NullPointerException     if beatDur is null.
 	 * @param beats   number of beats in measure.
@@ -39,8 +39,9 @@ public class TimeSignature {
 	 * @return a TimeSignature with the specified properties.
 	 */
 	public static TimeSignature getTimeSignature(int beats, Duration beatDur) {
-		if (beats < 1)
+		if (beats < 1) {
 			throw new IllegalArgumentException("beats must be at least 1.");
+		}
 
 		return new TimeSignature(beats, Objects.requireNonNull(beatDur));
 	}
@@ -67,7 +68,7 @@ public class TimeSignature {
 	/**
 	 * Get the total duration of a measure with this time signature. For example for
 	 * time signature 4/4 duration is one whole note.
-	 * 
+	 *
 	 * @return sum of beat durations in a measure.
 	 */
 	public Duration getTotalDuration() {
@@ -76,15 +77,16 @@ public class TimeSignature {
 
 	/**
 	 * Compare for equality.
-	 * 
+	 *
 	 * @param o Object against which this is compared for equality.
 	 * @return true if o is an instance of TimeSignature and o has the same number
 	 *         of beats and same beat duration as this. false otherwise.
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof TimeSignature))
+		if (!(o instanceof TimeSignature)) {
 			return false;
+		}
 
 		TimeSignature other = (TimeSignature) o;
 
@@ -102,7 +104,7 @@ public class TimeSignature {
 	/**
 	 * Get String representation of <code>TimeSignature</code>. String
 	 * representation is of form <code>Time(numBeats/beatDuration)</code>.
-	 * 
+	 *
 	 * @return string representation of TimeSignature.
 	 */
 	@Override

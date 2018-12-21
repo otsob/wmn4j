@@ -18,7 +18,7 @@ import java.util.TreeMap;
  * Class that defines a measure. A measure may contain multiple voices that are
  * referred to using voice numbers. This class is immutable. Use the
  * MeasureBuilder class for easier creation of Measures.
- * 
+ *
  * @author Otso Björklund
  */
 public class Measure implements Iterable<Durational> {
@@ -61,21 +61,23 @@ public class Measure implements Iterable<Durational> {
 		this.number = number;
 		SortedMap<Integer, List<Durational>> voicesCopy = new TreeMap<>();
 
-		for (Integer voiceNum : noteVoices.keySet())
+		for (Integer voiceNum : noteVoices.keySet()) {
 			voicesCopy.put(voiceNum, Collections.unmodifiableList(new ArrayList<>(noteVoices.get(voiceNum))));
+		}
 
 		this.voices = Collections.unmodifiableSortedMap(voicesCopy);
 
 		this.measureAttr = Objects.requireNonNull(measureAttr);
 
-		if (this.number < 0)
+		if (this.number < 0) {
 			throw new IllegalArgumentException("Measure number must be at least 0");
+		}
 	}
 
 	/**
 	 * Get the voice numbers in this measure. Voice numbers are not necessarily
 	 * consecutive and do not begin from 0.
-	 * 
+	 *
 	 * @return list of the voice numbers used in this measure.
 	 */
 	public List<Integer> getVoiceNumbers() {
@@ -84,7 +86,7 @@ public class Measure implements Iterable<Durational> {
 
 	/**
 	 * Get a voiceNumber of the measure.
-	 * 
+	 *
 	 * @param voiceNumber the number of the voice.
 	 * @return the voiceNumber at the given index voiceNumber.
 	 */
@@ -181,7 +183,7 @@ public class Measure implements Iterable<Durational> {
 	/**
 	 * Returns the <code>Durational</code> at the given index on the given voice
 	 * number.
-	 * 
+	 *
 	 * @param voiceNumber Number of the voice from which to get the element.
 	 * @param index       index of element on the voice.
 	 * @return <code>Durational</code> at the given index on the given voice.
@@ -189,19 +191,21 @@ public class Measure implements Iterable<Durational> {
 	 *                                if the index is out of range
 	 */
 	public Durational get(int voiceNumber, int index) throws NoSuchElementException {
-		if (!this.voices.keySet().contains(voiceNumber))
+		if (!this.voices.keySet().contains(voiceNumber)) {
 			throw new NoSuchElementException();
+		}
 
 		List<Durational> voice = this.voices.get(voiceNumber);
-		if (index < 0 || index >= voice.size())
+		if (index < 0 || index >= voice.size()) {
 			throw new NoSuchElementException();
+		}
 
 		return voice.get(index);
 	}
 
 	/**
 	 * String representation of <code>Measure</code>. This is subject to change.
-	 * 
+	 *
 	 * @return string representation of measure.
 	 */
 	@Override
@@ -213,8 +217,9 @@ public class Measure implements Iterable<Durational> {
 			strBuilder.append("Voice ").append(i).append(": ");
 			for (int j = 0; j < voices.get(i).size(); ++j) {
 				strBuilder.append(voices.get(i).get(j).toString());
-				if (j != voices.get(i).size() - 1)
+				if (j != voices.get(i).size() - 1) {
 					strBuilder.append(", ");
+				}
 			}
 			strBuilder.append("\n");
 		}
@@ -232,7 +237,7 @@ public class Measure implements Iterable<Durational> {
 
 	/**
 	 * Get an iterator as <code>Measure.Iter</code>.
-	 * 
+	 *
 	 * @return an iterator of type <code>Measure.Iter</code>.
 	 */
 	public Measure.Iter getMeasureIterator() {
@@ -278,8 +283,9 @@ public class Measure implements Iterable<Durational> {
 
 		@Override
 		public boolean hasNext() {
-			if (voiceNumberIndex >= this.voiceNumbers.size())
+			if (voiceNumberIndex >= this.voiceNumbers.size()) {
 				return false;
+			}
 
 			int voiceNumber = this.voiceNumbers.get(this.voiceNumberIndex);
 			return !this.measure.getVoice(voiceNumber).isEmpty();
@@ -287,8 +293,9 @@ public class Measure implements Iterable<Durational> {
 
 		@Override
 		public Durational next() {
-			if (!this.hasNext())
+			if (!this.hasNext()) {
 				throw new NoSuchElementException();
+			}
 
 			this.prevVoiceNumber = this.voiceNumbers.get(this.voiceNumberIndex);
 			List<Durational> currentVoice = this.measure.getVoice(this.prevVoiceNumber);

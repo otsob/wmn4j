@@ -44,8 +44,8 @@ public class MeasureBuilderTest {
 		builder.addVoice();
 		assertEquals(1, builder.getNumberOfVoices());
 		builder.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT))
-				.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT))
-				.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
+		.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT))
+		.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
 
 		Measure measure = builder.build();
 		assertTrue(measure != null);
@@ -71,8 +71,8 @@ public class MeasureBuilderTest {
 		builder.addVoice();
 		assertEquals(1, builder.getNumberOfVoices());
 		builder.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT))
-				.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT))
-				.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
+		.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT))
+		.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
 
 		Measure measure = builder.build();
 		assertTrue(measure != null);
@@ -101,8 +101,8 @@ public class MeasureBuilderTest {
 		builder.addVoice();
 		assertEquals(1, builder.getNumberOfVoices());
 		builder.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT))
-				.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT))
-				.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
+		.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT))
+		.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
 
 		Measure measure = builder.build();
 		assertTrue(measure != null);
@@ -154,8 +154,8 @@ public class MeasureBuilderTest {
 		builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.CMAJ_AMIN);
 
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER.addDot()))
-				.addToVoice(0, new RestBuilder(Durations.QUARTER))
-				.addToVoice(1, new RestBuilder(Durations.QUARTER.addDot()));
+		.addToVoice(0, new RestBuilder(Durations.QUARTER))
+		.addToVoice(1, new RestBuilder(Durations.QUARTER.addDot()));
 		builder.addToVoice(0, new RestBuilder(Durations.SIXTEENTH_TRIPLET)).addToVoice(0,
 				new RestBuilder(Durations.SIXTEENTH_TRIPLET));
 		assertFalse("Voice 0 is full when 6/8 measure is lacking one sixteenth triplet", builder.isVoiceFull(0));
@@ -180,8 +180,8 @@ public class MeasureBuilderTest {
 		builder.setTimeSig(TimeSignatures.SIX_EIGHT);
 
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER.addDot()))
-				.addToVoice(0, new RestBuilder(Durations.QUARTER))
-				.addToVoice(1, new RestBuilder(Durations.QUARTER.addDot()));
+		.addToVoice(0, new RestBuilder(Durations.QUARTER))
+		.addToVoice(1, new RestBuilder(Durations.QUARTER.addDot()));
 		builder.addToVoice(0, new RestBuilder(Durations.SIXTEENTH_TRIPLET)).addToVoice(0,
 				new RestBuilder(Durations.SIXTEENTH_TRIPLET));
 		assertFalse("builder is full when 6/8 measure is lacking one sixteenth triplet", builder.isFull());

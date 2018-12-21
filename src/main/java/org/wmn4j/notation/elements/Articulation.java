@@ -6,7 +6,7 @@ package org.wmn4j.notation.elements;
 
 /**
  * Note specific articulations.
- * 
+ *
  * @author Otso Björklund
  */
 public enum Articulation {
