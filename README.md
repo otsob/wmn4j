@@ -21,6 +21,8 @@ Contributing to wmn4j happens throught pull requests. For commits we try to foll
 
 As wmn4j is an API, the testing happens through unit tests and it is preferred that changes come accompanied by corresponding unit tests.
 
+The coding style of wmn4j is not very strict, but there are some [basic guidelines](CODING_CONVENTIONS.md).
+
 Contributing to this project is supposed to be enjoyable, so behaving nicely and respectfully is appreciated. For a general guideline on code-of-conduct we follow the one outlined by [Contributor Covenant](https://www.contributor-covenant.org/version/1/4/code-of-conduct).
 
 
