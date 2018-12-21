@@ -102,10 +102,7 @@ var activeTableTab = "activeTableTab";
 <hr>
 <br>
 <pre>public interface <span class="typeNameLabel">MusicXmlWriter</span></pre>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
+<div class="block">Interface for MusicXML writers.</div>
 </li>
 </ul>
 </div>
@@ -126,11 +123,16 @@ var activeTableTab = "activeTableTab";
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>static <a href="../../../../org/wmn4j/io/musicxml/MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/io/musicxml/MusicXmlWriter.html#getWriter-org.wmn4j.notation.elements.Score-">getWriter</a></span>(<a href="../../../../org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a>&nbsp;score)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/io/musicxml/MusicXmlWriter.html#getWriter-org.wmn4j.notation.elements.Score-">getWriter</a></span>(<a href="../../../../org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a>&nbsp;score)</code>
+<div class="block">Returns an instance of a writer for the given <a href="../../../../org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/io/musicxml/MusicXmlWriter.html#writeToFile-java.lang.String-">writeToFile</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/io/musicxml/MusicXmlWriter.html#writeToFile-java.lang.String-">writeToFile</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
+<div class="block">Writes the <a href="../../../../org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a> with which this writer was initialized into a
+ MusicXML file into the given path.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -154,6 +156,13 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>getWriter</h4>
 <pre>static&nbsp;<a href="../../../../org/wmn4j/io/musicxml/MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a>&nbsp;getWriter(<a href="../../../../org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a>&nbsp;score)</pre>
+<div class="block">Returns an instance of a writer for the given <a href="../../../../org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>score</code> - the score for which the writer is created</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>an instance of a writer for the given <a href="../../../../org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a></dd>
+</dl>
 </li>
 </ul>
 <a name="writeToFile-java.lang.String-">
@@ -163,6 +172,12 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>writeToFile</h4>
 <pre>void&nbsp;writeToFile(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<div class="block">Writes the <a href="../../../../org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a> with which this writer was initialized into a
+ MusicXML file into the given path.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>path</code> - the output path for the MusicXML file</dd>
+</dl>
 </li>
 </ul>
 </li>

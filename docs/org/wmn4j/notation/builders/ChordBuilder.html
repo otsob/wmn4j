@@ -117,10 +117,6 @@ var activeTableTab = "activeTableTab";
 extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>
 implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></pre>
 <div class="block">Class for building <code>Chord</code> objects.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
 </li>
 </ul>
 </div>
@@ -139,10 +135,14 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/ChordBuilder.html#ChordBuilder-java.util.List-">ChordBuilder</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&gt;&nbsp;noteBuilders)</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/ChordBuilder.html#ChordBuilder-java.util.List-">ChordBuilder</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&gt;&nbsp;noteBuilders)</code>
+<div class="block">Constructor.</div>
+</td>
 </tr>
 <tr class="rowColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/ChordBuilder.html#ChordBuilder-org.wmn4j.notation.builders.NoteBuilder-">ChordBuilder</a></span>(<a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&nbsp;noteBuilder)</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/ChordBuilder.html#ChordBuilder-org.wmn4j.notation.builders.NoteBuilder-">ChordBuilder</a></span>(<a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&nbsp;noteBuilder)</code>
+<div class="block">Constructor.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -161,7 +161,9 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../../../org/wmn4j/notation/builders/ChordBuilder.html" title="class in org.wmn4j.notation.builders">ChordBuilder</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/ChordBuilder.html#add-org.wmn4j.notation.builders.NoteBuilder-">add</a></span>(<a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&nbsp;noteBuilder)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/ChordBuilder.html#add-org.wmn4j.notation.builders.NoteBuilder-">add</a></span>(<a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&nbsp;noteBuilder)</code>
+<div class="block">Adds the given NoteBuilder into this builder.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../../org/wmn4j/notation/elements/Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
@@ -204,6 +206,12 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>ChordBuilder</h4>
 <pre>public&nbsp;ChordBuilder(<a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&nbsp;noteBuilder)</pre>
+<div class="block">Constructor.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>noteBuilder</code> - the note builder that specifies the first note in this
+                    builder</dd>
+</dl>
 </li>
 </ul>
 <a name="ChordBuilder-java.util.List-">
@@ -213,6 +221,11 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>ChordBuilder</h4>
 <pre>public&nbsp;ChordBuilder(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&gt;&nbsp;noteBuilders)</pre>
+<div class="block">Constructor.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>noteBuilders</code> - the note builders that are placed into this builder</dd>
+</dl>
 </li>
 </ul>
 </li>
@@ -230,6 +243,13 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>add</h4>
 <pre>public&nbsp;<a href="../../../../org/wmn4j/notation/builders/ChordBuilder.html" title="class in org.wmn4j.notation.builders">ChordBuilder</a>&nbsp;add(<a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&nbsp;noteBuilder)</pre>
+<div class="block">Adds the given NoteBuilder into this builder.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>noteBuilder</code> - the note builder that is added to this builder</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>reference to this</dd>
+</dl>
 </li>
 </ul>
 <a name="getDuration--">

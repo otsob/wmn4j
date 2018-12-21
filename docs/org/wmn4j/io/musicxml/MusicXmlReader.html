@@ -103,10 +103,6 @@ var activeTableTab = "activeTableTab";
 <br>
 <pre>public interface <span class="typeNameLabel">MusicXmlReader</span></pre>
 <div class="block">Interface for MusicXML readers.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
 </li>
 </ul>
 </div>
@@ -127,7 +123,9 @@ var activeTableTab = "activeTableTab";
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>static <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/io/musicxml/MusicXmlReader.html#SCHEMA">SCHEMA</a></span></code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/io/musicxml/MusicXmlReader.html#SCHEMA">SCHEMA</a></span></code>
+<div class="block">The path to the local MusicXML schema.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -146,7 +144,9 @@ var activeTableTab = "activeTableTab";
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>static <a href="../../../../org/wmn4j/io/musicxml/MusicXmlReader.html" title="interface in org.wmn4j.io.musicxml">MusicXmlReader</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/io/musicxml/MusicXmlReader.html#getReader-boolean-">getReader</a></span>(boolean&nbsp;validate)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/io/musicxml/MusicXmlReader.html#getReader-boolean-">getReader</a></span>(boolean&nbsp;validate)</code>
+<div class="block">Returns a reader object with the given configuration.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../../org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a></code></td>
@@ -184,6 +184,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>SCHEMA</h4>
 <pre>static final&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a> SCHEMA</pre>
+<div class="block">The path to the local MusicXML schema.</div>
 </li>
 </ul>
 </li>
@@ -201,6 +202,14 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>getReader</h4>
 <pre>static&nbsp;<a href="../../../../org/wmn4j/io/musicxml/MusicXmlReader.html" title="interface in org.wmn4j.io.musicxml">MusicXmlReader</a>&nbsp;getReader(boolean&nbsp;validate)</pre>
+<div class="block">Returns a reader object with the given configuration.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>validate</code> - specifies whether the returned reader should validate input
+                 files for complying to MusicXML schema</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a reader object with the given configuration</dd>
+</dl>
 </li>
 </ul>
 <a name="readScore-java.nio.file.Path-">

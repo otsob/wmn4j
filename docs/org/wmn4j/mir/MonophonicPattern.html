@@ -141,7 +141,9 @@ implements <a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../org/wmn4j/mir/MonophonicPattern.html#MonophonicPattern-java.util.List-">MonophonicPattern</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;contents)</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../org/wmn4j/mir/MonophonicPattern.html#MonophonicPattern-java.util.List-">MonophonicPattern</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;contents)</code>
+<div class="block">Constructor.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -200,7 +202,9 @@ implements <a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/wmn4j/mir/MonophonicPattern.html#getContents--">getContents</a></span>()</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/wmn4j/mir/MonophonicPattern.html#getContents--">getContents</a></span>()</code>
+<div class="block">Returns the notation elements in temporal order that make up the pattern.</div>
+</td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
@@ -242,6 +246,12 @@ implements <a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org
 <li class="blockList">
 <h4>MonophonicPattern</h4>
 <pre>public&nbsp;MonophonicPattern(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;contents)</pre>
+<div class="block">Constructor.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>contents</code> - the notation elements in temporal order that make up the
+                 pattern</dd>
+</dl>
 </li>
 </ul>
 </li>
@@ -259,6 +269,11 @@ implements <a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org
 <li class="blockList">
 <h4>getContents</h4>
 <pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;getContents()</pre>
+<div class="block">Returns the notation elements in temporal order that make up the pattern.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the notation elements in temporal order that make up the pattern</dd>
+</dl>
 </li>
 </ul>
 <a name="toString--">
@@ -328,8 +343,8 @@ implements <a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../org/wmn4j/mir/Pattern.html#equalsInPitch-org.wmn4j.mir.Pattern-">equalsInPitch</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - the <code>Pattern</code> against which this is compared for pitch
-            equality.</dd>
+<dd><code>other</code> - the <code>Pattern</code> against which this is compared for
+              pitch equality.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if this <code>Pattern</code> contains the same pitches in the
          same order as other, otherwise returns false</dd>
@@ -353,7 +368,7 @@ implements <a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org
 <dd><code><a href="../../../org/wmn4j/mir/Pattern.html#equalsEnharmonicallyInPitch-org.wmn4j.mir.Pattern-">equalsEnharmonicallyInPitch</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>other</code> - the <code>Pattern</code> against which this is compared for
-            enharmonic pitch equality.</dd>
+              enharmonic pitch equality.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if this <code>Pattern</code> contains the enharmonically same
          pitches in the same order as other, otherwise returns false</dd>
@@ -375,7 +390,7 @@ implements <a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org
 <dd><code><a href="../../../org/wmn4j/mir/Pattern.html#equalsInTransposedPitch-org.wmn4j.mir.Pattern-">equalsInTransposedPitch</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>other</code> - the <code>Pattern</code> against which this is compared for
-            transposed enharmonic pitch equality.</dd>
+              transposed enharmonic pitch equality.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if this <code>Pattern</code> can be transposed so that its
          pitches are enharmonically equal to those of other, otherwise returns
@@ -398,8 +413,8 @@ implements <a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../org/wmn4j/mir/Pattern.html#equalsInRhythm-org.wmn4j.mir.Pattern-">equalsInRhythm</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - the <code>Pattern</code> against which this is compared for rhythm
-            equality.</dd>
+<dd><code>other</code> - the <code>Pattern</code> against which this is compared for
+              rhythm equality.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if this <code>Pattern</code> has the same rhythm as other,
          otherwise returns false</dd>
@@ -421,8 +436,8 @@ implements <a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../org/wmn4j/mir/Pattern.html#equalsInOnsets-org.wmn4j.mir.Pattern-">equalsInOnsets</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - the <code>Pattern</code> against which this is compared for onset
-            equality.</dd>
+<dd><code>other</code> - the <code>Pattern</code> against which this is compared for
+              onset equality.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if the onset times of notes in this <code>Pattern</code> match
          the onset times of notes in other, otherwise returns false</dd>
