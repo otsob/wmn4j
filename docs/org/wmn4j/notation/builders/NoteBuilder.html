@@ -118,10 +118,6 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></pre>
 <div class="block">Class for building <code>Note</code> objects. The built note is cached. This
  is used for ensuring that sequences of tied notes are built correctly.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
 </li>
 </ul>
 </div>
@@ -141,7 +137,9 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 </tr>
 <tr class="altColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#NoteBuilder-org.wmn4j.notation.elements.Pitch-org.wmn4j.notation.elements.Duration-">NoteBuilder</a></span>(<a href="../../../../org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
-           <a href="../../../../org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</code>&nbsp;</td>
+           <a href="../../../../org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</code>
+<div class="block">Constructor.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -160,11 +158,15 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#addArticulation-org.wmn4j.notation.elements.Articulation-">addArticulation</a></span>(<a href="../../../../org/wmn4j/notation/elements/Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&nbsp;articulation)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#addArticulation-org.wmn4j.notation.elements.Articulation-">addArticulation</a></span>(<a href="../../../../org/wmn4j/notation/elements/Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&nbsp;articulation)</code>
+<div class="block">Adds an articulation to this builder.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#addMultiNoteArticulation-org.wmn4j.notation.elements.MultiNoteArticulation-">addMultiNoteArticulation</a></span>(<a href="../../../../org/wmn4j/notation/elements/MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&nbsp;articulation)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#addMultiNoteArticulation-org.wmn4j.notation.elements.MultiNoteArticulation-">addMultiNoteArticulation</a></span>(<a href="../../../../org/wmn4j/notation/elements/MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&nbsp;articulation)</code>
+<div class="block">Adds a multinote articulation to this builder.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
@@ -187,53 +189,75 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;<a href="../../../../org/wmn4j/notation/elements/Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getArticulations--">getArticulations</a></span>()</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getArticulations--">getArticulations</a></span>()</code>
+<div class="block">Returns the articulations set in this builder.</div>
+</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../../../org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getDuration--">getDuration</a></span>()</code>
-<div class="block">Get the <code>Duration</code> set in the builder.</div>
+<div class="block">Returns the duration set in this builder.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/wmn4j/notation/elements/MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getMultiNoteArticulations--">getMultiNoteArticulations</a></span>()</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getMultiNoteArticulations--">getMultiNoteArticulations</a></span>()</code>
+<div class="block">Returns the multinote articulations set in this builder.</div>
+</td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../../../org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getPitch--">getPitch</a></span>()</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getPitch--">getPitch</a></span>()</code>
+<div class="block">Returns the pitch set in this builder.</div>
+</td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../../org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getTiedTo--">getTiedTo</a></span>()</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getTiedTo--">getTiedTo</a></span>()</code>
+<div class="block">Returns the following note to which this builder is tied.</div>
+</td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#isTiedFromPrevious--">isTiedFromPrevious</a></span>()</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#isTiedFromPrevious--">isTiedFromPrevious</a></span>()</code>
+<div class="block">Returns true if this is tied from the previous note or notebuilder.</div>
+</td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setArticulations-java.util.Set-">setArticulations</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;<a href="../../../../org/wmn4j/notation/elements/Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;articulations)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setArticulations-java.util.Set-">setArticulations</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;<a href="../../../../org/wmn4j/notation/elements/Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;articulations)</code>
+<div class="block">Sets the articulations in this builder.</div>
+</td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setDuration-org.wmn4j.notation.elements.Duration-">setDuration</a></span>(<a href="../../../../org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setDuration-org.wmn4j.notation.elements.Duration-">setDuration</a></span>(<a href="../../../../org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</code>
+<div class="block">Sets the duration in this builder.</div>
+</td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setIsTiedFromPrevious-boolean-">setIsTiedFromPrevious</a></span>(boolean&nbsp;isTiedFromPrevious)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setIsTiedFromPrevious-boolean-">setIsTiedFromPrevious</a></span>(boolean&nbsp;isTiedFromPrevious)</code>
+<div class="block">Sets this to be tied from the previous.</div>
+</td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setMultiNoteArticulations-java.util.List-">setMultiNoteArticulations</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/wmn4j/notation/elements/MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;&nbsp;multiNoteArticulations)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setMultiNoteArticulations-java.util.List-">setMultiNoteArticulations</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/wmn4j/notation/elements/MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;&nbsp;multiNoteArticulations)</code>
+<div class="block">Sets the given multinote articulations to this builder.</div>
+</td>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setPitch-org.wmn4j.notation.elements.Pitch-">setPitch</a></span>(<a href="../../../../org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setPitch-org.wmn4j.notation.elements.Pitch-">setPitch</a></span>(<a href="../../../../org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch)</code>
+<div class="block">Sets the pitch in this builder.</div>
+</td>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setTiedTo-org.wmn4j.notation.elements.Note-">setTiedTo</a></span>(<a href="../../../../org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;tiedTo)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setTiedTo-org.wmn4j.notation.elements.Note-">setTiedTo</a></span>(<a href="../../../../org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;tiedTo)</code>
+<div class="block">Sets this to be tied to the given note.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -265,6 +289,7 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <h4>NoteBuilder</h4>
 <pre>public&nbsp;NoteBuilder(<a href="../../../../org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
                    <a href="../../../../org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</pre>
+<div class="block">Constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>pitch</code> - The pitch set in this builder.</dd>
@@ -287,9 +312,10 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>getPitch</h4>
 <pre>public&nbsp;<a href="../../../../org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;getPitch()</pre>
+<div class="block">Returns the pitch set in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The pitch currently set in this builder.</dd>
+<dd>the pitch set in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -300,9 +326,10 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>setPitch</h4>
 <pre>public&nbsp;void&nbsp;setPitch(<a href="../../../../org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch)</pre>
+<div class="block">Sets the pitch in this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>pitch</code> - The pitch to be set in this builder.</dd>
+<dd><code>pitch</code> - the pitch to be set in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -313,14 +340,12 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>getDuration</h4>
 <pre>public&nbsp;<a href="../../../../org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;getDuration()</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.html#getDuration--">DurationalBuilder</a></code></span></div>
-<div class="block">Get the <code>Duration</code> set in the builder. Each
- <code>DurationalBuilder</code> should always have at least a valid duration.</div>
+<div class="block">Returns the duration set in this builder.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.html#getDuration--">getDuration</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The duration currently set in this builder.</dd>
+<dd>the duration currently set in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -331,9 +356,10 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>setDuration</h4>
 <pre>public&nbsp;void&nbsp;setDuration(<a href="../../../../org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</pre>
+<div class="block">Sets the duration in this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>duration</code> - The duration to be set in this builder.</dd>
+<dd><code>duration</code> - The duration to be set in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -344,6 +370,11 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>getArticulations</h4>
 <pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;<a href="../../../../org/wmn4j/notation/elements/Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;getArticulations()</pre>
+<div class="block">Returns the articulations set in this builder.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the articulations set in this builder</dd>
+</dl>
 </li>
 </ul>
 <a name="setArticulations-java.util.Set-">
@@ -353,6 +384,11 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>setArticulations</h4>
 <pre>public&nbsp;void&nbsp;setArticulations(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;<a href="../../../../org/wmn4j/notation/elements/Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;articulations)</pre>
+<div class="block">Sets the articulations in this builder.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>articulations</code> - the articulations that are set into this builder</dd>
+</dl>
 </li>
 </ul>
 <a name="addArticulation-org.wmn4j.notation.elements.Articulation-">
@@ -362,6 +398,11 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>addArticulation</h4>
 <pre>public&nbsp;void&nbsp;addArticulation(<a href="../../../../org/wmn4j/notation/elements/Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&nbsp;articulation)</pre>
+<div class="block">Adds an articulation to this builder.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>articulation</code> - the articulation that is added to this builder</dd>
+</dl>
 </li>
 </ul>
 <a name="getMultiNoteArticulations--">
@@ -371,6 +412,11 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>getMultiNoteArticulations</h4>
 <pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/wmn4j/notation/elements/MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;&nbsp;getMultiNoteArticulations()</pre>
+<div class="block">Returns the multinote articulations set in this builder.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the multinote articulations set in this builder</dd>
+</dl>
 </li>
 </ul>
 <a name="addMultiNoteArticulation-org.wmn4j.notation.elements.MultiNoteArticulation-">
@@ -380,6 +426,11 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>addMultiNoteArticulation</h4>
 <pre>public&nbsp;void&nbsp;addMultiNoteArticulation(<a href="../../../../org/wmn4j/notation/elements/MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&nbsp;articulation)</pre>
+<div class="block">Adds a multinote articulation to this builder.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>articulation</code> - the multinote articulation that is added to this builder</dd>
+</dl>
 </li>
 </ul>
 <a name="setMultiNoteArticulations-java.util.List-">
@@ -389,6 +440,12 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>setMultiNoteArticulations</h4>
 <pre>public&nbsp;void&nbsp;setMultiNoteArticulations(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/wmn4j/notation/elements/MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;&nbsp;multiNoteArticulations)</pre>
+<div class="block">Sets the given multinote articulations to this builder.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>multiNoteArticulations</code> - the multinote articulations that are set into
+                               this builder</dd>
+</dl>
 </li>
 </ul>
 <a name="addTieToFollowing-org.wmn4j.notation.builders.NoteBuilder-">
@@ -415,6 +472,11 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>getTiedTo</h4>
 <pre>public&nbsp;<a href="../../../../org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;getTiedTo()</pre>
+<div class="block">Returns the following note to which this builder is tied.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the note to which this is tied</dd>
+</dl>
 </li>
 </ul>
 <a name="setTiedTo-org.wmn4j.notation.elements.Note-">
@@ -424,6 +486,11 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>setTiedTo</h4>
 <pre>public&nbsp;void&nbsp;setTiedTo(<a href="../../../../org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;tiedTo)</pre>
+<div class="block">Sets this to be tied to the given note.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>tiedTo</code> - the note to which this is set to be tied</dd>
+</dl>
 </li>
 </ul>
 <a name="isTiedFromPrevious--">
@@ -433,6 +500,11 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>isTiedFromPrevious</h4>
 <pre>public&nbsp;boolean&nbsp;isTiedFromPrevious()</pre>
+<div class="block">Returns true if this is tied from the previous note or notebuilder.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>true if this is tied from the previous note or notebuilder</dd>
+</dl>
 </li>
 </ul>
 <a name="setIsTiedFromPrevious-boolean-">
@@ -442,6 +514,12 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <li class="blockList">
 <h4>setIsTiedFromPrevious</h4>
 <pre>public&nbsp;void&nbsp;setIsTiedFromPrevious(boolean&nbsp;isTiedFromPrevious)</pre>
+<div class="block">Sets this to be tied from the previous.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>isTiedFromPrevious</code> - the value that defines whether this is tied from
+                           the previous note or note builder</dd>
+</dl>
 </li>
 </ul>
 <a name="clearCache--">

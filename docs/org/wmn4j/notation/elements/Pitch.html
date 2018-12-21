@@ -113,7 +113,7 @@ var activeTableTab = "activeTableTab";
 </dl>
 <hr>
 <br>
-<pre>public class <span class="typeNameLabel">Pitch</span>
+<pre>public final class <span class="typeNameLabel">Pitch</span>
 extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>
 implements <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</a>&lt;<a href="../../../../org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&gt;</pre>
 <div class="block">The <code>Pitch</code> class represents a pitch. Pitches consist of the basic
@@ -122,10 +122,6 @@ implements <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Comparab
  the note. Octave number is based on
  <a href="http://en.wikipedia.org/wiki/Scientific_pitch_notation">scientific
  pitch notation</a>. This class is immutable.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
 </li>
 </ul>
 </div>
@@ -343,15 +339,16 @@ implements <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Comparab
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>pitchName</code> - the letter on which the name of the pitch is based.</dd>
-<dd><code>alter</code> - by how many half-steps the pitch is altered up (positive values)
-            or down (negative values).</dd>
+<dd><code>alter</code> - by how many half-steps the pitch is altered up (positive
+                  values) or down (negative values).</dd>
 <dd><code>octave</code> - the octave of the pitch.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Pitch object with the specified attributes.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></code> - if alter is greater than <a href="../../../../org/wmn4j/notation/elements/Pitch.html#ALTER_LIMIT"><code>ALTER_LIMIT</code></a> of
-             smaller than <a href="../../../../org/wmn4j/notation/elements/Pitch.html#ALTER_LIMIT"><code>-1*ALTER_LIMIT</code></a>, or if octave is
-             negative or larger than <a href="../../../../org/wmn4j/notation/elements/Pitch.html#MAX_OCTAVE"><code>MAX_OCTAVE</code></a>.</dd>
+<dd><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></code> - if alter is greater than <a href="../../../../org/wmn4j/notation/elements/Pitch.html#ALTER_LIMIT"><code>ALTER_LIMIT</code></a> of smaller than
+                                  <a href="../../../../org/wmn4j/notation/elements/Pitch.html#ALTER_LIMIT"><code>-1*ALTER_LIMIT</code></a>, or if
+                                  octave is negative or larger than
+                                  <a href="../../../../org/wmn4j/notation/elements/Pitch.html#MAX_OCTAVE"><code>MAX_OCTAVE</code></a>.</dd>
 </dl>
 </li>
 </ul>
