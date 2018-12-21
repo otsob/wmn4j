@@ -8,7 +8,7 @@ package org.wmn4j.io.musicxml;
  *
  * @author Otso Björklund
  */
-class MusicXmlTags {
+final class MusicXmlTags {
 
 	// Barline tags
 	static final String BARLINE = "barline";

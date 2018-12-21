@@ -18,7 +18,7 @@ import org.wmn4j.notation.elements.Pitch;
 /**
  * Class for building <code>Note</code> objects. The built note is cached. This
  * is used for ensuring that sequences of tied notes are built correctly.
- * 
+ *
  * @author Otso Björklund
  */
 public class NoteBuilder implements DurationalBuilder {
@@ -34,10 +34,8 @@ public class NoteBuilder implements DurationalBuilder {
 	private Note cachedNote;
 
 	/**
-	 * @param pitch
-	 *            The pitch set in this builder.
-	 * @param duration
-	 *            The duration set in this builder.
+	 * @param pitch    The pitch set in this builder.
+	 * @param duration The duration set in this builder.
 	 */
 	public NoteBuilder(Pitch pitch, Duration duration) {
 		this.pitch = pitch;
@@ -55,8 +53,7 @@ public class NoteBuilder implements DurationalBuilder {
 	}
 
 	/**
-	 * @param pitch
-	 *            The pitch to be set in this builder.
+	 * @param pitch The pitch to be set in this builder.
 	 */
 	public void setPitch(Pitch pitch) {
 		this.pitch = pitch;
@@ -71,8 +68,7 @@ public class NoteBuilder implements DurationalBuilder {
 	}
 
 	/**
-	 * @param duration
-	 *            The duration to be set in this builder.
+	 * @param duration The duration to be set in this builder.
 	 */
 	public void setDuration(Duration duration) {
 		this.duration = duration;
@@ -107,9 +103,8 @@ public class NoteBuilder implements DurationalBuilder {
 	 * should be built before this. When the notes are built the <code>Note</code>
 	 * returned by the call of {@link #build build} on this will be tied to the
 	 * <code>Note</code> built by builder.
-	 * 
-	 * @param builder
-	 *            The builder for the following note that this is to be tied to.
+	 *
+	 * @param builder The builder for the following note that this is to be tied to.
 	 */
 	public void addTieToFollowing(NoteBuilder builder) {
 		this.followingTied = builder;
@@ -147,7 +142,7 @@ public class NoteBuilder implements DurationalBuilder {
 	 * this method to create the first note in a sequence of tied notes builds all
 	 * the tied notes. The <code>Note</code> objects are cached in the builders. In
 	 * case of tied notes, the temporally first one should be built first.
-	 * 
+	 *
 	 * @return <code>Note</code> instance with the values set in this builder.
 	 */
 	@Override

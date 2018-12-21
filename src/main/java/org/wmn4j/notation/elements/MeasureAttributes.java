@@ -12,10 +12,10 @@ import java.util.Objects;
 /**
  * Class containing the attributes of measures that typically remain unchanged
  * from one measure to the next.
- * 
+ *
  * @author Otso Björklund
  */
-public class MeasureAttributes {
+public final class MeasureAttributes {
 
 	private final TimeSignature timeSig;
 	private final KeySignature keySig;
@@ -48,10 +48,11 @@ public class MeasureAttributes {
 		this.leftBarline = Objects.requireNonNull(leftBarline);
 		this.clef = Objects.requireNonNull(clef);
 
-		if (clefChanges != null && !clefChanges.isEmpty())
+		if (clefChanges != null && !clefChanges.isEmpty()) {
 			this.clefChanges = new HashMap<>(clefChanges);
-		else
+		} else {
 			this.clefChanges = Collections.<Duration, Clef>emptyMap();
+		}
 	}
 
 	public TimeSignature getTimeSignature() {
@@ -84,25 +85,31 @@ public class MeasureAttributes {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof MeasureAttributes))
+		if (!(o instanceof MeasureAttributes)) {
 			return false;
+		}
 
 		MeasureAttributes other = (MeasureAttributes) o;
 
-		if (!this.timeSig.equals(other.timeSig))
+		if (!this.timeSig.equals(other.timeSig)) {
 			return false;
+		}
 
-		if (!this.keySig.equals(other.keySig))
+		if (!this.keySig.equals(other.keySig)) {
 			return false;
+		}
 
-		if (!this.rightBarline.equals(other.rightBarline))
+		if (!this.rightBarline.equals(other.rightBarline)) {
 			return false;
+		}
 
-		if (!this.leftBarline.equals(other.leftBarline))
+		if (!this.leftBarline.equals(other.leftBarline)) {
 			return false;
+		}
 
-		if (!this.clef.equals(other.clef))
+		if (!this.clef.equals(other.clef)) {
 			return false;
+		}
 
 		return true;
 	}

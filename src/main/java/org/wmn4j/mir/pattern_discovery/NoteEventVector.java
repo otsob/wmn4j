@@ -7,7 +7,7 @@ package org.wmn4j.mir.pattern_discovery;
 import org.wmn4j.notation.iterators.ScorePosition;
 
 /**
- * 
+ *
  * @author Otso Björklund
  */
 public class NoteEventVector implements Comparable<NoteEventVector> {
@@ -70,10 +70,12 @@ public class NoteEventVector implements Comparable<NoteEventVector> {
 	public int compareTo(NoteEventVector other) {
 		for (int i = 0; i < this.getDimensionality(); ++i) {
 			// TODO: Consider checking if doubles just really close to each other
-			if (this.getComponent(i) < other.getComponent(i))
+			if (this.getComponent(i) < other.getComponent(i)) {
 				return -1;
-			if (this.getComponent(i) > other.getComponent(i))
+			}
+			if (this.getComponent(i) > other.getComponent(i)) {
 				return 1;
+			}
 		}
 
 		return 0;
@@ -81,15 +83,18 @@ public class NoteEventVector implements Comparable<NoteEventVector> {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
+		if (o == this) {
 			return true;
+		}
 
-		if (!(o instanceof NoteEventVector))
+		if (!(o instanceof NoteEventVector)) {
 			return false;
+		}
 
 		NoteEventVector other = (NoteEventVector) o;
-		if (other.getDimensionality() != this.getDimensionality())
+		if (other.getDimensionality() != this.getDimensionality()) {
 			return false;
+		}
 
 		return this.compareTo(other) == 0;
 	}
@@ -124,8 +129,9 @@ public class NoteEventVector implements Comparable<NoteEventVector> {
 		}
 		strBuilder.append(Double.toString(this.components[this.components.length - 1])).append(")");
 
-		if (this.scorePosition != null)
+		if (this.scorePosition != null) {
 			strBuilder.append(" at ").append(scorePosition);
+		}
 
 		return strBuilder.toString();
 	}

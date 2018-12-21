@@ -62,8 +62,9 @@ public class SingleStaffPartTest {
 		noteVoices.get(1).add(Rest.getRest(Durations.QUARTER));
 
 		List<Measure> measureList = new ArrayList<>();
-		for (int i = 1; i <= this.measureCount; ++i)
+		for (int i = 1; i <= this.measureCount; ++i) {
 			measureList.add(new Measure(i, noteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G));
+		}
 
 		this.measures = Collections.unmodifiableList(measureList);
 	}
@@ -127,7 +128,7 @@ public class SingleStaffPartTest {
 			iter.remove();
 			fail("Removing through iterator did not cause exception");
 		} catch (Exception e) {
-			/* Ignore */ }
+		/* Ignore */ }
 
 		assertEquals(this.measureCount, part.getStaff().getMeasures().size());
 	}

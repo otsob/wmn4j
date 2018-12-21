@@ -18,7 +18,7 @@ import org.wmn4j.notation.iterators.ScorePosition;
  * Class that describes a score. This class is immutable.
  * <code>ScoreBuilder</code> can be used for creating <code>Score</code>
  * objects.
- * 
+ *
  * @author Otso Björklund
  */
 public class Score implements Iterable<Part> {
@@ -27,7 +27,7 @@ public class Score implements Iterable<Part> {
 	 * Type for the different text attributes a score can have.
 	 */
 	public enum Attribute {
-	NAME, COMPOSER, ARRANGER, YEAR
+		NAME, COMPOSER, ARRANGER, YEAR
 	}
 
 	private final Map<Attribute, String> scoreAttr;
@@ -41,8 +41,9 @@ public class Score implements Iterable<Part> {
 		this.parts = Collections.unmodifiableList(new ArrayList<>(parts));
 		this.scoreAttr = Collections.unmodifiableMap(new HashMap<>(attributes));
 
-		if (this.parts.isEmpty())
+		if (this.parts.isEmpty()) {
 			throw new IllegalArgumentException("Cannot create score: parts is empty");
+		}
 	}
 
 	/**
@@ -80,15 +81,16 @@ public class Score implements Iterable<Part> {
 	 *         string otherwise.
 	 */
 	public String getAttribute(Attribute attribute) {
-		if (this.scoreAttr.containsKey(attribute))
+		if (this.scoreAttr.containsKey(attribute)) {
 			return this.scoreAttr.get(attribute);
+		}
 
 		return "";
 	}
 
 	/**
 	 * Get the <code>Durational</code> at position.
-	 * 
+	 *
 	 * @param position the <code>ScorePosition</code> from which to get the element.
 	 * @return the <code>Durational</code> at position.
 	 * @throws NoSuchElementException if the position is not found.

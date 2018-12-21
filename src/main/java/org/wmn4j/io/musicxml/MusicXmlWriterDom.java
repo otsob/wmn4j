@@ -39,7 +39,7 @@ import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 import org.wmn4j.notation.iterators.ScoreIterator;
 
 /**
- * 
+ *
  * @author Otso Björklund
  */
 class MusicXmlWriterDom implements MusicXmlWriter {
@@ -49,7 +49,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	private final SortedMap<String, Part> partIdMap = new TreeMap<>();
 	private final int divisions;
 
-	public MusicXmlWriterDom(Score score) {
+	MusicXmlWriterDom(Score score) {
 		this.score = score;
 		this.divisions = computeDivisions(this.score);
 	}
@@ -111,8 +111,9 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 
 		while (iter.hasNext()) {
 			Duration dur = iter.next().getDuration();
-			if (dur.shorterThan(shortest))
+			if (dur.shorterThan(shortest)) {
 				shortest = dur;
+			}
 		}
 
 		return 1;
@@ -178,11 +179,13 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		List<Integer> voiceNumber = measure.getVoiceNumbers();
 		for (Integer voiceNumbers : voiceNumber) {
 			for (Durational dur : measure.getVoice(voiceNumbers)) {
-				if (dur instanceof Rest)
+				if (dur instanceof Rest) {
 					measureElement.appendChild(createRestElement((Rest) dur, voiceNumbers, 0));
+				}
 
-				if (dur instanceof Note)
+				if (dur instanceof Note) {
 					measureElement.appendChild(createNoteElement((Note) dur, voiceNumbers, 0, false));
+				}
 
 				if (dur instanceof Chord) {
 					boolean useChordTag = false;

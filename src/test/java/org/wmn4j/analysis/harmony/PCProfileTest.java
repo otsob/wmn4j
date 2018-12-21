@@ -75,14 +75,17 @@ public class PCProfileTest {
 		final int G4Count = 3;
 		final int CsharpCount = 2;
 
-		for (int i = 0; i < C4Count; ++i)
+		for (int i = 0; i < C4Count; ++i) {
 			profile.add(C4);
+		}
 
-		for (int i = 0; i < G4Count; ++i)
+		for (int i = 0; i < G4Count; ++i) {
 			profile.add(G4);
+		}
 
-		for (int i = 0; i < CsharpCount; ++i)
+		for (int i = 0; i < CsharpCount; ++i) {
 			profile.add(Csharp4);
+		}
 
 		assertEquals("Incorrect value for C before normalization", C4Count, profile.getValue(PitchClass.C), EPS);
 		assertEquals("Incorrect value for G before normalization", G4Count, profile.getValue(PitchClass.G), EPS);

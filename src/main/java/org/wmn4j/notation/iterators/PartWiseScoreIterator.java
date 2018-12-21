@@ -16,7 +16,7 @@ import org.wmn4j.notation.elements.Score;
  * Iterates through a <code>Score</code> in part wise order. Starts by iterating
  * through the part with the smallest number. Iterates through parts starting
  * from smallest measure number. Iterates through measure voice by voice.
- * 
+ *
  * @author Otso Björklund
  */
 public class PartWiseScoreIterator implements ScoreIterator {
@@ -53,8 +53,9 @@ public class PartWiseScoreIterator implements ScoreIterator {
 
 	@Override
 	public Durational next() {
-		if (!this.hasNext())
+		if (!this.hasNext()) {
 			throw new NoSuchElementException();
+		}
 
 		if (!this.currentMeasureIterator.hasNext()) {
 			if (!this.currentPartIterator.hasNext()) {
@@ -77,8 +78,9 @@ public class PartWiseScoreIterator implements ScoreIterator {
 
 	@Override
 	public ScorePosition positionOfPrevious() {
-		if (this.prevPart == null)
+		if (this.prevPart == null) {
 			throw new IllegalStateException("no previous position available because next has not been called yet");
+		}
 
 		return new ScorePosition(this.prevPartIndex, this.prevStaffNumber, this.prevMeasureNumber, this.prevVoice,
 				this.prevIndex);

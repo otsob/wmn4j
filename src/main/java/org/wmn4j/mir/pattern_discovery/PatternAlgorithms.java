@@ -17,7 +17,7 @@ import javafx.util.Pair;
  *
  * @author Otso Björklund
  */
-public class PatternAlgorithms {
+public final class PatternAlgorithms {
 
 	// Implements SIATECH
 	public static List<TEC> computeTecs(PointSet dataset) {
@@ -32,8 +32,9 @@ public class PatternAlgorithms {
 			for (int j = i + 1; j < dataset.size(); ++j) {
 				NoteEventVector diff = dataset.get(j).subtract(origin);
 
-				if (!mtpMap.containsKey(diff))
+				if (!mtpMap.containsKey(diff)) {
 					mtpMap.put(diff, new ArrayList<>());
+				}
 
 				mtpMap.get(diff).add(new Pair<>(i, j));
 			}
@@ -110,4 +111,8 @@ public class PatternAlgorithms {
 		return translators;
 	}
 
+	private PatternAlgorithms() {
+		// Not meant to be instantiated
+		throw new AssertionError();
+	}
 }

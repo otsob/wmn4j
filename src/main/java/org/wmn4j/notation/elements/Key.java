@@ -6,7 +6,7 @@ package org.wmn4j.notation.elements;
 
 /**
  * Major and minor keys.
- * 
+ *
  * @author Otso Björklund
  */
 public enum Key {
@@ -35,13 +35,13 @@ public enum Key {
 	A_MINOR(KeySignatures.CMAJ_AMIN),
 	BFLAT_MINOR(KeySignatures.DFLATMAJ_BFLATMIN),
 	B_MINOR(KeySignatures.DMAJ_BMIN);
-	
+
 	private final KeySignature keySignature;
-	
+
 	Key(KeySignature keySignature) {
 		this.keySignature = keySignature;
 	}
-	
+
 	public KeySignature getKeySignature() {
 		return this.keySignature;
 	}

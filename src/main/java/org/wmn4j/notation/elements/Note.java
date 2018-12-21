@@ -18,10 +18,10 @@ import java.util.Set;
  * objects. Notes have pitch, duration, articulations, and can be tied. A
  * sequence of tied notes functions like a singly linked list where a previous
  * note keeps track of the following tied note.
- * 
+ *
  * @author otsobjorklund
  */
-public class Note implements Durational {
+public final class Note implements Durational {
 
 	private final Pitch pitch;
 	private final Duration duration;
@@ -33,7 +33,7 @@ public class Note implements Durational {
 
 	/**
 	 * Get a <code>Note</code> object with specified parameters.
-	 * 
+	 *
 	 * @param pitchName the letter in the pitch name.
 	 * @param alter     how many half-steps the pitch is altered up (positive) or
 	 *                  down (negative).
@@ -47,7 +47,7 @@ public class Note implements Durational {
 
 	/**
 	 * Get a <code>Note</code> object with specified parameters.
-	 * 
+	 *
 	 * @param pitch    the pitch of the note. Must not be null.
 	 * @param duration the duration of the note. Must not be null.
 	 * @return a Note object with the given parameters.
@@ -58,7 +58,7 @@ public class Note implements Durational {
 
 	/**
 	 * Get a <code>Note</code> object with specified parameters.
-	 * 
+	 *
 	 * @param pitch         the pitch of the note. Must not be null.
 	 * @param duration      the duration of the note. Must not be null.
 	 * @param articulations a set of Articulations associated with the note.
@@ -70,7 +70,7 @@ public class Note implements Durational {
 
 	/**
 	 * Get a <code>Note</code> object with specified parameters.
-	 * 
+	 *
 	 * @param pitch                  the pitch of the note. Must not be null.
 	 * @param duration               the duration of the note. Must not be null.
 	 * @param articulations          a set of Articulations associated with the
@@ -86,7 +86,7 @@ public class Note implements Durational {
 
 	/**
 	 * Get a <code>Note</code> object with specified parameters.
-	 * 
+	 *
 	 * @param pitch                  the pitch of the note. Must not be null.
 	 * @param duration               the duration of the note. Must not be null.
 	 * @param articulations          a set of Articulations associated with the
@@ -105,7 +105,7 @@ public class Note implements Durational {
 	/**
 	 * Private constructor. Use the static <code>getNote</code> methods or
 	 * <code>NoteBuilder</code> to get an instance.
-	 * 
+	 *
 	 * @throws NullPointerException if duration or pitch is null.
 	 * @param pitch         the pitch of the note.
 	 * @param duration      the duration of the note.
@@ -116,15 +116,17 @@ public class Note implements Durational {
 
 		this.pitch = Objects.requireNonNull(pitch);
 		this.duration = Objects.requireNonNull(duration);
-		if (articulations != null && !articulations.isEmpty())
+		if (articulations != null && !articulations.isEmpty()) {
 			this.articulations = Collections.unmodifiableSet(EnumSet.copyOf(articulations));
-		else
+		} else {
 			this.articulations = Collections.emptySet();
+		}
 
-		if (multiNoteArticulations != null && !multiNoteArticulations.isEmpty())
+		if (multiNoteArticulations != null && !multiNoteArticulations.isEmpty()) {
 			this.multiNoteArticulations = Collections.unmodifiableList(new ArrayList<>(multiNoteArticulations));
-		else
+		} else {
 			this.multiNoteArticulations = Collections.emptyList();
+		}
 
 		this.tiedTo = tiedTo;
 		this.isTiedFrom = isTiedFromPrevious;
@@ -132,7 +134,7 @@ public class Note implements Durational {
 
 	/**
 	 * Get the <code>Pitch</code> of this <code>Note</code>.
-	 * 
+	 *
 	 * @return the Pitch of this Note.
 	 */
 	public Pitch getPitch() {
@@ -141,7 +143,7 @@ public class Note implements Durational {
 
 	/**
 	 * Get the <code>Duration</code> of this <code>Note</code>.
-	 * 
+	 *
 	 * @return the Duration of this Note.
 	 */
 	@Override
@@ -159,7 +161,7 @@ public class Note implements Durational {
 
 	/**
 	 * Get the articulations of this <code>Note</code> as a <code>Set</code>.
-	 * 
+	 *
 	 * @return the articulations of this <code>Note</code>.
 	 */
 	public Set<Articulation> getArticulations() {
@@ -168,7 +170,7 @@ public class Note implements Durational {
 
 	/**
 	 * Check if this <code>Note</code> has any articulations.
-	 * 
+	 *
 	 * @return true if this Note has any articulations, otherwise false.
 	 */
 	public boolean hasArticulations() {
@@ -177,7 +179,7 @@ public class Note implements Durational {
 
 	/**
 	 * Check if this <code>Note</code> has a particular articulation.
-	 * 
+	 *
 	 * @param articulation the articulation whose presence is checked.
 	 * @return true if this Note has the given articulation, otherwise false.
 	 */
@@ -228,7 +230,7 @@ public class Note implements Durational {
 	 * For example, if three quarter notes are tied together, then the tied duration
 	 * of the first note is a dotted half note. For a note that is not tied to a
 	 * following note this is equal to the note's duration.
-	 * 
+	 *
 	 * @return The total duration of consecutive tied notes starting from the onset
 	 *         of this <code>Note</code>.
 	 */
@@ -255,7 +257,7 @@ public class Note implements Durational {
 
 	/**
 	 * Compare notes by pitch.
-	 * 
+	 *
 	 * @param other the note to which this is compared
 	 * @return negative integer if this note is lower than other, positive integer
 	 *         if this is higher than other, 0 if notes are (enharmonically) of same
@@ -267,7 +269,7 @@ public class Note implements Durational {
 
 	/**
 	 * Returns a string representation of this <code>Note</code>.
-	 * 
+	 *
 	 * @return string representation of this Note.
 	 */
 	@Override
@@ -300,7 +302,7 @@ public class Note implements Durational {
 
 	/**
 	 * Compare this to other <code>Note</code> for equality of pitch and duration.
-	 * 
+	 *
 	 * @param other Note with which this is compared.
 	 * @return True if pitch and duration are equal, false otherwise.
 	 */
@@ -312,26 +314,30 @@ public class Note implements Durational {
 	 * Check this <code>Note</code> for equality against <code>Object o</code>.
 	 * Notes are equal if they have the same Pitch, Duration, and set of
 	 * Articulations.
-	 * 
+	 *
 	 * @param o the Object against which this Note is compared for equality.
 	 * @return true if Object o is of class Note and has the same Pitch, Duration,
 	 *         and Articulations as this Node. false otherwise.
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
+		if (o == this) {
 			return true;
+		}
 
-		if (!(o instanceof Note))
+		if (!(o instanceof Note)) {
 			return false;
+		}
 
 		Note other = (Note) o;
 
-		if (!this.equalsInPitchAndDuration(other))
+		if (!this.equalsInPitchAndDuration(other)) {
 			return false;
+		}
 
-		if (!this.articulations.equals(other.articulations))
+		if (!this.articulations.equals(other.articulations)) {
 			return false;
+		}
 
 		// TODO: Effect of ties and MultiNoteArticulations.
 

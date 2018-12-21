@@ -8,10 +8,10 @@ import java.util.Arrays;
 
 /**
  * Collection of typical key signatures associated with major and minor keys.
- * 
+ *
  * @author Otso Björklund
  */
-public class KeySignatures {
+public final class KeySignatures {
 	// Basic key signatures with sharps
 	public static final KeySignature CMAJ_AMIN = new KeySignature(null, null);
 	public static final KeySignature GMAJ_EMIN = new KeySignature(Arrays.asList(Pitch.Base.F), null);

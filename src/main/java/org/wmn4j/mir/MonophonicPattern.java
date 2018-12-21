@@ -15,7 +15,7 @@ import org.wmn4j.notation.elements.Durational;
  * A class for representing monophonic musical patterns. In a monophonic pattern
  * no notes occur simultaneously. The pattern cannot contain chords and does not
  * consist of multiple voices. This class is immutable.
- * 
+ *
  * @author Otso Björklund
  */
 public final class MonophonicPattern implements Pattern {
@@ -24,12 +24,15 @@ public final class MonophonicPattern implements Pattern {
 
 	public MonophonicPattern(List<Durational> contents) {
 		this.contents = Collections.unmodifiableList(new ArrayList<>(contents));
-		if (this.contents == null)
+		if (this.contents == null) {
 			throw new NullPointerException("Cannot create pattern with null contents");
-		if (this.contents.isEmpty())
+		}
+		if (this.contents.isEmpty()) {
 			throw new IllegalArgumentException("Cannot create pattern with empty contents");
-		if (this.contents.stream().anyMatch((dur) -> (dur instanceof Chord)))
+		}
+		if (this.contents.stream().anyMatch((dur) -> (dur instanceof Chord))) {
 			throw new IllegalArgumentException("Contents contain a Chord. Contents must be monophonic");
+		}
 	}
 
 	public List<Durational> getContents() {
@@ -39,15 +42,16 @@ public final class MonophonicPattern implements Pattern {
 	@Override
 	public String toString() {
 		StringBuilder strBuilder = new StringBuilder();
-		for (Durational dur : this.contents)
+		for (Durational dur : this.contents) {
 			strBuilder.append(dur.toString());
+		}
 
 		return strBuilder.toString();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#equals(wmnlibmir.Pattern)
 	 */
 	@Override
@@ -58,7 +62,7 @@ public final class MonophonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#isMonophonic()
 	 */
 	@Override
@@ -69,7 +73,7 @@ public final class MonophonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#equalsInPitch(wmnlibmir.Pattern)
 	 */
 	@Override
@@ -80,7 +84,7 @@ public final class MonophonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#equalsEnharmonicallyInPitch(wmnlibmir.Pattern)
 	 */
 	@Override
@@ -91,7 +95,7 @@ public final class MonophonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#equalsInTransposedPitch(wmnlibmir.Pattern)
 	 */
 	@Override
@@ -102,7 +106,7 @@ public final class MonophonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#equalsInRhythm(wmnlibmir.Pattern)
 	 */
 	@Override
@@ -113,7 +117,7 @@ public final class MonophonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#equalsInOnsets(wmnlibmir.Pattern)
 	 */
 	@Override

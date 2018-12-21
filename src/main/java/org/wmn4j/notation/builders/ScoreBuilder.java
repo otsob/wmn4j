@@ -14,7 +14,7 @@ import org.wmn4j.notation.elements.Score;
 
 /**
  * Class for building <code>Score</code> objects.
- * 
+ *
  * @author Otso Björklund
  */
 public class ScoreBuilder {
@@ -29,11 +29,9 @@ public class ScoreBuilder {
 
 	/**
 	 * Set attribute to given value.
-	 * 
-	 * @param attribute
-	 *            the attribute to be set.
-	 * @param attrValue
-	 *            value for the attribute.
+	 *
+	 * @param attribute the attribute to be set.
+	 * @param attrValue value for the attribute.
 	 */
 	public void setAttribute(Score.Attribute attribute, String attrValue) {
 		this.scoreAttr.put(attribute, attrValue);
@@ -41,9 +39,8 @@ public class ScoreBuilder {
 
 	/**
 	 * Add <code>PartBuilder</code> to builder.
-	 * 
-	 * @param partBuilder
-	 *            partBuilder to added to this builder.
+	 *
+	 * @param partBuilder partBuilder to added to this builder.
 	 */
 	public void addPart(PartBuilder partBuilder) {
 		this.partBuilders.add(partBuilder);
@@ -51,7 +48,7 @@ public class ScoreBuilder {
 
 	/**
 	 * Build a <code>Score</code> with the values specified in this builder.
-	 * 
+	 *
 	 * @return a <code>Score</code> with the values specified in this builder.
 	 */
 	public Score build() {

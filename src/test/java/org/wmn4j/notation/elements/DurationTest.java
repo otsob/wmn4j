@@ -20,7 +20,7 @@ import org.wmn4j.notation.elements.Durations;
 
 /**
  * Unit tests for Duration class.
- * 
+ *
  * @author Otso Björklund
  */
 public class DurationTest {
@@ -163,8 +163,9 @@ public class DurationTest {
 	public void testSumOf() {
 		List<Duration> durations = new ArrayList<>();
 		int numOfQuarters = 4;
-		for (int i = 0; i < numOfQuarters; ++i)
+		for (int i = 0; i < numOfQuarters; ++i) {
 			durations.add(Durations.QUARTER);
+		}
 
 		assertEquals("Four quarters did not add to whole note.", Durations.QUARTER.multiplyBy(numOfQuarters),
 				Duration.sumOf(durations));

@@ -49,7 +49,7 @@ import javafx.util.Pair;
 
 /**
  * A parser for MusicXML files.
- * 
+ *
  * @author Otso Björklund
  */
 class MusicXmlReaderDom implements MusicXmlReader {
@@ -62,11 +62,10 @@ class MusicXmlReaderDom implements MusicXmlReader {
 
 	/**
 	 * Constructor that allows setting validation.
-	 * 
-	 * @param validateInput
-	 *            Whether this validates MusicXML files given as input.
+	 *
+	 * @param validateInput Whether this validates MusicXML files given as input.
 	 */
-	public MusicXmlReaderDom(boolean validateInput) {
+	MusicXmlReaderDom(boolean validateInput) {
 		this.validateInput = validateInput;
 	}
 
@@ -144,13 +143,15 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	private void readScoreAttributesToBuilder(ScoreBuilder scoreBuilder, Document doc) {
 		// TODO: Extend this when the attributes of a score are increased.
 		Node movementTitle = doc.getElementsByTagName(MusicXmlTags.SCORE_MOVEMENT_TITLE).item(0);
-		if (movementTitle != null)
+		if (movementTitle != null) {
 			scoreBuilder.setAttribute(Score.Attribute.NAME, movementTitle.getTextContent());
+		}
 
 		Node identification = doc.getElementsByTagName(MusicXmlTags.SCORE_IDENTIFICATION).item(0);
 
 		DocHelper.findChild(identification, MusicXmlTags.SCORE_IDENTIFICATION_CREATOR)
-				.ifPresent(creatorNode -> scoreBuilder.setAttribute(Score.Attribute.COMPOSER, creatorNode.getTextContent()));
+				.ifPresent(creatorNode -> scoreBuilder.setAttribute(Score.Attribute.COMPOSER,
+						creatorNode.getTextContent()));
 	}
 
 	/**
@@ -211,8 +212,9 @@ class MusicXmlReaderDom implements MusicXmlReader {
 		Map<Integer, Context> contexts = new HashMap<>();
 
 		// Create the context containers for the staves.
-		for (int staffNumber = MIN_STAFF_NUMBER; staffNumber < staves + MIN_STAFF_NUMBER; ++staffNumber)
+		for (int staffNumber = MIN_STAFF_NUMBER; staffNumber < staves + MIN_STAFF_NUMBER; ++staffNumber) {
 			contexts.put(staffNumber, new Context());
+		}
 
 		// Read measure node by node, create measure and add to list
 		NodeList measureNodes = partNode.getChildNodes();
@@ -287,8 +289,9 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			if (offsets.get(1).isEmpty() && node.getNodeName().equals(MusicXmlTags.MEASURE_ATTRIBUTES)) {
 				updateContexts(node, contexts);
 
-				for (Integer staff : contexts.keySet())
+				for (Integer staff : contexts.keySet()) {
 					lastClefs.put(staff, contexts.get(staff).getClef());
+				}
 			}
 
 			// Handle note element
@@ -333,8 +336,9 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			clef = MusicXmlReaderDom.this.getClef(clefNode.get());
 			NamedNodeMap clefAttributes = clefNode.get().getAttributes();
 			Node clefStaffNode = clefAttributes.getNamedItem(MusicXmlTags.CLEF_STAFF);
-			if (clefStaffNode != null)
+			if (clefStaffNode != null) {
 				clefStaff = Integer.parseInt(clefStaffNode.getTextContent());
+			}
 		}
 		if (clef != null && !offsets.get(clefStaff).isEmpty()) {
 			Duration cumulatedDur = Duration.sumOf(offsets.get(clefStaff));
@@ -350,11 +354,13 @@ class MusicXmlReaderDom implements MusicXmlReader {
 		// measure.
 		Node locationNode = node.getAttributes().getNamedItem(MusicXmlTags.BARLINE_LOCATION);
 		if (locationNode != null && locationNode.getTextContent().equals(MusicXmlTags.BARLINE_LOCATION_LEFT)) {
-			for (Integer staff : measureBuilders.keySet())
+			for (Integer staff : measureBuilders.keySet()) {
 				measureBuilders.get(staff).setLeftBarline(barline);
+			}
 		} else {
-			for (Integer staff : measureBuilders.keySet())
+			for (Integer staff : measureBuilders.keySet()) {
 				measureBuilders.get(staff).setRightBarline(barline);
+			}
 		}
 	}
 
@@ -386,10 +392,11 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			// Handle ties
 			if (endsTie(node)) {
 				NoteBuilder tieBeginner = tieBeginnings.popMatchingBeginningFromStaff(staffNumber, noteBuilder);
-				if (tieBeginner != null)
+				if (tieBeginner != null) {
 					tieBeginner.addTieToFollowing(noteBuilder);
-				else
+				} else {
 					noteBuilder.setIsTiedFromPrevious(true);
+				}
 			}
 
 			if (startsTie(node)) {
@@ -460,8 +467,9 @@ class MusicXmlReaderDom implements MusicXmlReader {
 		for (Node clefNode : clefNodes) {
 			int staffNumber = MIN_STAFF_NUMBER;
 			Node clefStaffNode = clefNode.getAttributes().getNamedItem(MusicXmlTags.CLEF_STAFF);
-			if (clefStaffNode != null)
+			if (clefStaffNode != null) {
 				staffNumber = Integer.parseInt(clefStaffNode.getTextContent());
+			}
 
 			Context context = contexts.get(staffNumber);
 			context.setClef(MusicXmlReaderDom.this.getClef(clefNode));
@@ -505,14 +513,17 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			Node staffNumberNode = timeSigNode.get().getAttributes().getNamedItem(MusicXmlTags.MEAS_ATTR_STAFF_NUMBER);
 			if (staffNumberNode != null) {
 				int staffNumberAttr = Integer.parseInt(staffNumberNode.getTextContent());
-				if (staffNumberAttr == staffNumber)
+				if (staffNumberAttr == staffNumber) {
 					timeSig = TimeSignature.getTimeSignature(beats, beatType);
-				else
+				} else {
 					timeSig = previous.getTimeSig();
-			} else
+				}
+			} else {
 				timeSig = TimeSignature.getTimeSignature(beats, beatType);
-		} else
+			}
+		} else {
 			timeSig = previous.getTimeSig();
+		}
 
 		return timeSig;
 	}
@@ -603,10 +614,11 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			case MusicXmlTags.BARLINE_STYLE_INVISIBLE:
 				return Barline.INVISIBLE;
 			case MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY: {
-				if (!repeatNode.isPresent())
+				if (!repeatNode.isPresent()) {
 					return Barline.FINAL;
-				else
+				} else {
 					return Barline.REPEAT_RIGHT;
+				}
 			}
 			case MusicXmlTags.BARLINE_STYLE_LIGHT_LIGHT:
 				return Barline.DOUBLE;
@@ -636,8 +648,9 @@ class MusicXmlReaderDom implements MusicXmlReader {
 
 	private boolean hasTieWithType(Node noteNode, String tieType) {
 		List<Node> tieNodes = DocHelper.findChildren(noteNode, MusicXmlTags.TIE);
-		if (tieNodes.isEmpty())
+		if (tieNodes.isEmpty()) {
 			return false;
+		}
 
 		return tieNodes.stream().anyMatch((tieNode) -> tieNode.getAttributes().getNamedItem(MusicXmlTags.TIE_TYPE)
 				.getTextContent().equals(tieType));
@@ -733,20 +746,21 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	private class ChordBuffer {
 		private final List<Pair<NoteBuilder, Integer>> chordBuffer = new ArrayList<>();
 
-		public ChordBuffer() {
+		ChordBuffer() {
 		}
 
-		public void addNote(NoteBuilder noteBuilder, int voice) {
+		void addNote(NoteBuilder noteBuilder, int voice) {
 			this.chordBuffer.add(new Pair<>(noteBuilder, voice));
 		}
 
-		public void contentsToBuilder(MeasureBuilder builder) {
+		void contentsToBuilder(MeasureBuilder builder) {
 			if (!this.chordBuffer.isEmpty()) {
 				if (this.chordBuffer.size() > 1) {
 					List<NoteBuilder> notes = new ArrayList<>();
 					int voice = this.chordBuffer.get(0).getValue();
-					for (Pair<NoteBuilder, Integer> pair : this.chordBuffer)
+					for (Pair<NoteBuilder, Integer> pair : this.chordBuffer) {
 						notes.add(pair.getKey());
+					}
 
 					builder.addToVoice(voice, new ChordBuilder(notes));
 				} else if (this.chordBuffer.size() == 1) {
@@ -771,38 +785,38 @@ class MusicXmlReaderDom implements MusicXmlReader {
 		private TimeSignature timeSig;
 		private Clef clef;
 
-		public Context() {
+		Context() {
 		}
 
-		public int getDivisions() {
+		int getDivisions() {
 			return divisions;
 		}
 
-		public void setDivisions(int divisions) {
+		void setDivisions(int divisions) {
 			this.divisions = divisions;
 		}
 
-		public KeySignature getKeySig() {
+		KeySignature getKeySig() {
 			return keySig;
 		}
 
-		public void setKeySig(KeySignature keySig) {
+		void setKeySig(KeySignature keySig) {
 			this.keySig = keySig;
 		}
 
-		public TimeSignature getTimeSig() {
+		TimeSignature getTimeSig() {
 			return timeSig;
 		}
 
-		public void setTimeSig(TimeSignature timeSig) {
+		void setTimeSig(TimeSignature timeSig) {
 			this.timeSig = timeSig;
 		}
 
-		public Clef getClef() {
+		Clef getClef() {
 			return clef;
 		}
 
-		public void setClef(Clef clef) {
+		void setClef(Clef clef) {
 			this.clef = clef;
 		}
 	}
@@ -814,14 +828,15 @@ class MusicXmlReaderDom implements MusicXmlReader {
 
 		private final Map<Integer, List<NoteBuilder>> tieStarts = new HashMap<>();
 
-		public void addToStaff(int staffNumber, NoteBuilder builder) {
-			if (!this.tieStarts.containsKey(staffNumber))
+		void addToStaff(int staffNumber, NoteBuilder builder) {
+			if (!this.tieStarts.containsKey(staffNumber)) {
 				this.tieStarts.put(staffNumber, new ArrayList<>());
+			}
 
 			this.tieStarts.get(staffNumber).add(builder);
 		}
 
-		public NoteBuilder popMatchingBeginningFromStaff(int staff, NoteBuilder builder) {
+		NoteBuilder popMatchingBeginningFromStaff(int staff, NoteBuilder builder) {
 			NoteBuilder matching = null;
 
 			if (this.tieStarts.keySet().contains(staff)) {

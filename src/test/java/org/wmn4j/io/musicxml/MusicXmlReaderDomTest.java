@@ -1,7 +1,7 @@
 /*
-* Copyright 2018 Otso Björklund.
-* Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
-*/
+ * Copyright 2018 Otso Björklund.
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
 package org.wmn4j.io.musicxml;
 
 import static org.junit.Assert.assertEquals;
@@ -346,10 +346,12 @@ public class MusicXmlReaderDomTest {
 		MultiStaffPart multiStaff = null;
 		SingleStaffPart singleStaff = null;
 		for (Part part : score) {
-			if (part.getName().equals("MultiStaff"))
+			if (part.getName().equals("MultiStaff")) {
 				multiStaff = (MultiStaffPart) part;
-			if (part.getName().equals("SingleStaff"))
+			}
+			if (part.getName().equals("SingleStaff")) {
 				singleStaff = (SingleStaffPart) part;
+			}
 		}
 
 		assertTrue(multiStaff != null);

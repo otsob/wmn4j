@@ -31,8 +31,9 @@ public class MultiStaffPartTest {
 	public MultiStaffPartTest() {
 		this.testStaves = new HashMap<>();
 		List<Measure> measures = new ArrayList<>();
-		for (int i = 1; i <= 5; ++i)
+		for (int i = 1; i <= 5; ++i) {
 			measures.add(TestHelper.getTestMeasure(i));
+		}
 
 		this.testStaves.put(1, new Staff(measures));
 		this.testStaves.put(2, new Staff(measures));
@@ -72,8 +73,9 @@ public class MultiStaffPartTest {
 			if (staffIndex == 2) {
 				staffIndex = 1;
 				++measureNumber;
-			} else
+			} else {
 				staffIndex = 2;
+			}
 		}
 
 		assertEquals("Iterator went through an unexpected number of measures.", expectedCount, count);
@@ -83,8 +85,9 @@ public class MultiStaffPartTest {
 	public void testIteratorWithPickupMeasure() {
 		Map<Integer, Staff> staves = new HashMap<>();
 		List<Measure> measures = new ArrayList<>();
-		for (int i = 0; i <= 4; ++i)
+		for (int i = 0; i <= 4; ++i) {
 			measures.add(TestHelper.getTestMeasure(i));
+		}
 
 		staves.put(1, new Staff(measures));
 		staves.put(2, new Staff(measures));
@@ -108,8 +111,9 @@ public class MultiStaffPartTest {
 			if (staffIndex == 2) {
 				staffIndex = 1;
 				++measureNumber;
-			} else
+			} else {
 				staffIndex = 2;
+			}
 		}
 
 		assertEquals("Iterator went through an unexpected number of measures.", expectedCount, count);
@@ -124,6 +128,6 @@ public class MultiStaffPartTest {
 			iterator.remove();
 			fail("Did not throw exception when calling remove on iterator");
 		} catch (Exception e) {
-			/* Do nothing */ }
+		/* Do nothing */ }
 	}
 }
