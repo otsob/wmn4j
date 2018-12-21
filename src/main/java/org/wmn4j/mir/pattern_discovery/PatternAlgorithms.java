@@ -14,13 +14,12 @@ import java.util.Set;
 import javafx.util.Pair;
 
 /**
- *
- * @author Otso Björklund
+ * Geometric algorithms for repeated pattern discovery.
  */
-public final class PatternAlgorithms {
+final class PatternAlgorithms {
 
 	// Implements SIATECH
-	public static List<TEC> computeTecs(PointSet dataset) {
+	static List<TEC> computeTecs(PointSet dataset) {
 
 		dataset.sortLexicographically();
 		Map<NoteEventVector, List<Pair<Integer, Integer>>> mtpMap = new HashMap<>();
@@ -72,7 +71,7 @@ public final class PatternAlgorithms {
 		return tecs;
 	}
 
-	public static List<NoteEventVector> findTranslators(PointPattern pattern,
+	static List<NoteEventVector> findTranslators(PointPattern pattern,
 			Map<NoteEventVector, List<Pair<Integer, Integer>>> mtpMap, PointSet dataset) {
 		List<Integer> pointIndices = new ArrayList<>();
 		List<NoteEventVector> vecPatternPoints = pattern.getVectorizedRepresentation().getPoints();

@@ -12,7 +12,7 @@ import java.util.Random;
  *
  * @author Otso Björklund
  */
-public enum RandomMultiplierProvider {
+enum RandomMultiplierProvider {
 	INSTANCE;
 
 	private final List<Long> multipliers;
