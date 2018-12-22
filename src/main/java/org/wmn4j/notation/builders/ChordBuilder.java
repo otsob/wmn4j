@@ -7,6 +7,7 @@ package org.wmn4j.notation.builders;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Duration;
@@ -53,6 +54,10 @@ public class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
 	public ChordBuilder add(NoteBuilder noteBuilder) {
 		this.noteBuilders.add(new NoteBuilder(noteBuilder));
 		return this;
+	}
+	
+	public void removeIf(Predicate<NoteBuilder> filter) {
+		this.noteBuilders.removeIf(filter);
 	}
 
 	// TODO: Add methods for:

@@ -104,4 +104,15 @@ public class ChordBuilderTest {
 		}
 		assertEquals(Durations.HALF, chordBuilder.getDuration());
 	}
+	
+	@Test
+	public void testRemoveIf() {
+		ChordBuilder chordBuilder = new ChordBuilder(getCMajorAsNoteBuilders());
+		chordBuilder.removeIf((NoteBuilder nb) -> nb.getPitch().equals(Pitch.getPitch(Pitch.Base.C, 0, 4)));
+		
+		Chord chord = chordBuilder.build();		
+		assertEquals(2, chord.getNoteCount());
+		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
+	}
 }
