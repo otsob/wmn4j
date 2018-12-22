@@ -42,7 +42,7 @@ public class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
 		List<NoteBuilder> noteBuildersCopy = new ArrayList<>();
 		noteBuilders.forEach(builder -> noteBuildersCopy.add(new NoteBuilder(builder)));
 		this.noteBuilders = noteBuildersCopy;
-		this.duration = noteBuilders.get(0).getDuration();	
+		this.duration = noteBuilders.get(0).getDuration();
 	}
 
 	/**
@@ -55,19 +55,21 @@ public class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
 		this.noteBuilders.add(new NoteBuilder(noteBuilder));
 		return this;
 	}
-	
+
+	/**
+	 * Remove a NoteBuilder placed in this ChordBuilder.
+	 *
+	 * @param filter Predicate to determine which NoteBuilders are removed
+	 */
 	public void removeIf(Predicate<NoteBuilder> filter) {
 		this.noteBuilders.removeIf(filter);
 	}
 
-	// TODO: Add methods for:
-	// Removing
-	// Setting at index
-	// Getting at index
-	// Changing duration.
-
-	// TODO: Add tests.
-	
+	/**
+	 * Sets a new duration to this builder and all the NoteBuilders in it.
+	 *
+	 * @param duration Duration to set
+	 */
 	public void setDuration(Duration duration) {
 		for (NoteBuilder builder : this) {
 			builder.setDuration(duration);
@@ -79,7 +81,7 @@ public class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
 	public Duration getDuration() {
 		return this.duration;
 	}
-	
+
 	@Override
 	public Iterator<NoteBuilder> iterator() {
 		return this.noteBuilders.iterator();

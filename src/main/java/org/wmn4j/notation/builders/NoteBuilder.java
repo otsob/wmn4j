@@ -45,11 +45,11 @@ public class NoteBuilder implements DurationalBuilder {
 		this.multiNoteArticulations = new ArrayList<>();
 		this.isTiedFromPrevious = false;
 	}
-	
+
 	/**
-	 * Copy constructor for NoteBuilder. Creates a new instance of NoteBuilder 
+	 * Copy constructor for NoteBuilder. Creates a new instance of NoteBuilder
 	 * that is a copy of the NoteBuilder given as an attribute.
-	 * 
+	 *
 	 * @param builder the NoteBuilder to be copied
 	 */
 	public NoteBuilder(NoteBuilder builder) {
@@ -59,10 +59,9 @@ public class NoteBuilder implements DurationalBuilder {
 		builder.getMultiNoteArticulations()
 				.forEach(articulation -> this.multiNoteArticulations.add(articulation));
 		this.tiedTo = builder.getTiedTo();
-		this.isTiedFromPrevious = builder.isTiedFromPrevious();		
+		this.isTiedFromPrevious = builder.isTiedFromPrevious();
 		builder.getFollowingTied()
 				.ifPresent(tied -> this.followingTied = new NoteBuilder(tied));
-
 	}
 
 	/**
@@ -210,8 +209,8 @@ public class NoteBuilder implements DurationalBuilder {
 	/**
 	 * Returns the NoteBuilder of the following tied note, if there is one.
 	 *
-	 * @return NoteBuilder of the following tied note, if there is one,
-	 *         otherwise {@code null}
+	 * @return Optional containing the NoteBuilder of the following tied note
+	 *         if there is one, otherwise empty Optional.
 	 */
 	public Optional<NoteBuilder> getFollowingTied() {
 		return Optional.ofNullable(followingTied);
