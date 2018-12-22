@@ -20,27 +20,27 @@ import org.wmn4j.notation.iterators.ScorePosition;
  *
  * @author Otso Björklund
  */
-public class PointSet {
+class PointSet {
 
 	private final List<NoteEventVector> points;
 
-	public PointSet(List<NoteEventVector> points) {
+	PointSet(List<NoteEventVector> points) {
 		this.points = new ArrayList<>(points);
 	}
 
-	public PointSet(Score score) {
+	PointSet(Score score) {
 		this.points = this.pointsFromScore(score);
 	}
 
-	public void sortLexicographically() {
+	void sortLexicographically() {
 		this.points.sort(Comparator.naturalOrder());
 	}
 
-	public int size() {
+	int size() {
 		return this.points.size();
 	}
 
-	public NoteEventVector get(int index) {
+	NoteEventVector get(int index) {
 		return this.points.get(index);
 	}
 
@@ -60,16 +60,16 @@ public class PointSet {
 			if (prevPos != null && prevPos.getPartNumber() != pos.getPartNumber()) {
 				offsetToEndOfLastMeasure = 0.0;
 				offsetWithinMeasure = 0.0;
-			} // Measure changes.
-			else if (prevPos != null && prevPos.getMeasureNumber() != pos.getMeasureNumber()) {
+			} else if (prevPos != null && prevPos.getMeasureNumber() != pos.getMeasureNumber()) {
+				// Measure changes.
 				Measure prevMeasure = score.getPart(prevPos.getPartNumber()).getMeasure(prevPos.getStaffNumber(),
 						prevPos.getMeasureNumber());
 				double prevMeasureDuration = prevMeasure.getTimeSignature().getTotalDuration().toDouble();
 				offsetToEndOfLastMeasure += prevMeasureDuration;
 				offsetWithinMeasure = 0.0;
-			} // Voice or staff changes
-			else if (prevPos != null && (prevPos.getVoiceNumber() != pos.getVoiceNumber()
+			} else if (prevPos != null && (prevPos.getVoiceNumber() != pos.getVoiceNumber()
 					|| prevPos.getStaffNumber() != pos.getStaffNumber())) {
+				// Voice or staff changes
 				offsetWithinMeasure = 0.0;
 			}
 
@@ -100,13 +100,15 @@ public class PointSet {
 	}
 
 	private boolean isOnset(Durational dur) {
-		if (dur.isRest())
+		if (dur.isRest()) {
 			return false;
+		}
 
 		if (dur instanceof Note) {
 			Note note = (Note) dur;
-			if (note.isTiedFromPrevious())
+			if (note.isTiedFromPrevious()) {
 				return false;
+			}
 		}
 
 		return true;

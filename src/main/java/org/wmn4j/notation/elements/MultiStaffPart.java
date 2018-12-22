@@ -17,7 +17,7 @@ import java.util.TreeMap;
 /**
  * Class for parts that have multiple staves such as keyboard instruments. This
  * class is immutable.
- * 
+ *
  * @author Otso Björklund
  */
 public class MultiStaffPart implements Part {
@@ -25,12 +25,26 @@ public class MultiStaffPart implements Part {
 	private final Map<Part.Attribute, String> partAttributes;
 	private final SortedMap<Integer, Staff> staves;
 
+	/**
+	 * Constructor. The staves are associated with numbers which are to be given as
+	 * keys in the map parameter.
+	 *
+	 * @param name   the name of the part
+	 * @param staves the staves in the part
+	 */
 	public MultiStaffPart(String name, Map<Integer, Staff> staves) {
 		this.partAttributes = new HashMap<>();
 		this.partAttributes.put(Part.Attribute.NAME, name);
 		this.staves = Collections.unmodifiableSortedMap(new TreeMap<>(staves));
 	}
 
+	/**
+	 * Constructor. The staves are associated with numbers which are to be given as
+	 * keys in the map parameter.
+	 *
+	 * @param attributes the attributes of the part
+	 * @param staves     the staves in the part
+	 */
 	public MultiStaffPart(Map<Part.Attribute, String> attributes, Map<Integer, Staff> staves) {
 		this.partAttributes = Collections.unmodifiableMap(new HashMap<>(attributes));
 		this.staves = Collections.unmodifiableSortedMap(new TreeMap<>(staves));
@@ -63,9 +77,8 @@ public class MultiStaffPart implements Part {
 
 	/**
 	 * Returns the <code>Staff</code> with the number.
-	 * 
-	 * @param number
-	 *            number of staff.
+	 *
+	 * @param number number of staff.
 	 * @return <code>Staff</code> associated with the number.
 	 */
 	public Staff getStaff(int number) {
@@ -81,10 +94,11 @@ public class MultiStaffPart implements Part {
 
 	@Override
 	public String getPartAttribute(Attribute attribute) {
-		if (this.partAttributes.containsKey(attribute))
+		if (this.partAttributes.containsKey(attribute)) {
 			return this.partAttributes.get(attribute);
-		else
+		} else {
 			return "";
+		}
 	}
 
 	@Override
@@ -107,11 +121,13 @@ public class MultiStaffPart implements Part {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Part: ");
 
-		for (Attribute attr : this.partAttributes.keySet())
+		for (Attribute attr : this.partAttributes.keySet()) {
 			builder.append(attr).append(": ").append(this.partAttributes.get(attr));
+		}
 
-		for (Measure m : this)
+		for (Measure m : this) {
 			builder.append("\n").append(m.toString());
+		}
 
 		return builder.toString();
 	}
@@ -130,6 +146,11 @@ public class MultiStaffPart implements Part {
 		private int prevStaffNumber = 0;
 		private int prevMeasureNumber = 0;
 
+		/**
+		 * Constructor.
+		 *
+		 * @param part the part for which the iterator is created
+		 */
 		public Iter(MultiStaffPart part) {
 			this.part = part;
 			this.keyIndex = 0;
@@ -137,8 +158,9 @@ public class MultiStaffPart implements Part {
 			this.measureNumber = 1;
 
 			// If there is a pickup measure start from measure 0.
-			if (this.part.staves.get(this.keys.get(0)).hasPickupMeasure())
+			if (this.part.staves.get(this.keys.get(0)).hasPickupMeasure()) {
 				this.measureNumber = 0;
+			}
 		}
 
 		@Override
@@ -170,8 +192,9 @@ public class MultiStaffPart implements Part {
 					keyIndex = 0;
 					++this.measureNumber;
 				}
-			} else
+			} else {
 				throw new NoSuchElementException();
+			}
 
 			return measure;
 		}

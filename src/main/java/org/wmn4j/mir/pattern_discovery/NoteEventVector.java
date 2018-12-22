@@ -7,46 +7,46 @@ package org.wmn4j.mir.pattern_discovery;
 import org.wmn4j.notation.iterators.ScorePosition;
 
 /**
- * 
+ *
  * @author Otso Björklund
  */
-public class NoteEventVector implements Comparable<NoteEventVector> {
+class NoteEventVector implements Comparable<NoteEventVector> {
 
 	private final double[] components;
 	private final int hash;
 	private final ScorePosition scorePosition;
 
-	public NoteEventVector(double[] components) {
+	NoteEventVector(double[] components) {
 		this.components = new double[components.length];
 		System.arraycopy(components, 0, this.components, 0, components.length);
 		this.scorePosition = null;
 		this.hash = computeHash();
 	}
 
-	public NoteEventVector(double[] components, ScorePosition scorePosition) {
+	NoteEventVector(double[] components, ScorePosition scorePosition) {
 		this.components = new double[components.length];
 		System.arraycopy(components, 0, this.components, 0, components.length);
 		this.scorePosition = scorePosition;
 		this.hash = computeHash();
 	}
 
-	public int getDimensionality() {
+	int getDimensionality() {
 		return this.components.length;
 	}
 
-	public double getComponent(int index) {
+	double getComponent(int index) {
 		return this.components[index];
 	}
 
-	public boolean hasPosition() {
+	boolean hasPosition() {
 		return this.scorePosition != null;
 	}
 
-	public ScorePosition getPosition() {
+	ScorePosition getPosition() {
 		return this.scorePosition;
 	}
 
-	public NoteEventVector add(NoteEventVector other) {
+	NoteEventVector add(NoteEventVector other) {
 		double[] sumComponents = new double[this.getDimensionality()];
 
 		for (int i = 0; i < sumComponents.length; ++i) {
@@ -56,7 +56,7 @@ public class NoteEventVector implements Comparable<NoteEventVector> {
 		return new NoteEventVector(sumComponents);
 	}
 
-	public NoteEventVector subtract(NoteEventVector other) {
+	NoteEventVector subtract(NoteEventVector other) {
 		double[] diffComponents = new double[this.getDimensionality()];
 
 		for (int i = 0; i < diffComponents.length; ++i) {
@@ -70,10 +70,12 @@ public class NoteEventVector implements Comparable<NoteEventVector> {
 	public int compareTo(NoteEventVector other) {
 		for (int i = 0; i < this.getDimensionality(); ++i) {
 			// TODO: Consider checking if doubles just really close to each other
-			if (this.getComponent(i) < other.getComponent(i))
+			if (this.getComponent(i) < other.getComponent(i)) {
 				return -1;
-			if (this.getComponent(i) > other.getComponent(i))
+			}
+			if (this.getComponent(i) > other.getComponent(i)) {
 				return 1;
+			}
 		}
 
 		return 0;
@@ -81,15 +83,18 @@ public class NoteEventVector implements Comparable<NoteEventVector> {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
+		if (o == this) {
 			return true;
+		}
 
-		if (!(o instanceof NoteEventVector))
+		if (!(o instanceof NoteEventVector)) {
 			return false;
+		}
 
 		NoteEventVector other = (NoteEventVector) o;
-		if (other.getDimensionality() != this.getDimensionality())
+		if (other.getDimensionality() != this.getDimensionality()) {
 			return false;
+		}
 
 		return this.compareTo(other) == 0;
 	}
@@ -124,8 +129,9 @@ public class NoteEventVector implements Comparable<NoteEventVector> {
 		}
 		strBuilder.append(Double.toString(this.components[this.components.length - 1])).append(")");
 
-		if (this.scorePosition != null)
+		if (this.scorePosition != null) {
 			strBuilder.append(" at ").append(scorePosition);
+		}
 
 		return strBuilder.toString();
 	}

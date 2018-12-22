@@ -6,9 +6,50 @@ package org.wmn4j.notation.elements;
 
 /**
  * Barline types.
- * 
- * @author Otso Björklund
  */
 public enum Barline {
-	NONE, SINGLE, DOUBLE, REPEAT_LEFT, REPEAT_RIGHT, FINAL, DASHED, THICK, INVISIBLE
+	/**
+	 * Specifies no barline.
+	 */
+	NONE,
+
+	/**
+	 * Specifies a normal barline.
+	 */
+	SINGLE,
+
+	/**
+	 * Specifies a double barline.
+	 */
+	DOUBLE,
+
+	/**
+	 * Specifies a repeat on the left side.
+	 */
+	REPEAT_LEFT,
+
+	/**
+	 * Specifies a repeat on the right side.
+	 */
+	REPEAT_RIGHT,
+
+	/**
+	 * Specifies a final barline.
+	 */
+	FINAL,
+
+	/**
+	 * Specifies a dashed barline.
+	 */
+	DASHED,
+
+	/**
+	 * Specifies a thick barline.
+	 */
+	THICK,
+
+	/**
+	 * Specifies an invisible barline.
+	 */
+	INVISIBLE
 }

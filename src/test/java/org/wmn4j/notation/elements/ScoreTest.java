@@ -88,7 +88,7 @@ public class ScoreTest {
 		try {
 			scoreParts.add(parts.get(0));
 		} catch (Exception e) {
-			/* Do nothing */ }
+		/* Do nothing */ }
 		assertEquals("Number of parts changed in score", 5, score.getPartCount());
 	}
 

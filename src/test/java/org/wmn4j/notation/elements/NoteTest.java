@@ -23,7 +23,7 @@ import org.wmn4j.notation.elements.Pitch;
 
 /**
  * Unit tests for Note class.
- * 
+ *
  * @author Otso Björklund
  */
 public class NoteTest {
@@ -131,7 +131,7 @@ public class NoteTest {
 			artic.remove(Articulation.STACCATO);
 			fail("Removing articulation succeeded, immutability violated");
 		} catch (Exception e) {
-			/* Do nothing */ }
+		/* Do nothing */ }
 
 		assertTrue(note.hasArticulation(Articulation.STACCATO));
 	}

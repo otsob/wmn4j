@@ -19,7 +19,7 @@ import org.wmn4j.notation.elements.Staff;
 
 /**
  * Builder for building <code>Part</code> objects.
- * 
+ *
  * @author Otso Björklund
  */
 public class PartBuilder {
@@ -45,7 +45,7 @@ public class PartBuilder {
 	/**
 	 * Adds a <code>MeasureBuilder</code>. This is used for building parts with a
 	 * single staff.
-	 * 
+	 *
 	 * @param measureBuilder The measureBuilder that is added to the end of the
 	 *                       staff.
 	 * @return reference to this.
@@ -58,7 +58,7 @@ public class PartBuilder {
 	/**
 	 * Adds a <code>MeasureBuilder</code> to staff. This is used for building parts
 	 * with multiple staves.
-	 * 
+	 *
 	 * @param staffNumber    The number of the staff to which measureBuilder is
 	 *                       added.
 	 * @param measureBuilder The measureBuilder that is added to the end of the
@@ -66,8 +66,9 @@ public class PartBuilder {
 	 * @return reference to this.
 	 */
 	public PartBuilder addToStaff(int staffNumber, MeasureBuilder measureBuilder) {
-		if (!this.staveContents.containsKey(staffNumber))
+		if (!this.staveContents.containsKey(staffNumber)) {
 			this.staveContents.put(staffNumber, new ArrayList<>());
+		}
 
 		this.staveContents.get(staffNumber).add(Objects.requireNonNull(measureBuilder));
 		return this;
@@ -94,7 +95,7 @@ public class PartBuilder {
 
 	/**
 	 * Creates a part using the contained <code>MeasureBuilder</code> objects.
-	 * 
+	 *
 	 * @return A <code>Part</code> with the measures and attributes in the builder.
 	 *         The type of the part depends on the number of staves.
 	 */

@@ -6,7 +6,7 @@ package org.wmn4j.notation.elements;
 
 /**
  * Interface for all the notation objects that have a duration.
- * 
+ *
  * @author Otso Björklund
  */
 public interface Durational {

@@ -11,7 +11,7 @@ import java.util.Objects;
 
 /**
  * Class for key signatures. This class is immutable.
- * 
+ *
  * @author Otso Björklund
  */
 public class KeySignature {
@@ -22,15 +22,13 @@ public class KeySignature {
 	 * Constructor for KeySignature. For common key signatures use the ones defined
 	 * in <code>KeySignatures</code>. This is mostly intended for creating custom
 	 * key signatures.
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if the same Pitch.Base is in both sharps and flats.
-	 * @param sharps
-	 *            the Pitch.Base names that should be raised. For example, for
-	 *            G-major this list consists only of Pitch.Base.F.
-	 * @param flats
-	 *            the Pitch.Base names that should be flattened. For example, for
-	 *            F-major this list consists only of Pitch.Base.B.
+	 *
+	 * @throws IllegalArgumentException if the same Pitch.Base is in both sharps and
+	 *                                  flats.
+	 * @param sharps the Pitch.Base names that should be raised. For example, for
+	 *               G-major this list consists only of Pitch.Base.F.
+	 * @param flats  the Pitch.Base names that should be flattened. For example, for
+	 *               F-major this list consists only of Pitch.Base.B.
 	 */
 	public KeySignature(List<Pitch.Base> sharps, List<Pitch.Base> flats) {
 		if (sharps != null && !sharps.isEmpty()) {
@@ -46,13 +44,15 @@ public class KeySignature {
 
 		// Check that there are no conflicts and throw exception if there are.
 		for (Pitch.Base sharp : this.sharps) {
-			if (this.flats.contains(sharp))
+			if (this.flats.contains(sharp)) {
 				throw new IllegalArgumentException(sharp + " is both in sharps and in flats.");
+			}
 		}
 
 		for (Pitch.Base flat : this.flats) {
-			if (this.sharps.contains(flat))
+			if (this.sharps.contains(flat)) {
 				throw new IllegalArgumentException(flat + " is both in flats and in sharps.");
+			}
 		}
 	}
 
@@ -89,7 +89,7 @@ public class KeySignature {
 	 * <code>KeySig(sharps: ...)</code>, <code>KeySig(flats: ...)</code>, or
 	 * <code>KeySig(sharps: ... flats: ...)</code> where <code>...</code> refers to
 	 * the raised or flatted pitches.
-	 * 
+	 *
 	 * @return string representation of KeySignature.
 	 */
 	@Override
@@ -109,8 +109,9 @@ public class KeySignature {
 				strBuilder.append(flat).append("b").append(" ");
 			}
 		}
-		if (strBuilder.charAt(strBuilder.length() - 1) == ' ')
+		if (strBuilder.charAt(strBuilder.length() - 1) == ' ') {
 			strBuilder.deleteCharAt(strBuilder.length() - 1);
+		}
 
 		strBuilder.append(")");
 		return strBuilder.toString();
@@ -118,19 +119,20 @@ public class KeySignature {
 
 	/**
 	 * Compare this to <code>Object o</code> for equality.
-	 * 
-	 * @param o
-	 *            Object against which this is compared for equality.
+	 *
+	 * @param o Object against which this is compared for equality.
 	 * @return true if Object o is of class KeySignature and has the same sharps and
 	 *         flats as this. false otherwise.
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (this == o)
+		if (this == o) {
 			return true;
+		}
 
-		if (!(o instanceof KeySignature))
+		if (!(o instanceof KeySignature)) {
 			return false;
+		}
 
 		KeySignature other = (KeySignature) o;
 		return this.sharps.equals(other.sharps) && this.flats.equals(other.flats);

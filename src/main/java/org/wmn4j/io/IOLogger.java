@@ -5,11 +5,15 @@
 package org.wmn4j.io;
 
 /**
- *
- * @author Otso Björklund
+ * Logger for IO operations.
  */
 public class IOLogger {
 
+	/**
+	 * Logs the given message.
+	 *
+	 * @param message the message that is logged
+	 */
 	public void log(String message) {
 		System.out.println(message);
 	}

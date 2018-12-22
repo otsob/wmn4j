@@ -10,17 +10,17 @@ import java.util.List;
  *
  * @author Otso Björklund
  */
-public class TEC {
+class TEC {
 
 	private final PointPattern pattern;
 	private final List<NoteEventVector> translators;
 
-	public TEC(PointPattern pattern, List<NoteEventVector> translators) {
+	TEC(PointPattern pattern, List<NoteEventVector> translators) {
 		this.pattern = pattern;
 		this.translators = translators;
 	}
 
-	public PointPattern getPattern() {
+	PointPattern getPattern() {
 		return this.pattern;
 	}
 

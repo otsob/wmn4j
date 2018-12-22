@@ -47,11 +47,13 @@ public class ScoreBuilderTest {
 		Map<Score.Attribute, String> attributes = ScoreTest.getTestAttributes();
 		List<PartBuilder> partBuilders = getTestPartBuilders(5, 5);
 
-		for (Score.Attribute attr : attributes.keySet())
+		for (Score.Attribute attr : attributes.keySet()) {
 			builder.setAttribute(attr, attributes.get(attr));
+		}
 
-		for (PartBuilder partBuilder : partBuilders)
+		for (PartBuilder partBuilder : partBuilders) {
 			builder.addPart(partBuilder);
+		}
 
 		Score score = builder.build();
 		assertEquals(ScoreTest.SCORE_NAME, score.getName());

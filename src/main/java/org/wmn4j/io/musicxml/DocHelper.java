@@ -13,23 +13,25 @@ import org.w3c.dom.NodeList;
 
 /**
  * Helpers methods for handling <code>Document</code> objects.
- * 
+ *
  * @author Otso Björklund
  *
  */
-class DocHelper {
+final class DocHelper {
 	/**
 	 * Find the child with childName from the children of Node parent.
-	 * @return <code>Optional</code> that contains the child <code>Node</code> 
-	 * if it is found, otherwise an empty <code>Optional</code>.
+	 *
+	 * @return <code>Optional</code> that contains the child <code>Node</code> if it
+	 *         is found, otherwise an empty <code>Optional</code>.
 	 */
 	static Optional<Node> findChild(Node parent, String childName) {
 		NodeList children = parent.getChildNodes();
 		for (int i = 0; i < children.getLength(); ++i) {
 			Node child = children.item(i);
 			if (child != null && child.getNodeName() != null) {
-				if (child.getNodeName().equals(childName))
+				if (child.getNodeName().equals(childName)) {
 					return Optional.of(child);
+				}
 			}
 		}
 
@@ -46,8 +48,9 @@ class DocHelper {
 		for (int i = 0; i < children.getLength(); ++i) {
 			Node child = children.item(i);
 			if (child != null && child.getNodeName() != null) {
-				if (children.item(i).getNodeName().equals(childName))
+				if (children.item(i).getNodeName().equals(childName)) {
 					foundChildren.add(child);
+				}
 			}
 		}
 

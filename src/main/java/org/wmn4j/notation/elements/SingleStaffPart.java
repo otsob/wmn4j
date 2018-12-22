@@ -14,20 +14,23 @@ import java.util.NoSuchElementException;
 /**
  * Class for representing a part consisting of a single staff in a score. This
  * class is immutable.
- * 
+ *
  * @author Otso Björklund
  */
 public class SingleStaffPart implements Part {
 
+	/**
+	 * The default staff number for the staff in a single staff part.
+	 */
 	public static final int STAFF_NUMBER = 1;
 	private final Map<Part.Attribute, String> partAttributes;
 	private final Staff staff;
 
 	/**
-	 * @param name
-	 *            the name of the part.
-	 * @param measures
-	 *            the measures in this part.
+	 * Constructor.
+	 *
+	 * @param name     the name of the part.
+	 * @param measures the measures in this part.
 	 */
 	public SingleStaffPart(String name, List<Measure> measures) {
 		this.staff = new Staff(measures);
@@ -37,10 +40,10 @@ public class SingleStaffPart implements Part {
 	}
 
 	/**
-	 * @param partAttributes
-	 *            a map of attributes to be set for this part.
-	 * @param measures
-	 *            the measures in this part.
+	 * Constructor.
+	 *
+	 * @param partAttributes a map of attributes to be set for this part.
+	 * @param measures       the measures in this part.
 	 */
 	public SingleStaffPart(Map<Part.Attribute, String> partAttributes, List<Measure> measures) {
 		this.staff = new Staff(measures);
@@ -64,9 +67,8 @@ public class SingleStaffPart implements Part {
 
 	/**
 	 * Get the <code>Measure</code> with the given number.
-	 * 
-	 * @param number
-	 *            number of measure.
+	 *
+	 * @param number number of measure.
 	 * @return measure with the given number.
 	 */
 	public Measure getMeasure(int number) {
@@ -79,6 +81,8 @@ public class SingleStaffPart implements Part {
 	}
 
 	/**
+	 * Returns the staff in this part.
+	 *
 	 * @return the only staff in this part.
 	 */
 	public Staff getStaff() {
@@ -97,10 +101,11 @@ public class SingleStaffPart implements Part {
 
 	@Override
 	public String getPartAttribute(Attribute attribute) {
-		if (this.partAttributes.containsKey(attribute))
+		if (this.partAttributes.containsKey(attribute)) {
 			return this.partAttributes.get(attribute);
-		else
+		} else {
 			return "";
+		}
 	}
 
 	@Override
@@ -118,11 +123,13 @@ public class SingleStaffPart implements Part {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Part: ");
 
-		for (Attribute attr : this.partAttributes.keySet())
+		for (Attribute attr : this.partAttributes.keySet()) {
 			builder.append(attr).append(": ").append(this.partAttributes.get(attr));
+		}
 
-		for (Measure m : this)
+		for (Measure m : this) {
 			builder.append("\n").append(m.toString());
+		}
 
 		return builder.toString();
 	}
@@ -136,6 +143,11 @@ public class SingleStaffPart implements Part {
 		private final Iterator<Measure> staffIterator;
 		private int prevMeasureNumber = 0;
 
+		/**
+		 * Constructor.
+		 *
+		 * @param part the part for which the iterator is created
+		 */
 		public Iter(SingleStaffPart part) {
 			this.staffIterator = part.getStaff().iterator();
 		}
@@ -157,8 +169,9 @@ public class SingleStaffPart implements Part {
 
 		@Override
 		public Measure next() {
-			if (!this.hasNext())
+			if (!this.hasNext()) {
 				throw new NoSuchElementException();
+			}
 
 			Measure next = this.staffIterator.next();
 			this.prevMeasureNumber = next.getNumber();

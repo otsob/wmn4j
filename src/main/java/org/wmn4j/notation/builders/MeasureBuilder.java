@@ -30,10 +30,10 @@ import org.wmn4j.notation.elements.TimeSignatures;
  * exactly a measure that has the set time signature. The methods
  * {@link #isFull() isFull} and {@link #isVoiceFull(int) isVoiceFull} should be
  * used for checking if the durations add up to the correct
- * 
+ *
  * Default values: TimeSignature : 4/4 KeySignature : C-major/a-minor Clef: G
  * Barlines (right and left): Single. No clef changes.
- * 
+ *
  * @author Otso Björklund
  */
 public class MeasureBuilder {
@@ -55,11 +55,9 @@ public class MeasureBuilder {
 	/**
 	 * Create a <code>MeasureBuilder</code> with the given
 	 * <code>MeasureAttributes</code>.
-	 * 
-	 * @param number
-	 *            Measure number for measure being built.
-	 * @param measureAttr
-	 *            MeasureAttributes for measure.
+	 *
+	 * @param number      Measure number for measure being built.
+	 * @param measureAttr MeasureAttributes for measure.
 	 */
 	public MeasureBuilder(int number, MeasureAttributes measureAttr) {
 		this.voices = new HashMap<>();
@@ -74,8 +72,7 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @param number
-	 *            Measure number for measure being built.
+	 * @param number Measure number for measure being built.
 	 */
 	public MeasureBuilder(int number) {
 		this.voices = new HashMap<>();
@@ -90,8 +87,7 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @param number
-	 *            measure number for the measure that can be built.
+	 * @param number measure number for the measure that can be built.
 	 * @return reference to this builder.
 	 */
 	public MeasureBuilder setNumber(int number) {
@@ -107,8 +103,7 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @param timeSig
-	 *            time signature for the measure that can be built.
+	 * @param timeSig time signature for the measure that can be built.
 	 * @return reference to this builder.
 	 */
 	public MeasureBuilder setTimeSig(TimeSignature timeSig) {
@@ -124,8 +119,7 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @param keySig
-	 *            key signature for the measure that can be built.
+	 * @param keySig key signature for the measure that can be built.
 	 * @return reference to this builder.
 	 */
 	public MeasureBuilder setKeySig(KeySignature keySig) {
@@ -141,8 +135,7 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @param clef
-	 *            clef for the measure that can be built.
+	 * @param clef clef for the measure that can be built.
 	 * @return reference to this builder.
 	 */
 	public MeasureBuilder setClef(Clef clef) {
@@ -158,8 +151,7 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @param leftBarline
-	 *            left barline for the measure that can be built.
+	 * @param leftBarline left barline for the measure that can be built.
 	 * @return reference to this builder.
 	 */
 	public MeasureBuilder setLeftBarline(Barline leftBarline) {
@@ -175,8 +167,7 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @param rightBarline
-	 *            right barline for the measure that can be built.
+	 * @param rightBarline right barline for the measure that can be built.
 	 * @return reference to this builder.
 	 */
 	public MeasureBuilder setRightBarline(Barline rightBarline) {
@@ -194,11 +185,9 @@ public class MeasureBuilder {
 
 	/**
 	 * Add clef change at offset.
-	 * 
-	 * @param offset
-	 *            Offset of clef change from beginning of measure.
-	 * @param clef
-	 *            clef starting from offset.
+	 *
+	 * @param offset Offset of clef change from beginning of measure.
+	 * @param clef   clef starting from offset.
 	 * @return reference to this builder.
 	 */
 	public MeasureBuilder addClefChange(Duration offset, Clef clef) {
@@ -208,7 +197,7 @@ public class MeasureBuilder {
 
 	/**
 	 * Add new empty voice to this <code>MeasureBuilder</code>.
-	 * 
+	 *
 	 * @return reference to this builder.
 	 */
 	public MeasureBuilder addVoice() {
@@ -218,9 +207,8 @@ public class MeasureBuilder {
 
 	/**
 	 * Add possibly non-empty voice to this <code>MeasureBuilder</code>.
-	 * 
-	 * @param voice
-	 *            new voice to be added to this.
+	 *
+	 * @param voice new voice to be added to this.
 	 * @return reference to this builder.
 	 */
 	public MeasureBuilder addVoice(List<DurationalBuilder> voice) {
@@ -231,17 +219,16 @@ public class MeasureBuilder {
 	/**
 	 * Append <code>DurationalBuilder</code> object to voice with index
 	 * <code>voice</code>. If voice does not exist it is created.
-	 * 
-	 * @param voice
-	 *            index of voice to which builder is appended.
-	 * @param builder
-	 *            DurationalBuilder object to be appended to voice.
+	 *
+	 * @param voice   index of voice to which builder is appended.
+	 * @param builder DurationalBuilder object to be appended to voice.
 	 * @return reference to this builder.
 	 */
 	public MeasureBuilder addToVoice(int voice, DurationalBuilder builder) {
 
-		if (!this.voices.keySet().contains(voice))
+		if (!this.voices.keySet().contains(voice)) {
 			this.voices.put(voice, new ArrayList<>());
+		}
 
 		this.voices.get(voice).add(builder);
 		return this;
@@ -256,7 +243,7 @@ public class MeasureBuilder {
 
 	/**
 	 * Get the voice numbers. Voice numbers do not have to be contiguous.
-	 * 
+	 *
 	 * @return the set of voice numbers in this builder.
 	 */
 	public Set<Integer> getVoiceNumbers() {
@@ -265,13 +252,10 @@ public class MeasureBuilder {
 
 	/**
 	 * Set the element at specified location to given value.
-	 * 
-	 * @param voice
-	 *            the number of the voice to be modified.
-	 * @param index
-	 *            the index in the voice.
-	 * @param builder
-	 *            element to be placed in index on voice.
+	 *
+	 * @param voice   the number of the voice to be modified.
+	 * @param index   the index in the voice.
+	 * @param builder element to be placed in index on voice.
 	 */
 	public void setElement(int voice, int index, DurationalBuilder builder) {
 		this.voices.get(voice).set(index, builder);
@@ -280,11 +264,9 @@ public class MeasureBuilder {
 	/**
 	 * Get a reference to the <code>DurationalBuilder</code> at the specified
 	 * position.
-	 * 
-	 * @param voice
-	 *            the number of the voice from which to get the object.
-	 * @param index
-	 *            index in the voice.
+	 *
+	 * @param voice the number of the voice from which to get the object.
+	 * @param index index in the voice.
 	 * @return reference to the <code>DurationalBuilder</code> at the position
 	 *         specified by the parameters.
 	 */
@@ -294,16 +276,16 @@ public class MeasureBuilder {
 
 	/**
 	 * Get the sum of durations on a voice.
-	 * 
-	 * @param voice
-	 *            the index of the voice.
+	 *
+	 * @param voice the index of the voice.
 	 * @return Sum of the durations of the <code>Durational</code> objects on the
 	 *         voice.
 	 */
 	public Duration totalDurationOfVoice(int voice) {
 		List<Duration> durations = new ArrayList<>();
-		for (DurationalBuilder d : this.voices.get(voice))
+		for (DurationalBuilder d : this.voices.get(voice)) {
 			durations.add(d.getDuration());
+		}
 
 		return Duration.sumOf(durations);
 	}
@@ -312,9 +294,8 @@ public class MeasureBuilder {
 	 * Check if voice is full. A voice is considered full when it contains
 	 * <code>DurationalBuilder</code> objects whose combined duration is enough to
 	 * fill a measure that has the time signature that is set for this builder.
-	 * 
-	 * @param voice
-	 *            index of voice that is checked.
+	 *
+	 * @param voice index of voice that is checked.
 	 * @return true if the durations in the voice add up to fill a measure. False
 	 *         otherwise.
 	 */
@@ -325,7 +306,7 @@ public class MeasureBuilder {
 
 	/**
 	 * Check if any voice in this builder is full.
-	 * 
+	 *
 	 * @return true if even a single voice is full. False otherwise.
 	 */
 	public boolean isFull() {
@@ -361,7 +342,7 @@ public class MeasureBuilder {
 
 	/**
 	 * Create a <code>Measure</code> with the contents of this builder.
-	 * 
+	 *
 	 * @return Measure that has the set attributes and contains
 	 *         <code>Durational</code> objects built using the contained
 	 *         <code>DurationalBuilder</code> objects.

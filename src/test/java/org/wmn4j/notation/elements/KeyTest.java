@@ -4,12 +4,11 @@ package org.wmn4j.notation.elements;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-
 public class KeyTest {
-	
+
 	public KeyTest() {
 	}
-	
+
 	@Test
 	public void testGetKeySignature() {
 		assertTrue(Key.C_MAJOR.getKeySignature().equals(KeySignatures.CMAJ_AMIN));
@@ -24,7 +23,7 @@ public class KeyTest {
 		assertTrue(Key.A_MAJOR.getKeySignature().equals(KeySignatures.AMAJ_FSHARPMIN));
 		assertTrue(Key.BFLAT_MAJOR.getKeySignature().equals(KeySignatures.BFLATMAJ_GMIN));
 		assertTrue(Key.B_MAJOR.getKeySignature().equals(KeySignatures.BMAJ_GSHARPMIN));
-		
+
 		assertTrue(Key.C_MINOR.getKeySignature().equals(KeySignatures.EFLATMAJ_CMIN));
 		assertTrue(Key.CSHARP_MINOR.getKeySignature().equals(KeySignatures.EMAJ_CSHARPMIN));
 		assertTrue(Key.D_MINOR.getKeySignature().equals(KeySignatures.FMAJ_DMIN));

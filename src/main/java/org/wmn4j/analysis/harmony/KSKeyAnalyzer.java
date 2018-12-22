@@ -18,19 +18,28 @@ import org.wmn4j.notation.elements.Key;
 import org.wmn4j.notation.elements.PitchClass;
 
 /**
- * Implements Krumhansl-Schmuckler algorithm
- * 
+ * Implements Krumhansl-Schmuckler algorithm.
+ *
  * @author Otso Björklund
  */
 public class KSKeyAnalyzer implements KeyAnalyzer {
 
 	private final Map<Key, PCProfile> keyProfiles;
 
+	/**
+	 * Constructor.
+	 */
 	public KSKeyAnalyzer() {
 		this.keyProfiles = new HashMap<>();
 		this.readKeyProfiles();
 	}
 
+	/**
+	 * Returns the most fitting key.
+	 *
+	 * @param durationals the durationals for which the key is computed
+	 * @return the most fitting key
+	 */
 	public Key analyzeKey(List<Durational> durationals) {
 		PCProfile profile = PCProfile.getDurationWeightedProfile();
 		durationals.forEach(durational -> profile.add(durational));
@@ -53,8 +62,9 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
 	private void readKeyProfiles() {
 
 		Map<String, Key> keyStrings = new HashMap<>();
-		for (Key key : Key.values())
+		for (Key key : Key.values()) {
 			keyStrings.put(key.toString(), key);
+		}
 
 		try {
 			File keyProfilesFile = new File(KSKeyAnalyzer.class.getResource("KSKeyProfiles.csv").getPath());

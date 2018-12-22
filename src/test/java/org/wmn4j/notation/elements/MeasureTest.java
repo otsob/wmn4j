@@ -102,7 +102,7 @@ public class MeasureTest {
 			voice.add(Rest.getRest(Durations.QUARTER));
 			fail("Failed to throw exception for disabled adding");
 		} catch (Exception e) {
-			/* Do nothing */ }
+		/* Do nothing */ }
 	}
 
 	@Test
@@ -125,8 +125,9 @@ public class MeasureTest {
 
 		assertEquals(expected.size(), found.size());
 
-		for (Durational e : expected)
+		for (Durational e : expected) {
 			assertTrue(found.contains(e));
+		}
 	}
 
 	@Test
@@ -146,8 +147,9 @@ public class MeasureTest {
 
 		assertEquals(expected.size(), found.size());
 
-		for (Durational e : expected)
+		for (Durational e : expected) {
 			assertTrue(found.contains(e));
+		}
 	}
 
 	@Test
@@ -190,8 +192,9 @@ public class MeasureTest {
 		Measure measure = new Measure(1, noteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 
 		List<Durational> expected = new ArrayList<>(noteList);
-		for (Durational d : noteList)
+		for (Durational d : noteList) {
 			expected.add(d);
+		}
 
 		int count = 0;
 		int indexInExpected = 0;

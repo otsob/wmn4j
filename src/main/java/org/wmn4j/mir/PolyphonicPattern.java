@@ -12,7 +12,7 @@ public final class PolyphonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#equals(wmnlibmir.Pattern)
 	 */
 	@Override
@@ -23,7 +23,7 @@ public final class PolyphonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#isMonophonic()
 	 */
 	@Override
@@ -34,7 +34,7 @@ public final class PolyphonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#equalsInPitch(wmnlibmir.Pattern)
 	 */
 	@Override
@@ -45,7 +45,7 @@ public final class PolyphonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#equalsEnharmonicallyInPitch(wmnlibmir.Pattern)
 	 */
 	@Override
@@ -56,7 +56,7 @@ public final class PolyphonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#equalsInTransposedPitch(wmnlibmir.Pattern)
 	 */
 	@Override
@@ -67,7 +67,7 @@ public final class PolyphonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#equalsInRhythm(wmnlibmir.Pattern)
 	 */
 	@Override
@@ -78,7 +78,7 @@ public final class PolyphonicPattern implements Pattern {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see wmnlibmir.Pattern#equalsInOnsets(wmnlibmir.Pattern)
 	 */
 	@Override
