@@ -11,18 +11,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javafx.util.Pair;
-
 /**
  * Geometric algorithms for repeated pattern discovery.
  */
 final class PatternAlgorithms {
 
+	/**
+	 * Utility class for keeping track of a pair of indices.
+	 */
+	private static class IndexPair {
+		private final int first;
+		private final int second;
+
+		IndexPair(int first, int second) {
+			this.first = first;
+			this.second = second;
+		}
+
+		int getFirst() {
+			return first;
+		}
+
+		int getSecond() {
+			return second;
+		}
+	}
+
 	// Implements SIATECH
 	static List<TEC> computeTecs(PointSet dataset) {
 
 		dataset.sortLexicographically();
-		Map<NoteEventVector, List<Pair<Integer, Integer>>> mtpMap = new HashMap<>();
+		Map<NoteEventVector, List<IndexPair>> mtpMap = new HashMap<>();
 
 		for (int i = 0; i < dataset.size() - 1; ++i) {
 
@@ -35,7 +54,7 @@ final class PatternAlgorithms {
 					mtpMap.put(diff, new ArrayList<>());
 				}
 
-				mtpMap.get(diff).add(new Pair<>(i, j));
+				mtpMap.get(diff).add(new IndexPair(i, j));
 			}
 		}
 
@@ -43,11 +62,11 @@ final class PatternAlgorithms {
 		Set<PointPattern> patternVecs = new HashSet<>();
 
 		for (NoteEventVector diff : mtpMap.keySet()) {
-			List<Pair<Integer, Integer>> indexPairs = mtpMap.get(diff);
+			List<IndexPair> indexPairs = mtpMap.get(diff);
 
 			List<NoteEventVector> patternPoints = new ArrayList<>();
-			for (Pair<Integer, Integer> indexPair : indexPairs) {
-				patternPoints.add(dataset.get(indexPair.getKey()));
+			for (IndexPair indexPair : indexPairs) {
+				patternPoints.add(dataset.get(indexPair.getFirst()));
 			}
 
 			PointPattern pattern = new PointPattern(patternPoints);
@@ -72,28 +91,28 @@ final class PatternAlgorithms {
 	}
 
 	static List<NoteEventVector> findTranslators(PointPattern pattern,
-			Map<NoteEventVector, List<Pair<Integer, Integer>>> mtpMap, PointSet dataset) {
+			Map<NoteEventVector, List<IndexPair>> mtpMap, PointSet dataset) {
 		List<Integer> pointIndices = new ArrayList<>();
 		List<NoteEventVector> vecPatternPoints = pattern.getVectorizedRepresentation().getPoints();
 		NoteEventVector vec = vecPatternPoints.get(0);
 
-		for (Pair<Integer, Integer> indexPair : mtpMap.get(vec)) {
-			pointIndices.add(indexPair.getValue());
+		for (IndexPair indexPair : mtpMap.get(vec)) {
+			pointIndices.add(indexPair.getSecond());
 		}
 		for (int i = 1; i < vecPatternPoints.size(); ++i) {
 			vec = vecPatternPoints.get(i);
-			List<Pair<Integer, Integer>> indexPairs = mtpMap.get(vec);
+			List<IndexPair> indexPairs = mtpMap.get(vec);
 			List<Integer> tmpPointIndices = new ArrayList<>();
 			int j = 0;
 			int k = 0;
 			while (j < pointIndices.size() && k < indexPairs.size()) {
-				if (pointIndices.get(j).equals(indexPairs.get(k).getKey())) {
-					tmpPointIndices.add(indexPairs.get(k).getValue());
+				if (pointIndices.get(j).equals(indexPairs.get(k).getFirst())) {
+					tmpPointIndices.add(indexPairs.get(k).getSecond());
 					++j;
 					++k;
-				} else if (pointIndices.get(j) < indexPairs.get(k).getKey()) {
+				} else if (pointIndices.get(j) < indexPairs.get(k).getFirst()) {
 					++j;
-				} else if (pointIndices.get(j) > indexPairs.get(k).getKey()) {
+				} else if (pointIndices.get(j) > indexPairs.get(k).getFirst()) {
 					++k;
 				}
 			}
