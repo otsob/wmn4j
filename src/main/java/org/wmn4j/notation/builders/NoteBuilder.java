@@ -7,6 +7,7 @@ package org.wmn4j.notation.builders;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.wmn4j.notation.elements.Articulation;
@@ -43,6 +44,24 @@ public class NoteBuilder implements DurationalBuilder {
 		this.articulations = EnumSet.noneOf(Articulation.class);
 		this.multiNoteArticulations = new ArrayList<>();
 		this.isTiedFromPrevious = false;
+	}
+
+	/**
+	 * Copy constructor for NoteBuilder. Creates a new instance of NoteBuilder
+	 * that is a copy of the NoteBuilder given as an attribute.
+	 *
+	 * @param builder the NoteBuilder to be copied
+	 */
+	public NoteBuilder(NoteBuilder builder) {
+		this(builder.getPitch(), builder.getDuration());
+		builder.getArticulations()
+				.forEach(articulation -> this.articulations.add(articulation));
+		builder.getMultiNoteArticulations()
+				.forEach(articulation -> this.multiNoteArticulations.add(articulation));
+		this.tiedTo = builder.getTiedTo();
+		this.isTiedFromPrevious = builder.isTiedFromPrevious();
+		builder.getFollowingTied()
+				.ifPresent(tied -> this.followingTied = new NoteBuilder(tied));
 	}
 
 	/**
@@ -185,6 +204,16 @@ public class NoteBuilder implements DurationalBuilder {
 	 */
 	public void setIsTiedFromPrevious(boolean isTiedFromPrevious) {
 		this.isTiedFromPrevious = isTiedFromPrevious;
+	}
+
+	/**
+	 * Returns the NoteBuilder of the following tied note, if there is one.
+	 *
+	 * @return Optional containing the NoteBuilder of the following tied note
+	 *         if there is one, otherwise empty Optional.
+	 */
+	public Optional<NoteBuilder> getFollowingTied() {
+		return Optional.ofNullable(followingTied);
 	}
 
 	/**

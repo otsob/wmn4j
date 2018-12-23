@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -136,6 +136,11 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#NoteBuilder-org.wmn4j.notation.builders.NoteBuilder-">NoteBuilder</a></span>(<a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&nbsp;builder)</code>
+<div class="block">Copy constructor for NoteBuilder.</div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#NoteBuilder-org.wmn4j.notation.elements.Pitch-org.wmn4j.notation.elements.Duration-">NoteBuilder</a></span>(<a href="../../../../org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
            <a href="../../../../org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</code>
 <div class="block">Constructor.</div>
@@ -200,60 +205,66 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 </td>
 </tr>
 <tr id="i7" class="rowColor">
+<td class="colFirst"><code><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getFollowingTied--">getFollowingTied</a></span>()</code>
+<div class="block">Returns the NoteBuilder of the following tied note, if there is one.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/wmn4j/notation/elements/MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getMultiNoteArticulations--">getMultiNoteArticulations</a></span>()</code>
 <div class="block">Returns the multinote articulations set in this builder.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../../org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getPitch--">getPitch</a></span>()</code>
 <div class="block">Returns the pitch set in this builder.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../../../org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#getTiedTo--">getTiedTo</a></span>()</code>
 <div class="block">Returns the following note to which this builder is tied.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#isTiedFromPrevious--">isTiedFromPrevious</a></span>()</code>
 <div class="block">Returns true if this is tied from the previous note or notebuilder.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setArticulations-java.util.Set-">setArticulations</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;<a href="../../../../org/wmn4j/notation/elements/Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;articulations)</code>
 <div class="block">Sets the articulations in this builder.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setDuration-org.wmn4j.notation.elements.Duration-">setDuration</a></span>(<a href="../../../../org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</code>
 <div class="block">Sets the duration in this builder.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setIsTiedFromPrevious-boolean-">setIsTiedFromPrevious</a></span>(boolean&nbsp;isTiedFromPrevious)</code>
 <div class="block">Sets this to be tied from the previous.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setMultiNoteArticulations-java.util.List-">setMultiNoteArticulations</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/wmn4j/notation/elements/MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;&nbsp;multiNoteArticulations)</code>
 <div class="block">Sets the given multinote articulations to this builder.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setPitch-org.wmn4j.notation.elements.Pitch-">setPitch</a></span>(<a href="../../../../org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch)</code>
 <div class="block">Sets the pitch in this builder.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html#setTiedTo-org.wmn4j.notation.elements.Note-">setTiedTo</a></span>(<a href="../../../../org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;tiedTo)</code>
 <div class="block">Sets this to be tied to the given note.</div>
@@ -284,7 +295,7 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <a name="NoteBuilder-org.wmn4j.notation.elements.Pitch-org.wmn4j.notation.elements.Duration-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>NoteBuilder</h4>
 <pre>public&nbsp;NoteBuilder(<a href="../../../../org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
@@ -294,6 +305,21 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>pitch</code> - The pitch set in this builder.</dd>
 <dd><code>duration</code> - The duration set in this builder.</dd>
+</dl>
+</li>
+</ul>
+<a name="NoteBuilder-org.wmn4j.notation.builders.NoteBuilder-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>NoteBuilder</h4>
+<pre>public&nbsp;NoteBuilder(<a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&nbsp;builder)</pre>
+<div class="block">Copy constructor for NoteBuilder. Creates a new instance of NoteBuilder
+ that is a copy of the NoteBuilder given as an attribute.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>builder</code> - the NoteBuilder to be copied</dd>
 </dl>
 </li>
 </ul>
@@ -519,6 +545,21 @@ implements <a href="../../../../org/wmn4j/notation/builders/DurationalBuilder.ht
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>isTiedFromPrevious</code> - the value that defines whether this is tied from
                            the previous note or note builder</dd>
+</dl>
+</li>
+</ul>
+<a name="getFollowingTied--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getFollowingTied</h4>
+<pre>public&nbsp;<a href="../../../../org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&nbsp;getFollowingTied()</pre>
+<div class="block">Returns the NoteBuilder of the following tied note, if there is one.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>NoteBuilder of the following tied note, if there is one,
+         otherwise <code>null</code></dd>
 </dl>
 </li>
 </ul>
