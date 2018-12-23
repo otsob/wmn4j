@@ -584,6 +584,10 @@
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/KeySignature.html#getFlats--">getFlats()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/NoteBuilder.html#getFollowingTied--">getFollowingTied()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a></dt>
+<dd>
+<div class="block">Returns the NoteBuilder of the following tied note, if there is one.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Note.html#getFollowingTiedNote--">getFollowingTiedNote()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/MultiStaffPart.html#getFullMeasureCount--">getFullMeasureCount()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/MultiStaffPart.html" title="class in org.wmn4j.notation.elements">MultiStaffPart</a></dt>
@@ -1027,6 +1031,8 @@
 <dd>
 <div class="block">Constructor.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/ChordBuilder.html#iterator--">iterator()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/ChordBuilder.html" title="class in org.wmn4j.notation.builders">ChordBuilder</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Chord.html#iterator--">iterator()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Measure.html#iterator--">iterator()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Measure.html" title="class in org.wmn4j.notation.elements">Measure</a></dt>
@@ -1208,6 +1214,10 @@
 <dd>
 <div class="block">Constructor.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/NoteBuilder.html#NoteBuilder-org.wmn4j.notation.builders.NoteBuilder-">NoteBuilder(NoteBuilder)</a></span> - Constructor for class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a></dt>
+<dd>
+<div class="block">Copy constructor for NoteBuilder.</div>
+</dd>
 </dl>
 <a name="I:O">
 <!--   -->
@@ -1381,6 +1391,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/SingleStaffPart.Iter.html#remove--">remove()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/SingleStaffPart.Iter.html" title="class in org.wmn4j.notation.elements">SingleStaffPart.Iter</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/ChordBuilder.html#removeIf-java.util.function.Predicate-">removeIf(Predicate&lt;NoteBuilder&gt;)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/ChordBuilder.html" title="class in org.wmn4j.notation.builders">ChordBuilder</a></dt>
+<dd>
+<div class="block">Remove a NoteBuilder placed in this ChordBuilder.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Chord.html#removeNote-org.wmn4j.notation.elements.Note-">removeNote(Note)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></dt>
 <dd>
 <div class="block">Get a Chord with the given note removed.</div>
@@ -1468,6 +1482,10 @@
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#setClef-org.wmn4j.notation.elements.Clef-">setClef(Clef)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/ChordBuilder.html#setDuration-org.wmn4j.notation.elements.Duration-">setDuration(Duration)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/ChordBuilder.html" title="class in org.wmn4j.notation.builders">ChordBuilder</a></dt>
+<dd>
+<div class="block">Sets a new duration to this builder and all the NoteBuilders in it.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/NoteBuilder.html#setDuration-org.wmn4j.notation.elements.Duration-">setDuration(Duration)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a></dt>
 <dd>
 <div class="block">Sets the duration in this builder.</div>
