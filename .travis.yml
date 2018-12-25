@@ -1,12 +1,12 @@
 language: java
 sudo: false
-script:
-  - mvn install -B -V
-  - mvn javadoc:javadoc
+script: mvn install -B -V
+after_success: mvn javadoc:javadoc
 
 deploy:
   provider: pages
   skip-cleanup: true
+  local-dir: target/javadoc
   github-token: $DEPLOYMENT_TOKEN
   keep-history: true
   on:
