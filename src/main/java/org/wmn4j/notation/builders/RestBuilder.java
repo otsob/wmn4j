@@ -19,9 +19,9 @@ public final class RestBuilder implements DurationalBuilder {
 	private Duration duration;
 
 	/**
-	 * Create a new instance.
+	 * Constructor that creates a builder with the given duration value.
 	 *
-	 * @param duration The
+	 * @param duration the duration that is initially set to this builder
 	 */
 	public RestBuilder(Duration duration) {
 		setDuration(duration);
