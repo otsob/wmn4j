@@ -158,7 +158,7 @@ public class PCProfile {
 			}
 		}
 
-		if (!new Double(0.0).equals(largest)) {
+		if (!Double.valueOf(0.0).equals(largest)) {
 			for (PitchClass pc : this.profile.keySet()) {
 				final double value = this.profile.get(pc);
 				normalized.setValue(pc, value / largest);

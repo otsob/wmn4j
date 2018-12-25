@@ -275,9 +275,10 @@ public final class Note implements Durational {
 	@Override
 	public String toString() {
 		final StringBuilder strBuilder = new StringBuilder();
+		final String tieString = "->";
 
 		if (this.isTiedFromPrevious()) {
-			strBuilder.append("->");
+			strBuilder.append(tieString);
 		}
 
 		strBuilder.append(this.pitch.toString()).append(this.duration.toString());
@@ -294,7 +295,7 @@ public final class Note implements Durational {
 		}
 
 		if (this.isTiedToFollowing()) {
-			strBuilder.append("->");
+			strBuilder.append(tieString);
 		}
 
 		return strBuilder.toString();

@@ -40,14 +40,17 @@ public final class Duration implements Comparable<Duration> {
 			throw new IllegalArgumentException("denominator must be at least 1");
 		}
 
+		int reducedNumerator = numerator;
+		int reducedDenominator = denominator;
+
 		// TODO: Come up with a more effective way of finding GCD
 		if (numerator != 1) {
 			final int gcd = BigInteger.valueOf(numerator).gcd(BigInteger.valueOf(denominator)).intValue();
-			numerator = numerator / gcd;
-			denominator = denominator / gcd;
+			reducedNumerator = numerator / gcd;
+			reducedDenominator = denominator / gcd;
 		}
 		// TODO: Implement caching instead of creating new.
-		return new Duration(numerator, denominator);
+		return new Duration(reducedNumerator, reducedDenominator);
 	}
 
 	/**
