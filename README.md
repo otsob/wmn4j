@@ -1,5 +1,7 @@
 # Western Music Notation for Java (wmn4j)
 
+[![Build Status](https://travis-ci.com/otsob/wmn4j.svg?branch=master)](https://travis-ci.com/otsob/wmn4j)
+
 wmn4j is a Java API for handling western music notation.
 The main purpose of wmn4j is to enable easy and efficient analysis of scores and wmn4j is intended to also provide funtionality for algorithmic composition by generating scores.
 
