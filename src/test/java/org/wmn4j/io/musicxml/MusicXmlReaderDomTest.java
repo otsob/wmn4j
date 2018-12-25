@@ -56,13 +56,13 @@ public class MusicXmlReaderDomTest {
 	}
 
 	public Score readScore(String testFileName) {
-		MusicXmlReader reader = getMusicXmlReader();
+		final MusicXmlReader reader = getMusicXmlReader();
 		Score score = null;
-		Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
+		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
 
 		try {
 			score = reader.readScore(path);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			fail("Parsing failed with exception " + e);
 		}
 
@@ -72,19 +72,19 @@ public class MusicXmlReaderDomTest {
 
 	@Test
 	public void testReadScoreWithSingleNote() {
-		Score score = readScore("singleC.xml");
+		final Score score = readScore("singleC.xml");
 
 		assertEquals("Single C", score.getName());
 		assertEquals(1, score.getParts().size());
 
-		Part part = score.getParts().get(0);
+		final Part part = score.getParts().get(0);
 		assertTrue(part instanceof SingleStaffPart);
-		SingleStaffPart spart = (SingleStaffPart) part;
-		Staff staff = spart.getStaff();
+		final SingleStaffPart spart = (SingleStaffPart) part;
+		final Staff staff = spart.getStaff();
 		assertEquals("Part1", part.getName());
 		assertEquals(1, staff.getMeasures().size());
 
-		Measure measure = staff.getMeasures().get(0);
+		final Measure measure = staff.getMeasures().get(0);
 		assertEquals(1, measure.getNumber());
 		assertEquals(1, measure.getVoiceCount());
 		assertEquals(TimeSignatures.FOUR_FOUR, measure.getTimeSignature());
@@ -92,28 +92,28 @@ public class MusicXmlReaderDomTest {
 		assertEquals(Barline.SINGLE, measure.getRightBarline());
 		assertEquals(Clefs.G, measure.getClef());
 
-		List<Durational> voice = measure.getVoice(1);
+		final List<Durational> voice = measure.getVoice(1);
 		assertEquals(1, voice.size());
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE), voice.get(0));
 	}
 
 	@Test
 	public void testChordsAndMultipleVoices() {
-		Score score = readScore("twoMeasures.xml");
+		final Score score = readScore("twoMeasures.xml");
 
 		assertEquals("Two bar sample", score.getName());
 		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals(1, score.getParts().size());
 
-		Part part = score.getParts().get(0);
+		final Part part = score.getParts().get(0);
 		assertTrue(part instanceof SingleStaffPart);
-		SingleStaffPart spart = (SingleStaffPart) part;
-		Staff staff = spart.getStaff();
+		final SingleStaffPart spart = (SingleStaffPart) part;
+		final Staff staff = spart.getStaff();
 		assertEquals("Part1", part.getName());
 		assertEquals(2, staff.getMeasures().size());
 
 		// Verify data of measure one
-		Measure measureOne = staff.getMeasures().get(0);
+		final Measure measureOne = staff.getMeasures().get(0);
 		assertEquals(1, measureOne.getNumber());
 		assertEquals(1, measureOne.getVoiceCount());
 		assertEquals(TimeSignatures.FOUR_FOUR, measureOne.getTimeSignature());
@@ -128,7 +128,7 @@ public class MusicXmlReaderDomTest {
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voiceOne.get(1));
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voiceOne.get(2));
 		assertEquals(Rest.getRest(Durations.EIGHT), voiceOne.get(3));
-		Chord cMajor = Chord.getChord(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT),
+		final Chord cMajor = Chord.getChord(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT),
 				Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT),
 				Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
 		assertEquals(cMajor, voiceOne.get(4));
@@ -137,7 +137,7 @@ public class MusicXmlReaderDomTest {
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.EIGHT_TRIPLET), voiceOne.get(7));
 
 		// Verify data of measure two
-		Measure measureTwo = staff.getMeasures().get(1);
+		final Measure measureTwo = staff.getMeasures().get(1);
 		assertEquals(2, measureTwo.getNumber());
 		assertEquals(2, measureTwo.getVoiceCount());
 		assertEquals(TimeSignatures.FOUR_FOUR, measureTwo.getTimeSignature());
@@ -151,7 +151,7 @@ public class MusicXmlReaderDomTest {
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.HALF), voiceOne.get(0));
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.HALF), voiceOne.get(1));
 
-		List<Durational> voiceTwo = measureTwo.getVoice(2);
+		final List<Durational> voiceTwo = measureTwo.getVoice(2);
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER), voiceTwo.get(0));
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER), voiceTwo.get(1));
 		assertEquals(Rest.getRest(Durations.QUARTER), voiceTwo.get(2));
@@ -160,19 +160,19 @@ public class MusicXmlReaderDomTest {
 
 	@Test
 	public void testReadScoreWithMultipleStaves() {
-		Score score = readScore("twoStavesAndMeasures.xml");
+		final Score score = readScore("twoStavesAndMeasures.xml");
 
 		assertEquals("Multistaff test file", score.getName());
 		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals(2, score.getParts().size());
 
-		SingleStaffPart partOne = (SingleStaffPart) score.getParts().get(0);
-		Staff staffOne = partOne.getStaff();
+		final SingleStaffPart partOne = (SingleStaffPart) score.getParts().get(0);
+		final Staff staffOne = partOne.getStaff();
 		assertEquals("Part1", partOne.getName());
 		assertEquals(2, staffOne.getMeasures().size());
 
 		// Verify data of measure one of staff one
-		Measure staffOneMeasureOne = staffOne.getMeasures().get(0);
+		final Measure staffOneMeasureOne = staffOne.getMeasures().get(0);
 		assertEquals(1, staffOneMeasureOne.getNumber());
 		assertEquals(1, staffOneMeasureOne.getVoiceCount());
 		assertEquals(TimeSignatures.THREE_FOUR, staffOneMeasureOne.getTimeSignature());
@@ -182,12 +182,12 @@ public class MusicXmlReaderDomTest {
 
 		// Verify contents of measure one of staff one
 		assertEquals(1, staffOneMeasureOne.getVoiceCount());
-		List<Durational> voiceMOne = staffOneMeasureOne.getVoice(1);
+		final List<Durational> voiceMOne = staffOneMeasureOne.getVoice(1);
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF), voiceMOne.get(0));
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.QUARTER), voiceMOne.get(1));
 
 		// Verify data of measure two of staff one
-		Measure staffOneMeasureTwo = staffOne.getMeasures().get(1);
+		final Measure staffOneMeasureTwo = staffOne.getMeasures().get(1);
 		assertEquals(2, staffOneMeasureTwo.getNumber());
 		assertEquals(1, staffOneMeasureTwo.getVoiceCount());
 		assertEquals(TimeSignatures.THREE_FOUR, staffOneMeasureTwo.getTimeSignature());
@@ -197,17 +197,17 @@ public class MusicXmlReaderDomTest {
 
 		// Verify contents of measure one of staff one
 		assertEquals(1, staffOneMeasureTwo.getVoiceCount());
-		List<Durational> voiceM2 = staffOneMeasureTwo.getVoice(1);
+		final List<Durational> voiceM2 = staffOneMeasureTwo.getVoice(1);
 		assertEquals(Rest.getRest(Durations.QUARTER), voiceM2.get(0));
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF), voiceM2.get(1));
 
-		SingleStaffPart partTwo = (SingleStaffPart) score.getParts().get(1);
-		Staff staffTwo = partTwo.getStaff();
+		final SingleStaffPart partTwo = (SingleStaffPart) score.getParts().get(1);
+		final Staff staffTwo = partTwo.getStaff();
 		assertEquals("Part2", partTwo.getName());
 		assertEquals(2, staffTwo.getMeasures().size());
 
 		// Verify data of measure one of staff two
-		Measure staffTwoMeasureOne = staffTwo.getMeasures().get(0);
+		final Measure staffTwoMeasureOne = staffTwo.getMeasures().get(0);
 		assertEquals(1, staffTwoMeasureOne.getNumber());
 		assertEquals(1, staffTwoMeasureOne.getVoiceCount());
 		assertEquals(TimeSignatures.THREE_FOUR, staffTwoMeasureOne.getTimeSignature());
@@ -217,11 +217,11 @@ public class MusicXmlReaderDomTest {
 
 		// Verify contents of measure one of staff two
 		assertEquals(1, staffTwoMeasureOne.getVoiceCount());
-		List<Durational> voiceMOneS2 = staffTwoMeasureOne.getVoice(1);
+		final List<Durational> voiceMOneS2 = staffTwoMeasureOne.getVoice(1);
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), voiceMOneS2.get(0));
 
 		// Verify data of measure two of staff two
-		Measure staffTwoMeasureTwo = staffTwo.getMeasures().get(1);
+		final Measure staffTwoMeasureTwo = staffTwo.getMeasures().get(1);
 		assertEquals(2, staffTwoMeasureTwo.getNumber());
 		assertEquals(1, staffTwoMeasureTwo.getVoiceCount());
 		assertEquals(TimeSignatures.THREE_FOUR, staffTwoMeasureTwo.getTimeSignature());
@@ -231,17 +231,17 @@ public class MusicXmlReaderDomTest {
 
 		// Verify contents of measure two of staff two
 		assertEquals(1, staffTwoMeasureTwo.getVoiceCount());
-		List<Durational> voiceM2S2 = staffTwoMeasureTwo.getVoice(1);
+		final List<Durational> voiceM2S2 = staffTwoMeasureTwo.getVoice(1);
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), voiceM2S2.get(0));
 	}
 
 	@Test
 	public void testBarlines() {
-		Score score = readScore("barlines.xml");
+		final Score score = readScore("barlines.xml");
 
 		assertEquals(1, score.getParts().size());
-		SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
-		Staff staff = part.getStaff();
+		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+		final Staff staff = part.getStaff();
 
 		assertEquals(Barline.SINGLE, part.getMeasure(1).getRightBarline());
 		assertEquals(Barline.NONE, part.getMeasure(1).getLeftBarline());
@@ -273,8 +273,8 @@ public class MusicXmlReaderDomTest {
 
 	@Test
 	public void testClefs() {
-		Score score = readScore("clefs.xml");
-		SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+		final Score score = readScore("clefs.xml");
+		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 
 		assertEquals(Clefs.G, part.getMeasure(1).getClef());
 		assertFalse(part.getMeasure(1).containsClefChanges());
@@ -287,7 +287,7 @@ public class MusicXmlReaderDomTest {
 
 		assertEquals(Clef.getClef(Clef.Type.C, 4), part.getMeasure(4).getClef());
 		assertTrue(part.getMeasure(4).containsClefChanges());
-		Map<Duration, Clef> clefChanges = part.getMeasure(4).getClefChanges();
+		final Map<Duration, Clef> clefChanges = part.getMeasure(4).getClefChanges();
 		assertEquals(2, clefChanges.size());
 		assertEquals(Clefs.F, clefChanges.get(Durations.QUARTER));
 		assertEquals(Clefs.PERCUSSION, clefChanges.get(Durations.WHOLE));
@@ -301,10 +301,10 @@ public class MusicXmlReaderDomTest {
 
 	@Test
 	public void testMultiStaffClefs() {
-		Score score = readScore("multiStaffClefs.xml");
-		MultiStaffPart part = (MultiStaffPart) score.getParts().get(0);
-		Staff upper = part.getStaff(1);
-		Staff lower = part.getStaff(2);
+		final Score score = readScore("multiStaffClefs.xml");
+		final MultiStaffPart part = (MultiStaffPart) score.getParts().get(0);
+		final Staff upper = part.getStaff(1);
+		final Staff lower = part.getStaff(2);
 
 		// Check upper staff
 		assertEquals("Incorrect clef measure 1 upper staff beginning", Clefs.G, upper.getMeasure(1).getClef());
@@ -319,9 +319,9 @@ public class MusicXmlReaderDomTest {
 		// Check lower staff
 		assertEquals("Incorrect clef in measure 1 lower staff", Clefs.F, lower.getMeasure(1).getClef());
 		assertTrue("Lower staff measure 1 does not contain a clef change", lower.getMeasure(1).containsClefChanges());
-		Map<Duration, Clef> clefChanges = lower.getMeasure(1).getClefChanges();
+		final Map<Duration, Clef> clefChanges = lower.getMeasure(1).getClefChanges();
 		assertEquals("Incorrect number of clef changes", 1, clefChanges.size());
-		Duration offset = Durations.HALF.add(Durations.SIXTEENTH.multiplyBy(3));
+		final Duration offset = Durations.HALF.add(Durations.SIXTEENTH.multiplyBy(3));
 		assertEquals("Incorrect clef change", Clefs.G, clefChanges.get(offset));
 
 		assertEquals("Incorrect clef measure 2 of lower staff", Clefs.G, lower.getMeasure(2).getClef());
@@ -330,9 +330,9 @@ public class MusicXmlReaderDomTest {
 
 	@Test
 	public void testKeySignatures() {
-		Score score = readScore("keysigs.xml");
+		final Score score = readScore("keysigs.xml");
 
-		SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 
 		assertEquals(KeySignatures.CMAJ_AMIN, part.getMeasure(1).getKeySignature());
 		assertEquals(KeySignatures.GMAJ_EMIN, part.getMeasure(2).getKeySignature());
@@ -341,7 +341,7 @@ public class MusicXmlReaderDomTest {
 
 	@Test
 	public void testMultiStaffPart() {
-		Score score = readScore("multistaff.xml");
+		final Score score = readScore("multistaff.xml");
 		assertEquals(2, score.getPartCount());
 		MultiStaffPart multiStaff = null;
 		SingleStaffPart singleStaff = null;
@@ -363,11 +363,11 @@ public class MusicXmlReaderDomTest {
 		assertEquals(2, multiStaff.getStaffCount());
 
 		int measureCount = 0;
-		Note expectedNote = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
+		final Note expectedNote = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
 
 		for (Measure measure : multiStaff) {
 			assertTrue(measure.isSingleVoice());
-			List<Durational> voice = measure.getVoice(measure.getVoiceNumbers().get(0));
+			final List<Durational> voice = measure.getVoice(measure.getVoiceNumbers().get(0));
 			assertEquals(1, voice.size());
 			assertTrue(voice.get(0).equals(expectedNote));
 			++measureCount;
@@ -378,9 +378,9 @@ public class MusicXmlReaderDomTest {
 
 	@Test
 	public void testTimeSignatures() {
-		Score score = readScore("timesigs.xml");
+		final Score score = readScore("timesigs.xml");
 		assertEquals(1, score.getPartCount());
-		SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 		assertEquals(TimeSignature.getTimeSignature(2, 2), part.getMeasure(1).getTimeSignature());
 		assertEquals(TimeSignature.getTimeSignature(3, 4), part.getMeasure(2).getTimeSignature());
 		assertEquals(TimeSignature.getTimeSignature(6, 8), part.getMeasure(3).getTimeSignature());
@@ -389,61 +389,61 @@ public class MusicXmlReaderDomTest {
 
 	@Test
 	public void testTimeSignatureChange() {
-		Score score = readScore("scoreIteratorTesting.xml");
-		SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
-		Durational n = part.getMeasure(2).getVoice(1).get(0);
+		final Score score = readScore("scoreIteratorTesting.xml");
+		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+		final Durational n = part.getMeasure(2).getVoice(1).get(0);
 		assertEquals(Durations.EIGHT, n.getDuration());
 	}
 
 	@Test
 	public void testTiedNotes() {
-		Score score = readScore("tieTesting.xml");
-		SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+		final Score score = readScore("tieTesting.xml");
+		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 
-		Measure firstMeasure = part.getMeasure(1);
-		Note first = (Note) firstMeasure.get(1, 0);
+		final Measure firstMeasure = part.getMeasure(1);
+		final Note first = (Note) firstMeasure.get(1, 0);
 		assertTrue(first.isTiedToFollowing());
 		assertEquals(Pitch.getPitch(Pitch.Base.C, 0, 4), first.getFollowingTiedNote().get().getPitch());
 
-		Note second = (Note) firstMeasure.get(1, 1);
+		final Note second = (Note) firstMeasure.get(1, 1);
 		assertTrue(second.isTiedFromPrevious());
 		assertFalse(second.isTiedToFollowing());
 
-		Note third = (Note) firstMeasure.get(1, 2);
+		final Note third = (Note) firstMeasure.get(1, 2);
 		assertTrue(third.isTiedToFollowing());
 		assertFalse(third.isTiedFromPrevious());
 
-		Measure secondMeasure = part.getMeasure(2);
-		Note fourth = (Note) secondMeasure.get(1, 0);
+		final Measure secondMeasure = part.getMeasure(2);
+		final Note fourth = (Note) secondMeasure.get(1, 0);
 		assertEquals(fourth, third.getFollowingTiedNote().get());
 		assertTrue(fourth.isTiedFromPrevious());
 		assertFalse(fourth.isTiedToFollowing());
 
-		Measure thirdMeasure = part.getMeasure(3);
-		Note fifth = (Note) thirdMeasure.get(1, 0);
+		final Measure thirdMeasure = part.getMeasure(3);
+		final Note fifth = (Note) thirdMeasure.get(1, 0);
 		assertFalse(fifth.isTied());
-		Note sixth = (Note) thirdMeasure.get(1, 1);
+		final Note sixth = (Note) thirdMeasure.get(1, 1);
 		assertFalse(sixth.isTied());
-		Note seventh = (Note) thirdMeasure.get(1, 2);
+		final Note seventh = (Note) thirdMeasure.get(1, 2);
 		assertFalse(seventh.isTied());
 
-		Note eight = (Note) thirdMeasure.get(1, 3);
+		final Note eight = (Note) thirdMeasure.get(1, 3);
 		assertTrue(eight.isTiedToFollowing());
 		assertEquals(Durations.WHOLE.multiplyBy(2).add(Durations.QUARTER), eight.getTiedDuration());
 
-		Measure fourthMeasure = part.getMeasure(4);
-		Note ninth = (Note) fourthMeasure.get(1, 0);
+		final Measure fourthMeasure = part.getMeasure(4);
+		final Note ninth = (Note) fourthMeasure.get(1, 0);
 		assertTrue(ninth.isTiedFromPrevious());
 		assertTrue(ninth.isTiedToFollowing());
 	}
 
 	@Test
 	public void testReadingScoreWithArticulations() {
-		Score score = readScore("articulations.xml");
+		final Score score = readScore("articulations.xml");
 
 		System.out.println(score);
 
-		Measure measure = score.getPart(0).getMeasure(0, 1);
+		final Measure measure = score.getPart(0).getMeasure(0, 1);
 		assertTrue(((Note) measure.get(1, 0)).hasArticulation(Articulation.STACCATO));
 		assertTrue(((Note) measure.get(1, 1)).hasArticulation(Articulation.ACCENT));
 		assertTrue(((Note) measure.get(1, 2)).hasArticulation(Articulation.TENUTO));
@@ -452,11 +452,11 @@ public class MusicXmlReaderDomTest {
 
 	@Test
 	public void testReadingIncorrectXmlFile() {
-		MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
 		try {
-			Score score = reader.readScore(Paths.get(MUSICXML_FILE_PATH + "singleCinvalid.xml"));
+			final Score score = reader.readScore(Paths.get(MUSICXML_FILE_PATH + "singleCinvalid.xml"));
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
-		} catch (IOException e) {
+		} catch (final IOException e) {
 
 		}
 

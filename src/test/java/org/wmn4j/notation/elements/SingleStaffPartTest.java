@@ -48,20 +48,20 @@ public class SingleStaffPartTest {
 	Note C4Quarter = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
 	public SingleStaffPartTest() {
-		Map<Integer, List<Durational>> noteVoice = new HashMap<>();
+		final Map<Integer, List<Durational>> noteVoice = new HashMap<>();
 		noteVoice.put(0, new ArrayList<>());
 		noteVoice.get(0).add(C4Quarter);
 		noteVoice.get(0).add(Rest.getRest(Durations.QUARTER));
 		noteVoice.get(0).add(Chord.getChord(C4, E4, G4));
 
-		Map<Integer, List<Durational>> noteVoices = new HashMap<>();
+		final Map<Integer, List<Durational>> noteVoices = new HashMap<>();
 		noteVoices.put(0, noteVoice.get(0));
 		noteVoices.put(1, new ArrayList<>());
 		noteVoices.get(1).add(Rest.getRest(Durations.QUARTER));
 		noteVoices.get(1).add(C4);
 		noteVoices.get(1).add(Rest.getRest(Durations.QUARTER));
 
-		List<Measure> measureList = new ArrayList<>();
+		final List<Measure> measureList = new ArrayList<>();
 		for (int i = 1; i <= this.measureCount; ++i) {
 			measureList.add(new Measure(i, noteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G));
 		}
@@ -71,8 +71,8 @@ public class SingleStaffPartTest {
 
 	@Test
 	public void testImmutability() {
-		List<Measure> measuresCopy = new ArrayList<>(this.measures);
-		SingleStaffPart part = new SingleStaffPart("Test part", measuresCopy);
+		final List<Measure> measuresCopy = new ArrayList<>(this.measures);
+		final SingleStaffPart part = new SingleStaffPart("Test part", measuresCopy);
 		measuresCopy.set(0, null);
 		assertTrue("Modifying list used to create part modified part also.",
 				part.getStaff().getMeasures().get(0) != null);
@@ -80,33 +80,33 @@ public class SingleStaffPartTest {
 
 	@Test
 	public void testGetName() {
-		SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
+		final SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
 		assertEquals("Test part", part.getName());
 	}
 
 	@Test
 	public void testIsMultiStaff() {
-		SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
+		final SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
 		assertFalse(part.isMultiStaff());
 	}
 
 	@Test
 	public void testGetStaff() {
-		SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
-		Staff staff = part.getStaff();
+		final SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
+		final Staff staff = part.getStaff();
 		assertEquals(5, staff.getMeasures().size());
 	}
 
 	@Test
 	public void getMeasure() {
-		SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
-		Measure m = part.getMeasure(1);
+		final SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
+		final Measure m = part.getMeasure(1);
 		assertTrue(m == this.measures.get(0));
 	}
 
 	@Test
 	public void testIterator() {
-		SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
+		final SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
 		int measCount = 0;
 		int measureNumber = 1;
 		for (Measure m : part) {
@@ -120,14 +120,14 @@ public class SingleStaffPartTest {
 
 	@Test
 	public void testIteratorImmutability() {
-		SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
-		Iterator<Measure> iter = part.iterator();
+		final SingleStaffPart part = new SingleStaffPart("Test part", this.measures);
+		final Iterator<Measure> iter = part.iterator();
 		iter.next();
 
 		try {
 			iter.remove();
 			fail("Removing through iterator did not cause exception");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 		/* Ignore */ }
 
 		assertEquals(this.measureCount, part.getStaff().getMeasures().size());

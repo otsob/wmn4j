@@ -46,15 +46,15 @@ class PointSet {
 
 	private List<NoteEventVector> pointsFromScore(Score score) {
 
-		PartWiseScoreIterator scoreIterator = new PartWiseScoreIterator(score);
+		final PartWiseScoreIterator scoreIterator = new PartWiseScoreIterator(score);
 		ScorePosition prevPos = null;
 		double offsetToEndOfLastMeasure = 0.0;
 		double offsetWithinMeasure = 0.0;
-		List<NoteEventVector> noteEvents = new ArrayList<>();
+		final List<NoteEventVector> noteEvents = new ArrayList<>();
 
 		while (scoreIterator.hasNext()) {
-			Durational dur = scoreIterator.next();
-			ScorePosition pos = scoreIterator.positionOfPrevious();
+			final Durational dur = scoreIterator.next();
+			final ScorePosition pos = scoreIterator.positionOfPrevious();
 
 			// Part changes
 			if (prevPos != null && prevPos.getPartNumber() != pos.getPartNumber()) {
@@ -62,9 +62,9 @@ class PointSet {
 				offsetWithinMeasure = 0.0;
 			} else if (prevPos != null && prevPos.getMeasureNumber() != pos.getMeasureNumber()) {
 				// Measure changes.
-				Measure prevMeasure = score.getPart(prevPos.getPartNumber()).getMeasure(prevPos.getStaffNumber(),
+				final Measure prevMeasure = score.getPart(prevPos.getPartNumber()).getMeasure(prevPos.getStaffNumber(),
 						prevPos.getMeasureNumber());
-				double prevMeasureDuration = prevMeasure.getTimeSignature().getTotalDuration().toDouble();
+				final double prevMeasureDuration = prevMeasure.getTimeSignature().getTotalDuration().toDouble();
 				offsetToEndOfLastMeasure += prevMeasureDuration;
 				offsetWithinMeasure = 0.0;
 			} else if (prevPos != null && (prevPos.getVoiceNumber() != pos.getVoiceNumber()
@@ -74,18 +74,18 @@ class PointSet {
 			}
 
 			if (isOnset(dur)) {
-				double totalOffset = offsetToEndOfLastMeasure + offsetWithinMeasure;
-				Durational atPosition = score.getAtPosition(pos);
+				final double totalOffset = offsetToEndOfLastMeasure + offsetWithinMeasure;
+				final Durational atPosition = score.getAtPosition(pos);
 
 				if (atPosition instanceof Note) {
-					double pitch = ((Note) atPosition).getPitch().toInt();
-					double[] components = { totalOffset, pitch };
+					final double pitch = ((Note) atPosition).getPitch().toInt();
+					final double[] components = { totalOffset, pitch };
 					noteEvents.add(new NoteEventVector(components, pos));
 				} else {
-					Chord chord = (Chord) atPosition;
+					final Chord chord = (Chord) atPosition;
 					for (Note note : chord) {
-						double pitch = note.getPitch().toInt();
-						double[] components = { totalOffset, pitch };
+						final double pitch = note.getPitch().toInt();
+						final double[] components = { totalOffset, pitch };
 						noteEvents.add(new NoteEventVector(components, pos));
 					}
 				}
@@ -105,7 +105,7 @@ class PointSet {
 		}
 
 		if (dur instanceof Note) {
-			Note note = (Note) dur;
+			final Note note = (Note) dur;
 			if (note.isTiedFromPrevious()) {
 				return false;
 			}
@@ -116,7 +116,7 @@ class PointSet {
 
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
+		final StringBuilder strBuilder = new StringBuilder();
 
 		for (NoteEventVector vec : this.points) {
 			strBuilder.append(vec).append("\n");

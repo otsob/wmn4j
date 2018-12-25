@@ -43,7 +43,7 @@ public class Staff implements Iterable<Measure> {
 		// TODO: Add constructor that allows setting staff type.
 		this.type = Type.NORMAL;
 
-		List<Measure> tmpMeasures = new ArrayList<>();
+		final List<Measure> tmpMeasures = new ArrayList<>();
 
 		// Add placeholder for pickup if there is none.
 		if (measures.get(0).getNumber() != 0) {
@@ -117,7 +117,7 @@ public class Staff implements Iterable<Measure> {
 
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
+		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("Staff: ").append("\n");
 
 		for (Measure measure : this) {
@@ -132,7 +132,7 @@ public class Staff implements Iterable<Measure> {
 	 */
 	@Override
 	public Iterator<Measure> iterator() {
-		Iterator<Measure> iter = this.measures.iterator();
+		final Iterator<Measure> iter = this.measures.iterator();
 
 		// If there is no pickup measure go to next
 		if (!this.hasPickupMeasure()) {

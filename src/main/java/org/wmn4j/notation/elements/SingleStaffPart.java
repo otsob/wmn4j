@@ -34,7 +34,7 @@ public class SingleStaffPart implements Part {
 	 */
 	public SingleStaffPart(String name, List<Measure> measures) {
 		this.staff = new Staff(measures);
-		Map<Part.Attribute, String> attributes = new HashMap<>();
+		final Map<Part.Attribute, String> attributes = new HashMap<>();
 		attributes.put(Attribute.NAME, name);
 		this.partAttributes = Collections.unmodifiableMap(attributes);
 	}
@@ -120,7 +120,7 @@ public class SingleStaffPart implements Part {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		builder.append("Part: ");
 
 		for (Attribute attr : this.partAttributes.keySet()) {
@@ -173,7 +173,7 @@ public class SingleStaffPart implements Part {
 				throw new NoSuchElementException();
 			}
 
-			Measure next = this.staffIterator.next();
+			final Measure next = this.staffIterator.next();
 			this.prevMeasureNumber = next.getNumber();
 			return next;
 		}

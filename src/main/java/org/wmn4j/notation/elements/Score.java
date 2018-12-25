@@ -112,13 +112,13 @@ public class Score implements Iterable<Part> {
 	 * @throws NoSuchElementException if the position is not found.
 	 */
 	public Durational getAtPosition(ScorePosition position) throws NoSuchElementException {
-		Part part = this.parts.get(position.getPartNumber());
-		Measure measure = part.getMeasure(position.getStaffNumber(), position.getMeasureNumber());
+		final Part part = this.parts.get(position.getPartNumber());
+		final Measure measure = part.getMeasure(position.getStaffNumber(), position.getMeasureNumber());
 		Durational dur = measure.get(position.getVoiceNumber(), position.getIndexInVoice());
 
 		if (position.isInChord()) {
 			if (dur instanceof Chord) {
-				Chord chord = (Chord) dur;
+				final Chord chord = (Chord) dur;
 				dur = chord.getNote(position.getIndexInChord());
 			} else {
 				throw new NoSuchElementException("The element at the position is not a Chord.");
@@ -130,7 +130,7 @@ public class Score implements Iterable<Part> {
 
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
+		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("Score ").append(getName()).append("\n");
 
 		for (int i = 0; i < parts.size(); ++i) {

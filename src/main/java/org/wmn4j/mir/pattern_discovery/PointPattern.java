@@ -31,7 +31,7 @@ class PointPattern {
 	}
 
 	PointPattern getVectorizedRepresentation() {
-		List<NoteEventVector> vecPoints = new ArrayList<>();
+		final List<NoteEventVector> vecPoints = new ArrayList<>();
 
 		for (int i = 1; i < this.points.size(); ++i) {
 			vecPoints.add(this.points.get(i).subtract(this.points.get(i - 1)));
@@ -50,8 +50,8 @@ class PointPattern {
 			return false;
 		}
 
-		PointPattern other = (PointPattern) o;
-		List<NoteEventVector> otherPoints = other.getPoints();
+		final PointPattern other = (PointPattern) o;
+		final List<NoteEventVector> otherPoints = other.getPoints();
 		if (this.points.size() != otherPoints.size()) {
 			return false;
 		}
@@ -71,10 +71,10 @@ class PointPattern {
 
 		for (NoteEventVector point : this.points) {
 			for (int i = 0; i < point.getDimensionality(); ++i) {
-				long bits = Double.doubleToRawLongBits(point.getComponent(i));
-				int first = (int) (bits >> 32);
+				final long bits = Double.doubleToRawLongBits(point.getComponent(i));
+				final int first = (int) (bits >> 32);
 				hash += first * RandomMultiplierProvider.INSTANCE.getMultiplier(multiplierIndex++);
-				int second = (int) bits;
+				final int second = (int) bits;
 				hash += second * RandomMultiplierProvider.INSTANCE.getMultiplier(multiplierIndex++);
 			}
 		}

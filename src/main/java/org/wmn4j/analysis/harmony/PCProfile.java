@@ -135,7 +135,7 @@ public class PCProfile {
 	 *             this note.
 	 */
 	public void add(Note note) {
-		PitchClass pc = note.getPitch().getPitchClass();
+		final PitchClass pc = note.getPitch().getPitchClass();
 		double value = this.getValue(note.getPitch().getPitchClass());
 		value += this.pw.weight(note);
 		this.setValue(pc, value);
@@ -148,11 +148,11 @@ public class PCProfile {
 	 * @return normalized pitch class profile.
 	 */
 	public PCProfile normalize() {
-		PCProfile normalized = new PCProfile();
+		final PCProfile normalized = new PCProfile();
 		double largest = 0.0;
 
 		for (PitchClass pc : this.profile.keySet()) {
-			double value = this.profile.get(pc);
+			final double value = this.profile.get(pc);
 			if (value > largest) {
 				largest = value;
 			}
@@ -160,7 +160,7 @@ public class PCProfile {
 
 		if (!new Double(0.0).equals(largest)) {
 			for (PitchClass pc : this.profile.keySet()) {
-				double value = this.profile.get(pc);
+				final double value = this.profile.get(pc);
 				normalized.setValue(pc, value / largest);
 			}
 		}
@@ -178,8 +178,8 @@ public class PCProfile {
 
 	@Override
 	public String toString() {
-		DecimalFormat df = new DecimalFormat("0.000");
-		StringBuilder strBuilder = new StringBuilder();
+		final DecimalFormat df = new DecimalFormat("0.000");
+		final StringBuilder strBuilder = new StringBuilder();
 
 		for (PitchClass pc : this.profile.keySet()) {
 			strBuilder.append(pc).append(": ").append(df.format(this.profile.get(pc))).append(", ");
@@ -217,15 +217,15 @@ public class PCProfile {
 		double denomB = 0.0;
 
 		for (PitchClass pc : PitchClass.values()) {
-			double diffA = a.getValue(pc) - averageOfA;
-			double diffB = b.getValue(pc) - averageOfB;
+			final double diffA = a.getValue(pc) - averageOfA;
+			final double diffB = b.getValue(pc) - averageOfB;
 
 			numerator += diffA * diffB;
 			denomA += Math.pow(diffA, 2.0);
 			denomB += Math.pow(diffB, 2.0);
 		}
 
-		double denominator = Math.sqrt(denomA * denomB);
+		final double denominator = Math.sqrt(denomA * denomB);
 		return numerator / denominator;
 	}
 

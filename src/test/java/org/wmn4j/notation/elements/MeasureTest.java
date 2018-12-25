@@ -44,7 +44,7 @@ public class MeasureTest {
 	Note C4Quarter = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
 	public MeasureTest() {
-		List<Durational> voiceContents = new ArrayList<>();
+		final List<Durational> voiceContents = new ArrayList<>();
 		voiceContents.add(C4Quarter);
 		voiceContents.add(Rest.getRest(Durations.QUARTER));
 		voiceContents.add(Chord.getChord(C4, E4, G4));
@@ -62,28 +62,28 @@ public class MeasureTest {
 	public void testCreatingIllegalMeasureThrowsException() {
 		// Test exceptions thrown correctly for illegal arguments
 		try {
-			Measure m = new Measure(-1, this.multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+			final Measure m = new Measure(-1, this.multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 			fail("Exception not thrown");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 
 		try {
-			Measure m = new Measure(1, null, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+			final Measure m = new Measure(1, null, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 			fail("Exception not thrown");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof NullPointerException);
 		}
 	}
 
 	@Test
 	public void testVoicesImmutable() {
-		Map<Integer, List<Durational>> voices = new HashMap<>();
-		List<Durational> voice = new ArrayList<>();
+		final Map<Integer, List<Durational>> voices = new HashMap<>();
+		final List<Durational> voice = new ArrayList<>();
 		voice.add(C4);
 		voices.put(0, voice);
 
-		Measure measure = new Measure(1, voices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final Measure measure = new Measure(1, voices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 
 		// Test that modifying the original voices list does no affect measure created
 		// using it.
@@ -93,15 +93,15 @@ public class MeasureTest {
 
 	@Test
 	public void testGetVoice() {
-		Measure m = new Measure(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final Measure m = new Measure(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 		assertTrue(m.getVoice(1).contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF)));
 		assertTrue(m.getVoice(0).contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 
-		List<Durational> voice = m.getVoice(0);
+		final List<Durational> voice = m.getVoice(0);
 		try {
 			voice.add(Rest.getRest(Durations.QUARTER));
 			fail("Failed to throw exception for disabled adding");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 		/* Do nothing */ }
 	}
 
@@ -113,11 +113,11 @@ public class MeasureTest {
 
 	@Test
 	public void testIteratorWithSingleVoiceMeasure() {
-		Measure singleVoiceMeasure = new Measure(1, singleNoteVoice, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
-		int noteCount = 0;
+		final Measure singleVoiceMeasure = new Measure(1, singleNoteVoice, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final int noteCount = 0;
 
-		List<Durational> expected = singleNoteVoice.get(0);
-		List<Durational> found = new ArrayList<>();
+		final List<Durational> expected = singleNoteVoice.get(0);
+		final List<Durational> found = new ArrayList<>();
 
 		for (Durational e : singleVoiceMeasure) {
 			found.add(e);
@@ -132,14 +132,14 @@ public class MeasureTest {
 
 	@Test
 	public void testIteratorWithMultiVoiceMeasure() {
-		Measure multiVoiceMeasure = new Measure(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
-		int noteCount = 0;
+		final Measure multiVoiceMeasure = new Measure(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final int noteCount = 0;
 
-		List<Durational> expected = new ArrayList<>();
+		final List<Durational> expected = new ArrayList<>();
 		expected.addAll(multipleNoteVoices.get(0));
 		expected.addAll(multipleNoteVoices.get(1));
 
-		List<Durational> found = new ArrayList<>();
+		final List<Durational> found = new ArrayList<>();
 
 		for (Durational e : multiVoiceMeasure) {
 			found.add(e);
@@ -154,23 +154,23 @@ public class MeasureTest {
 
 	@Test
 	public void testIteratorRemoveDisabled() {
-		Measure m = new Measure(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final Measure m = new Measure(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 
 		try {
-			Iterator<Durational> iter = m.iterator();
+			final Iterator<Durational> iter = m.iterator();
 			iter.next();
 			iter.remove();
 			fail("Expected exception was not thrown");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof UnsupportedOperationException);
 		}
 	}
 
 	@Test
 	public void testIteratorWithEmptyMeasure() {
-		Map<Integer, List<Durational>> voices = new HashMap<>();
+		final Map<Integer, List<Durational>> voices = new HashMap<>();
 		voices.put(0, new ArrayList<>());
-		Measure emptyMeasure = new Measure(1, voices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final Measure emptyMeasure = new Measure(1, voices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 
 		int noteElemCount = 0;
 
@@ -184,14 +184,14 @@ public class MeasureTest {
 
 	@Test
 	public void testIteratorWithNonContiguousVoiceNumbers() {
-		List<Durational> noteList = this.singleNoteVoice.get(0);
-		Map<Integer, List<Durational>> noteVoices = new HashMap<>();
+		final List<Durational> noteList = this.singleNoteVoice.get(0);
+		final Map<Integer, List<Durational>> noteVoices = new HashMap<>();
 		noteVoices.put(1, noteList);
 		noteVoices.put(3, noteList);
 
-		Measure measure = new Measure(1, noteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final Measure measure = new Measure(1, noteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 
-		List<Durational> expected = new ArrayList<>(noteList);
+		final List<Durational> expected = new ArrayList<>(noteList);
 		for (Durational d : noteList) {
 			expected.add(d);
 		}

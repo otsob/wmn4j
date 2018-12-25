@@ -32,11 +32,11 @@ public class TestHelper {
 	private static final NoteBuilder C4Quarter = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
 	public static MeasureBuilder getTestMeasureBuilder(int number) {
-		MeasureBuilder builder = new MeasureBuilder(number);
+		final MeasureBuilder builder = new MeasureBuilder(number);
 
 		builder.addToVoice(0, C4Quarter);
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER));
-		ChordBuilder chordBuilder = new ChordBuilder(C4);
+		final ChordBuilder chordBuilder = new ChordBuilder(C4);
 		chordBuilder.add(E4).add(G4);
 		builder.addToVoice(0, chordBuilder);
 
@@ -54,13 +54,13 @@ public class TestHelper {
 	public static Score readScore(String pathString) {
 		Score score = null;
 
-		MusicXmlReader reader = MusicXmlReader.getReader(false);
+		final MusicXmlReader reader = MusicXmlReader.getReader(false);
 
-		Path path = Paths.get(TESTFILE_PATH, pathString);
+		final Path path = Paths.get(TESTFILE_PATH, pathString);
 
 		try {
 			score = reader.readScore(path);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			System.out.println("Failed to read score from " + path.toString() + " with exception: " + e);
 		}
 

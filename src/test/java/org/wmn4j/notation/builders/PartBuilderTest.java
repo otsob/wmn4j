@@ -52,16 +52,16 @@ public class PartBuilderTest {
 	NoteBuilder C4Quarter = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
 	public PartBuilderTest() {
-		Map<Integer, List<DurationalBuilder>> noteVoice = new HashMap<>();
+		final Map<Integer, List<DurationalBuilder>> noteVoice = new HashMap<>();
 		noteVoice.put(0, new ArrayList<>());
 		noteVoice.get(0).add(C4Quarter);
 		noteVoice.get(0).add(new RestBuilder(Durations.QUARTER));
-		ChordBuilder chordBuilder = new ChordBuilder(C4);
+		final ChordBuilder chordBuilder = new ChordBuilder(C4);
 		chordBuilder.add(E4).add(G4);
 
 		noteVoice.get(0).add(chordBuilder);
 
-		Map<Integer, List<DurationalBuilder>> noteVoices = new HashMap<>();
+		final Map<Integer, List<DurationalBuilder>> noteVoices = new HashMap<>();
 		noteVoices.put(0, noteVoice.get(0));
 		noteVoices.put(1, new ArrayList<>());
 		noteVoices.get(1).add(new RestBuilder(Durations.QUARTER));
@@ -74,7 +74,7 @@ public class PartBuilderTest {
 	}
 
 	private MeasureBuilder getMeasureBuilder(int number) {
-		MeasureBuilder builder = new MeasureBuilder(number, this.measureAttr);
+		final MeasureBuilder builder = new MeasureBuilder(number, this.measureAttr);
 		for (Integer voiceNum : this.measureContents.keySet()) {
 			builder.addVoice(this.measureContents.get(voiceNum));
 		}
@@ -84,16 +84,16 @@ public class PartBuilderTest {
 
 	@Test
 	public void testGetStaffCount() {
-		int measureCount = 5;
-		PartBuilder builder = new PartBuilder("");
+		final int measureCount = 5;
+		final PartBuilder builder = new PartBuilder("");
 		for (int i = 1; i <= measureCount; ++i) {
-			MeasureBuilder m = getMeasureBuilder(i);
+			final MeasureBuilder m = getMeasureBuilder(i);
 			builder.addToStaff(0, m);
 		}
 		assertEquals(1, builder.getStaffCount());
 
 		for (int i = 1; i <= measureCount; ++i) {
-			MeasureBuilder m = getMeasureBuilder(i);
+			final MeasureBuilder m = getMeasureBuilder(i);
 			builder.addToStaff(1, m);
 		}
 		assertEquals(2, builder.getStaffCount());
@@ -101,61 +101,61 @@ public class PartBuilderTest {
 
 	@Test
 	public void testBuildSingleStaffPart() {
-		int measureCount = 5;
-		PartBuilder builder = new PartBuilder("");
+		final int measureCount = 5;
+		final PartBuilder builder = new PartBuilder("");
 		for (int i = 1; i <= measureCount; ++i) {
-			MeasureBuilder m = getMeasureBuilder(i);
+			final MeasureBuilder m = getMeasureBuilder(i);
 			builder.add(m);
 		}
 
-		Part part = builder.build();
+		final Part part = builder.build();
 		assertTrue(part instanceof SingleStaffPart);
 		assertFalse(part.isMultiStaff());
 	}
 
 	@Test
 	public void testBuildMultiStaffPart() {
-		int measureCount = 5;
-		PartBuilder builder = new PartBuilder("");
+		final int measureCount = 5;
+		final PartBuilder builder = new PartBuilder("");
 		for (int i = 1; i <= measureCount; ++i) {
 			builder.addToStaff(1, getMeasureBuilder(i));
 			builder.addToStaff(2, getMeasureBuilder(i));
 		}
 
-		Part part = builder.build();
+		final Part part = builder.build();
 		assertTrue(part.isMultiStaff());
 		assertTrue(part instanceof MultiStaffPart);
-		MultiStaffPart mpart = (MultiStaffPart) part;
-		List<Integer> staffNumbers = mpart.getStaffNumbers();
+		final MultiStaffPart mpart = (MultiStaffPart) part;
+		final List<Integer> staffNumbers = mpart.getStaffNumbers();
 		assertTrue(staffNumbers.size() == 2);
 		assertTrue(staffNumbers.contains(1));
 		assertTrue(staffNumbers.contains(2));
 
-		Staff staff1 = mpart.getStaff(1);
+		final Staff staff1 = mpart.getStaff(1);
 		assertTrue(staff1.getMeasureCount() == 5);
 
-		Staff staff2 = mpart.getStaff(2);
+		final Staff staff2 = mpart.getStaff(2);
 		assertTrue(staff2.getMeasureCount() == 5);
 	}
 
 	@Test
 	public void testBuildPartWithTieBetweenMeasures() {
 
-		MeasureBuilder firstMeasureBuilder = new MeasureBuilder(1);
-		NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
+		final MeasureBuilder firstMeasureBuilder = new MeasureBuilder(1);
+		final NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
 		firstMeasureBuilder.addToVoice(1, firstNoteBuilder);
 
-		MeasureBuilder secondMeasureBuilder = new MeasureBuilder(2);
-		NoteBuilder secondNoteBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
+		final MeasureBuilder secondMeasureBuilder = new MeasureBuilder(2);
+		final NoteBuilder secondNoteBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
 		firstNoteBuilder.addTieToFollowing(secondNoteBuilder);
 		secondMeasureBuilder.addToVoice(1, secondNoteBuilder);
 
-		PartBuilder partBuilder = new PartBuilder("TiedMeasures");
+		final PartBuilder partBuilder = new PartBuilder("TiedMeasures");
 		partBuilder.add(firstMeasureBuilder).add(secondMeasureBuilder);
-		Part part = partBuilder.build();
+		final Part part = partBuilder.build();
 
-		Note firstNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 1).get(1, 0);
-		Note secondNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 2).get(1, 0);
+		final Note firstNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 1).get(1, 0);
+		final Note secondNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 2).get(1, 0);
 
 		assertEquals(secondNote, firstNote.getFollowingTiedNote().get());
 		assertTrue(secondNote.isTiedFromPrevious());

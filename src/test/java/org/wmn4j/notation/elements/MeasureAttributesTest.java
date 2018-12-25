@@ -37,7 +37,7 @@ public class MeasureAttributesTest {
 
 	@Test
 	public void testGetMeasureInfo() {
-		MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
+		final MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Barline.SINGLE, Clefs.G);
 
 		assertFalse(attr == null);
@@ -52,51 +52,51 @@ public class MeasureAttributesTest {
 	public void testGetMeasureInfoWithInvalidParameters() {
 
 		try {
-			MeasureAttributes attr = MeasureAttributes.getMeasureAttr(null, KeySignatures.CMAJ_AMIN, Barline.SINGLE,
+			final MeasureAttributes attr = MeasureAttributes.getMeasureAttr(null, KeySignatures.CMAJ_AMIN, Barline.SINGLE,
 					Barline.SINGLE, Clefs.G);
 
 			fail("Did not throw exception with null TimeSignature");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof NullPointerException);
 		}
 
 		try {
-			MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, null, Barline.SINGLE,
+			final MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, null, Barline.SINGLE,
 					Barline.SINGLE, Clefs.G);
 
 			fail("Did not throw exception with null KeySignature");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof NullPointerException);
 		}
 
 		try {
-			MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
+			final MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 					null, Barline.SINGLE, Clefs.G);
 
 			fail("Did not throw exception with null right barline");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof NullPointerException);
 		}
 
 		try {
-			MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
+			final MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 					Barline.SINGLE, Barline.SINGLE, null);
 
 			fail("Did not throw exception with null Clef");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof NullPointerException);
 		}
 	}
 
 	@Test
 	public void testEquals() {
-		MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
+		final MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Barline.SINGLE, Clefs.G);
 
-		MeasureAttributes other = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
+		final MeasureAttributes other = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Barline.SINGLE, Clefs.G);
 
-		MeasureAttributes different = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR,
+		final MeasureAttributes different = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR,
 				KeySignatures.CMAJ_AMIN, Barline.SINGLE, Barline.DOUBLE, Clefs.G);
 
 		assertTrue(attr.equals(attr));

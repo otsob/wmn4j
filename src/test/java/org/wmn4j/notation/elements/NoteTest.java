@@ -41,12 +41,12 @@ public class NoteTest {
 
 	@Test
 	public void testEquals() {
-		Note A1 = Note.getNote(Pitch.Base.A, 0, 1, Durations.QUARTER);
-		Note A1differentDur = Note.getNote(Pitch.Base.A, 0, 1, Durations.EIGHT);
-		Note A1Copy = Note.getNote(Pitch.Base.A, 0, 1, Durations.QUARTER);
-		Note B1 = Note.getNote(Pitch.Base.B, 0, 1, Durations.QUARTER);
-		Note Asharp1 = Note.getNote(Pitch.Base.A, 1, 1, Durations.QUARTER);
-		Note C4 = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final Note A1 = Note.getNote(Pitch.Base.A, 0, 1, Durations.QUARTER);
+		final Note A1differentDur = Note.getNote(Pitch.Base.A, 0, 1, Durations.EIGHT);
+		final Note A1Copy = Note.getNote(Pitch.Base.A, 0, 1, Durations.QUARTER);
+		final Note B1 = Note.getNote(Pitch.Base.B, 0, 1, Durations.QUARTER);
+		final Note Asharp1 = Note.getNote(Pitch.Base.A, 1, 1, Durations.QUARTER);
+		final Note C4 = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
 		assertTrue(A1.equals(A1));
 		assertTrue(A1.equals(A1Copy));
@@ -56,13 +56,13 @@ public class NoteTest {
 		assertFalse(A1.equals(Asharp1));
 		assertTrue(C4.equals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 
-		Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
-		HashSet<Articulation> articulations = new HashSet<>();
+		final Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
+		final HashSet<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
-		Note note1 = Note.getNote(pitch, Durations.EIGHT, articulations);
+		final Note note1 = Note.getNote(pitch, Durations.EIGHT, articulations);
 		articulations.add(Articulation.TENUTO);
-		Note note2 = Note.getNote(pitch, Durations.EIGHT, articulations);
-		Note note3 = Note.getNote(pitch, Durations.EIGHT, articulations);
+		final Note note2 = Note.getNote(pitch, Durations.EIGHT, articulations);
+		final Note note3 = Note.getNote(pitch, Durations.EIGHT, articulations);
 
 		assertFalse(note1.equals(Note.getNote(pitch, Durations.EIGHT)));
 		assertFalse(note1.equals(note2));
@@ -74,31 +74,31 @@ public class NoteTest {
 	public void testCreatingInvalidNote() {
 
 		try {
-			Note note = Note.getNote(Pitch.Base.C, 5, 1, Durations.QUARTER);
+			final Note note = Note.getNote(Pitch.Base.C, 5, 1, Durations.QUARTER);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 
 		try {
-			Note note = Note.getNote(Pitch.Base.C, 0, 11, Durations.QUARTER);
+			final Note note = Note.getNote(Pitch.Base.C, 0, 11, Durations.QUARTER);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 
 		try {
-			Note note = Note.getNote(Pitch.Base.C, 0, 1, null);
+			final Note note = Note.getNote(Pitch.Base.C, 0, 1, null);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof NullPointerException);
 		}
 	}
 
 	@Test
 	public void testHasArticulation() {
-		Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
-		Set<Articulation> articulations = new HashSet<>();
+		final Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
+		final Set<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
 		assertTrue(Note.getNote(pitch, Durations.EIGHT, articulations).hasArticulation(Articulation.STACCATO));
 		assertFalse(Note.getNote(pitch, Durations.EIGHT).hasArticulation(Articulation.STACCATO));
@@ -106,8 +106,8 @@ public class NoteTest {
 
 	@Test
 	public void testHasArticulations() {
-		Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
-		HashSet<Articulation> articulations = new HashSet<>();
+		final Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
+		final HashSet<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
 		assertTrue(Note.getNote(pitch, Durations.EIGHT, articulations).hasArticulations());
 		assertFalse(Note.getNote(pitch, Durations.EIGHT).hasArticulations());
@@ -115,22 +115,22 @@ public class NoteTest {
 
 	@Test
 	public void testGetArticulations() {
-		Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
+		final Pitch pitch = Pitch.getPitch(Pitch.Base.C, 0, 1);
 		assertTrue(Note.getNote(pitch, Durations.EIGHT).getArticulations().isEmpty());
 
-		Set<Articulation> articulations = new HashSet<>();
+		final Set<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
 		articulations.add(Articulation.TENUTO);
-		Note note = Note.getNote(pitch, Durations.EIGHT, articulations);
+		final Note note = Note.getNote(pitch, Durations.EIGHT, articulations);
 
-		Set<Articulation> artic = note.getArticulations();
+		final Set<Articulation> artic = note.getArticulations();
 		assertEquals(2, artic.size());
 		assertTrue(artic.contains(Articulation.STACCATO));
 		assertTrue(artic.contains(Articulation.TENUTO));
 		try {
 			artic.remove(Articulation.STACCATO);
 			fail("Removing articulation succeeded, immutability violated");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 		/* Do nothing */ }
 
 		assertTrue(note.hasArticulation(Articulation.STACCATO));
@@ -138,16 +138,16 @@ public class NoteTest {
 
 	@Test
 	public void testTies() {
-		NoteBuilder firstBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		NoteBuilder secondBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		final NoteBuilder firstBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final NoteBuilder secondBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
 		firstBuilder.addTieToFollowing(secondBuilder);
 
-		Note secondNote = secondBuilder.build();
+		final Note secondNote = secondBuilder.build();
 		assertTrue(secondNote.isTied());
 		assertTrue(!secondNote.getFollowingTiedNote().isPresent());
 		assertTrue(secondNote.isTiedFromPrevious());
 
-		Note firstNote = firstBuilder.build();
+		final Note firstNote = firstBuilder.build();
 		assertTrue(firstNote.isTied());
 		assertTrue(firstNote.getFollowingTiedNote() != null);
 		assertFalse(firstNote.isTiedFromPrevious());
@@ -156,11 +156,11 @@ public class NoteTest {
 
 	@Test
 	public void testTiedDuration() {
-		Note untied = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final Note untied = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		assertEquals(Durations.QUARTER, untied.getTiedDuration());
 
-		NoteBuilder firstBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		NoteBuilder secondBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		final NoteBuilder firstBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final NoteBuilder secondBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
 		firstBuilder.addTieToFollowing(secondBuilder);
 
 		Note firstNote = firstBuilder.build();
@@ -172,12 +172,12 @@ public class NoteTest {
 		firstBuilder.clearCache();
 		secondBuilder.clearCache();
 
-		NoteBuilder thirdBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		final NoteBuilder thirdBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
 		secondBuilder.addTieToFollowing(thirdBuilder);
 
 		firstNote = firstBuilder.build();
 		secondNote = secondBuilder.build();
-		Note thirdNote = thirdBuilder.build();
+		final Note thirdNote = thirdBuilder.build();
 
 		assertEquals(Durations.HALF, firstNote.getTiedDuration());
 		assertEquals(Durations.QUARTER, secondNote.getTiedDuration());

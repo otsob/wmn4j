@@ -156,7 +156,7 @@ public final class MeasureAttributes {
 			return false;
 		}
 
-		MeasureAttributes other = (MeasureAttributes) o;
+		final MeasureAttributes other = (MeasureAttributes) o;
 
 		if (!this.timeSig.equals(other.timeSig)) {
 			return false;
@@ -183,7 +183,7 @@ public final class MeasureAttributes {
 
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
+		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append(this.timeSig).append(", ").append(this.keySig).append(", ").append("left barline: ")
 				.append(this.leftBarline).append(", ").append("right barline: ").append(this.rightBarline).append(", ")
 				.append("Clef: ").append(this.clef).append(", ");

@@ -19,8 +19,8 @@ import org.wmn4j.notation.elements.Score;
  */
 public class ScoreBuilder {
 
-	private Map<Score.Attribute, String> scoreAttr;
-	private List<PartBuilder> partBuilders;
+	private final Map<Score.Attribute, String> scoreAttr;
+	private final List<PartBuilder> partBuilders;
 
 	/**
 	 * Constructor that creates an empty ScoreBuilder.
@@ -55,7 +55,7 @@ public class ScoreBuilder {
 	 * @return a <code>Score</code> with the values specified in this builder.
 	 */
 	public Score build() {
-		List<Part> parts = new ArrayList<>();
+		final List<Part> parts = new ArrayList<>();
 		this.partBuilders.forEach((builder) -> parts.add(builder.build()));
 		return new Score(this.scoreAttr, parts);
 	}

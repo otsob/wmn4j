@@ -94,7 +94,7 @@ public class KeySignature {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
+		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("KeySig(");
 		if (!this.sharps.isEmpty()) {
 			strBuilder.append("sharps: ");
@@ -134,7 +134,7 @@ public class KeySignature {
 			return false;
 		}
 
-		KeySignature other = (KeySignature) o;
+		final KeySignature other = (KeySignature) o;
 		return this.sharps.equals(other.sharps) && this.flats.equals(other.flats);
 	}
 

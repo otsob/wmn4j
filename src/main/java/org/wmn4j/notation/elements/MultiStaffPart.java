@@ -118,7 +118,7 @@ public class MultiStaffPart implements Part {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		builder.append("Part: ");
 
 		for (Attribute attr : this.partAttributes.keySet()) {

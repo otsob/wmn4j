@@ -35,12 +35,12 @@ public class PCProfileTest {
 
 	@Test
 	public void testSetIncorrectValue() {
-		PCProfile profile = new PCProfile();
+		final PCProfile profile = new PCProfile();
 
 		try {
 			profile.setValue(PitchClass.C, -0.1);
 			fail("No exception thrown");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 
@@ -48,7 +48,7 @@ public class PCProfileTest {
 
 	@Test
 	public void testAddWithDefaultWeightFunction() {
-		PCProfile profile = new PCProfile();
+		final PCProfile profile = new PCProfile();
 		profile.add(C4);
 		assertEquals("Incorrect value for C", 1.0, profile.getValue(PitchClass.C), EPS);
 		assertEquals("Incorrect value for Csharp", 0.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
@@ -58,7 +58,7 @@ public class PCProfileTest {
 
 	@Test
 	public void testAddWithDurationWeightFunction() {
-		PCProfile profile = PCProfile.getDurationWeightedProfile();
+		final PCProfile profile = PCProfile.getDurationWeightedProfile();
 		profile.add(C4);
 		assertEquals("Incorrect value for C", 0.25, profile.getValue(PitchClass.C), EPS);
 		assertEquals("Incorrect value for Csharp", 0.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
@@ -101,7 +101,7 @@ public class PCProfileTest {
 	}
 
 	public static PCProfile getTestProfile(double... values) {
-		PCProfile profile = new PCProfile();
+		final PCProfile profile = new PCProfile();
 		int i = 0;
 
 		for (PitchClass pc : PitchClass.values()) {
@@ -115,10 +115,10 @@ public class PCProfileTest {
 	public void testCorrelation() {
 
 		// Profile for C-major from Krumhansl and Kessler.
-		PCProfile cMajorProfile = getTestProfile(6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29,
+		final PCProfile cMajorProfile = getTestProfile(6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29,
 				2.88);
 		// Profile for A minor from Krumhansl and Kessler.
-		PCProfile aMinorProfile = getTestProfile(5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17, 6.33, 2.68,
+		final PCProfile aMinorProfile = getTestProfile(5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17, 6.33, 2.68,
 				3.52);
 
 		assertEquals("Incorrect correlation for c major profile with itself", 1.0,
@@ -134,13 +134,13 @@ public class PCProfileTest {
 	@Test
 	public void testEuclidean() {
 		// Profile for C-major from Krumhansl and Kessler.
-		PCProfile a = getTestProfile(1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00);
+		final PCProfile a = getTestProfile(1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00);
 		// Profile for A minor from Krumhansl and Kessler.
-		PCProfile b = getTestProfile(5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17, 6.33, 2.68, 3.52);
+		final PCProfile b = getTestProfile(5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17, 6.33, 2.68, 3.52);
 
 		assertEquals("Incorrect distance when computing distance with itself", 0.0, PCProfile.euclidean(b, b), EPS);
 
-		PCProfile c = getTestProfile(0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
+		final PCProfile c = getTestProfile(0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
 
 		assertEquals("Incorrect value", Math.sqrt(12.0), PCProfile.euclidean(a, c), EPS);
 	}

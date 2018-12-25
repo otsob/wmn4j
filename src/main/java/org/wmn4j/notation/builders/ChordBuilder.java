@@ -39,7 +39,7 @@ public class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
 	 * @param noteBuilders the note builders that are placed into this builder
 	 */
 	public ChordBuilder(List<NoteBuilder> noteBuilders) {
-		List<NoteBuilder> noteBuildersCopy = new ArrayList<>();
+		final List<NoteBuilder> noteBuildersCopy = new ArrayList<>();
 		noteBuilders.forEach(builder -> noteBuildersCopy.add(new NoteBuilder(builder)));
 		this.noteBuilders = noteBuildersCopy;
 		this.duration = noteBuilders.get(0).getDuration();
@@ -89,7 +89,7 @@ public class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
 
 	@Override
 	public Chord build() {
-		List<Note> notes = new ArrayList<>();
+		final List<Note> notes = new ArrayList<>();
 		this.noteBuilders.forEach((builder) -> notes.add(builder.build()));
 		return Chord.getChord(notes);
 	}

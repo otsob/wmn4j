@@ -27,10 +27,10 @@ public class ScoreBuilderTest {
 	}
 
 	public static List<PartBuilder> getTestPartBuilders(int partCount, int measureCount) {
-		List<PartBuilder> partBuilders = new ArrayList<>();
+		final List<PartBuilder> partBuilders = new ArrayList<>();
 
 		for (int p = 1; p <= partCount; ++p) {
-			PartBuilder partBuilder = new PartBuilder("Part" + p);
+			final PartBuilder partBuilder = new PartBuilder("Part" + p);
 			for (int m = 1; m <= measureCount; ++m) {
 				partBuilder.add(TestHelper.getTestMeasureBuilder(m));
 			}
@@ -43,9 +43,9 @@ public class ScoreBuilderTest {
 
 	@Test
 	public void testBuildingScore() {
-		ScoreBuilder builder = new ScoreBuilder();
-		Map<Score.Attribute, String> attributes = ScoreTest.getTestAttributes();
-		List<PartBuilder> partBuilders = getTestPartBuilders(5, 5);
+		final ScoreBuilder builder = new ScoreBuilder();
+		final Map<Score.Attribute, String> attributes = ScoreTest.getTestAttributes();
+		final List<PartBuilder> partBuilders = getTestPartBuilders(5, 5);
 
 		for (Score.Attribute attr : attributes.keySet()) {
 			builder.setAttribute(attr, attributes.get(attr));
@@ -55,7 +55,7 @@ public class ScoreBuilderTest {
 			builder.addPart(partBuilder);
 		}
 
-		Score score = builder.build();
+		final Score score = builder.build();
 		assertEquals(ScoreTest.SCORE_NAME, score.getName());
 		assertEquals(ScoreTest.COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
 

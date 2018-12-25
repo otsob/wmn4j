@@ -41,14 +41,14 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
 	 * @return the most fitting key
 	 */
 	public Key analyzeKey(List<Durational> durationals) {
-		PCProfile profile = PCProfile.getDurationWeightedProfile();
+		final PCProfile profile = PCProfile.getDurationWeightedProfile();
 		durationals.forEach(durational -> profile.add(durational));
 
 		Key bestKey = Key.C_MAJOR;
 		double maxCorrelation = -2.0;
 
 		for (Key key : this.keyProfiles.keySet()) {
-			double correlation = PCProfile.correlation(this.keyProfiles.get(key), profile);
+			final double correlation = PCProfile.correlation(this.keyProfiles.get(key), profile);
 
 			if (correlation > maxCorrelation) {
 				maxCorrelation = correlation;
@@ -61,31 +61,31 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
 
 	private void readKeyProfiles() {
 
-		Map<String, Key> keyStrings = new HashMap<>();
+		final Map<String, Key> keyStrings = new HashMap<>();
 		for (Key key : Key.values()) {
 			keyStrings.put(key.toString(), key);
 		}
 
 		try {
-			File keyProfilesFile = new File(KSKeyAnalyzer.class.getResource("KSKeyProfiles.csv").getPath());
+			final File keyProfilesFile = new File(KSKeyAnalyzer.class.getResource("KSKeyProfiles.csv").getPath());
 			keyProfilesFile.setReadOnly();
 
-			BufferedReader br = new BufferedReader(new FileReader(keyProfilesFile));
+			final BufferedReader br = new BufferedReader(new FileReader(keyProfilesFile));
 			String line = br.readLine();
 
 			while (line != null && !line.isEmpty()) {
 				if (line.charAt(0) != '#') {
-					String[] lineContents = line.split(",");
-					String cleanedKeyString = lineContents[0].trim();
-					Key key = keyStrings.get(cleanedKeyString);
+					final String[] lineContents = line.split(",");
+					final String cleanedKeyString = lineContents[0].trim();
+					final Key key = keyStrings.get(cleanedKeyString);
 
-					List<Double> values = new ArrayList<>();
+					final List<Double> values = new ArrayList<>();
 					for (int i = 1; i < lineContents.length; ++i) {
-						String cleanedString = lineContents[i].trim();
+						final String cleanedString = lineContents[i].trim();
 						values.add(Double.parseDouble(cleanedString));
 					}
 
-					PCProfile profile = createPCProfile(values);
+					final PCProfile profile = createPCProfile(values);
 					this.keyProfiles.put(key, profile);
 				}
 
@@ -94,13 +94,13 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
 
 			br.close();
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			System.out.println(e);
 		}
 	}
 
 	private PCProfile createPCProfile(List<Double> values) {
-		PCProfile profile = new PCProfile();
+		final PCProfile profile = new PCProfile();
 		int i = 0;
 
 		for (PitchClass pc : PitchClass.values()) {

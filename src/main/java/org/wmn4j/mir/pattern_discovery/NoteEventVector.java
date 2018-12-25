@@ -47,7 +47,7 @@ class NoteEventVector implements Comparable<NoteEventVector> {
 	}
 
 	NoteEventVector add(NoteEventVector other) {
-		double[] sumComponents = new double[this.getDimensionality()];
+		final double[] sumComponents = new double[this.getDimensionality()];
 
 		for (int i = 0; i < sumComponents.length; ++i) {
 			sumComponents[i] = this.components[i] + other.getComponent(i);
@@ -57,7 +57,7 @@ class NoteEventVector implements Comparable<NoteEventVector> {
 	}
 
 	NoteEventVector subtract(NoteEventVector other) {
-		double[] diffComponents = new double[this.getDimensionality()];
+		final double[] diffComponents = new double[this.getDimensionality()];
 
 		for (int i = 0; i < diffComponents.length; ++i) {
 			diffComponents[i] = this.components[i] - other.getComponent(i);
@@ -91,7 +91,7 @@ class NoteEventVector implements Comparable<NoteEventVector> {
 			return false;
 		}
 
-		NoteEventVector other = (NoteEventVector) o;
+		final NoteEventVector other = (NoteEventVector) o;
 		if (other.getDimensionality() != this.getDimensionality()) {
 			return false;
 		}
@@ -105,10 +105,10 @@ class NoteEventVector implements Comparable<NoteEventVector> {
 		long hash = RandomMultiplierProvider.INSTANCE.getMultiplier(multiplierIndex++);
 
 		for (int i = 0; i < this.components.length; ++i) {
-			long bits = Double.doubleToRawLongBits(this.components[i]);
-			int first = (int) (bits >> 32);
+			final long bits = Double.doubleToRawLongBits(this.components[i]);
+			final int first = (int) (bits >> 32);
 			hash += first * RandomMultiplierProvider.INSTANCE.getMultiplier(multiplierIndex++);
-			int second = (int) bits;
+			final int second = (int) bits;
 			hash += second * RandomMultiplierProvider.INSTANCE.getMultiplier(multiplierIndex++);
 		}
 
@@ -122,7 +122,7 @@ class NoteEventVector implements Comparable<NoteEventVector> {
 
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
+		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("(");
 		for (int i = 0; i < this.components.length - 1; ++i) {
 			strBuilder.append(Double.toString(this.components[i])).append(", ");

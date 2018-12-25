@@ -30,7 +30,7 @@ public class MultiStaffPartTest {
 
 	public MultiStaffPartTest() {
 		this.testStaves = new HashMap<>();
-		List<Measure> measures = new ArrayList<>();
+		final List<Measure> measures = new ArrayList<>();
 		for (int i = 1; i <= 5; ++i) {
 			measures.add(TestHelper.getTestMeasure(i));
 		}
@@ -41,10 +41,10 @@ public class MultiStaffPartTest {
 
 	@Test
 	public void testImmutability() {
-		Map<Integer, Staff> testStavesCopy = new HashMap<>(this.testStaves);
-		MultiStaffPart part = new MultiStaffPart("Test staff", testStavesCopy);
+		final Map<Integer, Staff> testStavesCopy = new HashMap<>(this.testStaves);
+		final MultiStaffPart part = new MultiStaffPart("Test staff", testStavesCopy);
 
-		List<Measure> testMeasures = new ArrayList<>();
+		final List<Measure> testMeasures = new ArrayList<>();
 		testMeasures.add(TestHelper.getTestMeasure(1));
 		testStavesCopy.put(1, new Staff(testMeasures));
 
@@ -54,9 +54,9 @@ public class MultiStaffPartTest {
 
 	@Test
 	public void testIterator() {
-		MultiStaffPart part = new MultiStaffPart("Test staff", this.testStaves);
+		final MultiStaffPart part = new MultiStaffPart("Test staff", this.testStaves);
 
-		int expectedCount = 10;
+		final int expectedCount = 10;
 		int count = 0;
 		int prevMeasureNumber = 0;
 
@@ -83,8 +83,8 @@ public class MultiStaffPartTest {
 
 	@Test
 	public void testIteratorWithPickupMeasure() {
-		Map<Integer, Staff> staves = new HashMap<>();
-		List<Measure> measures = new ArrayList<>();
+		final Map<Integer, Staff> staves = new HashMap<>();
+		final List<Measure> measures = new ArrayList<>();
 		for (int i = 0; i <= 4; ++i) {
 			measures.add(TestHelper.getTestMeasure(i));
 		}
@@ -92,9 +92,9 @@ public class MultiStaffPartTest {
 		staves.put(1, new Staff(measures));
 		staves.put(2, new Staff(measures));
 
-		MultiStaffPart part = new MultiStaffPart("Test Staff", staves);
+		final MultiStaffPart part = new MultiStaffPart("Test Staff", staves);
 
-		int expectedCount = 10;
+		final int expectedCount = 10;
 		int count = 0;
 		int prevMeasureNumber = 0;
 
@@ -121,13 +121,13 @@ public class MultiStaffPartTest {
 
 	@Test
 	public void testIteratorImmutability() {
-		MultiStaffPart part = new MultiStaffPart("Test staff", this.testStaves);
-		Iterator<Measure> iterator = part.iterator();
+		final MultiStaffPart part = new MultiStaffPart("Test staff", this.testStaves);
+		final Iterator<Measure> iterator = part.iterator();
 		iterator.next();
 		try {
 			iterator.remove();
 			fail("Did not throw exception when calling remove on iterator");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 		/* Do nothing */ }
 	}
 }

@@ -39,10 +39,10 @@ public class KeySignatureTest {
 	@Test
 	public void testGetKeySigExceptions() {
 		try {
-			List<Pitch.Base> sharps = Arrays.asList(Pitch.Base.C);
-			KeySignature illegalCustomKeySig = new KeySignature(sharps, sharps);
+			final List<Pitch.Base> sharps = Arrays.asList(Pitch.Base.C);
+			final KeySignature illegalCustomKeySig = new KeySignature(sharps, sharps);
 			fail("A KeySignature with the same note as sharp and flat was created without exception.");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue("Exception was of incorrect type.", e instanceof IllegalArgumentException);
 		}
 	}
@@ -66,7 +66,7 @@ public class KeySignatureTest {
 		assertTrue(KeySignatures.EMAJ_CSHARPMIN.equals(KeySignatures.EMAJ_CSHARPMIN));
 		assertTrue(KeySignatures.EFLATMAJ_CMIN.equals(KeySignatures.EFLATMAJ_CMIN));
 
-		KeySignature customSig = new KeySignature(Arrays.asList(Pitch.Base.C), Arrays.asList(Pitch.Base.B));
+		final KeySignature customSig = new KeySignature(Arrays.asList(Pitch.Base.C), Arrays.asList(Pitch.Base.B));
 		assertTrue(customSig.equals(new KeySignature(Arrays.asList(Pitch.Base.C), Arrays.asList(Pitch.Base.B))));
 
 		assertFalse(KeySignatures.CMAJ_AMIN.equals(KeySignatures.FMAJ_DMIN));

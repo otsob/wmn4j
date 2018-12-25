@@ -42,7 +42,7 @@ public final class Duration implements Comparable<Duration> {
 
 		// TODO: Come up with a more effective way of finding GCD
 		if (numerator != 1) {
-			int gcd = BigInteger.valueOf(numerator).gcd(BigInteger.valueOf(denominator)).intValue();
+			final int gcd = BigInteger.valueOf(numerator).gcd(BigInteger.valueOf(denominator)).intValue();
 			numerator = numerator / gcd;
 			denominator = denominator / gcd;
 		}
@@ -95,7 +95,7 @@ public final class Duration implements Comparable<Duration> {
 			return false;
 		}
 
-		Duration other = (Duration) o;
+		final Duration other = (Duration) o;
 
 		return (this.numerator == other.numerator) && (this.denominator == other.denominator);
 	}
@@ -151,8 +151,8 @@ public final class Duration implements Comparable<Duration> {
 	 * @return a Duration that is the sum of this and other.
 	 */
 	public Duration add(Duration other) {
-		int nom = this.numerator * other.denominator + this.denominator * other.numerator;
-		int denom = this.denominator * other.denominator;
+		final int nom = this.numerator * other.denominator + this.denominator * other.numerator;
+		final int denom = this.denominator * other.denominator;
 
 		return getDuration(nom, denom);
 	}
@@ -165,8 +165,8 @@ public final class Duration implements Comparable<Duration> {
 	 * @return a Duration that is this other minus other.
 	 */
 	public Duration subtract(Duration other) {
-		int nom = this.numerator * other.denominator - this.denominator * other.numerator;
-		int denom = this.denominator * other.denominator;
+		final int nom = this.numerator * other.denominator - this.denominator * other.numerator;
+		final int denom = this.denominator * other.denominator;
 
 		return getDuration(nom, denom);
 	}

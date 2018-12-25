@@ -25,9 +25,9 @@ final class DocHelper {
 	 *         is found, otherwise an empty <code>Optional</code>.
 	 */
 	static Optional<Node> findChild(Node parent, String childName) {
-		NodeList children = parent.getChildNodes();
+		final NodeList children = parent.getChildNodes();
 		for (int i = 0; i < children.getLength(); ++i) {
-			Node child = children.item(i);
+			final Node child = children.item(i);
 			if (child != null && child.getNodeName() != null) {
 				if (child.getNodeName().equals(childName)) {
 					return Optional.of(child);
@@ -42,11 +42,11 @@ final class DocHelper {
 	 * Find all children with given name from Node parent.
 	 */
 	static List<Node> findChildren(Node parent, String childName) {
-		List<Node> foundChildren = new ArrayList<>();
+		final List<Node> foundChildren = new ArrayList<>();
 
-		NodeList children = parent.getChildNodes();
+		final NodeList children = parent.getChildNodes();
 		for (int i = 0; i < children.getLength(); ++i) {
-			Node child = children.item(i);
+			final Node child = children.item(i);
 			if (child != null && child.getNodeName() != null) {
 				if (children.item(i).getNodeName().equals(childName)) {
 					foundChildren.add(child);

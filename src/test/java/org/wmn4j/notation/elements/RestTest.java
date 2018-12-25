@@ -45,8 +45,8 @@ public class RestTest {
 
 	@Test
 	public void testEquals() {
-		Rest quarter = Rest.getRest(Durations.QUARTER);
-		Rest half = Rest.getRest(Durations.HALF);
+		final Rest quarter = Rest.getRest(Durations.QUARTER);
+		final Rest half = Rest.getRest(Durations.HALF);
 
 		assertTrue(quarter.equals(Rest.getRest(Durations.QUARTER)));
 		assertTrue(Rest.getRest(Durations.QUARTER).equals(quarter));
