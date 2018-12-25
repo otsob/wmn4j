@@ -47,20 +47,11 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${maven-javadoc-version}</version>
 				<configuration>
-					<reportOutputDirectory>docs</reportOutputDirectory>
-					<destDir>docs</destDir>
+					<reportOutputDirectory>target/javadoc</reportOutputDirectory>
+					<destDir>target/javadoc</destDir>
 					<notimestamp>true</notimestamp>
 					<locale>en_US</locale>
 				</configuration>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<phase>install</phase>
-						<goals>
-							<goal>javadoc</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
