@@ -45,8 +45,6 @@ import org.wmn4j.notation.elements.SingleStaffPart;
 import org.wmn4j.notation.elements.TimeSignature;
 import org.xml.sax.SAXException;
 
-import javafx.util.Pair;
-
 /**
  * A parser for MusicXML files.
  *
@@ -744,29 +742,29 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	 * Class for handling the reading of chords.
 	 */
 	private class ChordBuffer {
-		private final List<Pair<NoteBuilder, Integer>> chordBuffer = new ArrayList<>();
+		private final List<NoteBuilder> chordBuffer = new ArrayList<>();
+		private int voice;
 
 		ChordBuffer() {
 		}
 
 		void addNote(NoteBuilder noteBuilder, int voice) {
-			this.chordBuffer.add(new Pair<>(noteBuilder, voice));
+			this.chordBuffer.add(noteBuilder);
+			this.voice = voice;
 		}
 
 		void contentsToBuilder(MeasureBuilder builder) {
 			if (!this.chordBuffer.isEmpty()) {
 				if (this.chordBuffer.size() > 1) {
 					List<NoteBuilder> notes = new ArrayList<>();
-					int voice = this.chordBuffer.get(0).getValue();
-					for (Pair<NoteBuilder, Integer> pair : this.chordBuffer) {
-						notes.add(pair.getKey());
+					for (NoteBuilder noteBuilder : this.chordBuffer) {
+						notes.add(noteBuilder);
 					}
 
-					builder.addToVoice(voice, new ChordBuilder(notes));
+					builder.addToVoice(this.voice, new ChordBuilder(notes));
 				} else if (this.chordBuffer.size() == 1) {
-					int voice = this.chordBuffer.get(0).getValue();
-					NoteBuilder noteBuilder = this.chordBuffer.get(0).getKey();
-					builder.addToVoice(voice, noteBuilder);
+					NoteBuilder noteBuilder = this.chordBuffer.get(0);
+					builder.addToVoice(this.voice, noteBuilder);
 				}
 
 				this.chordBuffer.clear();
