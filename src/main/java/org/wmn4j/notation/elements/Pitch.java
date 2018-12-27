@@ -237,7 +237,7 @@ public final class Pitch implements Comparable<Pitch> {
 			return false;
 		}
 
-		Pitch other = (Pitch) o;
+		final Pitch other = (Pitch) o;
 
 		if (other.pitchBase != this.pitchBase) {
 			return false;

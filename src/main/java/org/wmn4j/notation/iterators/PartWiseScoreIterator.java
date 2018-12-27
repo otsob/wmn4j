@@ -67,7 +67,7 @@ public class PartWiseScoreIterator implements ScoreIterator {
 			this.currentMeasureIterator = this.currentPartIterator.next().getMeasureIterator();
 		}
 
-		Durational next = this.currentMeasureIterator.next();
+		final Durational next = this.currentMeasureIterator.next();
 		this.prevStaffNumber = this.currentPartIterator.getStaffNumberOfPrevious();
 		this.prevMeasureNumber = this.currentPartIterator.getMeasureNumberOfPrevious();
 		this.prevVoice = this.currentMeasureIterator.getVoiceOfPrevious();

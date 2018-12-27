@@ -26,7 +26,7 @@ class TEC {
 
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
+		final StringBuilder strBuilder = new StringBuilder();
 
 		strBuilder.append("pattern: {");
 		for (NoteEventVector p : this.pattern.getPoints()) {

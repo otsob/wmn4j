@@ -59,7 +59,7 @@ public class Measure implements Iterable<Durational> {
 	 */
 	public Measure(int number, Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttr) {
 		this.number = number;
-		SortedMap<Integer, List<Durational>> voicesCopy = new TreeMap<>();
+		final SortedMap<Integer, List<Durational>> voicesCopy = new TreeMap<>();
 
 		for (Integer voiceNum : noteVoices.keySet()) {
 			voicesCopy.put(voiceNum, Collections.unmodifiableList(new ArrayList<>(noteVoices.get(voiceNum))));
@@ -195,7 +195,7 @@ public class Measure implements Iterable<Durational> {
 			throw new NoSuchElementException();
 		}
 
-		List<Durational> voice = this.voices.get(voiceNumber);
+		final List<Durational> voice = this.voices.get(voiceNumber);
 		if (index < 0 || index >= voice.size()) {
 			throw new NoSuchElementException();
 		}
@@ -210,7 +210,7 @@ public class Measure implements Iterable<Durational> {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
+		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("Measure ").append(this.number).append(", ").append(this.measureAttr).append(":\n");
 
 		for (Integer i : this.voices.keySet()) {
@@ -292,7 +292,7 @@ public class Measure implements Iterable<Durational> {
 				return false;
 			}
 
-			int voiceNumber = this.voiceNumbers.get(this.voiceNumberIndex);
+			final int voiceNumber = this.voiceNumbers.get(this.voiceNumberIndex);
 			return !this.measure.getVoice(voiceNumber).isEmpty();
 		}
 
@@ -303,9 +303,9 @@ public class Measure implements Iterable<Durational> {
 			}
 
 			this.prevVoiceNumber = this.voiceNumbers.get(this.voiceNumberIndex);
-			List<Durational> currentVoice = this.measure.getVoice(this.prevVoiceNumber);
+			final List<Durational> currentVoice = this.measure.getVoice(this.prevVoiceNumber);
 			this.prevPositionInVoice = this.positionInVoice;
-			Durational next = currentVoice.get(this.prevPositionInVoice);
+			final Durational next = currentVoice.get(this.prevPositionInVoice);
 
 			++this.positionInVoice;
 			if (this.positionInVoice == currentVoice.size()) {

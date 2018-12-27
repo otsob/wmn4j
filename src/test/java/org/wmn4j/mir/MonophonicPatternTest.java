@@ -29,7 +29,7 @@ public class MonophonicPatternTest {
 	final List<Durational> referenceNotes;
 
 	public MonophonicPatternTest() {
-		List<Durational> notes = new ArrayList<>();
+		final List<Durational> notes = new ArrayList<>();
 		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT));
 		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.EIGHT));
 		notes.add(Rest.getRest(Durations.QUARTER));
@@ -44,39 +44,39 @@ public class MonophonicPatternTest {
 		try {
 			new MonophonicPattern(null);
 			fail("Was able to create pattern with null contents");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof NullPointerException);
 		}
 
-		List<Durational> notes = new ArrayList<>();
+		final List<Durational> notes = new ArrayList<>();
 
 		try {
 			new MonophonicPattern(notes);
 			fail("Was able to create pattern with empty contents");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 
-		List<Durational> chordList = new ArrayList<>();
+		final List<Durational> chordList = new ArrayList<>();
 		chordList.add(Chord.getChord(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT),
 				Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT)));
 
 		try {
 			new MonophonicPattern(chordList);
 			fail("Was able to create pattern with Chord in contents");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 	}
 
 	@Test
 	public void testEqualsPattern() {
-		MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
-		MonophonicPattern pattern2 = new MonophonicPattern(this.referenceNotes);
+		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
+		final MonophonicPattern pattern2 = new MonophonicPattern(this.referenceNotes);
 
 		assertEquals(pattern1, pattern2);
 
-		List<Durational> modifiedNotes = new ArrayList<>(this.referenceNotes);
+		final List<Durational> modifiedNotes = new ArrayList<>(this.referenceNotes);
 		modifiedNotes.add(Rest.getRest(Durations.QUARTER));
 
 		assertFalse(pattern1.equals(new MonophonicPattern(modifiedNotes)));
@@ -84,9 +84,9 @@ public class MonophonicPatternTest {
 
 	@Test
 	public void testEqualsInPitch() {
-		MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
+		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 
-		List<Durational> notes = new ArrayList<>();
+		final List<Durational> notes = new ArrayList<>();
 		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
 		notes.add(Rest.getRest(Durations.QUARTER));
@@ -107,9 +107,9 @@ public class MonophonicPatternTest {
 
 	@Test
 	public void testEqualsEnharmonicallyInPitch() {
-		MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
+		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 
-		List<Durational> notes = new ArrayList<>();
+		final List<Durational> notes = new ArrayList<>();
 		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
 		notes.add(Rest.getRest(Durations.QUARTER));

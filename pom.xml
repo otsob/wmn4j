@@ -66,6 +66,8 @@
 				</dependencies>
 				<configuration>
 					<configLocation>build-resources/checkstyle/checkstyle.xml</configLocation>
+					<suppressionsLocation>build-resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+					<suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
 					<consoleOutput>true</consoleOutput>
 					<logViolationsToConsole>true</logViolationsToConsole>
 					<failsOnError>true</failsOnError>

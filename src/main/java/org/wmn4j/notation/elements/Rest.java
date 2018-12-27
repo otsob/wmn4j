@@ -87,14 +87,14 @@ public final class Rest implements Durational {
 			return false;
 		}
 
-		Rest other = (Rest) o;
+		final Rest other = (Rest) o;
 
 		return this.duration.equals(other.duration);
 	}
 
 	@Override
 	public int hashCode() {
-		int hash = 3;
+		final int hash = 3;
 		return hash;
 	}
 }

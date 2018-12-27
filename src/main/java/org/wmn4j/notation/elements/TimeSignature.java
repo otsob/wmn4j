@@ -88,7 +88,7 @@ public final class TimeSignature {
 			return false;
 		}
 
-		TimeSignature other = (TimeSignature) o;
+		final TimeSignature other = (TimeSignature) o;
 
 		return this.beatDuration.equals(other.beatDuration) && this.beats == other.beats;
 	}

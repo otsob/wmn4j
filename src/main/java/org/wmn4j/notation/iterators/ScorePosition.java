@@ -159,7 +159,7 @@ public class ScorePosition {
 			return false;
 		}
 
-		ScorePosition other = (ScorePosition) o;
+		final ScorePosition other = (ScorePosition) o;
 
 		if (this.partNumber != other.getPartNumber()) {
 			return false;
@@ -197,7 +197,7 @@ public class ScorePosition {
 
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
+		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("Part: ").append(this.partNumber).append(", Staff: ").append(this.staffNumber)
 		.append(", Measure: ").append(this.measureNumber).append(", Voice: ").append(this.voiceNumber)
 		.append(", Index: ").append(this.indexInVoice);

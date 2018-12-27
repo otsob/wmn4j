@@ -41,14 +41,14 @@ final class PatternAlgorithms {
 	static List<TEC> computeTecs(PointSet dataset) {
 
 		dataset.sortLexicographically();
-		Map<NoteEventVector, List<IndexPair>> mtpMap = new HashMap<>();
+		final Map<NoteEventVector, List<IndexPair>> mtpMap = new HashMap<>();
 
 		for (int i = 0; i < dataset.size() - 1; ++i) {
 
-			NoteEventVector origin = dataset.get(i);
+			final NoteEventVector origin = dataset.get(i);
 
 			for (int j = i + 1; j < dataset.size(); ++j) {
-				NoteEventVector diff = dataset.get(j).subtract(origin);
+				final NoteEventVector diff = dataset.get(j).subtract(origin);
 
 				if (!mtpMap.containsKey(diff)) {
 					mtpMap.put(diff, new ArrayList<>());
@@ -58,19 +58,19 @@ final class PatternAlgorithms {
 			}
 		}
 
-		List<TEC> tecs = new ArrayList<>();
-		Set<PointPattern> patternVecs = new HashSet<>();
+		final List<TEC> tecs = new ArrayList<>();
+		final Set<PointPattern> patternVecs = new HashSet<>();
 
 		for (NoteEventVector diff : mtpMap.keySet()) {
-			List<IndexPair> indexPairs = mtpMap.get(diff);
+			final List<IndexPair> indexPairs = mtpMap.get(diff);
 
-			List<NoteEventVector> patternPoints = new ArrayList<>();
+			final List<NoteEventVector> patternPoints = new ArrayList<>();
 			for (IndexPair indexPair : indexPairs) {
 				patternPoints.add(dataset.get(indexPair.getFirst()));
 			}
 
-			PointPattern pattern = new PointPattern(patternPoints);
-			PointPattern vec = pattern.getVectorizedRepresentation();
+			final PointPattern pattern = new PointPattern(patternPoints);
+			final PointPattern vec = pattern.getVectorizedRepresentation();
 
 			if (!patternVecs.contains(vec)) {
 				List<NoteEventVector> translators = new ArrayList<>();
@@ -93,7 +93,7 @@ final class PatternAlgorithms {
 	static List<NoteEventVector> findTranslators(PointPattern pattern,
 			Map<NoteEventVector, List<IndexPair>> mtpMap, PointSet dataset) {
 		List<Integer> pointIndices = new ArrayList<>();
-		List<NoteEventVector> vecPatternPoints = pattern.getVectorizedRepresentation().getPoints();
+		final List<NoteEventVector> vecPatternPoints = pattern.getVectorizedRepresentation().getPoints();
 		NoteEventVector vec = vecPatternPoints.get(0);
 
 		for (IndexPair indexPair : mtpMap.get(vec)) {
@@ -101,8 +101,8 @@ final class PatternAlgorithms {
 		}
 		for (int i = 1; i < vecPatternPoints.size(); ++i) {
 			vec = vecPatternPoints.get(i);
-			List<IndexPair> indexPairs = mtpMap.get(vec);
-			List<Integer> tmpPointIndices = new ArrayList<>();
+			final List<IndexPair> indexPairs = mtpMap.get(vec);
+			final List<Integer> tmpPointIndices = new ArrayList<>();
 			int j = 0;
 			int k = 0;
 			while (j < pointIndices.size() && k < indexPairs.size()) {
@@ -119,8 +119,8 @@ final class PatternAlgorithms {
 			pointIndices = tmpPointIndices;
 		}
 
-		List<NoteEventVector> translators = new ArrayList<>();
-		NoteEventVector lastPoint = pattern.getPoints().get(pattern.getPoints().size() - 1);
+		final List<NoteEventVector> translators = new ArrayList<>();
+		final NoteEventVector lastPoint = pattern.getPoints().get(pattern.getPoints().size() - 1);
 
 		for (Integer i : pointIndices) {
 			translators.add(dataset.get(i).subtract(lastPoint));

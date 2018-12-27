@@ -57,12 +57,12 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	@Override
 	public void writeToFile(String path) {
 		try {
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
 			// root elements
 			this.doc = docBuilder.newDocument();
-			Element rootElement = this.doc.createElement(MusicXmlTags.SCORE_PARTWISE);
+			final Element rootElement = this.doc.createElement(MusicXmlTags.SCORE_PARTWISE);
 			this.doc.appendChild(rootElement);
 
 			// staff elements
@@ -73,21 +73,22 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			}
 
 			// write the content into xml file
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
+			final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			final Transformer transformer = transformerFactory.newTransformer();
 
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-			DOMImplementation domImpl = doc.getImplementation();
-			DocumentType doctype = domImpl.createDocumentType("doctype", "-//Recordare//DTD MusicXML 3.0 Partwise//EN",
+			final DOMImplementation domImpl = doc.getImplementation();
+			final DocumentType doctype = domImpl.createDocumentType("doctype",
+					"-//Recordare//DTD MusicXML 3.0 Partwise//EN",
 					"http://www.musicxml.org/dtds/partwise.dtd");
 			transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, doctype.getPublicId());
 			transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
 
-			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(new File(path));
+			final DOMSource source = new DOMSource(doc);
+			final StreamResult result = new StreamResult(new File(path));
 
 			// Output to console for testing
 			// StreamResult result = new StreamResult(System.out);
@@ -97,20 +98,20 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			System.out.println("File saved!");
 			this.doc = null;
 
-		} catch (ParserConfigurationException pce) {
+		} catch (final ParserConfigurationException pce) {
 			pce.printStackTrace();
-		} catch (TransformerException tfe) {
+		} catch (final TransformerException tfe) {
 			tfe.printStackTrace();
 		}
 	}
 
 	private int computeDivisions(Score score) {
 
-		ScoreIterator iter = new PartWiseScoreIterator(score);
+		final ScoreIterator iter = new PartWiseScoreIterator(score);
 		Duration shortest = Durations.QUARTER;
 
 		while (iter.hasNext()) {
-			Duration dur = iter.next().getDuration();
+			final Duration dur = iter.next().getDuration();
 			if (dur.shorterThan(shortest)) {
 				shortest = dur;
 			}
@@ -120,16 +121,16 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private void writePartList(Element scoreRoot) {
-		Element partList = doc.createElement(MusicXmlTags.PART_LIST);
+		final Element partList = doc.createElement(MusicXmlTags.PART_LIST);
 
 		for (int i = 0; i < this.score.getPartCount(); ++i) {
-			Element partElement = doc.createElement(MusicXmlTags.PLIST_SCORE_PART);
-			String partId = "P" + (i + 1);
-			Part part = this.score.getPart(i);
+			final Element partElement = doc.createElement(MusicXmlTags.PLIST_SCORE_PART);
+			final String partId = "P" + (i + 1);
+			final Part part = this.score.getPart(i);
 			this.partIdMap.put(partId, part);
 
 			partElement.setAttribute(MusicXmlTags.PART_ID, partId);
-			Element partName = doc.createElement(MusicXmlTags.PART_NAME);
+			final Element partName = doc.createElement(MusicXmlTags.PART_NAME);
 			partName.setTextContent(part.getName());
 			partElement.appendChild(partName);
 
@@ -140,7 +141,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private void writePart(Part part, Element scoreRoot, String partId) {
-		Element partElement;
+		final Element partElement;
 
 		if (part.isMultiStaff()) {
 			partElement = createMultiStaffPart((MultiStaffPart) part, partId);
@@ -152,10 +153,10 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createSingleStaffPart(SingleStaffPart part, String partId) {
-		Element partElement = doc.createElement(MusicXmlTags.PART);
+		final Element partElement = doc.createElement(MusicXmlTags.PART);
 		partElement.setAttribute(MusicXmlTags.PART_ID, partId);
 
-		Measure prevMeasure = null;
+		final Measure prevMeasure = null;
 
 		for (Measure measure : part) {
 			partElement.appendChild(createMeasureElement(measure, prevMeasure));
@@ -169,14 +170,14 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createMeasureElement(Measure measure, Measure prevMeasure) {
-		Element measureElement = doc.createElement(MusicXmlTags.MEASURE);
+		final Element measureElement = doc.createElement(MusicXmlTags.MEASURE);
 		measureElement.setAttribute(MusicXmlTags.MEASURE_NUM, Integer.toString(measure.getNumber()));
 
 		if (prevMeasure == null) {
-			Element attributes = createMeasureAttributesElement(measure, null);
+			final Element attributes = createMeasureAttributesElement(measure, null);
 		}
 
-		List<Integer> voiceNumber = measure.getVoiceNumbers();
+		final List<Integer> voiceNumber = measure.getVoiceNumbers();
 		for (Integer voiceNumbers : voiceNumber) {
 			for (Durational dur : measure.getVoice(voiceNumbers)) {
 				if (dur instanceof Rest) {
@@ -202,19 +203,19 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createMeasureAttributesElement(Measure measure, Measure prevMeasure) {
-		Element attrElement = this.doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
+		final Element attrElement = this.doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
 
 		return attrElement;
 	}
 
 	private Element createNoteElement(Note note, int voice, int staff, boolean chordTag) {
-		Element noteElement = this.doc.createElement(MusicXmlTags.NOTE);
+		final Element noteElement = this.doc.createElement(MusicXmlTags.NOTE);
 		noteElement.appendChild(createPitchElement(note.getPitch()));
 		noteElement.appendChild(createDurationElement(note.getDuration()));
 
 		// TODO: Write other attributes.
 		if (chordTag) {
-			Element chordElement = this.doc.createElement(MusicXmlTags.NOTE_CHORD);
+			final Element chordElement = this.doc.createElement(MusicXmlTags.NOTE_CHORD);
 			noteElement.appendChild(chordElement);
 		}
 
@@ -222,8 +223,8 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createDurationElement(Duration duration) {
-		Element durationElement = this.doc.createElement(MusicXmlTags.NOTE_DURATION);
-		int durValue = 1;
+		final Element durationElement = this.doc.createElement(MusicXmlTags.NOTE_DURATION);
+		final int durValue = 1;
 
 		durationElement.setTextContent(Integer.toString(durValue));
 
@@ -231,16 +232,16 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createPitchElement(Pitch pitch) {
-		Element pitchElement = this.doc.createElement(MusicXmlTags.NOTE_PITCH);
-		Element step = this.doc.createElement(MusicXmlTags.PITCH_STEP);
+		final Element pitchElement = this.doc.createElement(MusicXmlTags.NOTE_PITCH);
+		final Element step = this.doc.createElement(MusicXmlTags.PITCH_STEP);
 		step.setTextContent(pitch.getBase().toString());
 		pitchElement.appendChild(step);
 
-		Element alter = this.doc.createElement(MusicXmlTags.PITCH_ALTER);
+		final Element alter = this.doc.createElement(MusicXmlTags.PITCH_ALTER);
 		alter.setTextContent(Integer.toString(pitch.getAlter()));
 		pitchElement.appendChild(alter);
 
-		Element octave = this.doc.createElement(MusicXmlTags.PITCH_OCT);
+		final Element octave = this.doc.createElement(MusicXmlTags.PITCH_OCT);
 		octave.setTextContent(Integer.toString(pitch.getOctave()));
 		pitchElement.appendChild(octave);
 
@@ -248,7 +249,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createRestElement(Rest rest, int voice, int staff) {
-		Element restElement = this.doc.createElement(MusicXmlTags.NOTE);
+		final Element restElement = this.doc.createElement(MusicXmlTags.NOTE);
 		restElement.appendChild(this.doc.createElement(MusicXmlTags.NOTE_REST));
 		restElement.appendChild(createDurationElement(rest.getDuration()));
 		// TODO: Set voice and staff

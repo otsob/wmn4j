@@ -38,9 +38,9 @@ public class StaffTest {
 	}
 
 	static List<Measure> getTestMeasures() {
-		List<Measure> measures = new ArrayList<>();
-		TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
-		Map<Integer, List<Durational>> notes = new HashMap<>();
+		final List<Measure> measures = new ArrayList<>();
+		final TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
+		final Map<Integer, List<Durational>> notes = new HashMap<>();
 		notes.put(0, new ArrayList<>());
 		notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
@@ -53,24 +53,24 @@ public class StaffTest {
 
 	@Test
 	public void testGetMeasures() {
-		List<Measure> origMeasures = getTestMeasures();
-		Staff staff = new Staff(origMeasures);
+		final List<Measure> origMeasures = getTestMeasures();
+		final Staff staff = new Staff(origMeasures);
 
-		List<Measure> measures = staff.getMeasures();
+		final List<Measure> measures = staff.getMeasures();
 
 		assertEquals(origMeasures.size(), measures.size());
 
 		try {
 			measures.add(origMeasures.get(0));
 			assertTrue("Did not throw UnsupportedOperationException", false);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof UnsupportedOperationException);
 		}
 
-		int sizeBeforeAddition = origMeasures.size();
-		List<Durational> voice = new ArrayList<>();
+		final int sizeBeforeAddition = origMeasures.size();
+		final List<Durational> voice = new ArrayList<>();
 		voice.add(Rest.getRest(Durations.WHOLE));
-		Map<Integer, List<Durational>> notes = new HashMap<>();
+		final Map<Integer, List<Durational>> notes = new HashMap<>();
 		notes.put(1, voice);
 		origMeasures.add(new Measure(3, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
 		assertEquals(sizeBeforeAddition, staff.getMeasures().size());
@@ -78,8 +78,8 @@ public class StaffTest {
 
 	@Test
 	public void testIterator() {
-		List<Measure> origMeasures = getTestMeasures();
-		Staff staff = new Staff(origMeasures);
+		final List<Measure> origMeasures = getTestMeasures();
+		final Staff staff = new Staff(origMeasures);
 
 		int measureCount = 0;
 		int prevMeasureNum = 0;
@@ -95,23 +95,23 @@ public class StaffTest {
 
 	@Test
 	public void testIteratorRemoveDisabled() {
-		List<Measure> origMeasures = getTestMeasures();
-		Staff staff = new Staff(origMeasures);
+		final List<Measure> origMeasures = getTestMeasures();
+		final Staff staff = new Staff(origMeasures);
 
 		try {
-			Iterator<Measure> iter = staff.iterator();
+			final Iterator<Measure> iter = staff.iterator();
 			iter.next();
 			iter.remove();
 			fail("Expected exception was not thrown");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof UnsupportedOperationException);
 		}
 	}
 
 	@Test
 	public void testGetMeasure() {
-		List<Measure> measures = getTestMeasures();
-		Staff staff = new Staff(measures);
+		final List<Measure> measures = getTestMeasures();
+		final Staff staff = new Staff(measures);
 
 		assertFalse(staff.hasPickupMeasure());
 
@@ -122,15 +122,15 @@ public class StaffTest {
 
 	@Test
 	public void testGetMeasureWithPickup() {
-		List<Measure> measures = new ArrayList<>();
-		List<Durational> voice = new ArrayList<>();
+		final List<Measure> measures = new ArrayList<>();
+		final List<Durational> voice = new ArrayList<>();
 		voice.add(Rest.getRest(Durations.WHOLE));
-		Map<Integer, List<Durational>> notes = new HashMap<>();
+		final Map<Integer, List<Durational>> notes = new HashMap<>();
 		notes.put(1, voice);
 		measures.add(new Measure(0, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
 		measures.addAll(getTestMeasures());
 
-		Staff staff = new Staff(measures);
+		final Staff staff = new Staff(measures);
 		assertTrue(staff.hasPickupMeasure());
 
 		for (int measureNumber = 0; measureNumber < measures.size(); ++measureNumber) {

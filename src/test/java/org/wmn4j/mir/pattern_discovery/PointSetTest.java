@@ -31,15 +31,15 @@ public class PointSetTest {
 
 	@Test
 	public void testCreatingFromSingleStaffScore() {
-		MusicXmlReader reader = MusicXmlReader.getReader(false);
+		final MusicXmlReader reader = MusicXmlReader.getReader(false);
 		try {
-			Score score = reader.readScore(Paths.get("src/test/resources/musicxml/twoMeasures.xml"));
-			PointSet pointset = new PointSet(score);
+			final Score score = reader.readScore(Paths.get("src/test/resources/musicxml/twoMeasures.xml"));
+			final PointSet pointset = new PointSet(score);
 			System.out.println(score);
 			System.out.println(pointset);
 			fail("This test is not implemented yet");
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			System.out.println(e);
 		}
 	}

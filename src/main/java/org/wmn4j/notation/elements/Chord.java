@@ -62,7 +62,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 */
 	private Chord(Collection<Note> notes) {
 
-		List<Note> notesCopy = new ArrayList<>(Objects.requireNonNull(notes));
+		final List<Note> notesCopy = new ArrayList<>(Objects.requireNonNull(notes));
 
 		if (notesCopy.isEmpty()) {
 			throw new IllegalArgumentException("Chord cannot be constructed with an empty List of notes");
@@ -131,7 +131,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return Chord with the notes of this and the added note.
 	 */
 	public Chord addNote(Note note) {
-		ArrayList<Note> noteList = new ArrayList<>(this.notes);
+		final ArrayList<Note> noteList = new ArrayList<>(this.notes);
 		noteList.add(note);
 		return Chord.getChord(noteList);
 	}
@@ -143,7 +143,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return Chord without the given note.
 	 */
 	public Chord removeNote(Note note) {
-		ArrayList<Note> noteList = new ArrayList<>(this.notes);
+		final ArrayList<Note> noteList = new ArrayList<>(this.notes);
 		noteList.remove(note);
 		return Chord.getChord(noteList);
 	}
@@ -182,7 +182,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 */
 	public Chord removePitch(Pitch pitch) {
 		if (this.contains(pitch)) {
-			List<Note> newNotes = new ArrayList<>(this.notes);
+			final List<Note> newNotes = new ArrayList<>(this.notes);
 			newNotes.remove(Note.getNote(pitch, this.getDuration()));
 			return Chord.getChord(newNotes);
 		}
@@ -203,7 +203,7 @@ public final class Chord implements Durational, Iterable<Note> {
 			return false;
 		}
 
-		Chord other = (Chord) o;
+		final Chord other = (Chord) o;
 
 		if (!this.getDuration().equals(other.getDuration())) {
 			return false;
@@ -236,7 +236,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
+		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("[");
 
 		for (int i = 0; i < this.notes.size(); ++i) {

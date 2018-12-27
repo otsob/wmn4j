@@ -235,7 +235,7 @@ public final class Note implements Durational {
 	 *         of this <code>Note</code>.
 	 */
 	public Duration getTiedDuration() {
-		List<Duration> tiedDurations = new ArrayList<>();
+		final List<Duration> tiedDurations = new ArrayList<>();
 
 		Optional<Note> currentNote = Optional.of(this);
 		while (currentNote.isPresent()) {
@@ -274,10 +274,11 @@ public final class Note implements Durational {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
+		final StringBuilder strBuilder = new StringBuilder();
+		final String tieString = "->";
 
 		if (this.isTiedFromPrevious()) {
-			strBuilder.append("->");
+			strBuilder.append(tieString);
 		}
 
 		strBuilder.append(this.pitch.toString()).append(this.duration.toString());
@@ -294,7 +295,7 @@ public final class Note implements Durational {
 		}
 
 		if (this.isTiedToFollowing()) {
-			strBuilder.append("->");
+			strBuilder.append(tieString);
 		}
 
 		return strBuilder.toString();
@@ -329,7 +330,7 @@ public final class Note implements Durational {
 			return false;
 		}
 
-		Note other = (Note) o;
+		final Note other = (Note) o;
 
 		if (!this.equalsInPitchAndDuration(other)) {
 			return false;

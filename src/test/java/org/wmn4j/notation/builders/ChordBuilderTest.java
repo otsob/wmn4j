@@ -12,105 +12,105 @@ import org.wmn4j.notation.elements.Pitch;
 
 
 public class ChordBuilderTest {
-	
+
 	public ChordBuilderTest() {
 	}
-	
+
 	private List<NoteBuilder> getCMajorAsNoteBuilders() {
-		NoteBuilder first = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		NoteBuilder second = new NoteBuilder(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER);
-		NoteBuilder third = new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER);
-		
-		List<NoteBuilder> cMajor = new ArrayList<>();
+		final NoteBuilder first = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final NoteBuilder second = new NoteBuilder(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER);
+		final NoteBuilder third = new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER);
+
+		final List<NoteBuilder> cMajor = new ArrayList<>();
 		cMajor.add(first);
 		cMajor.add(second);
 		cMajor.add(third);
-		
+
 		return cMajor;
 	}
 
 	@Test
-	public void testConstructorWithListOfNoteBuilders() {	
-		ChordBuilder builder = new ChordBuilder(getCMajorAsNoteBuilders());
-		
-		Chord chord = builder.build();		
+	public void testConstructorWithListOfNoteBuilders() {
+		final ChordBuilder builder = new ChordBuilder(getCMajorAsNoteBuilders());
+
+		final Chord chord = builder.build();
 		assertEquals(3, chord.getNoteCount());
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
 	}
-	
+
 	@Test
 	public void testConstructorWithListOfNoteBuildersCopiesNoteBuilders() {
-		List<NoteBuilder> cMajor = getCMajorAsNoteBuilders();
-		
-		ChordBuilder builder = new ChordBuilder(cMajor);
+		final List<NoteBuilder> cMajor = getCMajorAsNoteBuilders();
+
+		final ChordBuilder builder = new ChordBuilder(cMajor);
 		cMajor.get(0).setPitch(Pitch.getPitch(Pitch.Base.B, 0, 4));
-		
-		Chord chord = builder.build();		
+
+		final Chord chord = builder.build();
 		assertEquals(3, chord.getNoteCount());
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
 	}
-	
+
 	@Test
 	public void testConstructorWithSingleNoteBuilderCopiesNoteBuilder() {
-		NoteBuilder note = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);		
-		ChordBuilder builder = new ChordBuilder(note);
-		
+		final NoteBuilder note = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final ChordBuilder builder = new ChordBuilder(note);
+
 		note.setPitch(Pitch.getPitch(Pitch.Base.D, 0, 4));
-		
-		Chord chord = builder.build();		
+
+		final Chord chord = builder.build();
 		assertEquals(1, chord.getNoteCount());
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 	}
-	
+
 	@Test
 	public void testAddNoteBuilderCopiesNoteBuilder() {
-		List<NoteBuilder> cMajor = getCMajorAsNoteBuilders();
-		ChordBuilder builder = new ChordBuilder(cMajor);
-		
-		NoteBuilder note = new NoteBuilder(Pitch.getPitch(Pitch.Base.B, 0, 4), Durations.QUARTER);
+		final List<NoteBuilder> cMajor = getCMajorAsNoteBuilders();
+		final ChordBuilder builder = new ChordBuilder(cMajor);
+
+		final NoteBuilder note = new NoteBuilder(Pitch.getPitch(Pitch.Base.B, 0, 4), Durations.QUARTER);
 		builder.add(note);
 		note.setPitch(Pitch.getPitch(Pitch.Base.A, 0, 4));
-		
-		Chord chord = builder.build();		
+
+		final Chord chord = builder.build();
 		assertEquals(4, chord.getNoteCount());
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.B, 0, 4), Durations.QUARTER)));
 	}
-	
+
 	@Test
 	public void testIterator() {
-		ChordBuilder builder = new ChordBuilder(getCMajorAsNoteBuilders());
-		
+		final ChordBuilder builder = new ChordBuilder(getCMajorAsNoteBuilders());
+
 		int builders = 0;
 		for (NoteBuilder noteBuilder : builder) {
 			builders++;
 		}
 		assertEquals(3, builders);
 	}
-	
+
 	@Test
 	public void testSetDuration() {
-		ChordBuilder chordBuilder = new ChordBuilder(getCMajorAsNoteBuilders());
+		final ChordBuilder chordBuilder = new ChordBuilder(getCMajorAsNoteBuilders());
 		chordBuilder.setDuration(Durations.HALF);
-		
+
 		for (NoteBuilder noteBuilder : chordBuilder) {
 			assertEquals(Durations.HALF, noteBuilder.getDuration());
 		}
 		assertEquals(Durations.HALF, chordBuilder.getDuration());
 	}
-	
+
 	@Test
 	public void testRemoveIf() {
-		ChordBuilder chordBuilder = new ChordBuilder(getCMajorAsNoteBuilders());
+		final ChordBuilder chordBuilder = new ChordBuilder(getCMajorAsNoteBuilders());
 		chordBuilder.removeIf((NoteBuilder nb) -> nb.getPitch().equals(Pitch.getPitch(Pitch.Base.C, 0, 4)));
-		
-		Chord chord = chordBuilder.build();		
+
+		final Chord chord = chordBuilder.build();
 		assertEquals(2, chord.getNoteCount());
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
 		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));

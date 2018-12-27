@@ -38,7 +38,7 @@ public class DurationTest {
 
 	@Test
 	public void testGetDurationWithValidParameter() {
-		Duration duration = Duration.getDuration(1, 4);
+		final Duration duration = Duration.getDuration(1, 4);
 		assertTrue(duration != null);
 		assertTrue(duration.getNumerator() == 1);
 		assertTrue(duration.getDenominator() == 4);
@@ -47,32 +47,32 @@ public class DurationTest {
 	@Test
 	public void testGetDurationWithInvalidParameter() {
 		try {
-			Duration duration = Duration.getDuration(-1, 2);
+			final Duration duration = Duration.getDuration(-1, 2);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
-			Duration duration = Duration.getDuration(1, 0);
+			final Duration duration = Duration.getDuration(1, 0);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 	}
 
 	@Test
 	public void testEquals() {
-		Duration quarter = Duration.getDuration(1, 4);
+		final Duration quarter = Duration.getDuration(1, 4);
 		assertTrue(quarter.equals(quarter));
 		assertTrue(quarter.equals(Durations.QUARTER));
 		assertTrue(quarter.equals(Duration.getDuration(1, 4)));
 
-		Duration anotherQuarter = Duration.getDuration(2, 8);
+		final Duration anotherQuarter = Duration.getDuration(2, 8);
 		assertTrue(quarter.equals(anotherQuarter));
 		assertTrue(quarter.equals(Durations.QUARTER));
 		assertTrue(quarter.equals(Duration.getDuration(1, 4)));
 
-		Duration notQuarter = Duration.getDuration(1, 8);
+		final Duration notQuarter = Duration.getDuration(1, 8);
 		assertFalse(notQuarter.equals(quarter));
 
 		assertFalse(Durations.EIGHT_TRIPLET.equals(Durations.THIRTYSECOND));
@@ -80,11 +80,11 @@ public class DurationTest {
 
 	@Test
 	public void testRationalNumberReduced() {
-		Duration quarter = Duration.getDuration(3, 12);
+		final Duration quarter = Duration.getDuration(3, 12);
 		assertEquals(1, quarter.getNumerator());
 		assertEquals(4, quarter.getDenominator());
 
-		Duration quintuplet = Duration.getDuration(5, 100);
+		final Duration quintuplet = Duration.getDuration(5, 100);
 		assertEquals(1, quintuplet.getNumerator());
 		assertEquals(20, quintuplet.getDenominator());
 	}
@@ -162,7 +162,7 @@ public class DurationTest {
 	@Test
 	public void testSumOf() {
 		List<Duration> durations = new ArrayList<>();
-		int numOfQuarters = 4;
+		final int numOfQuarters = 4;
 		for (int i = 0; i < numOfQuarters; ++i) {
 			durations.add(Durations.QUARTER);
 		}

@@ -86,7 +86,7 @@ public final class Clef {
 			return false;
 		}
 
-		Clef other = (Clef) o;
+		final Clef other = (Clef) o;
 		return this.type == other.type && this.line == other.line;
 	}
 

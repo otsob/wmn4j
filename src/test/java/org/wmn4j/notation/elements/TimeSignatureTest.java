@@ -34,7 +34,7 @@ public class TimeSignatureTest {
 
 	@Test
 	public void testGetTimeSignature() {
-		TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
+		final TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
 		assertEquals(4, timeSig.getNumBeats());
 		assertEquals(Durations.QUARTER, timeSig.getBeatDuration());
 	}
@@ -49,10 +49,10 @@ public class TimeSignatureTest {
 
 	@Test
 	public void testEquals() {
-		TimeSignature timeSigA = TimeSignature.getTimeSignature(4, 4);
-		TimeSignature timeSigB = TimeSignature.getTimeSignature(4, 4);
-		TimeSignature timeSigC = TimeSignature.getTimeSignature(3, 4);
-		TimeSignature timeSigD = TimeSignature.getTimeSignature(4, 8);
+		final TimeSignature timeSigA = TimeSignature.getTimeSignature(4, 4);
+		final TimeSignature timeSigB = TimeSignature.getTimeSignature(4, 4);
+		final TimeSignature timeSigC = TimeSignature.getTimeSignature(3, 4);
+		final TimeSignature timeSigD = TimeSignature.getTimeSignature(4, 8);
 
 		assertTrue(timeSigA.equals(timeSigB));
 		assertFalse(timeSigA.equals(timeSigC));
@@ -61,7 +61,7 @@ public class TimeSignatureTest {
 
 	@Test
 	public void testToString() {
-		TimeSignature timeSigA = TimeSignature.getTimeSignature(4, 4);
+		final TimeSignature timeSigA = TimeSignature.getTimeSignature(4, 4);
 		assertEquals("Time(4/4)", timeSigA.toString());
 	}
 }

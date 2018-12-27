@@ -282,7 +282,7 @@ public class MeasureBuilder {
 	 *         voice.
 	 */
 	public Duration totalDurationOfVoice(int voice) {
-		List<Duration> durations = new ArrayList<>();
+		final List<Duration> durations = new ArrayList<>();
 		for (DurationalBuilder d : this.voices.get(voice)) {
 			durations.add(d.getDuration());
 		}
@@ -300,7 +300,7 @@ public class MeasureBuilder {
 	 *         otherwise.
 	 */
 	public boolean isVoiceFull(int voice) {
-		Duration voiceDuration = this.totalDurationOfVoice(voice);
+		final Duration voiceDuration = this.totalDurationOfVoice(voice);
 		return !voiceDuration.shorterThan(this.timeSig.getTotalDuration());
 	}
 
@@ -320,7 +320,7 @@ public class MeasureBuilder {
 	}
 
 	private List<Durational> buildVoice(List<DurationalBuilder> buildersForVoice) {
-		List<Durational> voice = new ArrayList<>();
+		final List<Durational> voice = new ArrayList<>();
 
 		buildersForVoice.forEach((builder) -> voice.add(builder.build()));
 
@@ -331,9 +331,9 @@ public class MeasureBuilder {
 
 		// TODO: Check that voices are full. If not, pad them with rests.
 
-		Map<Integer, List<Durational>> builtVoices = new HashMap<>();
+		final Map<Integer, List<Durational>> builtVoices = new HashMap<>();
 		for (Integer voiceNumber : this.getVoiceNumbers()) {
-			List<DurationalBuilder> builders = this.voices.get(voiceNumber);
+			final List<DurationalBuilder> builders = this.voices.get(voiceNumber);
 			builtVoices.put(voiceNumber, builders.stream().map(DurationalBuilder::build).collect(Collectors.toList()));
 		}
 
@@ -348,8 +348,8 @@ public class MeasureBuilder {
 	 *         <code>DurationalBuilder</code> objects.
 	 */
 	public Measure build() {
-		MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(this.timeSig, this.keySig, this.rightBarline,
-				this.leftBarline, this.clef, this.clefChanges);
+		final MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(this.timeSig, this.keySig,
+				this.rightBarline, this.leftBarline, this.clef, this.clefChanges);
 
 		return new Measure(this.number, this.getBuiltVoices(), measureAttr);
 	}

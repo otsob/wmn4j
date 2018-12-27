@@ -91,5 +91,22 @@
 		<module name="VisibilityModifier" />
 		<module name="FinalClass" />
 		<module name="HideUtilityClassConstructor" />
+
+		<module name="EqualsAvoidNull" />
+		<module name="EqualsHashCode" />
+
+		<module name="IllegalInstantiation">
+			<property name="classes" value="java.lang.Boolean" />
+			<property name="classes" value="java.lang.Double" />
+			<property name="classes" value="java.lang.Integer" />
+		</module>
+
+		<module name="MultipleStringLiterals">
+			<property name="ignoreStringsRegexp" value='^(("")|(", ")|(" ")|("\\n"))$' />
+		</module>
+
+		<module name="OneStatementPerLine" />
+		<module name="ParameterAssignment" />
+		<module name="StringLiteralEquality" />
 	</module>
 </module>

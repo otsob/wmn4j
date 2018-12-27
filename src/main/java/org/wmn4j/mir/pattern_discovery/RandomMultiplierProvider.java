@@ -23,7 +23,7 @@ enum RandomMultiplierProvider {
 	}
 
 	private void generateMultipliers(int count) {
-		Random random = new Random();
+		final Random random = new Random();
 		for (int i = 0; i < count; ++i) {
 
 			this.multipliers.add(random.nextLong());

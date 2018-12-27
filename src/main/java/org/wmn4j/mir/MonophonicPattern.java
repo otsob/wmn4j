@@ -52,7 +52,7 @@ public final class MonophonicPattern implements Pattern {
 
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
+		final StringBuilder strBuilder = new StringBuilder();
 		for (Durational dur : this.contents) {
 			strBuilder.append(dur.toString());
 		}
