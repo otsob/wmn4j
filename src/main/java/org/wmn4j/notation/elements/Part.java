@@ -19,7 +19,7 @@ public interface Part extends Iterable<Measure> {
 	 * Attribute types that a <code>Part</code> can have.
 	 */
 	enum Attribute {
-	NAME, ABBR_NAME
+	NAME, ABBREVIATED_NAME
 	};
 
 	/**
