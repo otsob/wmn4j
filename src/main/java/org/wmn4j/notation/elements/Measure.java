@@ -14,9 +14,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * Class that defines a measure. A measure may contain multiple voices that are
- * referred to using voice numbers. This class is immutable. Use the
- * MeasureBuilder class for easier creation of Measures.
+ * Represents a measure. A measure may contain multiple voices that are referred
+ * to using voice numbers. This class is immutable. Use the MeasureBuilder class
+ * for easier creation of Measures.
  */
 public class Measure implements Iterable<Durational> {
 
@@ -25,6 +25,8 @@ public class Measure implements Iterable<Durational> {
 	private final MeasureAttributes measureAttr;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param number       number of the measure.
 	 * @param noteVoices   the notes on the different voices of the measure.
 	 * @param timeSig      TimeSignature of the measure.
@@ -38,6 +40,8 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
+	 * Constructor.
+	 *
 	 * @param number     number of the measure.
 	 * @param noteVoices the notes on the different voices of the measure.
 	 * @param timeSig    TimeSignature of the measure.
@@ -50,6 +54,8 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
+	 * Constructor.
+	 *
 	 * @param number      number of the measure.
 	 * @param noteVoices  the notes on the different voices of the measure.
 	 * @param measureAttr the attributes of the measure.
@@ -72,7 +78,7 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * Get the voice numbers in this measure. Voice numbers are not necessarily
+	 * Returns the voice numbers in this measure. Voice numbers are not necessarily
 	 * consecutive and do not begin from 0.
 	 *
 	 * @return list of the voice numbers used in this measure.
@@ -82,31 +88,38 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * Get a voiceNumber of the measure.
+	 * Returns the voice with the given measure.
 	 *
-	 * @param voiceNumber the number of the voice.
-	 * @return the voiceNumber at the given index voiceNumber.
+	 * @param voiceNumber the number of the voice
+	 * @return the voice at the given index voiceNumber
 	 */
 	public List<Durational> getVoice(int voiceNumber) {
 		return this.voices.get(voiceNumber);
 	}
 
 	/**
+	 * Returns the number of durational notation elements in the voice with the
+	 * given number.
+	 *
 	 * @param voiceNumber the voice for which the number of elements is returned
-	 * @return the number of elements on the voice with voiceNumber.
+	 * @return the number of elements in the voice with voiceNumber
 	 */
 	public int getVoiceSize(int voiceNumber) {
 		return this.voices.get(voiceNumber).size();
 	}
 
 	/**
-	 * @return number of voices in this measure.
+	 * Returns the number of voices in this measure.
+	 *
+	 * @return number of voices in this measure
 	 */
 	public int getVoiceCount() {
 		return this.voices.keySet().size();
 	}
 
 	/**
+	 * Returns true if this measure has only a single voice.
+	 *
 	 * @return true if this measure only has one voice, false otherwise.
 	 */
 	public boolean isSingleVoice() {
@@ -114,6 +127,8 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
+	 * Returns the measure number of this measure.
+	 *
 	 * @return the number of this measure.
 	 */
 	public int getNumber() {
@@ -121,20 +136,26 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * @return TimeSignature in effect in this measure.
+	 * Returns the time signature in effect in this measure.
+	 *
+	 * @return the time signature in effect in this measure
 	 */
 	public TimeSignature getTimeSignature() {
 		return this.measureAttr.getTimeSignature();
 	}
 
 	/**
-	 * @return KeySignature in effect in this measure.
+	 * Returns the key signature in effect in this measure.
+	 *
+	 * @return the key signature in effect in this measure
 	 */
 	public KeySignature getKeySignature() {
 		return this.measureAttr.getKeySignature();
 	}
 
 	/**
+	 * Returns the barline on the right side of this measure.
+	 *
 	 * @return right barline of this measure.
 	 */
 	public Barline getRightBarline() {
@@ -142,21 +163,28 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * @return left barline of this measure.
+	 * Returns the barline on the left side of this measure. For example, this can
+	 * be a barline that denotes the beginning of a repeat.
+	 *
+	 * @return left barline of this measure
 	 */
 	public Barline getLeftBarline() {
 		return this.measureAttr.getLeftBarline();
 	}
 
 	/**
-	 * @return The clef in effect in the beginning of this measure.
+	 * Returns the clef in effect in the beginning of this measure.
+	 *
+	 * @return the clef in effect in the beginning of this measure
 	 */
 	public Clef getClef() {
 		return this.measureAttr.getClef();
 	}
 
 	/**
-	 * @return a Map of clef changes in this measure, where the Duration key is the
+	 * Returns the clef changes in this measure.
+	 *
+	 * @return a map of clef changes in this measure, where the duration key is the
 	 *         offset counted from the beginning of the measure.
 	 */
 	public Map<Duration, Clef> getClefChanges() {
@@ -164,6 +192,8 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
+	 * Returns true if this measure contains clef changes.
+	 *
 	 * @return true if there are clef changes in this measure, false otherwise.
 	 */
 	public boolean containsClefChanges() {
@@ -171,19 +201,20 @@ public class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * @return true if this <code>Measure</code> is a pickup measure.
+	 * Returns true if this measure is a pickup measure.
+	 *
+	 * @return true if this measure is a pickup measure.
 	 */
 	public boolean isPickUp() {
 		return this.getNumber() == 0;
 	}
 
 	/**
-	 * Returns the <code>Durational</code> at the given index on the given voice
-	 * number.
+	 * Returns the {@link Durational} at the given index on the given voice number.
 	 *
-	 * @param voiceNumber Number of the voice from which to get the element.
-	 * @param index       index of element on the voice.
-	 * @return <code>Durational</code> at the given index on the given voice.
+	 * @param voiceNumber the number of the voice from which to get the element
+	 * @param index       index of element on the voice
+	 * @return the {@link Durational} at the given index on the given voice
 	 * @throws NoSuchElementException if there is no voice with the given number of
 	 *                                if the index is out of range
 	 */
@@ -200,11 +231,6 @@ public class Measure implements Iterable<Durational> {
 		return voice.get(index);
 	}
 
-	/**
-	 * String representation of <code>Measure</code>. This is subject to change.
-	 *
-	 * @return string representation of measure.
-	 */
 	@Override
 	public String toString() {
 		final StringBuilder strBuilder = new StringBuilder();
@@ -224,28 +250,25 @@ public class Measure implements Iterable<Durational> {
 		return strBuilder.toString();
 	}
 
-	/**
-	 * @return iterator that goes through the Measure voice wise.
-	 */
 	@Override
 	public Iterator<Durational> iterator() {
 		return this.getMeasureIterator();
 	}
 
 	/**
-	 * Get an iterator as <code>Measure.Iter</code>.
+	 * Returns a measure iterator for this measure.
 	 *
-	 * @return an iterator of type <code>Measure.Iter</code>.
+	 * @return a measure iterator for this measure
 	 */
 	public Measure.Iter getMeasureIterator() {
 		return new Iter(this);
 	}
 
 	/**
-	 * Iterator for <code>Durational</code> objects in a <code>Measure</code>. The
-	 * iterator iterates through the notes in the Measure voice by voice going from
-	 * the earliest Durational in the voice to the last on each voice. The order of
-	 * voices is unspecified. The iterator does not support removing.
+	 * Iterator for {@link Durational} objects in a meusure. The iterator iterates
+	 * through the notes in the Measure voice by voice going from the earliest
+	 * durational in the voice to the last on each voice. The order of voices is
+	 * unspecified. The iterator does not support removing.
 	 */
 	public static class Iter implements Iterator<Durational> {
 		private final List<Integer> voiceNumbers;
@@ -266,18 +289,24 @@ public class Measure implements Iterable<Durational> {
 		}
 
 		/**
-		 * @return The voice of the <code>Durational</code> that was returned by the
-		 *         last call of {@link #next() next}. If next has not been called,
-		 *         return value is useless.
+		 * Returns the voice of the {@link Durational} that was returned by the last
+		 * call of {@link #next() next}.
+		 *
+		 * @return the voice of the {@link Durational} that was returned by the last
+		 *         call of {@link #next() next}. If next has not been called, return
+		 *         value is useless.
 		 */
 		public int getVoiceOfPrevious() {
 			return this.prevVoiceNumber;
 		}
 
 		/**
-		 * @return The index of the <code>Durational</code> that was returned by the
-		 *         last call of {@link #next() next}. If next has not been called,
-		 *         return value is useless.
+		 * Returns the index of the {@link Durational} that was returned by the last
+		 * call of {@link #next() next}.
+		 *
+		 * @return the index of the {@link Durational} that was returned by the last
+		 *         call of {@link #next() next}. If next has not been called, return
+		 *         value is useless.
 		 */
 		public int getIndexOfPrevious() {
 			return this.prevPositionInVoice;
