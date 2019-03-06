@@ -316,8 +316,8 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			chordBuffers.get(staffNumber).contentsToBuilder(builder);
 
 			builder.setClef(context.getClef());
-			builder.setTimeSig(context.getTimeSig());
-			builder.setKeySig(context.getKeySig());
+			builder.setTimeSignature(context.getTimeSig());
+			builder.setKeySignature(context.getKeySig());
 			context.setClef(lastClefs.get(staffNumber));
 
 			partBuilder.addToStaff(staffNumber, builder);

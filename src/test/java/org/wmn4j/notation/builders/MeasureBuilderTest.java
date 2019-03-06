@@ -38,7 +38,7 @@ public class MeasureBuilderTest {
 	@Test
 	public void testBuildMeasureBySettingParameters() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
-		builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.DFLATMAJ_BFLATMIN);
+		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
 
 		builder.addVoice();
@@ -95,7 +95,7 @@ public class MeasureBuilderTest {
 				KeySignatures.AMAJ_FSHARPMIN, Barline.REPEAT_RIGHT, Clefs.ALTO);
 		final MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
 
-		builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.DFLATMAJ_BFLATMIN);
+		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
 
 		builder.addVoice();
@@ -122,7 +122,7 @@ public class MeasureBuilderTest {
 	@Test
 	public void testAdditionOfVoices() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
-		builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.DFLATMAJ_BFLATMIN);
+		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
 
 		builder.addToVoice(1, new RestBuilder(Durations.EIGHT));
@@ -151,7 +151,7 @@ public class MeasureBuilderTest {
 		assertTrue("Voice 0 is not full when 4 quarter durations added to 4/4", builder.isVoiceFull(0));
 
 		builder = new MeasureBuilder(1);
-		builder.setTimeSig(TimeSignatures.SIX_EIGHT).setKeySig(KeySignatures.CMAJ_AMIN);
+		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.CMAJ_AMIN);
 
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER.addDot()))
 		.addToVoice(0, new RestBuilder(Durations.QUARTER))
@@ -177,7 +177,7 @@ public class MeasureBuilderTest {
 		assertTrue("builder is not full when 4 quarter durations added to 4/4", builder.isFull());
 
 		builder = new MeasureBuilder(1);
-		builder.setTimeSig(TimeSignatures.SIX_EIGHT);
+		builder.setTimeSignature(TimeSignatures.SIX_EIGHT);
 
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER.addDot()))
 		.addToVoice(0, new RestBuilder(Durations.QUARTER))

@@ -98,32 +98,32 @@ public class MeasureBuilder {
 	/**
 	 * @return time signature currently set for this builder.
 	 */
-	public TimeSignature getTimeSig() {
+	public TimeSignature getTimeSignature() {
 		return this.timeSig;
 	}
 
 	/**
-	 * @param timeSig time signature for the measure that can be built.
+	 * @param timeSignature time signature for the measure that can be built.
 	 * @return reference to this builder.
 	 */
-	public MeasureBuilder setTimeSig(TimeSignature timeSig) {
-		this.timeSig = timeSig;
+	public MeasureBuilder setTimeSignature(TimeSignature timeSignature) {
+		this.timeSig = timeSignature;
 		return this;
 	}
 
 	/**
 	 * @return key signature that is currently set for this builder.
 	 */
-	public KeySignature getKeySig() {
+	public KeySignature getKeySignature() {
 		return this.keySig;
 	}
 
 	/**
-	 * @param keySig key signature for the measure that can be built.
+	 * @param keySignature key signature for the measure that can be built.
 	 * @return reference to this builder.
 	 */
-	public MeasureBuilder setKeySig(KeySignature keySig) {
-		this.keySig = keySig;
+	public MeasureBuilder setKeySignature(KeySignature keySignature) {
+		this.keySig = keySignature;
 		return this;
 	}
 
