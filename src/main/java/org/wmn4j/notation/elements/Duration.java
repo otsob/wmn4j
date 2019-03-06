@@ -4,7 +4,8 @@
 package org.wmn4j.notation.elements;
 
 import java.math.BigInteger;
-import java.util.List;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Represents the duration of any musical object with a duration such as a note
@@ -237,19 +238,17 @@ public final class Duration implements Comparable<Duration> {
 	 * @param durations the durations whose sum is returned
 	 * @return The sum of the given durations
 	 */
-	public static Duration sumOf(List<Duration> durations) {
+	public static Duration sumOf(Collection<Duration> durations) {
 		if (durations.isEmpty()) {
 			throw new IllegalArgumentException("Cannot compute sum of durations from empty list");
 		}
 
-		if (durations.size() == 1) {
-			return durations.get(0);
-		}
+		Iterator<Duration> iterator = durations.iterator();
+		Duration cumulatedDur = iterator.next();
 
 		// TODO: Optimize this.
-		Duration cumulatedDur = durations.get(0);
-		for (int i = 1; i < durations.size(); ++i) {
-			cumulatedDur = cumulatedDur.add(durations.get(i));
+		while (iterator.hasNext()) {
+			cumulatedDur = cumulatedDur.add(iterator.next());
 		}
 
 		return cumulatedDur;
