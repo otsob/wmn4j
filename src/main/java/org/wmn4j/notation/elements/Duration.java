@@ -7,12 +7,12 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * The <code>Duration</code> class represents the duration of any musical object
- * with a duration such as a note or a rest. Durations are handled as rational
- * numbers that tell what fraction of a whole note the duration is just like in
- * normal music terminology. For example, the duration of a quarter note is
- * handled as the rational number 1/4. The rational number is always reduced to
- * the lowest possible numerator and denominator. This class is immutable.
+ * Represents the duration of any musical object with a duration such as a note
+ * or a rest. Durations are handled as rational numbers that tell what fraction
+ * of a whole note the duration is just like in normal music terminology. For
+ * example, the duration of a quarter note is handled as the rational number
+ * 1/4. The rational number is always reduced to the lowest possible numerator
+ * and denominator. This class is immutable.
  */
 public final class Duration implements Comparable<Duration> {
 
@@ -20,13 +20,13 @@ public final class Duration implements Comparable<Duration> {
 	private final int denominator;
 
 	/**
-	 * Returns a <code>Duration</code> object. The numerator and denominator must be
-	 * at least 1.
+	 * Returns an instance with the given numerator and denominator. The numerator
+	 * and denominator must be at least 1.
 	 *
-	 * @throws IllegalArgumentException if numerator or denominator are less than 1.
-	 * @param numerator   the numerator part of the duration.
-	 * @param denominator the denominator part of the duration.
-	 * @return a Duration object.
+	 * @throws IllegalArgumentException if numerator or denominator are less than 1
+	 * @param numerator   the numerator part of the duration
+	 * @param denominator the denominator part of the duration
+	 * @return an instance with the given numerator and denominator
 	 */
 	public static Duration getDuration(int numerator, int denominator) {
 
@@ -54,8 +54,8 @@ public final class Duration implements Comparable<Duration> {
 	 * Constructor for the class. The constructor is private, to get a Duration
 	 * object use the static method {@link #getDuration(int, int) getDuration}.
 	 *
-	 * @param numerator   the numerator part of the duration.
-	 * @param denominator the denominator part of the duration.
+	 * @param numerator   the numerator part of the duration
+	 * @param denominator the denominator part of the duration
 	 */
 	private Duration(int numerator, int denominator) {
 		this.numerator = numerator;
@@ -63,27 +63,29 @@ public final class Duration implements Comparable<Duration> {
 	}
 
 	/**
-	 * @return the numerator part of the duration.
+	 * Returns the numerator of this duration.
+	 *
+	 * @return the numerator of this duration
 	 */
 	public int getNumerator() {
 		return this.numerator;
 	}
 
 	/**
-	 * @return the denominator part of the duration.
+	 * Returns the denominator of this duration.
+	 *
+	 * @return the denominator of this duration.
 	 */
 	public int getDenominator() {
 		return this.denominator;
 	}
 
 	/**
-	 * Compares this <code>Duration</code> to <code>Object o</code> for equality. If
-	 * <code>Object o</code> is of class <code>Duration</code> and has the same
-	 * numerator and denominator as this, then <code>o</code> is equal to this.
+	 * Returns true if this is equal to the given object.
 	 *
-	 * @param o an object against which this Duration is compared for equality.
-	 * @return true if <code>Object o</code> is a <code>Duration</code> with the
-	 *         same numerator and denominator as this, false otherwise.
+	 * @param o an object against which this Duration is compared for equality
+	 * @return true if the given object is a {@link Duration} with the same
+	 *         numerator and denominator as this, false otherwise
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -108,22 +110,16 @@ public final class Duration implements Comparable<Duration> {
 		return hash;
 	}
 
-	/**
-	 * Durations are represented as strings of form
-	 * <code>(numerator/denominator)</code>.
-	 *
-	 * @return string representation of this Duration.
-	 */
 	@Override
 	public String toString() {
 		return "(" + this.numerator + "/" + this.denominator + ")";
 	}
 
 	/**
-	 * Extend this Duration by adding a dot (add half of this Duration to itself).
-	 * Does not change this Duration.
+	 * Returns a duration that is this duration with half of this duration added to
+	 * it.
 	 *
-	 * @return Duration that is this incremented by half of this.
+	 * @return duration that is this incremented by half of this
 	 */
 	public Duration addDot() {
 		return this.add(Duration.getDuration(this.numerator, 2 * this.denominator));
@@ -144,8 +140,7 @@ public final class Duration implements Comparable<Duration> {
 	}
 
 	/**
-	 * Returns a Duration that is the sum of this and other. Does not change this
-	 * Duration (this class is immutable).
+	 * Returns a duration that is the sum of this and other.
 	 *
 	 * @param other the Duration to be added to this.
 	 * @return a Duration that is the sum of this and other.
@@ -158,8 +153,8 @@ public final class Duration implements Comparable<Duration> {
 	}
 
 	/**
-	 * Returns a Duration that is the this other minus other given as parameter.
-	 * Does not change this Duration (this class is immutable).
+	 * Returns a duration that is this duration minus the duration given as
+	 * parameter.
 	 *
 	 * @param other the Duration to be subtracted from this.
 	 * @return a Duration that is this other minus other.
@@ -172,12 +167,12 @@ public final class Duration implements Comparable<Duration> {
 	}
 
 	/**
-	 * Returns a Duration that is this duration multiplied by multiplier. Multiplier
-	 * must be at least 1. Does not change this Duration (this class is immutable).
+	 * Returns a duration that is this duration multiplied by multiplier. Multiplier
+	 * must be at least 1.
 	 *
-	 * @throws IllegalArgumentException if multiplier is less than 1.
-	 * @param multiplier the factor by which this duration should be multiplied.
-	 * @return a Duration that is this duration multiplied by multiplier.
+	 * @throws IllegalArgumentException if multiplier is less than 1
+	 * @param multiplier the factor by which this duration should be multiplied
+	 * @return a Duration that is this duration multiplied by multiplier
 	 */
 	public Duration multiplyBy(int multiplier) {
 		if (multiplier < 1) {
@@ -188,12 +183,12 @@ public final class Duration implements Comparable<Duration> {
 	}
 
 	/**
-	 * Returns a Duration that is this duration divided by divider. Divider must be
-	 * at least 1. Does not change this Duration (this class is immutable).
+	 * Returns a duration that is this duration divided by divider. Divider must be
+	 * at least 1.
 	 *
-	 * @throws IllegalArgumentException if divider is less than 1.
-	 * @param divisor the factor by which this duration should be divided.
-	 * @return a Duration that is this duration divided by divider.
+	 * @throws IllegalArgumentException if divider is less than 1
+	 * @param divisor the factor by which this duration should be divided
+	 * @return a Duration that is this duration divided by divider
 	 */
 	public Duration divideBy(int divisor) {
 		if (divisor < 1) {
@@ -204,16 +199,20 @@ public final class Duration implements Comparable<Duration> {
 	}
 
 	/**
-	 * @param other Duration to which this is compared.
-	 * @return true if this is longer than other, otherwise false.
+	 * Returns true if this is longer than other, otherwise false.
+	 *
+	 * @param other Duration to which this is compared
+	 * @return true if this is longer than other, otherwise false
 	 */
 	public boolean isLongerThan(Duration other) {
 		return this.compareTo(other) > 0;
 	}
 
 	/**
-	 * @param other Duration to which this is compared.
-	 * @return true if this is shorter than other, otherwise false.
+	 * Returns true if this is shorter than other, otherwise false.
+	 *
+	 * @param other Duration to which this is compared
+	 * @return true if this is shorter than other, otherwise false
 	 */
 	public boolean isShorterThan(Duration other) {
 		return this.compareTo(other) < 0;
@@ -232,11 +231,11 @@ public final class Duration implements Comparable<Duration> {
 	}
 
 	/**
-	 * Get the total summed duration of the durations in the List.
+	 * Returns the total summed duration of the given durations.
 	 *
-	 * @throws IllegalArgumentException if durations is empty.
-	 * @param durations List of <code>Duration</code> objects.
-	 * @return The sum of durations in List.
+	 * @throws IllegalArgumentException if durations is empty
+	 * @param durations the durations whose sum is returned
+	 * @return The sum of the given durations
 	 */
 	public static Duration sumOf(List<Duration> durations) {
 		if (durations.isEmpty()) {
