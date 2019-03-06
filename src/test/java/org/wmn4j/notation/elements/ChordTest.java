@@ -129,7 +129,7 @@ public class ChordTest {
 		final HashSet<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
 		final Note staccatoC5 = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.QUARTER, articulations);
-		final Chord staccatoC = this.cMajor.addNote(staccatoC5);
+		final Chord staccatoC = this.cMajor.add(staccatoC5);
 		assertTrue(staccatoC.contains(staccatoC5));
 		assertFalse(staccatoC.contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.QUARTER)));
 		assertFalse(this.cMajor.contains(staccatoC5));
@@ -190,13 +190,13 @@ public class ChordTest {
 
 	@Test
 	public void testAddNote() {
-		final Chord cMaj = this.cMajor.addNote(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.QUARTER));
+		final Chord cMaj = this.cMajor.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.QUARTER));
 		assertFalse(this.cMajor.equals(cMaj));
 		assertEquals(4, cMaj.getNoteCount());
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.QUARTER), cMaj.getHighestNote());
 
 		try {
-			final Chord illegalCMaj = this.cMajor.addNote(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.EIGHT));
+			final Chord illegalCMaj = this.cMajor.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.EIGHT));
 			fail("Failed to throw expected exception");
 		} catch (final IllegalArgumentException e) {
 			assertTrue(e instanceof IllegalArgumentException);
@@ -205,7 +205,7 @@ public class ChordTest {
 
 	@Test
 	public void testRemoveNote() {
-		final Chord D_FSharp = this.dMajor.removeNote(Note.getNote(Pitch.getPitch(Pitch.Base.A, 0, 3), Durations.QUARTER));
+		final Chord D_FSharp = this.dMajor.remove(Note.getNote(Pitch.getPitch(Pitch.Base.A, 0, 3), Durations.QUARTER));
 		assertFalse(this.dMajor.equals(D_FSharp));
 		assertEquals(2, D_FSharp.getNoteCount());
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.F, 1, 3), Durations.QUARTER), D_FSharp.getHighestNote());

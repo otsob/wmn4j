@@ -4,7 +4,7 @@
 package org.wmn4j.notation.elements;
 
 /**
- * Note specific articulations.
+ * Articulations that affect a single note.
  */
 public enum Articulation {
 	/**
