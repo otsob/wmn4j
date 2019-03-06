@@ -21,7 +21,7 @@ import java.util.Set;
  *
  * @author otsobjorklund
  */
-public final class Note implements Durational {
+public final class Note implements Durational, Pitched {
 
 	private final Pitch pitch;
 	private final Duration duration;
@@ -137,6 +137,7 @@ public final class Note implements Durational {
 	 *
 	 * @return the Pitch of this Note.
 	 */
+	@Override
 	public Pitch getPitch() {
 		return this.pitch;
 	}
