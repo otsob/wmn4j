@@ -192,7 +192,7 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#divideBy(int)">divideBy</a></span>&#8203;(int&nbsp;divider)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#divideBy(int)">divideBy</a></span>&#8203;(int&nbsp;divisor)</code></th>
 <td class="colLast">
 <div class="block">Returns a Duration that is this duration divided by divider.</div>
 </td>
@@ -229,20 +229,20 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#longerThan(org.wmn4j.notation.elements.Duration)">longerThan</a></span>&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isLongerThan(org.wmn4j.notation.elements.Duration)">isLongerThan</a></span>&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i10" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isShorterThan(org.wmn4j.notation.elements.Duration)">isShorterThan</a></span>&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#multiplyBy(int)">multiplyBy</a></span>&#8203;(int&nbsp;multiplier)</code></th>
 <td class="colLast">
 <div class="block">Returns a Duration that is this duration multiplied by multiplier.</div>
 </td>
-</tr>
-<tr id="i11" class="rowColor">
-<td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#shorterThan(org.wmn4j.notation.elements.Duration)">shorterThan</a></span>&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
@@ -488,12 +488,12 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <ul class="blockList">
 <li class="blockList">
 <h4>divideBy</h4>
-<pre class="methodSignature">public&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;divideBy&#8203;(int&nbsp;divider)</pre>
+<pre class="methodSignature">public&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;divideBy&#8203;(int&nbsp;divisor)</pre>
 <div class="block">Returns a Duration that is this duration divided by divider. Divider must be
  at least 1. Does not change this Duration (this class is immutable).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>divider</code> - the factor by which this duration should be divided.</dd>
+<dd><code>divisor</code> - the factor by which this duration should be divided.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a Duration that is this duration divided by divider.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -501,13 +501,13 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 </dl>
 </li>
 </ul>
-<a id="longerThan(org.wmn4j.notation.elements.Duration)">
+<a id="isLongerThan(org.wmn4j.notation.elements.Duration)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>longerThan</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;longerThan&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</pre>
+<h4>isLongerThan</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;isLongerThan&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>other</code> - Duration to which this is compared.</dd>
@@ -516,13 +516,13 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 </dl>
 </li>
 </ul>
-<a id="shorterThan(org.wmn4j.notation.elements.Duration)">
+<a id="isShorterThan(org.wmn4j.notation.elements.Duration)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>shorterThan</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;shorterThan&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</pre>
+<h4>isShorterThan</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;isShorterThan&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>other</code> - Duration to which this is compared.</dd>
@@ -637,7 +637,7 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 </a></div>
 <!-- ======== END OF BOTTOM NAVBAR ======= -->
 </nav>
-<p class="legalCopy"><small>Copyright &#169; 2018. All rights reserved.</small></p>
+<p class="legalCopy"><small>Copyright &#169; 2019. All rights reserved.</small></p>
 </footer>
 </body>
 </html>
