@@ -49,15 +49,15 @@ public class KeySignatureTest {
 
 	@Test
 	public void testGetNumSharps() {
-		assertEquals(0, KeySignatures.CMAJ_AMIN.getNumSharps());
-		assertEquals(1, KeySignatures.GMAJ_EMIN.getNumSharps());
-		assertEquals(2, KeySignatures.DMAJ_BMIN.getNumSharps());
+		assertEquals(0, KeySignatures.CMAJ_AMIN.getNumberOfSharps());
+		assertEquals(1, KeySignatures.GMAJ_EMIN.getNumberOfSharps());
+		assertEquals(2, KeySignatures.DMAJ_BMIN.getNumberOfSharps());
 	}
 
 	@Test
 	public void testGetNumFlats() {
-		assertEquals(0, KeySignatures.CMAJ_AMIN.getNumFlats());
-		assertEquals(4, KeySignatures.AFLATMAJ_FMIN.getNumFlats());
+		assertEquals(0, KeySignatures.CMAJ_AMIN.getNumberOfFlats());
+		assertEquals(4, KeySignatures.AFLATMAJ_FMIN.getNumberOfFlats());
 	}
 
 	@Test

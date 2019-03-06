@@ -175,7 +175,7 @@ public final class Pitch implements Comparable<Pitch> {
 	 *
 	 * @return pitch class number of this pitch.
 	 */
-	public int getPCNumber() {
+	public int getPitchClassNumber() {
 		return this.toInt() % 12;
 	}
 
@@ -280,7 +280,7 @@ public final class Pitch implements Comparable<Pitch> {
 	 * @param other the Pitch against which this is compared.
 	 * @return true if this is higher than other, false otherwise.
 	 */
-	public boolean higherThan(Pitch other) {
+	public boolean isHigherThan(Pitch other) {
 		return this.toInt() > other.toInt();
 	}
 
@@ -288,7 +288,7 @@ public final class Pitch implements Comparable<Pitch> {
 	 * @param other the Pitch against which this is compared.
 	 * @return true if this is lower than other, false otherwise.
 	 */
-	public boolean lowerThan(Pitch other) {
+	public boolean isLowerThan(Pitch other) {
 		return this.toInt() < other.toInt();
 	}
 }

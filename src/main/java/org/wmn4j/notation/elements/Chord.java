@@ -180,7 +180,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @param pitch pitch of the note to be removed.
 	 * @return a chord without a note with the given pitch.
 	 */
-	public Chord removePitch(Pitch pitch) {
+	public Chord remove(Pitch pitch) {
 		if (this.contains(pitch)) {
 			final List<Note> newNotes = new ArrayList<>(this.notes);
 			newNotes.remove(Note.getNote(pitch, this.getDuration()));

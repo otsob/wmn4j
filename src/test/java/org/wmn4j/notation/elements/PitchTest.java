@@ -48,9 +48,9 @@ public class PitchTest {
 
 	@Test
 	public void testGetPCNumber() {
-		assertEquals(0, Pitch.getPitch(Pitch.Base.C, 0, 5).getPCNumber());
-		assertEquals(8, Pitch.getPitch(Pitch.Base.A, -1, 3).getPCNumber());
-		assertEquals(11, Pitch.getPitch(Pitch.Base.B, 0, 2).getPCNumber());
+		assertEquals(0, Pitch.getPitch(Pitch.Base.C, 0, 5).getPitchClassNumber());
+		assertEquals(8, Pitch.getPitch(Pitch.Base.A, -1, 3).getPitchClassNumber());
+		assertEquals(11, Pitch.getPitch(Pitch.Base.B, 0, 2).getPitchClassNumber());
 	}
 
 	@Test
@@ -82,16 +82,16 @@ public class PitchTest {
 
 	@Test
 	public void testHigherThan() {
-		assertTrue(Pitch.getPitch(Pitch.Base.C, 0, 3).higherThan(Pitch.getPitch(Pitch.Base.C, 0, 2)));
-		assertFalse(Pitch.getPitch(Pitch.Base.C, 0, 1).higherThan(Pitch.getPitch(Pitch.Base.C, 0, 1)));
-		assertFalse(Pitch.getPitch(Pitch.Base.C, 0, 2).higherThan(Pitch.getPitch(Pitch.Base.C, 0, 3)));
+		assertTrue(Pitch.getPitch(Pitch.Base.C, 0, 3).isHigherThan(Pitch.getPitch(Pitch.Base.C, 0, 2)));
+		assertFalse(Pitch.getPitch(Pitch.Base.C, 0, 1).isHigherThan(Pitch.getPitch(Pitch.Base.C, 0, 1)));
+		assertFalse(Pitch.getPitch(Pitch.Base.C, 0, 2).isHigherThan(Pitch.getPitch(Pitch.Base.C, 0, 3)));
 	}
 
 	@Test
 	public void testLowerThan() {
-		assertTrue(Pitch.getPitch(Pitch.Base.C, 0, 2).lowerThan(Pitch.getPitch(Pitch.Base.C, 1, 2)));
-		assertFalse(Pitch.getPitch(Pitch.Base.E, 1, 4).lowerThan(Pitch.getPitch(Pitch.Base.D, 0, 4)));
-		assertFalse(Pitch.getPitch(Pitch.Base.C, 0, 4).lowerThan(Pitch.getPitch(Pitch.Base.C, 0, 3)));
+		assertTrue(Pitch.getPitch(Pitch.Base.C, 0, 2).isLowerThan(Pitch.getPitch(Pitch.Base.C, 1, 2)));
+		assertFalse(Pitch.getPitch(Pitch.Base.E, 1, 4).isLowerThan(Pitch.getPitch(Pitch.Base.D, 0, 4)));
+		assertFalse(Pitch.getPitch(Pitch.Base.C, 0, 4).isLowerThan(Pitch.getPitch(Pitch.Base.C, 0, 3)));
 	}
 
 	@Test

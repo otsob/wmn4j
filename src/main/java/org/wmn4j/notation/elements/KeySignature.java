@@ -59,14 +59,14 @@ public class KeySignature {
 	/**
 	 * @return number of sharps in this KeySignature.
 	 */
-	public int getNumSharps() {
+	public int getNumberOfSharps() {
 		return this.sharps.size();
 	}
 
 	/**
 	 * @return number of flats in this KeySignature.
 	 */
-	public int getNumFlats() {
+	public int getNumberOfFlats() {
 		return this.flats.size();
 	}
 

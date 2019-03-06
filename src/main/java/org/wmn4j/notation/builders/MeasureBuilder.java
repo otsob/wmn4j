@@ -301,7 +301,7 @@ public class MeasureBuilder {
 	 */
 	public boolean isVoiceFull(int voice) {
 		final Duration voiceDuration = this.totalDurationOfVoice(voice);
-		return !voiceDuration.shorterThan(this.timeSig.getTotalDuration());
+		return !voiceDuration.isShorterThan(this.timeSig.getTotalDuration());
 	}
 
 	/**
