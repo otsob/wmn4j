@@ -282,10 +282,10 @@ public class MusicXmlReaderDomTest {
 		assertEquals(Clefs.ALTO, part.getMeasure(2).getClef());
 		assertFalse(part.getMeasure(2).containsClefChanges());
 
-		assertEquals(Clef.getClef(Clef.Type.C, 4), part.getMeasure(3).getClef());
+		assertEquals(Clef.getClef(Clef.Symbol.C, 4), part.getMeasure(3).getClef());
 		assertFalse(part.getMeasure(3).containsClefChanges());
 
-		assertEquals(Clef.getClef(Clef.Type.C, 4), part.getMeasure(4).getClef());
+		assertEquals(Clef.getClef(Clef.Symbol.C, 4), part.getMeasure(4).getClef());
 		assertTrue(part.getMeasure(4).containsClefChanges());
 		final Map<Duration, Clef> clefChanges = part.getMeasure(4).getClefChanges();
 		assertEquals(2, clefChanges.size());
