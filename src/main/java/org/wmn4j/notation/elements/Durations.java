@@ -4,7 +4,7 @@
 package org.wmn4j.notation.elements;
 
 /**
- * Collection of basic durations.
+ * Basic durations.
  */
 public final class Durations {
 	/**

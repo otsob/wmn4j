@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Class for key signatures. This class is immutable.
+ * Represents a key signature. This class is immutable.
  */
 public class KeySignature {
 	private final List<Pitch.Base> sharps;
@@ -17,8 +17,8 @@ public class KeySignature {
 
 	/**
 	 * Constructor for KeySignature. For common key signatures use the ones defined
-	 * in <code>KeySignatures</code>. This is mostly intended for creating custom
-	 * key signatures.
+	 * in {@link KeySignatures}. This is mostly intended for creating custom key
+	 * signatures.
 	 *
 	 * @throws IllegalArgumentException if the same Pitch.Base is in both sharps and
 	 *                                  flats.
@@ -54,41 +54,41 @@ public class KeySignature {
 	}
 
 	/**
-	 * @return number of sharps in this KeySignature.
+	 * Returns the number of sharps in this key signature.
+	 *
+	 * @return the number of sharps in this key signature
 	 */
 	public int getNumberOfSharps() {
 		return this.sharps.size();
 	}
 
 	/**
-	 * @return number of flats in this KeySignature.
+	 * Returns the number of flats in this key signature.
+	 *
+	 * @return the number of flats in this key signature
 	 */
 	public int getNumberOfFlats() {
 		return this.flats.size();
 	}
 
 	/**
-	 * @return a copy of the sharps in this KeySignature.
+	 * Returns the sharps in this key signature.
+	 *
+	 * @return the sharps in this key signature.
 	 */
 	public List<Pitch.Base> getSharps() {
 		return new ArrayList<>(this.sharps);
 	}
 
 	/**
-	 * @return a copy of the flats in this KeySignature.
+	 * Returns the flats in this key signature.
+	 *
+	 * @return the flats in this key signature
 	 */
 	public List<Pitch.Base> getFlats() {
 		return new ArrayList<>(this.flats);
 	}
 
-	/**
-	 * String representation of <code>KeySignature</code>. String is of form:
-	 * <code>KeySig(sharps: ...)</code>, <code>KeySig(flats: ...)</code>, or
-	 * <code>KeySig(sharps: ... flats: ...)</code> where <code>...</code> refers to
-	 * the raised or flatted pitches.
-	 *
-	 * @return string representation of KeySignature.
-	 */
 	@Override
 	public String toString() {
 		final StringBuilder strBuilder = new StringBuilder();
@@ -115,7 +115,7 @@ public class KeySignature {
 	}
 
 	/**
-	 * Compare this to <code>Object o</code> for equality.
+	 * Returns true if this is equal to the given object.
 	 *
 	 * @param o Object against which this is compared for equality.
 	 * @return true if Object o is of class KeySignature and has the same sharps and
