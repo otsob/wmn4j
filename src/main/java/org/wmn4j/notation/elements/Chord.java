@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -16,8 +15,6 @@ import java.util.Objects;
  * Class for chords. This class should be used for chords where the notes are
  * all of same length. For polyphonic textures add voices to the Measure. This
  * class is immutable.
- *
- * @author Otso Björklund
  */
 public final class Chord implements Durational, Iterable<Note> {
 	private final List<Note> notes;

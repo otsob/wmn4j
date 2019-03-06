@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -18,8 +17,6 @@ import java.util.Set;
  * objects. Notes have pitch, duration, articulations, and can be tied. A
  * sequence of tied notes functions like a singly linked list where a previous
  * note keeps track of the following tied note.
- *
- * @author otsobjorklund
  */
 public final class Note implements Durational, Pitched {
 

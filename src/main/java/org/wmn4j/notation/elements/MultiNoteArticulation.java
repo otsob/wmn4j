@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -7,8 +6,6 @@ package org.wmn4j.notation.elements;
 /**
  * Class that represents markings that span across multiple notes, such as slurs
  * and glissando. Is immutable.
- *
- * @author Otso Björklund
  */
 public class MultiNoteArticulation {
 
@@ -16,15 +13,15 @@ public class MultiNoteArticulation {
 	 * The type of the articulation.
 	 */
 	public enum Type {
-	/**
-	 * Specifies a slur.
-	 */
-	SLUR,
+		/**
+		 * Specifies a slur.
+		 */
+		SLUR,
 
-	/**
-	 * Specifies a glissando marking.
-	 */
-	GLISSANDO
+		/**
+		 * Specifies a glissando marking.
+		 */
+		GLISSANDO
 	}
 
 	private final Type type;

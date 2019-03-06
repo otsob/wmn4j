@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -17,8 +16,6 @@ import java.util.TreeMap;
 /**
  * Class for parts that have multiple staves such as keyboard instruments. This
  * class is immutable.
- *
- * @author Otso Björklund
  */
 public class MultiStaffPart implements Part {
 

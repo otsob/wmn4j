@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -20,40 +19,40 @@ public final class Pitch implements Comparable<Pitch> {
 	 * The letter in a pitch name.
 	 */
 	public enum Base {
-	/**
-	 * The base letter C in the pitch name.
-	 */
-	C(0),
+		/**
+		 * The base letter C in the pitch name.
+		 */
+		C(0),
 
-	/**
-	 * The base letter D in the pitch name.
-	 */
-	D(2),
+		/**
+		 * The base letter D in the pitch name.
+		 */
+		D(2),
 
-	/**
-	 * The base letter E in the pitch name.
-	 */
-	E(4),
+		/**
+		 * The base letter E in the pitch name.
+		 */
+		E(4),
 
-	/**
-	 * The base letter F in the pitch name.
-	 */
-	F(5),
+		/**
+		 * The base letter F in the pitch name.
+		 */
+		F(5),
 
-	/**
-	 * The base letter G in the pitch name.
-	 */
-	G(7),
+		/**
+		 * The base letter G in the pitch name.
+		 */
+		G(7),
 
-	/**
-	 * The base letter A in the pitch name.
-	 */
-	A(9),
+		/**
+		 * The base letter A in the pitch name.
+		 */
+		A(9),
 
-	/**
-	 * The base letter B in the pitch name.
-	 */
-	B(11);
+		/**
+		 * The base letter B in the pitch name.
+		 */
+		B(11);
 
 		private final int pitchAsInt;
 

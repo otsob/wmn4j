@@ -1,13 +1,10 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
 
 /**
  * Represents the 12 pitch classes in equal-temperament tuning.
- *
- * @author Otso Björklund
  */
 public enum PitchClass {
 	/**

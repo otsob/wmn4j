@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -12,8 +11,6 @@ import java.util.Objects;
 /**
  * Class containing the attributes of measures that typically remain unchanged
  * from one measure to the next.
- *
- * @author Otso Björklund
  */
 public final class MeasureAttributes {
 

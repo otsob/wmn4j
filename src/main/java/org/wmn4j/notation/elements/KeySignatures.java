@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -8,8 +7,6 @@ import java.util.Arrays;
 
 /**
  * Collection of typical key signatures associated with major and minor keys.
- *
- * @author Otso Björklund
  */
 public final class KeySignatures {
 	/**

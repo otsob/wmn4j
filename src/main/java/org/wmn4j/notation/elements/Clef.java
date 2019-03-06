@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -10,8 +9,6 @@ import java.util.Objects;
  * Class for clefs. Clefs have a type which tells the shape of the clef and
  * position which is the line on which the center of the clef is situated. For
  * example, the center of a G-type clef is the part of the clef that denotes G4.
- *
- * @author Otso Björklund
  */
 public final class Clef {
 	public enum Type {

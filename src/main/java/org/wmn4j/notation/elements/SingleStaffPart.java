@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -14,8 +13,6 @@ import java.util.NoSuchElementException;
 /**
  * Class for representing a part consisting of a single staff in a score. This
  * class is immutable.
- *
- * @author Otso Björklund
  */
 public class SingleStaffPart implements Part {
 

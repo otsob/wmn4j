@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -11,8 +10,6 @@ import java.util.Objects;
 
 /**
  * Class for key signatures. This class is immutable.
- *
- * @author Otso Björklund
  */
 public class KeySignature {
 	private final List<Pitch.Base> sharps;

@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -18,8 +17,6 @@ import org.wmn4j.notation.iterators.ScorePosition;
  * Class that describes a score. This class is immutable.
  * <code>ScoreBuilder</code> can be used for creating <code>Score</code>
  * objects.
- *
- * @author Otso Björklund
  */
 public class Score implements Iterable<Part> {
 
@@ -27,23 +24,23 @@ public class Score implements Iterable<Part> {
 	 * Type for the different text attributes a score can have.
 	 */
 	public enum Attribute {
-	/**
-	 * The name (main title) of the score.
-	 */
-	NAME,
-	/**
-	 * The composer name.
-	 */
-	COMPOSER,
+		/**
+		 * The name (main title) of the score.
+		 */
+		NAME,
+		/**
+		 * The composer name.
+		 */
+		COMPOSER,
 
-	/**
-	 * The arranger.
-	 */
-	ARRANGER,
-	/**
-	 * The year of publication.
-	 */
-	YEAR
+		/**
+		 * The arranger.
+		 */
+		ARRANGER,
+		/**
+		 * The year of publication.
+		 */
+		YEAR
 	}
 
 	private final Map<Attribute, String> scoreAttr;

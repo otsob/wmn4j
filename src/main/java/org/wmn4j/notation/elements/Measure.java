@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -18,8 +17,6 @@ import java.util.TreeMap;
  * Class that defines a measure. A measure may contain multiple voices that are
  * referred to using voice numbers. This class is immutable. Use the
  * MeasureBuilder class for easier creation of Measures.
- *
- * @author Otso Björklund
  */
 public class Measure implements Iterable<Durational> {
 

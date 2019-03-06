@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -14,8 +13,6 @@ import java.util.List;
  * normal music terminology. For example, the duration of a quarter note is
  * handled as the rational number 1/4. The rational number is always reduced to
  * the lowest possible numerator and denominator. This class is immutable.
- *
- * @author Otso Björklund
  */
 public final class Duration implements Comparable<Duration> {
 

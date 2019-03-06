@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -12,8 +11,6 @@ import java.util.NoSuchElementException;
 
 /**
  * Class for representing a staff in a score. This class is immutable.
- *
- * @author Otso Björklund
  */
 public class Staff implements Iterable<Measure> {
 
@@ -21,14 +18,14 @@ public class Staff implements Iterable<Measure> {
 	 * Type of staff.
 	 */
 	public enum Type {
-	/**
-	 * Normal five line staff.
-	 */
-	NORMAL,
-	/**
-	 * A single line percussion staff.
-	 */
-	SINGLE_LINE
+		/**
+		 * Normal five line staff.
+		 */
+		NORMAL,
+		/**
+		 * A single line percussion staff.
+		 */
+		SINGLE_LINE
 	};
 
 	private final List<Measure> measures;

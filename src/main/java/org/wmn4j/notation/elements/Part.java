@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -10,8 +9,6 @@ import java.util.NoSuchElementException;
 /**
  * Interface for parts in a score. The class <code>PartBuilder</code> can be
  * used for constructing <code>Part</code> objects.
- *
- * @author Otso Björklund
  */
 public interface Part extends Iterable<Measure> {
 
@@ -19,7 +16,7 @@ public interface Part extends Iterable<Measure> {
 	 * Attribute types that a <code>Part</code> can have.
 	 */
 	enum Attribute {
-	NAME, ABBREVIATED_NAME
+		NAME, ABBREVIATED_NAME
 	};
 
 	/**
