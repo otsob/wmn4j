@@ -134,14 +134,14 @@ public class DurationTest {
 
 	@Test
 	public void testLongerThan() {
-		assertTrue(Durations.QUARTER.longerThan(Durations.EIGHT));
-		assertFalse(Durations.EIGHT_TRIPLET.longerThan(Durations.EIGHT));
+		assertTrue(Durations.QUARTER.isLongerThan(Durations.EIGHT));
+		assertFalse(Durations.EIGHT_TRIPLET.isLongerThan(Durations.EIGHT));
 	}
 
 	@Test
 	public void testShorterThan() {
-		assertTrue(Durations.SIXTEENTH.shorterThan(Durations.EIGHT));
-		assertFalse(Durations.EIGHT_TRIPLET.shorterThan(Durations.THIRTYSECOND));
+		assertTrue(Durations.SIXTEENTH.isShorterThan(Durations.EIGHT));
+		assertFalse(Durations.EIGHT_TRIPLET.isShorterThan(Durations.THIRTYSECOND));
 	}
 
 	@Test

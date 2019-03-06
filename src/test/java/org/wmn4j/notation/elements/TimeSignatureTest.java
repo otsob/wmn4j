@@ -35,7 +35,7 @@ public class TimeSignatureTest {
 	@Test
 	public void testGetTimeSignature() {
 		final TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
-		assertEquals(4, timeSig.getNumBeats());
+		assertEquals(4, timeSig.getBeatCount());
 		assertEquals(Durations.QUARTER, timeSig.getBeatDuration());
 	}
 

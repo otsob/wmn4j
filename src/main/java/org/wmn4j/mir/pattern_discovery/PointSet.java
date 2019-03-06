@@ -54,7 +54,7 @@ class PointSet {
 
 		while (scoreIterator.hasNext()) {
 			final Durational dur = scoreIterator.next();
-			final ScorePosition pos = scoreIterator.positionOfPrevious();
+			final ScorePosition pos = scoreIterator.getPositionOfPrevious();
 
 			// Part changes
 			if (prevPos != null && prevPos.getPartNumber() != pos.getPartNumber()) {

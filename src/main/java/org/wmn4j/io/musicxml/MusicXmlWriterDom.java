@@ -112,7 +112,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 
 		while (iter.hasNext()) {
 			final Duration dur = iter.next().getDuration();
-			if (dur.shorterThan(shortest)) {
+			if (dur.isShorterThan(shortest)) {
 				shortest = dur;
 			}
 		}

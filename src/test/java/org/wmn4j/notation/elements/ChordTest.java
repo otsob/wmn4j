@@ -80,7 +80,7 @@ public class ChordTest {
 	public void testGetNoteOrderCorrect() {
 		for (int i = 0; i < cMajor.getNoteCount(); ++i) {
 			if (i != 0) {
-				assertFalse(cMajor.getNote(i - 1).getPitch().higherThan(cMajor.getNote(i).getPitch()));
+				assertFalse(cMajor.getNote(i - 1).getPitch().isHigherThan(cMajor.getNote(i).getPitch()));
 			}
 		}
 	}
@@ -213,7 +213,7 @@ public class ChordTest {
 
 	@Test
 	public void testRemovePitch() {
-		final Chord D_FSharp = this.dMajor.removePitch(Pitch.getPitch(Pitch.Base.A, 0, 3));
+		final Chord D_FSharp = this.dMajor.remove(Pitch.getPitch(Pitch.Base.A, 0, 3));
 		assertFalse(this.dMajor.equals(D_FSharp));
 		assertEquals(2, D_FSharp.getNoteCount());
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.F, 1, 3), Durations.QUARTER), D_FSharp.getHighestNote());

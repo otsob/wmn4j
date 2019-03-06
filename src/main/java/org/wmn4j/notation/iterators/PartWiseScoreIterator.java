@@ -77,7 +77,7 @@ public class PartWiseScoreIterator implements ScoreIterator {
 	}
 
 	@Override
-	public ScorePosition positionOfPrevious() {
+	public ScorePosition getPositionOfPrevious() {
 		if (this.prevPart == null) {
 			throw new IllegalStateException("no previous position available because next has not been called yet");
 		}

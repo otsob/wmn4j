@@ -54,7 +54,7 @@ public final class TimeSignature {
 	/**
 	 * @return number of beats.
 	 */
-	public int getNumBeats() {
+	public int getBeatCount() {
 		return this.beats;
 	}
 

@@ -143,7 +143,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @return the fraction numerator/denominator as double.
 	 */
 	public double toDouble() {
-		return (float) this.numerator / this.denominator;
+		return (double) this.numerator / this.denominator;
 	}
 
 	/**
@@ -195,22 +195,22 @@ public final class Duration implements Comparable<Duration> {
 	 * at least 1. Does not change this Duration (this class is immutable).
 	 *
 	 * @throws IllegalArgumentException if divider is less than 1.
-	 * @param divider the factor by which this duration should be divided.
+	 * @param divisor the factor by which this duration should be divided.
 	 * @return a Duration that is this duration divided by divider.
 	 */
-	public Duration divideBy(int divider) {
-		if (divider < 1) {
-			throw new IllegalArgumentException("divider must be at least 1. Was " + divider);
+	public Duration divideBy(int divisor) {
+		if (divisor < 1) {
+			throw new IllegalArgumentException("divider must be at least 1. Was " + divisor);
 		}
 
-		return getDuration(this.numerator, this.denominator * divider);
+		return getDuration(this.numerator, this.denominator * divisor);
 	}
 
 	/**
 	 * @param other Duration to which this is compared.
 	 * @return true if this is longer than other, otherwise false.
 	 */
-	public boolean longerThan(Duration other) {
+	public boolean isLongerThan(Duration other) {
 		return this.compareTo(other) > 0;
 	}
 
@@ -218,7 +218,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @param other Duration to which this is compared.
 	 * @return true if this is shorter than other, otherwise false.
 	 */
-	public boolean shorterThan(Duration other) {
+	public boolean isShorterThan(Duration other) {
 		return this.compareTo(other) < 0;
 	}
 
