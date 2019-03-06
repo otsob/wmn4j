@@ -145,7 +145,7 @@ public class ScoreTest {
 		final ScoreIterator iterator = new PartWiseScoreIterator(score);
 		while (iterator.hasNext()) {
 			final Durational elem = iterator.next();
-			final ScorePosition position = iterator.positionOfPrevious();
+			final ScorePosition position = iterator.getPositionOfPrevious();
 			assertEquals(elem, score.getAtPosition(position));
 		}
 	}

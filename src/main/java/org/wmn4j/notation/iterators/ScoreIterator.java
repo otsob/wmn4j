@@ -46,5 +46,5 @@ public interface ScoreIterator extends Iterator<Durational> {
 	 * @throws IllegalStateException if {@link #next() next} has not been called on
 	 *                               the iterator
 	 */
-	ScorePosition positionOfPrevious() throws IllegalStateException;
+	ScorePosition getPositionOfPrevious() throws IllegalStateException;
 }

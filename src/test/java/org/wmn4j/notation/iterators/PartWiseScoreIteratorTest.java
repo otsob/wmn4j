@@ -43,7 +43,7 @@ public class PartWiseScoreIteratorTest {
 		for (int i = 0; i < steps; ++i) {
 			next = this.iter.next();
 			System.out.println(next);
-			System.out.println(this.iter.positionOfPrevious());
+			System.out.println(this.iter.getPositionOfPrevious());
 		}
 		return next;
 	}
@@ -94,21 +94,21 @@ public class PartWiseScoreIteratorTest {
 		// Start at first note of top part.
 		Durational next = moveIterSteps(1);
 		final ScorePosition first = new ScorePosition(topPartNumber, 1, 1, 1, 0);
-		assertEquals(first, this.iter.positionOfPrevious());
+		assertEquals(first, this.iter.getPositionOfPrevious());
 
 		// Move to the rest in the first measure of top part.
 		next = moveIterSteps(2);
 		final ScorePosition second = new ScorePosition(topPartNumber, 1, 1, 1, 2);
-		assertEquals(second, this.iter.positionOfPrevious());
+		assertEquals(second, this.iter.getPositionOfPrevious());
 
 		// Move to first measure of bottom part;
 		next = moveIterSteps(16);
 		final ScorePosition third = new ScorePosition(bottomPartNumber, 1, 1, 1, 0);
-		assertEquals(third, this.iter.positionOfPrevious());
+		assertEquals(third, this.iter.getPositionOfPrevious());
 
 		// Move to first note of last measure of top staff of bottom part.
 		next = moveIterSteps(5);
 		final ScorePosition fourth = new ScorePosition(bottomPartNumber, 1, 3, 1, 0);
-		assertEquals(fourth, this.iter.positionOfPrevious());
+		assertEquals(fourth, this.iter.getPositionOfPrevious());
 	}
 }
