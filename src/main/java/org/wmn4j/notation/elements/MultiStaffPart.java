@@ -14,8 +14,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * Class for parts that have multiple staves such as keyboard instruments. This
- * class is immutable.
+ * Represents a score part with multiple staves such as are often used with
+ * keyboard instruments. This class is immutable.
  */
 public class MultiStaffPart implements Part {
 
@@ -73,17 +73,19 @@ public class MultiStaffPart implements Part {
 	}
 
 	/**
-	 * Returns the <code>Staff</code> with the number.
+	 * Returns the {@link Staff} with the given number in this part.
 	 *
-	 * @param number number of staff.
-	 * @return <code>Staff</code> associated with the number.
+	 * @param number number of staff
+	 * @return the staff associated with the number
 	 */
 	public Staff getStaff(int number) {
 		return this.staves.get(number);
 	}
 
 	/**
-	 * @return the numbers of the staves in the part.
+	 * Returns the numbers in this part that are used to denote the staves.
+	 *
+	 * @return the staff numbers in this part
 	 */
 	public List<Integer> getStaffNumbers() {
 		return new ArrayList<>(this.staves.keySet());
@@ -130,10 +132,10 @@ public class MultiStaffPart implements Part {
 	}
 
 	/**
-	 * Iterator for <code>MultiStaffPart</code> Iterates through the measures by
-	 * going through all staves for a certain measure number before going on to the
-	 * next measure. Staves are iterated through from smallest staff number to
-	 * greatest. Does not support removing.
+	 * Iterator for {@link MultiStaffPart}. Iterates through the measures by going
+	 * through all staves for a certain measure number before going on to the next
+	 * measure. Staves are iterated through from smallest staff number to greatest.
+	 * Does not support removing.
 	 */
 	public static class Iter implements Part.Iter {
 		private final MultiStaffPart part;
