@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Class containing the attributes of measures that typically remain unchanged
- * from one measure to the next.
+ * Represents the attributes of a measure that are often implicit in the
+ * measure, such as clef in effect, time signature, key signature and so on.
  */
 public final class MeasureAttributes {
 
@@ -22,50 +22,53 @@ public final class MeasureAttributes {
 	private final Map<Duration, Clef> clefChanges;
 
 	/**
-	 * Returns a MeasureAttributes instance with the given values. The left barline
-	 * type will be set to none.
+	 * Returns an instance with the given values. The left barline type will be set
+	 * to none.
 	 *
-	 * @param timeSig      the time signature
-	 * @param keySig       the key signature
-	 * @param rightBarline the type of the right barline
-	 * @param clef         the clef in effect at the beginning of the measure
-	 * @return a MeasureAttributes instance with the given values
+	 * @param timeSignature the time signature
+	 * @param keySignature  the key signature
+	 * @param rightBarline  the type of the right barline
+	 * @param clef          the clef in effect at the beginning of the measure
+	 * @return an instance with the given values
 	 */
-	public static MeasureAttributes getMeasureAttr(TimeSignature timeSig, KeySignature keySig, Barline rightBarline,
+	public static MeasureAttributes getMeasureAttr(TimeSignature timeSignature, KeySignature keySignature,
+			Barline rightBarline,
 			Clef clef) {
-		return getMeasureAttr(timeSig, keySig, rightBarline, Barline.NONE, clef);
+		return getMeasureAttr(timeSignature, keySignature, rightBarline, Barline.NONE, clef);
 	}
 
 	/**
-	 * Returns a MeasureAttributes instance with the given values.
+	 * Returns an instance with the given values.
 	 *
-	 * @param timeSig      the time signature
-	 * @param keySig       the key signature
-	 * @param rightBarline the type of the right barline
-	 * @param leftBarline  the type of the left barline
-	 * @param clef         the clef in effect at the beginning of the measure
-	 * @return a MeasureAttributes instance with the given values
+	 * @param timeSignature the time signature
+	 * @param keySignature  the key signature
+	 * @param rightBarline  the type of the right barline
+	 * @param leftBarline   the type of the left barline
+	 * @param clef          the clef in effect at the beginning of the measure
+	 * @return an instance with the given values
 	 */
-	public static MeasureAttributes getMeasureAttr(TimeSignature timeSig, KeySignature keySig, Barline rightBarline,
+	public static MeasureAttributes getMeasureAttr(TimeSignature timeSignature, KeySignature keySignature,
+			Barline rightBarline,
 			Barline leftBarline, Clef clef) {
-		return getMeasureAttr(timeSig, keySig, rightBarline, leftBarline, clef, null);
+		return getMeasureAttr(timeSignature, keySignature, rightBarline, leftBarline, clef, null);
 	}
 
 	/**
-	 * Returns a MeasureAttributes instance with the given values.
+	 * Returns an instance with the given values.
 	 *
-	 * @param timeSig      the time signature
-	 * @param keySig       the key signature
-	 * @param rightBarline the type of the right barline
-	 * @param leftBarline  the type of the left barline
-	 * @param clef         the clef in effect at the beginning of the measure
-	 * @param clefChanges  the clef changes within the measure
-	 * @return a MeasureAttributes instance with the given values
+	 * @param timeSignature the time signature
+	 * @param keySignature  the key signature
+	 * @param rightBarline  the type of the right barline
+	 * @param leftBarline   the type of the left barline
+	 * @param clef          the clef in effect at the beginning of the measure
+	 * @param clefChanges   the clef changes within the measure
+	 * @return an instance with the given values
 	 */
-	public static MeasureAttributes getMeasureAttr(TimeSignature timeSig, KeySignature keySig, Barline rightBarline,
+	public static MeasureAttributes getMeasureAttr(TimeSignature timeSignature, KeySignature keySignature,
+			Barline rightBarline,
 			Barline leftBarline, Clef clef, Map<Duration, Clef> clefChanges) {
 		// TODO: Potentially use interner pattern or similar for caching.
-		return new MeasureAttributes(timeSig, keySig, rightBarline, leftBarline, clef, clefChanges);
+		return new MeasureAttributes(timeSignature, keySignature, rightBarline, leftBarline, clef, clefChanges);
 	}
 
 	private MeasureAttributes(TimeSignature timeSig, KeySignature keySig, Barline rightBarline, Barline leftBarline,
@@ -84,36 +87,36 @@ public final class MeasureAttributes {
 	}
 
 	/**
-	 * Returns the time signature specified in the attributes.
+	 * Returns the time signature specified in these attributes.
 	 *
-	 * @return the time signature specified in the attributes
+	 * @return the time signature specified in these attributes
 	 */
 	public TimeSignature getTimeSignature() {
 		return this.timeSig;
 	}
 
 	/**
-	 * Returns the key signature specified in the attributes.
+	 * Returns the key signature specified in these attributes.
 	 *
-	 * @return the key signature specified in the attributes
+	 * @return the key signature specified in these attributes
 	 */
 	public KeySignature getKeySignature() {
 		return this.keySig;
 	}
 
 	/**
-	 * Returns the type of the right barline specified in the attributes.
+	 * Returns the type of the right barline specified in these attributes.
 	 *
-	 * @return the type of the right barline specified in the attributes
+	 * @return the type of the right barline specified in these attributes
 	 */
 	public Barline getRightBarline() {
 		return this.rightBarline;
 	}
 
 	/**
-	 * Returns the type of the left barline specified in the attributes.
+	 * Returns the type of the left barline specified in these attributes.
 	 *
-	 * @return the type of the left barline specified in the attributes
+	 * @return the type of the left barline specified in these attributes
 	 */
 	public Barline getLeftBarline() {
 		return this.leftBarline;
