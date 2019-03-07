@@ -133,12 +133,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a></code></dd>
+<dd><code><a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a></code>, <code><a href="Pitched.html" title="interface in org.wmn4j.notation.elements">Pitched</a></code></dd>
 </dl>
 <hr>
 <pre>public final class <span class="typeNameLabel">Note</span>
 extends java.lang.Object
-implements <a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a></pre>
+implements <a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>, <a href="Pitched.html" title="interface in org.wmn4j.notation.elements">Pitched</a></pre>
 <div class="block">Class that defines a note. This class is immutable. The
  <code>NoteBuilder</code> class can be used for creating <code>Note</code>
  objects. Notes have pitch, duration, articulations, and can be tied. A
@@ -473,6 +473,8 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <pre class="methodSignature">public&nbsp;<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;getPitch()</pre>
 <div class="block">Get the <code>Pitch</code> of this <code>Note</code>.</div>
 <dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="Pitched.html#getPitch()">getPitch</a></code>&nbsp;in interface&nbsp;<code><a href="Pitched.html" title="interface in org.wmn4j.notation.elements">Pitched</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the Pitch of this Note.</dd>
 </dl>
