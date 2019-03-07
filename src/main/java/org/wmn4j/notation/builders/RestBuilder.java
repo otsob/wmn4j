@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.builders;
@@ -10,9 +9,7 @@ import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.Rest;
 
 /**
- * Class for building <code>Rest</code> objects.
- *
- * @author Otso Björklund
+ * Class for building {@link Rest} objects.
  */
 public final class RestBuilder implements DurationalBuilder {
 
@@ -28,7 +25,7 @@ public final class RestBuilder implements DurationalBuilder {
 	}
 
 	/**
-	 * Set the duration of the <code>Rest</code>.
+	 * Set the duration in this builder.
 	 *
 	 * @param duration the duration that is set to this builder
 	 */
