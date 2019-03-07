@@ -139,11 +139,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public class <span class="typeNameLabel">Staff</span>
 extends java.lang.Object
 implements java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&gt;</pre>
-<div class="block">Class for representing a staff in a score. This class is immutable.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
+<div class="block">Represents a staff in a score. This class is immutable.</div>
 </li>
 </ul>
 </div>
@@ -215,34 +211,45 @@ implements java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFullMeasureCount()">getFullMeasureCount</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the number of full measures in this staff.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="Measure.html" title="class in org.wmn4j.notation.elements">Measure</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMeasure(int)">getMeasure</a></span>&#8203;(int&nbsp;number)</code></th>
 <td class="colLast">
-<div class="block">Get <code>Measure</code> by measure number.</div>
+<div class="block">Returns the measure with the given number.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMeasureCount()">getMeasureCount</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the number of measures in this staff.</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMeasures()">getMeasures</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the measures in this staff as a list from smallest measure number to
+ greatest.</div>
+</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="Staff.Type.html" title="enum in org.wmn4j.notation.elements">Staff.Type</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getType()">getType</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the type of this staff.</div>
+</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasPickupMeasure()">hasPickupMeasure</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns true if this staff contains a pickup measure.</div>
+</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&gt;</code></td>
@@ -316,12 +323,12 @@ implements java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4
 <li class="blockList">
 <h4>getMeasure</h4>
 <pre class="methodSignature">public&nbsp;<a href="Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&nbsp;getMeasure&#8203;(int&nbsp;number)</pre>
-<div class="block">Get <code>Measure</code> by measure number.</div>
+<div class="block">Returns the measure with the given number.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>number</code> - the number of the measure to get from this staff.</dd>
+<dd><code>number</code> - the number of the measure to get from this staff</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the measure with number</dd>
+<dd>the measure with the given number</dd>
 </dl>
 </li>
 </ul>
@@ -332,9 +339,11 @@ implements java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4
 <li class="blockList">
 <h4>getMeasureCount</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getMeasureCount()</pre>
+<div class="block">Returns the number of measures in this staff. Includes the pickup measure if
+ one is present.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>number of measures in this <code>Staff</code>.</dd>
+<dd>the number of measures in this staff</dd>
 </dl>
 </li>
 </ul>
@@ -345,10 +354,11 @@ implements java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4
 <li class="blockList">
 <h4>getFullMeasureCount</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getFullMeasureCount()</pre>
+<div class="block">Returns the number of full measures in this staff. Pickup measure is
+ excluded.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>number of full measures in this <code>Staff</code>. Pickup measure is
-         not included.</dd>
+<dd>the number of full measures in this staff</dd>
 </dl>
 </li>
 </ul>
@@ -359,9 +369,11 @@ implements java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4
 <li class="blockList">
 <h4>getMeasures</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&gt;&nbsp;getMeasures()</pre>
+<div class="block">Returns the measures in this staff as a list from smallest measure number to
+ greatest.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>List of measures in this staff in order from first measure to last.</dd>
+<dd>the measures in this staff</dd>
 </dl>
 </li>
 </ul>
@@ -372,9 +384,10 @@ implements java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4
 <li class="blockList">
 <h4>hasPickupMeasure</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;hasPickupMeasure()</pre>
+<div class="block">Returns true if this staff contains a pickup measure.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this staff begins with a pickup measure. false otherwise.</dd>
+<dd>true if this staff begins with a pickup measure, false otherwise</dd>
 </dl>
 </li>
 </ul>
@@ -385,9 +398,10 @@ implements java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4
 <li class="blockList">
 <h4>getType</h4>
 <pre class="methodSignature">public&nbsp;<a href="Staff.Type.html" title="enum in org.wmn4j.notation.elements">Staff.Type</a>&nbsp;getType()</pre>
+<div class="block">Returns the type of this staff.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>type of this <code>Staff</code>.</dd>
+<dd>type of this staff</dd>
 </dl>
 </li>
 </ul>
@@ -414,8 +428,6 @@ implements java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>iterator</code>&nbsp;in interface&nbsp;<code>java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&gt;</code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>iterator that does not support modifying this <code>Staff</code>.</dd>
 </dl>
 </li>
 </ul>

@@ -139,8 +139,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public class <span class="typeNameLabel">NoteBuilder</span>
 extends java.lang.Object
 implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></pre>
-<div class="block">Class for building <code>Note</code> objects. The built note is cached. This
- is used for ensuring that sequences of tied notes are built correctly.</div>
+<div class="block">Class for building <a href="../elements/Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> objects. The built note is cached.</div>
 </li>
 </ul>
 </div>
@@ -216,15 +215,14 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <td class="colFirst"><code><a href="../elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#build()">build</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Creates a <code>Note</code> with the values set in this builder.</div>
+<div class="block">Creates a note with the values set in this builder.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearCache()">clearCache</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Removes the cached <code>Note</code> that was built on the previous call of
- <a href="#build()"><code>build</code></a>.</div>
+<div class="block">Removes the cached note that was built on the previous call of <a href="#build()"><code>build</code></a>.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
@@ -353,8 +351,8 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <div class="block">Constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>pitch</code> - The pitch set in this builder.</dd>
-<dd><code>duration</code> - The duration set in this builder.</dd>
+<dd><code>pitch</code> - the pitch set in this builder</dd>
+<dd><code>duration</code> - the duration set in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -365,8 +363,8 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <li class="blockList">
 <h4>NoteBuilder</h4>
 <pre>public&nbsp;NoteBuilder&#8203;(<a href="NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&nbsp;builder)</pre>
-<div class="block">Copy constructor for NoteBuilder. Creates a new instance of NoteBuilder
- that is a copy of the NoteBuilder given as an attribute.</div>
+<div class="block">Copy constructor for NoteBuilder. Creates a new instance of NoteBuilder that
+ is a copy of the NoteBuilder given as an attribute.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>builder</code> - the NoteBuilder to be copied</dd>
@@ -610,8 +608,8 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <div class="block">Returns the NoteBuilder of the following tied note, if there is one.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Optional containing the NoteBuilder of the following tied note
-         if there is one, otherwise empty Optional.</dd>
+<dd>Optional containing the NoteBuilder of the following tied note if
+         there is one, otherwise empty Optional.</dd>
 </dl>
 </li>
 </ul>
@@ -622,8 +620,7 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <li class="blockList">
 <h4>clearCache</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;clearCache()</pre>
-<div class="block">Removes the cached <code>Note</code> that was built on the previous call of
- <a href="#build()"><code>build</code></a>.</div>
+<div class="block">Removes the cached note that was built on the previous call of <a href="#build()"><code>build</code></a>.</div>
 </li>
 </ul>
 <a id="build()">
@@ -633,17 +630,17 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <li class="blockList">
 <h4>build</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;build()</pre>
-<div class="block">Creates a <code>Note</code> with the values set in this builder. This method
- has side effects. The method calls <a href="#build()"><code>build</code></a> recursively on the
- following <code>NoteBuilder</code> objects to which this is tied. Calling
- this method to create the first note in a sequence of tied notes builds all
- the tied notes. The <code>Note</code> objects are cached in the builders. In
- case of tied notes, the temporally first one should be built first.</div>
+<div class="block">Creates a note with the values set in this builder. This method has side
+ effects. The method calls <a href="#build()"><code>build</code></a> recursively on the following
+ <a href="NoteBuilder.html" title="class in org.wmn4j.notation.builders"><code>NoteBuilder</code></a> objects to which this is tied. Calling this method to
+ create the first note in a sequence of tied notes builds all the tied notes.
+ The <a href="../elements/Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> objects are cached in the builders. In case of tied notes,
+ the temporally first one should be built first.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="DurationalBuilder.html#build()">build</a></code>&nbsp;in interface&nbsp;<code><a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd><code>Note</code> instance with the values set in this builder.</dd>
+<dd>a note instance with the values set in this builder.</dd>
 </dl>
 </li>
 </ul>

@@ -139,10 +139,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public final class <span class="typeNameLabel">Pitch</span>
 extends java.lang.Object
 implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&gt;</pre>
-<div class="block">The <code>Pitch</code> class represents a pitch. Pitches consist of the basic
- pitch letter <code>Pitch.Base</code>, alter number which tells by how many
- half-steps the pitch is altered, and octave number which tells the octave of
- the note. Octave number is based on
+<div class="block">Represents a pitch. Pitches consist of the basic pitch letter
+ <a href="Pitch.Base.html" title="enum in org.wmn4j.notation.elements"><code>Pitch.Base</code></a>, alter number which tells by how many half-steps the pitch
+ is altered, and octave number which tells the octave of the note. Octave
+ number is based on
  <a href="http://en.wikipedia.org/wiki/Scientific_pitch_notation">scientific
  pitch notation</a>. This class is immutable.</div>
 </li>
@@ -226,42 +226,45 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#compareTo(org.wmn4j.notation.elements.Pitch)">compareTo</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;other)</code></th>
 <td class="colLast">
-<div class="block">Compare this pitch against other for pitch height.</div>
+<div class="block">Returns an integer that denotes if this pitch is higher than, lower than, or
+ equal to the given pitch.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(java.lang.Object&nbsp;o)</code></th>
 <td class="colLast">
-<div class="block">Compare this <code>Pitch</code> for equality with <code>Object o</code>.</div>
+<div class="block">Returns true if this pitch is equal to the given object.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equalsEnharmonically(org.wmn4j.notation.elements.Pitch)">equalsEnharmonically</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;other)</code></th>
 <td class="colLast">
-<div class="block">Test enharmonic equality.</div>
+<div class="block">Returns true if this pitch is
+ <a href="http://en.wikipedia.org/wiki/Enharmonic">enharmonically</a> equal to
+ the given pitch.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAlter()">getAlter</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns by how many half-steps the pitch is altered.</div>
+<div class="block">Returns by how many half-steps this pitch is altered.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="Pitch.Base.html" title="enum in org.wmn4j.notation.elements">Pitch.Base</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getBase()">getBase</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the letter in the pitch name.</div>
+<div class="block">Returns the letter in the name of this pitch.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOctave()">getOctave</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the octave number.</div>
+<div class="block">Returns the octave number of this pitch.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
@@ -270,14 +273,15 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
         int&nbsp;alter,
         int&nbsp;octave)</code></th>
 <td class="colLast">
-<div class="block">Returns a <code>Pitch</code> object.</div>
+<div class="block">Returns an instance.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="PitchClass.html" title="enum in org.wmn4j.notation.elements">PitchClass</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPitchClass()">getPitchClass</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the PitchClass of this Pitch.</div>
+<div class="block">Returns the <a href="http://en.wikipedia.org/wiki/Pitch_class">pitch
+ class</a> of this pitch.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
@@ -295,26 +299,28 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isHigherThan(org.wmn4j.notation.elements.Pitch)">isHigherThan</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;other)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns true if this is higher than the given pitch.</div>
+</td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isLowerThan(org.wmn4j.notation.elements.Pitch)">isLowerThan</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;other)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns true if this is lower than the given pitch.</div>
+</td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toInt()">toInt</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Get an integer representation of this <code>Pitch</code>.</div>
+<div class="block">Get an integer representation of this pitch.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
-<td class="colLast">
-<div class="block">String representation of <code>Pitch</code>.</div>
-</td>
+<td class="colLast">&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -387,15 +393,15 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <pre class="methodSignature">public static&nbsp;<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;getPitch&#8203;(<a href="Pitch.Base.html" title="enum in org.wmn4j.notation.elements">Pitch.Base</a>&nbsp;pitchName,
                              int&nbsp;alter,
                              int&nbsp;octave)</pre>
-<div class="block">Returns a <code>Pitch</code> object.</div>
+<div class="block">Returns an instance.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>pitchName</code> - the letter on which the name of the pitch is based.</dd>
+<dd><code>pitchName</code> - the letter on which the name of the pitch is based</dd>
 <dd><code>alter</code> - by how many half-steps the pitch is altered up (positive
-                  values) or down (negative values).</dd>
-<dd><code>octave</code> - the octave of the pitch.</dd>
+                  values) or down (negative values)</dd>
+<dd><code>octave</code> - the octave of the pitch</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Pitch object with the specified attributes.</dd>
+<dd>Pitch object with the specified attributes</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.lang.IllegalArgumentException</code> - if alter is greater than <a href="#ALTER_LIMIT"><code>ALTER_LIMIT</code></a> of smaller than
                                   <a href="#ALTER_LIMIT"><code>-1*ALTER_LIMIT</code></a>, or if
@@ -411,10 +417,10 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <li class="blockList">
 <h4>getBase</h4>
 <pre class="methodSignature">public&nbsp;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation.elements">Pitch.Base</a>&nbsp;getBase()</pre>
-<div class="block">Returns the letter in the pitch name.</div>
+<div class="block">Returns the letter in the name of this pitch.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the letter on which the name of the pitch is based.</dd>
+<dd>the letter on which the name of the pitch is based</dd>
 </dl>
 </li>
 </ul>
@@ -425,11 +431,11 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <li class="blockList">
 <h4>getAlter</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getAlter()</pre>
-<div class="block">Returns by how many half-steps the pitch is altered.</div>
+<div class="block">Returns by how many half-steps this pitch is altered.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>by how many half-steps the pitch is altered up (positive value) or
-         down (negative value).</dd>
+         down (negative value)</dd>
 </dl>
 </li>
 </ul>
@@ -440,10 +446,10 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <li class="blockList">
 <h4>getOctave</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getOctave()</pre>
-<div class="block">Returns the octave number.</div>
+<div class="block">Returns the octave number of this pitch.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>octave number of this pitch.</dd>
+<dd>octave number of this pitch</dd>
 </dl>
 </li>
 </ul>
@@ -454,13 +460,12 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <li class="blockList">
 <h4>toInt</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;toInt()</pre>
-<div class="block">Get an integer representation of this <code>Pitch</code>. This is the MIDI
- number of the pitch (middle-C, C4, being 60). A <code>Pitch</code> is
- transformed into an integer using the formula
- <code> pitchAsInteger = base + alter + (octave + 1) * 12 </code>, where base
- is defined by the letter in the pitch name: C = 0, D = 2, E = 4, F = 5, G =
- 7, A = 9, B = 11. Alter is the number of sharps, or the number of flats * -1.
- For example, <code>C#4 = 0 + 1 + 5 * 12 = 61</code> and
+<div class="block">Get an integer representation of this pitch. This is the MIDI number of the
+ pitch (middle-C, C4, being 60). A pitch is transformed into an integer using
+ the formula <code> pitchAsInteger = base + alter + (octave + 1) * 12 </code>,
+ where base is defined by the letter in the pitch name: C = 0, D = 2, E = 4, F
+ = 5, G = 7, A = 9, B = 11. Alter is the number of sharps, or the number of
+ flats * -1. For example, <code>C#4 = 0 + 1 + 5 * 12 = 61</code> and
  <code>Db4 = 2 - 1 + 5 * 12 = 61</code>.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -475,11 +480,11 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <li class="blockList">
 <h4>getPitchClass</h4>
 <pre class="methodSignature">public&nbsp;<a href="PitchClass.html" title="enum in org.wmn4j.notation.elements">PitchClass</a>&nbsp;getPitchClass()</pre>
-<div class="block">Returns the PitchClass of this Pitch.</div>
+<div class="block">Returns the <a href="http://en.wikipedia.org/wiki/Pitch_class">pitch
+ class</a> of this pitch.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the <a href="http://en.wikipedia.org/wiki/Pitch_class">pitch
-         class</a> of this Pitch.</dd>
+<dd>the pitch class of this pitch</dd>
 </dl>
 </li>
 </ul>
@@ -493,7 +498,7 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <div class="block">Returns the pitch class number of this pitch.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>pitch class number of this pitch.</dd>
+<dd>the pitch class number of this pitch</dd>
 </dl>
 </li>
 </ul>
@@ -504,13 +509,14 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <li class="blockList">
 <h4>equalsEnharmonically</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;equalsEnharmonically&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;other)</pre>
-<div class="block">Test enharmonic equality. Compare this to other for
- <a href="http://en.wikipedia.org/wiki/Enharmonic">enharmonic</a> equality.</div>
+<div class="block">Returns true if this pitch is
+ <a href="http://en.wikipedia.org/wiki/Enharmonic">enharmonically</a> equal to
+ the given pitch.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - Pitch against which this is compared.</dd>
+<dd><code>other</code> - the pitch with which this is compared for enharmonic equality</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this is enharmonically equal to other, otherwise false.</dd>
+<dd>true if this is enharmonically equal to other, otherwise false</dd>
 </dl>
 </li>
 </ul>
@@ -521,16 +527,9 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <li class="blockList">
 <h4>toString</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;toString()</pre>
-<div class="block">String representation of <code>Pitch</code>. <code>Pitch</code> objects are
- represented as strings of form <code>bao</code>, where <code>b</code> is the
- base letter in the pitch name, <code>a</code> is the alteration (sharps # or
- flats b), and <code>o</code> is the octave number. For example middle C-sharp
- is represented as the string <code>C#4</code>.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>the string representation of this Pitch.</dd>
 </dl>
 </li>
 </ul>
@@ -541,11 +540,10 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <li class="blockList">
 <h4>equals</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;equals&#8203;(java.lang.Object&nbsp;o)</pre>
-<div class="block">Compare this <code>Pitch</code> for equality with <code>Object o</code>. Two
- objects of class <code>Pitch</code> are equal if they have the same ' base
- letter, alterations (sharps or flats), and same octave. Pitches that are
- enharmonically the same but spelt differently are not equal. For example,
- <code>C#4 != Db4</code>.</div>
+<div class="block">Returns true if this pitch is equal to the given object. Two pitches are
+ equal if they have the same base letter, alteration (sharps or flats), and
+ same octave. Pitches that are enharmonically equal but spelt differently are
+ not equal. For example, <code>C#4 != Db4</code>.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>equals</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
@@ -577,16 +575,17 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <li class="blockList">
 <h4>compareTo</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;compareTo&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;other)</pre>
-<div class="block">Compare this pitch against other for pitch height.</div>
+<div class="block">Returns an integer that denotes if this pitch is higher than, lower than, or
+ equal to the given pitch.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>compareTo</code>&nbsp;in interface&nbsp;<code>java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&gt;</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - the Pitch against which this is compared.</dd>
+<dd><code>other</code> - the pitch with which this is compared</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>negative integer if this is lower than other, positive integer if
          this is higher than other, 0 if pitches are (enharmonically) of same
-         height.</dd>
+         height</dd>
 </dl>
 </li>
 </ul>
@@ -597,11 +596,12 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <li class="blockList">
 <h4>isHigherThan</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isHigherThan&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;other)</pre>
+<div class="block">Returns true if this is higher than the given pitch.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - the Pitch against which this is compared.</dd>
+<dd><code>other</code> - the pitch with which this is compared for height</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this is higher than other, false otherwise.</dd>
+<dd>true if this is higher than other, false otherwise</dd>
 </dl>
 </li>
 </ul>
@@ -612,11 +612,12 @@ implements java.lang.Comparable&lt;<a href="Pitch.html" title="class in org.wmn4
 <li class="blockList">
 <h4>isLowerThan</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isLowerThan&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;other)</pre>
+<div class="block">Returns true if this is lower than the given pitch.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - the Pitch against which this is compared.</dd>
+<dd><code>other</code> - the pitch with which this is compared for height</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this is lower than other, false otherwise.</dd>
+<dd>true if this is lower than other, false otherwise</dd>
 </dl>
 </li>
 </ul>

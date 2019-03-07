@@ -139,16 +139,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public final class <span class="typeNameLabel">Duration</span>
 extends java.lang.Object
 implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&gt;</pre>
-<div class="block">The <code>Duration</code> class represents the duration of any musical object
- with a duration such as a note or a rest. Durations are handled as rational
- numbers that tell what fraction of a whole note the duration is just like in
- normal music terminology. For example, the duration of a quarter note is
- handled as the rational number 1/4. The rational number is always reduced to
- the lowest possible numerator and denominator. This class is immutable.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
+<div class="block">Represents the duration of any musical object with a duration such as a note
+ or a rest. Durations are handled as rational numbers that tell what fraction
+ of a whole note the duration is just like in normal music terminology. For
+ example, the duration of a quarter note is handled as the rational number
+ 1/4. The rational number is always reduced to the lowest possible numerator
+ and denominator. This class is immutable.</div>
 </li>
 </ul>
 </div>
@@ -173,14 +169,15 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#add(org.wmn4j.notation.elements.Duration)">add</a></span>&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</code></th>
 <td class="colLast">
-<div class="block">Returns a Duration that is the sum of this and other.</div>
+<div class="block">Returns a duration that is the sum of this and other.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDot()">addDot</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Extend this Duration by adding a dot (add half of this Duration to itself).</div>
+<div class="block">Returns a duration that is this duration with half of this duration added to
+ it.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
@@ -194,33 +191,37 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#divideBy(int)">divideBy</a></span>&#8203;(int&nbsp;divisor)</code></th>
 <td class="colLast">
-<div class="block">Returns a Duration that is this duration divided by divider.</div>
+<div class="block">Returns a duration that is this duration divided by divider.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(java.lang.Object&nbsp;o)</code></th>
 <td class="colLast">
-<div class="block">Compares this <code>Duration</code> to <code>Object o</code> for equality.</div>
+<div class="block">Returns true if this is equal to the given object.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDenominator()">getDenominator</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the denominator of this duration.</div>
+</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>static <a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDuration(int,int)">getDuration</a></span>&#8203;(int&nbsp;numerator,
            int&nbsp;denominator)</code></th>
 <td class="colLast">
-<div class="block">Returns a <code>Duration</code> object.</div>
+<div class="block">Returns an instance with the given numerator and denominator.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumerator()">getNumerator</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the numerator of this duration.</div>
+</td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>int</code></td>
@@ -230,32 +231,37 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isLongerThan(org.wmn4j.notation.elements.Duration)">isLongerThan</a></span>&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns true if this is longer than other, otherwise false.</div>
+</td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isShorterThan(org.wmn4j.notation.elements.Duration)">isShorterThan</a></span>&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns true if this is shorter than other, otherwise false.</div>
+</td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#multiplyBy(int)">multiplyBy</a></span>&#8203;(int&nbsp;multiplier)</code></th>
 <td class="colLast">
-<div class="block">Returns a Duration that is this duration multiplied by multiplier.</div>
+<div class="block">Returns a duration that is this duration multiplied by multiplier.</div>
 </td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#subtract(org.wmn4j.notation.elements.Duration)">subtract</a></span>&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</code></th>
 <td class="colLast">
-<div class="block">Returns a Duration that is the this other minus other given as parameter.</div>
+<div class="block">Returns a duration that is this duration minus the duration given as
+ parameter.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>static <a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#sumOf(java.util.List)">sumOf</a></span>&#8203;(java.util.List&lt;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&gt;&nbsp;durations)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#sumOf(java.util.Collection)">sumOf</a></span>&#8203;(java.util.Collection&lt;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&gt;&nbsp;durations)</code></th>
 <td class="colLast">
-<div class="block">Get the total summed duration of the durations in the List.</div>
+<div class="block">Returns the total summed duration of the given durations.</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
@@ -268,10 +274,7 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Durations are represented as strings of form
- <code>(numerator/denominator)</code>.</div>
-</td>
+<td class="colLast">&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -305,16 +308,16 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <h4>getDuration</h4>
 <pre class="methodSignature">public static&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;getDuration&#8203;(int&nbsp;numerator,
                                    int&nbsp;denominator)</pre>
-<div class="block">Returns a <code>Duration</code> object. The numerator and denominator must be
- at least 1.</div>
+<div class="block">Returns an instance with the given numerator and denominator. The numerator
+ and denominator must be at least 1.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>numerator</code> - the numerator part of the duration.</dd>
-<dd><code>denominator</code> - the denominator part of the duration.</dd>
+<dd><code>numerator</code> - the numerator part of the duration</dd>
+<dd><code>denominator</code> - the denominator part of the duration</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a Duration object.</dd>
+<dd>an instance with the given numerator and denominator</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.lang.IllegalArgumentException</code> - if numerator or denominator are less than 1.</dd>
+<dd><code>java.lang.IllegalArgumentException</code> - if numerator or denominator are less than 1</dd>
 </dl>
 </li>
 </ul>
@@ -325,9 +328,10 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <li class="blockList">
 <h4>getNumerator</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getNumerator()</pre>
+<div class="block">Returns the numerator of this duration.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the numerator part of the duration.</dd>
+<dd>the numerator of this duration</dd>
 </dl>
 </li>
 </ul>
@@ -338,9 +342,10 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <li class="blockList">
 <h4>getDenominator</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getDenominator()</pre>
+<div class="block">Returns the denominator of this duration.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the denominator part of the duration.</dd>
+<dd>the denominator of this duration.</dd>
 </dl>
 </li>
 </ul>
@@ -351,17 +356,15 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <li class="blockList">
 <h4>equals</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;equals&#8203;(java.lang.Object&nbsp;o)</pre>
-<div class="block">Compares this <code>Duration</code> to <code>Object o</code> for equality. If
- <code>Object o</code> is of class <code>Duration</code> and has the same
- numerator and denominator as this, then <code>o</code> is equal to this.</div>
+<div class="block">Returns true if this is equal to the given object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>equals</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>o</code> - an object against which this Duration is compared for equality.</dd>
+<dd><code>o</code> - an object against which this Duration is compared for equality</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if <code>Object o</code> is a <code>Duration</code> with the
-         same numerator and denominator as this, false otherwise.</dd>
+<dd>true if the given object is a <a href="Duration.html" title="class in org.wmn4j.notation.elements"><code>Duration</code></a> with the same
+         numerator and denominator as this, false otherwise</dd>
 </dl>
 </li>
 </ul>
@@ -385,13 +388,9 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <li class="blockList">
 <h4>toString</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;toString()</pre>
-<div class="block">Durations are represented as strings of form
- <code>(numerator/denominator)</code>.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string representation of this Duration.</dd>
 </dl>
 </li>
 </ul>
@@ -402,11 +401,11 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <li class="blockList">
 <h4>addDot</h4>
 <pre class="methodSignature">public&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;addDot()</pre>
-<div class="block">Extend this Duration by adding a dot (add half of this Duration to itself).
- Does not change this Duration.</div>
+<div class="block">Returns a duration that is this duration with half of this duration added to
+ it.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Duration that is this incremented by half of this.</dd>
+<dd>duration that is this incremented by half of this</dd>
 </dl>
 </li>
 </ul>
@@ -436,8 +435,7 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <li class="blockList">
 <h4>add</h4>
 <pre class="methodSignature">public&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;add&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</pre>
-<div class="block">Returns a Duration that is the sum of this and other. Does not change this
- Duration (this class is immutable).</div>
+<div class="block">Returns a duration that is the sum of this and other.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>other</code> - the Duration to be added to this.</dd>
@@ -453,8 +451,8 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <li class="blockList">
 <h4>subtract</h4>
 <pre class="methodSignature">public&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;subtract&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</pre>
-<div class="block">Returns a Duration that is the this other minus other given as parameter.
- Does not change this Duration (this class is immutable).</div>
+<div class="block">Returns a duration that is this duration minus the duration given as
+ parameter.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>other</code> - the Duration to be subtracted from this.</dd>
@@ -470,15 +468,15 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <li class="blockList">
 <h4>multiplyBy</h4>
 <pre class="methodSignature">public&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;multiplyBy&#8203;(int&nbsp;multiplier)</pre>
-<div class="block">Returns a Duration that is this duration multiplied by multiplier. Multiplier
- must be at least 1. Does not change this Duration (this class is immutable).</div>
+<div class="block">Returns a duration that is this duration multiplied by multiplier. Multiplier
+ must be at least 1.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>multiplier</code> - the factor by which this duration should be multiplied.</dd>
+<dd><code>multiplier</code> - the factor by which this duration should be multiplied</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a Duration that is this duration multiplied by multiplier.</dd>
+<dd>a Duration that is this duration multiplied by multiplier</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.lang.IllegalArgumentException</code> - if multiplier is less than 1.</dd>
+<dd><code>java.lang.IllegalArgumentException</code> - if multiplier is less than 1</dd>
 </dl>
 </li>
 </ul>
@@ -489,15 +487,15 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <li class="blockList">
 <h4>divideBy</h4>
 <pre class="methodSignature">public&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;divideBy&#8203;(int&nbsp;divisor)</pre>
-<div class="block">Returns a Duration that is this duration divided by divider. Divider must be
- at least 1. Does not change this Duration (this class is immutable).</div>
+<div class="block">Returns a duration that is this duration divided by divider. Divider must be
+ at least 1.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>divisor</code> - the factor by which this duration should be divided.</dd>
+<dd><code>divisor</code> - the factor by which this duration should be divided</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a Duration that is this duration divided by divider.</dd>
+<dd>a Duration that is this duration divided by divider</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.lang.IllegalArgumentException</code> - if divider is less than 1.</dd>
+<dd><code>java.lang.IllegalArgumentException</code> - if divider is less than 1</dd>
 </dl>
 </li>
 </ul>
@@ -508,11 +506,12 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <li class="blockList">
 <h4>isLongerThan</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isLongerThan&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</pre>
+<div class="block">Returns true if this is longer than other, otherwise false.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - Duration to which this is compared.</dd>
+<dd><code>other</code> - Duration to which this is compared</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this is longer than other, otherwise false.</dd>
+<dd>true if this is longer than other, otherwise false</dd>
 </dl>
 </li>
 </ul>
@@ -523,11 +522,12 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <li class="blockList">
 <h4>isShorterThan</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isShorterThan&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</pre>
+<div class="block">Returns true if this is shorter than other, otherwise false.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - Duration to which this is compared.</dd>
+<dd><code>other</code> - Duration to which this is compared</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this is shorter than other, otherwise false.</dd>
+<dd>true if this is shorter than other, otherwise false</dd>
 </dl>
 </li>
 </ul>
@@ -550,21 +550,21 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 </dl>
 </li>
 </ul>
-<a id="sumOf(java.util.List)">
+<a id="sumOf(java.util.Collection)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>sumOf</h4>
-<pre class="methodSignature">public static&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;sumOf&#8203;(java.util.List&lt;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&gt;&nbsp;durations)</pre>
-<div class="block">Get the total summed duration of the durations in the List.</div>
+<pre class="methodSignature">public static&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;sumOf&#8203;(java.util.Collection&lt;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&gt;&nbsp;durations)</pre>
+<div class="block">Returns the total summed duration of the given durations.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>durations</code> - List of <code>Duration</code> objects.</dd>
+<dd><code>durations</code> - the durations whose sum is returned</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The sum of durations in List.</dd>
+<dd>The sum of the given durations</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.lang.IllegalArgumentException</code> - if durations is empty.</dd>
+<dd><code>java.lang.IllegalArgumentException</code> - if durations is empty</dd>
 </dl>
 </li>
 </ul>

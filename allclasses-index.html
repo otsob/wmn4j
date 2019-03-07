@@ -114,7 +114,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i0" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a></td>
 <th class="colLast" scope="row">
-<div class="block">Note specific articulations.</div>
+<div class="block">Articulations that affect a single note.</div>
 </th>
 </tr>
 <tr id="i1" class="rowColor">
@@ -126,7 +126,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i2" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class for chords.</div>
+<div class="block">Represents a chord.</div>
 </th>
 </tr>
 <tr id="i3" class="rowColor">
@@ -138,12 +138,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i4" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class for clefs.</div>
+<div class="block">Represents a clef.</div>
 </th>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><a href="org/wmn4j/notation/elements/Clef.Type.html" title="enum in org.wmn4j.notation.elements">Clef.Type</a></td>
-<th class="colLast" scope="row">&nbsp;</th>
+<td class="colFirst"><a href="org/wmn4j/notation/elements/Clef.Symbol.html" title="enum in org.wmn4j.notation.elements">Clef.Symbol</a></td>
+<th class="colLast" scope="row">
+<div class="block">Represents the type of clef symbol.</div>
+</th>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Clefs.html" title="class in org.wmn4j.notation.elements">Clefs</a></td>
@@ -154,8 +156,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i7" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></td>
 <th class="colLast" scope="row">
-<div class="block">The <code>Duration</code> class represents the duration of any musical object
- with a duration such as a note or a rest.</div>
+<div class="block">Represents the duration of any musical object with a duration such as a note
+ or a rest.</div>
 </th>
 </tr>
 <tr id="i8" class="altColor">
@@ -167,13 +169,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i9" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></td>
 <th class="colLast" scope="row">
-<div class="block">Interface for builders that build <code>Durational</code> objects.</div>
+<div class="block">Interface for builders that build <a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> objects.</div>
 </th>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Durations.html" title="class in org.wmn4j.notation.elements">Durations</a></td>
 <th class="colLast" scope="row">
-<div class="block">Collection of basic durations.</div>
+<div class="block">Basic durations.</div>
 </th>
 </tr>
 <tr id="i11" class="rowColor">
@@ -195,7 +197,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i14" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class for key signatures.</div>
+<div class="block">Represents a key signature.</div>
 </th>
 </tr>
 <tr id="i15" class="rowColor">
@@ -213,26 +215,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i17" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Measure.html" title="class in org.wmn4j.notation.elements">Measure</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class that defines a measure.</div>
+<div class="block">Represents a measure.</div>
 </th>
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Measure.Iter.html" title="class in org.wmn4j.notation.elements">Measure.Iter</a></td>
 <th class="colLast" scope="row">
-<div class="block">Iterator for <code>Durational</code> objects in a <code>Measure</code>.</div>
+<div class="block">Iterator for <a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> objects in a meusure.</div>
 </th>
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/MeasureAttributes.html" title="class in org.wmn4j.notation.elements">MeasureAttributes</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class containing the attributes of measures that typically remain unchanged
- from one measure to the next.</div>
+<div class="block">Represents the attributes of a measure that are often implicit in the
+ measure, such as clef in effect, time signature, key signature and so on.</div>
 </th>
 </tr>
 <tr id="i20" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class for building <code>Measure</code> objects.</div>
+<div class="block">Class for building <a href="org/wmn4j/notation/elements/Measure.html" title="class in org.wmn4j.notation.elements"><code>Measure</code></a> objects.</div>
 </th>
 </tr>
 <tr id="i21" class="rowColor">
@@ -257,15 +259,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i24" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/MultiStaffPart.html" title="class in org.wmn4j.notation.elements">MultiStaffPart</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class for parts that have multiple staves such as keyboard instruments.</div>
+<div class="block">Represents a score part with multiple staves such as are often used with
+ keyboard instruments.</div>
 </th>
 </tr>
 <tr id="i25" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/MultiStaffPart.Iter.html" title="class in org.wmn4j.notation.elements">MultiStaffPart.Iter</a></td>
 <th class="colLast" scope="row">
-<div class="block">Iterator for <code>MultiStaffPart</code> Iterates through the measures by
- going through all staves for a certain measure number before going on to the
- next measure.</div>
+<div class="block">Iterator for <a href="org/wmn4j/notation/elements/MultiStaffPart.html" title="class in org.wmn4j.notation.elements"><code>MultiStaffPart</code></a>.</div>
 </th>
 </tr>
 <tr id="i26" class="altColor">
@@ -283,25 +284,25 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i28" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class that defines a note.</div>
+<div class="block">Represents a note.</div>
 </th>
 </tr>
 <tr id="i29" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class for building <code>Note</code> objects.</div>
+<div class="block">Class for building <a href="org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> objects.</div>
 </th>
 </tr>
 <tr id="i30" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Part.html" title="interface in org.wmn4j.notation.elements">Part</a></td>
 <th class="colLast" scope="row">
-<div class="block">Interface for parts in a score.</div>
+<div class="block">Represents a part in a score.</div>
 </th>
 </tr>
 <tr id="i31" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Part.Attribute.html" title="enum in org.wmn4j.notation.elements">Part.Attribute</a></td>
 <th class="colLast" scope="row">
-<div class="block">Attribute types that a <code>Part</code> can have.</div>
+<div class="block">Attribute types that a part can have.</div>
 </th>
 </tr>
 <tr id="i32" class="altColor">
@@ -313,13 +314,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i33" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/builders/PartBuilder.html" title="class in org.wmn4j.notation.builders">PartBuilder</a></td>
 <th class="colLast" scope="row">
-<div class="block">Builder for building <code>Part</code> objects.</div>
+<div class="block">Builder for building <a href="org/wmn4j/notation/elements/Part.html" title="interface in org.wmn4j.notation.elements"><code>Part</code></a> objects.</div>
 </th>
 </tr>
 <tr id="i34" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/iterators/PartWiseScoreIterator.html" title="class in org.wmn4j.notation.iterators">PartWiseScoreIterator</a></td>
 <th class="colLast" scope="row">
-<div class="block">Iterates through a <code>Score</code> in part wise order.</div>
+<div class="block">Iterates through a <a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a> in part wise order.</div>
 </th>
 </tr>
 <tr id="i35" class="rowColor">
@@ -355,7 +356,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i40" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a></td>
 <th class="colLast" scope="row">
-<div class="block">The <code>Pitch</code> class represents a pitch.</div>
+<div class="block">Represents a pitch.</div>
 </th>
 </tr>
 <tr id="i41" class="rowColor">
@@ -383,19 +384,19 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i45" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Rest.html" title="class in org.wmn4j.notation.elements">Rest</a></td>
 <th class="colLast" scope="row">
-<div class="block">This class represents a rest.</div>
+<div class="block">Represents a rest.</div>
 </th>
 </tr>
 <tr id="i46" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/builders/RestBuilder.html" title="class in org.wmn4j.notation.builders">RestBuilder</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class for building <code>Rest</code> objects.</div>
+<div class="block">Class for building <a href="org/wmn4j/notation/elements/Rest.html" title="class in org.wmn4j.notation.elements"><code>Rest</code></a> objects.</div>
 </th>
 </tr>
 <tr id="i47" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class that describes a score.</div>
+<div class="block">Represents a score.</div>
 </th>
 </tr>
 <tr id="i48" class="altColor">
@@ -407,38 +408,40 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i49" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/builders/ScoreBuilder.html" title="class in org.wmn4j.notation.builders">ScoreBuilder</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class for building <code>Score</code> objects.</div>
+<div class="block">Class for building <a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a> objects.</div>
 </th>
 </tr>
 <tr id="i50" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/iterators/ScoreIterator.html" title="interface in org.wmn4j.notation.iterators">ScoreIterator</a></td>
 <th class="colLast" scope="row">
-<div class="block">Interface for iterators that iterate through the <code>Durational</code>
- objects in a <code>Score</code>.</div>
+<div class="block">Interface for iterators that iterate through the
+ <a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> objects in a
+ <a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.</div>
 </th>
 </tr>
 <tr id="i51" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></td>
 <th class="colLast" scope="row">
-<div class="block">Defines the position of a <code>Durational</code> in a <code>Score</code>.</div>
+<div class="block">Represents the position of a <a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a>
+ in a <a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.</div>
 </th>
 </tr>
 <tr id="i52" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class for representing a part consisting of a single staff in a score.</div>
+<div class="block">Represents a part with a single staff in a score.</div>
 </th>
 </tr>
 <tr id="i53" class="rowColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/SingleStaffPart.Iter.html" title="class in org.wmn4j.notation.elements">SingleStaffPart.Iter</a></td>
 <th class="colLast" scope="row">
-<div class="block">Iterator for <code>SingleStaffPart</code>.</div>
+<div class="block">Iterator for <a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements"><code>SingleStaffPart</code></a>.</div>
 </th>
 </tr>
 <tr id="i54" class="altColor">
 <td class="colFirst"><a href="org/wmn4j/notation/elements/Staff.html" title="class in org.wmn4j.notation.elements">Staff</a></td>
 <th class="colLast" scope="row">
-<div class="block">Class for representing a staff in a score.</div>
+<div class="block">Represents a staff in a score.</div>
 </th>
 </tr>
 <tr id="i55" class="rowColor">

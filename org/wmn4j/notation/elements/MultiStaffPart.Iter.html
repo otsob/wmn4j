@@ -143,10 +143,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public static class <span class="typeNameLabel">MultiStaffPart.Iter</span>
 extends java.lang.Object
 implements <a href="Part.Iter.html" title="interface in org.wmn4j.notation.elements">Part.Iter</a></pre>
-<div class="block">Iterator for <code>MultiStaffPart</code> Iterates through the measures by
- going through all staves for a certain measure number before going on to the
- next measure. Staves are iterated through from smallest staff number to
- greatest. Does not support removing.</div>
+<div class="block">Iterator for <a href="MultiStaffPart.html" title="class in org.wmn4j.notation.elements"><code>MultiStaffPart</code></a>. Iterates through the measures by going
+ through all staves for a certain measure number before going on to the next
+ measure. Staves are iterated through from smallest staff number to greatest.
+ Does not support removing.</div>
 </li>
 </ul>
 </div>
@@ -193,12 +193,18 @@ implements <a href="Part.Iter.html" title="interface in org.wmn4j.notation.eleme
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMeasureNumberOfPrevious()">getMeasureNumberOfPrevious</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the measure number of the measure that was returned on the previous
+ call of next.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getStaffNumberOfPrevious()">getStaffNumberOfPrevious</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the staff number of the measure that was returned on the previous
+ call of next.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
@@ -277,12 +283,14 @@ implements <a href="Part.Iter.html" title="interface in org.wmn4j.notation.eleme
 <li class="blockList">
 <h4>getStaffNumberOfPrevious</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getStaffNumberOfPrevious()</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Part.Iter.html#getStaffNumberOfPrevious()">Part.Iter</a></code></span></div>
+<div class="block">Returns the staff number of the measure that was returned on the previous
+ call of next.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Part.Iter.html#getStaffNumberOfPrevious()">getStaffNumberOfPrevious</a></code>&nbsp;in interface&nbsp;<code><a href="Part.Iter.html" title="interface in org.wmn4j.notation.elements">Part.Iter</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The number of the <code>Staff</code> from which the
-         <code>Measure</code> on the previous call of next was returned.</dd>
+<dd>the staff number of the previous measure</dd>
 </dl>
 </li>
 </ul>
@@ -293,12 +301,14 @@ implements <a href="Part.Iter.html" title="interface in org.wmn4j.notation.eleme
 <li class="blockList">
 <h4>getMeasureNumberOfPrevious</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getMeasureNumberOfPrevious()</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Part.Iter.html#getMeasureNumberOfPrevious()">Part.Iter</a></code></span></div>
+<div class="block">Returns the measure number of the measure that was returned on the previous
+ call of next.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Part.Iter.html#getMeasureNumberOfPrevious()">getMeasureNumberOfPrevious</a></code>&nbsp;in interface&nbsp;<code><a href="Part.Iter.html" title="interface in org.wmn4j.notation.elements">Part.Iter</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The number of the <code>Measure</code> that was returned by the
-         previous call of next.</dd>
+<dd>the measure number of the previous measure</dd>
 </dl>
 </li>
 </ul>

@@ -134,18 +134,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">MeasureBuilder</span>
 extends java.lang.Object</pre>
-<div class="block">Class for building <code>Measure</code> objects. The builder does not ensure
- that the <code>DurationalBuilder</code> objects in the builder fill up
- exactly a measure that has the set time signature. The methods
- <a href="#isFull()"><code>isFull</code></a> and <a href="#isVoiceFull(int)"><code>isVoiceFull</code></a> should be
- used for checking if the durations add up to the correct
+<div class="block">Class for building <a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements"><code>Measure</code></a> objects. The methods <a href="#isFull()"><code>isFull</code></a> and <a href="#isVoiceFull(int)"><code>isVoiceFull</code></a> should be used for checking
+ if the durations add up to the correct amount to fill up the measure
+ according to the specified time signature.
 
  Default values: TimeSignature : 4/4 KeySignature : C-major/a-minor Clef: G
  Barlines (right and left): Single. No clef changes.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
 </li>
 </ul>
 </div>
@@ -167,14 +161,15 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(int)">MeasureBuilder</a></span>&#8203;(int&nbsp;number)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Constructor.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(int,org.wmn4j.notation.elements.MeasureAttributes)">MeasureBuilder</a></span>&#8203;(int&nbsp;number,
-              <a href="../elements/MeasureAttributes.html" title="class in org.wmn4j.notation.elements">MeasureAttributes</a>&nbsp;measureAttr)</code></th>
+              <a href="../elements/MeasureAttributes.html" title="class in org.wmn4j.notation.elements">MeasureAttributes</a>&nbsp;measureAttributes)</code></th>
 <td class="colLast">
-<div class="block">Create a <code>MeasureBuilder</code> with the given
- <code>MeasureAttributes</code>.</div>
+<div class="block">Create a measure builder with the given attributes.</div>
 </td>
 </tr>
 </table>
@@ -200,7 +195,7 @@ extends java.lang.Object</pre>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addClefChange(org.wmn4j.notation.elements.Duration,org.wmn4j.notation.elements.Clef)">addClefChange</a></span>&#8203;(<a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;offset,
              <a href="../elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;clef)</code></th>
 <td class="colLast">
-<div class="block">Add clef change at offset.</div>
+<div class="block">Adds a clef change at the given offset.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
@@ -208,29 +203,28 @@ extends java.lang.Object</pre>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addToVoice(int,org.wmn4j.notation.builders.DurationalBuilder)">addToVoice</a></span>&#8203;(int&nbsp;voice,
           <a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>&nbsp;builder)</code></th>
 <td class="colLast">
-<div class="block">Append <code>DurationalBuilder</code> object to voice with index
- <code>voice</code>.</div>
+<div class="block">Append a <a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders"><code>DurationalBuilder</code></a> to the voice with the given number.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addVoice()">addVoice</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Add new empty voice to this <code>MeasureBuilder</code>.</div>
+<div class="block">Add new empty voice to this builder.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addVoice(java.util.List)">addVoice</a></span>&#8203;(java.util.List&lt;<a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>&gt;&nbsp;voice)</code></th>
 <td class="colLast">
-<div class="block">Add possibly non-empty voice to this <code>MeasureBuilder</code>.</div>
+<div class="block">Add possibly voice to this builder.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements">Measure</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#build()">build</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Create a <code>Measure</code> with the contents of this builder.</div>
+<div class="block">Returns a <a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements"><code>Measure</code></a> with the values set in this builder.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
@@ -238,75 +232,92 @@ extends java.lang.Object</pre>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#get(int,int)">get</a></span>&#8203;(int&nbsp;voice,
    int&nbsp;index)</code></th>
 <td class="colLast">
-<div class="block">Get a reference to the <code>DurationalBuilder</code> at the specified
- position.</div>
+<div class="block">Returns the builder at the given position.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClef()">getClef</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the clef set in this builder.</div>
+</td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.Map&lt;<a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>,&#8203;<a href="../elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClefChanges()">getClefChanges</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the clef changes in this builder.</div>
+</td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../elements/KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getKeySignature()">getKeySignature</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the key signature set in this builder.</div>
+</td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLeftBarline()">getLeftBarline</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the left barline set in this builder.</div>
+</td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumber()">getNumber</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the measure number set in this builder.</div>
+</td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumberOfVoices()">getNumberOfVoices</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the number of voices in this builder.</div>
+</td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRightBarline()">getRightBarline</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the right barline set in this builder.</div>
+</td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../elements/TimeSignature.html" title="class in org.wmn4j.notation.elements">TimeSignature</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTimeSignature()">getTimeSignature</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the time signature set in this builder.</div>
+</td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>java.util.Set&lt;java.lang.Integer&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoiceNumbers()">getVoiceNumbers</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Get the voice numbers.</div>
+<div class="block">Returns the voice numbers set in this builder.</div>
 </td>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isFull()">isFull</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Check if any voice in this builder is full.</div>
+<div class="block">Returns true if any voice in this builder is full.</div>
 </td>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isVoiceFull(int)">isVoiceFull</a></span>&#8203;(int&nbsp;voice)</code></th>
 <td class="colLast">
-<div class="block">Check if voice is full.</div>
+<div class="block">Returns true if the voice with the given number is full.</div>
 </td>
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setClef(org.wmn4j.notation.elements.Clef)">setClef</a></span>&#8203;(<a href="../elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;clef)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Sets the clef in this builder.</div>
+</td>
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
@@ -314,39 +325,49 @@ extends java.lang.Object</pre>
           int&nbsp;index,
           <a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>&nbsp;builder)</code></th>
 <td class="colLast">
-<div class="block">Set the element at specified location to given value.</div>
+<div class="block">Sets the element at specified location to given value.</div>
 </td>
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setKeySignature(org.wmn4j.notation.elements.KeySignature)">setKeySignature</a></span>&#8203;(<a href="../elements/KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a>&nbsp;keySignature)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Sets the key signature for this builder.</div>
+</td>
 </tr>
 <tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLeftBarline(org.wmn4j.notation.elements.Barline)">setLeftBarline</a></span>&#8203;(<a href="../elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;leftBarline)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Sets the left barline in this builder.</div>
+</td>
 </tr>
 <tr id="i21" class="rowColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setNumber(int)">setNumber</a></span>&#8203;(int&nbsp;number)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Sets the measure number in this builder.</div>
+</td>
 </tr>
 <tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRightBarline(org.wmn4j.notation.elements.Barline)">setRightBarline</a></span>&#8203;(<a href="../elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;rightBarline)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Sets the right barline in this builder.</div>
+</td>
 </tr>
 <tr id="i23" class="rowColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTimeSignature(org.wmn4j.notation.elements.TimeSignature)">setTimeSignature</a></span>&#8203;(<a href="../elements/TimeSignature.html" title="class in org.wmn4j.notation.elements">TimeSignature</a>&nbsp;timeSignature)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Sets the time signature for this builder.</div>
+</td>
 </tr>
 <tr id="i24" class="altColor">
 <td class="colFirst"><code><a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#totalDurationOfVoice(int)">totalDurationOfVoice</a></span>&#8203;(int&nbsp;voice)</code></th>
 <td class="colLast">
-<div class="block">Get the sum of durations on a voice.</div>
+<div class="block">Returns the sum of durations in a voice.</div>
 </td>
 </tr>
 </table>
@@ -380,13 +401,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>MeasureBuilder</h4>
 <pre>public&nbsp;MeasureBuilder&#8203;(int&nbsp;number,
-                      <a href="../elements/MeasureAttributes.html" title="class in org.wmn4j.notation.elements">MeasureAttributes</a>&nbsp;measureAttr)</pre>
-<div class="block">Create a <code>MeasureBuilder</code> with the given
- <code>MeasureAttributes</code>.</div>
+                      <a href="../elements/MeasureAttributes.html" title="class in org.wmn4j.notation.elements">MeasureAttributes</a>&nbsp;measureAttributes)</pre>
+<div class="block">Create a measure builder with the given attributes.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>number</code> - Measure number for measure being built.</dd>
-<dd><code>measureAttr</code> - MeasureAttributes for measure.</dd>
+<dd><code>number</code> - measure number for measure being built</dd>
+<dd><code>measureAttributes</code> - attributes for the measure</dd>
 </dl>
 </li>
 </ul>
@@ -397,9 +417,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>MeasureBuilder</h4>
 <pre>public&nbsp;MeasureBuilder&#8203;(int&nbsp;number)</pre>
+<div class="block">Constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>number</code> - Measure number for measure being built.</dd>
+<dd><code>number</code> - measure number for measure being built</dd>
 </dl>
 </li>
 </ul>
@@ -420,9 +441,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getNumber</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getNumber()</pre>
+<div class="block">Returns the measure number set in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Measure number.</dd>
+<dd>the measure number set in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -433,11 +455,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>setNumber</h4>
 <pre class="methodSignature">public&nbsp;<a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;setNumber&#8203;(int&nbsp;number)</pre>
+<div class="block">Sets the measure number in this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>number</code> - measure number for the measure that can be built.</dd>
+<dd><code>number</code> - the measure number to set in this builder</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this builder.</dd>
+<dd>reference to this builder</dd>
 </dl>
 </li>
 </ul>
@@ -448,9 +471,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getTimeSignature</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/TimeSignature.html" title="class in org.wmn4j.notation.elements">TimeSignature</a>&nbsp;getTimeSignature()</pre>
+<div class="block">Returns the time signature set in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>time signature currently set for this builder.</dd>
+<dd>time signature set for this builder</dd>
 </dl>
 </li>
 </ul>
@@ -461,11 +485,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>setTimeSignature</h4>
 <pre class="methodSignature">public&nbsp;<a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;setTimeSignature&#8203;(<a href="../elements/TimeSignature.html" title="class in org.wmn4j.notation.elements">TimeSignature</a>&nbsp;timeSignature)</pre>
+<div class="block">Sets the time signature for this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>timeSignature</code> - time signature for the measure that can be built.</dd>
+<dd><code>timeSignature</code> - the time signature set in this builder</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this builder.</dd>
+<dd>reference to this builder</dd>
 </dl>
 </li>
 </ul>
@@ -476,9 +501,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getKeySignature</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a>&nbsp;getKeySignature()</pre>
+<div class="block">Returns the key signature set in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>key signature that is currently set for this builder.</dd>
+<dd>key signature that is set in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -489,11 +515,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>setKeySignature</h4>
 <pre class="methodSignature">public&nbsp;<a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;setKeySignature&#8203;(<a href="../elements/KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a>&nbsp;keySignature)</pre>
+<div class="block">Sets the key signature for this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>keySignature</code> - key signature for the measure that can be built.</dd>
+<dd><code>keySignature</code> - key signature set in this builder</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this builder.</dd>
+<dd>reference to this builder</dd>
 </dl>
 </li>
 </ul>
@@ -504,9 +531,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getClef</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;getClef()</pre>
+<div class="block">Returns the clef set in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>clef currently set for this builder.</dd>
+<dd>the clef set in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -517,11 +545,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>setClef</h4>
 <pre class="methodSignature">public&nbsp;<a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;setClef&#8203;(<a href="../elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;clef)</pre>
+<div class="block">Sets the clef in this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>clef</code> - clef for the measure that can be built.</dd>
+<dd><code>clef</code> - the clef to be set in this builder</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this builder.</dd>
+<dd>reference to this builder</dd>
 </dl>
 </li>
 </ul>
@@ -532,9 +561,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getLeftBarline</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;getLeftBarline()</pre>
+<div class="block">Returns the left barline set in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>left barline currently set for this builder.</dd>
+<dd>left barline set in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -545,11 +575,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>setLeftBarline</h4>
 <pre class="methodSignature">public&nbsp;<a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;setLeftBarline&#8203;(<a href="../elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;leftBarline)</pre>
+<div class="block">Sets the left barline in this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>leftBarline</code> - left barline for the measure that can be built.</dd>
+<dd><code>leftBarline</code> - left barline to set for this builder</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this builder.</dd>
+<dd>reference to this builder</dd>
 </dl>
 </li>
 </ul>
@@ -560,9 +591,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getRightBarline</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;getRightBarline()</pre>
+<div class="block">Returns the right barline set in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>right barline currently set for this builder.</dd>
+<dd>the right barline set in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -573,11 +605,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>setRightBarline</h4>
 <pre class="methodSignature">public&nbsp;<a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;setRightBarline&#8203;(<a href="../elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;rightBarline)</pre>
+<div class="block">Sets the right barline in this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>rightBarline</code> - right barline for the measure that can be built.</dd>
+<dd><code>rightBarline</code> - right barline to be set in this builder</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this builder.</dd>
+<dd>reference to this builder</dd>
 </dl>
 </li>
 </ul>
@@ -588,6 +621,8 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getClefChanges</h4>
 <pre class="methodSignature">public&nbsp;java.util.Map&lt;<a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>,&#8203;<a href="../elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&gt;&nbsp;getClefChanges()</pre>
+<div class="block">Returns the clef changes in this builder. The keys in the map are the offset
+ values of the clef changes measured from the beginning of the measure.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>clef changes currently set for this builder. Durations are offsets
@@ -603,13 +638,13 @@ extends java.lang.Object</pre>
 <h4>addClefChange</h4>
 <pre class="methodSignature">public&nbsp;<a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;addClefChange&#8203;(<a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;offset,
                                     <a href="../elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;clef)</pre>
-<div class="block">Add clef change at offset.</div>
+<div class="block">Adds a clef change at the given offset.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>offset</code> - Offset of clef change from beginning of measure.</dd>
-<dd><code>clef</code> - clef starting from offset.</dd>
+<dd><code>offset</code> - offset of clef change from beginning of measure</dd>
+<dd><code>clef</code> - clef starting from offset</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this builder.</dd>
+<dd>reference to this builder</dd>
 </dl>
 </li>
 </ul>
@@ -620,7 +655,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>addVoice</h4>
 <pre class="methodSignature">public&nbsp;<a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;addVoice()</pre>
-<div class="block">Add new empty voice to this <code>MeasureBuilder</code>.</div>
+<div class="block">Add new empty voice to this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>reference to this builder.</dd>
@@ -634,12 +669,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>addVoice</h4>
 <pre class="methodSignature">public&nbsp;<a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;addVoice&#8203;(java.util.List&lt;<a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>&gt;&nbsp;voice)</pre>
-<div class="block">Add possibly non-empty voice to this <code>MeasureBuilder</code>.</div>
+<div class="block">Add possibly voice to this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>voice</code> - new voice to be added to this.</dd>
+<dd><code>voice</code> - new voice to be added to this</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this builder.</dd>
+<dd>reference to this builder</dd>
 </dl>
 </li>
 </ul>
@@ -651,14 +686,14 @@ extends java.lang.Object</pre>
 <h4>addToVoice</h4>
 <pre class="methodSignature">public&nbsp;<a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;addToVoice&#8203;(int&nbsp;voice,
                                  <a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>&nbsp;builder)</pre>
-<div class="block">Append <code>DurationalBuilder</code> object to voice with index
- <code>voice</code>. If voice does not exist it is created.</div>
+<div class="block">Append a <a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders"><code>DurationalBuilder</code></a> to the voice with the given number. If
+ voice does not exist it is created.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>voice</code> - index of voice to which builder is appended.</dd>
-<dd><code>builder</code> - DurationalBuilder object to be appended to voice.</dd>
+<dd><code>voice</code> - number of voice to which builder is appended</dd>
+<dd><code>builder</code> - builder object to be appended to voice</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this builder.</dd>
+<dd>reference to this builder</dd>
 </dl>
 </li>
 </ul>
@@ -669,9 +704,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getNumberOfVoices</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getNumberOfVoices()</pre>
+<div class="block">Returns the number of voices in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>number or voices in this builder.</dd>
+<dd>number or voices in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -682,10 +718,11 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getVoiceNumbers</h4>
 <pre class="methodSignature">public&nbsp;java.util.Set&lt;java.lang.Integer&gt;&nbsp;getVoiceNumbers()</pre>
-<div class="block">Get the voice numbers. Voice numbers do not have to be contiguous.</div>
+<div class="block">Returns the voice numbers set in this builder. Voice numbers do not have to
+ be contiguous.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the set of voice numbers in this builder.</dd>
+<dd>the set of voice numbers in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -698,12 +735,12 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;setElement&#8203;(int&nbsp;voice,
                        int&nbsp;index,
                        <a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>&nbsp;builder)</pre>
-<div class="block">Set the element at specified location to given value.</div>
+<div class="block">Sets the element at specified location to given value.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>voice</code> - the number of the voice to be modified.</dd>
-<dd><code>index</code> - the index in the voice.</dd>
-<dd><code>builder</code> - element to be placed in index on voice.</dd>
+<dd><code>voice</code> - the number of the voice to be modified</dd>
+<dd><code>index</code> - the index in the voice</dd>
+<dd><code>builder</code> - element to be placed in index on voice</dd>
 </dl>
 </li>
 </ul>
@@ -715,15 +752,13 @@ extends java.lang.Object</pre>
 <h4>get</h4>
 <pre class="methodSignature">public&nbsp;<a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>&nbsp;get&#8203;(int&nbsp;voice,
                              int&nbsp;index)</pre>
-<div class="block">Get a reference to the <code>DurationalBuilder</code> at the specified
- position.</div>
+<div class="block">Returns the builder at the given position.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>voice</code> - the number of the voice from which to get the object.</dd>
-<dd><code>index</code> - index in the voice.</dd>
+<dd><code>voice</code> - the number of the voice from which to get the object</dd>
+<dd><code>index</code> - index in the voice</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to the <code>DurationalBuilder</code> at the position
-         specified by the parameters.</dd>
+<dd>reference to the builder at the position specified by the parameters</dd>
 </dl>
 </li>
 </ul>
@@ -734,13 +769,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>totalDurationOfVoice</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;totalDurationOfVoice&#8203;(int&nbsp;voice)</pre>
-<div class="block">Get the sum of durations on a voice.</div>
+<div class="block">Returns the sum of durations in a voice.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>voice</code> - the index of the voice.</dd>
+<dd><code>voice</code> - the index of the voice</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Sum of the durations of the <code>Durational</code> objects on the
-         voice.</dd>
+<dd>sum of the durations of the in the voice</dd>
 </dl>
 </li>
 </ul>
@@ -751,15 +785,14 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isVoiceFull</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isVoiceFull&#8203;(int&nbsp;voice)</pre>
-<div class="block">Check if voice is full. A voice is considered full when it contains
- <code>DurationalBuilder</code> objects whose combined duration is enough to
- fill a measure that has the time signature that is set for this builder.</div>
+<div class="block">Returns true if the voice with the given number is full. A voice is
+ considered full when the durations in it are enough to fill a measure with
+ the time signature set in this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>voice</code> - index of voice that is checked.</dd>
+<dd><code>voice</code> - index of voice that is checked</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if the durations in the voice add up to fill a measure. False
-         otherwise.</dd>
+<dd>true if the durations in the voice add up to fill a measure</dd>
 </dl>
 </li>
 </ul>
@@ -770,7 +803,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isFull</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isFull()</pre>
-<div class="block">Check if any voice in this builder is full.</div>
+<div class="block">Returns true if any voice in this builder is full.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if even a single voice is full. False otherwise.</dd>
@@ -784,12 +817,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>build</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&nbsp;build()</pre>
-<div class="block">Create a <code>Measure</code> with the contents of this builder.</div>
+<div class="block">Returns a <a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements"><code>Measure</code></a> with the values set in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Measure that has the set attributes and contains
-         <code>Durational</code> objects built using the contained
-         <code>DurationalBuilder</code> objects.</dd>
+<dd>a measure with the values set in this builder</dd>
 </dl>
 </li>
 </ul>

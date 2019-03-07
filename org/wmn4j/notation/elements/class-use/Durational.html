@@ -239,7 +239,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code><a href="../Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">DurationalBuilder.</span><code><span class="memberNameLink"><a href="../../builders/DurationalBuilder.html#build()">build</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Create a <code>Durational</code> object with the values set in the builder.</div>
+<div class="block">Returns a durational notation element with the values set in the builder.</div>
 </td>
 </tr>
 </tbody>
@@ -263,21 +263,21 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code>class&nbsp;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="../Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></span></code></th>
 <td class="colLast">
-<div class="block">Class for chords.</div>
+<div class="block">Represents a chord.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a></span></code></th>
 <td class="colLast">
-<div class="block">Class that defines a note.</div>
+<div class="block">Represents a note.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="../Rest.html" title="class in org.wmn4j.notation.elements">Rest</a></span></code></th>
 <td class="colLast">
-<div class="block">This class represents a rest.</div>
+<div class="block">Represents a rest.</div>
 </td>
 </tr>
 </tbody>
@@ -295,15 +295,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colSecond" scope="row"><span class="typeNameLabel">Measure.</span><code><span class="memberNameLink"><a href="../Measure.html#get(int,int)">get</a></span>&#8203;(int&nbsp;voiceNumber,
    int&nbsp;index)</code></th>
 <td class="colLast">
-<div class="block">Returns the <code>Durational</code> at the given index on the given voice
- number.</div>
+<div class="block">Returns the <a href="../Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> at the given index on the given voice number.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Score.</span><code><span class="memberNameLink"><a href="../Score.html#getAtPosition(org.wmn4j.notation.iterators.ScorePosition)">getAtPosition</a></span>&#8203;(<a href="../../iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a>&nbsp;position)</code></th>
 <td class="colLast">
-<div class="block">Get the <code>Durational</code> at position.</div>
+<div class="block">Returns the durational notation object at the given position.</div>
 </td>
 </tr>
 <tr class="altColor">
@@ -325,7 +324,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code>java.util.List&lt;<a href="../Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;</code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Measure.</span><code><span class="memberNameLink"><a href="../Measure.html#getVoice(int)">getVoice</a></span>&#8203;(int&nbsp;voiceNumber)</code></th>
 <td class="colLast">
-<div class="block">Get a voiceNumber of the measure.</div>
+<div class="block">Returns the voice with the given measure.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -346,7 +345,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="../Measure.html#%3Cinit%3E(int,java.util.Map,org.wmn4j.notation.elements.MeasureAttributes)">Measure</a></span>&#8203;(int&nbsp;number,
        java.util.Map&lt;java.lang.Integer,&#8203;java.util.List&lt;<a href="../Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&gt;&nbsp;noteVoices,
        <a href="../MeasureAttributes.html" title="class in org.wmn4j.notation.elements">MeasureAttributes</a>&nbsp;measureAttr)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Constructor.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="../Measure.html#%3Cinit%3E(int,java.util.Map,org.wmn4j.notation.elements.TimeSignature,org.wmn4j.notation.elements.KeySignature,org.wmn4j.notation.elements.Barline,org.wmn4j.notation.elements.Clef)">Measure</a></span>&#8203;(int&nbsp;number,
@@ -355,7 +356,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
        <a href="../KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a>&nbsp;keySig,
        <a href="../Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;rightBarLine,
        <a href="../Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;clef)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Constructor.</div>
+</td>
 </tr>
 <tr class="altColor">
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="../Measure.html#%3Cinit%3E(int,java.util.Map,org.wmn4j.notation.elements.TimeSignature,org.wmn4j.notation.elements.KeySignature,org.wmn4j.notation.elements.Clef)">Measure</a></span>&#8203;(int&nbsp;number,
@@ -363,7 +366,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
        <a href="../TimeSignature.html" title="class in org.wmn4j.notation.elements">TimeSignature</a>&nbsp;timeSig,
        <a href="../KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a>&nbsp;keySig,
        <a href="../Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;clef)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Constructor.</div>
+</td>
 </tr>
 </tbody>
 </table>
@@ -391,7 +396,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code><a href="../Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">ScoreIterator.</span><code><span class="memberNameLink"><a href="../../iterators/ScoreIterator.html#next()">next</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Get the next <code>Durational</code> from the score.</div>
+<div class="block">Get the next durational notation element from the score.</div>
 </td>
 </tr>
 </tbody>

@@ -139,11 +139,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public final class <span class="typeNameLabel">RestBuilder</span>
 extends java.lang.Object
 implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></pre>
-<div class="block">Class for building <code>Rest</code> objects.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
+<div class="block">Class for building <a href="../elements/Rest.html" title="class in org.wmn4j.notation.elements"><code>Rest</code></a> objects.</div>
 </li>
 </ul>
 </div>
@@ -191,21 +187,21 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <td class="colFirst"><code><a href="../elements/Rest.html" title="class in org.wmn4j.notation.elements">Rest</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#build()">build</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Create a <code>Durational</code> object with the values set in the builder.</div>
+<div class="block">Returns a durational notation element with the values set in the builder.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDuration()">getDuration</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Get the <code>Duration</code> set in the builder.</div>
+<div class="block">Returns the duration set in this builder.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDuration(org.wmn4j.notation.elements.Duration)">setDuration</a></span>&#8203;(<a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</code></th>
 <td class="colLast">
-<div class="block">Set the duration of the <code>Rest</code>.</div>
+<div class="block">Set the duration in this builder.</div>
 </td>
 </tr>
 </table>
@@ -263,7 +259,7 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <li class="blockList">
 <h4>setDuration</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setDuration&#8203;(<a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</pre>
-<div class="block">Set the duration of the <code>Rest</code>.</div>
+<div class="block">Set the duration in this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>duration</code> - the duration that is set to this builder</dd>
@@ -278,13 +274,12 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <h4>getDuration</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;getDuration()</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="DurationalBuilder.html#getDuration()">DurationalBuilder</a></code></span></div>
-<div class="block">Get the <code>Duration</code> set in the builder. Each
- <code>DurationalBuilder</code> should always have at least a valid duration.</div>
+<div class="block">Returns the duration set in this builder.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="DurationalBuilder.html#getDuration()">getDuration</a></code>&nbsp;in interface&nbsp;<code><a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The <code>Duration</code> set in the builder.</dd>
+<dd>the duration set in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -296,12 +291,12 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <h4>build</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/Rest.html" title="class in org.wmn4j.notation.elements">Rest</a>&nbsp;build()</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="DurationalBuilder.html#build()">DurationalBuilder</a></code></span></div>
-<div class="block">Create a <code>Durational</code> object with the values set in the builder.</div>
+<div class="block">Returns a durational notation element with the values set in the builder.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="DurationalBuilder.html#build()">build</a></code>&nbsp;in interface&nbsp;<code><a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a Durational object.</dd>
+<dd>a durational notation element with the values set in the builder</dd>
 </dl>
 </li>
 </ul>

@@ -139,13 +139,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public class <span class="typeNameLabel">PartWiseScoreIterator</span>
 extends java.lang.Object
 implements <a href="ScoreIterator.html" title="interface in org.wmn4j.notation.iterators">ScoreIterator</a></pre>
-<div class="block">Iterates through a <code>Score</code> in part wise order. Starts by iterating
+<div class="block">Iterates through a <a href="../elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a> in part wise order. Starts by iterating
  through the part with the smallest number. Iterates through parts starting
  from smallest measure number. Iterates through measure voice by voice.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
 </li>
 </ul>
 </div>
@@ -167,7 +163,9 @@ implements <a href="ScoreIterator.html" title="interface in org.wmn4j.notation.i
 </tr>
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.wmn4j.notation.elements.Score)">PartWiseScoreIterator</a></span>&#8203;(<a href="../elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a>&nbsp;score)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Constructor.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -191,22 +189,22 @@ implements <a href="ScoreIterator.html" title="interface in org.wmn4j.notation.i
 <td class="colFirst"><code><a href="ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPositionOfPrevious()">getPositionOfPrevious</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the position of the <code>Durational</code> returned by the last call
- of <a href="ScoreIterator.html#next()"><code>next</code></a>.</div>
+<div class="block">Returns the position of the <a href="../elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> returned by the last call of
+ <a href="ScoreIterator.html#next()"><code>next</code></a>.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasNext()">hasNext</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Checks if the <code>ScoreIterator</code> is at the end of the score.</div>
+<div class="block">Returns true if this iterator has elements left.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#next()">next</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Get the next <code>Durational</code> from the score.</div>
+<div class="block">Get the next durational notation element from the score.</div>
 </td>
 </tr>
 </table>
@@ -247,9 +245,10 @@ implements <a href="ScoreIterator.html" title="interface in org.wmn4j.notation.i
 <li class="blockList">
 <h4>PartWiseScoreIterator</h4>
 <pre>public&nbsp;PartWiseScoreIterator&#8203;(<a href="../elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a>&nbsp;score)</pre>
+<div class="block">Constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>score</code> - The score that this iterates through.</dd>
+<dd><code>score</code> - the score that this iterates through.</dd>
 </dl>
 </li>
 </ul>
@@ -271,14 +270,14 @@ implements <a href="ScoreIterator.html" title="interface in org.wmn4j.notation.i
 <h4>hasNext</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;hasNext()</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="ScoreIterator.html#hasNext()">ScoreIterator</a></code></span></div>
-<div class="block">Checks if the <code>ScoreIterator</code> is at the end of the score.</div>
+<div class="block">Returns true if this iterator has elements left.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>hasNext</code>&nbsp;in interface&nbsp;<code>java.util.Iterator&lt;<a href="../elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;</code></dd>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="ScoreIterator.html#hasNext()">hasNext</a></code>&nbsp;in interface&nbsp;<code><a href="ScoreIterator.html" title="interface in org.wmn4j.notation.iterators">ScoreIterator</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if not at the end, false otherwise.</dd>
+<dd>true if not at the end, false otherwise</dd>
 </dl>
 </li>
 </ul>
@@ -290,7 +289,7 @@ implements <a href="ScoreIterator.html" title="interface in org.wmn4j.notation.i
 <h4>next</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&nbsp;next()</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="ScoreIterator.html#next()">ScoreIterator</a></code></span></div>
-<div class="block">Get the next <code>Durational</code> from the score. Order of iteration
+<div class="block">Get the next durational notation element from the score. Order of iteration
  depends on the implementation.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -298,7 +297,7 @@ implements <a href="ScoreIterator.html" title="interface in org.wmn4j.notation.i
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="ScoreIterator.html#next()">next</a></code>&nbsp;in interface&nbsp;<code><a href="ScoreIterator.html" title="interface in org.wmn4j.notation.iterators">ScoreIterator</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>next <code>Durational</code>.</dd>
+<dd>next durational element</dd>
 </dl>
 </li>
 </ul>
@@ -310,15 +309,13 @@ implements <a href="ScoreIterator.html" title="interface in org.wmn4j.notation.i
 <h4>getPositionOfPrevious</h4>
 <pre class="methodSignature">public&nbsp;<a href="ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a>&nbsp;getPositionOfPrevious()</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="ScoreIterator.html#getPositionOfPrevious()">ScoreIterator</a></code></span></div>
-<div class="block">Returns the position of the <code>Durational</code> returned by the last call
- of <a href="ScoreIterator.html#next()"><code>next</code></a>. This method should only be called after
- <a href="ScoreIterator.html#next()"><code>next</code></a> has been called.</div>
+<div class="block">Returns the position of the <a href="../elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> returned by the last call of
+ <a href="ScoreIterator.html#next()"><code>next</code></a>. This method should only be called after <a href="ScoreIterator.html#next()"><code>next</code></a> has been called.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="ScoreIterator.html#getPositionOfPrevious()">getPositionOfPrevious</a></code>&nbsp;in interface&nbsp;<code><a href="ScoreIterator.html" title="interface in org.wmn4j.notation.iterators">ScoreIterator</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd><code>ScorePosition</code> of the previously returned
-         <code>Durational</code>.</dd>
+<dd>the position of the previously returned duration notation element</dd>
 </dl>
 </li>
 </ul>

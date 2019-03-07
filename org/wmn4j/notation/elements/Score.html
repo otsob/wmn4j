@@ -139,13 +139,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public class <span class="typeNameLabel">Score</span>
 extends java.lang.Object
 implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn4j.notation.elements">Part</a>&gt;</pre>
-<div class="block">Class that describes a score. This class is immutable.
- <code>ScoreBuilder</code> can be used for creating <code>Score</code>
- objects.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
+<div class="block">Represents a score. This class is immutable.</div>
 </li>
 </ul>
 </div>
@@ -193,7 +187,9 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.util.Map,java.util.List)">Score</a></span>&#8203;(java.util.Map&lt;<a href="Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a>,&#8203;java.lang.String&gt;&nbsp;attributes,
      java.util.List&lt;<a href="Part.html" title="interface in org.wmn4j.notation.elements">Part</a>&gt;&nbsp;parts)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Constructor.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -217,33 +213,43 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 <td class="colFirst"><code><a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAtPosition(org.wmn4j.notation.iterators.ScorePosition)">getAtPosition</a></span>&#8203;(<a href="../iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a>&nbsp;position)</code></th>
 <td class="colLast">
-<div class="block">Get the <code>Durational</code> at position.</div>
+<div class="block">Returns the durational notation object at the given position.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAttribute(org.wmn4j.notation.elements.Score.Attribute)">getAttribute</a></span>&#8203;(<a href="Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a>&nbsp;attribute)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the value of the given attribute.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getName()">getName</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the name of this score.</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="Part.html" title="interface in org.wmn4j.notation.elements">Part</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPart(int)">getPart</a></span>&#8203;(int&nbsp;index)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the part at the index.</div>
+</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPartCount()">getPartCount</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the number of parts in this score.</div>
+</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="Part.html" title="interface in org.wmn4j.notation.elements">Part</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getParts()">getParts</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the parts in this score.</div>
+</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="Part.html" title="interface in org.wmn4j.notation.elements">Part</a>&gt;</code></td>
@@ -294,10 +300,11 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 <h4>Score</h4>
 <pre>public&nbsp;Score&#8203;(java.util.Map&lt;<a href="Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a>,&#8203;java.lang.String&gt;&nbsp;attributes,
              java.util.List&lt;<a href="Part.html" title="interface in org.wmn4j.notation.elements">Part</a>&gt;&nbsp;parts)</pre>
+<div class="block">Constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>attributes</code> - The attributes of the score.</dd>
-<dd><code>parts</code> - The parts in the score.</dd>
+<dd><code>attributes</code> - the attributes of the score</dd>
+<dd><code>parts</code> - the parts in the score</dd>
 </dl>
 </li>
 </ul>
@@ -318,9 +325,10 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 <li class="blockList">
 <h4>getName</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getName()</pre>
+<div class="block">Returns the name of this score.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Name of this <code>Score</code>.</dd>
+<dd>the name of this score</dd>
 </dl>
 </li>
 </ul>
@@ -331,9 +339,10 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 <li class="blockList">
 <h4>getPartCount</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getPartCount()</pre>
+<div class="block">Returns the number of parts in this score.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>number of parts in this <code>Score</code>.</dd>
+<dd>number of parts in this score</dd>
 </dl>
 </li>
 </ul>
@@ -344,9 +353,10 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 <li class="blockList">
 <h4>getParts</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="Part.html" title="interface in org.wmn4j.notation.elements">Part</a>&gt;&nbsp;getParts()</pre>
+<div class="block">Returns the parts in this score.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the parts in this <code>Score</code> as list in no particular order.</dd>
+<dd>the parts in this score</dd>
 </dl>
 </li>
 </ul>
@@ -357,11 +367,12 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 <li class="blockList">
 <h4>getPart</h4>
 <pre class="methodSignature">public&nbsp;<a href="Part.html" title="interface in org.wmn4j.notation.elements">Part</a>&nbsp;getPart&#8203;(int&nbsp;index)</pre>
+<div class="block">Returns the part at the index.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>index</code> - the number of the <code>Part</code> in the <code>Score</code>.</dd>
+<dd><code>index</code> - the number of the part in this score</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd><code>Part</code> associated with index.</dd>
+<dd>the part at the index</dd>
 </dl>
 </li>
 </ul>
@@ -372,11 +383,12 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 <li class="blockList">
 <h4>getAttribute</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getAttribute&#8203;(<a href="Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a>&nbsp;attribute)</pre>
+<div class="block">Returns the value of the given attribute.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>attribute</code> - the type of the attribute.</dd>
+<dd><code>attribute</code> - the type of the attribute</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the text associated with attribute if the attribute is set. Empty
+<dd>the text associated with attribute if the attribute is present. Empty
          string otherwise.</dd>
 </dl>
 </li>
@@ -389,14 +401,14 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 <h4>getAtPosition</h4>
 <pre class="methodSignature">public&nbsp;<a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&nbsp;getAtPosition&#8203;(<a href="../iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a>&nbsp;position)
                          throws java.util.NoSuchElementException</pre>
-<div class="block">Get the <code>Durational</code> at position.</div>
+<div class="block">Returns the durational notation object at the given position.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>position</code> - the <code>ScorePosition</code> from which to get the element.</dd>
+<dd><code>position</code> - the position from which to get the element</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the <code>Durational</code> at position.</dd>
+<dd>the notation object with duration at the given position</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.util.NoSuchElementException</code> - if the position is not found.</dd>
+<dd><code>java.util.NoSuchElementException</code> - if the position is not found in this score</dd>
 </dl>
 </li>
 </ul>
@@ -423,8 +435,6 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>iterator</code>&nbsp;in interface&nbsp;<code>java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn4j.notation.elements">Part</a>&gt;</code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>iterator that does not support modifying the <code>Score</code>.</dd>
 </dl>
 </li>
 </ul>

@@ -177,7 +177,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code><a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">NoteBuilder.</span><code><span class="memberNameLink"><a href="../../builders/NoteBuilder.html#build()">build</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Creates a <code>Note</code> with the values set in this builder.</div>
+<div class="block">Creates a note with the values set in this builder.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -224,19 +224,23 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr class="altColor">
 <td class="colFirst"><code><a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Chord.</span><code><span class="memberNameLink"><a href="../Chord.html#getHighestNote()">getHighestNote</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the highest note in this chord.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Chord.</span><code><span class="memberNameLink"><a href="../Chord.html#getLowestNote()">getLowestNote</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the lowest note in this chord.</div>
+</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Chord.</span><code><span class="memberNameLink"><a href="../Chord.html#getNote(int)">getNote</a></span>&#8203;(int&nbsp;fromLowest)</code></th>
 <td class="colLast">
-<div class="block">Get the <code>Note</code> with the fromLowest lowest pitch from this
- <code>Chord</code>.</div>
+<div class="block">Returns the <a href="../Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> at the given index counting from lowest pitch in
+ this <a href="../Chord.html" title="class in org.wmn4j.notation.elements"><code>Chord</code></a>.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -246,7 +250,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
        int&nbsp;octave,
        <a href="../Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</code></th>
 <td class="colLast">
-<div class="block">Get a <code>Note</code> object with specified parameters.</div>
+<div class="block">Returns an instance with the given parameters.</div>
 </td>
 </tr>
 <tr class="altColor">
@@ -254,7 +258,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colSecond" scope="row"><span class="typeNameLabel">Note.</span><code><span class="memberNameLink"><a href="../Note.html#getNote(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration)">getNote</a></span>&#8203;(<a href="../Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
        <a href="../Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</code></th>
 <td class="colLast">
-<div class="block">Get a <code>Note</code> object with specified parameters.</div>
+<div class="block">Returns an instance with the given parameters.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -263,7 +267,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
        <a href="../Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration,
        java.util.Set&lt;<a href="../Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;articulations)</code></th>
 <td class="colLast">
-<div class="block">Get a <code>Note</code> object with specified parameters.</div>
+<div class="block">Returns an instance with the given parameters.</div>
 </td>
 </tr>
 <tr class="altColor">
@@ -273,7 +277,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
        java.util.Set&lt;<a href="../Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;articulations,
        java.util.List&lt;<a href="../MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;&nbsp;multiNoteArticulations)</code></th>
 <td class="colLast">
-<div class="block">Get a <code>Note</code> object with specified parameters.</div>
+<div class="block">Returns an instance with the given parameters.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -285,7 +289,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
        <a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;tiedTo,
        boolean&nbsp;isTiedFromPrevious)</code></th>
 <td class="colLast">
-<div class="block">Get a <code>Note</code> object with specified parameters.</div>
+<div class="block">Returns an instance with the given parameters.</div>
 </td>
 </tr>
 </tbody>
@@ -301,7 +305,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr class="altColor">
 <td class="colFirst"><code>java.util.Optional&lt;<a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;</code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Note.</span><code><span class="memberNameLink"><a href="../Note.html#getFollowingTiedNote()">getFollowingTiedNote</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the following note to which this note is tied.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;</code></td>
@@ -320,38 +326,38 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tbody>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
-<th class="colSecond" scope="row"><span class="typeNameLabel">Chord.</span><code><span class="memberNameLink"><a href="../Chord.html#addNote(org.wmn4j.notation.elements.Note)">addNote</a></span>&#8203;(<a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</code></th>
+<th class="colSecond" scope="row"><span class="typeNameLabel">Chord.</span><code><span class="memberNameLink"><a href="../Chord.html#add(org.wmn4j.notation.elements.Note)">add</a></span>&#8203;(<a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</code></th>
 <td class="colLast">
-<div class="block">Get a Chord with the added note.</div>
+<div class="block">Returns a chord with the notes of this chord and the given note.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Note.</span><code><span class="memberNameLink"><a href="../Note.html#compareByPitch(org.wmn4j.notation.elements.Note)">compareByPitch</a></span>&#8203;(<a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;other)</code></th>
 <td class="colLast">
-<div class="block">Compare notes by pitch.</div>
+<div class="block">Returns an integer that specifies if this note is higher than, lower than, or
+ equal in pitch to the given note.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Chord.</span><code><span class="memberNameLink"><a href="../Chord.html#contains(org.wmn4j.notation.elements.Note)">contains</a></span>&#8203;(<a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</code></th>
 <td class="colLast">
-<div class="block">Check if this contains the given note.</div>
+<div class="block">Returns true if this contains the given note.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Note.</span><code><span class="memberNameLink"><a href="../Note.html#equalsInPitchAndDuration(org.wmn4j.notation.elements.Note)">equalsInPitchAndDuration</a></span>&#8203;(<a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;other)</code></th>
 <td class="colLast">
-<div class="block">Compare this to other <code>Note</code> for equality of pitch and duration.</div>
+<div class="block">Returns true if this note is equal to the given note in pitch and duration.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>static <a href="../Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Chord.</span><code><span class="memberNameLink"><a href="../Chord.html#getChord(org.wmn4j.notation.elements.Note...)">getChord</a></span>&#8203;(<a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>...&nbsp;n)</code></th>
 <td class="colLast">
-<div class="block">Get an instance of <code>Chord</code> with the given <code>Note</code>
- objects.</div>
+<div class="block">Returns an instance of with the given <a href="../Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> objects.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -363,14 +369,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
        <a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;tiedTo,
        boolean&nbsp;isTiedFromPrevious)</code></th>
 <td class="colLast">
-<div class="block">Get a <code>Note</code> object with specified parameters.</div>
+<div class="block">Returns an instance with the given parameters.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
-<th class="colSecond" scope="row"><span class="typeNameLabel">Chord.</span><code><span class="memberNameLink"><a href="../Chord.html#removeNote(org.wmn4j.notation.elements.Note)">removeNote</a></span>&#8203;(<a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</code></th>
+<th class="colSecond" scope="row"><span class="typeNameLabel">Chord.</span><code><span class="memberNameLink"><a href="../Chord.html#remove(org.wmn4j.notation.elements.Note)">remove</a></span>&#8203;(<a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</code></th>
 <td class="colLast">
-<div class="block">Get a Chord with the given note removed.</div>
+<div class="block">Returns a Chord with the given note removed.</div>
 </td>
 </tr>
 </tbody>
@@ -387,7 +393,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code>static <a href="../Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Chord.</span><code><span class="memberNameLink"><a href="../Chord.html#getChord(java.util.Collection)">getChord</a></span>&#8203;(java.util.Collection&lt;<a href="../Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;&nbsp;notes)</code></th>
 <td class="colLast">
-<div class="block">Get an instance of <code>Chord</code> with the given <code>Note</code>s.</div>
+<div class="block">Returns an instance with the given <a href="../Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a>s.</div>
 </td>
 </tr>
 </tbody>

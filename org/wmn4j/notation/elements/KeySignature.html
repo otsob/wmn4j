@@ -134,11 +134,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">KeySignature</span>
 extends java.lang.Object</pre>
-<div class="block">Class for key signatures. This class is immutable.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
+<div class="block">Represents a key signature. This class is immutable.</div>
 </li>
 </ul>
 </div>
@@ -187,28 +183,36 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(java.lang.Object&nbsp;o)</code></th>
 <td class="colLast">
-<div class="block">Compare this to <code>Object o</code> for equality.</div>
+<div class="block">Returns true if this is equal to the given object.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation.elements">Pitch.Base</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFlats()">getFlats</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the flats in this key signature.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumberOfFlats()">getNumberOfFlats</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the number of flats in this key signature.</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumberOfSharps()">getNumberOfSharps</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the number of sharps in this key signature.</div>
+</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation.elements">Pitch.Base</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSharps()">getSharps</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the sharps in this key signature.</div>
+</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
@@ -218,9 +222,7 @@ extends java.lang.Object</pre>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
-<td class="colLast">
-<div class="block">String representation of <code>KeySignature</code>.</div>
-</td>
+<td class="colLast">&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -255,8 +257,8 @@ extends java.lang.Object</pre>
 <pre>public&nbsp;KeySignature&#8203;(java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation.elements">Pitch.Base</a>&gt;&nbsp;sharps,
                     java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation.elements">Pitch.Base</a>&gt;&nbsp;flats)</pre>
 <div class="block">Constructor for KeySignature. For common key signatures use the ones defined
- in <code>KeySignatures</code>. This is mostly intended for creating custom
- key signatures.</div>
+ in <a href="KeySignatures.html" title="class in org.wmn4j.notation.elements"><code>KeySignatures</code></a>. This is mostly intended for creating custom key
+ signatures.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>sharps</code> - the Pitch.Base names that should be raised. For example, for
@@ -286,9 +288,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getNumberOfSharps</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getNumberOfSharps()</pre>
+<div class="block">Returns the number of sharps in this key signature.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>number of sharps in this KeySignature.</dd>
+<dd>the number of sharps in this key signature</dd>
 </dl>
 </li>
 </ul>
@@ -299,9 +302,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getNumberOfFlats</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getNumberOfFlats()</pre>
+<div class="block">Returns the number of flats in this key signature.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>number of flats in this KeySignature.</dd>
+<dd>the number of flats in this key signature</dd>
 </dl>
 </li>
 </ul>
@@ -312,9 +316,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getSharps</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation.elements">Pitch.Base</a>&gt;&nbsp;getSharps()</pre>
+<div class="block">Returns the sharps in this key signature.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a copy of the sharps in this KeySignature.</dd>
+<dd>the sharps in this key signature.</dd>
 </dl>
 </li>
 </ul>
@@ -325,9 +330,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getFlats</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation.elements">Pitch.Base</a>&gt;&nbsp;getFlats()</pre>
+<div class="block">Returns the flats in this key signature.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a copy of the flats in this KeySignature.</dd>
+<dd>the flats in this key signature</dd>
 </dl>
 </li>
 </ul>
@@ -338,15 +344,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>toString</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;toString()</pre>
-<div class="block">String representation of <code>KeySignature</code>. String is of form:
- <code>KeySig(sharps: ...)</code>, <code>KeySig(flats: ...)</code>, or
- <code>KeySig(sharps: ... flats: ...)</code> where <code>...</code> refers to
- the raised or flatted pitches.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string representation of KeySignature.</dd>
 </dl>
 </li>
 </ul>
@@ -357,7 +357,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>equals</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;equals&#8203;(java.lang.Object&nbsp;o)</pre>
-<div class="block">Compare this to <code>Object o</code> for equality.</div>
+<div class="block">Returns true if this is equal to the given object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>equals</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>

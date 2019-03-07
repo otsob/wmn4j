@@ -134,12 +134,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">ScorePosition</span>
 extends java.lang.Object</pre>
-<div class="block">Defines the position of a <code>Durational</code> in a <code>Score</code>. Is
- immutable.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
+<div class="block">Represents the position of a <a href="../elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a>
+ in a <a href="../elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>. Is immutable.</div>
 </li>
 </ul>
 </div>
@@ -175,7 +171,7 @@ extends java.lang.Object</pre>
              int&nbsp;voiceNumber,
              int&nbsp;indexInVoice)</code></th>
 <td class="colLast">
-<div class="block">Constructor for <code>ScorePosition</code> for parts with multiple staves.</div>
+<div class="block">Constructor for positions in parts with multiple staves.</div>
 </td>
 </tr>
 <tr class="altColor">
@@ -186,8 +182,7 @@ extends java.lang.Object</pre>
              int&nbsp;indexInVoice,
              int&nbsp;indexInChord)</code></th>
 <td class="colLast">
-<div class="block">Constructor for <code>ScorePosition</code> that can be used to access a note
- in a chord.</div>
+<div class="block">Constructor for positions that can be used to access a note in a chord.</div>
 </td>
 </tr>
 </table>
@@ -212,41 +207,50 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(java.lang.Object&nbsp;o)</code></th>
 <td class="colLast">
-<div class="block">Compares this <code>ScorePosition</code> with equality against
- <code>Object o</code>.</div>
+<div class="block">Returns true if this position is equal to the given object.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIndexInChord()">getIndexInChord</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Get the index of the note in a chord specified by this position.</div>
+<div class="block">Returns the index of the note in a chord to which this position points.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIndexInVoice()">getIndexInVoice</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the index in the voice to which this position points.</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMeasureNumber()">getMeasureNumber</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the number of the measure to which this position points.</div>
+</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPartNumber()">getPartNumber</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the part number of this position.</div>
+</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getStaffNumber()">getStaffNumber</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the staff number in the part pointed to by this position.</div>
+</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoiceNumber()">getVoiceNumber</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the number of the voice to which this position points.</div>
+</td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>int</code></td>
@@ -257,7 +261,7 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isInChord()">isInChord</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Check if this position refers to note in a chord.</div>
+<div class="block">Returns true if this position points to a note in a chord.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
@@ -300,17 +304,16 @@ extends java.lang.Object</pre>
                      int&nbsp;measureNumber,
                      int&nbsp;voiceNumber,
                      int&nbsp;indexInVoice)</pre>
-<div class="block">Constructor for <code>ScorePosition</code> for parts with multiple staves.</div>
+<div class="block">Constructor for positions in parts with multiple staves.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>partNumber</code> - The number (index) of the part in the
-                      <code>Score</code>.</dd>
-<dd><code>staffNumber</code> - The number of the staff in the <code>Part</code>. For
-                      <code>SingleStaffPart</code> objects use the constructor
-                      without the staffNumber parameter.</dd>
-<dd><code>measureNumber</code> - The measure number.</dd>
-<dd><code>voiceNumber</code> - The voice number in the measure.</dd>
-<dd><code>indexInVoice</code> - The index in the voice specified by voiceNumber.</dd>
+<dd><code>partNumber</code> - the number (index) of the part in the the score</dd>
+<dd><code>staffNumber</code> - the number of the staff in the part. For parts with a
+                      single staff use the constructor without the staffNumber
+                      parameter</dd>
+<dd><code>measureNumber</code> - the measure number</dd>
+<dd><code>voiceNumber</code> - the voice number in the measure</dd>
+<dd><code>indexInVoice</code> - the index in the voice specified by voiceNumber</dd>
 </dl>
 </li>
 </ul>
@@ -326,20 +329,18 @@ extends java.lang.Object</pre>
                      int&nbsp;voiceNumber,
                      int&nbsp;indexInVoice,
                      int&nbsp;indexInChord)</pre>
-<div class="block">Constructor for <code>ScorePosition</code> that can be used to access a note
- in a chord.</div>
+<div class="block">Constructor for positions that can be used to access a note in a chord.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>partNumber</code> - The number (index) of the part in the
-                      <code>Score</code>.</dd>
-<dd><code>staffNumber</code> - The number of the staff in the <code>Part</code>. For
-                      <code>SingleStaffPart</code> objects use the constructor
-                      without the staffNumber parameter.</dd>
-<dd><code>measureNumber</code> - The measure number.</dd>
-<dd><code>voiceNumber</code> - The voice number in the measure.</dd>
-<dd><code>indexInVoice</code> - The index in the voice specified by voiceNumber.</dd>
+<dd><code>partNumber</code> - The number (index) of the part in the score</dd>
+<dd><code>staffNumber</code> - The number of the staff in the part. For single staff
+                      parts use the constructor without the staffNumber
+                      parameter</dd>
+<dd><code>measureNumber</code> - The measure number</dd>
+<dd><code>voiceNumber</code> - The voice number in the measure</dd>
+<dd><code>indexInVoice</code> - The index in the voice specified by voiceNumber</dd>
 <dd><code>indexInChord</code> - Starting from the bottom of the chord, the index of the
-                      Note.</dd>
+                      note</dd>
 </dl>
 </li>
 </ul>
@@ -356,11 +357,10 @@ extends java.lang.Object</pre>
 <div class="block">Constructor for position in a part with only a single staff.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>partNumber</code> - The number (index) of the part in the
-                      <code>Score</code>.</dd>
-<dd><code>measureNumber</code> - The measure number.</dd>
-<dd><code>voiceNumber</code> - The voice number in the measure.</dd>
-<dd><code>indexInVoice</code> - The index in the voice specified by voiceNumber.</dd>
+<dd><code>partNumber</code> - the number (index) of the part in the score</dd>
+<dd><code>measureNumber</code> - the measure number</dd>
+<dd><code>voiceNumber</code> - the voice number in the measure</dd>
+<dd><code>indexInVoice</code> - the index in the voice specified by voiceNumber</dd>
 </dl>
 </li>
 </ul>
@@ -381,9 +381,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getPartNumber</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getPartNumber()</pre>
+<div class="block">Returns the part number of this position.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The number (index) of the part in the score.</dd>
+<dd>The number (index) of the part in the score</dd>
 </dl>
 </li>
 </ul>
@@ -394,9 +395,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getStaffNumber</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getStaffNumber()</pre>
+<div class="block">Returns the staff number in the part pointed to by this position.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The number of the staff in the part.</dd>
+<dd>the number of the staff in the part</dd>
 </dl>
 </li>
 </ul>
@@ -407,9 +409,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getMeasureNumber</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getMeasureNumber()</pre>
+<div class="block">Returns the number of the measure to which this position points.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The measure number specified by this position.</dd>
+<dd>the measure number specified by this position</dd>
 </dl>
 </li>
 </ul>
@@ -420,9 +423,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getVoiceNumber</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getVoiceNumber()</pre>
+<div class="block">Returns the number of the voice to which this position points.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The number of the voice in the measure.</dd>
+<dd>the number of the voice in the measure</dd>
 </dl>
 </li>
 </ul>
@@ -433,9 +437,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getIndexInVoice</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getIndexInVoice()</pre>
+<div class="block">Returns the index in the voice to which this position points.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The index of the <code>Durational</code> in the voice.</dd>
+<dd>the index in the voice to which this position points</dd>
 </dl>
 </li>
 </ul>
@@ -446,10 +451,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isInChord</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isInChord()</pre>
-<div class="block">Check if this position refers to note in a chord.</div>
+<div class="block">Returns true if this position points to a note in a chord.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this position is for a note in a chord.</dd>
+<dd>true if this position is for a note in a chord</dd>
 </dl>
 </li>
 </ul>
@@ -460,11 +465,11 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getIndexInChord</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getIndexInChord()</pre>
-<div class="block">Get the index of the note in a chord specified by this position.</div>
+<div class="block">Returns the index of the note in a chord to which this position points.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the index, counting from the bottom of the chord, of a note in a
-         chord.</dd>
+         chord</dd>
 </dl>
 </li>
 </ul>
@@ -475,16 +480,15 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>equals</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;equals&#8203;(java.lang.Object&nbsp;o)</pre>
-<div class="block">Compares this <code>ScorePosition</code> with equality against
- <code>Object o</code>. Two positions are equal if and only if all of their
- properties are equal.</div>
+<div class="block">Returns true if this position is equal to the given object. Two positions are
+ equal if and only if they are equal in all fields.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>equals</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>o</code> - Object with which this is compared for equality.</dd>
+<dd><code>o</code> - Object with which this is compared for equality</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>True if o is equal to this, false otherwise.</dd>
+<dd>true if o is equal to this, false otherwise</dd>
 </dl>
 </li>
 </ul>

@@ -140,7 +140,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code><a href="../Part.html" title="interface in org.wmn4j.notation.elements">Part</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">PartBuilder.</span><code><span class="memberNameLink"><a href="../../builders/PartBuilder.html#build()">build</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Creates a part using the contained <code>MeasureBuilder</code> objects.</div>
+<div class="block">Returns a part with the contents set in this builder.</div>
 </td>
 </tr>
 </tbody>
@@ -164,14 +164,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code>class&nbsp;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="../MultiStaffPart.html" title="class in org.wmn4j.notation.elements">MultiStaffPart</a></span></code></th>
 <td class="colLast">
-<div class="block">Class for parts that have multiple staves such as keyboard instruments.</div>
+<div class="block">Represents a score part with multiple staves such as are often used with
+ keyboard instruments.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="../SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></span></code></th>
 <td class="colLast">
-<div class="block">Class for representing a part consisting of a single staff in a score.</div>
+<div class="block">Represents a part with a single staff in a score.</div>
 </td>
 </tr>
 </tbody>
@@ -187,7 +188,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr class="altColor">
 <td class="colFirst"><code><a href="../Part.html" title="interface in org.wmn4j.notation.elements">Part</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Score.</span><code><span class="memberNameLink"><a href="../Score.html#getPart(int)">getPart</a></span>&#8203;(int&nbsp;index)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the part at the index.</div>
+</td>
 </tr>
 </tbody>
 </table>
@@ -202,7 +205,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../Part.html" title="interface in org.wmn4j.notation.elements">Part</a>&gt;</code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Score.</span><code><span class="memberNameLink"><a href="../Score.html#getParts()">getParts</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the parts in this score.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="../Part.html" title="interface in org.wmn4j.notation.elements">Part</a>&gt;</code></td>
@@ -221,7 +226,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr class="altColor">
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="../Score.html#%3Cinit%3E(java.util.Map,java.util.List)">Score</a></span>&#8203;(java.util.Map&lt;<a href="../Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a>,&#8203;java.lang.String&gt;&nbsp;attributes,
      java.util.List&lt;<a href="../Part.html" title="interface in org.wmn4j.notation.elements">Part</a>&gt;&nbsp;parts)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Constructor.</div>
+</td>
 </tr>
 </tbody>
 </table>

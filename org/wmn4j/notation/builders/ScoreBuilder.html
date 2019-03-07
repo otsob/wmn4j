@@ -134,11 +134,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">ScoreBuilder</span>
 extends java.lang.Object</pre>
-<div class="block">Class for building <code>Score</code> objects.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
+<div class="block">Class for building <a href="../elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a> objects.</div>
 </li>
 </ul>
 </div>
@@ -161,7 +157,7 @@ extends java.lang.Object</pre>
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E()">ScoreBuilder</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Constructor that creates an empty ScoreBuilder.</div>
+<div class="block">Constructor that creates an empty builder.</div>
 </td>
 </tr>
 </table>
@@ -186,22 +182,22 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addPart(org.wmn4j.notation.builders.PartBuilder)">addPart</a></span>&#8203;(<a href="PartBuilder.html" title="class in org.wmn4j.notation.builders">PartBuilder</a>&nbsp;partBuilder)</code></th>
 <td class="colLast">
-<div class="block">Add <code>PartBuilder</code> to builder.</div>
+<div class="block">Add <a href="PartBuilder.html" title="class in org.wmn4j.notation.builders"><code>PartBuilder</code></a> to this builder.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#build()">build</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Build a <code>Score</code> with the values specified in this builder.</div>
+<div class="block">Returns a <a href="../elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a> with the contents of this builder.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAttribute(org.wmn4j.notation.elements.Score.Attribute,java.lang.String)">setAttribute</a></span>&#8203;(<a href="../elements/Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a>&nbsp;attribute,
-            java.lang.String&nbsp;attrValue)</code></th>
+            java.lang.String&nbsp;attributeValue)</code></th>
 <td class="colLast">
-<div class="block">Set attribute to given value.</div>
+<div class="block">Set the given attribute to given value.</div>
 </td>
 </tr>
 </table>
@@ -235,7 +231,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>ScoreBuilder</h4>
 <pre>public&nbsp;ScoreBuilder()</pre>
-<div class="block">Constructor that creates an empty ScoreBuilder.</div>
+<div class="block">Constructor that creates an empty builder.</div>
 </li>
 </ul>
 </li>
@@ -255,12 +251,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>setAttribute</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setAttribute&#8203;(<a href="../elements/Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a>&nbsp;attribute,
-                         java.lang.String&nbsp;attrValue)</pre>
-<div class="block">Set attribute to given value.</div>
+                         java.lang.String&nbsp;attributeValue)</pre>
+<div class="block">Set the given attribute to given value.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>attribute</code> - the attribute to be set.</dd>
-<dd><code>attrValue</code> - value for the attribute.</dd>
+<dd><code>attribute</code> - the attribute to be set</dd>
+<dd><code>attributeValue</code> - value for the attribute</dd>
 </dl>
 </li>
 </ul>
@@ -271,10 +267,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>addPart</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addPart&#8203;(<a href="PartBuilder.html" title="class in org.wmn4j.notation.builders">PartBuilder</a>&nbsp;partBuilder)</pre>
-<div class="block">Add <code>PartBuilder</code> to builder.</div>
+<div class="block">Add <a href="PartBuilder.html" title="class in org.wmn4j.notation.builders"><code>PartBuilder</code></a> to this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>partBuilder</code> - partBuilder to added to this builder.</dd>
+<dd><code>partBuilder</code> - partBuilder to add to this builder</dd>
 </dl>
 </li>
 </ul>
@@ -285,10 +281,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>build</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a>&nbsp;build()</pre>
-<div class="block">Build a <code>Score</code> with the values specified in this builder.</div>
+<div class="block">Returns a <a href="../elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a> with the contents of this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a <code>Score</code> with the values specified in this builder.</dd>
+<dd>a score with the contents of this builder</dd>
 </dl>
 </li>
 </ul>

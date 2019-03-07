@@ -139,13 +139,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public final class <span class="typeNameLabel">Chord</span>
 extends java.lang.Object
 implements <a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>, java.lang.Iterable&lt;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;</pre>
-<div class="block">Class for chords. This class should be used for chords where the notes are
- all of same length. For polyphonic textures add voices to the Measure. This
- class is immutable.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
+<div class="block">Represents a chord. This class should be used for chords where the notes are
+ all of same length. For polyphonic textures add voices to the
+ <a href="Measure.html" title="class in org.wmn4j.notation.elements"><code>Measure</code></a>. This class is immutable.</div>
 </li>
 </ul>
 </div>
@@ -168,74 +164,81 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addNote(org.wmn4j.notation.elements.Note)">addNote</a></span>&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#add(org.wmn4j.notation.elements.Note)">add</a></span>&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</code></th>
 <td class="colLast">
-<div class="block">Get a Chord with the added note.</div>
+<div class="block">Returns a chord with the notes of this chord and the given note.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#contains(org.wmn4j.notation.elements.Note)">contains</a></span>&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</code></th>
 <td class="colLast">
-<div class="block">Check if this contains the given note.</div>
+<div class="block">Returns true if this contains the given note.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#contains(org.wmn4j.notation.elements.Pitch)">contains</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch)</code></th>
 <td class="colLast">
-<div class="block">Check if this contains the given pitch.</div>
+<div class="block">Returns true if this chord contains the given pitch.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(java.lang.Object&nbsp;o)</code></th>
 <td class="colLast">
-<div class="block">Check equality against <code>Object o</code>.</div>
+<div class="block">Returns true if the given Object is equal to this.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>static <a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getChord(java.util.Collection)">getChord</a></span>&#8203;(java.util.Collection&lt;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;&nbsp;notes)</code></th>
 <td class="colLast">
-<div class="block">Get an instance of <code>Chord</code> with the given <code>Note</code>s.</div>
+<div class="block">Returns an instance with the given <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a>s.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>static <a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getChord(org.wmn4j.notation.elements.Note...)">getChord</a></span>&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>...&nbsp;n)</code></th>
 <td class="colLast">
-<div class="block">Get an instance of <code>Chord</code> with the given <code>Note</code>
- objects.</div>
+<div class="block">Returns an instance of with the given <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> objects.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDuration()">getDuration</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the duration of this.</div>
+</td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getHighestNote()">getHighestNote</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the highest note in this chord.</div>
+</td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLowestNote()">getLowestNote</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the lowest note in this chord.</div>
+</td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNote(int)">getNote</a></span>&#8203;(int&nbsp;fromLowest)</code></th>
 <td class="colLast">
-<div class="block">Get the <code>Note</code> with the fromLowest lowest pitch from this
- <code>Chord</code>.</div>
+<div class="block">Returns the <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> at the given index counting from lowest pitch in
+ this <a href="Chord.html" title="class in org.wmn4j.notation.elements"><code>Chord</code></a>.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNoteCount()">getNoteCount</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the number of notes in this chord.</div>
+</td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>int</code></td>
@@ -245,7 +248,9 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isRest()">isRest</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns true if this is a rest, false otherwise.</div>
+</td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;</code></td>
@@ -254,24 +259,22 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#remove(org.wmn4j.notation.elements.Pitch)">remove</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#remove(org.wmn4j.notation.elements.Note)">remove</a></span>&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</code></th>
 <td class="colLast">
-<div class="block">Get a Chord with the given pitch removed.</div>
+<div class="block">Returns a Chord with the given note removed.</div>
 </td>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code><a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeNote(org.wmn4j.notation.elements.Note)">removeNote</a></span>&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#remove(org.wmn4j.notation.elements.Pitch)">remove</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch)</code></th>
 <td class="colLast">
-<div class="block">Get a Chord with the given note removed.</div>
+<div class="block">Returns a chord with the given pitch removed.</div>
 </td>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Get a String representation of this <code>Chord</code>.</div>
-</td>
+<td class="colLast">&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -311,17 +314,16 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>getChord</h4>
 <pre class="methodSignature">public static&nbsp;<a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;getChord&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>...&nbsp;n)</pre>
-<div class="block">Get an instance of <code>Chord</code> with the given <code>Note</code>
- objects.</div>
+<div class="block">Returns an instance of with the given <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> objects.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>n</code> - A non-empty and non-null array of <code>Note</code> objects.</dd>
+<dd><code>n</code> - A non-empty and non-null array of <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> objects</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a chord with the given notes.</dd>
+<dd>a chord with the given notes</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.lang.NullPointerException</code> - if notes is null.</dd>
+<dd><code>java.lang.NullPointerException</code> - if notes is null</dd>
 <dd><code>java.lang.IllegalArgumentException</code> - if notes is empty or all Note objects in
-                                  notes are not of same duration.</dd>
+                                  notes are not of same duration</dd>
 </dl>
 </li>
 </ul>
@@ -332,13 +334,12 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>getChord</h4>
 <pre class="methodSignature">public static&nbsp;<a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;getChord&#8203;(java.util.Collection&lt;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;&nbsp;notes)</pre>
-<div class="block">Get an instance of <code>Chord</code> with the given <code>Note</code>s.</div>
+<div class="block">Returns an instance with the given <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a>s.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>notes</code> - A non-empty and non-null Collection of <code>Note</code>
-              objects.</dd>
+<dd><code>notes</code> - A non-empty and non-null Collection of <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> objects</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a chord with the given notes.</dd>
+<dd>a chord with the given notes</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.lang.NullPointerException</code> - if notes is null.</dd>
 <dd><code>java.lang.IllegalArgumentException</code> - if notes is empty or all Note objects in
@@ -353,11 +354,13 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>getDuration</h4>
 <pre class="methodSignature">public&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;getDuration()</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Durational.html#getDuration()">Durational</a></code></span></div>
+<div class="block">Returns the duration of this.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Durational.html#getDuration()">getDuration</a></code>&nbsp;in interface&nbsp;<code><a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd><code>Duration</code> of this.</dd>
+<dd>the duration of this</dd>
 </dl>
 </li>
 </ul>
@@ -368,16 +371,16 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>getNote</h4>
 <pre class="methodSignature">public&nbsp;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;getNote&#8203;(int&nbsp;fromLowest)</pre>
-<div class="block">Get the <code>Note</code> with the fromLowest lowest pitch from this
- <code>Chord</code>.</div>
+<div class="block">Returns the <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> at the given index counting from lowest pitch in
+ this <a href="Chord.html" title="class in org.wmn4j.notation.elements"><code>Chord</code></a>.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>fromLowest</code> - index of note, 0 being the lowest note in the chord.</dd>
+<dd><code>fromLowest</code> - index of note, 0 being the lowest note in the chord</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the note from index fromLowest.</dd>
+<dd>the note from index fromLowest</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.lang.IllegalArgumentException</code> - if fromLowest is smaller than 0 or at least
-                                  the number of notes in this Chord.</dd>
+                                  the number of notes in this Chord</dd>
 </dl>
 </li>
 </ul>
@@ -388,6 +391,7 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>getLowestNote</h4>
 <pre class="methodSignature">public&nbsp;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;getLowestNote()</pre>
+<div class="block">Returns the lowest note in this chord.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the note with the lowest pitch in this Chord.</dd>
@@ -401,6 +405,7 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>getHighestNote</h4>
 <pre class="methodSignature">public&nbsp;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;getHighestNote()</pre>
+<div class="block">Returns the highest note in this chord.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the note with the highest pitch in this Chord.</dd>
@@ -414,41 +419,42 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>getNoteCount</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getNoteCount()</pre>
+<div class="block">Returns the number of notes in this chord.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>number of notes in this Chord.</dd>
+<dd>number of notes in this chord.</dd>
 </dl>
 </li>
 </ul>
-<a id="addNote(org.wmn4j.notation.elements.Note)">
+<a id="add(org.wmn4j.notation.elements.Note)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>addNote</h4>
-<pre class="methodSignature">public&nbsp;<a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;addNote&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</pre>
-<div class="block">Get a Chord with the added note.</div>
+<h4>add</h4>
+<pre class="methodSignature">public&nbsp;<a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;add&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</pre>
+<div class="block">Returns a chord with the notes of this chord and the given note.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>note</code> - note to be Added.</dd>
+<dd><code>note</code> - the note that is added</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Chord with the notes of this and the added note.</dd>
+<dd>a chord with the notes of this and the added note</dd>
 </dl>
 </li>
 </ul>
-<a id="removeNote(org.wmn4j.notation.elements.Note)">
+<a id="remove(org.wmn4j.notation.elements.Note)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>removeNote</h4>
-<pre class="methodSignature">public&nbsp;<a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;removeNote&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</pre>
-<div class="block">Get a Chord with the given note removed.</div>
+<h4>remove</h4>
+<pre class="methodSignature">public&nbsp;<a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;remove&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</pre>
+<div class="block">Returns a Chord with the given note removed.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>note</code> - note to be removed.</dd>
+<dd><code>note</code> - note to be removed</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Chord without the given note.</dd>
+<dd>a chord without the given note</dd>
 </dl>
 </li>
 </ul>
@@ -459,12 +465,12 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>contains</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;contains&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch)</pre>
-<div class="block">Check if this contains the given pitch.</div>
+<div class="block">Returns true if this chord contains the given pitch.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>pitch</code> - pitch whose presence in this Chord is checked.</dd>
+<dd><code>pitch</code> - pitch whose presence in this chord is checked</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this contains the given pitch, false otherwise.</dd>
+<dd>true if this contains the given pitch, false otherwise</dd>
 </dl>
 </li>
 </ul>
@@ -475,12 +481,12 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>contains</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;contains&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</pre>
-<div class="block">Check if this contains the given note.</div>
+<div class="block">Returns true if this contains the given note.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>note</code> - Note whose presence in this Chord is checked.</dd>
+<dd><code>note</code> - the note whose presence in this chord is checked</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this contains the given note, false otherwise.</dd>
+<dd>true if this contains the given note, false otherwise</dd>
 </dl>
 </li>
 </ul>
@@ -491,12 +497,12 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>remove</h4>
 <pre class="methodSignature">public&nbsp;<a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;remove&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch)</pre>
-<div class="block">Get a Chord with the given pitch removed.</div>
+<div class="block">Returns a chord with the given pitch removed.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>pitch</code> - pitch of the note to be removed.</dd>
+<dd><code>pitch</code> - pitch of the note to be removed</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a chord without a note with the given pitch.</dd>
+<dd>a chord without a note with the given pitch</dd>
 </dl>
 </li>
 </ul>
@@ -507,7 +513,7 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>equals</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;equals&#8203;(java.lang.Object&nbsp;o)</pre>
-<div class="block">Check equality against <code>Object o</code>.</div>
+<div class="block">Returns true if the given Object is equal to this.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>equals</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
@@ -539,14 +545,9 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>toString</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;toString()</pre>
-<div class="block">Get a String representation of this <code>Chord</code>. The string
- representation of chord is of form: <code>[Note0, Note1, ...]</code> where
- the notes are in order increasing order of pitch.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string representation of this chord.</dd>
 </dl>
 </li>
 </ul>
@@ -557,11 +558,13 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <li class="blockList">
 <h4>isRest</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isRest()</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Durational.html#isRest()">Durational</a></code></span></div>
+<div class="block">Returns true if this is a rest, false otherwise.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Durational.html#isRest()">isRest</a></code>&nbsp;in interface&nbsp;<code><a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this is a rest, false otherwise.</dd>
+<dd>true if this is a rest, false otherwise</dd>
 </dl>
 </li>
 </ul>
@@ -575,9 +578,6 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>iterator</code>&nbsp;in interface&nbsp;<code>java.lang.Iterable&lt;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;</code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>Iterator that can be used to iterate through the notes in this Chord.
-         The Iterator does not support removing.</dd>
 </dl>
 </li>
 </ul>

@@ -140,7 +140,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code><a href="../Measure.html" title="class in org.wmn4j.notation.elements">Measure</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">MeasureBuilder.</span><code><span class="memberNameLink"><a href="../../builders/MeasureBuilder.html#build()">build</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Create a <code>Measure</code> with the contents of this builder.</div>
+<div class="block">Returns a <a href="../Measure.html" title="class in org.wmn4j.notation.elements"><code>Measure</code></a> with the values set in this builder.</div>
 </td>
 </tr>
 </tbody>
@@ -171,14 +171,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colSecond" scope="row"><span class="typeNameLabel">Part.</span><code><span class="memberNameLink"><a href="../Part.html#getMeasure(int,int)">getMeasure</a></span>&#8203;(int&nbsp;staffNumber,
           int&nbsp;measureNumber)</code></th>
 <td class="colLast">
-<div class="block">Returns the measure with the staff and measure number.</div>
+<div class="block">Returns the measure with the given number from the staff with the given
+ number.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../Measure.html" title="class in org.wmn4j.notation.elements">Measure</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">SingleStaffPart.</span><code><span class="memberNameLink"><a href="../SingleStaffPart.html#getMeasure(int)">getMeasure</a></span>&#8203;(int&nbsp;number)</code></th>
 <td class="colLast">
-<div class="block">Get the <code>Measure</code> with the given number.</div>
+<div class="block">Returns the measure with the given number.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -191,7 +192,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code><a href="../Measure.html" title="class in org.wmn4j.notation.elements">Measure</a></code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Staff.</span><code><span class="memberNameLink"><a href="../Staff.html#getMeasure(int)">getMeasure</a></span>&#8203;(int&nbsp;number)</code></th>
 <td class="colLast">
-<div class="block">Get <code>Measure</code> by measure number.</div>
+<div class="block">Returns the measure with the given number.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -217,7 +218,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&gt;</code></td>
 <th class="colSecond" scope="row"><span class="typeNameLabel">Staff.</span><code><span class="memberNameLink"><a href="../Staff.html#getMeasures()">getMeasures</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the measures in this staff as a list from smallest measure number to
+ greatest.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="../Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&gt;</code></td>

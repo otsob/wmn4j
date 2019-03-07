@@ -144,10 +144,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public enum <span class="typeNameLabel">PitchClass</span>
 extends java.lang.Enum&lt;<a href="PitchClass.html" title="enum in org.wmn4j.notation.elements">PitchClass</a>&gt;</pre>
 <div class="block">Represents the 12 pitch classes in equal-temperament tuning.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
 </li>
 </ul>
 </div>
@@ -261,13 +257,17 @@ extends java.lang.Enum&lt;<a href="PitchClass.html" title="enum in org.wmn4j.not
 <td class="colFirst"><code>static <a href="PitchClass.html" title="enum in org.wmn4j.notation.elements">PitchClass</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#fromInt(int)">fromInt</a></span>&#8203;(int&nbsp;pitchNumber)</code></th>
 <td class="colLast">
-<div class="block">Computes the pitch class from the pitch number.</div>
+<div class="block">Returns the pitch class that corresponds to the given non-negative pitch
+ number.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toInt()">toInt</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the <a href="http://en.wikipedia.org/wiki/Pitch_class">pitch class
+ number</a> of this pitch class.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>static <a href="PitchClass.html" title="enum in org.wmn4j.notation.elements">PitchClass</a></code></td>
@@ -494,10 +494,11 @@ not permitted.)</div>
 <li class="blockList">
 <h4>toInt</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;toInt()</pre>
+<div class="block">Returns the <a href="http://en.wikipedia.org/wiki/Pitch_class">pitch class
+ number</a> of this pitch class.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the <a href="http://en.wikipedia.org/wiki/Pitch_class">pitch class
-         number</a> of this pitch class.</dd>
+<dd>the pitch class number of this pitch class</dd>
 </dl>
 </li>
 </ul>
@@ -508,12 +509,14 @@ not permitted.)</div>
 <li class="blockList">
 <h4>fromInt</h4>
 <pre class="methodSignature">public static&nbsp;<a href="PitchClass.html" title="enum in org.wmn4j.notation.elements">PitchClass</a>&nbsp;fromInt&#8203;(int&nbsp;pitchNumber)</pre>
-<div class="block">Computes the pitch class from the pitch number.</div>
+<div class="block">Returns the pitch class that corresponds to the given non-negative pitch
+ number.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>pitchNumber</code> - The MIDI number of the pitch.</dd>
+<dd><code>pitchNumber</code> - The MIDI number of the pitch for which the pitch class is
+                    returned</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>pitch class corresponding to the pitchNumber.</dd>
+<dd>pitch class corresponding to the given pitch number</dd>
 </dl>
 </li>
 </ul>

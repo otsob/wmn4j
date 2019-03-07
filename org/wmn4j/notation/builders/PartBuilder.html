@@ -134,11 +134,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">PartBuilder</span>
 extends java.lang.Object</pre>
-<div class="block">Builder for building <code>Part</code> objects.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
+<div class="block">Builder for building <a href="../elements/Part.html" title="interface in org.wmn4j.notation.elements"><code>Part</code></a> objects.</div>
 </li>
 </ul>
 </div>
@@ -160,7 +156,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String)">PartBuilder</a></span>&#8203;(java.lang.String&nbsp;name)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Constructor.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -184,7 +182,7 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code><a href="PartBuilder.html" title="class in org.wmn4j.notation.builders">PartBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#add(org.wmn4j.notation.builders.MeasureBuilder)">add</a></span>&#8203;(<a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;measureBuilder)</code></th>
 <td class="colLast">
-<div class="block">Adds a <code>MeasureBuilder</code>.</div>
+<div class="block">Adds a <a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders"><code>MeasureBuilder</code></a> to this builder.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
@@ -192,31 +190,37 @@ extends java.lang.Object</pre>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addToStaff(int,org.wmn4j.notation.builders.MeasureBuilder)">addToStaff</a></span>&#8203;(int&nbsp;staffNumber,
           <a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;measureBuilder)</code></th>
 <td class="colLast">
-<div class="block">Adds a <code>MeasureBuilder</code> to staff.</div>
+<div class="block">Adds a <a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders"><code>MeasureBuilder</code></a> to the staff with the given number.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../elements/Part.html" title="interface in org.wmn4j.notation.elements">Part</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#build()">build</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Creates a part using the contained <code>MeasureBuilder</code> objects.</div>
+<div class="block">Returns a part with the contents set in this builder.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getName()">getName</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the name set in this builder.</div>
+</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getStaffCount()">getStaffCount</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the number of staves set in this builder.</div>
+</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAttribute(org.wmn4j.notation.elements.Part.Attribute,java.lang.String)">setAttribute</a></span>&#8203;(<a href="../elements/Part.Attribute.html" title="enum in org.wmn4j.notation.elements">Part.Attribute</a>&nbsp;attribute,
             java.lang.String&nbsp;value)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Sets the given attribute to the given value.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -249,9 +253,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>PartBuilder</h4>
 <pre>public&nbsp;PartBuilder&#8203;(java.lang.String&nbsp;name)</pre>
+<div class="block">Constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>name</code> - Name of the <code>Part</code> to be built.</dd>
+<dd><code>name</code> - the name of the part to be built.</dd>
 </dl>
 </li>
 </ul>
@@ -272,9 +277,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getStaffCount</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getStaffCount()</pre>
+<div class="block">Returns the number of staves set in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the number of staves in the <code>PartBuilder</code>.</dd>
+<dd>the number of staves in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -285,14 +291,14 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>add</h4>
 <pre class="methodSignature">public&nbsp;<a href="PartBuilder.html" title="class in org.wmn4j.notation.builders">PartBuilder</a>&nbsp;add&#8203;(<a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;measureBuilder)</pre>
-<div class="block">Adds a <code>MeasureBuilder</code>. This is used for building parts with a
- single staff.</div>
+<div class="block">Adds a <a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders"><code>MeasureBuilder</code></a> to this builder. This is used for building
+ parts with a single staff.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>measureBuilder</code> - The measureBuilder that is added to the end of the
-                       staff.</dd>
+<dd><code>measureBuilder</code> - the measureBuilder that is added to the end of the
+                       staff</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this.</dd>
+<dd>reference to this</dd>
 </dl>
 </li>
 </ul>
@@ -304,16 +310,16 @@ extends java.lang.Object</pre>
 <h4>addToStaff</h4>
 <pre class="methodSignature">public&nbsp;<a href="PartBuilder.html" title="class in org.wmn4j.notation.builders">PartBuilder</a>&nbsp;addToStaff&#8203;(int&nbsp;staffNumber,
                               <a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a>&nbsp;measureBuilder)</pre>
-<div class="block">Adds a <code>MeasureBuilder</code> to staff. This is used for building parts
- with multiple staves.</div>
+<div class="block">Adds a <a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders"><code>MeasureBuilder</code></a> to the staff with the given number. This is
+ used for building parts with multiple staves.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>staffNumber</code> - The number of the staff to which measureBuilder is
-                       added.</dd>
-<dd><code>measureBuilder</code> - The measureBuilder that is added to the end of the
-                       staff.</dd>
+<dd><code>staffNumber</code> - the number of the staff to which measureBuilder is
+                       added</dd>
+<dd><code>measureBuilder</code> - the measureBuilder that is added to the end of the
+                       staff</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this.</dd>
+<dd>reference to this</dd>
 </dl>
 </li>
 </ul>
@@ -325,10 +331,11 @@ extends java.lang.Object</pre>
 <h4>setAttribute</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setAttribute&#8203;(<a href="../elements/Part.Attribute.html" title="enum in org.wmn4j.notation.elements">Part.Attribute</a>&nbsp;attribute,
                          java.lang.String&nbsp;value)</pre>
+<div class="block">Sets the given attribute to the given value.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>attribute</code> - The attribute to be set.</dd>
-<dd><code>value</code> - The value that will be set for the attribute.</dd>
+<dd><code>attribute</code> - the attribute to be set</dd>
+<dd><code>value</code> - the value that will be set for the attribute</dd>
 </dl>
 </li>
 </ul>
@@ -339,9 +346,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getName</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getName()</pre>
+<div class="block">Returns the name set in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The name of the <code>Part</code> being built.</dd>
+<dd>the name set in this builder</dd>
 </dl>
 </li>
 </ul>
@@ -352,11 +360,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>build</h4>
 <pre class="methodSignature">public&nbsp;<a href="../elements/Part.html" title="interface in org.wmn4j.notation.elements">Part</a>&nbsp;build()</pre>
-<div class="block">Creates a part using the contained <code>MeasureBuilder</code> objects.</div>
+<div class="block">Returns a part with the contents set in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>A <code>Part</code> with the measures and attributes in the builder.
-         The type of the part depends on the number of staves.</dd>
+<dd>a part with the contents set in this builder</dd>
 </dl>
 </li>
 </ul>

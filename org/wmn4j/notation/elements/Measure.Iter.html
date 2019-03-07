@@ -143,10 +143,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public static class <span class="typeNameLabel">Measure.Iter</span>
 extends java.lang.Object
 implements java.util.Iterator&lt;<a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;</pre>
-<div class="block">Iterator for <code>Durational</code> objects in a <code>Measure</code>. The
- iterator iterates through the notes in the Measure voice by voice going from
- the earliest Durational in the voice to the last on each voice. The order of
- voices is unspecified. The iterator does not support removing.</div>
+<div class="block">Iterator for <a href="Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> objects in a meusure. The iterator iterates
+ through the notes in the Measure voice by voice going from the earliest
+ durational in the voice to the last on each voice. The order of voices is
+ unspecified. The iterator does not support removing.</div>
 </li>
 </ul>
 </div>
@@ -193,12 +193,18 @@ implements java.util.Iterator&lt;<a href="Durational.html" title="interface in o
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIndexOfPrevious()">getIndexOfPrevious</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the index of the <a href="Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> that was returned by the last
+ call of <a href="#next()"><code>next</code></a>.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoiceOfPrevious()">getVoiceOfPrevious</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the voice of the <a href="Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> that was returned by the last
+ call of <a href="#next()"><code>next</code></a>.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
@@ -277,11 +283,13 @@ implements java.util.Iterator&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getVoiceOfPrevious</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getVoiceOfPrevious()</pre>
+<div class="block">Returns the voice of the <a href="Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> that was returned by the last
+ call of <a href="#next()"><code>next</code></a>.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The voice of the <code>Durational</code> that was returned by the
-         last call of <a href="#next()"><code>next</code></a>. If next has not been called,
-         return value is useless.</dd>
+<dd>the voice of the <a href="Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> that was returned by the last
+         call of <a href="#next()"><code>next</code></a>. If next has not been called, return
+         value is useless.</dd>
 </dl>
 </li>
 </ul>
@@ -292,11 +300,13 @@ implements java.util.Iterator&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getIndexOfPrevious</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getIndexOfPrevious()</pre>
+<div class="block">Returns the index of the <a href="Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> that was returned by the last
+ call of <a href="#next()"><code>next</code></a>.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The index of the <code>Durational</code> that was returned by the
-         last call of <a href="#next()"><code>next</code></a>. If next has not been called,
-         return value is useless.</dd>
+<dd>the index of the <a href="Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> that was returned by the last
+         call of <a href="#next()"><code>next</code></a>. If next has not been called, return
+         value is useless.</dd>
 </dl>
 </li>
 </ul>

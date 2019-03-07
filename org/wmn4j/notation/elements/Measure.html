@@ -139,13 +139,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public class <span class="typeNameLabel">Measure</span>
 extends java.lang.Object
 implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;</pre>
-<div class="block">Class that defines a measure. A measure may contain multiple voices that are
- referred to using voice numbers. This class is immutable. Use the
- MeasureBuilder class for easier creation of Measures.</div>
-<dl>
-<dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Otso Björklund</dd>
-</dl>
+<div class="block">Represents a measure. A measure may contain multiple voices that are referred
+ to using voice numbers. This class is immutable. Use the MeasureBuilder class
+ for easier creation of Measures.</div>
 </li>
 </ul>
 </div>
@@ -170,7 +166,7 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <td class="colFirst"><code>static class&nbsp;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="Measure.Iter.html" title="class in org.wmn4j.notation.elements">Measure.Iter</a></span></code></th>
 <td class="colLast">
-<div class="block">Iterator for <code>Durational</code> objects in a <code>Measure</code>.</div>
+<div class="block">Iterator for <a href="Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> objects in a meusure.</div>
 </td>
 </tr>
 </table>
@@ -194,7 +190,9 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(int,java.util.Map,org.wmn4j.notation.elements.MeasureAttributes)">Measure</a></span>&#8203;(int&nbsp;number,
        java.util.Map&lt;java.lang.Integer,&#8203;java.util.List&lt;<a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&gt;&nbsp;noteVoices,
        <a href="MeasureAttributes.html" title="class in org.wmn4j.notation.elements">MeasureAttributes</a>&nbsp;measureAttr)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Constructor.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(int,java.util.Map,org.wmn4j.notation.elements.TimeSignature,org.wmn4j.notation.elements.KeySignature,org.wmn4j.notation.elements.Barline,org.wmn4j.notation.elements.Clef)">Measure</a></span>&#8203;(int&nbsp;number,
@@ -203,7 +201,9 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
        <a href="KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a>&nbsp;keySig,
        <a href="Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;rightBarLine,
        <a href="Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;clef)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Constructor.</div>
+</td>
 </tr>
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(int,java.util.Map,org.wmn4j.notation.elements.TimeSignature,org.wmn4j.notation.elements.KeySignature,org.wmn4j.notation.elements.Clef)">Measure</a></span>&#8203;(int&nbsp;number,
@@ -211,7 +211,9 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
        <a href="TimeSignature.html" title="class in org.wmn4j.notation.elements">TimeSignature</a>&nbsp;timeSig,
        <a href="KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a>&nbsp;keySig,
        <a href="Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;clef)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Constructor.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -234,92 +236,116 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsClefChanges()">containsClefChanges</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns true if this measure contains clef changes.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#get(int,int)">get</a></span>&#8203;(int&nbsp;voiceNumber,
    int&nbsp;index)</code></th>
 <td class="colLast">
-<div class="block">Returns the <code>Durational</code> at the given index on the given voice
- number.</div>
+<div class="block">Returns the <a href="Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> at the given index on the given voice number.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="Clef.html" title="class in org.wmn4j.notation.elements">Clef</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClef()">getClef</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the clef in effect in the beginning of this measure.</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.Map&lt;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>,&#8203;<a href="Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClefChanges()">getClefChanges</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the clef changes in this measure.</div>
+</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getKeySignature()">getKeySignature</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the key signature in effect in this measure.</div>
+</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLeftBarline()">getLeftBarline</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the barline on the left side of this measure.</div>
+</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="Measure.Iter.html" title="class in org.wmn4j.notation.elements">Measure.Iter</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMeasureIterator()">getMeasureIterator</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Get an iterator as <code>Measure.Iter</code>.</div>
+<div class="block">Returns a measure iterator for this measure.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumber()">getNumber</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the measure number of this measure.</div>
+</td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRightBarline()">getRightBarline</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the barline on the right side of this measure.</div>
+</td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="TimeSignature.html" title="class in org.wmn4j.notation.elements">TimeSignature</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTimeSignature()">getTimeSignature</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the time signature in effect in this measure.</div>
+</td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoice(int)">getVoice</a></span>&#8203;(int&nbsp;voiceNumber)</code></th>
 <td class="colLast">
-<div class="block">Get a voiceNumber of the measure.</div>
+<div class="block">Returns the voice with the given measure.</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoiceCount()">getVoiceCount</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the number of voices in this measure.</div>
+</td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.Integer&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoiceNumbers()">getVoiceNumbers</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Get the voice numbers in this measure.</div>
+<div class="block">Returns the voice numbers in this measure.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoiceSize(int)">getVoiceSize</a></span>&#8203;(int&nbsp;voiceNumber)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the number of durational notation elements in the voice with the
+ given number.</div>
+</td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isPickUp()">isPickUp</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns true if this measure is a pickup measure.</div>
+</td>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isSingleVoice()">isSingleVoice</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns true if this measure has only a single voice.</div>
+</td>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;</code></td>
@@ -329,9 +355,7 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
-<td class="colLast">
-<div class="block">String representation of <code>Measure</code>.</div>
-</td>
+<td class="colLast">&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -376,6 +400,7 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
                <a href="KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a>&nbsp;keySig,
                <a href="Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;rightBarLine,
                <a href="Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;clef)</pre>
+<div class="block">Constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>number</code> - number of the measure.</dd>
@@ -398,6 +423,7 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
                <a href="TimeSignature.html" title="class in org.wmn4j.notation.elements">TimeSignature</a>&nbsp;timeSig,
                <a href="KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a>&nbsp;keySig,
                <a href="Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;clef)</pre>
+<div class="block">Constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>number</code> - number of the measure.</dd>
@@ -417,6 +443,7 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <pre>public&nbsp;Measure&#8203;(int&nbsp;number,
                java.util.Map&lt;java.lang.Integer,&#8203;java.util.List&lt;<a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&gt;&nbsp;noteVoices,
                <a href="MeasureAttributes.html" title="class in org.wmn4j.notation.elements">MeasureAttributes</a>&nbsp;measureAttr)</pre>
+<div class="block">Constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>number</code> - number of the measure.</dd>
@@ -442,7 +469,7 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getVoiceNumbers</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.Integer&gt;&nbsp;getVoiceNumbers()</pre>
-<div class="block">Get the voice numbers in this measure. Voice numbers are not necessarily
+<div class="block">Returns the voice numbers in this measure. Voice numbers are not necessarily
  consecutive and do not begin from 0.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -457,12 +484,12 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getVoice</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;getVoice&#8203;(int&nbsp;voiceNumber)</pre>
-<div class="block">Get a voiceNumber of the measure.</div>
+<div class="block">Returns the voice with the given measure.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>voiceNumber</code> - the number of the voice.</dd>
+<dd><code>voiceNumber</code> - the number of the voice</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the voiceNumber at the given index voiceNumber.</dd>
+<dd>the voice at the given index voiceNumber</dd>
 </dl>
 </li>
 </ul>
@@ -473,11 +500,13 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getVoiceSize</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getVoiceSize&#8203;(int&nbsp;voiceNumber)</pre>
+<div class="block">Returns the number of durational notation elements in the voice with the
+ given number.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>voiceNumber</code> - the voice for which the number of elements is returned</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the number of elements on the voice with voiceNumber.</dd>
+<dd>the number of elements in the voice with voiceNumber</dd>
 </dl>
 </li>
 </ul>
@@ -488,9 +517,10 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getVoiceCount</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getVoiceCount()</pre>
+<div class="block">Returns the number of voices in this measure.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>number of voices in this measure.</dd>
+<dd>number of voices in this measure</dd>
 </dl>
 </li>
 </ul>
@@ -501,6 +531,7 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>isSingleVoice</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isSingleVoice()</pre>
+<div class="block">Returns true if this measure has only a single voice.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if this measure only has one voice, false otherwise.</dd>
@@ -514,6 +545,7 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getNumber</h4>
 <pre class="methodSignature">public&nbsp;int&nbsp;getNumber()</pre>
+<div class="block">Returns the measure number of this measure.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the number of this measure.</dd>
@@ -527,9 +559,10 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getTimeSignature</h4>
 <pre class="methodSignature">public&nbsp;<a href="TimeSignature.html" title="class in org.wmn4j.notation.elements">TimeSignature</a>&nbsp;getTimeSignature()</pre>
+<div class="block">Returns the time signature in effect in this measure.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>TimeSignature in effect in this measure.</dd>
+<dd>the time signature in effect in this measure</dd>
 </dl>
 </li>
 </ul>
@@ -540,9 +573,10 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getKeySignature</h4>
 <pre class="methodSignature">public&nbsp;<a href="KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a>&nbsp;getKeySignature()</pre>
+<div class="block">Returns the key signature in effect in this measure.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>KeySignature in effect in this measure.</dd>
+<dd>the key signature in effect in this measure</dd>
 </dl>
 </li>
 </ul>
@@ -553,6 +587,7 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getRightBarline</h4>
 <pre class="methodSignature">public&nbsp;<a href="Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;getRightBarline()</pre>
+<div class="block">Returns the barline on the right side of this measure.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>right barline of this measure.</dd>
@@ -566,9 +601,11 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getLeftBarline</h4>
 <pre class="methodSignature">public&nbsp;<a href="Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;getLeftBarline()</pre>
+<div class="block">Returns the barline on the left side of this measure. For example, this can
+ be a barline that denotes the beginning of a repeat.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>left barline of this measure.</dd>
+<dd>left barline of this measure</dd>
 </dl>
 </li>
 </ul>
@@ -579,9 +616,10 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getClef</h4>
 <pre class="methodSignature">public&nbsp;<a href="Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;getClef()</pre>
+<div class="block">Returns the clef in effect in the beginning of this measure.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The clef in effect in the beginning of this measure.</dd>
+<dd>the clef in effect in the beginning of this measure</dd>
 </dl>
 </li>
 </ul>
@@ -592,9 +630,10 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getClefChanges</h4>
 <pre class="methodSignature">public&nbsp;java.util.Map&lt;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>,&#8203;<a href="Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&gt;&nbsp;getClefChanges()</pre>
+<div class="block">Returns the clef changes in this measure.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a Map of clef changes in this measure, where the Duration key is the
+<dd>a map of clef changes in this measure, where the duration key is the
          offset counted from the beginning of the measure.</dd>
 </dl>
 </li>
@@ -606,6 +645,7 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>containsClefChanges</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;containsClefChanges()</pre>
+<div class="block">Returns true if this measure contains clef changes.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if there are clef changes in this measure, false otherwise.</dd>
@@ -619,9 +659,10 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>isPickUp</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isPickUp()</pre>
+<div class="block">Returns true if this measure is a pickup measure.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this <code>Measure</code> is a pickup measure.</dd>
+<dd>true if this measure is a pickup measure.</dd>
 </dl>
 </li>
 </ul>
@@ -634,14 +675,13 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <pre class="methodSignature">public&nbsp;<a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&nbsp;get&#8203;(int&nbsp;voiceNumber,
                       int&nbsp;index)
                throws java.util.NoSuchElementException</pre>
-<div class="block">Returns the <code>Durational</code> at the given index on the given voice
- number.</div>
+<div class="block">Returns the <a href="Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> at the given index on the given voice number.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>voiceNumber</code> - Number of the voice from which to get the element.</dd>
-<dd><code>index</code> - index of element on the voice.</dd>
+<dd><code>voiceNumber</code> - the number of the voice from which to get the element</dd>
+<dd><code>index</code> - index of element on the voice</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd><code>Durational</code> at the given index on the given voice.</dd>
+<dd>the <a href="Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> at the given index on the given voice</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.util.NoSuchElementException</code> - if there is no voice with the given number of
                                 if the index is out of range</dd>
@@ -655,12 +695,9 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>toString</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;toString()</pre>
-<div class="block">String representation of <code>Measure</code>. This is subject to change.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string representation of measure.</dd>
 </dl>
 </li>
 </ul>
@@ -674,8 +711,6 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>iterator</code>&nbsp;in interface&nbsp;<code>java.lang.Iterable&lt;<a href="Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;</code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>iterator that goes through the Measure voice wise.</dd>
 </dl>
 </li>
 </ul>
@@ -686,10 +721,10 @@ implements java.lang.Iterable&lt;<a href="Durational.html" title="interface in o
 <li class="blockList">
 <h4>getMeasureIterator</h4>
 <pre class="methodSignature">public&nbsp;<a href="Measure.Iter.html" title="class in org.wmn4j.notation.elements">Measure.Iter</a>&nbsp;getMeasureIterator()</pre>
-<div class="block">Get an iterator as <code>Measure.Iter</code>.</div>
+<div class="block">Returns a measure iterator for this measure.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>an iterator of type <code>Measure.Iter</code>.</dd>
+<dd>a measure iterator for this measure</dd>
 </dl>
 </li>
 </ul>
