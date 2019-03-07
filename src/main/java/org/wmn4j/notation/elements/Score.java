@@ -14,9 +14,8 @@ import java.util.NoSuchElementException;
 import org.wmn4j.notation.iterators.ScorePosition;
 
 /**
- * Class that describes a score. This class is immutable.
- * <code>ScoreBuilder</code> can be used for creating <code>Score</code>
- * objects.
+ * Represents a score. This class is immutable.
+ *
  */
 public class Score implements Iterable<Part> {
 
@@ -47,8 +46,10 @@ public class Score implements Iterable<Part> {
 	private final List<Part> parts;
 
 	/**
-	 * @param attributes The attributes of the score.
-	 * @param parts      The parts in the score.
+	 * Constructor.
+	 *
+	 * @param attributes the attributes of the score
+	 * @param parts      the parts in the score
 	 */
 	public Score(Map<Attribute, String> attributes, List<Part> parts) {
 		this.parts = Collections.unmodifiableList(new ArrayList<>(parts));
@@ -60,37 +61,47 @@ public class Score implements Iterable<Part> {
 	}
 
 	/**
-	 * @return Name of this <code>Score</code>.
+	 * Returns the name of this score.
+	 *
+	 * @return the name of this score
 	 */
 	public String getName() {
 		return this.getAttribute(Attribute.NAME);
 	}
 
 	/**
-	 * @return number of parts in this <code>Score</code>.
+	 * Returns the number of parts in this score.
+	 *
+	 * @return number of parts in this score
 	 */
 	public int getPartCount() {
 		return this.parts.size();
 	}
 
 	/**
-	 * @return the parts in this <code>Score</code> as list in no particular order.
+	 * Returns the parts in this score.
+	 *
+	 * @return the parts in this score
 	 */
 	public List<Part> getParts() {
 		return this.parts;
 	}
 
 	/**
-	 * @param index the number of the <code>Part</code> in the <code>Score</code>.
-	 * @return <code>Part</code> associated with index.
+	 * Returns the part at the index.
+	 *
+	 * @param index the number of the part in this score
+	 * @return the part at the index
 	 */
 	public Part getPart(int index) {
 		return this.parts.get(index);
 	}
 
 	/**
-	 * @param attribute the type of the attribute.
-	 * @return the text associated with attribute if the attribute is set. Empty
+	 * Returns the value of the given attribute.
+	 *
+	 * @param attribute the type of the attribute
+	 * @return the text associated with attribute if the attribute is present. Empty
 	 *         string otherwise.
 	 */
 	public String getAttribute(Attribute attribute) {
@@ -102,11 +113,11 @@ public class Score implements Iterable<Part> {
 	}
 
 	/**
-	 * Get the <code>Durational</code> at position.
+	 * Returns the durational notation object at the given position.
 	 *
-	 * @param position the <code>ScorePosition</code> from which to get the element.
-	 * @return the <code>Durational</code> at position.
-	 * @throws NoSuchElementException if the position is not found.
+	 * @param position the position from which to get the element
+	 * @return the notation object with duration at the given position
+	 * @throws NoSuchElementException if the position is not found in this score
 	 */
 	public Durational getAtPosition(ScorePosition position) throws NoSuchElementException {
 		final Part part = this.parts.get(position.getPartNumber());
@@ -138,9 +149,6 @@ public class Score implements Iterable<Part> {
 		return strBuilder.toString();
 	}
 
-	/**
-	 * @return iterator that does not support modifying the <code>Score</code>.
-	 */
 	@Override
 	public Iterator<Part> iterator() {
 		return this.parts.iterator();
