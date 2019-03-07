@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.iterators;
@@ -10,39 +9,37 @@ import java.util.NoSuchElementException;
 import org.wmn4j.notation.elements.Durational;
 
 /**
- * Interface for iterators that iterate through the <code>Durational</code>
- * objects in a <code>Score</code>.
- *
- * @author Otso Björklund
+ * Interface for iterators that iterate through the
+ * {@link org.wmn4j.notation.elements.Durational} objects in a
+ * {@link org.wmn4j.notation.elements.Score}.
  */
 public interface ScoreIterator extends Iterator<Durational> {
 
 	/**
-	 * Checks if the <code>ScoreIterator</code> is at the end of the score.
+	 * Returns true if this iterator has elements left.
 	 *
-	 * @return true if not at the end, false otherwise.
+	 * @return true if not at the end, false otherwise
 	 */
 	@Override
 	boolean hasNext();
 
 	/**
-	 * Get the next <code>Durational</code> from the score. Order of iteration
+	 * Get the next durational notation element from the score. Order of iteration
 	 * depends on the implementation.
 	 *
-	 * @return next <code>Durational</code>.
-	 * @throws NoSuchElementException if next <code>Durational</code> is not
-	 *                                available.
+	 * @return next durational element
+	 * @throws NoSuchElementException if this iterator has already reached the end
+	 *                                of the score
 	 */
 	@Override
 	Durational next() throws NoSuchElementException;
 
 	/**
-	 * Returns the position of the <code>Durational</code> returned by the last call
-	 * of {@link #next() next}. This method should only be called after
-	 * {@link #next() next} has been called.
+	 * Returns the position of the {@link Durational} returned by the last call of
+	 * {@link #next() next}. This method should only be called after {@link #next()
+	 * next} has been called.
 	 *
-	 * @return <code>ScorePosition</code> of the previously returned
-	 *         <code>Durational</code>.
+	 * @return the position of the previously returned duration notation element
 	 * @throws IllegalStateException if {@link #next() next} has not been called on
 	 *                               the iterator
 	 */
