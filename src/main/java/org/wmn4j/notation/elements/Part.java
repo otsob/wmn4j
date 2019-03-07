@@ -7,44 +7,52 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Interface for parts in a score. The class <code>PartBuilder</code> can be
- * used for constructing <code>Part</code> objects.
+ * Represents a part in a score.
  */
 public interface Part extends Iterable<Measure> {
 
 	/**
-	 * Attribute types that a <code>Part</code> can have.
+	 * Attribute types that a part can have.
 	 */
 	enum Attribute {
 		NAME, ABBREVIATED_NAME
 	};
 
 	/**
-	 * @return name of this <code>Part</code>.
+	 * Returns the name of this part.
+	 *
+	 * @return name of this part
 	 */
 	String getName();
 
 	/**
-	 * @return true if this <code>Part</code> has multiple staves. False otherwise.
+	 * Returns true if this part has multiple staves.
+	 *
+	 * @return true if this part has multiple staves
 	 */
 	boolean isMultiStaff();
 
 	/**
-	 * @return number of staves in this part.
+	 * Returns the number of staves in this part.
+	 *
+	 * @return number of staves in this part
 	 */
 	int getStaffCount();
 
 	/**
-	 * @param attribute the Attribute to get from this <code>Part</code>.
-	 * @return the String associated with the attribute, or an empty string if the
-	 *         attribute is not set.
+	 * Returns the given attribute. If the attribute is not present, returns an
+	 * empty string.
+	 *
+	 * @param attribute the attribute to return from this part
+	 * @return the value of the attribute, or an empty string if the attribute is
+	 *         not set
 	 */
 	String getPartAttribute(Attribute attribute);
 
 	/**
-	 * Get the number of measures in the part. The count is based on the measure
-	 * numbers, so even if a part has multiple staves its measure count is the
-	 * largest measure number.
+	 * Returns the number of measures in this part. The count is based on the
+	 * measure numbers, so even if a part has multiple staves its measure count is
+	 * the largest measure number.
 	 *
 	 * @return number of measures in the part. If there is a pickup measure, it is
 	 *         included in the count.
@@ -52,17 +60,18 @@ public interface Part extends Iterable<Measure> {
 	int getMeasureCount();
 
 	/**
-	 * Get the number of complete measures.
+	 * Returns the the number of complete measures. Does not include the measure
+	 * number if there is one.
 	 *
-	 * @return the number of measures excluding the pickup measure.
+	 * @return the number of measures excluding the pickup measure
 	 */
 	int getFullMeasureCount();
 
 	/**
-	 * Returns the measure with the staff and measure number.
+	 * Returns the measure with the given number from the staff with the given
+	 * number.
 	 *
-	 * @param staffNumber   Number of staff. Is not used when accessing a single
-	 *                      staff part.
+	 * @param staffNumber   the number of the staff from which the get the measure
 	 * @param measureNumber the number of the measure
 	 * @return the measure with measureNumber from the staff with staffNumber
 	 * @throws NoSuchElementException if there is no staff of measure with the given
@@ -71,7 +80,11 @@ public interface Part extends Iterable<Measure> {
 	Measure getMeasure(int staffNumber, int measureNumber) throws NoSuchElementException;
 
 	/**
-	 * @return An iterator that implements the Part.Iter interface.
+	 * Returns a part iterator that can be used to iterate through the measures in
+	 * this part.
+	 *
+	 * @return an iterator that can be used to iterate through the measures in this
+	 *         part
 	 */
 	Part.Iter getPartIterator();
 
@@ -81,14 +94,18 @@ public interface Part extends Iterable<Measure> {
 	public interface Iter extends Iterator<Measure> {
 
 		/**
-		 * @return The number of the <code>Staff</code> from which the
-		 *         <code>Measure</code> on the previous call of next was returned.
+		 * Returns the staff number of the measure that was returned on the previous
+		 * call of next.
+		 *
+		 * @return the staff number of the previous measure
 		 */
 		int getStaffNumberOfPrevious();
 
 		/**
-		 * @return The number of the <code>Measure</code> that was returned by the
-		 *         previous call of next.
+		 * Returns the measure number of the measure that was returned on the previous
+		 * call of next.
+		 *
+		 * @return the measure number of the previous measure
 		 */
 		int getMeasureNumberOfPrevious();
 	}
