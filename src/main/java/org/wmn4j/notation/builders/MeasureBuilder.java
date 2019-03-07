@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.builders;
@@ -25,16 +24,13 @@ import org.wmn4j.notation.elements.TimeSignature;
 import org.wmn4j.notation.elements.TimeSignatures;
 
 /**
- * Class for building <code>Measure</code> objects. The builder does not ensure
- * that the <code>DurationalBuilder</code> objects in the builder fill up
- * exactly a measure that has the set time signature. The methods
- * {@link #isFull() isFull} and {@link #isVoiceFull(int) isVoiceFull} should be
- * used for checking if the durations add up to the correct
+ * Class for building {@link Measure} objects. The methods {@link #isFull()
+ * isFull} and {@link #isVoiceFull(int) isVoiceFull} should be used for checking
+ * if the durations add up to the correct amount to fill up the measure
+ * according to the specified time signature.
  *
  * Default values: TimeSignature : 4/4 KeySignature : C-major/a-minor Clef: G
  * Barlines (right and left): Single. No clef changes.
- *
- * @author Otso Björklund
  */
 public class MeasureBuilder {
 
@@ -53,26 +49,27 @@ public class MeasureBuilder {
 	// TODO: If MeasureAttributes are given, then use those.
 
 	/**
-	 * Create a <code>MeasureBuilder</code> with the given
-	 * <code>MeasureAttributes</code>.
+	 * Create a measure builder with the given attributes.
 	 *
-	 * @param number      Measure number for measure being built.
-	 * @param measureAttr MeasureAttributes for measure.
+	 * @param number            measure number for measure being built
+	 * @param measureAttributes attributes for the measure
 	 */
-	public MeasureBuilder(int number, MeasureAttributes measureAttr) {
+	public MeasureBuilder(int number, MeasureAttributes measureAttributes) {
 		this.voices = new HashMap<>();
 		this.number = number;
 
-		this.timeSig = measureAttr.getTimeSignature();
-		this.keySig = measureAttr.getKeySignature();
-		this.clef = measureAttr.getClef();
-		this.leftBarline = measureAttr.getLeftBarline();
-		this.rightBarline = measureAttr.getRightBarline();
-		this.clefChanges = new HashMap<>(measureAttr.getClefChanges());
+		this.timeSig = measureAttributes.getTimeSignature();
+		this.keySig = measureAttributes.getKeySignature();
+		this.clef = measureAttributes.getClef();
+		this.leftBarline = measureAttributes.getLeftBarline();
+		this.rightBarline = measureAttributes.getRightBarline();
+		this.clefChanges = new HashMap<>(measureAttributes.getClefChanges());
 	}
 
 	/**
-	 * @param number Measure number for measure being built.
+	 * Constructor.
+	 *
+	 * @param number measure number for measure being built
 	 */
 	public MeasureBuilder(int number) {
 		this.voices = new HashMap<>();
@@ -80,15 +77,19 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @return Measure number.
+	 * Returns the measure number set in this builder.
+	 *
+	 * @return the measure number set in this builder
 	 */
 	public int getNumber() {
 		return this.number;
 	}
 
 	/**
-	 * @param number measure number for the measure that can be built.
-	 * @return reference to this builder.
+	 * Sets the measure number in this builder.
+	 *
+	 * @param number the measure number to set in this builder
+	 * @return reference to this builder
 	 */
 	public MeasureBuilder setNumber(int number) {
 		this.number = number;
@@ -96,15 +97,19 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @return time signature currently set for this builder.
+	 * Returns the time signature set in this builder.
+	 *
+	 * @return time signature set for this builder
 	 */
 	public TimeSignature getTimeSignature() {
 		return this.timeSig;
 	}
 
 	/**
-	 * @param timeSignature time signature for the measure that can be built.
-	 * @return reference to this builder.
+	 * Sets the time signature for this builder.
+	 *
+	 * @param timeSignature the time signature set in this builder
+	 * @return reference to this builder
 	 */
 	public MeasureBuilder setTimeSignature(TimeSignature timeSignature) {
 		this.timeSig = timeSignature;
@@ -112,15 +117,19 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @return key signature that is currently set for this builder.
+	 * Returns the key signature set in this builder.
+	 *
+	 * @return key signature that is set in this builder
 	 */
 	public KeySignature getKeySignature() {
 		return this.keySig;
 	}
 
 	/**
-	 * @param keySignature key signature for the measure that can be built.
-	 * @return reference to this builder.
+	 * Sets the key signature for this builder.
+	 *
+	 * @param keySignature key signature set in this builder
+	 * @return reference to this builder
 	 */
 	public MeasureBuilder setKeySignature(KeySignature keySignature) {
 		this.keySig = keySignature;
@@ -128,15 +137,19 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @return clef currently set for this builder.
+	 * Returns the clef set in this builder.
+	 *
+	 * @return the clef set in this builder
 	 */
 	public Clef getClef() {
 		return this.clef;
 	}
 
 	/**
-	 * @param clef clef for the measure that can be built.
-	 * @return reference to this builder.
+	 * Sets the clef in this builder.
+	 *
+	 * @param clef the clef to be set in this builder
+	 * @return reference to this builder
 	 */
 	public MeasureBuilder setClef(Clef clef) {
 		this.clef = clef;
@@ -144,15 +157,19 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @return left barline currently set for this builder.
+	 * Returns the left barline set in this builder.
+	 *
+	 * @return left barline set in this builder
 	 */
 	public Barline getLeftBarline() {
 		return this.leftBarline;
 	}
 
 	/**
-	 * @param leftBarline left barline for the measure that can be built.
-	 * @return reference to this builder.
+	 * Sets the left barline in this builder.
+	 *
+	 * @param leftBarline left barline to set for this builder
+	 * @return reference to this builder
 	 */
 	public MeasureBuilder setLeftBarline(Barline leftBarline) {
 		this.leftBarline = leftBarline;
@@ -160,15 +177,19 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @return right barline currently set for this builder.
+	 * Returns the right barline set in this builder.
+	 *
+	 * @return the right barline set in this builder
 	 */
 	public Barline getRightBarline() {
 		return rightBarline;
 	}
 
 	/**
-	 * @param rightBarline right barline for the measure that can be built.
-	 * @return reference to this builder.
+	 * Sets the right barline in this builder.
+	 *
+	 * @param rightBarline right barline to be set in this builder
+	 * @return reference to this builder
 	 */
 	public MeasureBuilder setRightBarline(Barline rightBarline) {
 		this.rightBarline = rightBarline;
@@ -176,6 +197,9 @@ public class MeasureBuilder {
 	}
 
 	/**
+	 * Returns the clef changes in this builder. The keys in the map are the offset
+	 * values of the clef changes measured from the beginning of the measure.
+	 *
 	 * @return clef changes currently set for this builder. Durations are offsets
 	 *         from the beginning of the measure.
 	 */
@@ -184,11 +208,11 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * Add clef change at offset.
+	 * Adds a clef change at the given offset.
 	 *
-	 * @param offset Offset of clef change from beginning of measure.
-	 * @param clef   clef starting from offset.
-	 * @return reference to this builder.
+	 * @param offset offset of clef change from beginning of measure
+	 * @param clef   clef starting from offset
+	 * @return reference to this builder
 	 */
 	public MeasureBuilder addClefChange(Duration offset, Clef clef) {
 		this.clefChanges.put(offset, clef);
@@ -196,7 +220,7 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * Add new empty voice to this <code>MeasureBuilder</code>.
+	 * Add new empty voice to this builder.
 	 *
 	 * @return reference to this builder.
 	 */
@@ -206,10 +230,10 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * Add possibly non-empty voice to this <code>MeasureBuilder</code>.
+	 * Add possibly voice to this builder.
 	 *
-	 * @param voice new voice to be added to this.
-	 * @return reference to this builder.
+	 * @param voice new voice to be added to this
+	 * @return reference to this builder
 	 */
 	public MeasureBuilder addVoice(List<DurationalBuilder> voice) {
 		this.voices.put(this.voices.keySet().size(), voice);
@@ -217,12 +241,12 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * Append <code>DurationalBuilder</code> object to voice with index
-	 * <code>voice</code>. If voice does not exist it is created.
+	 * Append a {@link DurationalBuilder} to the voice with the given number. If
+	 * voice does not exist it is created.
 	 *
-	 * @param voice   index of voice to which builder is appended.
-	 * @param builder DurationalBuilder object to be appended to voice.
-	 * @return reference to this builder.
+	 * @param voice   number of voice to which builder is appended
+	 * @param builder builder object to be appended to voice
+	 * @return reference to this builder
 	 */
 	public MeasureBuilder addToVoice(int voice, DurationalBuilder builder) {
 
@@ -235,51 +259,51 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * @return number or voices in this builder.
+	 * Returns the number of voices in this builder.
+	 *
+	 * @return number or voices in this builder
 	 */
 	public int getNumberOfVoices() {
 		return this.voices.size();
 	}
 
 	/**
-	 * Get the voice numbers. Voice numbers do not have to be contiguous.
+	 * Returns the voice numbers set in this builder. Voice numbers do not have to
+	 * be contiguous.
 	 *
-	 * @return the set of voice numbers in this builder.
+	 * @return the set of voice numbers in this builder
 	 */
 	public Set<Integer> getVoiceNumbers() {
 		return Collections.unmodifiableSet(this.voices.keySet());
 	}
 
 	/**
-	 * Set the element at specified location to given value.
+	 * Sets the element at specified location to given value.
 	 *
-	 * @param voice   the number of the voice to be modified.
-	 * @param index   the index in the voice.
-	 * @param builder element to be placed in index on voice.
+	 * @param voice   the number of the voice to be modified
+	 * @param index   the index in the voice
+	 * @param builder element to be placed in index on voice
 	 */
 	public void setElement(int voice, int index, DurationalBuilder builder) {
 		this.voices.get(voice).set(index, builder);
 	}
 
 	/**
-	 * Get a reference to the <code>DurationalBuilder</code> at the specified
-	 * position.
+	 * Returns the builder at the given position.
 	 *
-	 * @param voice the number of the voice from which to get the object.
-	 * @param index index in the voice.
-	 * @return reference to the <code>DurationalBuilder</code> at the position
-	 *         specified by the parameters.
+	 * @param voice the number of the voice from which to get the object
+	 * @param index index in the voice
+	 * @return reference to the builder at the position specified by the parameters
 	 */
 	public DurationalBuilder get(int voice, int index) {
 		return this.voices.get(voice).get(index);
 	}
 
 	/**
-	 * Get the sum of durations on a voice.
+	 * Returns the sum of durations in a voice.
 	 *
-	 * @param voice the index of the voice.
-	 * @return Sum of the durations of the <code>Durational</code> objects on the
-	 *         voice.
+	 * @param voice the index of the voice
+	 * @return sum of the durations of the in the voice
 	 */
 	public Duration totalDurationOfVoice(int voice) {
 		final List<Duration> durations = new ArrayList<>();
@@ -291,13 +315,12 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * Check if voice is full. A voice is considered full when it contains
-	 * <code>DurationalBuilder</code> objects whose combined duration is enough to
-	 * fill a measure that has the time signature that is set for this builder.
+	 * Returns true if the voice with the given number is full. A voice is
+	 * considered full when the durations in it are enough to fill a measure with
+	 * the time signature set in this builder.
 	 *
-	 * @param voice index of voice that is checked.
-	 * @return true if the durations in the voice add up to fill a measure. False
-	 *         otherwise.
+	 * @param voice index of voice that is checked
+	 * @return true if the durations in the voice add up to fill a measure
 	 */
 	public boolean isVoiceFull(int voice) {
 		final Duration voiceDuration = this.totalDurationOfVoice(voice);
@@ -305,7 +328,7 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * Check if any voice in this builder is full.
+	 * Returns true if any voice in this builder is full.
 	 *
 	 * @return true if even a single voice is full. False otherwise.
 	 */
@@ -317,14 +340,6 @@ public class MeasureBuilder {
 		}
 
 		return false;
-	}
-
-	private List<Durational> buildVoice(List<DurationalBuilder> buildersForVoice) {
-		final List<Durational> voice = new ArrayList<>();
-
-		buildersForVoice.forEach((builder) -> voice.add(builder.build()));
-
-		return voice;
 	}
 
 	private Map<Integer, List<Durational>> getBuiltVoices() {
@@ -341,11 +356,9 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * Create a <code>Measure</code> with the contents of this builder.
+	 * Returns a {@link Measure} with the values set in this builder.
 	 *
-	 * @return Measure that has the set attributes and contains
-	 *         <code>Durational</code> objects built using the contained
-	 *         <code>DurationalBuilder</code> objects.
+	 * @return a measure with the values set in this builder
 	 */
 	public Measure build() {
 		final MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(this.timeSig, this.keySig,
