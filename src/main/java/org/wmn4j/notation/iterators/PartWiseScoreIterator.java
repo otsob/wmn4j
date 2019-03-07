@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.iterators;
@@ -13,11 +12,9 @@ import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Score;
 
 /**
- * Iterates through a <code>Score</code> in part wise order. Starts by iterating
+ * Iterates through a {@link Score} in part wise order. Starts by iterating
  * through the part with the smallest number. Iterates through parts starting
  * from smallest measure number. Iterates through measure voice by voice.
- *
- * @author Otso Björklund
  */
 public class PartWiseScoreIterator implements ScoreIterator {
 
@@ -33,7 +30,9 @@ public class PartWiseScoreIterator implements ScoreIterator {
 	private int prevIndex;
 
 	/**
-	 * @param score The score that this iterates through.
+	 * Constructor.
+	 *
+	 * @param score the score that this iterates through.
 	 */
 	public PartWiseScoreIterator(Score score) {
 		this.scoreIterator = score.iterator();

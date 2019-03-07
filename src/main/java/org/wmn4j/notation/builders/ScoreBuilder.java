@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.builders;
@@ -13,9 +12,7 @@ import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Score;
 
 /**
- * Class for building <code>Score</code> objects.
- *
- * @author Otso Björklund
+ * Class for building {@link Score} objects.
  */
 public class ScoreBuilder {
 
@@ -23,7 +20,7 @@ public class ScoreBuilder {
 	private final List<PartBuilder> partBuilders;
 
 	/**
-	 * Constructor that creates an empty ScoreBuilder.
+	 * Constructor that creates an empty builder.
 	 */
 	public ScoreBuilder() {
 		this.scoreAttr = new HashMap<>();
@@ -31,28 +28,28 @@ public class ScoreBuilder {
 	}
 
 	/**
-	 * Set attribute to given value.
+	 * Set the given attribute to given value.
 	 *
-	 * @param attribute the attribute to be set.
-	 * @param attrValue value for the attribute.
+	 * @param attribute      the attribute to be set
+	 * @param attributeValue value for the attribute
 	 */
-	public void setAttribute(Score.Attribute attribute, String attrValue) {
-		this.scoreAttr.put(attribute, attrValue);
+	public void setAttribute(Score.Attribute attribute, String attributeValue) {
+		this.scoreAttr.put(attribute, attributeValue);
 	}
 
 	/**
-	 * Add <code>PartBuilder</code> to builder.
+	 * Add {@link PartBuilder} to this builder.
 	 *
-	 * @param partBuilder partBuilder to added to this builder.
+	 * @param partBuilder partBuilder to add to this builder
 	 */
 	public void addPart(PartBuilder partBuilder) {
 		this.partBuilders.add(partBuilder);
 	}
 
 	/**
-	 * Build a <code>Score</code> with the values specified in this builder.
+	 * Returns a {@link Score} with the contents of this builder.
 	 *
-	 * @return a <code>Score</code> with the values specified in this builder.
+	 * @return a score with the contents of this builder
 	 */
 	public Score build() {
 		final List<Part> parts = new ArrayList<>();

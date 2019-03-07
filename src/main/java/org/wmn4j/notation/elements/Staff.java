@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -11,9 +10,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Class for representing a staff in a score. This class is immutable.
- *
- * @author Otso Björklund
+ * Represents a staff in a score. This class is immutable.
  */
 public class Staff implements Iterable<Measure> {
 
@@ -21,14 +18,14 @@ public class Staff implements Iterable<Measure> {
 	 * Type of staff.
 	 */
 	public enum Type {
-	/**
-	 * Normal five line staff.
-	 */
-	NORMAL,
-	/**
-	 * A single line percussion staff.
-	 */
-	SINGLE_LINE
+		/**
+		 * Normal five line staff.
+		 */
+		NORMAL,
+		/**
+		 * A single line percussion staff.
+		 */
+		SINGLE_LINE
 	};
 
 	private final List<Measure> measures;
@@ -56,10 +53,10 @@ public class Staff implements Iterable<Measure> {
 	}
 
 	/**
-	 * Get <code>Measure</code> by measure number.
+	 * Returns the measure with the given number.
 	 *
-	 * @param number the number of the measure to get from this staff.
-	 * @return the measure with number
+	 * @param number the number of the measure to get from this staff
+	 * @return the measure with the given number
 	 */
 	public Measure getMeasure(int number) {
 		if (!this.hasPickupMeasure() && number < 1) {
@@ -70,7 +67,10 @@ public class Staff implements Iterable<Measure> {
 	}
 
 	/**
-	 * @return number of measures in this <code>Staff</code>.
+	 * Returns the number of measures in this staff. Includes the pickup measure if
+	 * one is present.
+	 *
+	 * @return the number of measures in this staff
 	 */
 	public int getMeasureCount() {
 		int measureCount = this.getFullMeasureCount();
@@ -83,15 +83,20 @@ public class Staff implements Iterable<Measure> {
 	}
 
 	/**
-	 * @return number of full measures in this <code>Staff</code>. Pickup measure is
-	 *         not included.
+	 * Returns the number of full measures in this staff. Pickup measure is
+	 * excluded.
+	 *
+	 * @return the number of full measures in this staff
 	 */
 	public int getFullMeasureCount() {
 		return this.measures.size() - 1;
 	}
 
 	/**
-	 * @return List of measures in this staff in order from first measure to last.
+	 * Returns the measures in this staff as a list from smallest measure number to
+	 * greatest.
+	 *
+	 * @return the measures in this staff
 	 */
 	public List<Measure> getMeasures() {
 		if (!this.hasPickupMeasure()) {
@@ -102,14 +107,18 @@ public class Staff implements Iterable<Measure> {
 	}
 
 	/**
-	 * @return true if this staff begins with a pickup measure. false otherwise.
+	 * Returns true if this staff contains a pickup measure.
+	 *
+	 * @return true if this staff begins with a pickup measure, false otherwise
 	 */
 	public boolean hasPickupMeasure() {
 		return this.measures.get(0) != null;
 	}
 
 	/**
-	 * @return type of this <code>Staff</code>.
+	 * Returns the type of this staff.
+	 *
+	 * @return type of this staff
 	 */
 	public Type getType() {
 		return this.type;
@@ -127,9 +136,6 @@ public class Staff implements Iterable<Measure> {
 		return strBuilder.toString();
 	}
 
-	/**
-	 * @return iterator that does not support modifying this <code>Staff</code>.
-	 */
 	@Override
 	public Iterator<Measure> iterator() {
 		final Iterator<Measure> iter = this.measures.iterator();

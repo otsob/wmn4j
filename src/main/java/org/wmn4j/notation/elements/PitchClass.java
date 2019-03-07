@@ -1,13 +1,10 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
 
 /**
  * Represents the 12 pitch classes in equal-temperament tuning.
- *
- * @author Otso Björklund
  */
 public enum PitchClass {
 	/**
@@ -81,18 +78,22 @@ public enum PitchClass {
 	}
 
 	/**
-	 * @return the <a href="http://en.wikipedia.org/wiki/Pitch_class">pitch class
-	 *         number</a> of this pitch class.
+	 * Returns the <a href="http://en.wikipedia.org/wiki/Pitch_class">pitch class
+	 * number</a> of this pitch class.
+	 *
+	 * @return the pitch class number of this pitch class
 	 */
 	public int toInt() {
 		return this.number;
 	}
 
 	/**
-	 * Computes the pitch class from the pitch number.
+	 * Returns the pitch class that corresponds to the given non-negative pitch
+	 * number.
 	 *
-	 * @param pitchNumber The MIDI number of the pitch.
-	 * @return pitch class corresponding to the pitchNumber.
+	 * @param pitchNumber The MIDI number of the pitch for which the pitch class is
+	 *                    returned
+	 * @return pitch class corresponding to the given pitch number
 	 */
 	public static PitchClass fromInt(int pitchNumber) {
 		if (pitchNumber < 0) {

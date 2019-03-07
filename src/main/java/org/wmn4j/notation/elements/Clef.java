@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -7,14 +6,17 @@ package org.wmn4j.notation.elements;
 import java.util.Objects;
 
 /**
- * Class for clefs. Clefs have a type which tells the shape of the clef and
+ * Represents a clef. Clefs have a symbol which tells the shape of the clef and
  * position which is the line on which the center of the clef is situated. For
- * example, the center of a G-type clef is the part of the clef that denotes G4.
- *
- * @author Otso Björklund
+ * example, the center of a G-symbol clef is the part of the clef that denotes
+ * G4.
  */
 public final class Clef {
-	public enum Type {
+
+	/**
+	 * Represents the type of clef symbol.
+	 */
+	public enum Symbol {
 		/**
 		 * The G clef.
 		 */
@@ -36,45 +38,45 @@ public final class Clef {
 		PERCUSSION
 	}
 
-	private final Type type;
+	private final Symbol symbol;
 	// The the center of the clef counted from bottom.
 	private final int line;
 
 	/**
-	 * Get an instance of <code>Clef</code>.
+	 * Returns an instance with the given symbol at the given line.
 	 *
-	 * @throws IllegalArgumentException if line is smaller than 1.
-	 * @throws NullPointerException     if type is null.
-	 * @param type type of the clef.
-	 * @param line counting from the bottom line, the line on which the clef is
-	 *             centered.
-	 * @return a Clef with the specified properties.
+	 * @throws IllegalArgumentException if line is smaller than 1
+	 * @throws NullPointerException     if symbol is null
+	 * @param symbol the symbol of the clef
+	 * @param line   counting from the bottom line, the line on which the clef is
+	 *               centered
+	 * @return a clef with the specified properties.
 	 */
-	public static Clef getClef(Type type, int line) {
+	public static Clef getClef(Symbol symbol, int line) {
 
 		if (line < 1) {
 			throw new IllegalArgumentException("line is smaller than 1");
 		}
 
-		return new Clef(Objects.requireNonNull(type), line);
+		return new Clef(Objects.requireNonNull(symbol), line);
 	}
 
-	private Clef(Type type, int line) {
-		this.type = type;
+	private Clef(Symbol symbol, int line) {
+		this.symbol = symbol;
 		this.line = line;
 	}
 
 	@Override
 	public String toString() {
-		return this.type + "-clef(" + this.line + ")";
+		return this.symbol + "-clef(" + this.line + ")";
 	}
 
 	/**
-	 * Compare this <code>Clef</code> with <code>Object o</code> for equality.
+	 * Returns true if this clef is equal to the given object.
 	 *
-	 * @param o the Object against which this is compared for equality.
-	 * @return true if o is an instance of Clef and has the same type and position
-	 *         as this.
+	 * @param o the Object against which this is compared for equality
+	 * @return true if o is an instance of Clef and has the same symbol and position
+	 *         as this
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -87,13 +89,13 @@ public final class Clef {
 		}
 
 		final Clef other = (Clef) o;
-		return this.type == other.type && this.line == other.line;
+		return this.symbol == other.symbol && this.line == other.line;
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = 3;
-		hash = 71 * hash + Objects.hashCode(this.type);
+		hash = 71 * hash + Objects.hashCode(this.symbol);
 		hash = 71 * hash + this.line;
 		return hash;
 	}

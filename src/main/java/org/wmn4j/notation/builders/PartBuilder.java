@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.builders;
@@ -18,9 +17,7 @@ import org.wmn4j.notation.elements.SingleStaffPart;
 import org.wmn4j.notation.elements.Staff;
 
 /**
- * Builder for building <code>Part</code> objects.
- *
- * @author Otso Björklund
+ * Builder for building {@link Part} objects.
  */
 public class PartBuilder {
 
@@ -29,26 +26,30 @@ public class PartBuilder {
 	private static final int SINGLE_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
 
 	/**
-	 * @param name Name of the <code>Part</code> to be built.
+	 * Constructor.
+	 *
+	 * @param name the name of the part to be built.
 	 */
 	public PartBuilder(String name) {
 		this.partAttributes.put(Part.Attribute.NAME, name);
 	}
 
 	/**
-	 * @return the number of staves in the <code>PartBuilder</code>.
+	 * Returns the number of staves set in this builder.
+	 *
+	 * @return the number of staves in this builder
 	 */
 	public int getStaffCount() {
 		return this.staveContents.size();
 	}
 
 	/**
-	 * Adds a <code>MeasureBuilder</code>. This is used for building parts with a
-	 * single staff.
+	 * Adds a {@link MeasureBuilder} to this builder. This is used for building
+	 * parts with a single staff.
 	 *
-	 * @param measureBuilder The measureBuilder that is added to the end of the
-	 *                       staff.
-	 * @return reference to this.
+	 * @param measureBuilder the measureBuilder that is added to the end of the
+	 *                       staff
+	 * @return reference to this
 	 */
 	public PartBuilder add(MeasureBuilder measureBuilder) {
 		this.addToStaff(SINGLE_STAFF_NUMBER, measureBuilder);
@@ -56,14 +57,14 @@ public class PartBuilder {
 	}
 
 	/**
-	 * Adds a <code>MeasureBuilder</code> to staff. This is used for building parts
-	 * with multiple staves.
+	 * Adds a {@link MeasureBuilder} to the staff with the given number. This is
+	 * used for building parts with multiple staves.
 	 *
-	 * @param staffNumber    The number of the staff to which measureBuilder is
-	 *                       added.
-	 * @param measureBuilder The measureBuilder that is added to the end of the
-	 *                       staff.
-	 * @return reference to this.
+	 * @param staffNumber    the number of the staff to which measureBuilder is
+	 *                       added
+	 * @param measureBuilder the measureBuilder that is added to the end of the
+	 *                       staff
+	 * @return reference to this
 	 */
 	public PartBuilder addToStaff(int staffNumber, MeasureBuilder measureBuilder) {
 		if (!this.staveContents.containsKey(staffNumber)) {
@@ -75,15 +76,19 @@ public class PartBuilder {
 	}
 
 	/**
-	 * @param attribute The attribute to be set.
-	 * @param value     The value that will be set for the attribute.
+	 * Sets the given attribute to the given value.
+	 *
+	 * @param attribute the attribute to be set
+	 * @param value     the value that will be set for the attribute
 	 */
 	public void setAttribute(Part.Attribute attribute, String value) {
 		this.partAttributes.put(attribute, value);
 	}
 
 	/**
-	 * @return The name of the <code>Part</code> being built.
+	 * Returns the name set in this builder.
+	 *
+	 * @return the name set in this builder
 	 */
 	public String getName() {
 		return this.partAttributes.get(Part.Attribute.NAME);
@@ -94,10 +99,9 @@ public class PartBuilder {
 	}
 
 	/**
-	 * Creates a part using the contained <code>MeasureBuilder</code> objects.
+	 * Returns a part with the contents set in this builder.
 	 *
-	 * @return A <code>Part</code> with the measures and attributes in the builder.
-	 *         The type of the part depends on the number of staves.
+	 * @return a part with the contents set in this builder
 	 */
 	public Part build() {
 		if (this.staveContents.size() == 1) {

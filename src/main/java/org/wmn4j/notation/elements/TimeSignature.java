@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -10,8 +9,6 @@ import java.util.Objects;
  * Class for time signatures. Time signatures consist of the number of beats and
  * the duration of each beat. For example, for the time signature 4/4 the number
  * of beats is 4 and the duration of beat is <code>Durations.QUARTER</code>.
- *
- * @author Otso Björklund
  */
 public final class TimeSignature {
 

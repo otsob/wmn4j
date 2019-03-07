@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -13,13 +12,10 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Class that defines a note. This class is immutable. The
- * <code>NoteBuilder</code> class can be used for creating <code>Note</code>
- * objects. Notes have pitch, duration, articulations, and can be tied. A
- * sequence of tied notes functions like a singly linked list where a previous
- * note keeps track of the following tied note.
- *
- * @author otsobjorklund
+ * Represents a note. This class is immutable. Notes have pitch, duration,
+ * articulations, and can be tied. A sequence of tied notes functions like a
+ * singly linked list where a previous note keeps track of the following tied
+ * note.
  */
 public final class Note implements Durational, Pitched {
 
@@ -32,52 +28,50 @@ public final class Note implements Durational, Pitched {
 	private final boolean isTiedFrom;
 
 	/**
-	 * Get a <code>Note</code> object with specified parameters.
+	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitchName the letter in the pitch name.
+	 * @param pitchName the letter part of the pitch name
 	 * @param alter     how many half-steps the pitch is altered up (positive) or
-	 *                  down (negative).
-	 * @param octave    octave number of the pitch.
-	 * @param duration  the duration of the note. Must not be null.
-	 * @return a Note object with the given parameters.
+	 *                  down (negative)
+	 * @param octave    octave number of the pitch
+	 * @param duration  the duration of the note. Must not be null
+	 * @return an instance with the given parameters
 	 */
 	public static Note getNote(Pitch.Base pitchName, int alter, int octave, Duration duration) {
 		return getNote(Pitch.getPitch(pitchName, alter, octave), duration, null);
 	}
 
 	/**
-	 * Get a <code>Note</code> object with specified parameters.
+	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch    the pitch of the note. Must not be null.
-	 * @param duration the duration of the note. Must not be null.
-	 * @return a Note object with the given parameters.
+	 * @param pitch    the pitch of the note
+	 * @param duration the duration of the note
+	 * @return an instance with the given parameters
 	 */
 	public static Note getNote(Pitch pitch, Duration duration) {
 		return getNote(pitch, duration, null);
 	}
 
 	/**
-	 * Get a <code>Note</code> object with specified parameters.
+	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch         the pitch of the note. Must not be null.
-	 * @param duration      the duration of the note. Must not be null.
-	 * @param articulations a set of Articulations associated with the note.
-	 * @return a Note object with the given parameters.
+	 * @param pitch         the pitch of the note
+	 * @param duration      the duration of the note
+	 * @param articulations a set of Articulations associated with the note
+	 * @return an instance with the given parameters
 	 */
 	public static Note getNote(Pitch pitch, Duration duration, Set<Articulation> articulations) {
 		return new Note(pitch, duration, articulations, null, null, false);
 	}
 
 	/**
-	 * Get a <code>Note</code> object with specified parameters.
+	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch                  the pitch of the note. Must not be null.
-	 * @param duration               the duration of the note. Must not be null.
-	 * @param articulations          a set of Articulations associated with the
-	 *                               note.
-	 * @param multiNoteArticulations list of the MultiNoteArticulations for the
-	 *                               note.
-	 * @return a Note object with the given parameters.
+	 * @param pitch                  the pitch of the note
+	 * @param duration               the duration of the note
+	 * @param articulations          a set of Articulations associated with the note
+	 * @param multiNoteArticulations list of the MultiNoteArticulations for the note
+	 * @return an instance with the given parameters
 	 */
 	public static Note getNote(Pitch pitch, Duration duration, Set<Articulation> articulations,
 			List<MultiNoteArticulation> multiNoteArticulations) {
@@ -85,17 +79,15 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Get a <code>Note</code> object with specified parameters.
+	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch                  the pitch of the note. Must not be null.
-	 * @param duration               the duration of the note. Must not be null.
-	 * @param articulations          a set of Articulations associated with the
-	 *                               note.
-	 * @param multiNoteArticulations list of the MultiNoteArticulations for the
-	 *                               note.
-	 * @param tiedTo                 A tie from a previous note that ends in this.
-	 * @param isTiedFromPrevious     A tie that originates from this note.
-	 * @return a Note object with the given parameters.
+	 * @param pitch                  the pitch of the note
+	 * @param duration               the duration of the note
+	 * @param articulations          a set of Articulations associated with the note
+	 * @param multiNoteArticulations list of the MultiNoteArticulations for the note
+	 * @param tiedTo                 the following note to which this is tied
+	 * @param isTiedFromPrevious     true if this is tied from the previous note
+	 * @return an instance with the given parameters
 	 */
 	public static Note getNote(Pitch pitch, Duration duration, Set<Articulation> articulations,
 			List<MultiNoteArticulation> multiNoteArticulations, Note tiedTo, boolean isTiedFromPrevious) {
@@ -103,13 +95,7 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Private constructor. Use the static <code>getNote</code> methods or
-	 * <code>NoteBuilder</code> to get an instance.
-	 *
-	 * @throws NullPointerException if duration or pitch is null.
-	 * @param pitch         the pitch of the note.
-	 * @param duration      the duration of the note.
-	 * @param articulations a set of Articulations associated with the note.
+	 * Private constructor.
 	 */
 	private Note(Pitch pitch, Duration duration, Set<Articulation> articulations,
 			List<MultiNoteArticulation> multiNoteArticulations, Note tiedTo, boolean isTiedFromPrevious) {
@@ -133,9 +119,9 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Get the <code>Pitch</code> of this <code>Note</code>.
+	 * Returns the pitch of this note.
 	 *
-	 * @return the Pitch of this Note.
+	 * @return the pitch of this note
 	 */
 	@Override
 	public Pitch getPitch() {
@@ -143,97 +129,104 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Get the <code>Duration</code> of this <code>Note</code>.
+	 * Returns the duration of this note.
 	 *
-	 * @return the Duration of this Note.
+	 * @return the duration of this note
 	 */
 	@Override
 	public Duration getDuration() {
 		return this.duration;
 	}
 
-	/**
-	 * @return false.
-	 */
 	@Override
 	public boolean isRest() {
 		return false;
 	}
 
 	/**
-	 * Get the articulations of this <code>Note</code> as a <code>Set</code>.
+	 * Returns the articulations defined for this note.
 	 *
-	 * @return the articulations of this <code>Note</code>.
+	 * @return the articulations defined for this note
 	 */
 	public Set<Articulation> getArticulations() {
 		return this.articulations;
 	}
 
 	/**
-	 * Check if this <code>Note</code> has any articulations.
+	 * Returns true if this note has articulations that only affect this note, such
+	 * as staccato or tenuto.
 	 *
-	 * @return true if this Note has any articulations, otherwise false.
+	 * @return true if this note has articulations
 	 */
 	public boolean hasArticulations() {
 		return !this.articulations.isEmpty();
 	}
 
 	/**
-	 * Check if this <code>Note</code> has a particular articulation.
+	 * Returns true if this note has the given articulation.
 	 *
-	 * @param articulation the articulation whose presence is checked.
-	 * @return true if this Note has the given articulation, otherwise false.
+	 * @param articulation the articulation whose presence is checked
+	 * @return true if this note has the given articulation
 	 */
 	public boolean hasArticulation(Articulation articulation) {
 		return this.articulations.contains(articulation);
 	}
 
 	/**
-	 * @return The <code>MultiNoteArticulation</code> objects of this
-	 *         <code>Note</code>.
+	 * Returns the multinote articulations defined for this note. These are
+	 * articulations such as slurs or glissando.
+	 *
+	 * @return the multinote articulations defined for this note
 	 */
 	public List<MultiNoteArticulation> getMultiNoteArticulations() {
 		return this.multiNoteArticulations;
 	}
 
 	/**
-	 * @return true if this <code>Note</code> has any
-	 *         <code>MultiNoteArticulations</code>, false otherwise.
+	 * Returns true if this note is affected by any multinote articulations.
+	 *
+	 * @return true if this note is affected by any multinote articulations
 	 */
 	public boolean hasMultiNoteArticulations() {
 		return !this.multiNoteArticulations.isEmpty();
 	}
 
 	/**
-	 * @return True if this note is tied to a following note. False otherwise.
+	 * Returns true if this note is tied to a following note.
+	 *
+	 * @return true if this note is tied to a following note
 	 */
 	public boolean isTiedToFollowing() {
 		return this.tiedTo != null;
 	}
 
 	/**
-	 * @return True if this note is the end of a tie originating from a previous
-	 *         note. False otherwise.
+	 * Returns true if this note is tied to a previous note.
+	 *
+	 * @return true if this note is tied to a previous note
 	 */
 	public boolean isTiedFromPrevious() {
 		return this.isTiedFrom;
 	}
 
 	/**
-	 * @return True if there are any ties attached to this note. False otherwise.
+	 * Returns true if this note is tied to a previous or to a following note.
+	 *
+	 * @return true if this note is tied to a previous or to a following note
 	 */
 	public boolean isTied() {
 		return this.isTiedFromPrevious() || this.isTiedToFollowing();
 	}
 
 	/**
-	 * Get the total duration of tied notes starting from the onset of this note.
+	 * Returns the total duration of tied notes starting from the onset of this
+	 * note.
+	 *
 	 * For example, if three quarter notes are tied together, then the tied duration
 	 * of the first note is a dotted half note. For a note that is not tied to a
 	 * following note this is equal to the note's duration.
 	 *
-	 * @return The total duration of consecutive tied notes starting from the onset
-	 *         of this <code>Note</code>.
+	 * @return the total duration of tied notes starting from the onset of this note
 	 */
 	public Duration getTiedDuration() {
 		final List<Duration> tiedDurations = new ArrayList<>();
@@ -248,18 +241,20 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * @return The following <code>Note</code> that this is tied to wrapped in an
-	 *         <code>Optional</code>. Returns empty <code>Optional</code> if this
-	 *         note is not tied to a following note.
+	 * Returns the following note to which this note is tied. If this note is not
+	 * tied to a following note, then returns empty.
+	 *
+	 * @return the following note to which this note is tied
 	 */
 	public Optional<Note> getFollowingTiedNote() {
 		return Optional.ofNullable(this.tiedTo);
 	}
 
 	/**
-	 * Compare notes by pitch.
+	 * Returns an integer that specifies if this note is higher than, lower than, or
+	 * equal in pitch to the given note.
 	 *
-	 * @param other the note to which this is compared
+	 * @param other the note to which this is compared for pitch
 	 * @return negative integer if this note is lower than other, positive integer
 	 *         if this is higher than other, 0 if notes are (enharmonically) of same
 	 *         height.
@@ -268,11 +263,6 @@ public final class Note implements Durational, Pitched {
 		return this.pitch.compareTo(other.getPitch());
 	}
 
-	/**
-	 * Returns a string representation of this <code>Note</code>.
-	 *
-	 * @return string representation of this Note.
-	 */
 	@Override
 	public String toString() {
 		final StringBuilder strBuilder = new StringBuilder();
@@ -303,23 +293,22 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Compare this to other <code>Note</code> for equality of pitch and duration.
+	 * Returns true if this note is equal to the given note in pitch and duration.
 	 *
-	 * @param other Note with which this is compared.
-	 * @return True if pitch and duration are equal, false otherwise.
+	 * @param other note with which this is compared for pitch and duration equality
+	 * @return true if this note is equal to the given note in pitch and duration
 	 */
 	public boolean equalsInPitchAndDuration(Note other) {
 		return this.pitch.equals(other.pitch) && this.duration.equals(other.duration);
 	}
 
 	/**
-	 * Check this <code>Note</code> for equality against <code>Object o</code>.
-	 * Notes are equal if they have the same Pitch, Duration, and set of
-	 * Articulations.
+	 * Returns true if this note is equal to the given object. Notes are equal if
+	 * they have the same pitch, duration, and set of articulations.
 	 *
-	 * @param o the Object against which this Note is compared for equality.
+	 * @param o the Object with which this Note is compared for equality
 	 * @return true if Object o is of class Note and has the same Pitch, Duration,
-	 *         and Articulations as this Node. false otherwise.
+	 *         and Articulations as this Node. false otherwise
 	 */
 	@Override
 	public boolean equals(Object o) {

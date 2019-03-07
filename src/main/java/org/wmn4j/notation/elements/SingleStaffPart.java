@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -12,10 +11,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
- * Class for representing a part consisting of a single staff in a score. This
- * class is immutable.
- *
- * @author Otso Björklund
+ * Represents a part with a single staff in a score. This class is immutable.
  */
 public class SingleStaffPart implements Part {
 
@@ -29,8 +25,8 @@ public class SingleStaffPart implements Part {
 	/**
 	 * Constructor.
 	 *
-	 * @param name     the name of the part.
-	 * @param measures the measures in this part.
+	 * @param name     the name of the part
+	 * @param measures the measures in this part
 	 */
 	public SingleStaffPart(String name, List<Measure> measures) {
 		this.staff = new Staff(measures);
@@ -42,8 +38,8 @@ public class SingleStaffPart implements Part {
 	/**
 	 * Constructor.
 	 *
-	 * @param partAttributes a map of attributes to be set for this part.
-	 * @param measures       the measures in this part.
+	 * @param partAttributes a map of attributes to be set for this part
+	 * @param measures       the measures in this part
 	 */
 	public SingleStaffPart(Map<Part.Attribute, String> partAttributes, List<Measure> measures) {
 		this.staff = new Staff(measures);
@@ -66,10 +62,10 @@ public class SingleStaffPart implements Part {
 	}
 
 	/**
-	 * Get the <code>Measure</code> with the given number.
+	 * Returns the measure with the given number.
 	 *
-	 * @param number number of measure.
-	 * @return measure with the given number.
+	 * @param number number of measure to return
+	 * @return measure with the given number
 	 */
 	public Measure getMeasure(int number) {
 		return this.staff.getMeasure(number);
@@ -83,7 +79,7 @@ public class SingleStaffPart implements Part {
 	/**
 	 * Returns the staff in this part.
 	 *
-	 * @return the only staff in this part.
+	 * @return the only staff in this part
 	 */
 	public Staff getStaff() {
 		return this.staff;
@@ -135,8 +131,8 @@ public class SingleStaffPart implements Part {
 	}
 
 	/**
-	 * Iterator for <code>SingleStaffPart</code>. Iterates through measures starting
-	 * from smallest measure number. Does not support removing.
+	 * Iterator for {@link SingleStaffPart}. Iterates through measures starting from
+	 * smallest measure number. Does not support removing.
 	 */
 	public static class Iter implements Part.Iter {
 

@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -7,20 +6,17 @@ package org.wmn4j.notation.elements;
 import java.util.Objects;
 
 /**
- * This class represents a rest. This class is immutable.
- *
- * @author Otso Björklund
+ * Represents a rest. This class is immutable.
  */
 public final class Rest implements Durational {
 	private final Duration duration;
 
 	/**
-	 * Get a <code>Rest</code> with duration specified by
-	 * <code>Duration duration</code>.
+	 * Returns a rest with the given duration.
 	 *
-	 * @throws NullPointerException if duration is null.
-	 * @param duration the duration of the rest.
-	 * @return Rest with specified duration.
+	 * @throws NullPointerException if duration is null
+	 * @param duration the duration of the rest
+	 * @return Rest with specified duration
 	 */
 	public static Rest getRest(Duration duration) {
 
@@ -40,38 +36,28 @@ public final class Rest implements Durational {
 	}
 
 	/**
-	 * Get the <code>Duration</code> of this.
+	 * Returns the duration of this rest.
 	 *
-	 * @return the duration of this Rest.
+	 * @return the duration of this rest
 	 */
 	@Override
 	public Duration getDuration() {
 		return this.duration;
 	}
 
-	/**
-	 * Method for checking if the Durational is a Rest.
-	 *
-	 * @return true.
-	 */
 	@Override
 	public boolean isRest() {
 		return true;
 	}
 
-	/**
-	 * Get the String representation of Rest.
-	 *
-	 * @return String of form <code>RD</code> where <code>D</code> is the String
-	 *         representation of the Duration of this Rest.
-	 */
 	@Override
 	public String toString() {
 		return "R" + this.duration.toString();
 	}
 
 	/**
-	 * Compare this <code>Rest</code> for equality against <code>Object o</code>.
+	 * Returns true if the given object is a rest with the same duration as this
+	 * rest.
 	 *
 	 * @param o Object against which this is compared for equality.
 	 * @return true if Object o is a Rest and the Duration of o is equal to the

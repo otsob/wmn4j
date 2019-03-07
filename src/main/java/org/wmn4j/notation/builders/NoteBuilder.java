@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.builders;
@@ -17,8 +16,7 @@ import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
 
 /**
- * Class for building <code>Note</code> objects. The built note is cached. This
- * is used for ensuring that sequences of tied notes are built correctly.
+ * Class for building {@link Note} objects. The built note is cached.
  */
 public class NoteBuilder implements DurationalBuilder {
 
@@ -35,8 +33,8 @@ public class NoteBuilder implements DurationalBuilder {
 	/**
 	 * Constructor.
 	 *
-	 * @param pitch    The pitch set in this builder.
-	 * @param duration The duration set in this builder.
+	 * @param pitch    the pitch set in this builder
+	 * @param duration the duration set in this builder
 	 */
 	public NoteBuilder(Pitch pitch, Duration duration) {
 		this.pitch = pitch;
@@ -47,8 +45,8 @@ public class NoteBuilder implements DurationalBuilder {
 	}
 
 	/**
-	 * Copy constructor for NoteBuilder. Creates a new instance of NoteBuilder
-	 * that is a copy of the NoteBuilder given as an attribute.
+	 * Copy constructor for NoteBuilder. Creates a new instance of NoteBuilder that
+	 * is a copy of the NoteBuilder given as an attribute.
 	 *
 	 * @param builder the NoteBuilder to be copied
 	 */
@@ -209,30 +207,30 @@ public class NoteBuilder implements DurationalBuilder {
 	/**
 	 * Returns the NoteBuilder of the following tied note, if there is one.
 	 *
-	 * @return Optional containing the NoteBuilder of the following tied note
-	 *         if there is one, otherwise empty Optional.
+	 * @return Optional containing the NoteBuilder of the following tied note if
+	 *         there is one, otherwise empty Optional.
 	 */
 	public Optional<NoteBuilder> getFollowingTied() {
 		return Optional.ofNullable(followingTied);
 	}
 
 	/**
-	 * Removes the cached <code>Note</code> that was built on the previous call of
-	 * {@link #build build}.
+	 * Removes the cached note that was built on the previous call of {@link #build
+	 * build}.
 	 */
 	public void clearCache() {
 		this.cachedNote = null;
 	}
 
 	/**
-	 * Creates a <code>Note</code> with the values set in this builder. This method
-	 * has side effects. The method calls {@link #build build} recursively on the
-	 * following <code>NoteBuilder</code> objects to which this is tied. Calling
-	 * this method to create the first note in a sequence of tied notes builds all
-	 * the tied notes. The <code>Note</code> objects are cached in the builders. In
-	 * case of tied notes, the temporally first one should be built first.
+	 * Creates a note with the values set in this builder. This method has side
+	 * effects. The method calls {@link #build build} recursively on the following
+	 * {@link NoteBuilder} objects to which this is tied. Calling this method to
+	 * create the first note in a sequence of tied notes builds all the tied notes.
+	 * The {@link Note} objects are cached in the builders. In case of tied notes,
+	 * the temporally first one should be built first.
 	 *
-	 * @return <code>Note</code> instance with the values set in this builder.
+	 * @return a note instance with the values set in this builder.
 	 */
 	@Override
 	public Note build() {

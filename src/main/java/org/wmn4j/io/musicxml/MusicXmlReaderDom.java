@@ -576,19 +576,19 @@ class MusicXmlReaderDom implements MusicXmlReader {
 				.map(clefLineNode -> Integer.parseInt(clefLineNode.getTextContent()))
 				.orElse(3);
 
-		Clef.Type type = Clef.Type.G;
+		Clef.Symbol type = Clef.Symbol.G;
 		switch (clefName) {
 		case MusicXmlTags.CLEF_G:
-			type = Clef.Type.G;
+			type = Clef.Symbol.G;
 			break;
 		case MusicXmlTags.CLEF_F:
-			type = Clef.Type.F;
+			type = Clef.Symbol.F;
 			break;
 		case MusicXmlTags.CLEF_C:
-			type = Clef.Type.C;
+			type = Clef.Symbol.C;
 			break;
 		case MusicXmlTags.CLEF_PERC:
-			type = Clef.Type.PERCUSSION;
+			type = Clef.Symbol.PERCUSSION;
 			break;
 		}
 
