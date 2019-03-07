@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.builders;
@@ -8,24 +7,21 @@ import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.Durational;
 
 /**
- * Interface for builders that build <code>Durational</code> objects.
- *
- * @author Otso Björklund
+ * Interface for builders that build {@link Durational} objects.
  */
 public interface DurationalBuilder {
 
 	/**
-	 * Create a <code>Durational</code> object with the values set in the builder.
+	 * Returns a durational notation element with the values set in the builder.
 	 *
-	 * @return a Durational object.
+	 * @return a durational notation element with the values set in the builder
 	 */
 	Durational build();
 
 	/**
-	 * Get the <code>Duration</code> set in the builder. Each
-	 * <code>DurationalBuilder</code> should always have at least a valid duration.
+	 * Returns the duration set in this builder.
 	 *
-	 * @return The <code>Duration</code> set in the builder.
+	 * @return the duration set in this builder
 	 */
 	Duration getDuration();
 }
