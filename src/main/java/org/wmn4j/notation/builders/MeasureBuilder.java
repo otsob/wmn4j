@@ -364,6 +364,6 @@ public class MeasureBuilder {
 		final MeasureAttributes measureAttr = MeasureAttributes.of(this.timeSig, this.keySig,
 				this.rightBarline, this.leftBarline, this.clef, this.clefChanges);
 
-		return new Measure(this.number, this.getBuiltVoices(), measureAttr);
+		return Measure.of(this.number, this.getBuiltVoices(), measureAttr);
 	}
 }

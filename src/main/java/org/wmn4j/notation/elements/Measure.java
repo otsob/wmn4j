@@ -18,39 +18,55 @@ import java.util.TreeMap;
  * to using voice numbers. This class is immutable. Use the MeasureBuilder class
  * for easier creation of Measures.
  */
-public class Measure implements Iterable<Durational> {
+public final class Measure implements Iterable<Durational> {
 
 	private final int number;
 	private final SortedMap<Integer, List<Durational>> voices;
 	private final MeasureAttributes measureAttr;
 
 	/**
-	 * Constructor.
+	 * Returns a measure with the given values.
 	 *
-	 * @param number       number of the measure.
-	 * @param noteVoices   the notes on the different voices of the measure.
-	 * @param timeSig      TimeSignature of the measure.
-	 * @param keySig       KeySignature in effect in the measure.
-	 * @param rightBarLine barline on the right side (left side is NONE by default).
-	 * @param clef         Clef in effect in the measure.
+	 * @param number       number of the measure
+	 * @param noteVoices   the notes on the different voices of the measure
+	 * @param timeSig      TimeSignature of the measure
+	 * @param keySig       KeySignature in effect in the measure
+	 * @param rightBarLine barline on the right side (left side is NONE by default)
+	 * @param clef         Clef in effect in the measure
+	 * @return a measure with the given values
 	 */
-	public Measure(int number, Map<Integer, List<Durational>> noteVoices, TimeSignature timeSig, KeySignature keySig,
+	public static Measure of(int number, Map<Integer, List<Durational>> noteVoices, TimeSignature timeSig,
+			KeySignature keySig,
 			Barline rightBarLine, Clef clef) {
-		this(number, noteVoices, MeasureAttributes.of(timeSig, keySig, rightBarLine, clef));
+		return new Measure(number, noteVoices, MeasureAttributes.of(timeSig, keySig, rightBarLine, clef));
 	}
 
 	/**
-	 * Constructor.
+	 * Returns a measure with the given values.
 	 *
-	 * @param number     number of the measure.
-	 * @param noteVoices the notes on the different voices of the measure.
-	 * @param timeSig    TimeSignature of the measure.
-	 * @param keySig     KeySignature in effect in the measure.
-	 * @param clef       Clef in effect in the measure.
+	 * @param number     number of the measure
+	 * @param noteVoices the notes on the different voices of the measure
+	 * @param timeSig    TimeSignature of the measure
+	 * @param keySig     KeySignature in effect in the measure
+	 * @param clef       Clef in effect in the measure
+	 * @return a measure with the given values
 	 */
-	public Measure(int number, Map<Integer, List<Durational>> noteVoices, TimeSignature timeSig, KeySignature keySig,
+	public static Measure of(int number, Map<Integer, List<Durational>> noteVoices, TimeSignature timeSig,
+			KeySignature keySig,
 			Clef clef) {
-		this(number, noteVoices, MeasureAttributes.of(timeSig, keySig, Barline.SINGLE, clef));
+		return new Measure(number, noteVoices, MeasureAttributes.of(timeSig, keySig, Barline.SINGLE, clef));
+	}
+
+	/**
+	 * Returns a measure with the given values.
+	 *
+	 * @param number      number of the measure
+	 * @param noteVoices  the notes on the different voices of the measure
+	 * @param measureAttr the attributes of the measure
+	 * @return a measure with the given values
+	 */
+	public static Measure of(int number, Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttr) {
+		return new Measure(number, noteVoices, measureAttr);
 	}
 
 	/**
@@ -60,7 +76,7 @@ public class Measure implements Iterable<Durational> {
 	 * @param noteVoices  the notes on the different voices of the measure.
 	 * @param measureAttr the attributes of the measure.
 	 */
-	public Measure(int number, Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttr) {
+	private Measure(int number, Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttr) {
 		this.number = number;
 		final SortedMap<Integer, List<Durational>> voicesCopy = new TreeMap<>();
 

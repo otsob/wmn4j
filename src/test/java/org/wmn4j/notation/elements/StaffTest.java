@@ -16,17 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.wmn4j.notation.elements.Clefs;
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.KeySignatures;
-import org.wmn4j.notation.elements.Measure;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.Rest;
-import org.wmn4j.notation.elements.Staff;
-import org.wmn4j.notation.elements.TimeSignature;
-import org.wmn4j.notation.elements.TimeSignatures;
 
 /**
  *
@@ -46,8 +35,8 @@ public class StaffTest {
 		notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		measures.add(new Measure(1, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
-		measures.add(new Measure(2, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
+		measures.add(Measure.of(1, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
+		measures.add(Measure.of(2, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
 		return measures;
 	}
 
@@ -72,7 +61,7 @@ public class StaffTest {
 		voice.add(Rest.getRest(Durations.WHOLE));
 		final Map<Integer, List<Durational>> notes = new HashMap<>();
 		notes.put(1, voice);
-		origMeasures.add(new Measure(3, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
+		origMeasures.add(Measure.of(3, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
 		assertEquals(sizeBeforeAddition, staff.getMeasures().size());
 	}
 
@@ -127,7 +116,7 @@ public class StaffTest {
 		voice.add(Rest.getRest(Durations.WHOLE));
 		final Map<Integer, List<Durational>> notes = new HashMap<>();
 		notes.put(1, voice);
-		measures.add(new Measure(0, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
+		measures.add(Measure.of(0, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
 		measures.addAll(getTestMeasures());
 
 		final Staff staff = new Staff(measures);

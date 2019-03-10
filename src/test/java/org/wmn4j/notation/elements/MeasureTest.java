@@ -15,17 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Clefs;
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.KeySignature;
-import org.wmn4j.notation.elements.KeySignatures;
-import org.wmn4j.notation.elements.Measure;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.Rest;
-import org.wmn4j.notation.elements.TimeSignatures;
 
 /**
  *
@@ -62,14 +51,14 @@ public class MeasureTest {
 	public void testCreatingIllegalMeasureThrowsException() {
 		// Test exceptions thrown correctly for illegal arguments
 		try {
-			final Measure m = new Measure(-1, this.multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+			final Measure m = Measure.of(-1, this.multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 			fail("Exception not thrown");
 		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 
 		try {
-			final Measure m = new Measure(1, null, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+			final Measure m = Measure.of(1, null, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 			fail("Exception not thrown");
 		} catch (final Exception e) {
 			assertTrue(e instanceof NullPointerException);
@@ -83,7 +72,7 @@ public class MeasureTest {
 		voice.add(C4);
 		voices.put(0, voice);
 
-		final Measure measure = new Measure(1, voices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final Measure measure = Measure.of(1, voices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 
 		// Test that modifying the original voices list does no affect measure created
 		// using it.
@@ -93,7 +82,7 @@ public class MeasureTest {
 
 	@Test
 	public void testGetVoice() {
-		final Measure m = new Measure(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final Measure m = Measure.of(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 		assertTrue(m.getVoice(1).contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF)));
 		assertTrue(m.getVoice(0).contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 
@@ -102,18 +91,18 @@ public class MeasureTest {
 			voice.add(Rest.getRest(Durations.QUARTER));
 			fail("Failed to throw exception for disabled adding");
 		} catch (final Exception e) {
-		/* Do nothing */ }
+			/* Do nothing */ }
 	}
 
 	@Test
 	public void testGetNumber() {
-		assertEquals(1, new Measure(1, singleNoteVoice, TimeSignatures.FOUR_FOUR, keySig, Clefs.G).getNumber());
-		assertEquals(512, new Measure(512, singleNoteVoice, TimeSignatures.FOUR_FOUR, keySig, Clefs.G).getNumber());
+		assertEquals(1, Measure.of(1, singleNoteVoice, TimeSignatures.FOUR_FOUR, keySig, Clefs.G).getNumber());
+		assertEquals(512, Measure.of(512, singleNoteVoice, TimeSignatures.FOUR_FOUR, keySig, Clefs.G).getNumber());
 	}
 
 	@Test
 	public void testIteratorWithSingleVoiceMeasure() {
-		final Measure singleVoiceMeasure = new Measure(1, singleNoteVoice, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final Measure singleVoiceMeasure = Measure.of(1, singleNoteVoice, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 		final int noteCount = 0;
 
 		final List<Durational> expected = singleNoteVoice.get(0);
@@ -132,7 +121,7 @@ public class MeasureTest {
 
 	@Test
 	public void testIteratorWithMultiVoiceMeasure() {
-		final Measure multiVoiceMeasure = new Measure(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final Measure multiVoiceMeasure = Measure.of(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 		final int noteCount = 0;
 
 		final List<Durational> expected = new ArrayList<>();
@@ -154,7 +143,7 @@ public class MeasureTest {
 
 	@Test
 	public void testIteratorRemoveDisabled() {
-		final Measure m = new Measure(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final Measure m = Measure.of(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 
 		try {
 			final Iterator<Durational> iter = m.iterator();
@@ -170,7 +159,7 @@ public class MeasureTest {
 	public void testIteratorWithEmptyMeasure() {
 		final Map<Integer, List<Durational>> voices = new HashMap<>();
 		voices.put(0, new ArrayList<>());
-		final Measure emptyMeasure = new Measure(1, voices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final Measure emptyMeasure = Measure.of(1, voices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 
 		int noteElemCount = 0;
 
@@ -189,7 +178,7 @@ public class MeasureTest {
 		noteVoices.put(1, noteList);
 		noteVoices.put(3, noteList);
 
-		final Measure measure = new Measure(1, noteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		final Measure measure = Measure.of(1, noteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 
 		final List<Durational> expected = new ArrayList<>(noteList);
 		for (Durational d : noteList) {

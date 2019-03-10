@@ -17,19 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Clefs;
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.KeySignature;
-import org.wmn4j.notation.elements.KeySignatures;
-import org.wmn4j.notation.elements.Measure;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.Rest;
-import org.wmn4j.notation.elements.SingleStaffPart;
-import org.wmn4j.notation.elements.Staff;
-import org.wmn4j.notation.elements.TimeSignatures;
 
 /**
  *
@@ -63,7 +50,7 @@ public class SingleStaffPartTest {
 
 		final List<Measure> measureList = new ArrayList<>();
 		for (int i = 1; i <= this.measureCount; ++i) {
-			measureList.add(new Measure(i, noteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G));
+			measureList.add(Measure.of(i, noteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G));
 		}
 
 		this.measures = Collections.unmodifiableList(measureList);
@@ -128,7 +115,7 @@ public class SingleStaffPartTest {
 			iter.remove();
 			fail("Removing through iterator did not cause exception");
 		} catch (final Exception e) {
-		/* Ignore */ }
+			/* Ignore */ }
 
 		assertEquals(this.measureCount, part.getStaff().getMeasures().size());
 	}
