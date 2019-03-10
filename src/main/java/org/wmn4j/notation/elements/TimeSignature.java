@@ -23,7 +23,7 @@ public final class TimeSignature {
 	 * @return a TimeSignature with the specified properties.
 	 */
 	public static TimeSignature getTimeSignature(int numerator, int denominator) {
-		return getTimeSignature(numerator, Duration.getDuration(1, denominator));
+		return getTimeSignature(numerator, Duration.of(1, denominator));
 	}
 
 	/**
