@@ -36,7 +36,7 @@ public class Measure implements Iterable<Durational> {
 	 */
 	public Measure(int number, Map<Integer, List<Durational>> noteVoices, TimeSignature timeSig, KeySignature keySig,
 			Barline rightBarLine, Clef clef) {
-		this(number, noteVoices, MeasureAttributes.getMeasureAttr(timeSig, keySig, rightBarLine, clef));
+		this(number, noteVoices, MeasureAttributes.of(timeSig, keySig, rightBarLine, clef));
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class Measure implements Iterable<Durational> {
 	 */
 	public Measure(int number, Map<Integer, List<Durational>> noteVoices, TimeSignature timeSig, KeySignature keySig,
 			Clef clef) {
-		this(number, noteVoices, MeasureAttributes.getMeasureAttr(timeSig, keySig, Barline.SINGLE, clef));
+		this(number, noteVoices, MeasureAttributes.of(timeSig, keySig, Barline.SINGLE, clef));
 	}
 
 	/**

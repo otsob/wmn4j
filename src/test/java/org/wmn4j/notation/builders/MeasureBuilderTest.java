@@ -64,7 +64,7 @@ public class MeasureBuilderTest {
 
 	@Test
 	public void testBuildMeasureWithGivenAttributes() {
-		final MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.SIX_EIGHT,
+		final MeasureAttributes measureAttr = MeasureAttributes.of(TimeSignatures.SIX_EIGHT,
 				KeySignatures.DFLATMAJ_BFLATMIN, Barline.DOUBLE, Clefs.F);
 		final MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
 
@@ -91,7 +91,7 @@ public class MeasureBuilderTest {
 
 	@Test
 	public void testSetParametersUsedOverMeasureAttributes() {
-		final MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.THREE_EIGHT,
+		final MeasureAttributes measureAttr = MeasureAttributes.of(TimeSignatures.THREE_EIGHT,
 				KeySignatures.AMAJ_FSHARPMIN, Barline.REPEAT_RIGHT, Clefs.ALTO);
 		final MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
 

@@ -69,7 +69,7 @@ public class PartBuilderTest {
 		noteVoices.get(1).add(new RestBuilder(Durations.QUARTER));
 
 		this.measureContents = Collections.unmodifiableMap(noteVoices);
-		this.measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
+		this.measureAttr = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Clefs.G);
 	}
 
