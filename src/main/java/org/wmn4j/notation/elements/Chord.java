@@ -29,7 +29,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @throws IllegalArgumentException if notes is empty or all Note objects in
 	 *                                  notes are not of same duration
 	 */
-	public static Chord getChord(Note... n) {
+	public static Chord of(Note... n) {
 		return new Chord(Arrays.asList(n));
 	}
 
@@ -43,7 +43,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @throws IllegalArgumentException if notes is empty or all Note objects in
 	 *                                  notes are not of same duration.
 	 */
-	public static Chord getChord(Collection<Note> notes) {
+	public static Chord of(Collection<Note> notes) {
 		return new Chord(notes);
 	}
 
@@ -134,7 +134,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	public Chord add(Note note) {
 		final ArrayList<Note> noteList = new ArrayList<>(this.notes);
 		noteList.add(note);
-		return Chord.getChord(noteList);
+		return Chord.of(noteList);
 	}
 
 	/**
@@ -146,7 +146,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	public Chord remove(Note note) {
 		final ArrayList<Note> noteList = new ArrayList<>(this.notes);
 		noteList.remove(note);
-		return Chord.getChord(noteList);
+		return Chord.of(noteList);
 	}
 
 	/**
@@ -185,7 +185,7 @@ public final class Chord implements Durational, Iterable<Note> {
 		if (this.contains(pitch)) {
 			final List<Note> newNotes = new ArrayList<>(this.notes);
 			newNotes.remove(Note.getNote(pitch, this.getDuration()));
-			return Chord.getChord(newNotes);
+			return Chord.of(newNotes);
 		}
 
 		return this;

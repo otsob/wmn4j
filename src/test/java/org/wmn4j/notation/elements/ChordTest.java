@@ -39,19 +39,19 @@ public class ChordTest {
 		this.cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		this.cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER));
 		this.cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.QUARTER));
-		this.cMajor = Chord.getChord(this.cMajorNotes);
+		this.cMajor = Chord.of(this.cMajorNotes);
 
 		final List<Note> dMajorNotes = new ArrayList<>();
 		dMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 3), Durations.QUARTER));
 		dMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.F, 1, 3), Durations.QUARTER));
 		dMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.A, 0, 3), Durations.QUARTER));
-		this.dMajor = Chord.getChord(dMajorNotes);
+		this.dMajor = Chord.of(dMajorNotes);
 
 		final List<Note> fMinorNotes = new ArrayList<>();
 		fMinorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.F, 0, 4), Durations.QUARTER));
 		fMinorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.A, -1, 4), Durations.QUARTER));
 		fMinorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.QUARTER));
-		this.fMinor = Chord.getChord(fMinorNotes);
+		this.fMinor = Chord.of(fMinorNotes);
 
 		final ArrayList<Note> DminorMaj9Notes = new ArrayList<>();
 		DminorMaj9Notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.EIGHT));
@@ -59,14 +59,14 @@ public class ChordTest {
 		DminorMaj9Notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.A, 0, 4), Durations.EIGHT));
 		DminorMaj9Notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 1, 5), Durations.EIGHT));
 		DminorMaj9Notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 5), Durations.EIGHT));
-		this.dMinorMaj9 = Chord.getChord(DminorMaj9Notes);
+		this.dMinorMaj9 = Chord.of(DminorMaj9Notes);
 	}
 
 	@Test
 	public void testChordImmutable() {
 
 		final List<Note> notes = new ArrayList<>(this.cMajorNotes);
-		final Chord cMaj = Chord.getChord(notes);
+		final Chord cMaj = Chord.of(notes);
 		assertEquals(this.cMajor, cMaj);
 
 		// Test that modifying the list of notes used to create the chord does not
@@ -89,7 +89,7 @@ public class ChordTest {
 	public void testVarargsFactory() {
 		final Note C4 = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT);
 		final Note E4 = Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT);
-		final Chord dyad = Chord.getChord(C4, E4);
+		final Chord dyad = Chord.of(C4, E4);
 		assertEquals(2, dyad.getNoteCount());
 		assertTrue(dyad.contains(E4));
 		assertTrue(dyad.contains(C4));
@@ -108,7 +108,7 @@ public class ChordTest {
 			final ArrayList<Note> notes = new ArrayList<>();
 			notes.add(a);
 			notes.add(b);
-			final Chord c = Chord.getChord(notes);
+			final Chord c = Chord.of(notes);
 			fail("Failed to throw IllegalArgumentException when "
 					+ "creating chord with notes whose durations are not the same");
 		} catch (final IllegalArgumentException e) {
@@ -175,7 +175,7 @@ public class ChordTest {
 		cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER));
 		cMajorNotes.add(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.QUARTER));
-		final Chord cMaj = Chord.getChord(cMajorNotes);
+		final Chord cMaj = Chord.of(cMajorNotes);
 		assertTrue(this.cMajor.equals(cMaj));
 		assertTrue(cMaj.equals(this.cMajor));
 		assertTrue(this.cMajor.equals(this.cMajor));
@@ -233,7 +233,7 @@ public class ChordTest {
 			assertTrue(cMajorNotes.contains(note));
 		}
 
-		final Chord cMaj = Chord.getChord(cMajorNotes);
+		final Chord cMaj = Chord.of(cMajorNotes);
 		final Iterator<Note> iterator = cMaj.iterator();
 		iterator.next();
 		try {

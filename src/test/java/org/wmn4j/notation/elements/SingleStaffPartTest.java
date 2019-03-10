@@ -52,7 +52,7 @@ public class SingleStaffPartTest {
 		noteVoice.put(0, new ArrayList<>());
 		noteVoice.get(0).add(C4Quarter);
 		noteVoice.get(0).add(Rest.getRest(Durations.QUARTER));
-		noteVoice.get(0).add(Chord.getChord(C4, E4, G4));
+		noteVoice.get(0).add(Chord.of(C4, E4, G4));
 
 		final Map<Integer, List<Durational>> noteVoices = new HashMap<>();
 		noteVoices.put(0, noteVoice.get(0));

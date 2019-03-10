@@ -58,7 +58,7 @@ public class MonophonicPatternTest {
 		}
 
 		final List<Durational> chordList = new ArrayList<>();
-		chordList.add(Chord.getChord(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT),
+		chordList.add(Chord.of(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT),
 				Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT)));
 
 		try {

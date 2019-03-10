@@ -128,7 +128,7 @@ public class MusicXmlReaderDomTest {
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voiceOne.get(1));
 		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voiceOne.get(2));
 		assertEquals(Rest.getRest(Durations.EIGHT), voiceOne.get(3));
-		final Chord cMajor = Chord.getChord(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT),
+		final Chord cMajor = Chord.of(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT),
 				Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT),
 				Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
 		assertEquals(cMajor, voiceOne.get(4));

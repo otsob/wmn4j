@@ -47,7 +47,7 @@ public class MeasureTest {
 		final List<Durational> voiceContents = new ArrayList<>();
 		voiceContents.add(C4Quarter);
 		voiceContents.add(Rest.getRest(Durations.QUARTER));
-		voiceContents.add(Chord.getChord(C4, E4, G4));
+		voiceContents.add(Chord.of(C4, E4, G4));
 		this.singleNoteVoice.put(0, voiceContents);
 
 		this.multipleNoteVoices = new HashMap<>();
