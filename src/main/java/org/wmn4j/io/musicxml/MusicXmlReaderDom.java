@@ -592,7 +592,7 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			break;
 		}
 
-		return Clef.getClef(type, clefLine);
+		return Clef.of(type, clefLine);
 	}
 
 	private Barline getBarline(Node barlineNode) {
