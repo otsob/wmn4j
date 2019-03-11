@@ -35,16 +35,16 @@ public class MeasureTest {
 	public MeasureTest() {
 		final List<Durational> voiceContents = new ArrayList<>();
 		voiceContents.add(C4Quarter);
-		voiceContents.add(Rest.getRest(Durations.QUARTER));
+		voiceContents.add(Rest.of(Durations.QUARTER));
 		voiceContents.add(Chord.of(C4, E4, G4));
 		this.singleNoteVoice.put(0, voiceContents);
 
 		this.multipleNoteVoices = new HashMap<>();
 		this.multipleNoteVoices.put(0, voiceContents);
 		this.multipleNoteVoices.put(1, new ArrayList<>());
-		this.multipleNoteVoices.get(1).add(Rest.getRest(Durations.QUARTER));
+		this.multipleNoteVoices.get(1).add(Rest.of(Durations.QUARTER));
 		this.multipleNoteVoices.get(1).add(C4);
-		this.multipleNoteVoices.get(1).add(Rest.getRest(Durations.QUARTER));
+		this.multipleNoteVoices.get(1).add(Rest.of(Durations.QUARTER));
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class MeasureTest {
 
 		final List<Durational> voice = m.getVoice(0);
 		try {
-			voice.add(Rest.getRest(Durations.QUARTER));
+			voice.add(Rest.of(Durations.QUARTER));
 			fail("Failed to throw exception for disabled adding");
 		} catch (final Exception e) {
 			/* Do nothing */ }

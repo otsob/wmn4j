@@ -18,7 +18,7 @@ public final class Rest implements Durational {
 	 * @param duration the duration of the rest
 	 * @return Rest with specified duration
 	 */
-	public static Rest getRest(Duration duration) {
+	public static Rest of(Duration duration) {
 
 		// TODO: Use interner pattern for caching.
 		return new Rest(Objects.requireNonNull(duration));
@@ -26,7 +26,7 @@ public final class Rest implements Durational {
 
 	/**
 	 * Private constructor. Use the static method
-	 * {@link #getRest(wmnlibnotation.Duration) getRest} to get a <code>Rest</code>
+	 * {@link #of(wmnlibnotation.Duration) getRest} to get a <code>Rest</code>
 	 * object.
 	 *
 	 * @param duration the duration of the rest.

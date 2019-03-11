@@ -32,7 +32,7 @@ public class MonophonicPatternTest {
 		final List<Durational> notes = new ArrayList<>();
 		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT));
 		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHT));
-		notes.add(Rest.getRest(Durations.QUARTER));
+		notes.add(Rest.of(Durations.QUARTER));
 		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
 		notes.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
 
@@ -77,7 +77,7 @@ public class MonophonicPatternTest {
 		assertEquals(pattern1, pattern2);
 
 		final List<Durational> modifiedNotes = new ArrayList<>(this.referenceNotes);
-		modifiedNotes.add(Rest.getRest(Durations.QUARTER));
+		modifiedNotes.add(Rest.of(Durations.QUARTER));
 
 		assertFalse(pattern1.equals(new MonophonicPattern(modifiedNotes)));
 	}
@@ -89,13 +89,13 @@ public class MonophonicPatternTest {
 		final List<Durational> notes = new ArrayList<>();
 		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
-		notes.add(Rest.getRest(Durations.QUARTER));
+		notes.add(Rest.of(Durations.QUARTER));
 		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
 		notes.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.WHOLE));
 
 		assertTrue(pattern1.equalsInPitch(new MonophonicPattern(notes)));
 
-		notes.add(Rest.getRest(Durations.QUARTER));
+		notes.add(Rest.of(Durations.QUARTER));
 
 		assertTrue("Adding rest to end of pattern should not make pattern inequal in pitches",
 				pattern1.equalsInPitch(new MonophonicPattern(notes)));
@@ -112,7 +112,7 @@ public class MonophonicPatternTest {
 		final List<Durational> notes = new ArrayList<>();
 		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
-		notes.add(Rest.getRest(Durations.QUARTER));
+		notes.add(Rest.of(Durations.QUARTER));
 		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
 		notes.add(Note.of(Pitch.of(Pitch.Base.A, 1, 3), Durations.WHOLE));
 

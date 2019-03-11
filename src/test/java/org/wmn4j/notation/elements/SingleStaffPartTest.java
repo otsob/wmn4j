@@ -38,15 +38,15 @@ public class SingleStaffPartTest {
 		final Map<Integer, List<Durational>> noteVoice = new HashMap<>();
 		noteVoice.put(0, new ArrayList<>());
 		noteVoice.get(0).add(C4Quarter);
-		noteVoice.get(0).add(Rest.getRest(Durations.QUARTER));
+		noteVoice.get(0).add(Rest.of(Durations.QUARTER));
 		noteVoice.get(0).add(Chord.of(C4, E4, G4));
 
 		final Map<Integer, List<Durational>> noteVoices = new HashMap<>();
 		noteVoices.put(0, noteVoice.get(0));
 		noteVoices.put(1, new ArrayList<>());
-		noteVoices.get(1).add(Rest.getRest(Durations.QUARTER));
+		noteVoices.get(1).add(Rest.of(Durations.QUARTER));
 		noteVoices.get(1).add(C4);
-		noteVoices.get(1).add(Rest.getRest(Durations.QUARTER));
+		noteVoices.get(1).add(Rest.of(Durations.QUARTER));
 
 		final List<Measure> measureList = new ArrayList<>();
 		for (int i = 1; i <= this.measureCount; ++i) {

@@ -133,9 +133,9 @@ public class MeasureBuilderTest {
 		final Measure measure = builder.build();
 		assertEquals(2, measure.getVoiceCount());
 		assertTrue(measure.getVoice(1).size() == 1);
-		assertTrue(measure.getVoice(1).contains(Rest.getRest(Durations.EIGHT)));
+		assertTrue(measure.getVoice(1).contains(Rest.of(Durations.EIGHT)));
 		assertTrue(measure.getVoice(3).size() == 1);
-		assertTrue(measure.getVoice(3).contains(Rest.getRest(Durations.EIGHT)));
+		assertTrue(measure.getVoice(3).contains(Rest.of(Durations.EIGHT)));
 	}
 
 	@Test

@@ -127,7 +127,7 @@ public class MusicXmlReaderDomTest {
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), voiceOne.get(0));
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT), voiceOne.get(1));
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT), voiceOne.get(2));
-		assertEquals(Rest.getRest(Durations.EIGHT), voiceOne.get(3));
+		assertEquals(Rest.of(Durations.EIGHT), voiceOne.get(3));
 		final Chord cMajor = Chord.of(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT),
 				Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT),
 				Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT));
@@ -154,7 +154,7 @@ public class MusicXmlReaderDomTest {
 		final List<Durational> voiceTwo = measureTwo.getVoice(2);
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), voiceTwo.get(0));
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), voiceTwo.get(1));
-		assertEquals(Rest.getRest(Durations.QUARTER), voiceTwo.get(2));
+		assertEquals(Rest.of(Durations.QUARTER), voiceTwo.get(2));
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), voiceTwo.get(3));
 	}
 
@@ -198,7 +198,7 @@ public class MusicXmlReaderDomTest {
 		// Verify contents of measure one of staff one
 		assertEquals(1, staffOneMeasureTwo.getVoiceCount());
 		final List<Durational> voiceM2 = staffOneMeasureTwo.getVoice(1);
-		assertEquals(Rest.getRest(Durations.QUARTER), voiceM2.get(0));
+		assertEquals(Rest.of(Durations.QUARTER), voiceM2.get(0));
 		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF), voiceM2.get(1));
 
 		final SingleStaffPart partTwo = (SingleStaffPart) score.getParts().get(1);

@@ -58,7 +58,7 @@ public class StaffTest {
 
 		final int sizeBeforeAddition = origMeasures.size();
 		final List<Durational> voice = new ArrayList<>();
-		voice.add(Rest.getRest(Durations.WHOLE));
+		voice.add(Rest.of(Durations.WHOLE));
 		final Map<Integer, List<Durational>> notes = new HashMap<>();
 		notes.put(1, voice);
 		origMeasures.add(Measure.of(3, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
@@ -113,7 +113,7 @@ public class StaffTest {
 	public void testGetMeasureWithPickup() {
 		final List<Measure> measures = new ArrayList<>();
 		final List<Durational> voice = new ArrayList<>();
-		voice.add(Rest.getRest(Durations.WHOLE));
+		voice.add(Rest.of(Durations.WHOLE));
 		final Map<Integer, List<Durational>> notes = new HashMap<>();
 		notes.put(1, voice);
 		measures.add(Measure.of(0, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
