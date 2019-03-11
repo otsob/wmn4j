@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":9,"i5":9,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":9,"i13":9,"i14":10,"i15":10,"i16":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -191,41 +191,27 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>static <a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getChord(java.util.Collection)">getChord</a></span>&#8203;(java.util.Collection&lt;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;&nbsp;notes)</code></th>
-<td class="colLast">
-<div class="block">Returns an instance with the given <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a>s.</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code>static <a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getChord(org.wmn4j.notation.elements.Note...)">getChord</a></span>&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>...&nbsp;n)</code></th>
-<td class="colLast">
-<div class="block">Returns an instance of with the given <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> objects.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDuration()">getDuration</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the duration of this.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getHighestNote()">getHighestNote</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the highest note in this chord.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLowestNote()">getLowestNote</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the lowest note in this chord.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNote(int)">getNote</a></span>&#8203;(int&nbsp;fromLowest)</code></th>
 <td class="colLast">
@@ -233,29 +219,43 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
  this <a href="Chord.html" title="class in org.wmn4j.notation.elements"><code>Chord</code></a>.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNoteCount()">getNoteCount</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the number of notes in this chord.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isRest()">isRest</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns true if this is a rest, false otherwise.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#iterator()">iterator</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i12" class="altColor">
+<td class="colFirst"><code>static <a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.util.Collection)">of</a></span>&#8203;(java.util.Collection&lt;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;&nbsp;notes)</code></th>
+<td class="colLast">
+<div class="block">Returns an instance with the given <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a>s.</div>
+</td>
+</tr>
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code>static <a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(org.wmn4j.notation.elements.Note...)">of</a></span>&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>...&nbsp;n)</code></th>
+<td class="colLast">
+<div class="block">Returns an instance of with the given <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> objects.</div>
+</td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></code></td>
@@ -307,13 +307,13 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getChord(org.wmn4j.notation.elements.Note...)">
+<a id="of(org.wmn4j.notation.elements.Note...)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getChord</h4>
-<pre class="methodSignature">public static&nbsp;<a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;getChord&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>...&nbsp;n)</pre>
+<h4>of</h4>
+<pre class="methodSignature">public static&nbsp;<a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;of&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>...&nbsp;n)</pre>
 <div class="block">Returns an instance of with the given <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> objects.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -327,13 +327,13 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 </dl>
 </li>
 </ul>
-<a id="getChord(java.util.Collection)">
+<a id="of(java.util.Collection)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getChord</h4>
-<pre class="methodSignature">public static&nbsp;<a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;getChord&#8203;(java.util.Collection&lt;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;&nbsp;notes)</pre>
+<h4>of</h4>
+<pre class="methodSignature">public static&nbsp;<a href="Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;of&#8203;(java.util.Collection&lt;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;&nbsp;notes)</pre>
 <div class="block">Returns an instance with the given <a href="Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a>s.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

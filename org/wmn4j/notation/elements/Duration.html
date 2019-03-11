@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":9,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":9,"i14":10,"i15":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":9,"i12":10,"i13":9,"i14":10,"i15":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -209,44 +209,44 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 </td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code>static <a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDuration(int,int)">getDuration</a></span>&#8203;(int&nbsp;numerator,
-           int&nbsp;denominator)</code></th>
-<td class="colLast">
-<div class="block">Returns an instance with the given numerator and denominator.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumerator()">getNumerator</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the numerator of this duration.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isLongerThan(org.wmn4j.notation.elements.Duration)">isLongerThan</a></span>&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</code></th>
 <td class="colLast">
 <div class="block">Returns true if this is longer than other, otherwise false.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isShorterThan(org.wmn4j.notation.elements.Duration)">isShorterThan</a></span>&#8203;(<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;other)</code></th>
 <td class="colLast">
 <div class="block">Returns true if this is shorter than other, otherwise false.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#multiplyBy(int)">multiplyBy</a></span>&#8203;(int&nbsp;multiplier)</code></th>
 <td class="colLast">
 <div class="block">Returns a duration that is this duration multiplied by multiplier.</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code>static <a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(int,int)">of</a></span>&#8203;(int&nbsp;numerator,
+  int&nbsp;denominator)</code></th>
+<td class="colLast">
+<div class="block">Returns an instance with the given numerator and denominator.</div>
 </td>
 </tr>
 <tr id="i12" class="altColor">
@@ -300,14 +300,14 @@ implements java.lang.Comparable&lt;<a href="Duration.html" title="class in org.w
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getDuration(int,int)">
+<a id="of(int,int)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getDuration</h4>
-<pre class="methodSignature">public static&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;getDuration&#8203;(int&nbsp;numerator,
-                                   int&nbsp;denominator)</pre>
+<h4>of</h4>
+<pre class="methodSignature">public static&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;of&#8203;(int&nbsp;numerator,
+                          int&nbsp;denominator)</pre>
 <div class="block">Returns an instance with the given numerator and denominator. The numerator
  and denominator must be at least 1.</div>
 <dl>
