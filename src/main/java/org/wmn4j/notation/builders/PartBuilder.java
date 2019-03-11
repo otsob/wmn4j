@@ -105,7 +105,7 @@ public class PartBuilder {
 	 */
 	public Part build() {
 		if (this.staveContents.size() == 1) {
-			return new SingleStaffPart(this.partAttributes,
+			return SingleStaffPart.of(this.partAttributes,
 					getBuiltMeasures(this.staveContents.get(SINGLE_STAFF_NUMBER)));
 		} else {
 			final Map<Integer, Staff> staves = new HashMap<>();
