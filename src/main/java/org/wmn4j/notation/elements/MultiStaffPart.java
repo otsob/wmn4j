@@ -61,7 +61,7 @@ public final class MultiStaffPart implements Part {
 
 	@Override
 	public String getName() {
-		return this.getPartAttribute(Part.Attribute.NAME);
+		return this.getAttribute(Part.Attribute.NAME);
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public final class MultiStaffPart implements Part {
 	}
 
 	@Override
-	public String getPartAttribute(Attribute attribute) {
+	public String getAttribute(Attribute attribute) {
 		if (this.partAttributes.containsKey(attribute)) {
 			return this.partAttributes.get(attribute);
 		} else {

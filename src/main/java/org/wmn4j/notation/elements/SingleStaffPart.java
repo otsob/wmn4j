@@ -48,7 +48,7 @@ public class SingleStaffPart implements Part {
 
 	@Override
 	public String getName() {
-		return this.getPartAttribute(Attribute.NAME);
+		return this.getAttribute(Attribute.NAME);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class SingleStaffPart implements Part {
 	}
 
 	@Override
-	public String getPartAttribute(Attribute attribute) {
+	public String getAttribute(Attribute attribute) {
 		if (this.partAttributes.containsKey(attribute)) {
 			return this.partAttributes.get(attribute);
 		} else {
