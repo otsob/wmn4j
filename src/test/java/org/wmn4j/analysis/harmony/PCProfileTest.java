@@ -25,10 +25,10 @@ public class PCProfileTest {
 	// By how much values are allowed fo differ
 	static final double EPS = 0.0000000001;
 
-	static final Note C4 = Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
-	static final Note E4 = Note.of(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT);
-	static final Note G4 = Note.of(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT);
-	static final Note Csharp4 = Note.of(Pitch.getPitch(Pitch.Base.C, 1, 4), Durations.SIXTEENTH);
+	static final Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+	static final Note E4 = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT);
+	static final Note G4 = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT);
+	static final Note Csharp4 = Note.of(Pitch.of(Pitch.Base.C, 1, 4), Durations.SIXTEENTH);
 
 	public PCProfileTest() {
 	}

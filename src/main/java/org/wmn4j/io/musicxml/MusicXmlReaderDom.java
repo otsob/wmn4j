@@ -684,7 +684,7 @@ class MusicXmlReaderDom implements MusicXmlReader {
 					.map(alterNode -> Integer.parseInt(alterNode.getTextContent()))
 					.orElse(0);
 
-			pitch = Pitch.getPitch(pitchBase, alter, octave);
+			pitch = Pitch.of(pitchBase, alter, octave);
 		} else {
 			final Optional<Node> unpitchedNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_UNPITCHED);
 			if (unpitchedNode.isPresent()) {
@@ -695,7 +695,7 @@ class MusicXmlReaderDom implements MusicXmlReader {
 				if (stepNode.isPresent() && octaveNode.isPresent()) {
 					final Pitch.Base pitchBase = getPitchBase(stepNode.get());
 					final int octave = Integer.parseInt(octaveNode.get().getTextContent());
-					pitch = Pitch.getPitch(pitchBase, 0, octave);
+					pitch = Pitch.of(pitchBase, 0, octave);
 				}
 			}
 		}

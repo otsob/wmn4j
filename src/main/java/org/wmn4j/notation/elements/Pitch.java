@@ -89,7 +89,7 @@ public final class Pitch implements Comparable<Pitch> {
 	 * @param octave    the octave of the pitch
 	 * @return Pitch object with the specified attributes
 	 */
-	public static Pitch getPitch(Base pitchName, int alter, int octave) {
+	public static Pitch of(Base pitchName, int alter, int octave) {
 		if (alter > ALTER_LIMIT || alter < -1 * ALTER_LIMIT) {
 			throw new IllegalArgumentException(
 					"alter was " + alter + ". alter must be between -" + ALTER_LIMIT + " and " + ALTER_LIMIT);

@@ -38,7 +38,7 @@ public final class Note implements Durational, Pitched {
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch.Base pitchName, int alter, int octave, Duration duration) {
-		return of(Pitch.getPitch(pitchName, alter, octave), duration, null);
+		return of(Pitch.of(pitchName, alter, octave), duration, null);
 	}
 
 	/**
