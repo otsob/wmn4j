@@ -46,10 +46,10 @@ public class PartBuilderTest {
 
 	KeySignature keySig = KeySignatures.CMAJ_AMIN;
 
-	NoteBuilder C4 = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF);
-	NoteBuilder E4 = new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF);
-	NoteBuilder G4 = new NoteBuilder(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF);
-	NoteBuilder C4Quarter = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+	NoteBuilder C4 = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
+	NoteBuilder E4 = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF);
+	NoteBuilder G4 = new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF);
+	NoteBuilder C4Quarter = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
 	public PartBuilderTest() {
 		final Map<Integer, List<DurationalBuilder>> noteVoice = new HashMap<>();
@@ -69,7 +69,7 @@ public class PartBuilderTest {
 		noteVoices.get(1).add(new RestBuilder(Durations.QUARTER));
 
 		this.measureContents = Collections.unmodifiableMap(noteVoices);
-		this.measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
+		this.measureAttr = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Clefs.G);
 	}
 
@@ -142,11 +142,11 @@ public class PartBuilderTest {
 	public void testBuildPartWithTieBetweenMeasures() {
 
 		final MeasureBuilder firstMeasureBuilder = new MeasureBuilder(1);
-		final NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
+		final NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.WHOLE);
 		firstMeasureBuilder.addToVoice(1, firstNoteBuilder);
 
 		final MeasureBuilder secondMeasureBuilder = new MeasureBuilder(2);
-		final NoteBuilder secondNoteBuilder = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.WHOLE);
+		final NoteBuilder secondNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.WHOLE);
 		firstNoteBuilder.addTieToFollowing(secondNoteBuilder);
 		secondMeasureBuilder.addToVoice(1, secondNoteBuilder);
 

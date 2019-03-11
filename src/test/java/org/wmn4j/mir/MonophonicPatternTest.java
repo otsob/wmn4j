@@ -30,11 +30,11 @@ public class MonophonicPatternTest {
 
 	public MonophonicPatternTest() {
 		final List<Durational> notes = new ArrayList<>();
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT));
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.EIGHT));
-		notes.add(Rest.getRest(Durations.QUARTER));
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER));
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.B, -1, 3), Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT));
+		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHT));
+		notes.add(Rest.of(Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
 
 		this.referenceNotes = Collections.unmodifiableList(notes);
 	}
@@ -58,8 +58,8 @@ public class MonophonicPatternTest {
 		}
 
 		final List<Durational> chordList = new ArrayList<>();
-		chordList.add(Chord.getChord(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT),
-				Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT)));
+		chordList.add(Chord.of(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT),
+				Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT)));
 
 		try {
 			new MonophonicPattern(chordList);
@@ -77,7 +77,7 @@ public class MonophonicPatternTest {
 		assertEquals(pattern1, pattern2);
 
 		final List<Durational> modifiedNotes = new ArrayList<>(this.referenceNotes);
-		modifiedNotes.add(Rest.getRest(Durations.QUARTER));
+		modifiedNotes.add(Rest.of(Durations.QUARTER));
 
 		assertFalse(pattern1.equals(new MonophonicPattern(modifiedNotes)));
 	}
@@ -87,20 +87,20 @@ public class MonophonicPatternTest {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 
 		final List<Durational> notes = new ArrayList<>();
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
-		notes.add(Rest.getRest(Durations.QUARTER));
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER));
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.B, -1, 3), Durations.WHOLE));
+		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
+		notes.add(Rest.of(Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.WHOLE));
 
 		assertTrue(pattern1.equalsInPitch(new MonophonicPattern(notes)));
 
-		notes.add(Rest.getRest(Durations.QUARTER));
+		notes.add(Rest.of(Durations.QUARTER));
 
 		assertTrue("Adding rest to end of pattern should not make pattern inequal in pitches",
 				pattern1.equalsInPitch(new MonophonicPattern(notes)));
 
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.E, -1, 3), Durations.WHOLE));
+		notes.add(Note.of(Pitch.of(Pitch.Base.E, -1, 3), Durations.WHOLE));
 
 		assertFalse(pattern1.equalsInPitch(new MonophonicPattern(notes)));
 	}
@@ -110,11 +110,11 @@ public class MonophonicPatternTest {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 
 		final List<Durational> notes = new ArrayList<>();
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
-		notes.add(Rest.getRest(Durations.QUARTER));
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER));
-		notes.add(Note.getNote(Pitch.getPitch(Pitch.Base.A, 1, 3), Durations.WHOLE));
+		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
+		notes.add(Rest.of(Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.A, 1, 3), Durations.WHOLE));
 
 		assertTrue(pattern1.equalsEnharmonicallyInPitch(new MonophonicPattern(notes)));
 	}

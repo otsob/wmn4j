@@ -16,17 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.wmn4j.notation.elements.Clefs;
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.KeySignatures;
-import org.wmn4j.notation.elements.Measure;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.Rest;
-import org.wmn4j.notation.elements.Staff;
-import org.wmn4j.notation.elements.TimeSignature;
-import org.wmn4j.notation.elements.TimeSignatures;
 
 /**
  *
@@ -39,22 +28,22 @@ public class StaffTest {
 
 	static List<Measure> getTestMeasures() {
 		final List<Measure> measures = new ArrayList<>();
-		final TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
+		final TimeSignature timeSig = TimeSignature.of(4, 4);
 		final Map<Integer, List<Durational>> notes = new HashMap<>();
 		notes.put(0, new ArrayList<>());
-		notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		notes.get(0).add(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		measures.add(new Measure(1, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
-		measures.add(new Measure(2, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
+		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
+		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
+		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
+		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
+		measures.add(Measure.of(1, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
+		measures.add(Measure.of(2, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
 		return measures;
 	}
 
 	@Test
 	public void testGetMeasures() {
 		final List<Measure> origMeasures = getTestMeasures();
-		final Staff staff = new Staff(origMeasures);
+		final Staff staff = Staff.of(origMeasures);
 
 		final List<Measure> measures = staff.getMeasures();
 
@@ -69,17 +58,17 @@ public class StaffTest {
 
 		final int sizeBeforeAddition = origMeasures.size();
 		final List<Durational> voice = new ArrayList<>();
-		voice.add(Rest.getRest(Durations.WHOLE));
+		voice.add(Rest.of(Durations.WHOLE));
 		final Map<Integer, List<Durational>> notes = new HashMap<>();
 		notes.put(1, voice);
-		origMeasures.add(new Measure(3, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
+		origMeasures.add(Measure.of(3, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
 		assertEquals(sizeBeforeAddition, staff.getMeasures().size());
 	}
 
 	@Test
 	public void testIterator() {
 		final List<Measure> origMeasures = getTestMeasures();
-		final Staff staff = new Staff(origMeasures);
+		final Staff staff = Staff.of(origMeasures);
 
 		int measureCount = 0;
 		int prevMeasureNum = 0;
@@ -96,7 +85,7 @@ public class StaffTest {
 	@Test
 	public void testIteratorRemoveDisabled() {
 		final List<Measure> origMeasures = getTestMeasures();
-		final Staff staff = new Staff(origMeasures);
+		final Staff staff = Staff.of(origMeasures);
 
 		try {
 			final Iterator<Measure> iter = staff.iterator();
@@ -111,7 +100,7 @@ public class StaffTest {
 	@Test
 	public void testGetMeasure() {
 		final List<Measure> measures = getTestMeasures();
-		final Staff staff = new Staff(measures);
+		final Staff staff = Staff.of(measures);
 
 		assertFalse(staff.hasPickupMeasure());
 
@@ -124,13 +113,13 @@ public class StaffTest {
 	public void testGetMeasureWithPickup() {
 		final List<Measure> measures = new ArrayList<>();
 		final List<Durational> voice = new ArrayList<>();
-		voice.add(Rest.getRest(Durations.WHOLE));
+		voice.add(Rest.of(Durations.WHOLE));
 		final Map<Integer, List<Durational>> notes = new HashMap<>();
 		notes.put(1, voice);
-		measures.add(new Measure(0, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
+		measures.add(Measure.of(0, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
 		measures.addAll(getTestMeasures());
 
-		final Staff staff = new Staff(measures);
+		final Staff staff = Staff.of(measures);
 		assertTrue(staff.hasPickupMeasure());
 
 		for (int measureNumber = 0; measureNumber < measures.size(); ++measureNumber) {

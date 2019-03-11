@@ -11,9 +11,26 @@ import java.util.Objects;
 /**
  * Represents a key signature. This class is immutable.
  */
-public class KeySignature {
+public final class KeySignature {
 	private final List<Pitch.Base> sharps;
 	private final List<Pitch.Base> flats;
+
+	/**
+	 * Returns a key signature with the given sharps and flats. For common key
+	 * signatures use the ones defined in {@link KeySignatures}. This is mostly
+	 * intended for creating custom key signatures.
+	 *
+	 * @throws IllegalArgumentException if the same Pitch.Base is in both sharps and
+	 *                                  flats.
+	 * @param sharps the Pitch.Base names that should be raised. For example, for
+	 *               G-major this list consists only of Pitch.Base.F.
+	 * @param flats  the Pitch.Base names that should be flattened. For example, for
+	 *               F-major this list consists only of Pitch.Base.B.
+	 * @return a key signature with the given sharps and flats
+	 */
+	public static KeySignature of(List<Pitch.Base> sharps, List<Pitch.Base> flats) {
+		return new KeySignature(sharps, flats);
+	}
 
 	/**
 	 * Constructor for KeySignature. For common key signatures use the ones defined
@@ -27,7 +44,7 @@ public class KeySignature {
 	 * @param flats  the Pitch.Base names that should be flattened. For example, for
 	 *               F-major this list consists only of Pitch.Base.B.
 	 */
-	public KeySignature(List<Pitch.Base> sharps, List<Pitch.Base> flats) {
+	private KeySignature(List<Pitch.Base> sharps, List<Pitch.Base> flats) {
 		if (sharps != null && !sharps.isEmpty()) {
 			this.sharps = new ArrayList<>(sharps);
 		} else {

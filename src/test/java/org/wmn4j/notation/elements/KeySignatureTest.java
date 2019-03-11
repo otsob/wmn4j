@@ -15,9 +15,6 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.wmn4j.notation.elements.KeySignature;
-import org.wmn4j.notation.elements.KeySignatures;
-import org.wmn4j.notation.elements.Pitch;
 
 /**
  *
@@ -40,7 +37,7 @@ public class KeySignatureTest {
 	public void testGetKeySigExceptions() {
 		try {
 			final List<Pitch.Base> sharps = Arrays.asList(Pitch.Base.C);
-			final KeySignature illegalCustomKeySig = new KeySignature(sharps, sharps);
+			final KeySignature illegalCustomKeySig = KeySignature.of(sharps, sharps);
 			fail("A KeySignature with the same note as sharp and flat was created without exception.");
 		} catch (final Exception e) {
 			assertTrue("Exception was of incorrect type.", e instanceof IllegalArgumentException);
@@ -66,8 +63,8 @@ public class KeySignatureTest {
 		assertTrue(KeySignatures.EMAJ_CSHARPMIN.equals(KeySignatures.EMAJ_CSHARPMIN));
 		assertTrue(KeySignatures.EFLATMAJ_CMIN.equals(KeySignatures.EFLATMAJ_CMIN));
 
-		final KeySignature customSig = new KeySignature(Arrays.asList(Pitch.Base.C), Arrays.asList(Pitch.Base.B));
-		assertTrue(customSig.equals(new KeySignature(Arrays.asList(Pitch.Base.C), Arrays.asList(Pitch.Base.B))));
+		final KeySignature customSig = KeySignature.of(Arrays.asList(Pitch.Base.C), Arrays.asList(Pitch.Base.B));
+		assertTrue(customSig.equals(KeySignature.of(Arrays.asList(Pitch.Base.C), Arrays.asList(Pitch.Base.B))));
 
 		assertFalse(KeySignatures.CMAJ_AMIN.equals(KeySignatures.FMAJ_DMIN));
 	}

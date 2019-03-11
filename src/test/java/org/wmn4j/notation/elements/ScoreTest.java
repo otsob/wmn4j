@@ -18,12 +18,6 @@ import java.util.NoSuchElementException;
 import org.junit.Test;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.builders.PartBuilder;
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Part;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 import org.wmn4j.notation.iterators.ScoreIterator;
 import org.wmn4j.notation.iterators.ScorePosition;
@@ -64,7 +58,7 @@ public class ScoreTest {
 
 	@Test
 	public void testGetAttribute() {
-		final Score score = new Score(getTestAttributes(), getTestParts(5, 5));
+		final Score score = Score.of(getTestAttributes(), getTestParts(5, 5));
 		assertEquals(SCORE_NAME, score.getAttribute(Score.Attribute.NAME));
 		assertEquals(COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals("", score.getAttribute(Score.Attribute.ARRANGER));
@@ -75,7 +69,7 @@ public class ScoreTest {
 		final Map<Score.Attribute, String> attributes = getTestAttributes();
 		final List<Part> parts = getTestParts(5, 5);
 
-		final Score score = new Score(attributes, parts);
+		final Score score = Score.of(attributes, parts);
 		assertEquals("Number of parts was incorrect before trying to modify.", 5, score.getPartCount());
 		parts.add(parts.get(0));
 		assertEquals("Adding part to the list used for creating score changed score.", 5, score.getPartCount());
@@ -88,7 +82,7 @@ public class ScoreTest {
 		try {
 			scoreParts.add(parts.get(0));
 		} catch (final Exception e) {
-		/* Do nothing */ }
+			/* Do nothing */ }
 		assertEquals("Number of parts changed in score", 5, score.getPartCount());
 	}
 
@@ -96,7 +90,7 @@ public class ScoreTest {
 	public void testIterator() {
 		final int partCount = 10;
 		final int measureCount = 10;
-		final Score score = new Score(getTestAttributes(), getTestParts(partCount, measureCount));
+		final Score score = Score.of(getTestAttributes(), getTestParts(partCount, measureCount));
 
 		int parts = 0;
 
@@ -129,11 +123,11 @@ public class ScoreTest {
 		}
 
 		// Test first note.
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER),
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER),
 				score.getAtPosition(new ScorePosition(0, 1, 1, 1, 0)));
 
 		// Test last note.
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 3), Durations.WHOLE),
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 3), Durations.WHOLE),
 				score.getAtPosition(new ScorePosition(1, 2, 3, 2, 0)));
 	}
 
@@ -159,6 +153,6 @@ public class ScoreTest {
 		// Get the middle note (E) from the chord in the score.
 		final ScorePosition position = new ScorePosition(0, 1, 1, 1, 1, 1);
 		final Note noteInChord = (Note) score.getAtPosition(position);
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF), noteInChord);
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF), noteInChord);
 	}
 }

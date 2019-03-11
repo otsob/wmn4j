@@ -17,7 +17,7 @@ import org.wmn4j.notation.iterators.ScorePosition;
  * Represents a score. This class is immutable.
  *
  */
-public class Score implements Iterable<Part> {
+public final class Score implements Iterable<Part> {
 
 	/**
 	 * Type for the different text attributes a score can have.
@@ -46,12 +46,23 @@ public class Score implements Iterable<Part> {
 	private final List<Part> parts;
 
 	/**
+	 * Returns a score with the given attributes and parts.
+	 *
+	 * @param attributes the attributes of the score
+	 * @param parts      the parts in the score
+	 * @return a score with the given attributes and parts
+	 */
+	public static Score of(Map<Attribute, String> attributes, List<Part> parts) {
+		return new Score(attributes, parts);
+	}
+
+	/**
 	 * Constructor.
 	 *
 	 * @param attributes the attributes of the score
 	 * @param parts      the parts in the score
 	 */
-	public Score(Map<Attribute, String> attributes, List<Part> parts) {
+	private Score(Map<Attribute, String> attributes, List<Part> parts) {
 		this.parts = Collections.unmodifiableList(new ArrayList<>(parts));
 		this.scoreAttr = Collections.unmodifiableMap(new HashMap<>(attributes));
 

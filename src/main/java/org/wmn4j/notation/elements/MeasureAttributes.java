@@ -31,10 +31,10 @@ public final class MeasureAttributes {
 	 * @param clef          the clef in effect at the beginning of the measure
 	 * @return an instance with the given values
 	 */
-	public static MeasureAttributes getMeasureAttr(TimeSignature timeSignature, KeySignature keySignature,
+	public static MeasureAttributes of(TimeSignature timeSignature, KeySignature keySignature,
 			Barline rightBarline,
 			Clef clef) {
-		return getMeasureAttr(timeSignature, keySignature, rightBarline, Barline.NONE, clef);
+		return of(timeSignature, keySignature, rightBarline, Barline.NONE, clef);
 	}
 
 	/**
@@ -47,10 +47,10 @@ public final class MeasureAttributes {
 	 * @param clef          the clef in effect at the beginning of the measure
 	 * @return an instance with the given values
 	 */
-	public static MeasureAttributes getMeasureAttr(TimeSignature timeSignature, KeySignature keySignature,
+	public static MeasureAttributes of(TimeSignature timeSignature, KeySignature keySignature,
 			Barline rightBarline,
 			Barline leftBarline, Clef clef) {
-		return getMeasureAttr(timeSignature, keySignature, rightBarline, leftBarline, clef, null);
+		return of(timeSignature, keySignature, rightBarline, leftBarline, clef, null);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public final class MeasureAttributes {
 	 * @param clefChanges   the clef changes within the measure
 	 * @return an instance with the given values
 	 */
-	public static MeasureAttributes getMeasureAttr(TimeSignature timeSignature, KeySignature keySignature,
+	public static MeasureAttributes of(TimeSignature timeSignature, KeySignature keySignature,
 			Barline rightBarline,
 			Barline leftBarline, Clef clef, Map<Duration, Clef> clefChanges) {
 		// TODO: Potentially use interner pattern or similar for caching.

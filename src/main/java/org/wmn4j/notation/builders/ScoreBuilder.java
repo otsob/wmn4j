@@ -54,6 +54,6 @@ public class ScoreBuilder {
 	public Score build() {
 		final List<Part> parts = new ArrayList<>();
 		this.partBuilders.forEach((builder) -> parts.add(builder.build()));
-		return new Score(this.scoreAttr, parts);
+		return Score.of(this.scoreAttr, parts);
 	}
 }

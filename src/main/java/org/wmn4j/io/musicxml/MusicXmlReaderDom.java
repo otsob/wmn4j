@@ -513,12 +513,12 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			if (staffNumberNode != null) {
 				final int staffNumberAttr = Integer.parseInt(staffNumberNode.getTextContent());
 				if (staffNumberAttr == staffNumber) {
-					timeSig = TimeSignature.getTimeSignature(beats, beatType);
+					timeSig = TimeSignature.of(beats, beatType);
 				} else {
 					timeSig = previous.getTimeSig();
 				}
 			} else {
-				timeSig = TimeSignature.getTimeSignature(beats, beatType);
+				timeSig = TimeSignature.of(beats, beatType);
 			}
 		} else {
 			timeSig = previous.getTimeSig();
@@ -592,7 +592,7 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			break;
 		}
 
-		return Clef.getClef(type, clefLine);
+		return Clef.of(type, clefLine);
 	}
 
 	private Barline getBarline(Node barlineNode) {
@@ -684,7 +684,7 @@ class MusicXmlReaderDom implements MusicXmlReader {
 					.map(alterNode -> Integer.parseInt(alterNode.getTextContent()))
 					.orElse(0);
 
-			pitch = Pitch.getPitch(pitchBase, alter, octave);
+			pitch = Pitch.of(pitchBase, alter, octave);
 		} else {
 			final Optional<Node> unpitchedNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_UNPITCHED);
 			if (unpitchedNode.isPresent()) {
@@ -695,7 +695,7 @@ class MusicXmlReaderDom implements MusicXmlReader {
 				if (stepNode.isPresent() && octaveNode.isPresent()) {
 					final Pitch.Base pitchBase = getPitchBase(stepNode.get());
 					final int octave = Integer.parseInt(octaveNode.get().getTextContent());
-					pitch = Pitch.getPitch(pitchBase, 0, octave);
+					pitch = Pitch.of(pitchBase, 0, octave);
 				}
 			}
 		}
@@ -734,7 +734,7 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			final int nominator = Integer.parseInt(durationNode.get().getTextContent());
 			// In MusicXml divisions is the number of parts into which a quarter note
 			// is divided. Therefore divisions needs to be multiplied by 4.
-			return Duration.getDuration(nominator, divisions * 4);
+			return Duration.of(nominator, divisions * 4);
 		}
 
 		return null;

@@ -43,9 +43,9 @@ public class MeasureBuilderTest {
 
 		builder.addVoice();
 		assertEquals(1, builder.getNumberOfVoices());
-		builder.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT))
-		.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT))
-		.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT))
+		.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT))
+		.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT));
 
 		final Measure measure = builder.build();
 		assertTrue(measure != null);
@@ -57,22 +57,22 @@ public class MeasureBuilderTest {
 
 		assertEquals(1, measure.getVoiceCount());
 		final List<Durational> voice = measure.getVoice(0);
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voice.get(0));
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), voice.get(1));
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT), voice.get(2));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT), voice.get(0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT), voice.get(1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT), voice.get(2));
 	}
 
 	@Test
 	public void testBuildMeasureWithGivenAttributes() {
-		final MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.SIX_EIGHT,
+		final MeasureAttributes measureAttr = MeasureAttributes.of(TimeSignatures.SIX_EIGHT,
 				KeySignatures.DFLATMAJ_BFLATMIN, Barline.DOUBLE, Clefs.F);
 		final MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
 
 		builder.addVoice();
 		assertEquals(1, builder.getNumberOfVoices());
-		builder.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT))
-		.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT))
-		.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT))
+		.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT))
+		.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT));
 
 		final Measure measure = builder.build();
 		assertTrue(measure != null);
@@ -84,14 +84,14 @@ public class MeasureBuilderTest {
 
 		assertEquals(1, measure.getVoiceCount());
 		final List<Durational> voice = measure.getVoice(0);
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voice.get(0));
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), voice.get(1));
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT), voice.get(2));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT), voice.get(0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT), voice.get(1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT), voice.get(2));
 	}
 
 	@Test
 	public void testSetParametersUsedOverMeasureAttributes() {
-		final MeasureAttributes measureAttr = MeasureAttributes.getMeasureAttr(TimeSignatures.THREE_EIGHT,
+		final MeasureAttributes measureAttr = MeasureAttributes.of(TimeSignatures.THREE_EIGHT,
 				KeySignatures.AMAJ_FSHARPMIN, Barline.REPEAT_RIGHT, Clefs.ALTO);
 		final MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
 
@@ -100,9 +100,9 @@ public class MeasureBuilderTest {
 
 		builder.addVoice();
 		assertEquals(1, builder.getNumberOfVoices());
-		builder.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT))
-		.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT))
-		.addToVoice(0, new NoteBuilder(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT))
+		.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT))
+		.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT));
 
 		final Measure measure = builder.build();
 		assertTrue(measure != null);
@@ -114,9 +114,9 @@ public class MeasureBuilderTest {
 
 		assertEquals(1, measure.getVoiceCount());
 		final List<Durational> voice = measure.getVoice(0);
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voice.get(0));
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), voice.get(1));
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT), voice.get(2));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT), voice.get(0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT), voice.get(1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT), voice.get(2));
 	}
 
 	@Test
@@ -133,9 +133,9 @@ public class MeasureBuilderTest {
 		final Measure measure = builder.build();
 		assertEquals(2, measure.getVoiceCount());
 		assertTrue(measure.getVoice(1).size() == 1);
-		assertTrue(measure.getVoice(1).contains(Rest.getRest(Durations.EIGHT)));
+		assertTrue(measure.getVoice(1).contains(Rest.of(Durations.EIGHT)));
 		assertTrue(measure.getVoice(3).size() == 1);
-		assertTrue(measure.getVoice(3).contains(Rest.getRest(Durations.EIGHT)));
+		assertTrue(measure.getVoice(3).contains(Rest.of(Durations.EIGHT)));
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class MeasureBuilderTest {
 		MeasureBuilder builder = new MeasureBuilder(1);
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER));
 		assertFalse("Voice 0 is full for 4/4 measure after adding one quarter rest", builder.isVoiceFull(0));
-		final NoteBuilder c = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 2), Durations.QUARTER);
+		final NoteBuilder c = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER);
 		builder.addToVoice(0, c);
 		assertFalse("Voice 0 is full for 4/4 measure after adding two quarters", builder.isVoiceFull(0));
 		builder.addToVoice(0, c);
@@ -169,7 +169,7 @@ public class MeasureBuilderTest {
 		MeasureBuilder builder = new MeasureBuilder(1);
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER));
 		assertFalse("builder for 4/4 is full after adding one quarter rest", builder.isFull());
-		final NoteBuilder c = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 2), Durations.QUARTER);
+		final NoteBuilder c = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER);
 		builder.addToVoice(0, c);
 		assertFalse("builder for 4/4 is full only after adding two quarters", builder.isFull());
 		builder.addToVoice(0, c);
@@ -192,8 +192,8 @@ public class MeasureBuilderTest {
 	@Test
 	public void testBuildingMeasureWithTiedNotes() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
-		final NoteBuilder first = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 2), Durations.HALF);
-		final NoteBuilder second = new NoteBuilder(Pitch.getPitch(Pitch.Base.C, 0, 2), Durations.HALF);
+		final NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
+		final NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
 
 		first.addTieToFollowing(second);
 		builder.addToVoice(1, first).addToVoice(1, second);

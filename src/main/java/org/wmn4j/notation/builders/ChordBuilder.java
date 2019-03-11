@@ -90,7 +90,7 @@ public class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
 	public Chord build() {
 		final List<Note> notes = new ArrayList<>();
 		this.noteBuilders.forEach((builder) -> notes.add(builder.build()));
-		return Chord.getChord(notes);
+		return Chord.of(notes);
 	}
 
 }

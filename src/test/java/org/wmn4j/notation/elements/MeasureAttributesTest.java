@@ -37,7 +37,7 @@ public class MeasureAttributesTest {
 
 	@Test
 	public void testGetMeasureInfo() {
-		final MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
+		final MeasureAttributes attr = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Barline.SINGLE, Clefs.G);
 
 		assertFalse(attr == null);
@@ -52,7 +52,7 @@ public class MeasureAttributesTest {
 	public void testGetMeasureInfoWithInvalidParameters() {
 
 		try {
-			final MeasureAttributes attr = MeasureAttributes.getMeasureAttr(null, KeySignatures.CMAJ_AMIN, Barline.SINGLE,
+			final MeasureAttributes attr = MeasureAttributes.of(null, KeySignatures.CMAJ_AMIN, Barline.SINGLE,
 					Barline.SINGLE, Clefs.G);
 
 			fail("Did not throw exception with null TimeSignature");
@@ -61,7 +61,7 @@ public class MeasureAttributesTest {
 		}
 
 		try {
-			final MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, null, Barline.SINGLE,
+			final MeasureAttributes attr = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, null, Barline.SINGLE,
 					Barline.SINGLE, Clefs.G);
 
 			fail("Did not throw exception with null KeySignature");
@@ -70,7 +70,7 @@ public class MeasureAttributesTest {
 		}
 
 		try {
-			final MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
+			final MeasureAttributes attr = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 					null, Barline.SINGLE, Clefs.G);
 
 			fail("Did not throw exception with null right barline");
@@ -79,7 +79,7 @@ public class MeasureAttributesTest {
 		}
 
 		try {
-			final MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
+			final MeasureAttributes attr = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 					Barline.SINGLE, Barline.SINGLE, null);
 
 			fail("Did not throw exception with null Clef");
@@ -90,13 +90,13 @@ public class MeasureAttributesTest {
 
 	@Test
 	public void testEquals() {
-		final MeasureAttributes attr = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
+		final MeasureAttributes attr = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Barline.SINGLE, Clefs.G);
 
-		final MeasureAttributes other = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
+		final MeasureAttributes other = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Barline.SINGLE, Clefs.G);
 
-		final MeasureAttributes different = MeasureAttributes.getMeasureAttr(TimeSignatures.FOUR_FOUR,
+		final MeasureAttributes different = MeasureAttributes.of(TimeSignatures.FOUR_FOUR,
 				KeySignatures.CMAJ_AMIN, Barline.SINGLE, Barline.DOUBLE, Clefs.G);
 
 		assertTrue(attr.equals(attr));

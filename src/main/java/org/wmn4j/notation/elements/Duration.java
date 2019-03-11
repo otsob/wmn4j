@@ -29,7 +29,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @param denominator the denominator part of the duration
 	 * @return an instance with the given numerator and denominator
 	 */
-	public static Duration getDuration(int numerator, int denominator) {
+	public static Duration of(int numerator, int denominator) {
 
 		if (numerator < 1) {
 			throw new IllegalArgumentException("numerator must be at least 1");
@@ -53,7 +53,7 @@ public final class Duration implements Comparable<Duration> {
 
 	/**
 	 * Constructor for the class. The constructor is private, to get a Duration
-	 * object use the static method {@link #getDuration(int, int) getDuration}.
+	 * object use the static method {@link #of(int, int) getDuration}.
 	 *
 	 * @param numerator   the numerator part of the duration
 	 * @param denominator the denominator part of the duration
@@ -123,7 +123,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @return duration that is this incremented by half of this
 	 */
 	public Duration addDot() {
-		return this.add(Duration.getDuration(this.numerator, 2 * this.denominator));
+		return this.add(Duration.of(this.numerator, 2 * this.denominator));
 	}
 
 	/**
@@ -150,7 +150,7 @@ public final class Duration implements Comparable<Duration> {
 		final int nom = this.numerator * other.denominator + this.denominator * other.numerator;
 		final int denom = this.denominator * other.denominator;
 
-		return getDuration(nom, denom);
+		return of(nom, denom);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public final class Duration implements Comparable<Duration> {
 		final int nom = this.numerator * other.denominator - this.denominator * other.numerator;
 		final int denom = this.denominator * other.denominator;
 
-		return getDuration(nom, denom);
+		return of(nom, denom);
 	}
 
 	/**
@@ -180,7 +180,7 @@ public final class Duration implements Comparable<Duration> {
 			throw new IllegalArgumentException("multiplier must be at least 1. Was " + multiplier);
 		}
 
-		return getDuration(this.numerator * multiplier, this.denominator);
+		return of(this.numerator * multiplier, this.denominator);
 	}
 
 	/**
@@ -196,7 +196,7 @@ public final class Duration implements Comparable<Duration> {
 			throw new IllegalArgumentException("divider must be at least 1. Was " + divisor);
 		}
 
-		return getDuration(this.numerator, this.denominator * divisor);
+		return of(this.numerator, this.denominator * divisor);
 	}
 
 	/**

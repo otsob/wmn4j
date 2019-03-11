@@ -40,6 +40,6 @@ public final class RestBuilder implements DurationalBuilder {
 
 	@Override
 	public Rest build() {
-		return Rest.getRest(this.duration);
+		return Rest.of(this.duration);
 	}
 }

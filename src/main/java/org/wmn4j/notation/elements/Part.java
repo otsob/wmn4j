@@ -47,7 +47,7 @@ public interface Part extends Iterable<Measure> {
 	 * @return the value of the attribute, or an empty string if the attribute is
 	 *         not set
 	 */
-	String getPartAttribute(Attribute attribute);
+	String getAttribute(Attribute attribute);
 
 	/**
 	 * Returns the number of measures in this part. The count is based on the

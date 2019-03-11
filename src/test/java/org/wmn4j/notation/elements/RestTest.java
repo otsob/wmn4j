@@ -33,23 +33,23 @@ public class RestTest {
 
 	@Test
 	public void testGetDuration() {
-		assertTrue(Rest.getRest(Durations.EIGHT).getDuration().equals(Durations.EIGHT));
-		assertFalse(Rest.getRest(Durations.QUARTER).getDuration().equals(Durations.EIGHT));
+		assertTrue(Rest.of(Durations.EIGHT).getDuration().equals(Durations.EIGHT));
+		assertFalse(Rest.of(Durations.QUARTER).getDuration().equals(Durations.EIGHT));
 	}
 
 	@Test
 	public void testToString() {
-		assertEquals("R(1/4)", Rest.getRest(Durations.QUARTER).toString());
-		assertEquals("R(1/12)", Rest.getRest(Durations.EIGHT_TRIPLET).toString());
+		assertEquals("R(1/4)", Rest.of(Durations.QUARTER).toString());
+		assertEquals("R(1/12)", Rest.of(Durations.EIGHT_TRIPLET).toString());
 	}
 
 	@Test
 	public void testEquals() {
-		final Rest quarter = Rest.getRest(Durations.QUARTER);
-		final Rest half = Rest.getRest(Durations.HALF);
+		final Rest quarter = Rest.of(Durations.QUARTER);
+		final Rest half = Rest.of(Durations.HALF);
 
-		assertTrue(quarter.equals(Rest.getRest(Durations.QUARTER)));
-		assertTrue(Rest.getRest(Durations.QUARTER).equals(quarter));
+		assertTrue(quarter.equals(Rest.of(Durations.QUARTER)));
+		assertTrue(Rest.of(Durations.QUARTER).equals(quarter));
 		assertFalse(quarter.equals(half));
 	}
 }

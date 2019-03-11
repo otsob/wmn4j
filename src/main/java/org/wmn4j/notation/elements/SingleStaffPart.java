@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 /**
  * Represents a part with a single staff in a score. This class is immutable.
  */
-public class SingleStaffPart implements Part {
+public final class SingleStaffPart implements Part {
 
 	/**
 	 * The default staff number for the staff in a single staff part.
@@ -23,16 +23,27 @@ public class SingleStaffPart implements Part {
 	private final Staff staff;
 
 	/**
-	 * Constructor.
+	 * Returns a part with a single staff with the given name and measures.
 	 *
 	 * @param name     the name of the part
 	 * @param measures the measures in this part
+	 * @return a part with a single staff with the given name and measures
 	 */
-	public SingleStaffPart(String name, List<Measure> measures) {
-		this.staff = new Staff(measures);
+	public static SingleStaffPart of(String name, List<Measure> measures) {
 		final Map<Part.Attribute, String> attributes = new HashMap<>();
 		attributes.put(Attribute.NAME, name);
-		this.partAttributes = Collections.unmodifiableMap(attributes);
+		return new SingleStaffPart(attributes, measures);
+	}
+
+	/**
+	 * Returns a part with a single staff with the given attributes and measures.
+	 *
+	 * @param partAttributes a map of attributes to be set for this part
+	 * @param measures       the measures in this part
+	 * @return a part with a single staff with the given attributes and measures
+	 */
+	public static SingleStaffPart of(Map<Part.Attribute, String> partAttributes, List<Measure> measures) {
+		return new SingleStaffPart(partAttributes, measures);
 	}
 
 	/**
@@ -41,14 +52,14 @@ public class SingleStaffPart implements Part {
 	 * @param partAttributes a map of attributes to be set for this part
 	 * @param measures       the measures in this part
 	 */
-	public SingleStaffPart(Map<Part.Attribute, String> partAttributes, List<Measure> measures) {
-		this.staff = new Staff(measures);
+	private SingleStaffPart(Map<Part.Attribute, String> partAttributes, List<Measure> measures) {
+		this.staff = Staff.of(measures);
 		this.partAttributes = Collections.unmodifiableMap(new HashMap<>(partAttributes));
 	}
 
 	@Override
 	public String getName() {
-		return this.getPartAttribute(Attribute.NAME);
+		return this.getAttribute(Attribute.NAME);
 	}
 
 	@Override
@@ -96,7 +107,7 @@ public class SingleStaffPart implements Part {
 	}
 
 	@Override
-	public String getPartAttribute(Attribute attribute) {
+	public String getAttribute(Attribute attribute) {
 		if (this.partAttributes.containsKey(attribute)) {
 			return this.partAttributes.get(attribute);
 		} else {

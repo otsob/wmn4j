@@ -38,7 +38,7 @@ public class DurationTest {
 
 	@Test
 	public void testGetDurationWithValidParameter() {
-		final Duration duration = Duration.getDuration(1, 4);
+		final Duration duration = Duration.of(1, 4);
 		assertTrue(duration != null);
 		assertTrue(duration.getNumerator() == 1);
 		assertTrue(duration.getDenominator() == 4);
@@ -47,13 +47,13 @@ public class DurationTest {
 	@Test
 	public void testGetDurationWithInvalidParameter() {
 		try {
-			final Duration duration = Duration.getDuration(-1, 2);
+			final Duration duration = Duration.of(-1, 2);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
 		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
-			final Duration duration = Duration.getDuration(1, 0);
+			final Duration duration = Duration.of(1, 0);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
 		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
@@ -62,17 +62,17 @@ public class DurationTest {
 
 	@Test
 	public void testEquals() {
-		final Duration quarter = Duration.getDuration(1, 4);
+		final Duration quarter = Duration.of(1, 4);
 		assertTrue(quarter.equals(quarter));
 		assertTrue(quarter.equals(Durations.QUARTER));
-		assertTrue(quarter.equals(Duration.getDuration(1, 4)));
+		assertTrue(quarter.equals(Duration.of(1, 4)));
 
-		final Duration anotherQuarter = Duration.getDuration(2, 8);
+		final Duration anotherQuarter = Duration.of(2, 8);
 		assertTrue(quarter.equals(anotherQuarter));
 		assertTrue(quarter.equals(Durations.QUARTER));
-		assertTrue(quarter.equals(Duration.getDuration(1, 4)));
+		assertTrue(quarter.equals(Duration.of(1, 4)));
 
-		final Duration notQuarter = Duration.getDuration(1, 8);
+		final Duration notQuarter = Duration.of(1, 8);
 		assertFalse(notQuarter.equals(quarter));
 
 		assertFalse(Durations.EIGHT_TRIPLET.equals(Durations.THIRTYSECOND));
@@ -80,20 +80,20 @@ public class DurationTest {
 
 	@Test
 	public void testRationalNumberReduced() {
-		final Duration quarter = Duration.getDuration(3, 12);
+		final Duration quarter = Duration.of(3, 12);
 		assertEquals(1, quarter.getNumerator());
 		assertEquals(4, quarter.getDenominator());
 
-		final Duration quintuplet = Duration.getDuration(5, 100);
+		final Duration quintuplet = Duration.of(5, 100);
 		assertEquals(1, quintuplet.getNumerator());
 		assertEquals(20, quintuplet.getDenominator());
 	}
 
 	@Test
 	public void testToString() {
-		assertEquals("(1/4)", Duration.getDuration(1, 4).toString());
+		assertEquals("(1/4)", Duration.of(1, 4).toString());
 		assertEquals("(1/8)", Durations.EIGHT.toString());
-		assertEquals("(1/16)", Duration.getDuration(1, 16).toString());
+		assertEquals("(1/16)", Duration.of(1, 16).toString());
 	}
 
 	@Test
@@ -108,14 +108,14 @@ public class DurationTest {
 		assertEquals(Durations.EIGHT, Durations.SIXTEENTH.add(Durations.SIXTEENTH));
 		assertEquals(Durations.QUARTER,
 				Durations.EIGHT_TRIPLET.add(Durations.EIGHT_TRIPLET.add(Durations.EIGHT_TRIPLET)));
-		assertEquals(Duration.getDuration(1, 8), Duration.getDuration(3, 32).add(Duration.getDuration(1, 32)));
+		assertEquals(Duration.of(1, 8), Duration.of(3, 32).add(Duration.of(1, 32)));
 	}
 
 	@Test
 	public void testSubtract() {
 		assertEquals(Durations.EIGHT, Durations.QUARTER.subtract(Durations.EIGHT));
 		assertEquals(Durations.QUARTER.addDot(), Durations.HALF.subtract(Durations.EIGHT));
-		assertEquals(Duration.getDuration(2, 12), Durations.QUARTER.subtract(Durations.EIGHT_TRIPLET));
+		assertEquals(Duration.of(2, 12), Durations.QUARTER.subtract(Durations.EIGHT_TRIPLET));
 	}
 
 	@Test
@@ -129,7 +129,7 @@ public class DurationTest {
 	public void testDivideBy() {
 		assertEquals(Durations.EIGHT, Durations.QUARTER.divideBy(2));
 		assertEquals(Durations.QUARTER, Durations.WHOLE.divideBy(4));
-		assertEquals(Duration.getDuration(1, 20), Durations.QUARTER.divideBy(5));
+		assertEquals(Duration.of(1, 20), Durations.QUARTER.divideBy(5));
 	}
 
 	@Test
@@ -155,8 +155,8 @@ public class DurationTest {
 
 	@Test
 	public void testAddDot() {
-		assertEquals(Duration.getDuration(3, 8), Durations.QUARTER.addDot());
-		assertEquals(Duration.getDuration(3, 4), Durations.HALF.addDot());
+		assertEquals(Duration.of(3, 8), Durations.QUARTER.addDot());
+		assertEquals(Duration.of(3, 4), Durations.HALF.addDot());
 	}
 
 	@Test

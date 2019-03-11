@@ -52,7 +52,7 @@ public final class Clef {
 	 *               centered
 	 * @return a clef with the specified properties.
 	 */
-	public static Clef getClef(Symbol symbol, int line) {
+	public static Clef of(Symbol symbol, int line) {
 
 		if (line < 1) {
 			throw new IllegalArgumentException("line is smaller than 1");

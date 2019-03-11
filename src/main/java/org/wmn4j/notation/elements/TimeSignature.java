@@ -16,31 +16,31 @@ public final class TimeSignature {
 	private final Duration beatDuration;
 
 	/**
-	 * Get an instance of <code>TimeSignature</code>.
+	 * Returns a time signature with the given numerator and denominator.
 	 *
-	 * @param numerator   the top number of the time signature.
-	 * @param denominator the bottom number of the time signature.
-	 * @return a TimeSignature with the specified properties.
+	 * @param numerator   the top number of the time signature
+	 * @param denominator the bottom number of the time signature
+	 * @return a time signature with the given numerator and denominator
 	 */
-	public static TimeSignature getTimeSignature(int numerator, int denominator) {
-		return getTimeSignature(numerator, Duration.getDuration(1, denominator));
+	public static TimeSignature of(int numerator, int denominator) {
+		return of(numerator, Duration.of(1, denominator));
 	}
 
 	/**
-	 * Get an instance of <code>TimeSignature</code>.
+	 * Returns a time signature with the given numerator and beat duration.
 	 *
-	 * @throws IllegalArgumentException if beats is less than 1.
-	 * @throws NullPointerException     if beatDur is null.
-	 * @param beats   number of beats in measure.
-	 * @param beatDur the Duration of the beats.
-	 * @return a TimeSignature with the specified properties.
+	 * @throws IllegalArgumentException if beats is less than 1
+	 * @throws NullPointerException     if beatDuration is null
+	 * @param beats        number of beats in measure
+	 * @param beatDuration the Duration of the beats
+	 * @return a time signature with the given numerator and beat duration
 	 */
-	public static TimeSignature getTimeSignature(int beats, Duration beatDur) {
+	public static TimeSignature of(int beats, Duration beatDuration) {
 		if (beats < 1) {
 			throw new IllegalArgumentException("beats must be at least 1.");
 		}
 
-		return new TimeSignature(beats, Objects.requireNonNull(beatDur));
+		return new TimeSignature(beats, Objects.requireNonNull(beatDuration));
 	}
 
 	private TimeSignature(int beats, Duration beatDuration) {
