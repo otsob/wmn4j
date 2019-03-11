@@ -37,8 +37,8 @@ public final class Note implements Durational, Pitched {
 	 * @param duration  the duration of the note. Must not be null
 	 * @return an instance with the given parameters
 	 */
-	public static Note getNote(Pitch.Base pitchName, int alter, int octave, Duration duration) {
-		return getNote(Pitch.getPitch(pitchName, alter, octave), duration, null);
+	public static Note of(Pitch.Base pitchName, int alter, int octave, Duration duration) {
+		return of(Pitch.getPitch(pitchName, alter, octave), duration, null);
 	}
 
 	/**
@@ -48,8 +48,8 @@ public final class Note implements Durational, Pitched {
 	 * @param duration the duration of the note
 	 * @return an instance with the given parameters
 	 */
-	public static Note getNote(Pitch pitch, Duration duration) {
-		return getNote(pitch, duration, null);
+	public static Note of(Pitch pitch, Duration duration) {
+		return of(pitch, duration, null);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public final class Note implements Durational, Pitched {
 	 * @param articulations a set of Articulations associated with the note
 	 * @return an instance with the given parameters
 	 */
-	public static Note getNote(Pitch pitch, Duration duration, Set<Articulation> articulations) {
+	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations) {
 		return new Note(pitch, duration, articulations, null, null, false);
 	}
 
@@ -73,7 +73,7 @@ public final class Note implements Durational, Pitched {
 	 * @param multiNoteArticulations list of the MultiNoteArticulations for the note
 	 * @return an instance with the given parameters
 	 */
-	public static Note getNote(Pitch pitch, Duration duration, Set<Articulation> articulations,
+	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
 			List<MultiNoteArticulation> multiNoteArticulations) {
 		return new Note(pitch, duration, articulations, multiNoteArticulations, null, false);
 	}
@@ -89,7 +89,7 @@ public final class Note implements Durational, Pitched {
 	 * @param isTiedFromPrevious     true if this is tied from the previous note
 	 * @return an instance with the given parameters
 	 */
-	public static Note getNote(Pitch pitch, Duration duration, Set<Articulation> articulations,
+	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
 			List<MultiNoteArticulation> multiNoteArticulations, Note tiedTo, boolean isTiedFromPrevious) {
 		return new Note(pitch, duration, articulations, multiNoteArticulations, tiedTo, isTiedFromPrevious);
 	}

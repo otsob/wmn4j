@@ -57,9 +57,9 @@ public class MeasureBuilderTest {
 
 		assertEquals(1, measure.getVoiceCount());
 		final List<Durational> voice = measure.getVoice(0);
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voice.get(0));
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), voice.get(1));
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT), voice.get(2));
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voice.get(0));
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), voice.get(1));
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT), voice.get(2));
 	}
 
 	@Test
@@ -84,9 +84,9 @@ public class MeasureBuilderTest {
 
 		assertEquals(1, measure.getVoiceCount());
 		final List<Durational> voice = measure.getVoice(0);
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voice.get(0));
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), voice.get(1));
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT), voice.get(2));
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voice.get(0));
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), voice.get(1));
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT), voice.get(2));
 	}
 
 	@Test
@@ -114,9 +114,9 @@ public class MeasureBuilderTest {
 
 		assertEquals(1, measure.getVoiceCount());
 		final List<Durational> voice = measure.getVoice(0);
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voice.get(0));
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), voice.get(1));
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT), voice.get(2));
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.EIGHT), voice.get(0));
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.EIGHT), voice.get(1));
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.EIGHT), voice.get(2));
 	}
 
 	@Test

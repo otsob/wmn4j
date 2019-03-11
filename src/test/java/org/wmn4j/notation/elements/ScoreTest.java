@@ -129,11 +129,11 @@ public class ScoreTest {
 		}
 
 		// Test first note.
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER),
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER),
 				score.getAtPosition(new ScorePosition(0, 1, 1, 1, 0)));
 
 		// Test last note.
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 3), Durations.WHOLE),
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.C, 0, 3), Durations.WHOLE),
 				score.getAtPosition(new ScorePosition(1, 2, 3, 2, 0)));
 	}
 
@@ -159,6 +159,6 @@ public class ScoreTest {
 		// Get the middle note (E) from the chord in the score.
 		final ScorePosition position = new ScorePosition(0, 1, 1, 1, 1, 1);
 		final Note noteInChord = (Note) score.getAtPosition(position);
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF), noteInChord);
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF), noteInChord);
 	}
 }

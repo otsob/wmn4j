@@ -35,9 +35,9 @@ public class ChordBuilderTest {
 
 		final Chord chord = builder.build();
 		assertEquals(3, chord.getNoteCount());
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
 	}
 
 	@Test
@@ -49,9 +49,9 @@ public class ChordBuilderTest {
 
 		final Chord chord = builder.build();
 		assertEquals(3, chord.getNoteCount());
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class ChordBuilderTest {
 
 		final Chord chord = builder.build();
 		assertEquals(1, chord.getNoteCount());
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 	}
 
 	@Test
@@ -77,10 +77,10 @@ public class ChordBuilderTest {
 
 		final Chord chord = builder.build();
 		assertEquals(4, chord.getNoteCount());
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.B, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.B, 0, 4), Durations.QUARTER)));
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class ChordBuilderTest {
 
 		final Chord chord = chordBuilder.build();
 		assertEquals(2, chord.getNoteCount());
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
-		assertTrue(chord.contains(Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.D, 0, 4), Durations.QUARTER)));
+		assertTrue(chord.contains(Note.of(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.QUARTER)));
 	}
 }

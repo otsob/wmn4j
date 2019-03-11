@@ -184,7 +184,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	public Chord remove(Pitch pitch) {
 		if (this.contains(pitch)) {
 			final List<Note> newNotes = new ArrayList<>(this.notes);
-			newNotes.remove(Note.getNote(pitch, this.getDuration()));
+			newNotes.remove(Note.of(pitch, this.getDuration()));
 			return Chord.of(newNotes);
 		}
 

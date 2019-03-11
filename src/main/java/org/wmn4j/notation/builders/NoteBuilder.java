@@ -240,7 +240,7 @@ public class NoteBuilder implements DurationalBuilder {
 				this.tiedTo = this.followingTied.build();
 			}
 
-			this.cachedNote = Note.getNote(this.pitch, this.duration, this.articulations, this.multiNoteArticulations,
+			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, this.multiNoteArticulations,
 					this.tiedTo, this.isTiedFromPrevious);
 		}
 

@@ -31,7 +31,7 @@ public class NoteBuilderTest {
 		assertFalse(note.hasArticulations());
 		assertFalse(note.hasMultiNoteArticulations());
 		assertFalse(note.isTied());
-		assertEquals(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER), note);
+		assertEquals(Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER), note);
 	}
 
 	@Test
@@ -40,12 +40,12 @@ public class NoteBuilderTest {
 		builder.addArticulation(Articulation.STACCATO);
 		builder.addMultiNoteArticulation(new MultiNoteArticulation(MultiNoteArticulation.Type.SLUR));
 
-		final Note tiedNote = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final Note tiedNote = Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		final ScorePosition position = new ScorePosition(1, 1, 1, 1);
 
 		builder.setTiedTo(tiedNote);
 
-		final Note expected = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER,
+		final Note expected = Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER,
 				EnumSet.of(Articulation.STACCATO));
 
 		final Note note = builder.build();

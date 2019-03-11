@@ -29,10 +29,10 @@ public class SingleStaffPartTest {
 
 	KeySignature keySig = KeySignatures.CMAJ_AMIN;
 
-	Note C4 = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF);
-	Note E4 = Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF);
-	Note G4 = Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF);
-	Note C4Quarter = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+	Note C4 = Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF);
+	Note E4 = Note.of(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF);
+	Note G4 = Note.of(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF);
+	Note C4Quarter = Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
 	public SingleStaffPartTest() {
 		final Map<Integer, List<Durational>> noteVoice = new HashMap<>();

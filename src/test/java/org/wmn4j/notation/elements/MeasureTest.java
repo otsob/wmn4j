@@ -27,10 +27,10 @@ public class MeasureTest {
 
 	KeySignature keySig = KeySignatures.CMAJ_AMIN;
 
-	Note C4 = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF);
-	Note E4 = Note.getNote(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF);
-	Note G4 = Note.getNote(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF);
-	Note C4Quarter = Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
+	Note C4 = Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF);
+	Note E4 = Note.of(Pitch.getPitch(Pitch.Base.E, 0, 4), Durations.HALF);
+	Note G4 = Note.of(Pitch.getPitch(Pitch.Base.G, 0, 4), Durations.HALF);
+	Note C4Quarter = Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
 	public MeasureTest() {
 		final List<Durational> voiceContents = new ArrayList<>();
@@ -83,8 +83,8 @@ public class MeasureTest {
 	@Test
 	public void testGetVoice() {
 		final Measure m = Measure.of(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
-		assertTrue(m.getVoice(1).contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF)));
-		assertTrue(m.getVoice(0).contains(Note.getNote(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
+		assertTrue(m.getVoice(1).contains(Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.HALF)));
+		assertTrue(m.getVoice(0).contains(Note.of(Pitch.getPitch(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 
 		final List<Durational> voice = m.getVoice(0);
 		try {
