@@ -53,7 +53,7 @@ public final class SingleStaffPart implements Part {
 	 * @param measures       the measures in this part
 	 */
 	private SingleStaffPart(Map<Part.Attribute, String> partAttributes, List<Measure> measures) {
-		this.staff = new Staff(measures);
+		this.staff = Staff.of(measures);
 		this.partAttributes = Collections.unmodifiableMap(new HashMap<>(partAttributes));
 	}
 

@@ -43,7 +43,7 @@ public class StaffTest {
 	@Test
 	public void testGetMeasures() {
 		final List<Measure> origMeasures = getTestMeasures();
-		final Staff staff = new Staff(origMeasures);
+		final Staff staff = Staff.of(origMeasures);
 
 		final List<Measure> measures = staff.getMeasures();
 
@@ -68,7 +68,7 @@ public class StaffTest {
 	@Test
 	public void testIterator() {
 		final List<Measure> origMeasures = getTestMeasures();
-		final Staff staff = new Staff(origMeasures);
+		final Staff staff = Staff.of(origMeasures);
 
 		int measureCount = 0;
 		int prevMeasureNum = 0;
@@ -85,7 +85,7 @@ public class StaffTest {
 	@Test
 	public void testIteratorRemoveDisabled() {
 		final List<Measure> origMeasures = getTestMeasures();
-		final Staff staff = new Staff(origMeasures);
+		final Staff staff = Staff.of(origMeasures);
 
 		try {
 			final Iterator<Measure> iter = staff.iterator();
@@ -100,7 +100,7 @@ public class StaffTest {
 	@Test
 	public void testGetMeasure() {
 		final List<Measure> measures = getTestMeasures();
-		final Staff staff = new Staff(measures);
+		final Staff staff = Staff.of(measures);
 
 		assertFalse(staff.hasPickupMeasure());
 
@@ -119,7 +119,7 @@ public class StaffTest {
 		measures.add(Measure.of(0, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
 		measures.addAll(getTestMeasures());
 
-		final Staff staff = new Staff(measures);
+		final Staff staff = Staff.of(measures);
 		assertTrue(staff.hasPickupMeasure());
 
 		for (int measureNumber = 0; measureNumber < measures.size(); ++measureNumber) {

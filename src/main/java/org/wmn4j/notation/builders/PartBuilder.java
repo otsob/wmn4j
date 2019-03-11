@@ -110,7 +110,7 @@ public class PartBuilder {
 		} else {
 			final Map<Integer, Staff> staves = new HashMap<>();
 			for (int staffNumber : this.staveContents.keySet()) {
-				staves.put(staffNumber, new Staff(getBuiltMeasures(this.staveContents.get(staffNumber))));
+				staves.put(staffNumber, Staff.of(getBuiltMeasures(this.staveContents.get(staffNumber))));
 			}
 
 			return MultiStaffPart.of(this.partAttributes, staves);

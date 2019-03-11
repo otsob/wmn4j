@@ -32,8 +32,8 @@ public class MultiStaffPartTest {
 			measures.add(TestHelper.getTestMeasure(i));
 		}
 
-		this.testStaves.put(1, new Staff(measures));
-		this.testStaves.put(2, new Staff(measures));
+		this.testStaves.put(1, Staff.of(measures));
+		this.testStaves.put(2, Staff.of(measures));
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class MultiStaffPartTest {
 
 		final List<Measure> testMeasures = new ArrayList<>();
 		testMeasures.add(TestHelper.getTestMeasure(1));
-		testStavesCopy.put(1, new Staff(testMeasures));
+		testStavesCopy.put(1, Staff.of(testMeasures));
 
 		assertTrue("Modifying map that was used to create MultiStaffPart changed the MultiStaffPart.",
 				part.getStaff(1).getMeasure(1) == this.testStaves.get(1).getMeasure(1));
@@ -86,8 +86,8 @@ public class MultiStaffPartTest {
 			measures.add(TestHelper.getTestMeasure(i));
 		}
 
-		staves.put(1, new Staff(measures));
-		staves.put(2, new Staff(measures));
+		staves.put(1, Staff.of(measures));
+		staves.put(2, Staff.of(measures));
 
 		final MultiStaffPart part = MultiStaffPart.of("Test Staff", staves);
 

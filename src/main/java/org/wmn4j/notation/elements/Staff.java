@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 /**
  * Represents a staff in a score. This class is immutable.
  */
-public class Staff implements Iterable<Measure> {
+public final class Staff implements Iterable<Measure> {
 
 	/**
 	 * Type of staff.
@@ -32,11 +32,21 @@ public class Staff implements Iterable<Measure> {
 	private final Type type;
 
 	/**
+	 * Returns a staff with the given measures.
+	 *
+	 * @param measures the measures in the staff
+	 * @return a staff with the given measures
+	 */
+	public static Staff of(List<Measure> measures) {
+		return new Staff(measures);
+	}
+
+	/**
 	 * Constructor.
 	 *
 	 * @param measures the measures in the staff.
 	 */
-	public Staff(List<Measure> measures) {
+	private Staff(List<Measure> measures) {
 		// TODO: Add constructor that allows setting staff type.
 		this.type = Type.NORMAL;
 
