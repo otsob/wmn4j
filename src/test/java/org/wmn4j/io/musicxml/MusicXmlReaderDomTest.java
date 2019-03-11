@@ -381,10 +381,10 @@ public class MusicXmlReaderDomTest {
 		final Score score = readScore("timesigs.xml");
 		assertEquals(1, score.getPartCount());
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
-		assertEquals(TimeSignature.getTimeSignature(2, 2), part.getMeasure(1).getTimeSignature());
-		assertEquals(TimeSignature.getTimeSignature(3, 4), part.getMeasure(2).getTimeSignature());
-		assertEquals(TimeSignature.getTimeSignature(6, 8), part.getMeasure(3).getTimeSignature());
-		assertEquals(TimeSignature.getTimeSignature(15, 16), part.getMeasure(4).getTimeSignature());
+		assertEquals(TimeSignature.of(2, 2), part.getMeasure(1).getTimeSignature());
+		assertEquals(TimeSignature.of(3, 4), part.getMeasure(2).getTimeSignature());
+		assertEquals(TimeSignature.of(6, 8), part.getMeasure(3).getTimeSignature());
+		assertEquals(TimeSignature.of(15, 16), part.getMeasure(4).getTimeSignature());
 	}
 
 	@Test

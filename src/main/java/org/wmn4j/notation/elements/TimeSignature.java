@@ -22,8 +22,8 @@ public final class TimeSignature {
 	 * @param denominator the bottom number of the time signature.
 	 * @return a TimeSignature with the specified properties.
 	 */
-	public static TimeSignature getTimeSignature(int numerator, int denominator) {
-		return getTimeSignature(numerator, Duration.of(1, denominator));
+	public static TimeSignature of(int numerator, int denominator) {
+		return of(numerator, Duration.of(1, denominator));
 	}
 
 	/**
@@ -35,7 +35,7 @@ public final class TimeSignature {
 	 * @param beatDur the Duration of the beats.
 	 * @return a TimeSignature with the specified properties.
 	 */
-	public static TimeSignature getTimeSignature(int beats, Duration beatDur) {
+	public static TimeSignature of(int beats, Duration beatDur) {
 		if (beats < 1) {
 			throw new IllegalArgumentException("beats must be at least 1.");
 		}

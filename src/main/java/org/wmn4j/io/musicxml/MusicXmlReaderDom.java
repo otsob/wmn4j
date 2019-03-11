@@ -513,12 +513,12 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			if (staffNumberNode != null) {
 				final int staffNumberAttr = Integer.parseInt(staffNumberNode.getTextContent());
 				if (staffNumberAttr == staffNumber) {
-					timeSig = TimeSignature.getTimeSignature(beats, beatType);
+					timeSig = TimeSignature.of(beats, beatType);
 				} else {
 					timeSig = previous.getTimeSig();
 				}
 			} else {
-				timeSig = TimeSignature.getTimeSignature(beats, beatType);
+				timeSig = TimeSignature.of(beats, beatType);
 			}
 		} else {
 			timeSig = previous.getTimeSig();

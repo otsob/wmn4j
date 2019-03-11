@@ -28,7 +28,7 @@ public class StaffTest {
 
 	static List<Measure> getTestMeasures() {
 		final List<Measure> measures = new ArrayList<>();
-		final TimeSignature timeSig = TimeSignature.getTimeSignature(4, 4);
+		final TimeSignature timeSig = TimeSignature.of(4, 4);
 		final Map<Integer, List<Durational>> notes = new HashMap<>();
 		notes.put(0, new ArrayList<>());
 		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
