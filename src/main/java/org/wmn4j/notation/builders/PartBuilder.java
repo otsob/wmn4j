@@ -113,7 +113,7 @@ public class PartBuilder {
 				staves.put(staffNumber, new Staff(getBuiltMeasures(this.staveContents.get(staffNumber))));
 			}
 
-			return new MultiStaffPart(this.partAttributes, staves);
+			return MultiStaffPart.of(this.partAttributes, staves);
 		}
 	}
 }

@@ -16,9 +16,6 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.wmn4j.notation.TestHelper;
-import org.wmn4j.notation.elements.Measure;
-import org.wmn4j.notation.elements.MultiStaffPart;
-import org.wmn4j.notation.elements.Staff;
 
 /**
  *
@@ -42,7 +39,7 @@ public class MultiStaffPartTest {
 	@Test
 	public void testImmutability() {
 		final Map<Integer, Staff> testStavesCopy = new HashMap<>(this.testStaves);
-		final MultiStaffPart part = new MultiStaffPart("Test staff", testStavesCopy);
+		final MultiStaffPart part = MultiStaffPart.of("Test staff", testStavesCopy);
 
 		final List<Measure> testMeasures = new ArrayList<>();
 		testMeasures.add(TestHelper.getTestMeasure(1));
@@ -54,7 +51,7 @@ public class MultiStaffPartTest {
 
 	@Test
 	public void testIterator() {
-		final MultiStaffPart part = new MultiStaffPart("Test staff", this.testStaves);
+		final MultiStaffPart part = MultiStaffPart.of("Test staff", this.testStaves);
 
 		final int expectedCount = 10;
 		int count = 0;
@@ -92,7 +89,7 @@ public class MultiStaffPartTest {
 		staves.put(1, new Staff(measures));
 		staves.put(2, new Staff(measures));
 
-		final MultiStaffPart part = new MultiStaffPart("Test Staff", staves);
+		final MultiStaffPart part = MultiStaffPart.of("Test Staff", staves);
 
 		final int expectedCount = 10;
 		int count = 0;
@@ -121,13 +118,13 @@ public class MultiStaffPartTest {
 
 	@Test
 	public void testIteratorImmutability() {
-		final MultiStaffPart part = new MultiStaffPart("Test staff", this.testStaves);
+		final MultiStaffPart part = MultiStaffPart.of("Test staff", this.testStaves);
 		final Iterator<Measure> iterator = part.iterator();
 		iterator.next();
 		try {
 			iterator.remove();
 			fail("Did not throw exception when calling remove on iterator");
 		} catch (final Exception e) {
-		/* Do nothing */ }
+			/* Do nothing */ }
 	}
 }

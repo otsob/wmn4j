@@ -17,22 +17,34 @@ import java.util.TreeMap;
  * Represents a score part with multiple staves such as are often used with
  * keyboard instruments. This class is immutable.
  */
-public class MultiStaffPart implements Part {
+public final class MultiStaffPart implements Part {
 
 	private final Map<Part.Attribute, String> partAttributes;
 	private final SortedMap<Integer, Staff> staves;
 
 	/**
-	 * Constructor. The staves are associated with numbers which are to be given as
-	 * keys in the map parameter.
+	 * Returns a part with multiple staves with the given values. The staves are
+	 * associated with numbers which are to be given as keys in the map parameter.
 	 *
 	 * @param name   the name of the part
 	 * @param staves the staves in the part
+	 * @return a part with multiple staves with the given values
 	 */
-	public MultiStaffPart(String name, Map<Integer, Staff> staves) {
-		this.partAttributes = new HashMap<>();
-		this.partAttributes.put(Part.Attribute.NAME, name);
-		this.staves = Collections.unmodifiableSortedMap(new TreeMap<>(staves));
+	public static MultiStaffPart of(String name, Map<Integer, Staff> staves) {
+		Map<Part.Attribute, String> attributes = new HashMap<>();
+		return new MultiStaffPart(attributes, staves);
+	}
+
+	/**
+	 * Returns a part with multiple staves with the given values. The staves are
+	 * associated with numbers which are to be given as keys in the map parameter.
+	 *
+	 * @param attributes the attributes of the part
+	 * @param staves     the staves in the part
+	 * @return a part with multiple staves with the given values
+	 */
+	public static MultiStaffPart of(Map<Part.Attribute, String> attributes, Map<Integer, Staff> staves) {
+		return new MultiStaffPart(attributes, staves);
 	}
 
 	/**
@@ -42,7 +54,7 @@ public class MultiStaffPart implements Part {
 	 * @param attributes the attributes of the part
 	 * @param staves     the staves in the part
 	 */
-	public MultiStaffPart(Map<Part.Attribute, String> attributes, Map<Integer, Staff> staves) {
+	private MultiStaffPart(Map<Part.Attribute, String> attributes, Map<Integer, Staff> staves) {
 		this.partAttributes = Collections.unmodifiableMap(new HashMap<>(attributes));
 		this.staves = Collections.unmodifiableSortedMap(new TreeMap<>(staves));
 	}
