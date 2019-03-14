@@ -37,6 +37,7 @@ public class MeasureBuilder {
 	private int number;
 	private final Map<Integer, List<DurationalBuilder>> voices;
 	private final MeasureAttributesBuilder attributesBuilder;
+	private final MeasureAttributes initialMeasureAttributes;
 
 	/**
 	 * Create a measure builder with the given attributes.
@@ -47,7 +48,8 @@ public class MeasureBuilder {
 	public MeasureBuilder(int number, MeasureAttributes measureAttributes) {
 		this.voices = new HashMap<>();
 		this.number = number;
-		attributesBuilder = new MeasureAttributesBuilder(measureAttributes);
+		this.attributesBuilder = new MeasureAttributesBuilder(measureAttributes);
+		this.initialMeasureAttributes = measureAttributes;
 	}
 
 	/**
@@ -58,7 +60,8 @@ public class MeasureBuilder {
 	public MeasureBuilder(int number) {
 		this.voices = new HashMap<>();
 		this.number = number;
-		attributesBuilder = new MeasureAttributesBuilder();
+		this.attributesBuilder = new MeasureAttributesBuilder();
+		this.initialMeasureAttributes = null;
 	}
 
 	/**
@@ -346,7 +349,11 @@ public class MeasureBuilder {
 	 * @return a measure with the values set in this builder
 	 */
 	public Measure build() {
-		final MeasureAttributes measureAttributes = attributesBuilder.build();
+		MeasureAttributes measureAttributes = initialMeasureAttributes;
+
+		if (!attributesBuilder.equalsInContent(measureAttributes)) {
+			measureAttributes = attributesBuilder.build();
+		}
 
 		return Measure.of(this.number, this.getBuiltVoices(), measureAttributes);
 	}
@@ -379,6 +386,38 @@ public class MeasureBuilder {
 
 		private MeasureAttributes build() {
 			return MeasureAttributes.of(timeSignature, keySignature, rightBarline, leftBarline, clef, clefChanges);
+		}
+
+		private boolean equalsInContent(MeasureAttributes measureAttributes) {
+			if (measureAttributes == null) {
+				return false;
+			}
+
+			if (!timeSignature.equals(measureAttributes.getTimeSignature())) {
+				return false;
+			}
+
+			if (!keySignature.equals(measureAttributes.getKeySignature())) {
+				return false;
+			}
+
+			if (!clef.equals(measureAttributes.getClef())) {
+				return false;
+			}
+
+			if (!leftBarline.equals(measureAttributes.getLeftBarline())) {
+				return false;
+			}
+
+			if (!rightBarline.equals(measureAttributes.getRightBarline())) {
+				return false;
+			}
+
+			if (!clefChanges.equals(measureAttributes.getClefChanges())) {
+				return false;
+			}
+
+			return true;
 		}
 	}
 }
