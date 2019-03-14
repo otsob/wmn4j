@@ -346,12 +346,9 @@ public class MeasureBuilder {
 	 * @return a measure with the values set in this builder
 	 */
 	public Measure build() {
-		final MeasureAttributes measureAttr = MeasureAttributes.of(attributesBuilder.timeSignature,
-				attributesBuilder.keySignature,
-				attributesBuilder.rightBarline, attributesBuilder.leftBarline, attributesBuilder.clef,
-				attributesBuilder.clefChanges);
+		final MeasureAttributes measureAttributes = attributesBuilder.build();
 
-		return Measure.of(this.number, this.getBuiltVoices(), measureAttr);
+		return Measure.of(this.number, this.getBuiltVoices(), measureAttributes);
 	}
 
 	private final class MeasureAttributesBuilder {
@@ -378,6 +375,10 @@ public class MeasureBuilder {
 			this.leftBarline = measureAttributes.getLeftBarline();
 			this.rightBarline = measureAttributes.getRightBarline();
 			this.clefChanges = new HashMap<>(measureAttributes.getClefChanges());
+		}
+
+		private MeasureAttributes build() {
+			return MeasureAttributes.of(timeSignature, keySignature, rightBarline, leftBarline, clef, clefChanges);
 		}
 	}
 }
