@@ -35,18 +35,8 @@ import org.wmn4j.notation.elements.TimeSignatures;
 public class MeasureBuilder {
 
 	private int number;
-	// TODO: Keep track of voice durations in some way to make checking if measure
-	// is full faster.
 	private final Map<Integer, List<DurationalBuilder>> voices;
-
-	private TimeSignature timeSig = TimeSignatures.FOUR_FOUR;
-	private KeySignature keySig = KeySignatures.CMAJ_AMIN;
-	private Clef clef = Clefs.G;
-	private Barline leftBarline = Barline.NONE;
-	private Barline rightBarline = Barline.SINGLE;
-	private Map<Duration, Clef> clefChanges = new HashMap<>();
-
-	// TODO: If MeasureAttributes are given, then use those.
+	private final MeasureAttributesBuilder attributesBuilder;
 
 	/**
 	 * Create a measure builder with the given attributes.
@@ -57,13 +47,7 @@ public class MeasureBuilder {
 	public MeasureBuilder(int number, MeasureAttributes measureAttributes) {
 		this.voices = new HashMap<>();
 		this.number = number;
-
-		this.timeSig = measureAttributes.getTimeSignature();
-		this.keySig = measureAttributes.getKeySignature();
-		this.clef = measureAttributes.getClef();
-		this.leftBarline = measureAttributes.getLeftBarline();
-		this.rightBarline = measureAttributes.getRightBarline();
-		this.clefChanges = new HashMap<>(measureAttributes.getClefChanges());
+		attributesBuilder = new MeasureAttributesBuilder(measureAttributes);
 	}
 
 	/**
@@ -74,6 +58,7 @@ public class MeasureBuilder {
 	public MeasureBuilder(int number) {
 		this.voices = new HashMap<>();
 		this.number = number;
+		attributesBuilder = new MeasureAttributesBuilder();
 	}
 
 	/**
@@ -102,7 +87,7 @@ public class MeasureBuilder {
 	 * @return time signature set for this builder
 	 */
 	public TimeSignature getTimeSignature() {
-		return this.timeSig;
+		return attributesBuilder.timeSignature;
 	}
 
 	/**
@@ -112,7 +97,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder setTimeSignature(TimeSignature timeSignature) {
-		this.timeSig = timeSignature;
+		attributesBuilder.timeSignature = timeSignature;
 		return this;
 	}
 
@@ -122,7 +107,7 @@ public class MeasureBuilder {
 	 * @return key signature that is set in this builder
 	 */
 	public KeySignature getKeySignature() {
-		return this.keySig;
+		return attributesBuilder.keySignature;
 	}
 
 	/**
@@ -132,7 +117,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder setKeySignature(KeySignature keySignature) {
-		this.keySig = keySignature;
+		attributesBuilder.keySignature = keySignature;
 		return this;
 	}
 
@@ -142,7 +127,7 @@ public class MeasureBuilder {
 	 * @return the clef set in this builder
 	 */
 	public Clef getClef() {
-		return this.clef;
+		return attributesBuilder.clef;
 	}
 
 	/**
@@ -152,7 +137,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder setClef(Clef clef) {
-		this.clef = clef;
+		attributesBuilder.clef = clef;
 		return this;
 	}
 
@@ -162,7 +147,7 @@ public class MeasureBuilder {
 	 * @return left barline set in this builder
 	 */
 	public Barline getLeftBarline() {
-		return this.leftBarline;
+		return attributesBuilder.leftBarline;
 	}
 
 	/**
@@ -172,7 +157,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder setLeftBarline(Barline leftBarline) {
-		this.leftBarline = leftBarline;
+		attributesBuilder.leftBarline = leftBarline;
 		return this;
 	}
 
@@ -182,7 +167,7 @@ public class MeasureBuilder {
 	 * @return the right barline set in this builder
 	 */
 	public Barline getRightBarline() {
-		return rightBarline;
+		return attributesBuilder.rightBarline;
 	}
 
 	/**
@@ -192,7 +177,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder setRightBarline(Barline rightBarline) {
-		this.rightBarline = rightBarline;
+		attributesBuilder.rightBarline = rightBarline;
 		return this;
 	}
 
@@ -204,7 +189,7 @@ public class MeasureBuilder {
 	 *         from the beginning of the measure.
 	 */
 	public Map<Duration, Clef> getClefChanges() {
-		return this.clefChanges;
+		return attributesBuilder.clefChanges;
 	}
 
 	/**
@@ -215,7 +200,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder addClefChange(Duration offset, Clef clef) {
-		this.clefChanges.put(offset, clef);
+		attributesBuilder.clefChanges.put(offset, clef);
 		return this;
 	}
 
@@ -324,7 +309,7 @@ public class MeasureBuilder {
 	 */
 	public boolean isVoiceFull(int voice) {
 		final Duration voiceDuration = this.totalDurationOfVoice(voice);
-		return !voiceDuration.isShorterThan(this.timeSig.getTotalDuration());
+		return !voiceDuration.isShorterThan(attributesBuilder.timeSignature.getTotalDuration());
 	}
 
 	/**
@@ -361,9 +346,38 @@ public class MeasureBuilder {
 	 * @return a measure with the values set in this builder
 	 */
 	public Measure build() {
-		final MeasureAttributes measureAttr = MeasureAttributes.of(this.timeSig, this.keySig,
-				this.rightBarline, this.leftBarline, this.clef, this.clefChanges);
+		final MeasureAttributes measureAttr = MeasureAttributes.of(attributesBuilder.timeSignature,
+				attributesBuilder.keySignature,
+				attributesBuilder.rightBarline, attributesBuilder.leftBarline, attributesBuilder.clef,
+				attributesBuilder.clefChanges);
 
 		return Measure.of(this.number, this.getBuiltVoices(), measureAttr);
+	}
+
+	private final class MeasureAttributesBuilder {
+		private TimeSignature timeSignature;
+		private KeySignature keySignature;
+		private Clef clef;
+		private Barline leftBarline;
+		private Barline rightBarline;
+		private Map<Duration, Clef> clefChanges;
+
+		private MeasureAttributesBuilder() {
+			this.timeSignature = TimeSignatures.FOUR_FOUR;
+			this.keySignature = KeySignatures.CMAJ_AMIN;
+			this.clef = Clefs.G;
+			this.leftBarline = Barline.NONE;
+			this.rightBarline = Barline.SINGLE;
+			this.clefChanges = new HashMap<>();
+		}
+
+		private MeasureAttributesBuilder(MeasureAttributes measureAttributes) {
+			this.timeSignature = measureAttributes.getTimeSignature();
+			this.keySignature = measureAttributes.getKeySignature();
+			this.clef = measureAttributes.getClef();
+			this.leftBarline = measureAttributes.getLeftBarline();
+			this.rightBarline = measureAttributes.getRightBarline();
+			this.clefChanges = new HashMap<>(measureAttributes.getClefChanges());
+		}
 	}
 }
