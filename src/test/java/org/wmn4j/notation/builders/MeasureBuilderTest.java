@@ -13,6 +13,7 @@ import java.util.List;
 import org.junit.Test;
 import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Clefs;
+import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.KeySignatures;
@@ -118,17 +119,19 @@ public class MeasureBuilderTest {
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
 
-		builder.addToVoice(1, new RestBuilder(Durations.EIGHT));
+		final Duration measureFillingDuration = TimeSignatures.SIX_EIGHT.getTotalDuration();
+
+		builder.addToVoice(1, new RestBuilder(measureFillingDuration));
 		assertEquals(1, builder.getNumberOfVoices());
-		builder.addToVoice(3, new RestBuilder(Durations.EIGHT));
+		builder.addToVoice(3, new RestBuilder(measureFillingDuration));
 		assertEquals(2, builder.getNumberOfVoices());
 
 		final Measure measure = builder.build();
 		assertEquals(2, measure.getVoiceCount());
-		assertTrue(measure.getVoice(1).size() == 1);
-		assertTrue(measure.getVoice(1).contains(Rest.of(Durations.EIGHT)));
-		assertTrue(measure.getVoice(3).size() == 1);
-		assertTrue(measure.getVoice(3).contains(Rest.of(Durations.EIGHT)));
+		assertEquals(1, measure.getVoice(1).size());
+		assertTrue(measure.getVoice(1).contains(Rest.of(measureFillingDuration)));
+		assertEquals(1, measure.getVoice(3).size());
+		assertTrue(measure.getVoice(3).contains(Rest.of(measureFillingDuration)));
 	}
 
 	@Test
@@ -196,5 +199,27 @@ public class MeasureBuilderTest {
 		final Note secondNote = (Note) measure.get(1, 1);
 		assertEquals(secondNote, firstNote.getFollowingTiedNote().get());
 		assertTrue(secondNote.isTiedFromPrevious());
+	}
+
+	@Test
+	public void testAllVoicesArePaddedWithRestsWhenBuilding() {
+		final MeasureBuilder builder = new MeasureBuilder(1);
+		builder.setTimeSignature(TimeSignatures.THREE_FOUR);
+		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
+		NoteBuilder withEightDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.EIGHT);
+		builder.addToVoice(0, withHalfDuration);
+		builder.addToVoice(1, withHalfDuration);
+		builder.addToVoice(1, withEightDuration);
+
+		final Measure measure = builder.build();
+		final Note halfDurationNote = withHalfDuration.build();
+		final Note eightDurationNote = withEightDuration.build();
+
+		assertEquals(halfDurationNote, measure.get(0, 0));
+		assertEquals(Rest.of(Durations.QUARTER), measure.get(0, 1));
+
+		assertEquals(halfDurationNote, measure.get(1, 0));
+		assertEquals(eightDurationNote, measure.get(1, 1));
+		assertEquals(Rest.of(Durations.EIGHT), measure.get(1, 2));
 	}
 }

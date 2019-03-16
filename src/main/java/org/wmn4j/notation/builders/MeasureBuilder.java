@@ -330,21 +330,32 @@ public class MeasureBuilder {
 		return false;
 	}
 
-	private Map<Integer, List<Durational>> getBuiltVoices() {
-
-		// TODO: Check that voices are full. If not, pad them with rests.
+	private Map<Integer, List<Durational>> buildVoices() {
 
 		final Map<Integer, List<Durational>> builtVoices = new HashMap<>();
 		for (Integer voiceNumber : this.getVoiceNumbers()) {
-			final List<DurationalBuilder> builders = this.voices.get(voiceNumber);
-			builtVoices.put(voiceNumber, builders.stream().map(DurationalBuilder::build).collect(Collectors.toList()));
+			final List<DurationalBuilder> buildersInVoice = this.voices.get(voiceNumber);
+			final Duration totalDurationOfVoice = totalDurationOfVoice(voiceNumber);
+
+			final Duration timeSignatureDuration = getTimeSignature().getTotalDuration();
+
+			if (!totalDurationOfVoice.equals(timeSignatureDuration)
+					&& totalDurationOfVoice.isShorterThan(timeSignatureDuration)) {
+				final Duration missingDuration = timeSignatureDuration.subtract(totalDurationOfVoice);
+				buildersInVoice.add(new RestBuilder(missingDuration));
+			}
+
+			builtVoices.put(voiceNumber, buildersInVoice.stream().map(DurationalBuilder::build)
+					.collect(Collectors.toList()));
 		}
 
 		return builtVoices;
 	}
 
 	/**
-	 * Returns a {@link Measure} with the values set in this builder.
+	 * Returns a {@link Measure} with the values set in this builder. Voices that do
+	 * not contain enough durational notation elements are padded with rests at the
+	 * end.
 	 *
 	 * @return a measure with the values set in this builder
 	 */
@@ -355,7 +366,7 @@ public class MeasureBuilder {
 			measureAttributes = attributesBuilder.build();
 		}
 
-		return Measure.of(this.number, this.getBuiltVoices(), measureAttributes);
+		return Measure.of(this.number, this.buildVoices(), measureAttributes);
 	}
 
 	private final class MeasureAttributesBuilder {
