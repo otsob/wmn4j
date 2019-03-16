@@ -24,4 +24,11 @@ public interface DurationalBuilder {
 	 * @return the duration set in this builder
 	 */
 	Duration getDuration();
+
+	/**
+	 * Sets the duration of this builder to the given value.
+	 *
+	 * @param duration the duration that is set to this builder
+	 */
+	void setDuration(Duration duration);
 }
