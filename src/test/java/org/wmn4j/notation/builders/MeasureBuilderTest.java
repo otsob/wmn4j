@@ -301,4 +301,30 @@ public class MeasureBuilderTest {
 		assertFalse(builder.isOverflowing());
 		builder.build();
 	}
+
+	@Test
+	public void testBuildingWithoutPaddingAndTrimming() {
+		final MeasureBuilder builder = new MeasureBuilder(1);
+		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
+
+		NoteBuilder tooLongBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.WHOLE);
+		NoteBuilder tooShortBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER);
+
+		builder.addToVoice(0, tooLongBuilder);
+		builder.addToVoice(1, tooShortBuilder);
+
+		final Note expectedVoice0Note = tooLongBuilder.build();
+		final Note expectedVoice1Note = tooShortBuilder.build();
+
+		assertTrue(builder.isOverflowing(0));
+		assertTrue(!builder.isFull(1));
+
+		final Measure incompleteMeasure = builder.build(false, false);
+
+		assertEquals(1, incompleteMeasure.getVoice(0).size());
+		assertEquals(expectedVoice0Note, incompleteMeasure.get(0, 0));
+
+		assertEquals(1, incompleteMeasure.getVoice(1).size());
+		assertEquals(expectedVoice1Note, incompleteMeasure.get(1, 0));
+	}
 }

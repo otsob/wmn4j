@@ -397,19 +397,22 @@ public class MeasureBuilder {
 		}
 	}
 
-	private Map<Integer, List<Durational>> buildVoices() {
+	private Map<Integer, List<Durational>> buildVoices(boolean padWithRests) {
 
 		final Map<Integer, List<Durational>> builtVoices = new HashMap<>();
 		for (Integer voiceNumber : this.getVoiceNumbers()) {
 			final List<DurationalBuilder> buildersInVoice = this.voices.get(voiceNumber);
-			final Duration totalDurationOfVoice = totalDurationOfVoice(voiceNumber);
 
-			final Duration timeSignatureDuration = getTimeSignature().getTotalDuration();
+			if (padWithRests) {
+				final Duration totalDurationOfVoice = totalDurationOfVoice(voiceNumber);
 
-			if (!totalDurationOfVoice.equals(timeSignatureDuration)
-					&& totalDurationOfVoice.isShorterThan(timeSignatureDuration)) {
-				final Duration missingDuration = timeSignatureDuration.subtract(totalDurationOfVoice);
-				buildersInVoice.add(new RestBuilder(missingDuration));
+				final Duration timeSignatureDuration = getTimeSignature().getTotalDuration();
+
+				if (!totalDurationOfVoice.equals(timeSignatureDuration)
+						&& totalDurationOfVoice.isShorterThan(timeSignatureDuration)) {
+					final Duration missingDuration = timeSignatureDuration.subtract(totalDurationOfVoice);
+					buildersInVoice.add(new RestBuilder(missingDuration));
+				}
 			}
 
 			builtVoices.put(voiceNumber, buildersInVoice.stream().map(DurationalBuilder::build)
@@ -422,18 +425,38 @@ public class MeasureBuilder {
 	/**
 	 * Returns a {@link Measure} with the values set in this builder. Voices that do
 	 * not contain enough durational notation elements are padded with rests at the
-	 * end.
+	 * end. If any voice has a total duration that exceeds what can fit into a
+	 * measure with the time signature set in this builder, then those voices are
+	 * trimmed by discarding the exceeding durations. Any durational that partly
+	 * fits in the measure is reduced in duration to fit into the built measure.
 	 *
 	 * @return a measure with the values set in this builder
 	 */
 	public Measure build() {
+		return build(true, true);
+	}
+
+	/**
+	 * Returns a {@link Measure} with the values set in this builder.
+	 *
+	 * @param padWithRests set this to true to pad the voices that do not fill the
+	 *                     measure with rests
+	 * @param trim         set this to true to trim the durational elements whose
+	 *                     durations exceed what can fit into the measure
+	 * @return a measure with the values set in this builder
+	 */
+	public Measure build(boolean padWithRests, boolean trim) {
 		MeasureAttributes measureAttributes = initialMeasureAttributes;
 
 		if (!attributesBuilder.equalsInContent(measureAttributes)) {
 			measureAttributes = attributesBuilder.build();
 		}
 
-		return Measure.of(this.number, this.buildVoices(), measureAttributes);
+		if (trim) {
+			this.trim();
+		}
+
+		return Measure.of(this.number, this.buildVoices(padWithRests), measureAttributes);
 	}
 
 	private final class MeasureAttributesBuilder {
