@@ -250,4 +250,55 @@ public class MeasureBuilderTest {
 
 		assertTrue(builder.isOverflowing());
 	}
+
+	@Test
+	public void testTrimWithSingleElementPerVoice() {
+		final MeasureBuilder builder = new MeasureBuilder(1);
+		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
+		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
+		NoteBuilder withDottedHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF.addDot());
+		NoteBuilder withEightDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.EIGHT);
+
+		builder.addToVoice(0, withHalfDuration);
+		builder.addToVoice(1, withDottedHalfDuration);
+		builder.addToVoice(2, withEightDuration);
+
+		builder.trim();
+		assertEquals(
+				"Voice that had one durational with exactly the duration of the time signature was affected by trim.",
+				Durations.HALF, builder.get(0, 0).getDuration());
+		assertEquals(
+				"Voice that had one durational exceeding the duration specified by the time signature was not trimmed correctly.",
+				Durations.HALF, builder.get(1, 0).getDuration());
+		assertEquals(
+				"Voice that had one durational shorter than the duration specified by the time signature was affected by trim.",
+				Durations.EIGHT, builder.get(2, 0).getDuration());
+		builder.build();
+	}
+
+	@Test
+	public void testTrimWithMultipleElementsInVoice() {
+		final MeasureBuilder builder = new MeasureBuilder(1);
+		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
+
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.EIGHT));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER));
+
+		builder.trim();
+
+		assertEquals(
+				"First element was affected by trim when it shouldn't have been.",
+				Durations.QUARTER, builder.get(0, 0).getDuration());
+		assertEquals(
+				"Second element was affected by trim when it shouldn't have been.",
+				Durations.EIGHT, builder.get(0, 1).getDuration());
+		assertEquals(
+				"Third element was not affected by trim when it should have been.",
+				Durations.EIGHT, builder.get(0, 2).getDuration());
+
+		assertFalse(builder.isOverflowing());
+		builder.build();
+	}
 }

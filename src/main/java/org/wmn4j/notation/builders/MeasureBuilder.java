@@ -352,6 +352,51 @@ public class MeasureBuilder {
 		return voices.keySet().stream().anyMatch(voiceNumber -> isOverflowing(voiceNumber));
 	}
 
+	/**
+	 * Trims the excess durations from this builder. The durational elements that
+	 * start from this builder and would continue onto the next measure are reduced
+	 * in duration to fit into a measure with the time signature set in this
+	 * builder.
+	 */
+	public void trim() {
+		voices.keySet().stream().filter(voice -> isOverflowing(voice)).forEach(voice -> trimVoice(voice));
+	}
+
+	private void trimVoice(int voice) {
+		List<DurationalBuilder> voiceContents = voices.get(voice);
+
+		Duration cumulatedDuration = null;
+		final Duration maxTotalDuration = getTimeSignature().getTotalDuration();
+
+		for (int i = 0; i < voiceContents.size(); ++i) {
+			DurationalBuilder builder = voiceContents.get(i);
+			Duration duration = builder.getDuration();
+			Duration cumulatedWithCurrent = cumulatedDuration == null ? duration
+					: cumulatedDuration.add(duration);
+
+			// If this is true, the builder at index i fills the voice to be exactly of the
+			// duration specified by the time signature. The rest of the builders are
+			// discarded.
+			if (cumulatedWithCurrent.equals(maxTotalDuration)) {
+				voiceContents.subList(i + 1, voiceContents.size()).clear();
+				break;
+			}
+
+			// If this is true, the builder at index i fills the voice to exceed the
+			// duration specified by the time signature so the duration needs to be
+			// reduced. The rest of the builders are discarded.
+			if (cumulatedWithCurrent.isLongerThan(maxTotalDuration)) {
+				final Duration allowedDuration = cumulatedDuration == null ? maxTotalDuration
+						: maxTotalDuration.subtract(cumulatedDuration);
+				builder.setDuration(allowedDuration);
+				voiceContents.subList(i + 1, voiceContents.size()).clear();
+				break;
+			}
+
+			cumulatedDuration = cumulatedWithCurrent;
+		}
+	}
+
 	private Map<Integer, List<Durational>> buildVoices() {
 
 		final Map<Integer, List<Durational>> builtVoices = new HashMap<>();
