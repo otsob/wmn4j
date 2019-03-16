@@ -321,13 +321,7 @@ public class MeasureBuilder {
 	 * @return true if even a single voice is full. False otherwise.
 	 */
 	public boolean isFull() {
-		for (int voice = 0; voice < this.voices.size(); ++voice) {
-			if (this.isVoiceFull(voice)) {
-				return true;
-			}
-		}
-
-		return false;
+		return voices.keySet().stream().anyMatch(voiceNumber -> isVoiceFull(voiceNumber));
 	}
 
 	private Map<Integer, List<Durational>> buildVoices() {
