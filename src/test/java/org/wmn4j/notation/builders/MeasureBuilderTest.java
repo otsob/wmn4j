@@ -138,13 +138,13 @@ public class MeasureBuilderTest {
 	public void testIsVoiceFull() {
 		MeasureBuilder builder = new MeasureBuilder(1);
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER));
-		assertFalse("Voice 0 is full for 4/4 measure after adding one quarter rest", builder.isVoiceFull(0));
+		assertFalse("Voice 0 is full for 4/4 measure after adding one quarter rest", builder.isFull(0));
 		final NoteBuilder c = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER);
 		builder.addToVoice(0, c);
-		assertFalse("Voice 0 is full for 4/4 measure after adding two quarters", builder.isVoiceFull(0));
+		assertFalse("Voice 0 is full for 4/4 measure after adding two quarters", builder.isFull(0));
 		builder.addToVoice(0, c);
 		builder.addToVoice(0, c);
-		assertTrue("Voice 0 is not full when 4 quarter durations added to 4/4", builder.isVoiceFull(0));
+		assertTrue("Voice 0 is not full when 4 quarter durations added to 4/4", builder.isFull(0));
 
 		builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.CMAJ_AMIN);
@@ -154,10 +154,10 @@ public class MeasureBuilderTest {
 				.addToVoice(1, new RestBuilder(Durations.QUARTER.addDot()));
 		builder.addToVoice(0, new RestBuilder(Durations.SIXTEENTH_TRIPLET)).addToVoice(0,
 				new RestBuilder(Durations.SIXTEENTH_TRIPLET));
-		assertFalse("Voice 0 is full when 6/8 measure is lacking one sixteenth triplet", builder.isVoiceFull(0));
+		assertFalse("Voice 0 is full when 6/8 measure is lacking one sixteenth triplet", builder.isFull(0));
 		builder.addToVoice(0, new RestBuilder(Durations.SIXTEENTH_TRIPLET));
-		assertTrue("Voice 0 is not full when 6/8 measure should be full.", builder.isVoiceFull(0));
-		assertFalse("Voice 1 is full for 6/8 measure when it should not be", builder.isVoiceFull(1));
+		assertTrue("Voice 0 is not full when 6/8 measure should be full.", builder.isFull(0));
+		assertFalse("Voice 1 is full for 6/8 measure when it should not be", builder.isFull(1));
 	}
 
 	@Test

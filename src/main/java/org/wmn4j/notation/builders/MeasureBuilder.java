@@ -25,9 +25,9 @@ import org.wmn4j.notation.elements.TimeSignatures;
 
 /**
  * Class for building {@link Measure} objects. The methods {@link #isFull()
- * isFull} and {@link #isVoiceFull(int) isVoiceFull} should be used for checking
- * if the durations add up to the correct amount to fill up the measure
- * according to the specified time signature.
+ * isFull} and {@link #isFull(int) isVoiceFull} should be used for checking if
+ * the durations add up to the correct amount to fill up the measure according
+ * to the specified time signature.
  *
  * Default values: TimeSignature : 4/4 KeySignature : C-major/a-minor Clef: G
  * Barlines (right and left): Single. No clef changes.
@@ -305,23 +305,27 @@ public class MeasureBuilder {
 	/**
 	 * Returns true if the voice with the given number is full. A voice is
 	 * considered full when the durations in it are enough to fill a measure with
-	 * the time signature set in this builder.
+	 * the time signature set in this builder. The voice may contain more durational
+	 * elements than fit in a measure with the time signature set in this builder.
 	 *
-	 * @param voice index of voice that is checked
+	 * @param voice the number of voice that is checked
 	 * @return true if the durations in the voice add up to fill a measure
 	 */
-	public boolean isVoiceFull(int voice) {
+	public boolean isFull(int voice) {
 		final Duration voiceDuration = this.totalDurationOfVoice(voice);
 		return !voiceDuration.isShorterThan(attributesBuilder.timeSignature.getTotalDuration());
 	}
 
 	/**
-	 * Returns true if any voice in this builder is full.
+	 * Returns true if any voice in this builder is full. A voice is considered full
+	 * when the durations in it are enough to fill a measure with the time signature
+	 * set in this builder. The voice may contain more durational elements than fit
+	 * in a measure with the time signature set in this builder.
 	 *
 	 * @return true if even a single voice is full. False otherwise.
 	 */
 	public boolean isFull() {
-		return voices.keySet().stream().anyMatch(voiceNumber -> isVoiceFull(voiceNumber));
+		return voices.keySet().stream().anyMatch(voiceNumber -> isFull(voiceNumber));
 	}
 
 	private Map<Integer, List<Durational>> buildVoices() {
