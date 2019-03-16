@@ -328,6 +328,30 @@ public class MeasureBuilder {
 		return voices.keySet().stream().anyMatch(voiceNumber -> isFull(voiceNumber));
 	}
 
+	/**
+	 * Returns true if the total duration of the durational elements in the voice
+	 * with the given number is more than can fit into a measure with the time
+	 * signature set in this builder.
+	 *
+	 * @param voice the number of the voice that is checked
+	 * @return true if the total duration of the durational elements in the voice
+	 *         exceed what can fit in the measure
+	 */
+	public boolean isOverflowing(int voice) {
+		return totalDurationOfVoice(voice).isLongerThan(getTimeSignature().getTotalDuration());
+	}
+
+	/**
+	 * Returns true if any voice in this builder is overflowing. A voice is
+	 * overflowing if the total duration of the durational elements in the voice is
+	 * more than can fit into a measure with the time signature set in this builder.
+	 *
+	 * @return true if any voice in this builder is overflowing
+	 */
+	public boolean isOverflowing() {
+		return voices.keySet().stream().anyMatch(voiceNumber -> isOverflowing(voiceNumber));
+	}
+
 	private Map<Integer, List<Durational>> buildVoices() {
 
 		final Map<Integer, List<Durational>> builtVoices = new HashMap<>();

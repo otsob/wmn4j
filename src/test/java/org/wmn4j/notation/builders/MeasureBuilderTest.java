@@ -222,4 +222,32 @@ public class MeasureBuilderTest {
 		assertEquals(eightDurationNote, measure.get(1, 1));
 		assertEquals(Rest.of(Durations.EIGHT), measure.get(1, 2));
 	}
+
+	@Test
+	public void testIsVoiceOverflowing() {
+		final MeasureBuilder builder = new MeasureBuilder(1);
+		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
+		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
+		NoteBuilder withDottedHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF.addDot());
+		builder.addToVoice(0, withHalfDuration);
+		builder.addToVoice(1, withDottedHalfDuration);
+
+		assertFalse(builder.isOverflowing(0));
+		assertTrue(builder.isOverflowing(1));
+	}
+
+	@Test
+	public void testIsOverflowing() {
+		final MeasureBuilder builder = new MeasureBuilder(1);
+		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
+		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
+		NoteBuilder withDottedHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF.addDot());
+		builder.addToVoice(0, withHalfDuration);
+
+		assertFalse(builder.isOverflowing());
+
+		builder.addToVoice(1, withDottedHalfDuration);
+
+		assertTrue(builder.isOverflowing());
+	}
 }
