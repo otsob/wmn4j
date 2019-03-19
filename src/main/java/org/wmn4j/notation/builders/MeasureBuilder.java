@@ -25,9 +25,9 @@ import org.wmn4j.notation.elements.TimeSignatures;
 
 /**
  * Class for building {@link Measure} objects. The methods {@link #isFull()
- * isFull} and {@link #isVoiceFull(int) isVoiceFull} should be used for checking
- * if the durations add up to the correct amount to fill up the measure
- * according to the specified time signature.
+ * isFull} and {@link #isFull(int) isVoiceFull} should be used for checking if
+ * the durations add up to the correct amount to fill up the measure according
+ * to the specified time signature.
  *
  * Default values: TimeSignature : 4/4 KeySignature : C-major/a-minor Clef: G
  * Barlines (right and left): Single. No clef changes.
@@ -35,18 +35,9 @@ import org.wmn4j.notation.elements.TimeSignatures;
 public class MeasureBuilder {
 
 	private int number;
-	// TODO: Keep track of voice durations in some way to make checking if measure
-	// is full faster.
 	private final Map<Integer, List<DurationalBuilder>> voices;
-
-	private TimeSignature timeSig = TimeSignatures.FOUR_FOUR;
-	private KeySignature keySig = KeySignatures.CMAJ_AMIN;
-	private Clef clef = Clefs.G;
-	private Barline leftBarline = Barline.NONE;
-	private Barline rightBarline = Barline.SINGLE;
-	private Map<Duration, Clef> clefChanges = new HashMap<>();
-
-	// TODO: If MeasureAttributes are given, then use those.
+	private final MeasureAttributesBuilder attributesBuilder;
+	private final MeasureAttributes initialMeasureAttributes;
 
 	/**
 	 * Create a measure builder with the given attributes.
@@ -57,13 +48,8 @@ public class MeasureBuilder {
 	public MeasureBuilder(int number, MeasureAttributes measureAttributes) {
 		this.voices = new HashMap<>();
 		this.number = number;
-
-		this.timeSig = measureAttributes.getTimeSignature();
-		this.keySig = measureAttributes.getKeySignature();
-		this.clef = measureAttributes.getClef();
-		this.leftBarline = measureAttributes.getLeftBarline();
-		this.rightBarline = measureAttributes.getRightBarline();
-		this.clefChanges = new HashMap<>(measureAttributes.getClefChanges());
+		this.attributesBuilder = new MeasureAttributesBuilder(measureAttributes);
+		this.initialMeasureAttributes = measureAttributes;
 	}
 
 	/**
@@ -74,6 +60,8 @@ public class MeasureBuilder {
 	public MeasureBuilder(int number) {
 		this.voices = new HashMap<>();
 		this.number = number;
+		this.attributesBuilder = new MeasureAttributesBuilder();
+		this.initialMeasureAttributes = null;
 	}
 
 	/**
@@ -102,7 +90,7 @@ public class MeasureBuilder {
 	 * @return time signature set for this builder
 	 */
 	public TimeSignature getTimeSignature() {
-		return this.timeSig;
+		return attributesBuilder.timeSignature;
 	}
 
 	/**
@@ -112,7 +100,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder setTimeSignature(TimeSignature timeSignature) {
-		this.timeSig = timeSignature;
+		attributesBuilder.timeSignature = timeSignature;
 		return this;
 	}
 
@@ -122,7 +110,7 @@ public class MeasureBuilder {
 	 * @return key signature that is set in this builder
 	 */
 	public KeySignature getKeySignature() {
-		return this.keySig;
+		return attributesBuilder.keySignature;
 	}
 
 	/**
@@ -132,7 +120,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder setKeySignature(KeySignature keySignature) {
-		this.keySig = keySignature;
+		attributesBuilder.keySignature = keySignature;
 		return this;
 	}
 
@@ -142,7 +130,7 @@ public class MeasureBuilder {
 	 * @return the clef set in this builder
 	 */
 	public Clef getClef() {
-		return this.clef;
+		return attributesBuilder.clef;
 	}
 
 	/**
@@ -152,7 +140,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder setClef(Clef clef) {
-		this.clef = clef;
+		attributesBuilder.clef = clef;
 		return this;
 	}
 
@@ -162,7 +150,7 @@ public class MeasureBuilder {
 	 * @return left barline set in this builder
 	 */
 	public Barline getLeftBarline() {
-		return this.leftBarline;
+		return attributesBuilder.leftBarline;
 	}
 
 	/**
@@ -172,7 +160,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder setLeftBarline(Barline leftBarline) {
-		this.leftBarline = leftBarline;
+		attributesBuilder.leftBarline = leftBarline;
 		return this;
 	}
 
@@ -182,7 +170,7 @@ public class MeasureBuilder {
 	 * @return the right barline set in this builder
 	 */
 	public Barline getRightBarline() {
-		return rightBarline;
+		return attributesBuilder.rightBarline;
 	}
 
 	/**
@@ -192,7 +180,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder setRightBarline(Barline rightBarline) {
-		this.rightBarline = rightBarline;
+		attributesBuilder.rightBarline = rightBarline;
 		return this;
 	}
 
@@ -204,7 +192,7 @@ public class MeasureBuilder {
 	 *         from the beginning of the measure.
 	 */
 	public Map<Duration, Clef> getClefChanges() {
-		return this.clefChanges;
+		return attributesBuilder.clefChanges;
 	}
 
 	/**
@@ -215,7 +203,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder addClefChange(Duration offset, Clef clef) {
-		this.clefChanges.put(offset, clef);
+		attributesBuilder.clefChanges.put(offset, clef);
 		return this;
 	}
 
@@ -317,53 +305,220 @@ public class MeasureBuilder {
 	/**
 	 * Returns true if the voice with the given number is full. A voice is
 	 * considered full when the durations in it are enough to fill a measure with
-	 * the time signature set in this builder.
+	 * the time signature set in this builder. The voice may contain more durational
+	 * elements than fit in a measure with the time signature set in this builder.
 	 *
-	 * @param voice index of voice that is checked
+	 * @param voice the number of voice that is checked
 	 * @return true if the durations in the voice add up to fill a measure
 	 */
-	public boolean isVoiceFull(int voice) {
+	public boolean isFull(int voice) {
 		final Duration voiceDuration = this.totalDurationOfVoice(voice);
-		return !voiceDuration.isShorterThan(this.timeSig.getTotalDuration());
+		return !voiceDuration.isShorterThan(attributesBuilder.timeSignature.getTotalDuration());
 	}
 
 	/**
-	 * Returns true if any voice in this builder is full.
+	 * Returns true if any voice in this builder is full. A voice is considered full
+	 * when the durations in it are enough to fill a measure with the time signature
+	 * set in this builder. The voice may contain more durational elements than fit
+	 * in a measure with the time signature set in this builder.
 	 *
 	 * @return true if even a single voice is full. False otherwise.
 	 */
 	public boolean isFull() {
-		for (int voice = 0; voice < this.voices.size(); ++voice) {
-			if (this.isVoiceFull(voice)) {
-				return true;
-			}
-		}
-
-		return false;
+		return voices.keySet().stream().anyMatch(voiceNumber -> isFull(voiceNumber));
 	}
 
-	private Map<Integer, List<Durational>> getBuiltVoices() {
+	/**
+	 * Returns true if the total duration of the durational elements in the voice
+	 * with the given number is more than can fit into a measure with the time
+	 * signature set in this builder.
+	 *
+	 * @param voice the number of the voice that is checked
+	 * @return true if the total duration of the durational elements in the voice
+	 *         exceed what can fit in the measure
+	 */
+	public boolean isOverflowing(int voice) {
+		return totalDurationOfVoice(voice).isLongerThan(getTimeSignature().getTotalDuration());
+	}
 
-		// TODO: Check that voices are full. If not, pad them with rests.
+	/**
+	 * Returns true if any voice in this builder is overflowing. A voice is
+	 * overflowing if the total duration of the durational elements in the voice is
+	 * more than can fit into a measure with the time signature set in this builder.
+	 *
+	 * @return true if any voice in this builder is overflowing
+	 */
+	public boolean isOverflowing() {
+		return voices.keySet().stream().anyMatch(voiceNumber -> isOverflowing(voiceNumber));
+	}
+
+	/**
+	 * Trims the excess durations from this builder. The durational elements that
+	 * start from this builder and would continue onto the next measure are reduced
+	 * in duration to fit into a measure with the time signature set in this
+	 * builder.
+	 */
+	public void trim() {
+		voices.keySet().stream().filter(voice -> isOverflowing(voice)).forEach(voice -> trimVoice(voice));
+	}
+
+	private void trimVoice(int voice) {
+		List<DurationalBuilder> voiceContents = voices.get(voice);
+
+		Duration cumulatedDuration = null;
+		final Duration maxTotalDuration = getTimeSignature().getTotalDuration();
+
+		for (int i = 0; i < voiceContents.size(); ++i) {
+			DurationalBuilder builder = voiceContents.get(i);
+			Duration duration = builder.getDuration();
+			Duration cumulatedWithCurrent = cumulatedDuration == null ? duration
+					: cumulatedDuration.add(duration);
+
+			// If this is true, the builder at index i fills the voice to be exactly of the
+			// duration specified by the time signature. The rest of the builders are
+			// discarded.
+			if (cumulatedWithCurrent.equals(maxTotalDuration)) {
+				voiceContents.subList(i + 1, voiceContents.size()).clear();
+				break;
+			}
+
+			// If this is true, the builder at index i fills the voice to exceed the
+			// duration specified by the time signature so the duration needs to be
+			// reduced. The rest of the builders are discarded.
+			if (cumulatedWithCurrent.isLongerThan(maxTotalDuration)) {
+				final Duration allowedDuration = cumulatedDuration == null ? maxTotalDuration
+						: maxTotalDuration.subtract(cumulatedDuration);
+				builder.setDuration(allowedDuration);
+				voiceContents.subList(i + 1, voiceContents.size()).clear();
+				break;
+			}
+
+			cumulatedDuration = cumulatedWithCurrent;
+		}
+	}
+
+	private Map<Integer, List<Durational>> buildVoices(boolean padWithRests) {
 
 		final Map<Integer, List<Durational>> builtVoices = new HashMap<>();
 		for (Integer voiceNumber : this.getVoiceNumbers()) {
-			final List<DurationalBuilder> builders = this.voices.get(voiceNumber);
-			builtVoices.put(voiceNumber, builders.stream().map(DurationalBuilder::build).collect(Collectors.toList()));
+			final List<DurationalBuilder> buildersInVoice = this.voices.get(voiceNumber);
+
+			if (padWithRests) {
+				final Duration totalDurationOfVoice = totalDurationOfVoice(voiceNumber);
+
+				final Duration timeSignatureDuration = getTimeSignature().getTotalDuration();
+
+				if (!totalDurationOfVoice.equals(timeSignatureDuration)
+						&& totalDurationOfVoice.isShorterThan(timeSignatureDuration)) {
+					final Duration missingDuration = timeSignatureDuration.subtract(totalDurationOfVoice);
+					buildersInVoice.add(new RestBuilder(missingDuration));
+				}
+			}
+
+			builtVoices.put(voiceNumber, buildersInVoice.stream().map(DurationalBuilder::build)
+					.collect(Collectors.toList()));
 		}
 
 		return builtVoices;
 	}
 
 	/**
-	 * Returns a {@link Measure} with the values set in this builder.
+	 * Returns a {@link Measure} with the values set in this builder. Voices that do
+	 * not contain enough durational notation elements are padded with rests at the
+	 * end. If any voice has a total duration that exceeds what can fit into a
+	 * measure with the time signature set in this builder, then those voices are
+	 * trimmed by discarding the exceeding durations. Any durational that partly
+	 * fits in the measure is reduced in duration to fit into the built measure.
 	 *
 	 * @return a measure with the values set in this builder
 	 */
 	public Measure build() {
-		final MeasureAttributes measureAttr = MeasureAttributes.of(this.timeSig, this.keySig,
-				this.rightBarline, this.leftBarline, this.clef, this.clefChanges);
+		return build(true, true);
+	}
 
-		return Measure.of(this.number, this.getBuiltVoices(), measureAttr);
+	/**
+	 * Returns a {@link Measure} with the values set in this builder.
+	 *
+	 * @param padWithRests set this to true to pad the voices that do not fill the
+	 *                     measure with rests
+	 * @param trim         set this to true to trim the durational elements whose
+	 *                     durations exceed what can fit into the measure
+	 * @return a measure with the values set in this builder
+	 */
+	public Measure build(boolean padWithRests, boolean trim) {
+		MeasureAttributes measureAttributes = initialMeasureAttributes;
+
+		if (!attributesBuilder.equalsInContent(measureAttributes)) {
+			measureAttributes = attributesBuilder.build();
+		}
+
+		if (trim) {
+			this.trim();
+		}
+
+		return Measure.of(this.number, this.buildVoices(padWithRests), measureAttributes);
+	}
+
+	private final class MeasureAttributesBuilder {
+		private TimeSignature timeSignature;
+		private KeySignature keySignature;
+		private Clef clef;
+		private Barline leftBarline;
+		private Barline rightBarline;
+		private Map<Duration, Clef> clefChanges;
+
+		private MeasureAttributesBuilder() {
+			this.timeSignature = TimeSignatures.FOUR_FOUR;
+			this.keySignature = KeySignatures.CMAJ_AMIN;
+			this.clef = Clefs.G;
+			this.leftBarline = Barline.NONE;
+			this.rightBarline = Barline.SINGLE;
+			this.clefChanges = new HashMap<>();
+		}
+
+		private MeasureAttributesBuilder(MeasureAttributes measureAttributes) {
+			this.timeSignature = measureAttributes.getTimeSignature();
+			this.keySignature = measureAttributes.getKeySignature();
+			this.clef = measureAttributes.getClef();
+			this.leftBarline = measureAttributes.getLeftBarline();
+			this.rightBarline = measureAttributes.getRightBarline();
+			this.clefChanges = new HashMap<>(measureAttributes.getClefChanges());
+		}
+
+		private MeasureAttributes build() {
+			return MeasureAttributes.of(timeSignature, keySignature, rightBarline, leftBarline, clef, clefChanges);
+		}
+
+		private boolean equalsInContent(MeasureAttributes measureAttributes) {
+			if (measureAttributes == null) {
+				return false;
+			}
+
+			if (!timeSignature.equals(measureAttributes.getTimeSignature())) {
+				return false;
+			}
+
+			if (!keySignature.equals(measureAttributes.getKeySignature())) {
+				return false;
+			}
+
+			if (!clef.equals(measureAttributes.getClef())) {
+				return false;
+			}
+
+			if (!leftBarline.equals(measureAttributes.getLeftBarline())) {
+				return false;
+			}
+
+			if (!rightBarline.equals(measureAttributes.getRightBarline())) {
+				return false;
+			}
+
+			if (!clefChanges.equals(measureAttributes.getClefChanges())) {
+				return false;
+			}
+
+			return true;
+		}
 	}
 }

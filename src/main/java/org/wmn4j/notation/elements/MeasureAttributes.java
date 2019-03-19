@@ -178,6 +178,10 @@ public final class MeasureAttributes {
 			return false;
 		}
 
+		if (!this.clefChanges.equals(other.clefChanges)) {
+			return false;
+		}
+
 		return true;
 	}
 

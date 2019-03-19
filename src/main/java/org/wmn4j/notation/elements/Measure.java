@@ -77,6 +77,10 @@ public final class Measure implements Iterable<Durational> {
 	 * @param measureAttr the attributes of the measure.
 	 */
 	private Measure(int number, Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttr) {
+		if (number < 0) {
+			throw new IllegalArgumentException("Measure number cannot be negative");
+		}
+
 		this.number = number;
 		final SortedMap<Integer, List<Durational>> voicesCopy = new TreeMap<>();
 

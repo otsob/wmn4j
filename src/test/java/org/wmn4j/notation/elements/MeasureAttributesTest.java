@@ -1,7 +1,4 @@
-/*
- * Copyright 2018 Otso Björklund.
- * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
- */
+
 package org.wmn4j.notation.elements;
 
 import static org.junit.Assert.assertEquals;
@@ -9,19 +6,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.wmn4j.notation.elements.Barline;
-import org.wmn4j.notation.elements.Clefs;
-import org.wmn4j.notation.elements.KeySignatures;
-import org.wmn4j.notation.elements.MeasureAttributes;
-import org.wmn4j.notation.elements.TimeSignatures;
 
-/**
- *
- * @author Otso Björklund
- */
 public class MeasureAttributesTest {
 
 	public MeasureAttributesTest() {
@@ -90,14 +81,20 @@ public class MeasureAttributesTest {
 
 	@Test
 	public void testEquals() {
+
+		final Map<Duration, Clef> clefChangesA = new HashMap<>();
+		clefChangesA.put(Durations.HALF, Clefs.F);
+		final Map<Duration, Clef> clefChangesB = new HashMap<>();
+		clefChangesB.put(Durations.HALF.addDot(), Clefs.F);
+
 		final MeasureAttributes attr = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
-				Barline.SINGLE, Barline.SINGLE, Clefs.G);
+				Barline.SINGLE, Barline.SINGLE, Clefs.G, clefChangesA);
 
 		final MeasureAttributes other = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
-				Barline.SINGLE, Barline.SINGLE, Clefs.G);
+				Barline.SINGLE, Barline.SINGLE, Clefs.G, clefChangesA);
 
 		final MeasureAttributes different = MeasureAttributes.of(TimeSignatures.FOUR_FOUR,
-				KeySignatures.CMAJ_AMIN, Barline.SINGLE, Barline.DOUBLE, Clefs.G);
+				KeySignatures.CMAJ_AMIN, Barline.SINGLE, Barline.DOUBLE, Clefs.G, clefChangesB);
 
 		assertTrue(attr.equals(attr));
 		assertTrue(attr.equals(other));

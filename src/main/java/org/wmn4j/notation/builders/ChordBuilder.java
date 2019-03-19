@@ -69,6 +69,7 @@ public class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
 	 *
 	 * @param duration Duration to set
 	 */
+	@Override
 	public void setDuration(Duration duration) {
 		for (NoteBuilder builder : this) {
 			builder.setDuration(duration);

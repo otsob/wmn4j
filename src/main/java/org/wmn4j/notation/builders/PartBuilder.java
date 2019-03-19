@@ -95,7 +95,7 @@ public class PartBuilder {
 	}
 
 	private List<Measure> getBuiltMeasures(List<MeasureBuilder> builders) {
-		return builders.stream().map(MeasureBuilder::build).collect(Collectors.toList());
+		return builders.stream().map(measureBuilder -> measureBuilder.build(false, false)).collect(Collectors.toList());
 	}
 
 	/**

@@ -95,6 +95,7 @@ public class NoteBuilder implements DurationalBuilder {
 	 *
 	 * @param duration The duration to be set in this builder
 	 */
+	@Override
 	public void setDuration(Duration duration) {
 		this.duration = duration;
 	}
