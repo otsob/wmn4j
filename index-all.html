@@ -295,6 +295,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns a <a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a> with the contents of this builder.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#build(boolean,boolean)">build(boolean, boolean)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
+<dd>
+<div class="block">Returns a <a href="org/wmn4j/notation/elements/Measure.html" title="class in org.wmn4j.notation.elements"><code>Measure</code></a> with the values set in this builder.</div>
+</dd>
 </dl>
 <a id="I:C">
 <!--   -->
@@ -1290,6 +1294,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns true if any voice in this builder is full.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#isFull(int)">isFull(int)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
+<dd>
+<div class="block">Returns true if the voice with the given number is full.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Pitch.html#isHigherThan(org.wmn4j.notation.elements.Pitch)">isHigherThan(Pitch)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a></dt>
 <dd>
 <div class="block">Returns true if this is higher than the given pitch.</div>
@@ -1323,6 +1331,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/SingleStaffPart.html#isMultiStaff()">isMultiStaff()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#isOverflowing()">isOverflowing()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
+<dd>
+<div class="block">Returns true if any voice in this builder is overflowing.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#isOverflowing(int)">isOverflowing(int)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
+<dd>
+<div class="block">Returns true if the total duration of the durational elements in the voice
+ with the given number is more than can fit into a measure with the time
+ signature set in this builder.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Measure.html#isPickUp()">isPickUp()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Measure.html" title="class in org.wmn4j.notation.elements">Measure</a></dt>
 <dd>
 <div class="block">Returns true if this measure is a pickup measure.</div>
@@ -1360,10 +1378,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Note.html#isTiedToFollowing()">isTiedToFollowing()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a></dt>
 <dd>
 <div class="block">Returns true if this note is tied to a following note.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#isVoiceFull(int)">isVoiceFull(int)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
-<dd>
-<div class="block">Returns true if the voice with the given number is full.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Measure.Iter.html#%3Cinit%3E(org.wmn4j.notation.elements.Measure)">Iter(Measure)</a></span> - Constructor for class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Measure.Iter.html" title="class in org.wmn4j.notation.elements">Measure.Iter</a></dt>
 <dd>
@@ -1944,6 +1958,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Sets a new duration to this builder and all the NoteBuilders in it.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/DurationalBuilder.html#setDuration(org.wmn4j.notation.elements.Duration)">setDuration(Duration)</a></span> - Method in interface org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></dt>
+<dd>
+<div class="block">Sets the duration of this builder to the given value.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/NoteBuilder.html#setDuration(org.wmn4j.notation.elements.Duration)">setDuration(Duration)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a></dt>
 <dd>
 <div class="block">Sets the duration in this builder.</div>
@@ -2143,6 +2161,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#totalDurationOfVoice(int)">totalDurationOfVoice(int)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
 <div class="block">Returns the sum of durations in a voice.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#trim()">trim()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
+<dd>
+<div class="block">Trims the excess durations from this builder.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/TimeSignatures.html#TWO_FOUR">TWO_FOUR</a></span> - Static variable in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/TimeSignatures.html" title="class in org.wmn4j.notation.elements">TimeSignatures</a></dt>
 <dd>

@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -134,9 +134,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">MeasureBuilder</span>
 extends java.lang.Object</pre>
-<div class="block">Class for building <a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements"><code>Measure</code></a> objects. The methods <a href="#isFull()"><code>isFull</code></a> and <a href="#isVoiceFull(int)"><code>isVoiceFull</code></a> should be used for checking
- if the durations add up to the correct amount to fill up the measure
- according to the specified time signature.
+<div class="block">Class for building <a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements"><code>Measure</code></a> objects. The methods <a href="#isFull()"><code>isFull</code></a> and <a href="#isFull(int)"><code>isVoiceFull</code></a> should be used for checking if
+ the durations add up to the correct amount to fill up the measure according
+ to the specified time signature.
 
  Default values: TimeSignature : 4/4 KeySignature : C-major/a-minor Clef: G
  Barlines (right and left): Single. No clef changes.</div>
@@ -228,6 +228,14 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
+<td class="colFirst"><code><a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements">Measure</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#build(boolean,boolean)">build</a></span>&#8203;(boolean&nbsp;padWithRests,
+     boolean&nbsp;trim)</code></th>
+<td class="colLast">
+<div class="block">Returns a <a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements"><code>Measure</code></a> with the values set in this builder.</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#get(int,int)">get</a></span>&#8203;(int&nbsp;voice,
    int&nbsp;index)</code></th>
@@ -235,91 +243,107 @@ extends java.lang.Object</pre>
 <div class="block">Returns the builder at the given position.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClef()">getClef</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the clef set in this builder.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.util.Map&lt;<a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>,&#8203;<a href="../elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClefChanges()">getClefChanges</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the clef changes in this builder.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../elements/KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getKeySignature()">getKeySignature</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the key signature set in this builder.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLeftBarline()">getLeftBarline</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the left barline set in this builder.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumber()">getNumber</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the measure number set in this builder.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumberOfVoices()">getNumberOfVoices</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the number of voices in this builder.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRightBarline()">getRightBarline</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the right barline set in this builder.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="../elements/TimeSignature.html" title="class in org.wmn4j.notation.elements">TimeSignature</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTimeSignature()">getTimeSignature</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the time signature set in this builder.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>java.util.Set&lt;java.lang.Integer&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoiceNumbers()">getVoiceNumbers</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the voice numbers set in this builder.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isFull()">isFull</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns true if any voice in this builder is full.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isVoiceFull(int)">isVoiceFull</a></span>&#8203;(int&nbsp;voice)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isFull(int)">isFull</a></span>&#8203;(int&nbsp;voice)</code></th>
 <td class="colLast">
 <div class="block">Returns true if the voice with the given number is full.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isOverflowing()">isOverflowing</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns true if any voice in this builder is overflowing.</div>
+</td>
+</tr>
+<tr id="i19" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isOverflowing(int)">isOverflowing</a></span>&#8203;(int&nbsp;voice)</code></th>
+<td class="colLast">
+<div class="block">Returns true if the total duration of the durational elements in the voice
+ with the given number is more than can fit into a measure with the time
+ signature set in this builder.</div>
+</td>
+</tr>
+<tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setClef(org.wmn4j.notation.elements.Clef)">setClef</a></span>&#8203;(<a href="../elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&nbsp;clef)</code></th>
 <td class="colLast">
 <div class="block">Sets the clef in this builder.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElement(int,int,org.wmn4j.notation.builders.DurationalBuilder)">setElement</a></span>&#8203;(int&nbsp;voice,
           int&nbsp;index,
@@ -328,46 +352,53 @@ extends java.lang.Object</pre>
 <div class="block">Sets the element at specified location to given value.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setKeySignature(org.wmn4j.notation.elements.KeySignature)">setKeySignature</a></span>&#8203;(<a href="../elements/KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a>&nbsp;keySignature)</code></th>
 <td class="colLast">
 <div class="block">Sets the key signature for this builder.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLeftBarline(org.wmn4j.notation.elements.Barline)">setLeftBarline</a></span>&#8203;(<a href="../elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;leftBarline)</code></th>
 <td class="colLast">
 <div class="block">Sets the left barline in this builder.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setNumber(int)">setNumber</a></span>&#8203;(int&nbsp;number)</code></th>
 <td class="colLast">
 <div class="block">Sets the measure number in this builder.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRightBarline(org.wmn4j.notation.elements.Barline)">setRightBarline</a></span>&#8203;(<a href="../elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a>&nbsp;rightBarline)</code></th>
 <td class="colLast">
 <div class="block">Sets the right barline in this builder.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTimeSignature(org.wmn4j.notation.elements.TimeSignature)">setTimeSignature</a></span>&#8203;(<a href="../elements/TimeSignature.html" title="class in org.wmn4j.notation.elements">TimeSignature</a>&nbsp;timeSignature)</code></th>
 <td class="colLast">
 <div class="block">Sets the time signature for this builder.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code><a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#totalDurationOfVoice(int)">totalDurationOfVoice</a></span>&#8203;(int&nbsp;voice)</code></th>
 <td class="colLast">
 <div class="block">Returns the sum of durations in a voice.</div>
+</td>
+</tr>
+<tr id="i28" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#trim()">trim</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Trims the excess durations from this builder.</div>
 </td>
 </tr>
 </table>
@@ -778,19 +809,20 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="isVoiceFull(int)">
+<a id="isFull(int)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>isVoiceFull</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;isVoiceFull&#8203;(int&nbsp;voice)</pre>
+<h4>isFull</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;isFull&#8203;(int&nbsp;voice)</pre>
 <div class="block">Returns true if the voice with the given number is full. A voice is
  considered full when the durations in it are enough to fill a measure with
- the time signature set in this builder.</div>
+ the time signature set in this builder. The voice may contain more durational
+ elements than fit in a measure with the time signature set in this builder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>voice</code> - index of voice that is checked</dd>
+<dd><code>voice</code> - the number of voice that is checked</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if the durations in the voice add up to fill a measure</dd>
 </dl>
@@ -803,22 +835,98 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isFull</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isFull()</pre>
-<div class="block">Returns true if any voice in this builder is full.</div>
+<div class="block">Returns true if any voice in this builder is full. A voice is considered full
+ when the durations in it are enough to fill a measure with the time signature
+ set in this builder. The voice may contain more durational elements than fit
+ in a measure with the time signature set in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if even a single voice is full. False otherwise.</dd>
 </dl>
 </li>
 </ul>
+<a id="isOverflowing(int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isOverflowing</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;isOverflowing&#8203;(int&nbsp;voice)</pre>
+<div class="block">Returns true if the total duration of the durational elements in the voice
+ with the given number is more than can fit into a measure with the time
+ signature set in this builder.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>voice</code> - the number of the voice that is checked</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>true if the total duration of the durational elements in the voice
+         exceed what can fit in the measure</dd>
+</dl>
+</li>
+</ul>
+<a id="isOverflowing()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isOverflowing</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;isOverflowing()</pre>
+<div class="block">Returns true if any voice in this builder is overflowing. A voice is
+ overflowing if the total duration of the durational elements in the voice is
+ more than can fit into a measure with the time signature set in this builder.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>true if any voice in this builder is overflowing</dd>
+</dl>
+</li>
+</ul>
+<a id="trim()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>trim</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;trim()</pre>
+<div class="block">Trims the excess durations from this builder. The durational elements that
+ start from this builder and would continue onto the next measure are reduced
+ in duration to fit into a measure with the time signature set in this
+ builder.</div>
+</li>
+</ul>
 <a id="build()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>build</h4>
+<pre class="methodSignature">public&nbsp;<a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&nbsp;build()</pre>
+<div class="block">Returns a <a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements"><code>Measure</code></a> with the values set in this builder. Voices that do
+ not contain enough durational notation elements are padded with rests at the
+ end. If any voice has a total duration that exceeds what can fit into a
+ measure with the time signature set in this builder, then those voices are
+ trimmed by discarding the exceeding durations. Any durational that partly
+ fits in the measure is reduced in duration to fit into the built measure.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a measure with the values set in this builder</dd>
+</dl>
+</li>
+</ul>
+<a id="build(boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>build</h4>
-<pre class="methodSignature">public&nbsp;<a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&nbsp;build()</pre>
+<pre class="methodSignature">public&nbsp;<a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&nbsp;build&#8203;(boolean&nbsp;padWithRests,
+                     boolean&nbsp;trim)</pre>
 <div class="block">Returns a <a href="../elements/Measure.html" title="class in org.wmn4j.notation.elements"><code>Measure</code></a> with the values set in this builder.</div>
 <dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>padWithRests</code> - set this to true to pad the voices that do not fill the
+                     measure with rests</dd>
+<dd><code>trim</code> - set this to true to trim the durational elements whose
+                     durations exceed what can fit into the measure</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a measure with the values set in this builder</dd>
 </dl>
