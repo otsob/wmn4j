@@ -1,15 +1,14 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.builders;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.EnumSet;
-import static org.junit.Assert.assertNotSame;
 
 import org.junit.Test;
 import org.wmn4j.notation.elements.Articulation;
@@ -17,7 +16,6 @@ import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.MultiNoteArticulation;
 import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.iterators.ScorePosition;
 
 public class NoteBuilderTest {
 
@@ -41,7 +39,6 @@ public class NoteBuilderTest {
 		builder.addMultiNoteArticulation(new MultiNoteArticulation(MultiNoteArticulation.Type.SLUR));
 
 		final Note tiedNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		final ScorePosition position = new ScorePosition(1, 1, 1, 1);
 
 		builder.setTiedTo(tiedNote);
 
