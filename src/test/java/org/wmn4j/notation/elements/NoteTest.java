@@ -200,4 +200,35 @@ public class NoteTest {
 		assertTrue(noteThatBeginsSlur.hasArticulation(LinkedArticulation.Marking.Type.SLUR));
 		assertFalse(noteThatBeginsSlur.hasArticulation(LinkedArticulation.Marking.Type.GLISSANDO));
 	}
+
+	@Test
+	public void testEqualsAndHashCodeWithLinkedArticulations() {
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+
+		LinkedArticulation slurBeginning = LinkedArticulation.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		LinkedArticulation glissandoEnd = LinkedArticulation.endOf(Marking.of(Marking.Type.GLISSANDO));
+		List<LinkedArticulation> linkedArticulations = new ArrayList<>();
+
+		linkedArticulations.add(slurBeginning);
+		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), linkedArticulations, null, false);
+
+		LinkedArticulation slurEnd = LinkedArticulation.endOf(Marking.of(Marking.Type.SLUR));
+		List<LinkedArticulation> slurEndList = new ArrayList<>();
+		slurEndList.add(slurEnd);
+		final Note noteThatEndsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), slurEndList, null, false);
+
+		linkedArticulations.add(glissandoEnd);
+		final Note noteWithLinkedArticulations = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), linkedArticulations, null, false);
+
+		assertEquals(noteThatBeginsSlur, noteThatEndsSlur);
+		assertEquals(noteThatBeginsSlur.hashCode(), noteThatEndsSlur.hashCode());
+
+		assertFalse(noteThatBeginsSlur.equals(followingNote));
+		assertFalse(noteWithLinkedArticulations.equals(followingNote));
+		assertFalse(noteWithLinkedArticulations.equals(noteThatBeginsSlur));
+	}
+
 }

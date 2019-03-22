@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Represents a note. This class is immutable. Notes have pitch, duration,
@@ -359,18 +360,25 @@ public final class Note implements Durational, Pitched {
 			return false;
 		}
 
-		// TODO: Effect of ties and linked articulations.
+		if (!getLinkedArticulationTypes().equals(other.getLinkedArticulationTypes())) {
+			return false;
+		}
 
 		return true;
 	}
 
+	private Set<LinkedArticulation.Marking.Type> getLinkedArticulationTypes() {
+		return linkedArticulations.stream()
+				.map(LinkedArticulation::getType).collect(Collectors.toSet());
+	}
+
 	@Override
 	public int hashCode() {
-		// TODO: if equals is changed update this.
 		int hash = 3;
 		hash = 79 * hash + Objects.hashCode(this.pitch);
 		hash = 79 * hash + Objects.hashCode(this.duration);
 		hash = 79 * hash + Objects.hashCode(this.articulations);
+		hash = 79 * hash + Objects.hashCode(getLinkedArticulationTypes());
 		return hash;
 	}
 

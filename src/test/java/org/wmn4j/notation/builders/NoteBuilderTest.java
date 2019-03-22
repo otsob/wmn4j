@@ -48,7 +48,8 @@ public class NoteBuilderTest {
 				EnumSet.of(Articulation.STACCATO));
 
 		final Note note = builder.build();
-		assertEquals(expected, note);
+		assertTrue(expected.equalsInPitchAndDuration(note));
+		assertFalse(expected.equals(note));
 		assertTrue(note.isTied());
 		assertTrue(note.isTiedToFollowing());
 		assertFalse(note.isTiedFromPrevious());
