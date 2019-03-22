@@ -23,7 +23,7 @@ public class NoteBuilder implements DurationalBuilder {
 	private Pitch pitch;
 	private Duration duration;
 	private Set<Articulation> articulations;
-	private List<LinkedArticulation> multiNoteArticulations;
+	private List<LinkedArticulation> linkedArticulations;
 	private Note tiedTo;
 	private boolean isTiedFromPrevious;
 	private NoteBuilder followingTied;
@@ -40,7 +40,7 @@ public class NoteBuilder implements DurationalBuilder {
 		this.pitch = pitch;
 		this.duration = duration;
 		this.articulations = EnumSet.noneOf(Articulation.class);
-		this.multiNoteArticulations = new ArrayList<>();
+		this.linkedArticulations = new ArrayList<>();
 		this.isTiedFromPrevious = false;
 	}
 
@@ -54,8 +54,8 @@ public class NoteBuilder implements DurationalBuilder {
 		this(builder.getPitch(), builder.getDuration());
 		builder.getArticulations()
 				.forEach(articulation -> this.articulations.add(articulation));
-		builder.getMultiNoteArticulations()
-				.forEach(articulation -> this.multiNoteArticulations.add(articulation));
+		builder.getLinkedArticulations()
+				.forEach(articulation -> this.linkedArticulations.add(articulation));
 		this.tiedTo = builder.getTiedTo();
 		this.isTiedFromPrevious = builder.isTiedFromPrevious();
 		builder.getFollowingTied()
@@ -128,31 +128,31 @@ public class NoteBuilder implements DurationalBuilder {
 	}
 
 	/**
-	 * Returns the multinote articulations set in this builder.
+	 * Returns the linked articulations set in this builder.
 	 *
-	 * @return the multinote articulations set in this builder
+	 * @return the linked articulations set in this builder
 	 */
-	public List<LinkedArticulation> getMultiNoteArticulations() {
-		return multiNoteArticulations;
+	public List<LinkedArticulation> getLinkedArticulations() {
+		return linkedArticulations;
 	}
 
 	/**
-	 * Adds a multinote articulation to this builder.
+	 * Adds a linked articulation to this builder.
 	 *
-	 * @param articulation the multinote articulation that is added to this builder
+	 * @param articulation the linked articulation that is added to this builder
 	 */
-	public void addMultiNoteArticulation(LinkedArticulation articulation) {
-		this.multiNoteArticulations.add(articulation);
+	public void addLinkedArticulation(LinkedArticulation articulation) {
+		this.linkedArticulations.add(articulation);
 	}
 
 	/**
-	 * Sets the given multinote articulations to this builder.
+	 * Sets the given linked articulations to this builder.
 	 *
-	 * @param multiNoteArticulations the multinote articulations that are set into
-	 *                               this builder
+	 * @param linkedArticulations the linked articulations that are set into this
+	 *                            builder
 	 */
-	public void setMultiNoteArticulations(List<LinkedArticulation> multiNoteArticulations) {
-		this.multiNoteArticulations = multiNoteArticulations;
+	public void setLinkedArticulations(List<LinkedArticulation> linkedArticulations) {
+		this.linkedArticulations = linkedArticulations;
 	}
 
 	/**
@@ -241,7 +241,7 @@ public class NoteBuilder implements DurationalBuilder {
 				this.tiedTo = this.followingTied.build();
 			}
 
-			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, this.multiNoteArticulations,
+			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, this.linkedArticulations,
 					this.tiedTo, this.isTiedFromPrevious);
 		}
 

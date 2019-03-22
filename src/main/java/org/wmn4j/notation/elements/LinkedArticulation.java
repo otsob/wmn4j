@@ -3,6 +3,7 @@
  */
 package org.wmn4j.notation.elements;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -29,7 +30,7 @@ public final class LinkedArticulation {
 	 *         affected by the articulation
 	 */
 	public static LinkedArticulation beginningOf(Marking marking, Note followingNote) {
-		return new LinkedArticulation(marking, followingNote, true, false);
+		return new LinkedArticulation(marking, Objects.requireNonNull(followingNote), true, false);
 	}
 
 	/**
@@ -40,7 +41,7 @@ public final class LinkedArticulation {
 	 * @return an articulation connection with the given marking to the given note
 	 */
 	public static LinkedArticulation of(Marking marking, Note followingNote) {
-		return new LinkedArticulation(marking, followingNote, false, false);
+		return new LinkedArticulation(marking, Objects.requireNonNull(followingNote), false, false);
 	}
 
 	/**
@@ -67,7 +68,7 @@ public final class LinkedArticulation {
 	 */
 	private LinkedArticulation(Marking marking, Note followingNote, boolean isBeginning,
 			boolean isEnd) {
-		this.marking = marking;
+		this.marking = Objects.requireNonNull(marking);
 		this.followingNote = followingNote;
 		this.isBeginning = isBeginning;
 		this.isEnd = isEnd;

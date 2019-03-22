@@ -28,7 +28,7 @@ public class NoteBuilderTest {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		final Note note = builder.build();
 		assertFalse(note.hasArticulations());
-		assertFalse(note.hasMultiNoteArticulations());
+		assertFalse(note.hasLinkedArticulations());
 		assertFalse(note.isTied());
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), note);
 	}
@@ -37,7 +37,7 @@ public class NoteBuilderTest {
 	public void testBuildingNoteWithAllAttributes() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		builder.addArticulation(Articulation.STACCATO);
-		builder.addMultiNoteArticulation(LinkedArticulation
+		builder.addLinkedArticulation(LinkedArticulation
 				.of(Marking.of(Marking.Type.GLISSANDO), Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 
 		final Note tiedNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
@@ -52,7 +52,7 @@ public class NoteBuilderTest {
 		assertTrue(note.isTied());
 		assertTrue(note.isTiedToFollowing());
 		assertFalse(note.isTiedFromPrevious());
-		assertTrue(note.hasMultiNoteArticulations());
+		assertTrue(note.hasLinkedArticulations());
 	}
 
 	@Test
@@ -112,18 +112,18 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testCopyConstructorMultiNoteArticulations() {
+	public void testCopyConstructorLinkedArticulations() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		final LinkedArticulation glissando = LinkedArticulation
 				.of(Marking.of(Marking.Type.GLISSANDO), Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		builder.addMultiNoteArticulation(glissando);
+		builder.addLinkedArticulation(glissando);
 
 		final NoteBuilder copy = new NoteBuilder(builder);
 
-		builder.addMultiNoteArticulation(LinkedArticulation
+		builder.addLinkedArticulation(LinkedArticulation
 				.of(Marking.of(Marking.Type.GLISSANDO), Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
-		assertTrue(copy.getMultiNoteArticulations().size() == 1);
-		assertTrue(copy.getMultiNoteArticulations().contains(glissando));
+		assertTrue(copy.getLinkedArticulations().size() == 1);
+		assertTrue(copy.getLinkedArticulations().contains(glissando));
 	}
 
 	@Test

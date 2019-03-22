@@ -22,7 +22,7 @@ public final class Note implements Durational, Pitched {
 	private final Pitch pitch;
 	private final Duration duration;
 	private final Set<Articulation> articulations;
-	private final List<LinkedArticulation> multiNoteArticulations;
+	private final List<LinkedArticulation> linkedArticulations;
 
 	private final Note tiedTo;
 	private final boolean isTiedFrom;
@@ -67,38 +67,38 @@ public final class Note implements Durational, Pitched {
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch                  the pitch of the note
-	 * @param duration               the duration of the note
-	 * @param articulations          a set of Articulations associated with the note
-	 * @param multiNoteArticulations list of the MultiNoteArticulations for the note
+	 * @param pitch               the pitch of the note
+	 * @param duration            the duration of the note
+	 * @param articulations       a set of Articulations associated with the note
+	 * @param linkedArticulations list of the linked articulations for the note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			List<LinkedArticulation> multiNoteArticulations) {
-		return new Note(pitch, duration, articulations, multiNoteArticulations, null, false);
+			List<LinkedArticulation> linkedArticulations) {
+		return new Note(pitch, duration, articulations, linkedArticulations, null, false);
 	}
 
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch                  the pitch of the note
-	 * @param duration               the duration of the note
-	 * @param articulations          a set of Articulations associated with the note
-	 * @param multiNoteArticulations list of the MultiNoteArticulations for the note
-	 * @param tiedTo                 the following note to which this is tied
-	 * @param isTiedFromPrevious     true if this is tied from the previous note
+	 * @param pitch               the pitch of the note
+	 * @param duration            the duration of the note
+	 * @param articulations       a set of Articulations associated with the note
+	 * @param linkedArticulations list of the linked articulations for the note
+	 * @param tiedTo              the following note to which this is tied
+	 * @param isTiedFromPrevious  true if this is tied from the previous note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			List<LinkedArticulation> multiNoteArticulations, Note tiedTo, boolean isTiedFromPrevious) {
-		return new Note(pitch, duration, articulations, multiNoteArticulations, tiedTo, isTiedFromPrevious);
+			List<LinkedArticulation> linkedArticulations, Note tiedTo, boolean isTiedFromPrevious) {
+		return new Note(pitch, duration, articulations, linkedArticulations, tiedTo, isTiedFromPrevious);
 	}
 
 	/**
 	 * Private constructor.
 	 */
 	private Note(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			List<LinkedArticulation> multiNoteArticulations, Note tiedTo, boolean isTiedFromPrevious) {
+			List<LinkedArticulation> linkedArticulations, Note tiedTo, boolean isTiedFromPrevious) {
 
 		this.pitch = Objects.requireNonNull(pitch);
 		this.duration = Objects.requireNonNull(duration);
@@ -108,10 +108,10 @@ public final class Note implements Durational, Pitched {
 			this.articulations = Collections.emptySet();
 		}
 
-		if (multiNoteArticulations != null && !multiNoteArticulations.isEmpty()) {
-			this.multiNoteArticulations = Collections.unmodifiableList(new ArrayList<>(multiNoteArticulations));
+		if (linkedArticulations != null && !linkedArticulations.isEmpty()) {
+			this.linkedArticulations = Collections.unmodifiableList(new ArrayList<>(linkedArticulations));
 		} else {
-			this.multiNoteArticulations = Collections.emptyList();
+			this.linkedArticulations = Collections.emptyList();
 		}
 
 		this.tiedTo = tiedTo;
@@ -173,22 +173,13 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Returns the multinote articulations defined for this note. These are
-	 * articulations such as slurs or glissando.
+	 * Returns true if this note is affected by any linked articulations (see
+	 * {@link LinkedArticulation}).
 	 *
-	 * @return the multinote articulations defined for this note
+	 * @return true if this note is affected by any linked articulations
 	 */
-	public List<LinkedArticulation> getMultiNoteArticulations() {
-		return this.multiNoteArticulations;
-	}
-
-	/**
-	 * Returns true if this note is affected by any multinote articulations.
-	 *
-	 * @return true if this note is affected by any multinote articulations
-	 */
-	public boolean hasMultiNoteArticulations() {
-		return !this.multiNoteArticulations.isEmpty();
+	public boolean hasLinkedArticulations() {
+		return !this.linkedArticulations.isEmpty();
 	}
 
 	/**
@@ -330,7 +321,7 @@ public final class Note implements Durational, Pitched {
 			return false;
 		}
 
-		// TODO: Effect of ties and MultiNoteArticulations.
+		// TODO: Effect of ties and linked articulations.
 
 		return true;
 	}
