@@ -4,6 +4,7 @@
 package org.wmn4j.notation.elements;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -22,7 +23,7 @@ public final class Note implements Durational, Pitched {
 	private final Pitch pitch;
 	private final Duration duration;
 	private final Set<Articulation> articulations;
-	private final List<LinkedArticulation> linkedArticulations;
+	private final Collection<LinkedArticulation> linkedArticulations;
 
 	private final Note tiedTo;
 	private final boolean isTiedFrom;
@@ -90,7 +91,7 @@ public final class Note implements Durational, Pitched {
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			List<LinkedArticulation> linkedArticulations, Note tiedTo, boolean isTiedFromPrevious) {
+			Collection<LinkedArticulation> linkedArticulations, Note tiedTo, boolean isTiedFromPrevious) {
 		return new Note(pitch, duration, articulations, linkedArticulations, tiedTo, isTiedFromPrevious);
 	}
 
@@ -98,7 +99,7 @@ public final class Note implements Durational, Pitched {
 	 * Private constructor.
 	 */
 	private Note(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			List<LinkedArticulation> linkedArticulations, Note tiedTo, boolean isTiedFromPrevious) {
+			Collection<LinkedArticulation> linkedArticulations, Note tiedTo, boolean isTiedFromPrevious) {
 
 		this.pitch = Objects.requireNonNull(pitch);
 		this.duration = Objects.requireNonNull(duration);
@@ -170,6 +171,43 @@ public final class Note implements Durational, Pitched {
 	 */
 	public boolean hasArticulation(Articulation articulation) {
 		return this.articulations.contains(articulation);
+	}
+
+	/**
+	 * Returns true if this note has the linked articulation of the given type.
+	 *
+	 * @param articulationType the type of articulation whose presence is checked
+	 * @return true if this note has the given articulation
+	 */
+	public boolean hasArticulation(LinkedArticulation.Marking.Type articulationType) {
+		return linkedArticulations.stream()
+				.anyMatch(linkedArticulation -> linkedArticulation.getType().equals(articulationType));
+	}
+
+	/**
+	 * Returns true if this note begins a linked articulation of the given type.
+	 *
+	 * @param articulationType the type of the articulation for whose beginning this
+	 *                         note is checked
+	 * @return true if this note begins a linked articulation of the given type
+	 */
+	public boolean begins(LinkedArticulation.Marking.Type articulationType) {
+		return linkedArticulations.stream()
+				.anyMatch(linkedArticulation -> linkedArticulation.getType().equals(articulationType)
+						&& linkedArticulation.isBeginning());
+	}
+
+	/**
+	 * Returns true if this note ends a linked articulation of the given type.
+	 *
+	 * @param articulationType the type of the articulation for whose end this note
+	 *                         is checked
+	 * @return true if this note ends a linked articulation of the given type
+	 */
+	public boolean ends(LinkedArticulation.Marking.Type articulationType) {
+		return linkedArticulations.stream()
+				.anyMatch(linkedArticulation -> linkedArticulation.getType().equals(articulationType)
+						&& linkedArticulation.isEnd());
 	}
 
 	/**

@@ -8,11 +8,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
 import org.wmn4j.notation.builders.NoteBuilder;
+import org.wmn4j.notation.elements.LinkedArticulation.Marking;
 
 public class NoteTest {
 
@@ -159,5 +163,41 @@ public class NoteTest {
 		assertEquals(Durations.HALF, firstNote.getTiedDuration());
 		assertEquals(Durations.QUARTER, secondNote.getTiedDuration());
 		assertEquals(Durations.EIGHT, thirdNote.getTiedDuration());
+	}
+
+	@Test
+	public void testBeginsAndEndsLinkedArticulation() {
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+
+		LinkedArticulation slurBeginning = LinkedArticulation.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		LinkedArticulation glissandoEnd = LinkedArticulation.endOf(Marking.of(Marking.Type.GLISSANDO));
+		List<LinkedArticulation> linkedArticulations = new ArrayList<>();
+		linkedArticulations.add(slurBeginning);
+		linkedArticulations.add(glissandoEnd);
+
+		final Note noteWithLinkedArticulations = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), linkedArticulations, null, false);
+
+		assertTrue(noteWithLinkedArticulations.begins(LinkedArticulation.Marking.Type.SLUR));
+		assertTrue(noteWithLinkedArticulations.ends(LinkedArticulation.Marking.Type.GLISSANDO));
+
+		assertFalse(noteWithLinkedArticulations.begins(LinkedArticulation.Marking.Type.GLISSANDO));
+		assertFalse(noteWithLinkedArticulations.ends(LinkedArticulation.Marking.Type.SLUR));
+	}
+
+	@Test
+	public void testHasLinkedArticulation() {
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		LinkedArticulation slurBeginning = LinkedArticulation.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		List<LinkedArticulation> linkedArticulations = new ArrayList<>();
+		linkedArticulations.add(slurBeginning);
+
+		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), linkedArticulations, null, false);
+
+		assertTrue(noteThatBeginsSlur.hasLinkedArticulations());
+		assertFalse(followingNote.hasLinkedArticulations());
+		assertTrue(noteThatBeginsSlur.hasArticulation(LinkedArticulation.Marking.Type.SLUR));
+		assertFalse(noteThatBeginsSlur.hasArticulation(LinkedArticulation.Marking.Type.GLISSANDO));
 	}
 }
