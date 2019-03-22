@@ -22,7 +22,7 @@ public final class Note implements Durational, Pitched {
 	private final Pitch pitch;
 	private final Duration duration;
 	private final Set<Articulation> articulations;
-	private final List<MultiNoteArticulation> multiNoteArticulations;
+	private final List<LinkedArticulation> multiNoteArticulations;
 
 	private final Note tiedTo;
 	private final boolean isTiedFrom;
@@ -74,7 +74,7 @@ public final class Note implements Durational, Pitched {
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			List<MultiNoteArticulation> multiNoteArticulations) {
+			List<LinkedArticulation> multiNoteArticulations) {
 		return new Note(pitch, duration, articulations, multiNoteArticulations, null, false);
 	}
 
@@ -90,7 +90,7 @@ public final class Note implements Durational, Pitched {
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			List<MultiNoteArticulation> multiNoteArticulations, Note tiedTo, boolean isTiedFromPrevious) {
+			List<LinkedArticulation> multiNoteArticulations, Note tiedTo, boolean isTiedFromPrevious) {
 		return new Note(pitch, duration, articulations, multiNoteArticulations, tiedTo, isTiedFromPrevious);
 	}
 
@@ -98,7 +98,7 @@ public final class Note implements Durational, Pitched {
 	 * Private constructor.
 	 */
 	private Note(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			List<MultiNoteArticulation> multiNoteArticulations, Note tiedTo, boolean isTiedFromPrevious) {
+			List<LinkedArticulation> multiNoteArticulations, Note tiedTo, boolean isTiedFromPrevious) {
 
 		this.pitch = Objects.requireNonNull(pitch);
 		this.duration = Objects.requireNonNull(duration);
@@ -178,7 +178,7 @@ public final class Note implements Durational, Pitched {
 	 *
 	 * @return the multinote articulations defined for this note
 	 */
-	public List<MultiNoteArticulation> getMultiNoteArticulations() {
+	public List<LinkedArticulation> getMultiNoteArticulations() {
 		return this.multiNoteArticulations;
 	}
 

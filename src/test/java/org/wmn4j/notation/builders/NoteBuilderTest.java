@@ -13,7 +13,8 @@ import java.util.EnumSet;
 import org.junit.Test;
 import org.wmn4j.notation.elements.Articulation;
 import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.MultiNoteArticulation;
+import org.wmn4j.notation.elements.LinkedArticulation;
+import org.wmn4j.notation.elements.LinkedArticulation.Marking;
 import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
 
@@ -36,7 +37,8 @@ public class NoteBuilderTest {
 	public void testBuildingNoteWithAllAttributes() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		builder.addArticulation(Articulation.STACCATO);
-		builder.addMultiNoteArticulation(new MultiNoteArticulation(MultiNoteArticulation.Type.SLUR));
+		builder.addMultiNoteArticulation(LinkedArticulation
+				.of(Marking.of(Marking.Type.GLISSANDO), Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 
 		final Note tiedNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
@@ -112,12 +114,14 @@ public class NoteBuilderTest {
 	@Test
 	public void testCopyConstructorMultiNoteArticulations() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		final MultiNoteArticulation glissando = new MultiNoteArticulation(MultiNoteArticulation.Type.GLISSANDO);
+		final LinkedArticulation glissando = LinkedArticulation
+				.of(Marking.of(Marking.Type.GLISSANDO), Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		builder.addMultiNoteArticulation(glissando);
 
 		final NoteBuilder copy = new NoteBuilder(builder);
 
-		builder.addMultiNoteArticulation(new MultiNoteArticulation(MultiNoteArticulation.Type.SLUR));
+		builder.addMultiNoteArticulation(LinkedArticulation
+				.of(Marking.of(Marking.Type.GLISSANDO), Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 		assertTrue(copy.getMultiNoteArticulations().size() == 1);
 		assertTrue(copy.getMultiNoteArticulations().contains(glissando));
 	}

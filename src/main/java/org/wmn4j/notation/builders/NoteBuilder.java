@@ -11,7 +11,7 @@ import java.util.Set;
 
 import org.wmn4j.notation.elements.Articulation;
 import org.wmn4j.notation.elements.Duration;
-import org.wmn4j.notation.elements.MultiNoteArticulation;
+import org.wmn4j.notation.elements.LinkedArticulation;
 import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
 
@@ -23,7 +23,7 @@ public class NoteBuilder implements DurationalBuilder {
 	private Pitch pitch;
 	private Duration duration;
 	private Set<Articulation> articulations;
-	private List<MultiNoteArticulation> multiNoteArticulations;
+	private List<LinkedArticulation> multiNoteArticulations;
 	private Note tiedTo;
 	private boolean isTiedFromPrevious;
 	private NoteBuilder followingTied;
@@ -132,7 +132,7 @@ public class NoteBuilder implements DurationalBuilder {
 	 *
 	 * @return the multinote articulations set in this builder
 	 */
-	public List<MultiNoteArticulation> getMultiNoteArticulations() {
+	public List<LinkedArticulation> getMultiNoteArticulations() {
 		return multiNoteArticulations;
 	}
 
@@ -141,7 +141,7 @@ public class NoteBuilder implements DurationalBuilder {
 	 *
 	 * @param articulation the multinote articulation that is added to this builder
 	 */
-	public void addMultiNoteArticulation(MultiNoteArticulation articulation) {
+	public void addMultiNoteArticulation(LinkedArticulation articulation) {
 		this.multiNoteArticulations.add(articulation);
 	}
 
@@ -151,7 +151,7 @@ public class NoteBuilder implements DurationalBuilder {
 	 * @param multiNoteArticulations the multinote articulations that are set into
 	 *                               this builder
 	 */
-	public void setMultiNoteArticulations(List<MultiNoteArticulation> multiNoteArticulations) {
+	public void setMultiNoteArticulations(List<LinkedArticulation> multiNoteArticulations) {
 		this.multiNoteArticulations = multiNoteArticulations;
 	}
 
