@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -12,32 +11,10 @@ import static org.junit.Assert.fail;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.wmn4j.notation.builders.NoteBuilder;
-import org.wmn4j.notation.elements.Articulation;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
 
-/**
- * Unit tests for Note class.
- *
- * @author Otso Björklund
- */
 public class NoteTest {
-
-	public NoteTest() {
-	}
-
-	@BeforeClass
-	public static void setUpClass() {
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
-	}
 
 	@Test
 	public void testEquals() {
@@ -74,21 +51,21 @@ public class NoteTest {
 	public void testCreatingInvalidNote() {
 
 		try {
-			final Note note = Note.of(Pitch.Base.C, 5, 1, Durations.QUARTER);
+			Note.of(Pitch.Base.C, 5, 1, Durations.QUARTER);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
 		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 
 		try {
-			final Note note = Note.of(Pitch.Base.C, 0, 11, Durations.QUARTER);
+			Note.of(Pitch.Base.C, 0, 11, Durations.QUARTER);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
 		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 
 		try {
-			final Note note = Note.of(Pitch.Base.C, 0, 1, null);
+			Note.of(Pitch.Base.C, 0, 1, null);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
 		} catch (final Exception e) {
 			assertTrue(e instanceof NullPointerException);
@@ -131,7 +108,7 @@ public class NoteTest {
 			artic.remove(Articulation.STACCATO);
 			fail("Removing articulation succeeded, immutability violated");
 		} catch (final Exception e) {
-		/* Do nothing */ }
+			/* Do nothing */ }
 
 		assertTrue(note.hasArticulation(Articulation.STACCATO));
 	}
