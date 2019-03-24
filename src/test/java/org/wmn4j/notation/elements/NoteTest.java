@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -104,7 +105,7 @@ public class NoteTest {
 		articulations.add(Articulation.TENUTO);
 		final Note note = Note.of(pitch, Durations.EIGHT, articulations);
 
-		final Set<Articulation> artic = note.getArticulations();
+		final Collection<Articulation> artic = note.getArticulations();
 		assertEquals(2, artic.size());
 		assertTrue(artic.contains(Articulation.STACCATO));
 		assertTrue(artic.contains(Articulation.TENUTO));

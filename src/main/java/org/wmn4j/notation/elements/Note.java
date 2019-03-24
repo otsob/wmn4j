@@ -150,7 +150,7 @@ public final class Note implements Durational, Pitched {
 	 *
 	 * @return the articulations defined for this note
 	 */
-	public Set<Articulation> getArticulations() {
+	public Collection<Articulation> getArticulations() {
 		return this.articulations;
 	}
 
@@ -251,7 +251,7 @@ public final class Note implements Durational, Pitched {
 	/**
 	 * Returns the total duration of tied notes starting from the onset of this
 	 * note.
-	 *
+	 * <p>
 	 * For example, if three quarter notes are tied together, then the tied duration
 	 * of the first note is a dotted half note. For a note that is not tied to a
 	 * following note this is equal to the note's duration.
@@ -286,8 +286,8 @@ public final class Note implements Durational, Pitched {
 	 *
 	 * @param other the note to which this is compared for pitch
 	 * @return negative integer if this note is lower than other, positive integer
-	 *         if this is higher than other, 0 if notes are (enharmonically) of same
-	 *         height.
+	 * if this is higher than other, 0 if notes are (enharmonically) of same
+	 * height.
 	 */
 	public int compareByPitch(Note other) {
 		return this.pitch.compareTo(other.getPitch());
@@ -338,7 +338,7 @@ public final class Note implements Durational, Pitched {
 	 *
 	 * @param o the Object with which this Note is compared for equality
 	 * @return true if Object o is of class Note and has the same Pitch, Duration,
-	 *         and Articulations as this Node. false otherwise
+	 * and Articulations as this Node. false otherwise
 	 */
 	@Override
 	public boolean equals(Object o) {
