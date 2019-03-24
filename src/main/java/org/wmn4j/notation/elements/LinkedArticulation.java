@@ -3,6 +3,8 @@
  */
 package org.wmn4j.notation.elements;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,7 +29,7 @@ public final class LinkedArticulation {
 	 * @param marking       the marking used for the articulation
 	 * @param followingNote the note to which this connects
 	 * @return an articulation connection with the given marking from the first note
-	 *         affected by the articulation
+	 * affected by the articulation
 	 */
 	public static LinkedArticulation beginningOf(Marking marking, Note followingNote) {
 		return new LinkedArticulation(marking, Objects.requireNonNull(followingNote), true, false);
@@ -50,7 +52,7 @@ public final class LinkedArticulation {
 	 *
 	 * @param marking the marking used for the articulation
 	 * @return an articulation connection with the given marking that is used to
-	 *         denote the last note affected by the articulation
+	 * denote the last note affected by the articulation
 	 */
 	public static LinkedArticulation endOf(Marking marking) {
 		return new LinkedArticulation(marking, null, false, true);
@@ -95,11 +97,20 @@ public final class LinkedArticulation {
 	}
 
 	/**
+	 * Returns all following notes that are affected by the same marking to which this linked articulation belongs.
+	 *
+	 * @return all following notes that are affected by the same marking to which this linked articulation belongs
+	 */
+	public Iterable<Note> getFollowingNotes() {
+		return new LinkedArticulationIterable(this);
+	}
+
+	/**
 	 * Returns true if this denotes the connection starting from the first note
 	 * affected by the articulation.
 	 *
 	 * @return true if this denotes the connection starting from the first note
-	 *         affected by the articulation
+	 * affected by the articulation
 	 */
 	public boolean isBeginning() {
 		return isBeginning;
@@ -166,6 +177,48 @@ public final class LinkedArticulation {
 		 */
 		public Type getType() {
 			return type;
+		}
+	}
+
+	private static final class LinkedArticulationIterable implements Iterable<Note> {
+
+		private final LinkedArticulation first;
+
+		LinkedArticulationIterable(LinkedArticulation first) {
+			this.first = first;
+		}
+
+		@Override
+		public Iterator<Note> iterator() {
+			return new LinkedArticulationIterator(first);
+		}
+
+		private static final class LinkedArticulationIterator implements Iterator<Note> {
+
+			private Optional<LinkedArticulation> current;
+			private final Marking marking;
+
+			private LinkedArticulationIterator(LinkedArticulation first) {
+				current = Optional.of(first);
+				marking = current.get().getMarking();
+			}
+
+			@Override
+			public boolean hasNext() {
+				return current.isPresent() && current.get().getFollowingNote().isPresent();
+			}
+
+			@Override
+			public Note next() {
+				if (!hasNext()) {
+					throw new NoSuchElementException();
+				}
+
+				Note nextNote = current.get().getFollowingNote().get();
+				current = nextNote.getLinkedArticulation(marking);
+
+				return nextNote;
+			}
 		}
 	}
 }
