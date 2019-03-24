@@ -146,12 +146,21 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Returns the articulations defined for this note.
+	 * Returns an unmodifiable view of all articulations defined for this note.
 	 *
 	 * @return the articulations defined for this note
 	 */
 	public Collection<Articulation> getArticulations() {
 		return this.articulations;
+	}
+
+	/**
+	 * Returns an unmodifiable view of all linked articulations that affect this note.
+	 *
+	 * @return all linked articulations that affect this note
+	 */
+	public Collection<LinkedArticulation> getLinkedArticulations() {
+		return linkedArticulations;
 	}
 
 	/**

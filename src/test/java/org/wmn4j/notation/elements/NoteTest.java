@@ -3,10 +3,9 @@
  */
 package org.wmn4j.notation.elements;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.wmn4j.notation.builders.NoteBuilder;
+import org.wmn4j.notation.elements.LinkedArticulation.Marking;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,9 +14,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Test;
-import org.wmn4j.notation.builders.NoteBuilder;
-import org.wmn4j.notation.elements.LinkedArticulation.Marking;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class NoteTest {
 
@@ -113,7 +113,8 @@ public class NoteTest {
 			artic.remove(Articulation.STACCATO);
 			fail("Removing articulation succeeded, immutability violated");
 		} catch (final Exception e) {
-			/* Do nothing */ }
+			/* Do nothing */
+		}
 
 		assertTrue(note.hasArticulation(Articulation.STACCATO));
 	}
@@ -232,4 +233,31 @@ public class NoteTest {
 		assertFalse(noteWithLinkedArticulations.equals(noteThatBeginsSlur));
 	}
 
+	@Test
+	public void testGetLinkedArticulations() {
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+
+		LinkedArticulation slurBeginning = LinkedArticulation.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		LinkedArticulation glissandoEnd = LinkedArticulation.endOf(Marking.of(Marking.Type.GLISSANDO));
+		List<LinkedArticulation> linkedArticulations = new ArrayList<>();
+		linkedArticulations.add(slurBeginning);
+		linkedArticulations.add(glissandoEnd);
+
+		final Note noteWithLinkedArticulations = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), linkedArticulations, null, false);
+
+		final Collection<LinkedArticulation> articulationsInNote = noteWithLinkedArticulations.getLinkedArticulations();
+		assertEquals(2, articulationsInNote.size());
+		assertTrue(articulationsInNote.contains(slurBeginning));
+		assertTrue(articulationsInNote.contains(glissandoEnd));
+
+		try {
+			articulationsInNote.add(slurBeginning);
+			fail("No exception was thrown when trying to add to linked articulations");
+		} catch (Exception e) {
+			/* Do nothing */
+		}
+
+		assertEquals("The ", 2, noteWithLinkedArticulations.getLinkedArticulations().size());
+	}
 }
