@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -259,5 +260,23 @@ public class NoteTest {
 		}
 
 		assertEquals("The ", 2, noteWithLinkedArticulations.getLinkedArticulations().size());
+	}
+
+	@Test
+	public void testGetLinkedArticulation() {
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		LinkedArticulation slurBeginning = LinkedArticulation.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		List<LinkedArticulation> linkedArticulations = new ArrayList<>();
+		linkedArticulations.add(slurBeginning);
+
+		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), linkedArticulations, null, false);
+
+		Optional<LinkedArticulation> slurBeginningOptional = noteThatBeginsSlur
+				.getLinkedArticulation(slurBeginning.getMarking());
+		assertTrue(slurBeginningOptional.isPresent());
+		assertEquals(slurBeginning, slurBeginningOptional.get());
+
+		assertFalse(noteThatBeginsSlur.getLinkedArticulation(Marking.of(Marking.Type.GLISSANDO)).isPresent());
 	}
 }

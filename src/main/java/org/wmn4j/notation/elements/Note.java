@@ -164,6 +164,19 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
+	 * Returns the linked articulation belonging to the given marking. If no linked articulation for the marking is
+	 * present, return empty.
+	 *
+	 * @param marking the marking for which the linked articulation is returned
+	 * @return the linked articulation belonging to the given marking
+	 */
+	public Optional<LinkedArticulation> getLinkedArticulation(LinkedArticulation.Marking marking) {
+		return linkedArticulations.stream()
+				.filter(articulation -> articulation.getMarking().equals(marking))
+				.findFirst();
+	}
+
+	/**
 	 * Returns true if this note has articulations that only affect this note, such
 	 * as staccato or tenuto.
 	 *
