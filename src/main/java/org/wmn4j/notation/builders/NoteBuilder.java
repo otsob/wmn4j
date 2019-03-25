@@ -3,17 +3,17 @@
  */
 package org.wmn4j.notation.builders;
 
+import org.wmn4j.notation.elements.Articulation;
+import org.wmn4j.notation.elements.Duration;
+import org.wmn4j.notation.elements.Marking;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.Pitch;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import org.wmn4j.notation.elements.Articulation;
-import org.wmn4j.notation.elements.Duration;
-import org.wmn4j.notation.elements.LinkedArticulation;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
 
 /**
  * Class for building {@link Note} objects. The built note is cached.
@@ -23,7 +23,7 @@ public class NoteBuilder implements DurationalBuilder {
 	private Pitch pitch;
 	private Duration duration;
 	private Set<Articulation> articulations;
-	private List<LinkedArticulation> linkedArticulations;
+	private List<Marking.Connection> markingConnections;
 	private Note tiedTo;
 	private boolean isTiedFromPrevious;
 	private NoteBuilder followingTied;
@@ -40,7 +40,7 @@ public class NoteBuilder implements DurationalBuilder {
 		this.pitch = pitch;
 		this.duration = duration;
 		this.articulations = EnumSet.noneOf(Articulation.class);
-		this.linkedArticulations = new ArrayList<>();
+		this.markingConnections = new ArrayList<>();
 		this.isTiedFromPrevious = false;
 	}
 
@@ -54,8 +54,8 @@ public class NoteBuilder implements DurationalBuilder {
 		this(builder.getPitch(), builder.getDuration());
 		builder.getArticulations()
 				.forEach(articulation -> this.articulations.add(articulation));
-		builder.getLinkedArticulations()
-				.forEach(articulation -> this.linkedArticulations.add(articulation));
+		builder.getMarkingConnections()
+				.forEach(markingConnection -> this.markingConnections.add(markingConnection));
 		this.tiedTo = builder.getTiedTo();
 		this.isTiedFromPrevious = builder.isTiedFromPrevious();
 		builder.getFollowingTied()
@@ -128,31 +128,31 @@ public class NoteBuilder implements DurationalBuilder {
 	}
 
 	/**
-	 * Returns the linked articulations set in this builder.
+	 * Returns the marking connections set in this builder.
 	 *
-	 * @return the linked articulations set in this builder
+	 * @return the marking connections set in this builder
 	 */
-	public List<LinkedArticulation> getLinkedArticulations() {
-		return linkedArticulations;
+	public List<Marking.Connection> getMarkingConnections() {
+		return markingConnections;
 	}
 
 	/**
-	 * Adds a linked articulation to this builder.
+	 * Adds a marking connection to this builder.
 	 *
-	 * @param articulation the linked articulation that is added to this builder
+	 * @param markingConnection the marking connection that is added to this builder
 	 */
-	public void addLinkedArticulation(LinkedArticulation articulation) {
-		this.linkedArticulations.add(articulation);
+	public void addMarkingConnection(Marking.Connection markingConnection) {
+		this.markingConnections.add(markingConnection);
 	}
 
 	/**
-	 * Sets the given linked articulations to this builder.
+	 * Sets the given marking connections to this builder.
 	 *
-	 * @param linkedArticulations the linked articulations that are set into this
-	 *                            builder
+	 * @param markingConnections the marking connections that are set into this
+	 *                           builder
 	 */
-	public void setLinkedArticulations(List<LinkedArticulation> linkedArticulations) {
-		this.linkedArticulations = linkedArticulations;
+	public void setMarkingConnections(List<Marking.Connection> markingConnections) {
+		this.markingConnections = markingConnections;
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class NoteBuilder implements DurationalBuilder {
 	 * Returns the NoteBuilder of the following tied note, if there is one.
 	 *
 	 * @return Optional containing the NoteBuilder of the following tied note if
-	 *         there is one, otherwise empty Optional.
+	 * there is one, otherwise empty Optional.
 	 */
 	public Optional<NoteBuilder> getFollowingTied() {
 		return Optional.ofNullable(followingTied);
@@ -241,7 +241,7 @@ public class NoteBuilder implements DurationalBuilder {
 				this.tiedTo = this.followingTied.build();
 			}
 
-			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, this.linkedArticulations,
+			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, this.markingConnections,
 					this.tiedTo, this.isTiedFromPrevious);
 		}
 

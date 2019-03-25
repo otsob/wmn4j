@@ -3,20 +3,19 @@
  */
 package org.wmn4j.notation.builders;
 
+import org.junit.Test;
+import org.wmn4j.notation.elements.Articulation;
+import org.wmn4j.notation.elements.Durations;
+import org.wmn4j.notation.elements.Marking;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.Pitch;
+
+import java.util.EnumSet;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
-
-import java.util.EnumSet;
-
-import org.junit.Test;
-import org.wmn4j.notation.elements.Articulation;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.LinkedArticulation;
-import org.wmn4j.notation.elements.LinkedArticulation.Marking;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
 
 public class NoteBuilderTest {
 
@@ -28,7 +27,7 @@ public class NoteBuilderTest {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		final Note note = builder.build();
 		assertFalse(note.hasArticulations());
-		assertFalse(note.hasLinkedArticulations());
+		assertFalse(note.hasMarkings());
 		assertFalse(note.isTied());
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), note);
 	}
@@ -37,7 +36,7 @@ public class NoteBuilderTest {
 	public void testBuildingNoteWithAllAttributes() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		builder.addArticulation(Articulation.STACCATO);
-		builder.addLinkedArticulation(LinkedArticulation
+		builder.addMarkingConnection(Marking.Connection
 				.of(Marking.of(Marking.Type.GLISSANDO), Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 
 		final Note tiedNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
@@ -53,7 +52,7 @@ public class NoteBuilderTest {
 		assertTrue(note.isTied());
 		assertTrue(note.isTiedToFollowing());
 		assertFalse(note.isTiedFromPrevious());
-		assertTrue(note.hasLinkedArticulations());
+		assertTrue(note.hasMarkings());
 	}
 
 	@Test
@@ -113,18 +112,18 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testCopyConstructorLinkedArticulations() {
+	public void testCopyConstructorMarkingConnections() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		final LinkedArticulation glissando = LinkedArticulation
+		final Marking.Connection glissando = Marking.Connection
 				.of(Marking.of(Marking.Type.GLISSANDO), Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		builder.addLinkedArticulation(glissando);
+		builder.addMarkingConnection(glissando);
 
 		final NoteBuilder copy = new NoteBuilder(builder);
 
-		builder.addLinkedArticulation(LinkedArticulation
+		builder.addMarkingConnection(Marking.Connection
 				.of(Marking.of(Marking.Type.GLISSANDO), Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
-		assertTrue(copy.getLinkedArticulations().size() == 1);
-		assertTrue(copy.getLinkedArticulations().contains(glissando));
+		assertTrue(copy.getMarkingConnections().size() == 1);
+		assertTrue(copy.getMarkingConnections().contains(glissando));
 	}
 
 	@Test

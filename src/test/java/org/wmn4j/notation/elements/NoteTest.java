@@ -5,7 +5,6 @@ package org.wmn4j.notation.elements;
 
 import org.junit.Test;
 import org.wmn4j.notation.builders.NoteBuilder;
-import org.wmn4j.notation.elements.LinkedArticulation.Marking;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -169,114 +168,114 @@ public class NoteTest {
 	}
 
 	@Test
-	public void testBeginsAndEndsLinkedArticulation() {
+	public void testBeginsAndEndsMarking() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
 
-		LinkedArticulation slurBeginning = LinkedArticulation.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
-		LinkedArticulation glissandoEnd = LinkedArticulation.endOf(Marking.of(Marking.Type.GLISSANDO));
-		List<LinkedArticulation> linkedArticulations = new ArrayList<>();
-		linkedArticulations.add(slurBeginning);
-		linkedArticulations.add(glissandoEnd);
+		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		Marking.Connection glissandoEnd = Marking.Connection.endOf(Marking.of(Marking.Type.GLISSANDO));
+		List<Marking.Connection> markingConnections = new ArrayList<>();
+		markingConnections.add(slurBeginning);
+		markingConnections.add(glissandoEnd);
 
-		final Note noteWithLinkedArticulations = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
-				Collections.emptySet(), linkedArticulations, null, false);
+		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), markingConnections, null, false);
 
-		assertTrue(noteWithLinkedArticulations.begins(LinkedArticulation.Marking.Type.SLUR));
-		assertTrue(noteWithLinkedArticulations.ends(LinkedArticulation.Marking.Type.GLISSANDO));
+		assertTrue(noteWithMarkingConnections.begins(Marking.Type.SLUR));
+		assertTrue(noteWithMarkingConnections.ends(Marking.Type.GLISSANDO));
 
-		assertFalse(noteWithLinkedArticulations.begins(LinkedArticulation.Marking.Type.GLISSANDO));
-		assertFalse(noteWithLinkedArticulations.ends(LinkedArticulation.Marking.Type.SLUR));
+		assertFalse(noteWithMarkingConnections.begins(Marking.Type.GLISSANDO));
+		assertFalse(noteWithMarkingConnections.ends(Marking.Type.SLUR));
 	}
 
 	@Test
-	public void testHasLinkedArticulation() {
+	public void testHasMarkingConnection() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
-		LinkedArticulation slurBeginning = LinkedArticulation.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
-		List<LinkedArticulation> linkedArticulations = new ArrayList<>();
-		linkedArticulations.add(slurBeginning);
+		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		List<Marking.Connection> markingConnections = new ArrayList<>();
+		markingConnections.add(slurBeginning);
 
 		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
-				Collections.emptySet(), linkedArticulations, null, false);
+				Collections.emptySet(), markingConnections, null, false);
 
-		assertTrue(noteThatBeginsSlur.hasLinkedArticulations());
-		assertFalse(followingNote.hasLinkedArticulations());
-		assertTrue(noteThatBeginsSlur.hasArticulation(LinkedArticulation.Marking.Type.SLUR));
-		assertFalse(noteThatBeginsSlur.hasArticulation(LinkedArticulation.Marking.Type.GLISSANDO));
+		assertTrue(noteThatBeginsSlur.hasMarkings());
+		assertFalse(followingNote.hasMarkings());
+		assertTrue(noteThatBeginsSlur.hasMarking(Marking.Type.SLUR));
+		assertFalse(noteThatBeginsSlur.hasMarking(Marking.Type.GLISSANDO));
 	}
 
 	@Test
-	public void testEqualsAndHashCodeWithLinkedArticulations() {
+	public void testEqualsAndHashCodeWithMarkings() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
 
-		LinkedArticulation slurBeginning = LinkedArticulation.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
-		LinkedArticulation glissandoEnd = LinkedArticulation.endOf(Marking.of(Marking.Type.GLISSANDO));
-		List<LinkedArticulation> linkedArticulations = new ArrayList<>();
+		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		Marking.Connection glissandoEnd = Marking.Connection.endOf(Marking.of(Marking.Type.GLISSANDO));
+		List<Marking.Connection> markingConnections = new ArrayList<>();
 
-		linkedArticulations.add(slurBeginning);
+		markingConnections.add(slurBeginning);
 		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
-				Collections.emptySet(), linkedArticulations, null, false);
+				Collections.emptySet(), markingConnections, null, false);
 
-		LinkedArticulation slurEnd = LinkedArticulation.endOf(Marking.of(Marking.Type.SLUR));
-		List<LinkedArticulation> slurEndList = new ArrayList<>();
+		Marking.Connection slurEnd = Marking.Connection.endOf(Marking.of(Marking.Type.SLUR));
+		List<Marking.Connection> slurEndList = new ArrayList<>();
 		slurEndList.add(slurEnd);
 		final Note noteThatEndsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
 				Collections.emptySet(), slurEndList, null, false);
 
-		linkedArticulations.add(glissandoEnd);
-		final Note noteWithLinkedArticulations = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
-				Collections.emptySet(), linkedArticulations, null, false);
+		markingConnections.add(glissandoEnd);
+		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), markingConnections, null, false);
 
 		assertEquals(noteThatBeginsSlur, noteThatEndsSlur);
 		assertEquals(noteThatBeginsSlur.hashCode(), noteThatEndsSlur.hashCode());
 
 		assertFalse(noteThatBeginsSlur.equals(followingNote));
-		assertFalse(noteWithLinkedArticulations.equals(followingNote));
-		assertFalse(noteWithLinkedArticulations.equals(noteThatBeginsSlur));
+		assertFalse(noteWithMarkingConnections.equals(followingNote));
+		assertFalse(noteWithMarkingConnections.equals(noteThatBeginsSlur));
 	}
 
 	@Test
-	public void testGetLinkedArticulations() {
+	public void testGetMarkingConnections() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
 
-		LinkedArticulation slurBeginning = LinkedArticulation.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
-		LinkedArticulation glissandoEnd = LinkedArticulation.endOf(Marking.of(Marking.Type.GLISSANDO));
-		List<LinkedArticulation> linkedArticulations = new ArrayList<>();
-		linkedArticulations.add(slurBeginning);
-		linkedArticulations.add(glissandoEnd);
+		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		Marking.Connection glissandoEnd = Marking.Connection.endOf(Marking.of(Marking.Type.GLISSANDO));
+		List<Marking.Connection> markingConnections = new ArrayList<>();
+		markingConnections.add(slurBeginning);
+		markingConnections.add(glissandoEnd);
 
-		final Note noteWithLinkedArticulations = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
-				Collections.emptySet(), linkedArticulations, null, false);
+		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), markingConnections, null, false);
 
-		final Collection<LinkedArticulation> articulationsInNote = noteWithLinkedArticulations.getLinkedArticulations();
-		assertEquals(2, articulationsInNote.size());
-		assertTrue(articulationsInNote.contains(slurBeginning));
-		assertTrue(articulationsInNote.contains(glissandoEnd));
+		final Collection<Marking> markingsInNote = noteWithMarkingConnections.getMarkings();
+		assertEquals(2, markingsInNote.size());
+		assertTrue(markingsInNote.contains(slurBeginning.getMarking()));
+		assertTrue(markingsInNote.contains(glissandoEnd.getMarking()));
 
 		try {
-			articulationsInNote.add(slurBeginning);
-			fail("No exception was thrown when trying to add to linked articulations");
+			markingsInNote.add(Marking.of(Marking.Type.GLISSANDO));
+			fail("No exception was thrown when trying to add to markings");
 		} catch (Exception e) {
 			/* Do nothing */
 		}
 
-		assertEquals("The ", 2, noteWithLinkedArticulations.getLinkedArticulations().size());
+		assertEquals("The ", 2, noteWithMarkingConnections.getMarkings().size());
 	}
 
 	@Test
-	public void testGetLinkedArticulation() {
+	public void testGetMarkingConnection() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
-		LinkedArticulation slurBeginning = LinkedArticulation.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
-		List<LinkedArticulation> linkedArticulations = new ArrayList<>();
-		linkedArticulations.add(slurBeginning);
+		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		List<Marking.Connection> markingConnections = new ArrayList<>();
+		markingConnections.add(slurBeginning);
 
 		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
-				Collections.emptySet(), linkedArticulations, null, false);
+				Collections.emptySet(), markingConnections, null, false);
 
-		Optional<LinkedArticulation> slurBeginningOptional = noteThatBeginsSlur
-				.getLinkedArticulation(slurBeginning.getMarking());
+		Optional<Marking.Connection> slurBeginningOptional = noteThatBeginsSlur
+				.getMarkingConnection(slurBeginning.getMarking());
 		assertTrue(slurBeginningOptional.isPresent());
 		assertEquals(slurBeginning, slurBeginningOptional.get());
 
-		assertFalse(noteThatBeginsSlur.getLinkedArticulation(Marking.of(Marking.Type.GLISSANDO)).isPresent());
+		assertFalse(noteThatBeginsSlur.getMarkingConnection(Marking.of(Marking.Type.GLISSANDO)).isPresent());
 	}
 }

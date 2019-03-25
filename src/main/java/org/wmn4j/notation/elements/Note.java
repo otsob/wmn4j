@@ -24,7 +24,7 @@ public final class Note implements Durational, Pitched {
 	private final Pitch pitch;
 	private final Duration duration;
 	private final Set<Articulation> articulations;
-	private final Collection<LinkedArticulation> linkedArticulations;
+	private final Collection<Marking.Connection> markingConnections;
 
 	private final Note tiedTo;
 	private final boolean isTiedFrom;
@@ -69,38 +69,38 @@ public final class Note implements Durational, Pitched {
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch               the pitch of the note
-	 * @param duration            the duration of the note
-	 * @param articulations       a set of Articulations associated with the note
-	 * @param linkedArticulations list of the linked articulations for the note
+	 * @param pitch              the pitch of the note
+	 * @param duration           the duration of the note
+	 * @param articulations      a set of Articulations associated with the note
+	 * @param markingConnections list of the marking connections for the note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			List<LinkedArticulation> linkedArticulations) {
-		return new Note(pitch, duration, articulations, linkedArticulations, null, false);
+			Collection<Marking.Connection> markingConnections) {
+		return new Note(pitch, duration, articulations, markingConnections, null, false);
 	}
 
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch               the pitch of the note
-	 * @param duration            the duration of the note
-	 * @param articulations       a set of Articulations associated with the note
-	 * @param linkedArticulations list of the linked articulations for the note
-	 * @param tiedTo              the following note to which this is tied
-	 * @param isTiedFromPrevious  true if this is tied from the previous note
+	 * @param pitch              the pitch of the note
+	 * @param duration           the duration of the note
+	 * @param articulations      a set of Articulations associated with the note
+	 * @param markingConnections list of the marking connections for the note
+	 * @param tiedTo             the following note to which this is tied
+	 * @param isTiedFromPrevious true if this is tied from the previous note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<LinkedArticulation> linkedArticulations, Note tiedTo, boolean isTiedFromPrevious) {
-		return new Note(pitch, duration, articulations, linkedArticulations, tiedTo, isTiedFromPrevious);
+			Collection<Marking.Connection> markingConnections, Note tiedTo, boolean isTiedFromPrevious) {
+		return new Note(pitch, duration, articulations, markingConnections, tiedTo, isTiedFromPrevious);
 	}
 
 	/**
 	 * Private constructor.
 	 */
 	private Note(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<LinkedArticulation> linkedArticulations, Note tiedTo, boolean isTiedFromPrevious) {
+			Collection<Marking.Connection> markingConnections, Note tiedTo, boolean isTiedFromPrevious) {
 
 		this.pitch = Objects.requireNonNull(pitch);
 		this.duration = Objects.requireNonNull(duration);
@@ -110,10 +110,10 @@ public final class Note implements Durational, Pitched {
 			this.articulations = Collections.emptySet();
 		}
 
-		if (linkedArticulations != null && !linkedArticulations.isEmpty()) {
-			this.linkedArticulations = Collections.unmodifiableList(new ArrayList<>(linkedArticulations));
+		if (markingConnections != null && !markingConnections.isEmpty()) {
+			this.markingConnections = Collections.unmodifiableList(new ArrayList<>(markingConnections));
 		} else {
-			this.linkedArticulations = Collections.emptyList();
+			this.markingConnections = Collections.emptyList();
 		}
 
 		this.tiedTo = tiedTo;
@@ -155,23 +155,24 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Returns an unmodifiable view of all linked articulations that affect this note.
+	 * Returns an unmodifiable view of all marking connections that affect this note.
 	 *
-	 * @return all linked articulations that affect this note
+	 * @return all marking connections that affect this note
 	 */
-	public Collection<LinkedArticulation> getLinkedArticulations() {
-		return linkedArticulations;
+	public Collection<Marking> getMarkings() {
+		return markingConnections.stream().map(connection -> connection.getMarking())
+				.collect(Collectors.toUnmodifiableList());
 	}
 
 	/**
-	 * Returns the linked articulation belonging to the given marking. If no linked articulation for the marking is
+	 * Returns the marking connection belonging to the given marking. If no marking connection for the marking is
 	 * present, return empty.
 	 *
-	 * @param marking the marking for which the linked articulation is returned
-	 * @return the linked articulation belonging to the given marking
+	 * @param marking the marking for which the marking connection is returned
+	 * @return the marking connection belonging to the given marking
 	 */
-	public Optional<LinkedArticulation> getLinkedArticulation(LinkedArticulation.Marking marking) {
-		return linkedArticulations.stream()
+	public Optional<Marking.Connection> getMarkingConnection(Marking marking) {
+		return markingConnections.stream()
 				.filter(articulation -> articulation.getMarking().equals(marking))
 				.findFirst();
 	}
@@ -197,50 +198,49 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Returns true if this note has the linked articulation of the given type.
+	 * Returns true if this note is affected by a marking of the given type.
 	 *
-	 * @param articulationType the type of articulation whose presence is checked
-	 * @return true if this note has the given articulation
+	 * @param markingType the type of marking whose presence is checked
+	 * @return true if this note has the given marking
 	 */
-	public boolean hasArticulation(LinkedArticulation.Marking.Type articulationType) {
-		return linkedArticulations.stream()
-				.anyMatch(linkedArticulation -> linkedArticulation.getType().equals(articulationType));
+	public boolean hasMarking(Marking.Type markingType) {
+		return markingConnections.stream()
+				.anyMatch(markingConnection -> markingConnection.getType().equals(markingType));
 	}
 
 	/**
-	 * Returns true if this note begins a linked articulation of the given type.
+	 * Returns true if this note begins a marking of the given type.
 	 *
-	 * @param articulationType the type of the articulation for whose beginning this
-	 *                         note is checked
-	 * @return true if this note begins a linked articulation of the given type
+	 * @param markingType the type of the marking for whose beginning this
+	 *                    note is checked
+	 * @return true if this note begins a marking of the given type
 	 */
-	public boolean begins(LinkedArticulation.Marking.Type articulationType) {
-		return linkedArticulations.stream()
-				.anyMatch(linkedArticulation -> linkedArticulation.getType().equals(articulationType)
-						&& linkedArticulation.isBeginning());
+	public boolean begins(Marking.Type markingType) {
+		return markingConnections.stream()
+				.anyMatch(markingConnection -> markingConnection.getType().equals(markingType)
+						&& markingConnection.isBeginning());
 	}
 
 	/**
-	 * Returns true if this note ends a linked articulation of the given type.
+	 * Returns true if this note ends a marking of the given type.
 	 *
-	 * @param articulationType the type of the articulation for whose end this note
-	 *                         is checked
-	 * @return true if this note ends a linked articulation of the given type
+	 * @param markingType the type of the marking for whose end this note
+	 *                    is checked
+	 * @return true if this note ends a marking of the given type
 	 */
-	public boolean ends(LinkedArticulation.Marking.Type articulationType) {
-		return linkedArticulations.stream()
-				.anyMatch(linkedArticulation -> linkedArticulation.getType().equals(articulationType)
-						&& linkedArticulation.isEnd());
+	public boolean ends(Marking.Type markingType) {
+		return markingConnections.stream()
+				.anyMatch(markingConnection -> markingConnection.getType().equals(markingType)
+						&& markingConnection.isEnd());
 	}
 
 	/**
-	 * Returns true if this note is affected by any linked articulations (see
-	 * {@link LinkedArticulation}).
+	 * Returns true if this note is affected by any markings.
 	 *
-	 * @return true if this note is affected by any linked articulations
+	 * @return true if this note is affected by any markings
 	 */
-	public boolean hasLinkedArticulations() {
-		return !this.linkedArticulations.isEmpty();
+	public boolean hasMarkings() {
+		return !this.markingConnections.isEmpty();
 	}
 
 	/**
@@ -382,16 +382,16 @@ public final class Note implements Durational, Pitched {
 			return false;
 		}
 
-		if (!getLinkedArticulationTypes().equals(other.getLinkedArticulationTypes())) {
+		if (!getMarkingConnectionTypes().equals(other.getMarkingConnectionTypes())) {
 			return false;
 		}
 
 		return true;
 	}
 
-	private Set<LinkedArticulation.Marking.Type> getLinkedArticulationTypes() {
-		return linkedArticulations.stream()
-				.map(LinkedArticulation::getType).collect(Collectors.toSet());
+	private Set<Marking.Type> getMarkingConnectionTypes() {
+		return markingConnections.stream()
+				.map(Marking.Connection::getType).collect(Collectors.toSet());
 	}
 
 	@Override
@@ -400,7 +400,7 @@ public final class Note implements Durational, Pitched {
 		hash = 79 * hash + Objects.hashCode(this.pitch);
 		hash = 79 * hash + Objects.hashCode(this.duration);
 		hash = 79 * hash + Objects.hashCode(this.articulations);
-		hash = 79 * hash + Objects.hashCode(getLinkedArticulationTypes());
+		hash = 79 * hash + Objects.hashCode(getMarkingConnectionTypes());
 		return hash;
 	}
 
