@@ -47,6 +47,7 @@ public class NoteBuilder implements DurationalBuilder {
 	/**
 	 * Copy constructor for NoteBuilder. Creates a new instance of NoteBuilder that
 	 * is a copy of the NoteBuilder given as an attribute.
+	 * This does not copy connections to other builders through markings.
 	 *
 	 * @param builder the NoteBuilder to be copied
 	 */
@@ -54,8 +55,6 @@ public class NoteBuilder implements DurationalBuilder {
 		this(builder.getPitch(), builder.getDuration());
 		builder.getArticulations()
 				.forEach(articulation -> this.articulations.add(articulation));
-		builder.getMarkingConnections()
-				.forEach(markingConnection -> this.markingConnections.add(markingConnection));
 		this.tiedTo = builder.getTiedTo();
 		this.isTiedFromPrevious = builder.isTiedFromPrevious();
 		builder.getFollowingTied()

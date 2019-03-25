@@ -112,21 +112,6 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testCopyConstructorMarkingConnections() {
-		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		final Marking.Connection glissando = Marking.Connection
-				.of(Marking.of(Marking.Type.GLISSANDO), Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		builder.addMarkingConnection(glissando);
-
-		final NoteBuilder copy = new NoteBuilder(builder);
-
-		builder.addMarkingConnection(Marking.Connection
-				.of(Marking.of(Marking.Type.GLISSANDO), Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
-		assertTrue(copy.getMarkingConnections().size() == 1);
-		assertTrue(copy.getMarkingConnections().contains(glissando));
-	}
-
-	@Test
 	public void testCopyConstructorsFollowingTiedIsCopiedAsWell() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		final NoteBuilder following = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
