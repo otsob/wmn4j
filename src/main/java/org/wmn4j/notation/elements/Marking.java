@@ -3,7 +3,9 @@
  */
 package org.wmn4j.notation.elements;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,6 +44,28 @@ public final class Marking {
 	 */
 	public static Marking of(Type type) {
 		return new Marking(type);
+	}
+
+	/**
+	 * Returns all notes affected by this marking starting from the given note.
+	 *
+	 * @param note the starting note
+	 * @return all notes affected by this marking starting from the given note
+	 */
+	public List<Note> getAffectedStartingFrom(Note note) {
+
+		final List<Note> affectedNotes = new ArrayList<>();
+		Optional<Connection> markingConnectionOpt = note.getMarkingConnection(this);
+		if (markingConnectionOpt.isEmpty()) {
+			return affectedNotes;
+		}
+
+		affectedNotes.add(note);
+		for (Note followingNote : markingConnectionOpt.get().getFollowingNotes()) {
+			affectedNotes.add(followingNote);
+		}
+
+		return affectedNotes;
 	}
 
 	private Marking(Type type) {

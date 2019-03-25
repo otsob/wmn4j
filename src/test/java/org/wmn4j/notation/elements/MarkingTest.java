@@ -6,6 +6,7 @@ package org.wmn4j.notation.elements;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -81,5 +82,28 @@ public class MarkingTest {
 
 		assertEquals(second, followingNotes.get(0));
 		assertEquals(third, followingNotes.get(1));
+	}
+
+	@Test
+	public void testGetAffectedStartingFrom() {
+		final Marking slur = Marking.of(Marking.Type.SLUR);
+		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), List.of(Marking.Connection.endOf(slur)), null, false);
+		final Note second = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), List.of(Marking.Connection.of(slur, third)), null, false);
+		final Note first = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), List.of(Marking.Connection.beginningOf(slur, second)), null, false);
+
+		assertTrue("Incorrectly returned notes for a different slur",
+				Marking.of(Marking.Type.SLUR).getAffectedStartingFrom(first).isEmpty());
+
+		assertEquals(3, slur.getAffectedStartingFrom(first).size());
+		assertEquals(2, slur.getAffectedStartingFrom(second).size());
+		assertEquals(1, slur.getAffectedStartingFrom(third).size());
+
+		Collection<Note> allNotesInSlur = slur.getAffectedStartingFrom(first);
+		assertTrue(allNotesInSlur.contains(first));
+		assertTrue(allNotesInSlur.contains(first));
+		assertTrue(allNotesInSlur.contains(first));
 	}
 }
