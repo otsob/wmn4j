@@ -9,11 +9,14 @@ import org.wmn4j.notation.elements.Marking;
 import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumSet;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Class for building {@link Note} objects. The built note is cached.
@@ -23,7 +26,8 @@ public class NoteBuilder implements DurationalBuilder {
 	private Pitch pitch;
 	private Duration duration;
 	private Set<Articulation> articulations;
-	private List<Marking.Connection> markingConnections;
+	private Map<Marking, NoteBuilder> connectedTo = new HashMap<>();
+	private Set<Marking> connectedFrom = new HashSet<>();
 	private Note tiedTo;
 	private boolean isTiedFromPrevious;
 	private NoteBuilder followingTied;
@@ -40,7 +44,6 @@ public class NoteBuilder implements DurationalBuilder {
 		this.pitch = pitch;
 		this.duration = duration;
 		this.articulations = EnumSet.noneOf(Articulation.class);
-		this.markingConnections = new ArrayList<>();
 		this.isTiedFromPrevious = false;
 	}
 
@@ -127,34 +130,6 @@ public class NoteBuilder implements DurationalBuilder {
 	}
 
 	/**
-	 * Returns the marking connections set in this builder.
-	 *
-	 * @return the marking connections set in this builder
-	 */
-	public List<Marking.Connection> getMarkingConnections() {
-		return markingConnections;
-	}
-
-	/**
-	 * Adds a marking connection to this builder.
-	 *
-	 * @param markingConnection the marking connection that is added to this builder
-	 */
-	public void addMarkingConnection(Marking.Connection markingConnection) {
-		this.markingConnections.add(markingConnection);
-	}
-
-	/**
-	 * Sets the given marking connections to this builder.
-	 *
-	 * @param markingConnections the marking connections that are set into this
-	 *                           builder
-	 */
-	public void setMarkingConnections(List<Marking.Connection> markingConnections) {
-		this.markingConnections = markingConnections;
-	}
-
-	/**
 	 * Tie this builder to a following builder. The builder that this is tied to
 	 * should be built before this. When the notes are built the <code>Note</code>
 	 * returned by the call of {@link #build build} on this will be tied to the
@@ -215,11 +190,43 @@ public class NoteBuilder implements DurationalBuilder {
 	}
 
 	/**
+	 * Connects this builder to the given builder with the specified marking.
+	 * <p>
+	 * The connections set using this method are automatically resolved and built when the note builder is built.
+	 *
+	 * @param marking           the marking with which this is connected to the target
+	 * @param targetNoteBuilder the note builder to which this is connected using the given marking
+	 */
+	public void connectWith(Marking marking, NoteBuilder targetNoteBuilder) {
+		connectedTo.put(marking, targetNoteBuilder);
+		targetNoteBuilder.connectedFrom.add(marking);
+	}
+
+	/**
 	 * Removes the cached note that was built on the previous call of {@link #build
 	 * build}.
 	 */
 	public void clearCache() {
 		this.cachedNote = null;
+	}
+
+	private Collection<Marking.Connection> getResolvedMarkingConnections() {
+		Set<Marking> markings = new HashSet<>(connectedFrom);
+		markings.addAll(connectedTo.keySet());
+		return markings.stream().map(marking -> resolveConnection(marking)).collect(Collectors.toList());
+	}
+
+	private Marking.Connection resolveConnection(Marking marking) {
+
+		if (!connectedTo.containsKey(marking) && connectedFrom.contains(marking)) {
+			return Marking.Connection.endOf(marking);
+		}
+
+		if (connectedTo.containsKey(marking) && !connectedFrom.contains(marking)) {
+			return Marking.Connection.beginningOf(marking, connectedTo.get(marking).build());
+		}
+
+		return Marking.Connection.of(marking, connectedTo.get(marking).build());
 	}
 
 	/**
@@ -240,7 +247,7 @@ public class NoteBuilder implements DurationalBuilder {
 				this.tiedTo = this.followingTied.build();
 			}
 
-			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, this.markingConnections,
+			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, getResolvedMarkingConnections(),
 					this.tiedTo, this.isTiedFromPrevious);
 		}
 

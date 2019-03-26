@@ -36,15 +36,16 @@ public class NoteBuilderTest {
 	public void testBuildingNoteWithAllAttributes() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		builder.addArticulation(Articulation.STACCATO);
-		builder.addMarkingConnection(Marking.Connection
-				.of(Marking.of(Marking.Type.GLISSANDO), Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
+
+		builder.connectWith(Marking.of(Marking.Type.SLUR),
+				new NoteBuilder(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
 
 		final Note tiedNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
 		builder.setTiedTo(tiedNote);
 
-		final Note expected = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER,
-				EnumSet.of(Articulation.STACCATO));
+		final Note expected = Note
+				.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER, EnumSet.of(Articulation.STACCATO));
 
 		final Note note = builder.build();
 		assertTrue(expected.equalsInPitchAndDuration(note));
@@ -52,7 +53,7 @@ public class NoteBuilderTest {
 		assertTrue(note.isTied());
 		assertTrue(note.isTiedToFollowing());
 		assertFalse(note.isTiedFromPrevious());
-		assertTrue(note.hasMarkings());
+		assertTrue(note.begins(Marking.Type.SLUR));
 	}
 
 	@Test
@@ -120,6 +121,69 @@ public class NoteBuilderTest {
 		final NoteBuilder copy = new NoteBuilder(builder);
 		assertNotSame(builder.getFollowingTied().get(), copy.getFollowingTied().get());
 		assertEquals(Durations.HALF, copy.getFollowingTied().get().getDuration());
+	}
+
+	@Test
+	public void testBuildingWitMultipleNotesInSlur() {
+		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER);
+		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
+
+		final Marking slur = Marking.of(Marking.Type.SLUR);
+		first.connectWith(slur, second);
+		second.connectWith(slur, third);
+
+		final Note firstNote = first.build();
+		final Note secondNote = second.build();
+		final Note thirdNote = third.build();
+
+		assertTrue(firstNote.begins(Marking.Type.SLUR));
+		assertFalse(firstNote.ends(Marking.Type.SLUR));
+		assertEquals(secondNote, firstNote.getMarkingConnection(slur).get().getFollowingNote().get());
+
+		assertTrue(secondNote.hasMarking(Marking.Type.SLUR));
+		assertFalse(secondNote.begins(Marking.Type.SLUR));
+		assertFalse(secondNote.ends(Marking.Type.SLUR));
+		assertEquals(thirdNote, secondNote.getMarkingConnection(slur).get().getFollowingNote().get());
+
+		assertTrue(thirdNote.ends(Marking.Type.SLUR));
+		assertTrue(thirdNote.getMarkingConnection(slur).get().getFollowingNote().isEmpty());
+	}
+
+	@Test
+	public void testBuildingWithMultipleNotesWithTiesInSlur() {
+		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
+
+		final Marking slur = Marking.of(Marking.Type.SLUR);
+		first.connectWith(slur, second);
+		second.connectWith(slur, third);
+
+		first.addTieToFollowing(second);
+
+		final Note firstNote = first.build();
+		final Note secondNote = second.build();
+		final Note thirdNote = third.build();
+
+		assertTrue(firstNote.begins(Marking.Type.SLUR));
+		assertFalse(firstNote.ends(Marking.Type.SLUR));
+		assertEquals(1, firstNote.getMarkings().size());
+		assertEquals(secondNote, firstNote.getMarkingConnection(slur).get().getFollowingNote().get());
+
+		assertEquals(secondNote, firstNote.getFollowingTiedNote().get());
+		assertTrue(secondNote.isTiedFromPrevious());
+
+		assertTrue(secondNote.hasMarking(Marking.Type.SLUR));
+		assertEquals(1, secondNote.getMarkings().size());
+		assertFalse(secondNote.begins(Marking.Type.SLUR));
+		assertFalse(secondNote.ends(Marking.Type.SLUR));
+		assertEquals(thirdNote, secondNote.getMarkingConnection(slur).get().getFollowingNote().get());
+
+		assertFalse(thirdNote.isTied());
+		assertEquals(1, thirdNote.getMarkings().size());
+		assertTrue(thirdNote.ends(Marking.Type.SLUR));
+		assertTrue(thirdNote.getMarkingConnection(slur).get().getFollowingNote().isEmpty());
 	}
 
 }
