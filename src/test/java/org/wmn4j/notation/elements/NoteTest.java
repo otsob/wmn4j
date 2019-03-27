@@ -1,43 +1,25 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
+
+import org.junit.Test;
+import org.wmn4j.notation.builders.NoteBuilder;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.wmn4j.notation.builders.NoteBuilder;
-import org.wmn4j.notation.elements.Articulation;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
-
-/**
- * Unit tests for Note class.
- *
- * @author Otso Björklund
- */
 public class NoteTest {
-
-	public NoteTest() {
-	}
-
-	@BeforeClass
-	public static void setUpClass() {
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
-	}
 
 	@Test
 	public void testEquals() {
@@ -74,21 +56,21 @@ public class NoteTest {
 	public void testCreatingInvalidNote() {
 
 		try {
-			final Note note = Note.of(Pitch.Base.C, 5, 1, Durations.QUARTER);
+			Note.of(Pitch.Base.C, 5, 1, Durations.QUARTER);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
 		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 
 		try {
-			final Note note = Note.of(Pitch.Base.C, 0, 11, Durations.QUARTER);
+			Note.of(Pitch.Base.C, 0, 11, Durations.QUARTER);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
 		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 
 		try {
-			final Note note = Note.of(Pitch.Base.C, 0, 1, null);
+			Note.of(Pitch.Base.C, 0, 1, null);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
 		} catch (final Exception e) {
 			assertTrue(e instanceof NullPointerException);
@@ -123,7 +105,7 @@ public class NoteTest {
 		articulations.add(Articulation.TENUTO);
 		final Note note = Note.of(pitch, Durations.EIGHT, articulations);
 
-		final Set<Articulation> artic = note.getArticulations();
+		final Collection<Articulation> artic = note.getArticulations();
 		assertEquals(2, artic.size());
 		assertTrue(artic.contains(Articulation.STACCATO));
 		assertTrue(artic.contains(Articulation.TENUTO));
@@ -131,7 +113,8 @@ public class NoteTest {
 			artic.remove(Articulation.STACCATO);
 			fail("Removing articulation succeeded, immutability violated");
 		} catch (final Exception e) {
-		/* Do nothing */ }
+			/* Do nothing */
+		}
 
 		assertTrue(note.hasArticulation(Articulation.STACCATO));
 	}
@@ -182,5 +165,117 @@ public class NoteTest {
 		assertEquals(Durations.HALF, firstNote.getTiedDuration());
 		assertEquals(Durations.QUARTER, secondNote.getTiedDuration());
 		assertEquals(Durations.EIGHT, thirdNote.getTiedDuration());
+	}
+
+	@Test
+	public void testBeginsAndEndsMarking() {
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+
+		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		Marking.Connection glissandoEnd = Marking.Connection.endOf(Marking.of(Marking.Type.GLISSANDO));
+		List<Marking.Connection> markingConnections = new ArrayList<>();
+		markingConnections.add(slurBeginning);
+		markingConnections.add(glissandoEnd);
+
+		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), markingConnections, null, false);
+
+		assertTrue(noteWithMarkingConnections.begins(Marking.Type.SLUR));
+		assertTrue(noteWithMarkingConnections.ends(Marking.Type.GLISSANDO));
+
+		assertFalse(noteWithMarkingConnections.begins(Marking.Type.GLISSANDO));
+		assertFalse(noteWithMarkingConnections.ends(Marking.Type.SLUR));
+	}
+
+	@Test
+	public void testHasMarkingConnection() {
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		List<Marking.Connection> markingConnections = new ArrayList<>();
+		markingConnections.add(slurBeginning);
+
+		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), markingConnections, null, false);
+
+		assertTrue(noteThatBeginsSlur.hasMarkings());
+		assertFalse(followingNote.hasMarkings());
+		assertTrue(noteThatBeginsSlur.hasMarking(Marking.Type.SLUR));
+		assertFalse(noteThatBeginsSlur.hasMarking(Marking.Type.GLISSANDO));
+	}
+
+	@Test
+	public void testEqualsAndHashCodeWithMarkings() {
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+
+		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		Marking.Connection glissandoEnd = Marking.Connection.endOf(Marking.of(Marking.Type.GLISSANDO));
+		List<Marking.Connection> markingConnections = new ArrayList<>();
+
+		markingConnections.add(slurBeginning);
+		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), markingConnections, null, false);
+
+		Marking.Connection slurEnd = Marking.Connection.endOf(Marking.of(Marking.Type.SLUR));
+		List<Marking.Connection> slurEndList = new ArrayList<>();
+		slurEndList.add(slurEnd);
+		final Note noteThatEndsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), slurEndList, null, false);
+
+		markingConnections.add(glissandoEnd);
+		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), markingConnections, null, false);
+
+		assertEquals(noteThatBeginsSlur, noteThatEndsSlur);
+		assertEquals(noteThatBeginsSlur.hashCode(), noteThatEndsSlur.hashCode());
+
+		assertFalse(noteThatBeginsSlur.equals(followingNote));
+		assertFalse(noteWithMarkingConnections.equals(followingNote));
+		assertFalse(noteWithMarkingConnections.equals(noteThatBeginsSlur));
+	}
+
+	@Test
+	public void testGetMarkingConnections() {
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+
+		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		Marking.Connection glissandoEnd = Marking.Connection.endOf(Marking.of(Marking.Type.GLISSANDO));
+		List<Marking.Connection> markingConnections = new ArrayList<>();
+		markingConnections.add(slurBeginning);
+		markingConnections.add(glissandoEnd);
+
+		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), markingConnections, null, false);
+
+		final Collection<Marking> markingsInNote = noteWithMarkingConnections.getMarkings();
+		assertEquals(2, markingsInNote.size());
+		assertTrue(markingsInNote.contains(slurBeginning.getMarking()));
+		assertTrue(markingsInNote.contains(glissandoEnd.getMarking()));
+
+		try {
+			markingsInNote.add(Marking.of(Marking.Type.GLISSANDO));
+			fail("No exception was thrown when trying to add to markings");
+		} catch (Exception e) {
+			/* Do nothing */
+		}
+
+		assertEquals("The ", 2, noteWithMarkingConnections.getMarkings().size());
+	}
+
+	@Test
+	public void testGetMarkingConnection() {
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
+		List<Marking.Connection> markingConnections = new ArrayList<>();
+		markingConnections.add(slurBeginning);
+
+		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+				Collections.emptySet(), markingConnections, null, false);
+
+		Optional<Marking.Connection> slurBeginningOptional = noteThatBeginsSlur
+				.getMarkingConnection(slurBeginning.getMarking());
+		assertTrue(slurBeginningOptional.isPresent());
+		assertEquals(slurBeginning, slurBeginningOptional.get());
+
+		assertFalse(noteThatBeginsSlur.getMarkingConnection(Marking.of(Marking.Type.GLISSANDO)).isPresent());
 	}
 }

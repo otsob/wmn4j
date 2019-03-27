@@ -4,12 +4,14 @@
 package org.wmn4j.notation.elements;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Represents a note. This class is immutable. Notes have pitch, duration,
@@ -22,7 +24,7 @@ public final class Note implements Durational, Pitched {
 	private final Pitch pitch;
 	private final Duration duration;
 	private final Set<Articulation> articulations;
-	private final List<MultiNoteArticulation> multiNoteArticulations;
+	private final Collection<Marking.Connection> markingConnections;
 
 	private final Note tiedTo;
 	private final boolean isTiedFrom;
@@ -67,38 +69,38 @@ public final class Note implements Durational, Pitched {
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch                  the pitch of the note
-	 * @param duration               the duration of the note
-	 * @param articulations          a set of Articulations associated with the note
-	 * @param multiNoteArticulations list of the MultiNoteArticulations for the note
+	 * @param pitch              the pitch of the note
+	 * @param duration           the duration of the note
+	 * @param articulations      a set of Articulations associated with the note
+	 * @param markingConnections list of the marking connections for the note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			List<MultiNoteArticulation> multiNoteArticulations) {
-		return new Note(pitch, duration, articulations, multiNoteArticulations, null, false);
+			Collection<Marking.Connection> markingConnections) {
+		return new Note(pitch, duration, articulations, markingConnections, null, false);
 	}
 
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch                  the pitch of the note
-	 * @param duration               the duration of the note
-	 * @param articulations          a set of Articulations associated with the note
-	 * @param multiNoteArticulations list of the MultiNoteArticulations for the note
-	 * @param tiedTo                 the following note to which this is tied
-	 * @param isTiedFromPrevious     true if this is tied from the previous note
+	 * @param pitch              the pitch of the note
+	 * @param duration           the duration of the note
+	 * @param articulations      a set of Articulations associated with the note
+	 * @param markingConnections list of the marking connections for the note
+	 * @param tiedTo             the following note to which this is tied
+	 * @param isTiedFromPrevious true if this is tied from the previous note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			List<MultiNoteArticulation> multiNoteArticulations, Note tiedTo, boolean isTiedFromPrevious) {
-		return new Note(pitch, duration, articulations, multiNoteArticulations, tiedTo, isTiedFromPrevious);
+			Collection<Marking.Connection> markingConnections, Note tiedTo, boolean isTiedFromPrevious) {
+		return new Note(pitch, duration, articulations, markingConnections, tiedTo, isTiedFromPrevious);
 	}
 
 	/**
 	 * Private constructor.
 	 */
 	private Note(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			List<MultiNoteArticulation> multiNoteArticulations, Note tiedTo, boolean isTiedFromPrevious) {
+			Collection<Marking.Connection> markingConnections, Note tiedTo, boolean isTiedFromPrevious) {
 
 		this.pitch = Objects.requireNonNull(pitch);
 		this.duration = Objects.requireNonNull(duration);
@@ -108,10 +110,10 @@ public final class Note implements Durational, Pitched {
 			this.articulations = Collections.emptySet();
 		}
 
-		if (multiNoteArticulations != null && !multiNoteArticulations.isEmpty()) {
-			this.multiNoteArticulations = Collections.unmodifiableList(new ArrayList<>(multiNoteArticulations));
+		if (markingConnections != null && !markingConnections.isEmpty()) {
+			this.markingConnections = Collections.unmodifiableList(new ArrayList<>(markingConnections));
 		} else {
-			this.multiNoteArticulations = Collections.emptyList();
+			this.markingConnections = Collections.emptyList();
 		}
 
 		this.tiedTo = tiedTo;
@@ -144,12 +146,35 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Returns the articulations defined for this note.
+	 * Returns an unmodifiable view of all articulations defined for this note.
 	 *
 	 * @return the articulations defined for this note
 	 */
-	public Set<Articulation> getArticulations() {
+	public Collection<Articulation> getArticulations() {
 		return this.articulations;
+	}
+
+	/**
+	 * Returns an unmodifiable view of all marking connections that affect this note.
+	 *
+	 * @return all marking connections that affect this note
+	 */
+	public Collection<Marking> getMarkings() {
+		return markingConnections.stream().map(connection -> connection.getMarking())
+				.collect(Collectors.toUnmodifiableList());
+	}
+
+	/**
+	 * Returns the marking connection belonging to the given marking. If no marking connection for the marking is
+	 * present, return empty.
+	 *
+	 * @param marking the marking for which the marking connection is returned
+	 * @return the marking connection belonging to the given marking
+	 */
+	public Optional<Marking.Connection> getMarkingConnection(Marking marking) {
+		return markingConnections.stream()
+				.filter(articulation -> articulation.getMarking().equals(marking))
+				.findFirst();
 	}
 
 	/**
@@ -173,22 +198,49 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Returns the multinote articulations defined for this note. These are
-	 * articulations such as slurs or glissando.
+	 * Returns true if this note is affected by a marking of the given type.
 	 *
-	 * @return the multinote articulations defined for this note
+	 * @param markingType the type of marking whose presence is checked
+	 * @return true if this note has the given marking
 	 */
-	public List<MultiNoteArticulation> getMultiNoteArticulations() {
-		return this.multiNoteArticulations;
+	public boolean hasMarking(Marking.Type markingType) {
+		return markingConnections.stream()
+				.anyMatch(markingConnection -> markingConnection.getType().equals(markingType));
 	}
 
 	/**
-	 * Returns true if this note is affected by any multinote articulations.
+	 * Returns true if this note begins a marking of the given type.
 	 *
-	 * @return true if this note is affected by any multinote articulations
+	 * @param markingType the type of the marking for whose beginning this
+	 *                    note is checked
+	 * @return true if this note begins a marking of the given type
 	 */
-	public boolean hasMultiNoteArticulations() {
-		return !this.multiNoteArticulations.isEmpty();
+	public boolean begins(Marking.Type markingType) {
+		return markingConnections.stream()
+				.anyMatch(markingConnection -> markingConnection.getType().equals(markingType)
+						&& markingConnection.isBeginning());
+	}
+
+	/**
+	 * Returns true if this note ends a marking of the given type.
+	 *
+	 * @param markingType the type of the marking for whose end this note
+	 *                    is checked
+	 * @return true if this note ends a marking of the given type
+	 */
+	public boolean ends(Marking.Type markingType) {
+		return markingConnections.stream()
+				.anyMatch(markingConnection -> markingConnection.getType().equals(markingType)
+						&& markingConnection.isEnd());
+	}
+
+	/**
+	 * Returns true if this note is affected by any markings.
+	 *
+	 * @return true if this note is affected by any markings
+	 */
+	public boolean hasMarkings() {
+		return !this.markingConnections.isEmpty();
 	}
 
 	/**
@@ -221,7 +273,7 @@ public final class Note implements Durational, Pitched {
 	/**
 	 * Returns the total duration of tied notes starting from the onset of this
 	 * note.
-	 *
+	 * <p>
 	 * For example, if three quarter notes are tied together, then the tied duration
 	 * of the first note is a dotted half note. For a note that is not tied to a
 	 * following note this is equal to the note's duration.
@@ -256,8 +308,8 @@ public final class Note implements Durational, Pitched {
 	 *
 	 * @param other the note to which this is compared for pitch
 	 * @return negative integer if this note is lower than other, positive integer
-	 *         if this is higher than other, 0 if notes are (enharmonically) of same
-	 *         height.
+	 * if this is higher than other, 0 if notes are (enharmonically) of same
+	 * height.
 	 */
 	public int compareByPitch(Note other) {
 		return this.pitch.compareTo(other.getPitch());
@@ -308,7 +360,7 @@ public final class Note implements Durational, Pitched {
 	 *
 	 * @param o the Object with which this Note is compared for equality
 	 * @return true if Object o is of class Note and has the same Pitch, Duration,
-	 *         and Articulations as this Node. false otherwise
+	 * and Articulations as this Node. false otherwise
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -330,18 +382,25 @@ public final class Note implements Durational, Pitched {
 			return false;
 		}
 
-		// TODO: Effect of ties and MultiNoteArticulations.
+		if (!getMarkingConnectionTypes().equals(other.getMarkingConnectionTypes())) {
+			return false;
+		}
 
 		return true;
 	}
 
+	private Set<Marking.Type> getMarkingConnectionTypes() {
+		return markingConnections.stream()
+				.map(Marking.Connection::getType).collect(Collectors.toSet());
+	}
+
 	@Override
 	public int hashCode() {
-		// TODO: if equals is changed update this.
 		int hash = 3;
 		hash = 79 * hash + Objects.hashCode(this.pitch);
 		hash = 79 * hash + Objects.hashCode(this.duration);
 		hash = 79 * hash + Objects.hashCode(this.articulations);
+		hash = 79 * hash + Objects.hashCode(getMarkingConnectionTypes());
 		return hash;
 	}
 

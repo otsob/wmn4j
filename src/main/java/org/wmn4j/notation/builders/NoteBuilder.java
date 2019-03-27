@@ -3,17 +3,20 @@
  */
 package org.wmn4j.notation.builders;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
 import org.wmn4j.notation.elements.Articulation;
 import org.wmn4j.notation.elements.Duration;
-import org.wmn4j.notation.elements.MultiNoteArticulation;
+import org.wmn4j.notation.elements.Marking;
 import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
+
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Class for building {@link Note} objects. The built note is cached.
@@ -23,12 +26,14 @@ public class NoteBuilder implements DurationalBuilder {
 	private Pitch pitch;
 	private Duration duration;
 	private Set<Articulation> articulations;
-	private List<MultiNoteArticulation> multiNoteArticulations;
+	private Map<Marking, NoteBuilder> connectedTo = new HashMap<>();
+	private Set<Marking> connectedFrom = new HashSet<>();
 	private Note tiedTo;
 	private boolean isTiedFromPrevious;
 	private NoteBuilder followingTied;
 
 	private Note cachedNote;
+	private boolean isBuilding;
 
 	/**
 	 * Constructor.
@@ -40,13 +45,13 @@ public class NoteBuilder implements DurationalBuilder {
 		this.pitch = pitch;
 		this.duration = duration;
 		this.articulations = EnumSet.noneOf(Articulation.class);
-		this.multiNoteArticulations = new ArrayList<>();
 		this.isTiedFromPrevious = false;
 	}
 
 	/**
 	 * Copy constructor for NoteBuilder. Creates a new instance of NoteBuilder that
 	 * is a copy of the NoteBuilder given as an attribute.
+	 * This does not copy connections to other builders through markings.
 	 *
 	 * @param builder the NoteBuilder to be copied
 	 */
@@ -54,8 +59,6 @@ public class NoteBuilder implements DurationalBuilder {
 		this(builder.getPitch(), builder.getDuration());
 		builder.getArticulations()
 				.forEach(articulation -> this.articulations.add(articulation));
-		builder.getMultiNoteArticulations()
-				.forEach(articulation -> this.multiNoteArticulations.add(articulation));
 		this.tiedTo = builder.getTiedTo();
 		this.isTiedFromPrevious = builder.isTiedFromPrevious();
 		builder.getFollowingTied()
@@ -128,34 +131,6 @@ public class NoteBuilder implements DurationalBuilder {
 	}
 
 	/**
-	 * Returns the multinote articulations set in this builder.
-	 *
-	 * @return the multinote articulations set in this builder
-	 */
-	public List<MultiNoteArticulation> getMultiNoteArticulations() {
-		return multiNoteArticulations;
-	}
-
-	/**
-	 * Adds a multinote articulation to this builder.
-	 *
-	 * @param articulation the multinote articulation that is added to this builder
-	 */
-	public void addMultiNoteArticulation(MultiNoteArticulation articulation) {
-		this.multiNoteArticulations.add(articulation);
-	}
-
-	/**
-	 * Sets the given multinote articulations to this builder.
-	 *
-	 * @param multiNoteArticulations the multinote articulations that are set into
-	 *                               this builder
-	 */
-	public void setMultiNoteArticulations(List<MultiNoteArticulation> multiNoteArticulations) {
-		this.multiNoteArticulations = multiNoteArticulations;
-	}
-
-	/**
 	 * Tie this builder to a following builder. The builder that this is tied to
 	 * should be built before this. When the notes are built the <code>Note</code>
 	 * returned by the call of {@link #build build} on this will be tied to the
@@ -209,10 +184,23 @@ public class NoteBuilder implements DurationalBuilder {
 	 * Returns the NoteBuilder of the following tied note, if there is one.
 	 *
 	 * @return Optional containing the NoteBuilder of the following tied note if
-	 *         there is one, otherwise empty Optional.
+	 * there is one, otherwise empty Optional.
 	 */
 	public Optional<NoteBuilder> getFollowingTied() {
 		return Optional.ofNullable(followingTied);
+	}
+
+	/**
+	 * Connects this builder to the given builder with the specified marking.
+	 * <p>
+	 * The connections set using this method are automatically resolved and built when the note builder is built.
+	 *
+	 * @param marking           the marking with which this is connected to the target
+	 * @param targetNoteBuilder the note builder to which this is connected using the given marking
+	 */
+	public void connectWith(Marking marking, NoteBuilder targetNoteBuilder) {
+		connectedTo.put(marking, targetNoteBuilder);
+		targetNoteBuilder.connectedFrom.add(marking);
 	}
 
 	/**
@@ -221,6 +209,25 @@ public class NoteBuilder implements DurationalBuilder {
 	 */
 	public void clearCache() {
 		this.cachedNote = null;
+	}
+
+	private Collection<Marking.Connection> getResolvedMarkingConnections() {
+		Set<Marking> markings = new HashSet<>(connectedFrom);
+		markings.addAll(connectedTo.keySet());
+		return markings.stream().map(marking -> resolveConnection(marking)).collect(Collectors.toList());
+	}
+
+	private Marking.Connection resolveConnection(Marking marking) {
+
+		if (!connectedTo.containsKey(marking) && connectedFrom.contains(marking)) {
+			return Marking.Connection.endOf(marking);
+		}
+
+		if (connectedTo.containsKey(marking) && !connectedFrom.contains(marking)) {
+			return Marking.Connection.beginningOf(marking, connectedTo.get(marking).build());
+		}
+
+		return Marking.Connection.of(marking, connectedTo.get(marking).build());
 	}
 
 	/**
@@ -237,12 +244,22 @@ public class NoteBuilder implements DurationalBuilder {
 	public Note build() {
 
 		if (this.cachedNote == null) {
+			if (isBuilding) {
+				throw new IllegalStateException("Trying to build a note from a builder that is currently building. "
+						+ "This can be caused by concurrent modification or by a circular dependency between "
+						+ "note builders caused by slurs or markings.");
+			}
+
+			isBuilding = true;
+
 			if (this.followingTied != null) {
 				this.tiedTo = this.followingTied.build();
 			}
 
-			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, this.multiNoteArticulations,
+			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, getResolvedMarkingConnections(),
 					this.tiedTo, this.isTiedFromPrevious);
+
+			isBuilding = false;
 		}
 
 		return this.cachedNote;
