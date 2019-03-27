@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":9,"i18":9,"i19":9,"i20":9,"i21":9,"i22":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":9,"i22":9,"i23":9,"i24":9,"i25":9,"i26":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -164,6 +164,13 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#begins(org.wmn4j.notation.elements.Marking.Type)">begins</a></span>&#8203;(<a href="Marking.Type.html" title="enum in org.wmn4j.notation.elements">Marking.Type</a>&nbsp;markingType)</code></th>
+<td class="colLast">
+<div class="block">Returns true if this note begins a marking of the given type.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#compareByPitch(org.wmn4j.notation.elements.Note)">compareByPitch</a></span>&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;other)</code></th>
 <td class="colLast">
@@ -171,56 +178,70 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
  equal in pitch to the given note.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ends(org.wmn4j.notation.elements.Marking.Type)">ends</a></span>&#8203;(<a href="Marking.Type.html" title="enum in org.wmn4j.notation.elements">Marking.Type</a>&nbsp;markingType)</code></th>
+<td class="colLast">
+<div class="block">Returns true if this note ends a marking of the given type.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(java.lang.Object&nbsp;o)</code></th>
 <td class="colLast">
 <div class="block">Returns true if this note is equal to the given object.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equalsInPitchAndDuration(org.wmn4j.notation.elements.Note)">equalsInPitchAndDuration</a></span>&#8203;(<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;other)</code></th>
 <td class="colLast">
 <div class="block">Returns true if this note is equal to the given note in pitch and duration.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>java.util.Set&lt;<a href="Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;</code></td>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>java.util.Collection&lt;<a href="Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getArticulations()">getArticulations</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the articulations defined for this note.</div>
+<div class="block">Returns an unmodifiable view of all articulations defined for this note.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDuration()">getDuration</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the duration of this note.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.Optional&lt;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFollowingTiedNote()">getFollowingTiedNote</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the following note to which this note is tied.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMultiNoteArticulations()">getMultiNoteArticulations</a></span>()</code></th>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>java.util.Optional&lt;<a href="Marking.Connection.html" title="class in org.wmn4j.notation.elements">Marking.Connection</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMarkingConnection(org.wmn4j.notation.elements.Marking)">getMarkingConnection</a></span>&#8203;(<a href="Marking.html" title="class in org.wmn4j.notation.elements">Marking</a>&nbsp;marking)</code></th>
 <td class="colLast">
-<div class="block">Returns the multinote articulations defined for this note.</div>
+<div class="block">Returns the marking connection belonging to the given marking.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>java.util.Collection&lt;<a href="Marking.html" title="class in org.wmn4j.notation.elements">Marking</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMarkings()">getMarkings</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns an unmodifiable view of all marking connections that affect this note.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPitch()">getPitch</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the pitch of this note.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTiedDuration()">getTiedDuration</a></span>()</code></th>
 <td class="colLast">
@@ -228,14 +249,14 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
  note.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasArticulation(org.wmn4j.notation.elements.Articulation)">hasArticulation</a></span>&#8203;(<a href="Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&nbsp;articulation)</code></th>
 <td class="colLast">
 <div class="block">Returns true if this note has the given articulation.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasArticulations()">hasArticulations</a></span>()</code></th>
 <td class="colLast">
@@ -243,47 +264,54 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
  as staccato or tenuto.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasMultiNoteArticulations()">hasMultiNoteArticulations</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasMarking(org.wmn4j.notation.elements.Marking.Type)">hasMarking</a></span>&#8203;(<a href="Marking.Type.html" title="enum in org.wmn4j.notation.elements">Marking.Type</a>&nbsp;markingType)</code></th>
 <td class="colLast">
-<div class="block">Returns true if this note is affected by any multinote articulations.</div>
+<div class="block">Returns true if this note is affected by a marking of the given type.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i16" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasMarkings()">hasMarkings</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns true if this note is affected by any markings.</div>
+</td>
+</tr>
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isRest()">isRest</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns true if this is a rest, false otherwise.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isTied()">isTied</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns true if this note is tied to a previous or to a following note.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isTiedFromPrevious()">isTiedFromPrevious</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns true if this note is tied to a previous note.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isTiedToFollowing()">isTiedToFollowing</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns true if this note is tied to a following note.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>static <a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(org.wmn4j.notation.elements.Pitch.Base,int,int,org.wmn4j.notation.elements.Duration)">of</a></span>&#8203;(<a href="Pitch.Base.html" title="enum in org.wmn4j.notation.elements">Pitch.Base</a>&nbsp;pitchName,
   int&nbsp;alter,
@@ -293,7 +321,7 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <div class="block">Returns an instance with the given parameters.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>static <a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration)">of</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
   <a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</code></th>
@@ -301,7 +329,7 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <div class="block">Returns an instance with the given parameters.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>static <a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration,java.util.Set)">of</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
   <a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration,
@@ -310,29 +338,29 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <div class="block">Returns an instance with the given parameters.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>static <a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration,java.util.Set,java.util.List)">of</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration,java.util.Set,java.util.Collection)">of</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
   <a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration,
   java.util.Set&lt;<a href="Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;articulations,
-  java.util.List&lt;<a href="MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;&nbsp;multiNoteArticulations)</code></th>
+  java.util.Collection&lt;<a href="Marking.Connection.html" title="class in org.wmn4j.notation.elements">Marking.Connection</a>&gt;&nbsp;markingConnections)</code></th>
 <td class="colLast">
 <div class="block">Returns an instance with the given parameters.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>static <a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration,java.util.Set,java.util.List,org.wmn4j.notation.elements.Note,boolean)">of</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration,java.util.Set,java.util.Collection,org.wmn4j.notation.elements.Note,boolean)">of</a></span>&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
   <a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration,
   java.util.Set&lt;<a href="Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;articulations,
-  java.util.List&lt;<a href="MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;&nbsp;multiNoteArticulations,
+  java.util.Collection&lt;<a href="Marking.Connection.html" title="class in org.wmn4j.notation.elements">Marking.Connection</a>&gt;&nbsp;markingConnections,
   <a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;tiedTo,
   boolean&nbsp;isTiedFromPrevious)</code></th>
 <td class="colLast">
 <div class="block">Returns an instance with the given parameters.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
@@ -422,7 +450,7 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 </dl>
 </li>
 </ul>
-<a id="of(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration,java.util.Set,java.util.List)">
+<a id="of(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration,java.util.Set,java.util.Collection)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -431,20 +459,20 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <pre class="methodSignature">public static&nbsp;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;of&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
                       <a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration,
                       java.util.Set&lt;<a href="Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;articulations,
-                      java.util.List&lt;<a href="MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;&nbsp;multiNoteArticulations)</pre>
+                      java.util.Collection&lt;<a href="Marking.Connection.html" title="class in org.wmn4j.notation.elements">Marking.Connection</a>&gt;&nbsp;markingConnections)</pre>
 <div class="block">Returns an instance with the given parameters.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>pitch</code> - the pitch of the note</dd>
 <dd><code>duration</code> - the duration of the note</dd>
 <dd><code>articulations</code> - a set of Articulations associated with the note</dd>
-<dd><code>multiNoteArticulations</code> - list of the MultiNoteArticulations for the note</dd>
+<dd><code>markingConnections</code> - list of the marking connections for the note</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>an instance with the given parameters</dd>
 </dl>
 </li>
 </ul>
-<a id="of(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration,java.util.Set,java.util.List,org.wmn4j.notation.elements.Note,boolean)">
+<a id="of(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration,java.util.Set,java.util.Collection,org.wmn4j.notation.elements.Note,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -453,7 +481,7 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <pre class="methodSignature">public static&nbsp;<a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;of&#8203;(<a href="Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
                       <a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration,
                       java.util.Set&lt;<a href="Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;articulations,
-                      java.util.List&lt;<a href="MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;&nbsp;multiNoteArticulations,
+                      java.util.Collection&lt;<a href="Marking.Connection.html" title="class in org.wmn4j.notation.elements">Marking.Connection</a>&gt;&nbsp;markingConnections,
                       <a href="Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;tiedTo,
                       boolean&nbsp;isTiedFromPrevious)</pre>
 <div class="block">Returns an instance with the given parameters.</div>
@@ -462,7 +490,7 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <dd><code>pitch</code> - the pitch of the note</dd>
 <dd><code>duration</code> - the duration of the note</dd>
 <dd><code>articulations</code> - a set of Articulations associated with the note</dd>
-<dd><code>multiNoteArticulations</code> - list of the MultiNoteArticulations for the note</dd>
+<dd><code>markingConnections</code> - list of the marking connections for the note</dd>
 <dd><code>tiedTo</code> - the following note to which this is tied</dd>
 <dd><code>isTiedFromPrevious</code> - true if this is tied from the previous note</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -525,11 +553,42 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <ul class="blockList">
 <li class="blockList">
 <h4>getArticulations</h4>
-<pre class="methodSignature">public&nbsp;java.util.Set&lt;<a href="Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;getArticulations()</pre>
-<div class="block">Returns the articulations defined for this note.</div>
+<pre class="methodSignature">public&nbsp;java.util.Collection&lt;<a href="Articulation.html" title="enum in org.wmn4j.notation.elements">Articulation</a>&gt;&nbsp;getArticulations()</pre>
+<div class="block">Returns an unmodifiable view of all articulations defined for this note.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the articulations defined for this note</dd>
+</dl>
+</li>
+</ul>
+<a id="getMarkings()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getMarkings</h4>
+<pre class="methodSignature">public&nbsp;java.util.Collection&lt;<a href="Marking.html" title="class in org.wmn4j.notation.elements">Marking</a>&gt;&nbsp;getMarkings()</pre>
+<div class="block">Returns an unmodifiable view of all marking connections that affect this note.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>all marking connections that affect this note</dd>
+</dl>
+</li>
+</ul>
+<a id="getMarkingConnection(org.wmn4j.notation.elements.Marking)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getMarkingConnection</h4>
+<pre class="methodSignature">public&nbsp;java.util.Optional&lt;<a href="Marking.Connection.html" title="class in org.wmn4j.notation.elements">Marking.Connection</a>&gt;&nbsp;getMarkingConnection&#8203;(<a href="Marking.html" title="class in org.wmn4j.notation.elements">Marking</a>&nbsp;marking)</pre>
+<div class="block">Returns the marking connection belonging to the given marking. If no marking connection for the marking is
+ present, return empty.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>marking</code> - the marking for which the marking connection is returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the marking connection belonging to the given marking</dd>
 </dl>
 </li>
 </ul>
@@ -564,32 +623,67 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 </dl>
 </li>
 </ul>
-<a id="getMultiNoteArticulations()">
+<a id="hasMarking(org.wmn4j.notation.elements.Marking.Type)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getMultiNoteArticulations</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="MultiNoteArticulation.html" title="class in org.wmn4j.notation.elements">MultiNoteArticulation</a>&gt;&nbsp;getMultiNoteArticulations()</pre>
-<div class="block">Returns the multinote articulations defined for this note. These are
- articulations such as slurs or glissando.</div>
+<h4>hasMarking</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;hasMarking&#8203;(<a href="Marking.Type.html" title="enum in org.wmn4j.notation.elements">Marking.Type</a>&nbsp;markingType)</pre>
+<div class="block">Returns true if this note is affected by a marking of the given type.</div>
 <dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>markingType</code> - the type of marking whose presence is checked</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the multinote articulations defined for this note</dd>
+<dd>true if this note has the given marking</dd>
 </dl>
 </li>
 </ul>
-<a id="hasMultiNoteArticulations()">
+<a id="begins(org.wmn4j.notation.elements.Marking.Type)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>hasMultiNoteArticulations</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;hasMultiNoteArticulations()</pre>
-<div class="block">Returns true if this note is affected by any multinote articulations.</div>
+<h4>begins</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;begins&#8203;(<a href="Marking.Type.html" title="enum in org.wmn4j.notation.elements">Marking.Type</a>&nbsp;markingType)</pre>
+<div class="block">Returns true if this note begins a marking of the given type.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>markingType</code> - the type of the marking for whose beginning this
+                    note is checked</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>true if this note begins a marking of the given type</dd>
+</dl>
+</li>
+</ul>
+<a id="ends(org.wmn4j.notation.elements.Marking.Type)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>ends</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;ends&#8203;(<a href="Marking.Type.html" title="enum in org.wmn4j.notation.elements">Marking.Type</a>&nbsp;markingType)</pre>
+<div class="block">Returns true if this note ends a marking of the given type.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>markingType</code> - the type of the marking for whose end this note
+                    is checked</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>true if this note ends a marking of the given type</dd>
+</dl>
+</li>
+</ul>
+<a id="hasMarkings()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>hasMarkings</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;hasMarkings()</pre>
+<div class="block">Returns true if this note is affected by any markings.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this note is affected by any multinote articulations</dd>
+<dd>true if this note is affected by any markings</dd>
 </dl>
 </li>
 </ul>
@@ -644,7 +738,7 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <pre class="methodSignature">public&nbsp;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;getTiedDuration()</pre>
 <div class="block">Returns the total duration of tied notes starting from the onset of this
  note.
-
+ <p>
  For example, if three quarter notes are tied together, then the tied duration
  of the first note is a dotted half note. For a note that is not tied to a
  following note this is equal to the note's duration.</div>
@@ -683,8 +777,8 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <dd><code>other</code> - the note to which this is compared for pitch</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>negative integer if this note is lower than other, positive integer
-         if this is higher than other, 0 if notes are (enharmonically) of same
-         height.</dd>
+ if this is higher than other, 0 if notes are (enharmonically) of same
+ height.</dd>
 </dl>
 </li>
 </ul>
@@ -733,7 +827,7 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation.elem
 <dd><code>o</code> - the Object with which this Note is compared for equality</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if Object o is of class Note and has the same Pitch, Duration,
-         and Articulations as this Node. false otherwise</dd>
+ and Articulations as this Node. false otherwise</dd>
 </dl>
 </li>
 </ul>
