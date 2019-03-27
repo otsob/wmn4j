@@ -33,6 +33,7 @@ public class NoteBuilder implements DurationalBuilder {
 	private NoteBuilder followingTied;
 
 	private Note cachedNote;
+	private boolean isBuilding;
 
 	/**
 	 * Constructor.
@@ -243,12 +244,22 @@ public class NoteBuilder implements DurationalBuilder {
 	public Note build() {
 
 		if (this.cachedNote == null) {
+			if (isBuilding) {
+				throw new IllegalStateException("Trying to build a note from a builder that is currently building. "
+						+ "This can be caused by concurrent modification or by a circular dependency between "
+						+ "note builders caused by slurs or markings.");
+			}
+
+			isBuilding = true;
+
 			if (this.followingTied != null) {
 				this.tiedTo = this.followingTied.build();
 			}
 
 			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, getResolvedMarkingConnections(),
 					this.tiedTo, this.isTiedFromPrevious);
+
+			isBuilding = false;
 		}
 
 		return this.cachedNote;

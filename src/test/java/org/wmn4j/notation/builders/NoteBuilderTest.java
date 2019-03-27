@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class NoteBuilderTest {
 
@@ -186,4 +187,98 @@ public class NoteBuilderTest {
 		assertTrue(thirdNote.getMarkingConnection(slur).get().getFollowingNote().isEmpty());
 	}
 
+	@Test
+	public void testBuildingWithSlurAndGlissandoAndTie() {
+		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
+
+		final Marking slur = Marking.of(Marking.Type.SLUR);
+		final Marking glissando = Marking.of(Marking.Type.GLISSANDO);
+		first.connectWith(slur, second);
+		second.connectWith(slur, third);
+
+		first.connectWith(glissando, second);
+		second.connectWith(glissando, third);
+
+		first.addTieToFollowing(second);
+
+		final Note firstNote = first.build();
+		final Note secondNote = second.build();
+		final Note thirdNote = third.build();
+
+		assertTrue(firstNote.begins(Marking.Type.SLUR));
+		assertFalse(firstNote.ends(Marking.Type.SLUR));
+
+		assertTrue(firstNote.begins(Marking.Type.GLISSANDO));
+		assertFalse(firstNote.ends(Marking.Type.GLISSANDO));
+
+		assertEquals(2, firstNote.getMarkings().size());
+		assertEquals(secondNote, firstNote.getMarkingConnection(slur).get().getFollowingNote().get());
+		assertEquals(secondNote, firstNote.getMarkingConnection(glissando).get().getFollowingNote().get());
+
+		assertEquals(secondNote, firstNote.getFollowingTiedNote().get());
+		assertTrue(secondNote.isTiedFromPrevious());
+
+		assertEquals(2, secondNote.getMarkings().size());
+		assertTrue(secondNote.hasMarking(Marking.Type.SLUR));
+		assertFalse(secondNote.begins(Marking.Type.SLUR));
+		assertFalse(secondNote.ends(Marking.Type.SLUR));
+		assertEquals(thirdNote, secondNote.getMarkingConnection(slur).get().getFollowingNote().get());
+
+		assertTrue(secondNote.hasMarking(Marking.Type.GLISSANDO));
+		assertFalse(secondNote.begins(Marking.Type.GLISSANDO));
+		assertFalse(secondNote.ends(Marking.Type.GLISSANDO));
+		assertEquals(thirdNote, secondNote.getMarkingConnection(glissando).get().getFollowingNote().get());
+
+		assertFalse(thirdNote.isTied());
+		assertEquals(2, thirdNote.getMarkings().size());
+
+		assertTrue(thirdNote.ends(Marking.Type.SLUR));
+		assertTrue(thirdNote.getMarkingConnection(slur).get().getFollowingNote().isEmpty());
+
+		assertTrue(thirdNote.ends(Marking.Type.GLISSANDO));
+		assertTrue(thirdNote.getMarkingConnection(glissando).get().getFollowingNote().isEmpty());
+	}
+
+	@Test
+	public void testBuildingWithLoopedSlur() {
+		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
+
+		final Marking slur = Marking.of(Marking.Type.SLUR);
+		first.connectWith(slur, second);
+		second.connectWith(slur, third);
+
+		// Create a circular dependency
+		third.connectWith(slur, first);
+
+		try {
+			first.build();
+			fail("Trying to build notes with a circular slur dependency did not result in exception");
+		} catch (Exception e) {
+			assertTrue(e instanceof IllegalStateException);
+		}
+	}
+
+	@Test
+	public void testBuildingWithLoopedTie() {
+		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
+
+		first.addTieToFollowing(second);
+		second.addTieToFollowing(third);
+
+		// Create a circular dependency
+		third.addTieToFollowing(first);
+
+		try {
+			first.build();
+			fail("Trying to build notes with a circular tie dependency did not result in exception");
+		} catch (Exception e) {
+			assertTrue(e instanceof IllegalStateException);
+		}
+	}
 }
