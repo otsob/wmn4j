@@ -2,8 +2,7 @@
 package org.wmn4j.analysis.harmony;
 
 /**
- *
- * @author Otso Björklund
+ * Common interface for key analyzers.
  */
 public interface KeyAnalyzer {
 
