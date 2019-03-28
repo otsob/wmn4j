@@ -15,7 +15,7 @@ The [API Documentation](https://otsob.github.io/wmn4j) provides a comprehensive 
 
 ### Building wmn4j
 
-wmn4j uses Maven and can be built by running Maven install. With the current configuration the install phase consists of compilation, unit tests, and static analysis.
+wmn4j uses Gradle and can be built by running Gradle build. With the current configuration the build consists of compilation, unit tests, and static analysis.
 
 ## Contributing
 
@@ -31,7 +31,7 @@ Contributing to this project is supposed to be enjoyable, so behaving nicely and
 
 ## Built With
 
-* [Maven](https://maven.apache.org/) - Dependency Management
+* [Gradle](https://gradle.org) - Dependency Management
 
 
 ## Versioning
