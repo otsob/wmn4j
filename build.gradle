@@ -5,6 +5,12 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'checkstyle'
+}
+
+checkstyle {
+    configDir file("build-resources/checkstyle/")
+    checkstyleTest.enabled = false
 }
 
 repositories {
