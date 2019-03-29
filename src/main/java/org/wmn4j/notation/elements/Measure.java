@@ -70,6 +70,17 @@ public final class Measure implements Iterable<Durational> {
 	}
 
 	/**
+	 * Returns a full measure rest with the given measure number and attributes.
+	 *
+	 * @param number            number of the measure
+	 * @param measureAttributes the attributes of the measure
+	 * @return a full measure rest with the given measure number and attributes
+	 */
+	public static Measure restMeasureOf(int number, MeasureAttributes measureAttributes) {
+		return new Measure(number, Collections.emptyMap(), measureAttributes);
+	}
+
+	/**
 	 * Constructor.
 	 *
 	 * @param number      number of the measure.
@@ -205,7 +216,7 @@ public final class Measure implements Iterable<Durational> {
 	 * Returns the clef changes in this measure.
 	 *
 	 * @return a map of clef changes in this measure, where the duration key is the
-	 *         offset counted from the beginning of the measure.
+	 * offset counted from the beginning of the measure.
 	 */
 	public Map<Duration, Clef> getClefChanges() {
 		return this.measureAttr.getClefChanges();
@@ -249,6 +260,15 @@ public final class Measure implements Iterable<Durational> {
 		}
 
 		return voice.get(index);
+	}
+
+	/**
+	 * Returns true if this measure is a full measure rest.
+	 *
+	 * @return true if this measure is a full measure rest
+	 */
+	public boolean isFullMeasureRest() {
+		return this.voices.isEmpty();
 	}
 
 	@Override
@@ -313,8 +333,8 @@ public final class Measure implements Iterable<Durational> {
 		 * call of {@link #next() next}.
 		 *
 		 * @return the voice of the {@link Durational} that was returned by the last
-		 *         call of {@link #next() next}. If next has not been called, return
-		 *         value is useless.
+		 * call of {@link #next() next}. If next has not been called, return
+		 * value is useless.
 		 */
 		public int getVoiceOfPrevious() {
 			return this.prevVoiceNumber;
@@ -325,8 +345,8 @@ public final class Measure implements Iterable<Durational> {
 		 * call of {@link #next() next}.
 		 *
 		 * @return the index of the {@link Durational} that was returned by the last
-		 *         call of {@link #next() next}. If next has not been called, return
-		 *         value is useless.
+		 * call of {@link #next() next}. If next has not been called, return
+		 * value is useless.
 		 */
 		public int getIndexOfPrevious() {
 			return this.prevPositionInVoice;

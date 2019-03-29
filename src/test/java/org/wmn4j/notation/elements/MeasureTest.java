@@ -4,20 +4,21 @@
  */
 package org.wmn4j.notation.elements;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
- *
  * @author Otso Björklund
  */
 public class MeasureTest {
@@ -91,7 +92,8 @@ public class MeasureTest {
 			voice.add(Rest.of(Durations.QUARTER));
 			fail("Failed to throw exception for disabled adding");
 		} catch (final Exception e) {
-			/* Do nothing */ }
+			/* Do nothing */
+		}
 	}
 
 	@Test
@@ -194,5 +196,28 @@ public class MeasureTest {
 
 		assertEquals("Iterator iterated through a number of objects different from size of expected", expected.size(),
 				count);
+	}
+
+	@Test
+	public void testFullMeasureRest() {
+		final List<Durational> noteList = this.singleNoteVoice.get(0);
+		final Map<Integer, List<Durational>> noteVoices = new HashMap<>();
+		noteVoices.put(1, noteList);
+		noteVoices.put(3, noteList);
+
+		final Measure measure = Measure.of(1, noteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
+		assertFalse(measure.isFullMeasureRest());
+
+		final MeasureAttributes attributes = MeasureAttributes
+				.of(TimeSignatures.FOUR_FOUR, keySig, Barline.SINGLE, Clefs.G);
+		final Measure fullMeasureRest = Measure.restMeasureOf(2, attributes);
+		assertTrue(fullMeasureRest.isFullMeasureRest());
+
+		try {
+			fullMeasureRest.get(0, 0);
+			fail("Trying to get a durational from full meausure rest did not throw exception");
+		} catch (NoSuchElementException exception) {
+			/* Do nothing */
+		}
 	}
 }

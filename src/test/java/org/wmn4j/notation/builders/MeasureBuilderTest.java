@@ -4,12 +4,6 @@
  */
 package org.wmn4j.notation.builders;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.junit.Test;
 import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Clefs;
@@ -23,6 +17,12 @@ import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Rest;
 import org.wmn4j.notation.elements.TimeSignatures;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class MeasureBuilderTest {
 
@@ -326,5 +326,15 @@ public class MeasureBuilderTest {
 
 		assertEquals(1, incompleteMeasure.getVoice(1).size());
 		assertEquals(expectedVoice1Note, incompleteMeasure.get(1, 0));
+	}
+
+	@Test
+	public void testBuildingFullMeasureRest() {
+		final MeasureBuilder builder = new MeasureBuilder(1);
+		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
+		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
+
+		final Measure fullMeasureRest = builder.build();
+		assertTrue(fullMeasureRest.isFullMeasureRest());
 	}
 }
