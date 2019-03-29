@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.io.musicxml;
@@ -7,7 +6,7 @@ package org.wmn4j.io.musicxml;
 import org.wmn4j.notation.elements.Score;
 
 /**
- * Interface for MusicXML writers.
+ * Represents a writer for MusicXML files.
  */
 public interface MusicXmlWriter {
 
@@ -23,7 +22,7 @@ public interface MusicXmlWriter {
 
 	/**
 	 * Writes the {@link Score} with which this writer was initialized into a
-	 * MusicXML file into the given path.
+	 * MusicXML file to the the given output path.
 	 *
 	 * @param path the output path for the MusicXML file
 	 */
