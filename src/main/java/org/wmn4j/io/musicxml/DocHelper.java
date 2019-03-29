@@ -1,28 +1,28 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.io.musicxml;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 /**
- * Helpers methods for handling <code>Document</code> objects.
- *
- * @author Otso Björklund
- *
+ * Helper methods for handling Document objects.
  */
 final class DocHelper {
+
 	/**
-	 * Find the child with childName from the children of Node parent.
+	 * Returns the child with the given name from the given parent node.
+	 * <p>
+	 * If there is no child with the given name, returns empty.
 	 *
-	 * @return <code>Optional</code> that contains the child <code>Node</code> if it
-	 *         is found, otherwise an empty <code>Optional</code>.
+	 * @param parent    the parent node that is searched for the child
+	 * @param childName the name of the child nodes
+	 * @return the child with the given name from the given parent node
 	 */
 	static Optional<Node> findChild(Node parent, String childName) {
 		final NodeList children = parent.getChildNodes();
@@ -39,7 +39,11 @@ final class DocHelper {
 	}
 
 	/**
-	 * Find all children with given name from Node parent.
+	 * Returns all children with the given name from the given parent node.
+	 *
+	 * @param parent    the parent node that is searched for children
+	 * @param childName the name of the child nodes
+	 * @return all children with the given name from the given parent node
 	 */
 	static List<Node> findChildren(Node parent, String childName) {
 		final List<Node> foundChildren = new ArrayList<>();
