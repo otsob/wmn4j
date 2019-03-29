@@ -4,9 +4,8 @@
  */
 package org.wmn4j.notation.elements;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.wmn4j.notation.TestHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,11 +13,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-import org.wmn4j.notation.TestHelper;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
- *
  * @author Otso Björklund
  */
 public class MultiStaffPartTest {
@@ -34,6 +33,15 @@ public class MultiStaffPartTest {
 
 		this.testStaves.put(1, Staff.of(measures));
 		this.testStaves.put(2, Staff.of(measures));
+	}
+
+	@Test
+	public void testPartHasName() {
+		final Map<Integer, Staff> testStavesCopy = new HashMap<>(this.testStaves);
+
+		final String partName = "Test staff";
+		final MultiStaffPart part = MultiStaffPart.of(partName, testStavesCopy);
+		assertEquals(partName, part.getName());
 	}
 
 	@Test
@@ -125,6 +133,7 @@ public class MultiStaffPartTest {
 			iterator.remove();
 			fail("Did not throw exception when calling remove on iterator");
 		} catch (final Exception e) {
-			/* Do nothing */ }
+			/* Do nothing */
+		}
 	}
 }
