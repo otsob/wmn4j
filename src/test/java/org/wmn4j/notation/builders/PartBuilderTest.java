@@ -1,26 +1,9 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.builders;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
-import org.wmn4j.notation.builders.ChordBuilder;
-import org.wmn4j.notation.builders.DurationalBuilder;
-import org.wmn4j.notation.builders.MeasureBuilder;
-import org.wmn4j.notation.builders.NoteBuilder;
-import org.wmn4j.notation.builders.PartBuilder;
-import org.wmn4j.notation.builders.RestBuilder;
 import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Clefs;
 import org.wmn4j.notation.elements.Durations;
@@ -35,10 +18,16 @@ import org.wmn4j.notation.elements.SingleStaffPart;
 import org.wmn4j.notation.elements.Staff;
 import org.wmn4j.notation.elements.TimeSignatures;
 
-/**
- *
- * @author Otso Björklund
- */
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class PartBuilderTest {
 
 	private final Map<Integer, List<DurationalBuilder>> measureContents;
