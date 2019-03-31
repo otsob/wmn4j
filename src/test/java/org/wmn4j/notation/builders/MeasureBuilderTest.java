@@ -337,4 +337,18 @@ public class MeasureBuilderTest {
 		final Measure fullMeasureRest = builder.build();
 		assertTrue(fullMeasureRest.isFullMeasureRest());
 	}
+
+	@Test
+	public void testBuildingWithAttributesOfAnotherBuilder() {
+		final MeasureBuilder builder = new MeasureBuilder(1);
+		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
+		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
+
+		final MeasureBuilder withSameAttributes = MeasureBuilder.withAttributesOf(builder);
+
+		assertEquals(TimeSignatures.SIX_EIGHT, withSameAttributes.getTimeSignature());
+		assertEquals(KeySignatures.DFLATMAJ_BFLATMIN, withSameAttributes.getKeySignature());
+		assertEquals(Barline.DOUBLE, withSameAttributes.getRightBarline());
+		assertEquals(Clefs.F, withSameAttributes.getClef());
+	}
 }
