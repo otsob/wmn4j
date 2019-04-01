@@ -32,6 +32,7 @@ public final class MultiStaffPart implements Part {
 	 */
 	public static MultiStaffPart of(String name, Map<Integer, Staff> staves) {
 		Map<Part.Attribute, String> attributes = new HashMap<>();
+		attributes.put(Attribute.NAME, name);
 		return new MultiStaffPart(attributes, staves);
 	}
 

@@ -3,18 +3,20 @@
  */
 package org.wmn4j.notation.builders;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import org.wmn4j.notation.elements.Measure;
 import org.wmn4j.notation.elements.MultiStaffPart;
 import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.SingleStaffPart;
 import org.wmn4j.notation.elements.Staff;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Builder for building {@link Part} objects.
@@ -108,12 +110,30 @@ public class PartBuilder {
 			return SingleStaffPart.of(this.partAttributes,
 					getBuiltMeasures(this.staveContents.get(SINGLE_STAFF_NUMBER)));
 		} else {
+			padShorterStavesWithRestMeasures();
 			final Map<Integer, Staff> staves = new HashMap<>();
 			for (int staffNumber : this.staveContents.keySet()) {
 				staves.put(staffNumber, Staff.of(getBuiltMeasures(this.staveContents.get(staffNumber))));
 			}
 
 			return MultiStaffPart.of(this.partAttributes, staves);
+		}
+	}
+
+	private void padShorterStavesWithRestMeasures() {
+		Optional<List<MeasureBuilder>> longestStaffOpt = staveContents.values().stream()
+				.max(Comparator.comparing(List::size));
+
+		if (longestStaffOpt.isPresent()) {
+			final List<MeasureBuilder> longestStaff = longestStaffOpt.get();
+			final int longestStaffMeasureCount = longestStaff.size();
+
+			for (List<MeasureBuilder> staffContents : staveContents.values()) {
+
+				for (int i = staffContents.size(); i < longestStaffMeasureCount; ++i) {
+					staffContents.add(MeasureBuilder.withAttributesOf(longestStaff.get(i)));
+				}
+			}
 		}
 	}
 }

@@ -1,31 +1,15 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.builders;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
-import org.wmn4j.notation.builders.ChordBuilder;
-import org.wmn4j.notation.builders.DurationalBuilder;
-import org.wmn4j.notation.builders.MeasureBuilder;
-import org.wmn4j.notation.builders.NoteBuilder;
-import org.wmn4j.notation.builders.PartBuilder;
-import org.wmn4j.notation.builders.RestBuilder;
 import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Clefs;
 import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.KeySignature;
 import org.wmn4j.notation.elements.KeySignatures;
+import org.wmn4j.notation.elements.Measure;
 import org.wmn4j.notation.elements.MeasureAttributes;
 import org.wmn4j.notation.elements.MultiStaffPart;
 import org.wmn4j.notation.elements.Note;
@@ -35,10 +19,16 @@ import org.wmn4j.notation.elements.SingleStaffPart;
 import org.wmn4j.notation.elements.Staff;
 import org.wmn4j.notation.elements.TimeSignatures;
 
-/**
- *
- * @author Otso Björklund
- */
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class PartBuilderTest {
 
 	private final Map<Integer, List<DurationalBuilder>> measureContents;
@@ -159,5 +149,74 @@ public class PartBuilderTest {
 
 		assertEquals(secondNote, firstNote.getFollowingTiedNote().get());
 		assertTrue(secondNote.isTiedFromPrevious());
+	}
+
+	@Test
+	public void testGivenBuilderWithMultipleStavesWhenBuiltPartsHavePadding() {
+		final MeasureBuilder firstMeasureBuilder = new MeasureBuilder(1);
+		final NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.WHOLE);
+		firstMeasureBuilder.addToVoice(1, firstNoteBuilder);
+
+		final MeasureBuilder secondMeasureBuilder = new MeasureBuilder(2);
+		final NoteBuilder secondNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.WHOLE);
+		secondMeasureBuilder.addToVoice(1, secondNoteBuilder);
+
+		final PartBuilder partBuilder = new PartBuilder("Part");
+		partBuilder.addToStaff(1, firstMeasureBuilder).addToStaff(1, secondMeasureBuilder);
+		partBuilder.addToStaff(2, firstMeasureBuilder);
+		final Part part = partBuilder.build();
+
+		final Note firstNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 1).get(1, 0);
+		final Note secondNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 2).get(1, 0);
+
+		assertEquals(firstNoteBuilder.build(), firstNote);
+		assertEquals(secondNoteBuilder.build(), secondNote);
+
+		assertFalse(part.getMeasure(1, 1).isFullMeasureRest());
+		assertFalse(part.getMeasure(1, 2).isFullMeasureRest());
+
+		assertFalse(part.getMeasure(2, 1).isFullMeasureRest());
+		assertTrue(part.getMeasure(2, 2).isFullMeasureRest());
+	}
+
+	@Test
+	public void testGivenBuilderWithMultipleStavesAndTimeSignatureChangesWhenBuiltMeasuresHaveCorrectTimeSignatures() {
+		final MeasureBuilder firstMeasureBuilder = new MeasureBuilder(1);
+		firstMeasureBuilder.setTimeSignature(TimeSignatures.SIX_EIGHT);
+		final MeasureBuilder secondMeasureBuilder = new MeasureBuilder(2);
+		secondMeasureBuilder.setTimeSignature(TimeSignatures.FOUR_FOUR);
+		final MeasureBuilder thirdMeasureBuilder = new MeasureBuilder(3);
+		thirdMeasureBuilder.setTimeSignature(TimeSignatures.THREE_FOUR);
+
+		PartBuilder builder = new PartBuilder("Test part");
+		builder.addToStaff(1, firstMeasureBuilder).addToStaff(1, secondMeasureBuilder)
+				.addToStaff(1, thirdMeasureBuilder);
+		builder.addToStaff(2, firstMeasureBuilder).addToStaff(2, secondMeasureBuilder);
+		builder.addToStaff(3, firstMeasureBuilder);
+
+		Part part = builder.build();
+		final Measure staffOneMeasureOne = part.getMeasure(1, 1);
+		final Measure staffOneMeasureTwo = part.getMeasure(1, 2);
+		final Measure staffOneMeasureThree = part.getMeasure(1, 3);
+
+		assertEquals(TimeSignatures.SIX_EIGHT, staffOneMeasureOne.getTimeSignature());
+		assertEquals(TimeSignatures.FOUR_FOUR, staffOneMeasureTwo.getTimeSignature());
+		assertEquals(TimeSignatures.THREE_FOUR, staffOneMeasureThree.getTimeSignature());
+
+		Measure staffTwoMeasureOne = part.getMeasure(2, 1);
+		Measure staffTwoMeasureTwo = part.getMeasure(2, 2);
+		Measure staffTwoMeasureThree = part.getMeasure(2, 3);
+
+		assertEquals(TimeSignatures.SIX_EIGHT, staffTwoMeasureOne.getTimeSignature());
+		assertEquals(TimeSignatures.FOUR_FOUR, staffTwoMeasureTwo.getTimeSignature());
+		assertEquals(TimeSignatures.THREE_FOUR, staffTwoMeasureThree.getTimeSignature());
+
+		Measure staffThreeMeasureOne = part.getMeasure(3, 1);
+		Measure staffThreeMeasureTwo = part.getMeasure(3, 2);
+		Measure staffThreeMeasureThree = part.getMeasure(3, 3);
+
+		assertEquals(TimeSignatures.SIX_EIGHT, staffThreeMeasureOne.getTimeSignature());
+		assertEquals(TimeSignatures.FOUR_FOUR, staffThreeMeasureTwo.getTimeSignature());
+		assertEquals(TimeSignatures.THREE_FOUR, staffThreeMeasureThree.getTimeSignature());
 	}
 }

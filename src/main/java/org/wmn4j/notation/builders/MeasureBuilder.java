@@ -3,14 +3,6 @@
  */
 package org.wmn4j.notation.builders;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Clef;
 import org.wmn4j.notation.elements.Clefs;
@@ -23,12 +15,20 @@ import org.wmn4j.notation.elements.MeasureAttributes;
 import org.wmn4j.notation.elements.TimeSignature;
 import org.wmn4j.notation.elements.TimeSignatures;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * Class for building {@link Measure} objects. The methods {@link #isFull()
  * isFull} and {@link #isFull(int) isVoiceFull} should be used for checking if
  * the durations add up to the correct amount to fill up the measure according
  * to the specified time signature.
- *
+ * <p>
  * Default values: TimeSignature : 4/4 KeySignature : C-major/a-minor Clef: G
  * Barlines (right and left): Single. No clef changes.
  */
@@ -38,6 +38,16 @@ public class MeasureBuilder {
 	private final Map<Integer, List<DurationalBuilder>> voices;
 	private final MeasureAttributesBuilder attributesBuilder;
 	private final MeasureAttributes initialMeasureAttributes;
+
+	/**
+	 * Returns a measure builder with the measure number and attributes of the given measure builder.
+	 *
+	 * @param builder the builder whose attributes are set to this builder
+	 * @return a measure builder with the attributes of the given measure builder
+	 */
+	public static MeasureBuilder withAttributesOf(MeasureBuilder builder) {
+		return new MeasureBuilder(builder.number, builder.getAttributes());
+	}
 
 	/**
 	 * Create a measure builder with the given attributes.
@@ -189,7 +199,7 @@ public class MeasureBuilder {
 	 * values of the clef changes measured from the beginning of the measure.
 	 *
 	 * @return clef changes currently set for this builder. Durations are offsets
-	 *         from the beginning of the measure.
+	 * from the beginning of the measure.
 	 */
 	public Map<Duration, Clef> getClefChanges() {
 		return attributesBuilder.clefChanges;
@@ -335,7 +345,7 @@ public class MeasureBuilder {
 	 *
 	 * @param voice the number of the voice that is checked
 	 * @return true if the total duration of the durational elements in the voice
-	 *         exceed what can fit in the measure
+	 * exceed what can fit in the measure
 	 */
 	public boolean isOverflowing(int voice) {
 		return totalDurationOfVoice(voice).isLongerThan(getTimeSignature().getTotalDuration());
@@ -422,6 +432,14 @@ public class MeasureBuilder {
 		return builtVoices;
 	}
 
+	private MeasureAttributes getAttributes() {
+		if (attributesBuilder.equalsInContent(initialMeasureAttributes)) {
+			return initialMeasureAttributes;
+		}
+
+		return attributesBuilder.build();
+	}
+
 	/**
 	 * Returns a {@link Measure} with the values set in this builder. Voices that do
 	 * not contain enough durational notation elements are padded with rests at the
@@ -446,17 +464,11 @@ public class MeasureBuilder {
 	 * @return a measure with the values set in this builder
 	 */
 	public Measure build(boolean padWithRests, boolean trim) {
-		MeasureAttributes measureAttributes = initialMeasureAttributes;
-
-		if (!attributesBuilder.equalsInContent(measureAttributes)) {
-			measureAttributes = attributesBuilder.build();
-		}
-
 		if (trim) {
 			this.trim();
 		}
 
-		return Measure.of(this.number, this.buildVoices(padWithRests), measureAttributes);
+		return Measure.of(this.number, this.buildVoices(padWithRests), getAttributes());
 	}
 
 	private final class MeasureAttributesBuilder {
