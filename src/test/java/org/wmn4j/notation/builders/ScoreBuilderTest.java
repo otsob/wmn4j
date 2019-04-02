@@ -1,26 +1,19 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.builders;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import org.wmn4j.notation.TestHelper;
+import org.wmn4j.notation.elements.Score;
+import org.wmn4j.notation.elements.ScoreTest;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-import org.wmn4j.notation.TestHelper;
-import org.wmn4j.notation.builders.PartBuilder;
-import org.wmn4j.notation.builders.ScoreBuilder;
-import org.wmn4j.notation.elements.Score;
-import org.wmn4j.notation.elements.ScoreTest;
+import static org.junit.Assert.assertEquals;
 
-/**
- *
- * @author Otso Björklund
- */
 public class ScoreBuilderTest {
 
 	public ScoreBuilderTest() {
