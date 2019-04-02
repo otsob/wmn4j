@@ -46,6 +46,18 @@ public class PartBuilder {
 	}
 
 	/**
+	 * Returns the number of measures in the longest staff in this builder.
+	 * <p>
+	 * For a single staff part the returned number is the number of measures. For a part with multiple staves
+	 * the returned number is the number of measures in the staff with the largest number of measures.
+	 *
+	 * @return the number of measures in the longest staff in this builder
+	 */
+	public int getMeasureCount() {
+		return staveContents.values().stream().map(staff -> staff.size()).max(Integer::compareTo).orElse(0);
+	}
+
+	/**
 	 * Adds a {@link MeasureBuilder} to this builder. This is used for building
 	 * parts with a single staff.
 	 *
