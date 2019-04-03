@@ -105,6 +105,21 @@ public class PartBuilderTest {
 	}
 
 	@Test
+	public void testGetStaffNumbers() {
+		PartBuilder builder = new PartBuilder("Test");
+		assertTrue(builder.getStaffNumbers().isEmpty());
+
+		builder.add(new MeasureBuilder(1));
+		assertEquals(1, builder.getStaffNumbers().size());
+		assertTrue(builder.getStaffNumbers().contains(1));
+
+		builder.addToStaff(2, new MeasureBuilder(1));
+		assertEquals(2, builder.getStaffNumbers().size());
+		assertTrue(builder.getStaffNumbers().contains(1));
+		assertTrue(builder.getStaffNumbers().contains(2));
+	}
+
+	@Test
 	public void testBuildSingleStaffPart() {
 		final int measureCount = 5;
 		final PartBuilder builder = new PartBuilder("");

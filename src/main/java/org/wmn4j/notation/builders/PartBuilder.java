@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -97,6 +98,15 @@ public class PartBuilder {
 	 */
 	public void setAttribute(Part.Attribute attribute, String value) {
 		this.partAttributes.put(attribute, value);
+	}
+
+	/**
+	 * Returns the staff numbers set in this builder.
+	 *
+	 * @return the staff numbers set in this builder
+	 */
+	public Set<Integer> getStaffNumbers() {
+		return staveContents.keySet();
 	}
 
 	/**
