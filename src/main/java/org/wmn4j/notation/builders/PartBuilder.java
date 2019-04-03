@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -44,6 +45,20 @@ public class PartBuilder {
 	 */
 	public int getStaffCount() {
 		return this.staveContents.size();
+	}
+
+	/**
+	 * Returns the list of builders associated with the given staff number.
+	 *
+	 * @param staffNumber the number of the staff for which to return the measure builders
+	 * @return the list of builders associated with the given staff number
+	 */
+	public List<MeasureBuilder> getStaffContents(int staffNumber) {
+		if (!staveContents.containsKey(staffNumber)) {
+			throw new NoSuchElementException("No staff with the number " + staffNumber);
+		}
+
+		return staveContents.get(staffNumber);
 	}
 
 	/**
