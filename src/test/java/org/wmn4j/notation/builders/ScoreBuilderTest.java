@@ -1,26 +1,21 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.builders;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import org.wmn4j.notation.TestHelper;
+import org.wmn4j.notation.elements.Part;
+import org.wmn4j.notation.elements.Score;
+import org.wmn4j.notation.elements.ScoreTest;
+import org.wmn4j.notation.elements.TimeSignatures;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-import org.wmn4j.notation.TestHelper;
-import org.wmn4j.notation.builders.PartBuilder;
-import org.wmn4j.notation.builders.ScoreBuilder;
-import org.wmn4j.notation.elements.Score;
-import org.wmn4j.notation.elements.ScoreTest;
+import static org.junit.Assert.assertEquals;
 
-/**
- *
- * @author Otso Björklund
- */
 public class ScoreBuilderTest {
 
 	public ScoreBuilderTest() {
@@ -60,5 +55,61 @@ public class ScoreBuilderTest {
 		assertEquals(ScoreTest.COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
 
 		assertEquals(5, score.getPartCount());
+	}
+
+	@Test
+	public void testPartsAreOfEqualLengthWhenBuilt() {
+		final List<PartBuilder> partBuilders = getTestPartBuilders(3, 1);
+		PartBuilder first = partBuilders.get(0);
+		first.add(new MeasureBuilder(2));
+
+		MeasureBuilder thirdMeasureBuilder = new MeasureBuilder(3);
+		thirdMeasureBuilder.setTimeSignature(TimeSignatures.THREE_FOUR);
+		first.add(thirdMeasureBuilder);
+
+		MeasureBuilder fourthMeasureBuilder = new MeasureBuilder(4);
+		fourthMeasureBuilder.setTimeSignature(TimeSignatures.FOUR_FOUR);
+		first.add(fourthMeasureBuilder);
+
+		PartBuilder multiStaffPartBuilder = partBuilders.get(1);
+		multiStaffPartBuilder.addToStaff(2, new MeasureBuilder(1));
+
+		ScoreBuilder scoreBuilder = new ScoreBuilder();
+		scoreBuilder.setAttribute(Score.Attribute.NAME, "test score");
+
+		scoreBuilder.addPart(first);
+		scoreBuilder.addPart(multiStaffPartBuilder);
+		scoreBuilder.addPart(partBuilders.get(2));
+
+		Score score = scoreBuilder.build();
+
+		Part firstPart = score.getPart(0);
+		assertEquals(4, firstPart.getMeasureCount());
+		assertEquals(1, firstPart.getStaffCount());
+		assertEquals(TimeSignatures.FOUR_FOUR, firstPart.getMeasure(1, 1).getTimeSignature());
+		assertEquals(TimeSignatures.FOUR_FOUR, firstPart.getMeasure(1, 2).getTimeSignature());
+		assertEquals(TimeSignatures.THREE_FOUR, firstPart.getMeasure(1, 3).getTimeSignature());
+		assertEquals(TimeSignatures.FOUR_FOUR, firstPart.getMeasure(1, 4).getTimeSignature());
+
+		Part secondPart = score.getPart(1);
+		assertEquals(4, secondPart.getMeasureCount());
+		assertEquals(2, secondPart.getStaffCount());
+		assertEquals(TimeSignatures.FOUR_FOUR, secondPart.getMeasure(1, 1).getTimeSignature());
+		assertEquals(TimeSignatures.FOUR_FOUR, secondPart.getMeasure(1, 2).getTimeSignature());
+		assertEquals(TimeSignatures.THREE_FOUR, secondPart.getMeasure(1, 3).getTimeSignature());
+		assertEquals(TimeSignatures.FOUR_FOUR, secondPart.getMeasure(1, 4).getTimeSignature());
+
+		assertEquals(TimeSignatures.FOUR_FOUR, secondPart.getMeasure(2, 1).getTimeSignature());
+		assertEquals(TimeSignatures.FOUR_FOUR, secondPart.getMeasure(2, 2).getTimeSignature());
+		assertEquals(TimeSignatures.THREE_FOUR, secondPart.getMeasure(2, 3).getTimeSignature());
+		assertEquals(TimeSignatures.FOUR_FOUR, secondPart.getMeasure(2, 4).getTimeSignature());
+
+		Part thirdPart = score.getPart(2);
+		assertEquals(4, thirdPart.getMeasureCount());
+		assertEquals(1, thirdPart.getStaffCount());
+		assertEquals(TimeSignatures.FOUR_FOUR, thirdPart.getMeasure(1, 1).getTimeSignature());
+		assertEquals(TimeSignatures.FOUR_FOUR, thirdPart.getMeasure(1, 2).getTimeSignature());
+		assertEquals(TimeSignatures.THREE_FOUR, thirdPart.getMeasure(1, 3).getTimeSignature());
+		assertEquals(TimeSignatures.FOUR_FOUR, thirdPart.getMeasure(1, 4).getTimeSignature());
 	}
 }

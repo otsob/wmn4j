@@ -14,8 +14,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +45,32 @@ public class PartBuilder {
 	 */
 	public int getStaffCount() {
 		return this.staveContents.size();
+	}
+
+	/**
+	 * Returns the list of builders associated with the given staff number.
+	 *
+	 * @param staffNumber the number of the staff for which to return the measure builders
+	 * @return the list of builders associated with the given staff number
+	 */
+	public List<MeasureBuilder> getStaffContents(int staffNumber) {
+		if (!staveContents.containsKey(staffNumber)) {
+			throw new NoSuchElementException("No staff with the number " + staffNumber);
+		}
+
+		return staveContents.get(staffNumber);
+	}
+
+	/**
+	 * Returns the number of measures in the longest staff in this builder.
+	 * <p>
+	 * For a single staff part the returned number is the number of measures. For a part with multiple staves
+	 * the returned number is the number of measures in the staff with the largest number of measures.
+	 *
+	 * @return the number of measures in the longest staff in this builder
+	 */
+	public int getMeasureCount() {
+		return staveContents.values().stream().map(staff -> staff.size()).max(Integer::compareTo).orElse(0);
 	}
 
 	/**
@@ -85,6 +113,15 @@ public class PartBuilder {
 	 */
 	public void setAttribute(Part.Attribute attribute, String value) {
 		this.partAttributes.put(attribute, value);
+	}
+
+	/**
+	 * Returns the staff numbers set in this builder.
+	 *
+	 * @return the staff numbers set in this builder
+	 */
+	public Set<Integer> getStaffNumbers() {
+		return staveContents.keySet();
 	}
 
 	/**

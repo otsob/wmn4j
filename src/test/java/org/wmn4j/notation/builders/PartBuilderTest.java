@@ -24,10 +24,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class PartBuilderTest {
 
@@ -87,6 +89,60 @@ public class PartBuilderTest {
 			builder.addToStaff(1, m);
 		}
 		assertEquals(2, builder.getStaffCount());
+	}
+
+	@Test
+	public void testGetMeasureCount() {
+		PartBuilder builder = new PartBuilder("Test");
+		assertEquals(0, builder.getMeasureCount());
+
+		builder.addToStaff(1, new MeasureBuilder(1));
+		assertEquals(1, builder.getMeasureCount());
+
+		builder.addToStaff(2, new MeasureBuilder(1));
+		assertEquals(1, builder.getMeasureCount());
+
+		builder.addToStaff(1, new MeasureBuilder(2));
+		assertEquals(2, builder.getMeasureCount());
+	}
+
+	@Test
+	public void testGetStaffNumbers() {
+		PartBuilder builder = new PartBuilder("Test");
+		assertTrue(builder.getStaffNumbers().isEmpty());
+
+		builder.add(new MeasureBuilder(1));
+		assertEquals(1, builder.getStaffNumbers().size());
+		assertTrue(builder.getStaffNumbers().contains(1));
+
+		builder.addToStaff(2, new MeasureBuilder(1));
+		assertEquals(2, builder.getStaffNumbers().size());
+		assertTrue(builder.getStaffNumbers().contains(1));
+		assertTrue(builder.getStaffNumbers().contains(2));
+	}
+
+	@Test
+	public void testGetMeasureBuildersForStaff() {
+		PartBuilder builder = new PartBuilder("Test");
+		assertTrue(builder.getStaffNumbers().isEmpty());
+
+		builder.addToStaff(1, new MeasureBuilder(1));
+		builder.addToStaff(1, new MeasureBuilder(2));
+		builder.addToStaff(2, new MeasureBuilder(1));
+
+		assertEquals(2, builder.getStaffContents(1).size());
+		assertEquals(1, builder.getStaffContents(1).get(0).getNumber());
+		assertEquals(2, builder.getStaffContents(1).get(1).getNumber());
+
+		assertEquals(1, builder.getStaffContents(2).size());
+		assertEquals(1, builder.getStaffContents(2).get(0).getNumber());
+
+		try {
+			builder.getStaffContents(3);
+			fail("Trying to get builder from a voice that is not set in the builder did not throw exception");
+		} catch (NoSuchElementException e) {
+			/* Do nothing */
+		}
 	}
 
 	@Test
