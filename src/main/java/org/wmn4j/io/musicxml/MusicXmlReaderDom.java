@@ -3,11 +3,12 @@
  */
 package org.wmn4j.io.musicxml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wmn4j.io.IOLogger;
 import org.wmn4j.notation.builders.ChordBuilder;
 import org.wmn4j.notation.builders.MeasureBuilder;
 import org.wmn4j.notation.builders.NoteBuilder;
@@ -51,7 +52,8 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	private static final int MIN_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
 	private static final int DEFAULT_STAFF_COUNT = 1;
 
-	private final IOLogger logger = new IOLogger();
+	private static final Logger LOG = LoggerFactory.getLogger(MusicXmlReaderDom.class);
+
 	private final boolean validateInput;
 
 	/**
@@ -85,7 +87,7 @@ class MusicXmlReaderDom implements MusicXmlReader {
 			final Validator validator = schema.newValidator();
 			validator.validate(new StreamSource(musicXmlFile));
 		} catch (IOException | SAXException e) {
-			this.logger.log(musicXmlFile.toString() + " is NOT valid reason:" + e);
+			LOG.warn(musicXmlFile.toString() + " is NOT valid reason", e);
 			return false;
 		}
 
@@ -419,7 +421,7 @@ class MusicXmlReaderDom implements MusicXmlReader {
 				if (articulation != null) {
 					noteBuilder.addArticulation(articulation);
 				} else {
-					this.logger.log("No Articulation for node with name " + articulationNode.getNodeName());
+					LOG.warn("Articulation of type " + articulationNode.getNodeName() + " not supported");
 				}
 			}
 		}
