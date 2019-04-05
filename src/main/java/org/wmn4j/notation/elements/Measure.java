@@ -81,6 +81,17 @@ public final class Measure implements Iterable<Durational> {
 	}
 
 	/**
+	 * Returns a pickup measure with the given contents and measure attributes.
+	 *
+	 * @param noteVoices        noteVoices  the notes on the different voices of the measure
+	 * @param measureAttributes the attributes of the measure
+	 * @return a pickup measure with the given contents and measure attributes
+	 */
+	public static Measure pickupOf(Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttributes) {
+		return new Measure(0, noteVoices, measureAttributes);
+	}
+
+	/**
 	 * Constructor.
 	 *
 	 * @param number      number of the measure.

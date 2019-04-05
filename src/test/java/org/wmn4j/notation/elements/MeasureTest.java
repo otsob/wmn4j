@@ -220,4 +220,17 @@ public class MeasureTest {
 			/* Do nothing */
 		}
 	}
+
+	@Test
+	public void testPickUpMeasure() {
+		final MeasureAttributes attributes = MeasureAttributes
+				.of(TimeSignatures.FOUR_FOUR, keySig, Barline.SINGLE, Clefs.G);
+		final Measure pickupMeasure = Measure.pickupOf(this.multipleNoteVoices, attributes);
+
+		assertTrue(pickupMeasure.isPickUp());
+
+		final Measure nonPickup = Measure.of(1, this.multipleNoteVoices, attributes);
+
+		assertFalse(nonPickup.isPickUp());
+	}
 }
