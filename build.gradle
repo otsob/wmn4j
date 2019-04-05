@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    compile 'junit:junit:4.12'
+    implementation 'junit:junit:4.12'
 }
 
 group = 'wmn4j'
