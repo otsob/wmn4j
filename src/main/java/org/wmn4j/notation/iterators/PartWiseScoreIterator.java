@@ -3,13 +3,12 @@
  */
 package org.wmn4j.notation.iterators;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
 import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Measure;
 import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Score;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Iterates through a {@link Score} in part wise order. Starts by iterating
@@ -21,7 +20,7 @@ public class PartWiseScoreIterator implements ScoreIterator {
 	private final Iterator<Part> scoreIterator;
 
 	private Part.Iter currentPartIterator;
-	private Measure.Iter currentMeasureIterator;
+	private MeasureIterator currentMeasureIterator;
 	private Part prevPart;
 	private int prevPartIndex;
 	private int prevStaffNumber;
