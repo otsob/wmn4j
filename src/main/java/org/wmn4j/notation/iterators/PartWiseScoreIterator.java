@@ -19,7 +19,7 @@ public class PartWiseScoreIterator implements ScoreIterator {
 
 	private final Iterator<Part> scoreIterator;
 
-	private Part.Iter currentPartIterator;
+	private PartIterator currentPartIterator;
 	private MeasureIterator currentMeasureIterator;
 	private Part prevPart;
 	private int prevPartIndex;

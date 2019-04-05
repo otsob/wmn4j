@@ -3,10 +3,11 @@
  */
 package org.wmn4j.notation.elements;
 
+import org.wmn4j.notation.iterators.PartIterator;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -119,13 +120,8 @@ public final class MultiStaffPart implements Part {
 	}
 
 	@Override
-	public Part.Iter getPartIterator() {
+	public PartIterator getPartIterator() {
 		return new MultiStaffPart.Iter(this);
-	}
-
-	@Override
-	public Iterator<Measure> iterator() {
-		return this.getPartIterator();
 	}
 
 	@Override
@@ -144,13 +140,7 @@ public final class MultiStaffPart implements Part {
 		return builder.toString();
 	}
 
-	/**
-	 * Iterator for {@link MultiStaffPart}. Iterates through the measures by going
-	 * through all staves for a certain measure number before going on to the next
-	 * measure. Staves are iterated through from smallest staff number to greatest.
-	 * Does not support removing.
-	 */
-	public static class Iter implements Part.Iter {
+	private static class Iter implements PartIterator {
 		private final MultiStaffPart part;
 		private int keyIndex;
 		private final List<Integer> keys;
@@ -163,7 +153,7 @@ public final class MultiStaffPart implements Part {
 		 *
 		 * @param part the part for which the iterator is created
 		 */
-		public Iter(MultiStaffPart part) {
+		Iter(MultiStaffPart part) {
 			this.part = part;
 			this.keyIndex = 0;
 			this.keys = this.part.getStaffNumbers();
@@ -209,11 +199,6 @@ public final class MultiStaffPart implements Part {
 			}
 
 			return measure;
-		}
-
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException("Removing not supported.");
 		}
 	}
 }

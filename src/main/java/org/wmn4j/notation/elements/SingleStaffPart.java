@@ -3,6 +3,8 @@
  */
 package org.wmn4j.notation.elements;
 
+import org.wmn4j.notation.iterators.PartIterator;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -97,13 +99,8 @@ public final class SingleStaffPart implements Part {
 	}
 
 	@Override
-	public Part.Iter getPartIterator() {
+	public PartIterator getPartIterator() {
 		return new SingleStaffPart.Iter(this);
-	}
-
-	@Override
-	public Iterator<Measure> iterator() {
-		return this.getPartIterator();
 	}
 
 	@Override
@@ -141,21 +138,12 @@ public final class SingleStaffPart implements Part {
 		return builder.toString();
 	}
 
-	/**
-	 * Iterator for {@link SingleStaffPart}. Iterates through measures starting from
-	 * smallest measure number. Does not support removing.
-	 */
-	public static class Iter implements Part.Iter {
+	private static class Iter implements PartIterator {
 
 		private final Iterator<Measure> staffIterator;
 		private int prevMeasureNumber = 0;
 
-		/**
-		 * Constructor.
-		 *
-		 * @param part the part for which the iterator is created
-		 */
-		public Iter(SingleStaffPart part) {
+		Iter(SingleStaffPart part) {
 			this.staffIterator = part.getStaff().iterator();
 		}
 
