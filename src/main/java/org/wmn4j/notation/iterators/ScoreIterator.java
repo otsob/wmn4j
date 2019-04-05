@@ -3,10 +3,9 @@
  */
 package org.wmn4j.notation.iterators;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
 import org.wmn4j.notation.elements.Durational;
+
+import java.util.Iterator;
 
 /**
  * Interface for iterators that iterate through the
@@ -14,25 +13,6 @@ import org.wmn4j.notation.elements.Durational;
  * {@link org.wmn4j.notation.elements.Score}.
  */
 public interface ScoreIterator extends Iterator<Durational> {
-
-	/**
-	 * Returns true if this iterator has elements left.
-	 *
-	 * @return true if not at the end, false otherwise
-	 */
-	@Override
-	boolean hasNext();
-
-	/**
-	 * Get the next durational notation element from the score. Order of iteration
-	 * depends on the implementation.
-	 *
-	 * @return next durational element
-	 * @throws NoSuchElementException if this iterator has already reached the end
-	 *                                of the score
-	 */
-	@Override
-	Durational next() throws NoSuchElementException;
 
 	/**
 	 * Returns the position of the {@link Durational} returned by the last call of
@@ -44,4 +24,9 @@ public interface ScoreIterator extends Iterator<Durational> {
 	 *                               the iterator
 	 */
 	ScorePosition getPositionOfPrevious() throws IllegalStateException;
+
+	@Override
+	default void remove() {
+		throw new UnsupportedOperationException("Removing not supported.");
+	}
 }
