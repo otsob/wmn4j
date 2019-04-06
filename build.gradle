@@ -21,7 +21,8 @@ repositories {
 }
 
 dependencies {
-    compile 'junit:junit:4.12'
+    implementation 'junit:junit:4.12'
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
 }
 
 group = 'wmn4j'
