@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.wmn4j.io.musicxml.MusicXmlReader;
-import org.wmn4j.io.musicxml.MusicXmlReaderDom;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.elements.Articulation;
 import org.wmn4j.notation.elements.Barline;
@@ -40,10 +38,7 @@ import org.wmn4j.notation.elements.Staff;
 import org.wmn4j.notation.elements.TimeSignature;
 import org.wmn4j.notation.elements.TimeSignatures;
 
-/**
- *
- * @author Otso Björklund
- */
+
 public class MusicXmlReaderDomTest {
 
 	static final String MUSICXML_FILE_PATH = "musicxml/";
