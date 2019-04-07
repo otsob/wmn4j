@@ -78,8 +78,6 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	}
 
 	private boolean isMusicXmlFileValid(File musicXmlFile) {
-
-		// TODO: Make this work.
 		final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		try {
 			final Schema schema = schemaFactory.newSchema(MusicXmlReader.SCHEMA.toFile());
