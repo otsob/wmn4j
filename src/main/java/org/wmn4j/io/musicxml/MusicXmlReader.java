@@ -16,7 +16,7 @@ public interface MusicXmlReader extends ScoreReader {
 	/**
 	 * The path to the local MusicXML schema.
 	 */
-	Path SCHEMA = Paths.get("src/wmnlibio/musicxml/musicxml.xsd");
+	Path SCHEMA = Paths.get("src/main/java/org/wmn4j/io/musicxml/schema/musicxml.xsd");
 
 	/**
 	 * Returns a reader object with the given configuration.
