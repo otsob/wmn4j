@@ -19,7 +19,7 @@ public final class TimeSignatures {
 	public static final TimeSignature THREE_FOUR = TimeSignature.of(3, 4);
 
 	/**
-	 * The time signature "/4.
+	 * The time signature 2/4.
 	 */
 	public static final TimeSignature TWO_FOUR = TimeSignature.of(2, 4);
 

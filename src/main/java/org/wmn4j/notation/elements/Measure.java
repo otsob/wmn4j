@@ -3,6 +3,8 @@
  */
 package org.wmn4j.notation.elements;
 
+import org.wmn4j.notation.iterators.MeasureIterator;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -78,6 +80,17 @@ public final class Measure implements Iterable<Durational> {
 	 */
 	public static Measure restMeasureOf(int number, MeasureAttributes measureAttributes) {
 		return new Measure(number, Collections.emptyMap(), measureAttributes);
+	}
+
+	/**
+	 * Returns a pickup measure with the given contents and measure attributes.
+	 *
+	 * @param noteVoices        noteVoices  the notes on the different voices of the measure
+	 * @param measureAttributes the attributes of the measure
+	 * @return a pickup measure with the given contents and measure attributes
+	 */
+	public static Measure pickupOf(Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttributes) {
+		return new Measure(0, noteVoices, measureAttributes);
 	}
 
 	/**
@@ -300,17 +313,11 @@ public final class Measure implements Iterable<Durational> {
 	 *
 	 * @return a measure iterator for this measure
 	 */
-	public Measure.Iter getMeasureIterator() {
+	public MeasureIterator getMeasureIterator() {
 		return new Iter(this);
 	}
 
-	/**
-	 * Iterator for {@link Durational} objects in a meusure. The iterator iterates
-	 * through the notes in the Measure voice by voice going from the earliest
-	 * durational in the voice to the last on each voice. The order of voices is
-	 * unspecified. The iterator does not support removing.
-	 */
-	public static class Iter implements Iterator<Durational> {
+	private static class Iter implements MeasureIterator {
 		private final List<Integer> voiceNumbers;
 		private final Measure measure;
 		private int voiceNumberIndex = 0;
@@ -323,31 +330,17 @@ public final class Measure implements Iterable<Durational> {
 		 *
 		 * @param measure the measure for which the iterator is created
 		 */
-		public Iter(Measure measure) {
+		Iter(Measure measure) {
 			this.measure = measure;
 			this.voiceNumbers = measure.getVoiceNumbers();
 		}
 
-		/**
-		 * Returns the voice of the {@link Durational} that was returned by the last
-		 * call of {@link #next() next}.
-		 *
-		 * @return the voice of the {@link Durational} that was returned by the last
-		 * call of {@link #next() next}. If next has not been called, return
-		 * value is useless.
-		 */
+		@Override
 		public int getVoiceOfPrevious() {
 			return this.prevVoiceNumber;
 		}
 
-		/**
-		 * Returns the index of the {@link Durational} that was returned by the last
-		 * call of {@link #next() next}.
-		 *
-		 * @return the index of the {@link Durational} that was returned by the last
-		 * call of {@link #next() next}. If next has not been called, return
-		 * value is useless.
-		 */
+		@Override
 		public int getIndexOfPrevious() {
 			return this.prevPositionInVoice;
 		}
@@ -380,11 +373,6 @@ public final class Measure implements Iterable<Durational> {
 			}
 
 			return next;
-		}
-
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException("Removing not supported.");
 		}
 	}
 }

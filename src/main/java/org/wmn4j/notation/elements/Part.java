@@ -3,6 +3,8 @@
  */
 package org.wmn4j.notation.elements;
 
+import org.wmn4j.notation.iterators.PartIterator;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -16,7 +18,7 @@ public interface Part extends Iterable<Measure> {
 	 */
 	enum Attribute {
 		NAME, ABBREVIATED_NAME
-	};
+	}
 
 	/**
 	 * Returns the name of this part.
@@ -45,7 +47,7 @@ public interface Part extends Iterable<Measure> {
 	 *
 	 * @param attribute the attribute to return from this part
 	 * @return the value of the attribute, or an empty string if the attribute is
-	 *         not set
+	 * not set
 	 */
 	String getAttribute(Attribute attribute);
 
@@ -55,7 +57,7 @@ public interface Part extends Iterable<Measure> {
 	 * the largest measure number.
 	 *
 	 * @return number of measures in the part. If there is a pickup measure, it is
-	 *         included in the count.
+	 * included in the count.
 	 */
 	int getMeasureCount();
 
@@ -84,29 +86,12 @@ public interface Part extends Iterable<Measure> {
 	 * this part.
 	 *
 	 * @return an iterator that can be used to iterate through the measures in this
-	 *         part
+	 * part
 	 */
-	Part.Iter getPartIterator();
+	PartIterator getPartIterator();
 
-	/**
-	 * Interface for Part Iterators.
-	 */
-	public interface Iter extends Iterator<Measure> {
-
-		/**
-		 * Returns the staff number of the measure that was returned on the previous
-		 * call of next.
-		 *
-		 * @return the staff number of the previous measure
-		 */
-		int getStaffNumberOfPrevious();
-
-		/**
-		 * Returns the measure number of the measure that was returned on the previous
-		 * call of next.
-		 *
-		 * @return the measure number of the previous measure
-		 */
-		int getMeasureNumberOfPrevious();
+	@Override
+	default Iterator<Measure> iterator() {
+		return getPartIterator();
 	}
 }
