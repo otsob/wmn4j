@@ -449,11 +449,23 @@ public class MusicXmlReaderDomTest {
 	public void testReadingIncorrectXmlFile() {
 		final MusicXmlReader reader = new MusicXmlReaderDom(true);
 		try {
-			final Score score = reader.readScore(Paths.get(MUSICXML_FILE_PATH + "singleCinvalid.xml"));
+			final Score score = reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalid.xml"));
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
 		} catch (final IOException e) {
 
 		}
 
 	}
+
+	@Test
+	public void testValidatingCorrectXmlFile() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"));
+		} catch (Exception e) {
+			fail("Exception was thrown while validating valid MusicXml file");
+		}
+
+	}
+
 }
