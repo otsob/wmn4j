@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.wmn4j.io.musicxml.MusicXmlReader;
-import org.wmn4j.io.musicxml.MusicXmlReaderDom;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.elements.Articulation;
 import org.wmn4j.notation.elements.Barline;
@@ -40,10 +38,7 @@ import org.wmn4j.notation.elements.Staff;
 import org.wmn4j.notation.elements.TimeSignature;
 import org.wmn4j.notation.elements.TimeSignatures;
 
-/**
- *
- * @author Otso Björklund
- */
+
 public class MusicXmlReaderDomTest {
 
 	static final String MUSICXML_FILE_PATH = "musicxml/";
@@ -454,11 +449,23 @@ public class MusicXmlReaderDomTest {
 	public void testReadingIncorrectXmlFile() {
 		final MusicXmlReader reader = new MusicXmlReaderDom(true);
 		try {
-			final Score score = reader.readScore(Paths.get(MUSICXML_FILE_PATH + "singleCinvalid.xml"));
+			final Score score = reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalid.xml"));
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
 		} catch (final IOException e) {
 
 		}
 
 	}
+
+	@Test
+	public void testValidatingCorrectXmlFile() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"));
+		} catch (Exception e) {
+			fail("Exception was thrown while validating valid MusicXml file");
+		}
+
+	}
+
 }
