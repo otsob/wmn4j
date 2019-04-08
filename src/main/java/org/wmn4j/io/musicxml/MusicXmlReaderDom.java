@@ -80,8 +80,9 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	private boolean isMusicXmlFileValid(File musicXmlFile) {
 		final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		try {
-			final Schema schema = schemaFactory.newSchema(MusicXmlReader.SCHEMA.toFile());
-
+			ClassLoader classLoader = getClass().getClassLoader();
+			File schemaFile = new File(classLoader.getResource("org/wmn4j/io/musicxml/musicxml.xsd").getFile());
+			final Schema schema = schemaFactory.newSchema(schemaFile);
 			final Validator validator = schema.newValidator();
 			validator.validate(new StreamSource(musicXmlFile));
 		} catch (IOException | SAXException e) {

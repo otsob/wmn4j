@@ -5,18 +5,10 @@ package org.wmn4j.io.musicxml;
 
 import org.wmn4j.io.ScoreReader;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 /**
  * Represents a reader for MusicXML files.
  */
 public interface MusicXmlReader extends ScoreReader {
-
-	/**
-	 * The path to the local MusicXML schema.
-	 */
-	Path SCHEMA = Paths.get("src/main/java/org/wmn4j/io/musicxml/schema/musicxml.xsd");
 
 	/**
 	 * Returns a reader object with the given configuration.
