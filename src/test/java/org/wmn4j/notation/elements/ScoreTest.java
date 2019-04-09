@@ -25,6 +25,7 @@ import static org.junit.Assert.fail;
 public class ScoreTest {
 
 	public static final String SCORE_NAME = "TestScore";
+	public static final String SUBTITLE = "Score subtitle";
 	public static final String COMPOSER_NAME = "TestComposer";
 
 	public ScoreTest() {
@@ -33,6 +34,7 @@ public class ScoreTest {
 	public static Map<Score.Attribute, String> getTestAttributes() {
 		final Map<Score.Attribute, String> attributes = new HashMap<>();
 		attributes.put(Score.Attribute.TITLE, SCORE_NAME);
+		attributes.put(Score.Attribute.SUBTITLE, SUBTITLE);
 		attributes.put(Score.Attribute.COMPOSER, COMPOSER_NAME);
 		return attributes;
 	}
@@ -66,6 +68,7 @@ public class ScoreTest {
 	public void testGetAttribute() {
 		final Score score = Score.of(getTestAttributes(), getTestParts(5, 5));
 		assertEquals(SCORE_NAME, score.getAttribute(Score.Attribute.TITLE));
+		assertEquals(SUBTITLE, score.getAttribute(Score.Attribute.SUBTITLE));
 		assertEquals(COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals("", score.getAttribute(Score.Attribute.ARRANGER));
 	}

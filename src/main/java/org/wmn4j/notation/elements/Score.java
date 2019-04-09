@@ -26,6 +26,12 @@ public final class Score implements Iterable<Part> {
 		 * The main title of the score.
 		 */
 		TITLE,
+
+		/**
+		 * The subtitle of the score.
+		 */
+		SUBTITLE,
+
 		/**
 		 * The composer name.
 		 */
