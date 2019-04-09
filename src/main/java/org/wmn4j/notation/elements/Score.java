@@ -108,6 +108,16 @@ public final class Score implements Iterable<Part> {
 	}
 
 	/**
+	 * Returns true if the given attribute is set in this score.
+	 *
+	 * @param attribute the attribute whose presence is checked
+	 * @return true if the given attribute is set in this score
+	 */
+	public boolean hasAttribute(Attribute attribute) {
+		return !scoreAttr.getOrDefault(attribute, "").isEmpty();
+	}
+
+	/**
 	 * Returns the value of the given attribute.
 	 *
 	 * @param attribute the type of the attribute

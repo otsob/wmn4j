@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -53,6 +54,16 @@ public class ScoreTest {
 		}
 
 		return parts;
+	}
+
+	@Test
+	public void testHasAttribute() {
+		final Map<Score.Attribute, String> attributes = new HashMap<>();
+		attributes.put(Score.Attribute.TITLE, SCORE_NAME);
+
+		final Score score = Score.of(attributes, getTestParts(1, 1));
+		assertTrue(score.hasAttribute(Score.Attribute.TITLE));
+		assertFalse(score.hasAttribute(Score.Attribute.COMPOSER));
 	}
 
 	@Test
