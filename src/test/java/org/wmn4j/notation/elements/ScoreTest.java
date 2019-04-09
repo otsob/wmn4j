@@ -27,6 +27,7 @@ public class ScoreTest {
 	public static final String SCORE_NAME = "TestScore";
 	public static final String SUBTITLE = "Score subtitle";
 	public static final String COMPOSER_NAME = "TestComposer";
+	public static final String ARRANGER = "Test Arranger";
 
 	public ScoreTest() {
 	}
@@ -36,6 +37,7 @@ public class ScoreTest {
 		attributes.put(Score.Attribute.TITLE, SCORE_NAME);
 		attributes.put(Score.Attribute.SUBTITLE, SUBTITLE);
 		attributes.put(Score.Attribute.COMPOSER, COMPOSER_NAME);
+		attributes.put(Score.Attribute.ARRANGER, ARRANGER);
 		return attributes;
 	}
 
@@ -70,7 +72,8 @@ public class ScoreTest {
 		assertEquals(SCORE_NAME, score.getAttribute(Score.Attribute.TITLE));
 		assertEquals(SUBTITLE, score.getAttribute(Score.Attribute.SUBTITLE));
 		assertEquals(COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
-		assertEquals("", score.getAttribute(Score.Attribute.ARRANGER));
+		assertEquals(ARRANGER, score.getAttribute(Score.Attribute.ARRANGER));
+		assertEquals("", score.getAttribute(Score.Attribute.YEAR));
 	}
 
 	@Test
