@@ -139,7 +139,7 @@ class MusicXmlReaderDom implements MusicXmlReader {
 		// TODO: Extend this when the attributes of a score are increased.
 		final Node movementTitle = doc.getElementsByTagName(MusicXmlTags.SCORE_MOVEMENT_TITLE).item(0);
 		if (movementTitle != null) {
-			scoreBuilder.setAttribute(Score.Attribute.NAME, movementTitle.getTextContent());
+			scoreBuilder.setAttribute(Score.Attribute.TITLE, movementTitle.getTextContent());
 		}
 
 		final Node identification = doc.getElementsByTagName(MusicXmlTags.SCORE_IDENTIFICATION).item(0);

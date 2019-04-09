@@ -51,7 +51,7 @@ public class ScoreBuilderTest {
 		}
 
 		final Score score = builder.build();
-		assertEquals(ScoreTest.SCORE_NAME, score.getName());
+		assertEquals(ScoreTest.SCORE_NAME, score.getTitle());
 		assertEquals(ScoreTest.COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
 
 		assertEquals(5, score.getPartCount());
@@ -75,7 +75,7 @@ public class ScoreBuilderTest {
 		multiStaffPartBuilder.addToStaff(2, new MeasureBuilder(1));
 
 		ScoreBuilder scoreBuilder = new ScoreBuilder();
-		scoreBuilder.setAttribute(Score.Attribute.NAME, "test score");
+		scoreBuilder.setAttribute(Score.Attribute.TITLE, "test score");
 
 		scoreBuilder.addPart(first);
 		scoreBuilder.addPart(multiStaffPartBuilder);
