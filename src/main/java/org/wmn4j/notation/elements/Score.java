@@ -3,6 +3,8 @@
  */
 package org.wmn4j.notation.elements;
 
+import org.wmn4j.notation.iterators.ScorePosition;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,11 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import org.wmn4j.notation.iterators.ScorePosition;
-
 /**
  * Represents a score. This class is immutable.
- *
  */
 public final class Score implements Iterable<Part> {
 
@@ -24,9 +23,15 @@ public final class Score implements Iterable<Part> {
 	 */
 	public enum Attribute {
 		/**
-		 * The name (main title) of the score.
+		 * The main title of the score.
 		 */
-		NAME,
+		TITLE,
+
+		/**
+		 * The subtitle of the score.
+		 */
+		SUBTITLE,
+
 		/**
 		 * The composer name.
 		 */
@@ -72,12 +77,12 @@ public final class Score implements Iterable<Part> {
 	}
 
 	/**
-	 * Returns the name of this score.
+	 * Returns the main title of this score.
 	 *
-	 * @return the name of this score
+	 * @return the main title of this score
 	 */
-	public String getName() {
-		return this.getAttribute(Attribute.NAME);
+	public String getTitle() {
+		return this.getAttribute(Attribute.TITLE);
 	}
 
 	/**
@@ -109,11 +114,21 @@ public final class Score implements Iterable<Part> {
 	}
 
 	/**
+	 * Returns true if the given attribute is set in this score.
+	 *
+	 * @param attribute the attribute whose presence is checked
+	 * @return true if the given attribute is set in this score
+	 */
+	public boolean hasAttribute(Attribute attribute) {
+		return !scoreAttr.getOrDefault(attribute, "").isEmpty();
+	}
+
+	/**
 	 * Returns the value of the given attribute.
 	 *
 	 * @param attribute the type of the attribute
 	 * @return the text associated with attribute if the attribute is present. Empty
-	 *         string otherwise.
+	 * string otherwise.
 	 */
 	public String getAttribute(Attribute attribute) {
 		if (this.scoreAttr.containsKey(attribute)) {
@@ -150,7 +165,7 @@ public final class Score implements Iterable<Part> {
 	@Override
 	public String toString() {
 		final StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("Score ").append(getName()).append("\n");
+		strBuilder.append("Score ").append(getTitle()).append("\n");
 
 		for (int i = 0; i < parts.size(); ++i) {
 			strBuilder.append(parts.get(i).toString());

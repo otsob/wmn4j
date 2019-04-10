@@ -69,7 +69,7 @@ public class MusicXmlReaderDomTest {
 	public void testReadScoreWithSingleNote() {
 		final Score score = readScore("singleC.xml");
 
-		assertEquals("Single C", score.getName());
+		assertEquals("Single C", score.getTitle());
 		assertEquals(1, score.getParts().size());
 
 		final Part part = score.getParts().get(0);
@@ -96,7 +96,7 @@ public class MusicXmlReaderDomTest {
 	public void testChordsAndMultipleVoices() {
 		final Score score = readScore("twoMeasures.xml");
 
-		assertEquals("Two bar sample", score.getName());
+		assertEquals("Two bar sample", score.getTitle());
 		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals(1, score.getParts().size());
 
@@ -157,7 +157,7 @@ public class MusicXmlReaderDomTest {
 	public void testReadScoreWithMultipleStaves() {
 		final Score score = readScore("twoStavesAndMeasures.xml");
 
-		assertEquals("Multistaff test file", score.getName());
+		assertEquals("Multistaff test file", score.getTitle());
 		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals(2, score.getParts().size());
 

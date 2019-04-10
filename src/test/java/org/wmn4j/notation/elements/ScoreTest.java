@@ -1,19 +1,7 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 
 import org.junit.Test;
 import org.wmn4j.notation.TestHelper;
@@ -22,22 +10,34 @@ import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 import org.wmn4j.notation.iterators.ScoreIterator;
 import org.wmn4j.notation.iterators.ScorePosition;
 
-/**
- *
- * @author Otso Björklund
- */
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 public class ScoreTest {
 
 	public static final String SCORE_NAME = "TestScore";
+	public static final String SUBTITLE = "Score subtitle";
 	public static final String COMPOSER_NAME = "TestComposer";
+	public static final String ARRANGER = "Test Arranger";
 
 	public ScoreTest() {
 	}
 
 	public static Map<Score.Attribute, String> getTestAttributes() {
 		final Map<Score.Attribute, String> attributes = new HashMap<>();
-		attributes.put(Score.Attribute.NAME, SCORE_NAME);
+		attributes.put(Score.Attribute.TITLE, SCORE_NAME);
+		attributes.put(Score.Attribute.SUBTITLE, SUBTITLE);
 		attributes.put(Score.Attribute.COMPOSER, COMPOSER_NAME);
+		attributes.put(Score.Attribute.ARRANGER, ARRANGER);
 		return attributes;
 	}
 
@@ -57,11 +57,23 @@ public class ScoreTest {
 	}
 
 	@Test
+	public void testHasAttribute() {
+		final Map<Score.Attribute, String> attributes = new HashMap<>();
+		attributes.put(Score.Attribute.TITLE, SCORE_NAME);
+
+		final Score score = Score.of(attributes, getTestParts(1, 1));
+		assertTrue(score.hasAttribute(Score.Attribute.TITLE));
+		assertFalse(score.hasAttribute(Score.Attribute.COMPOSER));
+	}
+
+	@Test
 	public void testGetAttribute() {
 		final Score score = Score.of(getTestAttributes(), getTestParts(5, 5));
-		assertEquals(SCORE_NAME, score.getAttribute(Score.Attribute.NAME));
+		assertEquals(SCORE_NAME, score.getAttribute(Score.Attribute.TITLE));
+		assertEquals(SUBTITLE, score.getAttribute(Score.Attribute.SUBTITLE));
 		assertEquals(COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
-		assertEquals("", score.getAttribute(Score.Attribute.ARRANGER));
+		assertEquals(ARRANGER, score.getAttribute(Score.Attribute.ARRANGER));
+		assertEquals("", score.getAttribute(Score.Attribute.YEAR));
 	}
 
 	@Test
@@ -74,15 +86,16 @@ public class ScoreTest {
 		parts.add(parts.get(0));
 		assertEquals("Adding part to the list used for creating score changed score.", 5, score.getPartCount());
 
-		assertEquals("Score name was incorrect before trying to modify", SCORE_NAME, score.getName());
-		attributes.put(Score.Attribute.NAME, "ModifiedName");
-		assertEquals("Score name was changed by modifying map used for creating score", SCORE_NAME, score.getName());
+		assertEquals("Score title was incorrect before trying to modify", SCORE_NAME, score.getTitle());
+		attributes.put(Score.Attribute.TITLE, "ModifiedName");
+		assertEquals("Score title was changed by modifying map used for creating score", SCORE_NAME, score.getTitle());
 
 		final List<Part> scoreParts = score.getParts();
 		try {
 			scoreParts.add(parts.get(0));
 		} catch (final Exception e) {
-			/* Do nothing */ }
+			/* Do nothing */
+		}
 		assertEquals("Number of parts changed in score", 5, score.getPartCount());
 	}
 
