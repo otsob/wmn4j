@@ -54,7 +54,7 @@ public class TestHelper {
 
 		try {
 			score = reader.readScore(path);
-		} catch (final IOException e) {
+		} catch (final Exception e) {
 			System.out.println("Failed to read score from " + path.toString() + " with exception: " + e);
 		}
 

@@ -19,16 +19,18 @@ public interface ScoreReader {
 	 *
 	 * @param filePath the path of the music notation file from which to read the contents of the score
 	 * @return a score with the contents of the music notation file at the given path
-	 * @throws IOException if the file is not found or the file is not valid
+	 * @throws IOException             if the file is not found or reading the file fails
+	 * @throws ParsingFailureException if the file cannot be parsed
 	 */
-	Score readScore(Path filePath) throws IOException;
+	Score readScore(Path filePath) throws IOException, ParsingFailureException;
 
 	/**
 	 * Returns a score builder with the contents of the music notation file at the given path.
 	 *
 	 * @param filePath the path of the music notation file from which to read the contents of the score builder
 	 * @return a score builder with the contents of the music notation file at the given path
-	 * @throws IOException if the file is not found or the file is not valid
+	 * @throws IOException             if the file is not found or reading the file fails
+	 * @throws ParsingFailureException if the file cannot be parsed
 	 */
-	ScoreBuilder scoreBuilderFromFile(Path filePath) throws IOException;
+	ScoreBuilder scoreBuilderFromFile(Path filePath) throws IOException, ParsingFailureException;
 }

@@ -4,18 +4,8 @@
  */
 package org.wmn4j.io.musicxml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
+import org.wmn4j.io.ParsingFailureException;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.elements.Articulation;
 import org.wmn4j.notation.elements.Barline;
@@ -38,6 +28,16 @@ import org.wmn4j.notation.elements.Staff;
 import org.wmn4j.notation.elements.TimeSignature;
 import org.wmn4j.notation.elements.TimeSignatures;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class MusicXmlReaderDomTest {
 
@@ -57,7 +57,7 @@ public class MusicXmlReaderDomTest {
 
 		try {
 			score = reader.readScore(path);
-		} catch (final IOException e) {
+		} catch (final IOException | ParsingFailureException e) {
 			fail("Parsing failed with exception " + e);
 		}
 
@@ -449,10 +449,13 @@ public class MusicXmlReaderDomTest {
 	public void testReadingIncorrectXmlFile() {
 		final MusicXmlReader reader = new MusicXmlReaderDom(true);
 		try {
-			final Score score = reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalid.xml"));
+			final Score score = reader
+					.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalid.xml"));
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
-		} catch (final IOException e) {
-
+		} catch (IOException ioException) {
+			fail("Reading the score failed due to IOException when a parsing failure was expected");
+		} catch (ParsingFailureException e) {
+			// Pass the test, this exception is expected.
 		}
 
 	}
@@ -463,7 +466,7 @@ public class MusicXmlReaderDomTest {
 		try {
 			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"));
 		} catch (Exception e) {
-			fail("Exception was thrown while validating valid MusicXml file");
+			fail("Exception " + e + " was thrown while validating valid MusicXml file");
 		}
 
 	}
