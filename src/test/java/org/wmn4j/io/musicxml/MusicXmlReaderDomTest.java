@@ -471,4 +471,16 @@ public class MusicXmlReaderDomTest {
 
 	}
 
+	@Test
+	public void testReadingFileThatDoesNotExist() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
+					+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"));
+		} catch (ParsingFailureException parsingFailure) {
+			fail("Reading the score failed due to parsing failure when an io expection was expected");
+		} catch (IOException ioException) {
+			// Pass the test, this exception is expected.
+		}
+	}
 }
