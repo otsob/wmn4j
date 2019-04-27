@@ -1,12 +1,7 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.wmn4j.io.musicxml.MusicXmlReader;
 import org.wmn4j.notation.builders.ChordBuilder;
@@ -18,10 +13,9 @@ import org.wmn4j.notation.elements.Measure;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Score;
 
-/**
- *
- * @author Otso Björklund
- */
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class TestHelper {
 
 	public static final String TESTFILE_PATH = "src/test/resources/";
@@ -60,7 +54,7 @@ public class TestHelper {
 
 		try {
 			score = reader.readScore(path);
-		} catch (final IOException e) {
+		} catch (final Exception e) {
 			System.out.println("Failed to read score from " + path.toString() + " with exception: " + e);
 		}
 

@@ -9,6 +9,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wmn4j.io.ParsingFailureException;
 import org.wmn4j.notation.builders.ChordBuilder;
 import org.wmn4j.notation.builders.MeasureBuilder;
 import org.wmn4j.notation.builders.NoteBuilder;
@@ -94,17 +95,21 @@ class MusicXmlReaderDom implements MusicXmlReader {
 	}
 
 	@Override
-	public Score readScore(Path filePath) throws IOException {
+	public Score readScore(Path filePath) throws IOException, ParsingFailureException {
 		return scoreBuilderFromFile(filePath).build();
 	}
 
 	@Override
-	public ScoreBuilder scoreBuilderFromFile(Path filePath) throws IOException {
+	public ScoreBuilder scoreBuilderFromFile(Path filePath) throws IOException, ParsingFailureException {
 		final ScoreBuilder scoreBuilder = new ScoreBuilder();
 		final File musicXmlFile = filePath.toFile();
 
+		if (!musicXmlFile.exists()) {
+			throw new IOException(filePath.toString() + " does not exist");
+		}
+
 		if (this.validateInput && !isMusicXmlFileValid(musicXmlFile)) {
-			throw new IOException("File at " + filePath.toString() + " is not a valid MusicXML file");
+			throw new ParsingFailureException(filePath.toString() + " is not a valid MusicXML file");
 		}
 
 		try {
@@ -114,10 +119,10 @@ class MusicXmlReaderDom implements MusicXmlReader {
 				final Document musicXmlDoc = docBuilder.parse(musicXmlFile);
 				readScoreToBuilder(scoreBuilder, musicXmlDoc);
 			} catch (final SAXException ex) {
-				throw new IOException("Parsing failed with exception " + ex.toString());
+				throw new ParsingFailureException("Parsing failed: " + ex.getMessage());
 			}
 		} catch (final ParserConfigurationException e) {
-			throw new IOException("Parser configuration failed");
+			throw new ParsingFailureException("Parser configuration failed: " + e.getMessage());
 		}
 
 		return scoreBuilder;
