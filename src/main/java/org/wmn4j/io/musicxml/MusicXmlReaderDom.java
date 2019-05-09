@@ -48,7 +48,7 @@ import java.util.Optional;
 /**
  * A parser for MusicXML files.
  */
-class MusicXmlReaderDom implements MusicXmlReader {
+final class MusicXmlReaderDom implements MusicXmlReader {
 
 	private static final int MIN_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
 	private static final int DEFAULT_STAFF_COUNT = 1;
