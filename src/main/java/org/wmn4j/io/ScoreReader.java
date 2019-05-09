@@ -32,5 +32,5 @@ public interface ScoreReader {
 	 * @throws IOException             if the file is not found or reading the file fails
 	 * @throws ParsingFailureException if the file cannot be parsed
 	 */
-	ScoreBuilder scoreBuilderFromFile(Path filePath) throws IOException, ParsingFailureException;
+	ScoreBuilder readScoreBuilder(Path filePath) throws IOException, ParsingFailureException;
 }

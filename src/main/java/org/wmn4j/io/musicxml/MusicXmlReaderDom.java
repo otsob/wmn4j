@@ -96,11 +96,11 @@ class MusicXmlReaderDom implements MusicXmlReader {
 
 	@Override
 	public Score readScore(Path filePath) throws IOException, ParsingFailureException {
-		return scoreBuilderFromFile(filePath).build();
+		return readScoreBuilder(filePath).build();
 	}
 
 	@Override
-	public ScoreBuilder scoreBuilderFromFile(Path filePath) throws IOException, ParsingFailureException {
+	public ScoreBuilder readScoreBuilder(Path filePath) throws IOException, ParsingFailureException {
 		final ScoreBuilder scoreBuilder = new ScoreBuilder();
 		final File musicXmlFile = filePath.toFile();
 
