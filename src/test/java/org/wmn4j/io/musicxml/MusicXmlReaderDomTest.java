@@ -566,9 +566,6 @@ public class MusicXmlReaderDomTest {
 	}
 
 	private void assertScoreWithArticulationsReadCorrectly(Score score) {
-
-		System.out.println(score);
-
 		final Measure measure = score.getPart(0).getMeasure(0, 1);
 		assertTrue(((Note) measure.get(1, 0)).hasArticulation(Articulation.STACCATO));
 		assertTrue(((Note) measure.get(1, 1)).hasArticulation(Articulation.ACCENT));
