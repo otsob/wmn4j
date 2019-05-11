@@ -296,7 +296,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 			// Handle note element
 			if (node.getNodeName().equals(MusicXmlTags.NOTE) && !isGraceNote(node)) {
-				handleNoteElement(node, measureBuilders, chordBuffers, offsets, contexts, tieBuffer);
+				readNoteElementIntoMeasureBuilder(node, measureBuilders, chordBuffers, offsets, contexts, tieBuffer);
 			}
 
 			// Handle clef changes
@@ -365,32 +365,32 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	}
 
 	/**
-	 * Handle a note element. A note element can be a rest, note, grace note, or a
+	 * Read a note element. A note element can be a rest, note, grace note, or a
 	 * note in a chord.
 	 */
-	private void handleNoteElement(Node node, Map<Integer, MeasureBuilder> measureBuilders,
+	private void readNoteElementIntoMeasureBuilder(Node noteNode, Map<Integer, MeasureBuilder> measureBuilders,
 			Map<Integer, ChordBuffer> chordBuffers, Map<Integer, List<Duration>> offsets,
 			Map<Integer, Context> contexts, TieBeginningContainer tieBeginnings) {
-		final int staffNumber = DocHelper.findChild(node, MusicXmlTags.NOTE_STAFF)
+		final int staffNumber = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_STAFF)
 				.map(staffNode -> Integer.parseInt(staffNode.getTextContent()))
 				.orElse(MIN_STAFF_NUMBER);
 
 		final Context context = contexts.get(staffNumber);
 		final MeasureBuilder builder = measureBuilders.get(staffNumber);
 
-		final int voice = getVoice(node);
-		final Duration duration = getDuration(node, context.getDivisions());
+		final int voice = getVoice(noteNode);
+		final Duration duration = getDuration(noteNode, context.getDivisions());
 		offsets.get(staffNumber).add(duration);
 
-		if (isRest(node)) {
+		if (isRest(noteNode)) {
 			chordBuffers.get(staffNumber).contentsToBuilder(builder);
 			builder.addToVoice(voice, new RestBuilder(duration));
 		} else {
-			final Pitch pitch = getPitch(node);
+			final Pitch pitch = getPitch(noteNode);
 			final NoteBuilder noteBuilder = new NoteBuilder(pitch, duration);
 
 			// Handle ties
-			if (endsTie(node)) {
+			if (endsTie(noteNode)) {
 				final NoteBuilder tieBeginner = tieBeginnings.popMatchingBeginningFromStaff(staffNumber, noteBuilder);
 				if (tieBeginner != null) {
 					tieBeginner.addTieToFollowing(noteBuilder);
@@ -399,14 +399,14 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				}
 			}
 
-			if (startsTie(node)) {
+			if (startsTie(noteNode)) {
 				tieBeginnings.addToStaff(staffNumber, noteBuilder);
 			}
 
-			DocHelper.findChild(node, MusicXmlTags.NOTATIONS)
+			DocHelper.findChild(noteNode, MusicXmlTags.NOTATIONS)
 					.ifPresent(notationsNode -> addNotations(notationsNode, noteBuilder));
 
-			if (hasChordTag(node)) {
+			if (hasChordTag(noteNode)) {
 				chordBuffers.get(staffNumber).addNote(noteBuilder, voice);
 			} else {
 				chordBuffers.get(staffNumber).contentsToBuilder(builder);
