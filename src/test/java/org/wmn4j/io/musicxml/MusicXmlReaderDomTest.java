@@ -42,7 +42,7 @@ import static org.junit.Assert.fail;
 
 public class MusicXmlReaderDomTest {
 
-	static final String MUSICXML_FILE_PATH = "musicxml/";
+	private static final String MUSICXML_FILE_PATH = "musicxml/";
 
 	public MusicXmlReaderDomTest() {
 	}
