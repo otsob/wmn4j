@@ -52,6 +52,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 	private static final int MIN_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
 	private static final int DEFAULT_STAFF_COUNT = 1;
+	private static final String MUSICXML_V3_1_SCHEMA_PATH = "org/wmn4j/io/musicxml/musicxml.xsd";
 
 	private static final Logger LOG = LoggerFactory.getLogger(MusicXmlReaderDom.class);
 
@@ -82,12 +83,12 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		try {
 			ClassLoader classLoader = getClass().getClassLoader();
-			File schemaFile = new File(classLoader.getResource("org/wmn4j/io/musicxml/musicxml.xsd").getFile());
+			File schemaFile = new File(classLoader.getResource(MUSICXML_V3_1_SCHEMA_PATH).getFile());
 			final Schema schema = schemaFactory.newSchema(schemaFile);
 			final Validator validator = schema.newValidator();
 			validator.validate(new StreamSource(musicXmlFile));
 		} catch (IOException | SAXException e) {
-			LOG.warn(musicXmlFile.toString() + " is NOT valid reason", e);
+			LOG.warn(musicXmlFile.toString() + " is not valid MusicXML:", e);
 			return false;
 		}
 
