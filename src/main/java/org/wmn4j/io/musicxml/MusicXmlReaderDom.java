@@ -782,7 +782,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	private class Context {
 
 		private int divisions;
-		private KeySignature keySig;
+		private KeySignature keySig = KeySignatures.CMAJ_AMIN;
 		private TimeSignature timeSig;
 		private Clef clef;
 
