@@ -504,11 +504,11 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		if (timeSigNode.isPresent()) {
 			final int beats = DocHelper.findChild(timeSigNode.get(), MusicXmlTags.MEAS_ATTR_BEATS)
 					.map(beatsNode -> Integer.parseInt(beatsNode.getTextContent()))
-					.orElse(null);
+					.orElseThrow();
 
 			final int beatType = DocHelper.findChild(timeSigNode.get(), MusicXmlTags.MEAS_ATTR_BEAT_TYPE)
 					.map(beatTypeNode -> Integer.parseInt(beatTypeNode.getTextContent()))
-					.orElse(null);
+					.orElseThrow();
 
 			final Node staffNumberNode = timeSigNode.get().getAttributes()
 					.getNamedItem(MusicXmlTags.MEAS_ATTR_STAFF_NUMBER);
