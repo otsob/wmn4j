@@ -69,7 +69,6 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 	private DocumentBuilder createAndConfigureDocBuilder() throws ParserConfigurationException {
 
-		// TODO: Check the parser configuration.
 		final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setValidating(false);
 		dbf.setNamespaceAware(true);
