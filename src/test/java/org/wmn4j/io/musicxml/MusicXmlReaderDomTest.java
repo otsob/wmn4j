@@ -613,7 +613,7 @@ public class MusicXmlReaderDomTest {
 	public void testReadingIncorrectXmlFileToScore() {
 		final MusicXmlReader reader = new MusicXmlReaderDom(true);
 		try {
-			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalid.xml"));
+			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"));
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
 		} catch (IOException ioException) {
 			fail("Reading the score failed due to IOException when a parsing failure was expected");
@@ -626,7 +626,7 @@ public class MusicXmlReaderDomTest {
 	public void testReadingIncorrectXmlFileToScoreBuilder() {
 		final MusicXmlReader reader = new MusicXmlReaderDom(true);
 		try {
-			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalid.xml"));
+			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"));
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
 		} catch (IOException ioException) {
 			fail("Reading the score failed due to IOException when a parsing failure was expected");
