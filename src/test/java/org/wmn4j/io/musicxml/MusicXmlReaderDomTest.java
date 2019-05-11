@@ -636,6 +636,33 @@ public class MusicXmlReaderDomTest {
 	}
 
 	@Test
+	public void testReadingIncorrectMusicXmlFileToScore() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"));
+			fail("No exception was thrown when trying to read XML file that does not comply to MusicXml schema");
+		} catch (IOException ioException) {
+			fail("Reading the score failed due to IOException when a parsing failure was expected");
+		} catch (ParsingFailureException e) {
+			// Pass the test, this exception is expected.
+		}
+	}
+
+	@Test
+	public void testReadingIncorrectMusicXmlFileToScoreBuilder() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			reader.readScoreBuilder(
+					Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"));
+			fail("No exception was thrown when trying to read XML file that does not comply to MusicXml schema");
+		} catch (IOException ioException) {
+			fail("Reading the score failed due to IOException when a parsing failure was expected");
+		} catch (ParsingFailureException e) {
+			// Pass the test, this exception is expected.
+		}
+	}
+
+	@Test
 	public void testValidatingCorrectXmlFileWhenReadingToScore() {
 		final MusicXmlReader reader = new MusicXmlReaderDom(true);
 		try {
