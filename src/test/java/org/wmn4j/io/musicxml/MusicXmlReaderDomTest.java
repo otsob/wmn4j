@@ -93,6 +93,9 @@ public class MusicXmlReaderDomTest {
 		assertSingleNoteScoreReadCorrectly(scoreBuilder.build());
 	}
 
+	/*
+	 * Expects the contents of the file "singleC.xml"
+	 */
 	private void assertSingleNoteScoreReadCorrectly(Score score) {
 		assertEquals("Single C", score.getTitle());
 		assertEquals(1, score.getParts().size());
@@ -129,6 +132,9 @@ public class MusicXmlReaderDomTest {
 		assertChordsAndMultipleVoicesReadCorrectly(scoreBuilder.build());
 	}
 
+	/*
+	 * Expects the contents of the file "twoMeasures.xml"
+	 */
 	private void assertChordsAndMultipleVoicesReadCorrectly(Score score) {
 		assertEquals("Two bar sample", score.getTitle());
 		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
@@ -199,6 +205,9 @@ public class MusicXmlReaderDomTest {
 		assertScoreWithMultipleStavesReadCorrectly(scoreBuilder.build());
 	}
 
+	/*
+	 * Expects the contents of the file "twoStavesAndMeasures.xml"
+	 */
 	private void assertScoreWithMultipleStavesReadCorrectly(Score score) {
 		assertEquals("Multistaff test file", score.getTitle());
 		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
@@ -285,6 +294,9 @@ public class MusicXmlReaderDomTest {
 		assertBarlinesReadCorrectly(scoreBuilder.build());
 	}
 
+	/*
+	 * Expects the contents of the file "barlines.xml"
+	 */
 	private void assertBarlinesReadCorrectly(Score score) {
 
 		assertEquals(1, score.getParts().size());
@@ -330,6 +342,9 @@ public class MusicXmlReaderDomTest {
 		assertClefsReadCorrectly(scoreBuilder.build());
 	}
 
+	/*
+	 * Expects the contents of the file "clefs.xml"
+	 */
 	private void assertClefsReadCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 
@@ -368,6 +383,9 @@ public class MusicXmlReaderDomTest {
 		assertMultiStaffClefsReadCorrectlyToScore(scoreBuilder.build());
 	}
 
+	/*
+	 * Expects the contents of the file "multiStaffClefs.xml"
+	 */
 	private void assertMultiStaffClefsReadCorrectlyToScore(Score score) {
 		final MultiStaffPart part = (MultiStaffPart) score.getParts().get(0);
 		final Staff upper = part.getStaff(1);
@@ -407,6 +425,9 @@ public class MusicXmlReaderDomTest {
 		assertKeySignaturesReadToScoreCorrectly(scoreBuilder.build());
 	}
 
+	/*
+	 * Expects the contents of the file "keysigs.xml"
+	 */
 	private void assertKeySignaturesReadToScoreCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 
@@ -427,6 +448,9 @@ public class MusicXmlReaderDomTest {
 		assertMultiStaffPartReadCorrectly(scoreBuilder.build());
 	}
 
+	/*
+	 * Expects the contents of the file "multistaff.xml"
+	 */
 	private void assertMultiStaffPartReadCorrectly(Score score) {
 		assertEquals(2, score.getPartCount());
 		MultiStaffPart multiStaff = null;
@@ -474,6 +498,9 @@ public class MusicXmlReaderDomTest {
 		assertTimeSignaturesReadCorrectly(scoreBuilder.build());
 	}
 
+	/*
+	 * Expects the contents of the file "timesigs.xml"
+	 */
 	private void assertTimeSignaturesReadCorrectly(Score score) {
 		assertEquals(1, score.getPartCount());
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
@@ -495,6 +522,9 @@ public class MusicXmlReaderDomTest {
 		assertTimeSignatureChangeReadCorrectly(scoreBuilder.build());
 	}
 
+	/*
+	 * Expects the contents of the file "scoreIteratorTesting.xml"
+	 */
 	private void assertTimeSignatureChangeReadCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 		final Durational n = part.getMeasure(2).getVoice(1).get(0);
@@ -513,6 +543,9 @@ public class MusicXmlReaderDomTest {
 		assertTiedNotesReadCorrectly(scoreBuilder.build());
 	}
 
+	/*
+	 * Expects the contents of the file "tieTesting.xml"
+	 */
 	private void assertTiedNotesReadCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 
@@ -565,6 +598,9 @@ public class MusicXmlReaderDomTest {
 		assertScoreWithArticulationsReadCorrectly(scoreBuilder.build());
 	}
 
+	/*
+	 * Expects the contents of the file "articulations.xml"
+	 */
 	private void assertScoreWithArticulationsReadCorrectly(Score score) {
 		final Measure measure = score.getPart(0).getMeasure(0, 1);
 		assertTrue(((Note) measure.get(1, 0)).hasArticulation(Articulation.STACCATO));
