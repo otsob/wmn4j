@@ -177,8 +177,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	}
 
 	/**
-	 * @param partsList
-	 * @return Map with part ids as keys and corresponding PartBuilders as values.
+	 * Creates empty part builders from the parts list in the MusicXML file.
 	 */
 	private Map<String, PartBuilder> createPartBuilders(Node partsList) {
 		final Map<String, PartBuilder> partBuilders = new HashMap<>();
