@@ -161,7 +161,6 @@ public class ScoreTest {
 	public void testGetAtPositionInChord() {
 		final Score score = TestHelper.readScore("musicxml/positionInChord.xml");
 		assertTrue(score != null);
-		System.out.println(score);
 
 		// Get the middle note (E) from the chord in the score.
 		final ScorePosition position = new ScorePosition(0, 1, 1, 1, 1, 1);

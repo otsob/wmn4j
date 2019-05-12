@@ -7,6 +7,7 @@ package org.wmn4j.io.musicxml;
 import org.junit.Test;
 import org.wmn4j.io.ParsingFailureException;
 import org.wmn4j.notation.TestHelper;
+import org.wmn4j.notation.builders.ScoreBuilder;
 import org.wmn4j.notation.elements.Articulation;
 import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Chord;
@@ -41,7 +42,7 @@ import static org.junit.Assert.fail;
 
 public class MusicXmlReaderDomTest {
 
-	static final String MUSICXML_FILE_PATH = "musicxml/";
+	private static final String MUSICXML_FILE_PATH = "musicxml/";
 
 	public MusicXmlReaderDomTest() {
 	}
@@ -65,10 +66,37 @@ public class MusicXmlReaderDomTest {
 		return score;
 	}
 
+	public ScoreBuilder readScoreBuilder(String testFileName) {
+		final MusicXmlReader reader = getMusicXmlReader();
+		ScoreBuilder scoreBuilder = null;
+		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
+
+		try {
+			scoreBuilder = reader.readScoreBuilder(path);
+		} catch (final IOException | ParsingFailureException e) {
+			fail("Parsing failed with exception " + e);
+		}
+
+		assertTrue("score is null", scoreBuilder != null);
+		return scoreBuilder;
+	}
+
 	@Test
 	public void testReadScoreWithSingleNote() {
 		final Score score = readScore("singleC.xml");
+		assertSingleNoteScoreReadCorrectly(score);
+	}
 
+	@Test
+	public void testReadScoreBuilderWithSingleNote() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("singleC.xml");
+		assertSingleNoteScoreReadCorrectly(scoreBuilder.build());
+	}
+
+	/*
+	 * Expects the contents of the file "singleC.xml"
+	 */
+	private void assertSingleNoteScoreReadCorrectly(Score score) {
 		assertEquals("Single C", score.getTitle());
 		assertEquals(1, score.getParts().size());
 
@@ -93,9 +121,21 @@ public class MusicXmlReaderDomTest {
 	}
 
 	@Test
-	public void testChordsAndMultipleVoices() {
+	public void testChordsAndMultipleVoicesReadToScore() {
 		final Score score = readScore("twoMeasures.xml");
+		assertChordsAndMultipleVoicesReadCorrectly(score);
+	}
 
+	@Test
+	public void testChordsAndMultipleVoicesReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("twoMeasures.xml");
+		assertChordsAndMultipleVoicesReadCorrectly(scoreBuilder.build());
+	}
+
+	/*
+	 * Expects the contents of the file "twoMeasures.xml"
+	 */
+	private void assertChordsAndMultipleVoicesReadCorrectly(Score score) {
 		assertEquals("Two bar sample", score.getTitle());
 		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals(1, score.getParts().size());
@@ -156,7 +196,19 @@ public class MusicXmlReaderDomTest {
 	@Test
 	public void testReadScoreWithMultipleStaves() {
 		final Score score = readScore("twoStavesAndMeasures.xml");
+		assertScoreWithMultipleStavesReadCorrectly(score);
+	}
 
+	@Test
+	public void testReadScoreBuilderWithMultipleStaves() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("twoStavesAndMeasures.xml");
+		assertScoreWithMultipleStavesReadCorrectly(scoreBuilder.build());
+	}
+
+	/*
+	 * Expects the contents of the file "twoStavesAndMeasures.xml"
+	 */
+	private void assertScoreWithMultipleStavesReadCorrectly(Score score) {
 		assertEquals("Multistaff test file", score.getTitle());
 		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals(2, score.getParts().size());
@@ -231,12 +283,24 @@ public class MusicXmlReaderDomTest {
 	}
 
 	@Test
-	public void testBarlines() {
+	public void testBarlinesReadToScore() {
 		final Score score = readScore("barlines.xml");
+		assertBarlinesReadCorrectly(score);
+	}
+
+	@Test
+	public void testBarlinesReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("barlines.xml");
+		assertBarlinesReadCorrectly(scoreBuilder.build());
+	}
+
+	/*
+	 * Expects the contents of the file "barlines.xml"
+	 */
+	private void assertBarlinesReadCorrectly(Score score) {
 
 		assertEquals(1, score.getParts().size());
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
-		final Staff staff = part.getStaff();
 
 		assertEquals(Barline.SINGLE, part.getMeasure(1).getRightBarline());
 		assertEquals(Barline.NONE, part.getMeasure(1).getLeftBarline());
@@ -267,8 +331,21 @@ public class MusicXmlReaderDomTest {
 	}
 
 	@Test
-	public void testClefs() {
+	public void testClefsReadToScore() {
 		final Score score = readScore("clefs.xml");
+		assertClefsReadCorrectly(score);
+	}
+
+	@Test
+	public void testClefsReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("clefs.xml");
+		assertClefsReadCorrectly(scoreBuilder.build());
+	}
+
+	/*
+	 * Expects the contents of the file "clefs.xml"
+	 */
+	private void assertClefsReadCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 
 		assertEquals(Clefs.G, part.getMeasure(1).getClef());
@@ -295,8 +372,21 @@ public class MusicXmlReaderDomTest {
 	}
 
 	@Test
-	public void testMultiStaffClefs() {
+	public void testMultiStaffClefsReadToScore() {
 		final Score score = readScore("multiStaffClefs.xml");
+		assertMultiStaffClefsReadCorrectlyToScore(score);
+	}
+
+	@Test
+	public void testMultiStaffClefsReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("multiStaffClefs.xml");
+		assertMultiStaffClefsReadCorrectlyToScore(scoreBuilder.build());
+	}
+
+	/*
+	 * Expects the contents of the file "multiStaffClefs.xml"
+	 */
+	private void assertMultiStaffClefsReadCorrectlyToScore(Score score) {
 		final MultiStaffPart part = (MultiStaffPart) score.getParts().get(0);
 		final Staff upper = part.getStaff(1);
 		final Staff lower = part.getStaff(2);
@@ -324,9 +414,21 @@ public class MusicXmlReaderDomTest {
 	}
 
 	@Test
-	public void testKeySignatures() {
+	public void testKeySignaturesReadToScore() {
 		final Score score = readScore("keysigs.xml");
+		assertKeySignaturesReadToScoreCorrectly(score);
+	}
 
+	@Test
+	public void testKeySignaturesReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("keysigs.xml");
+		assertKeySignaturesReadToScoreCorrectly(scoreBuilder.build());
+	}
+
+	/*
+	 * Expects the contents of the file "keysigs.xml"
+	 */
+	private void assertKeySignaturesReadToScoreCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 
 		assertEquals(KeySignatures.CMAJ_AMIN, part.getMeasure(1).getKeySignature());
@@ -335,8 +437,21 @@ public class MusicXmlReaderDomTest {
 	}
 
 	@Test
-	public void testMultiStaffPart() {
+	public void testMultiStaffPartReadToScore() {
 		final Score score = readScore("multistaff.xml");
+		assertMultiStaffPartReadCorrectly(score);
+	}
+
+	@Test
+	public void testMultiStaffPartReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("multistaff.xml");
+		assertMultiStaffPartReadCorrectly(scoreBuilder.build());
+	}
+
+	/*
+	 * Expects the contents of the file "multistaff.xml"
+	 */
+	private void assertMultiStaffPartReadCorrectly(Score score) {
 		assertEquals(2, score.getPartCount());
 		MultiStaffPart multiStaff = null;
 		SingleStaffPart singleStaff = null;
@@ -372,8 +487,21 @@ public class MusicXmlReaderDomTest {
 	}
 
 	@Test
-	public void testTimeSignatures() {
+	public void testTimeSignaturesReadToScore() {
 		final Score score = readScore("timesigs.xml");
+		assertTimeSignaturesReadCorrectly(score);
+	}
+
+	@Test
+	public void testTimeSignaturesReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("timesigs.xml");
+		assertTimeSignaturesReadCorrectly(scoreBuilder.build());
+	}
+
+	/*
+	 * Expects the contents of the file "timesigs.xml"
+	 */
+	private void assertTimeSignaturesReadCorrectly(Score score) {
 		assertEquals(1, score.getPartCount());
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 		assertEquals(TimeSignature.of(2, 2), part.getMeasure(1).getTimeSignature());
@@ -383,16 +511,42 @@ public class MusicXmlReaderDomTest {
 	}
 
 	@Test
-	public void testTimeSignatureChange() {
+	public void testTimeSignatureChangeReadToScore() {
 		final Score score = readScore("scoreIteratorTesting.xml");
+		assertTimeSignatureChangeReadCorrectly(score);
+	}
+
+	@Test
+	public void testTimeSignatureChangeReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("scoreIteratorTesting.xml");
+		assertTimeSignatureChangeReadCorrectly(scoreBuilder.build());
+	}
+
+	/*
+	 * Expects the contents of the file "scoreIteratorTesting.xml"
+	 */
+	private void assertTimeSignatureChangeReadCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 		final Durational n = part.getMeasure(2).getVoice(1).get(0);
 		assertEquals(Durations.EIGHT, n.getDuration());
 	}
 
 	@Test
-	public void testTiedNotes() {
+	public void testTiedNotesReadToScore() {
 		final Score score = readScore("tieTesting.xml");
+		assertTiedNotesReadCorrectly(score);
+	}
+
+	@Test
+	public void testTiedNotesReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("tieTesting.xml");
+		assertTiedNotesReadCorrectly(scoreBuilder.build());
+	}
+
+	/*
+	 * Expects the contents of the file "tieTesting.xml"
+	 */
+	private void assertTiedNotesReadCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 
 		final Measure firstMeasure = part.getMeasure(1);
@@ -435,9 +589,19 @@ public class MusicXmlReaderDomTest {
 	@Test
 	public void testReadingScoreWithArticulations() {
 		final Score score = readScore("articulations.xml");
+		assertScoreWithArticulationsReadCorrectly(score);
+	}
 
-		System.out.println(score);
+	@Test
+	public void testReadingScoreBuilderWithArticulations() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("articulations.xml");
+		assertScoreWithArticulationsReadCorrectly(scoreBuilder.build());
+	}
 
+	/*
+	 * Expects the contents of the file "articulations.xml"
+	 */
+	private void assertScoreWithArticulationsReadCorrectly(Score score) {
 		final Measure measure = score.getPart(0).getMeasure(0, 1);
 		assertTrue(((Note) measure.get(1, 0)).hasArticulation(Articulation.STACCATO));
 		assertTrue(((Note) measure.get(1, 1)).hasArticulation(Articulation.ACCENT));
@@ -446,36 +610,96 @@ public class MusicXmlReaderDomTest {
 	}
 
 	@Test
-	public void testReadingIncorrectXmlFile() {
+	public void testReadingIncorrectXmlFileToScore() {
 		final MusicXmlReader reader = new MusicXmlReaderDom(true);
 		try {
-			final Score score = reader
-					.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalid.xml"));
+			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"));
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
 		} catch (IOException ioException) {
 			fail("Reading the score failed due to IOException when a parsing failure was expected");
 		} catch (ParsingFailureException e) {
 			// Pass the test, this exception is expected.
 		}
-
 	}
 
 	@Test
-	public void testValidatingCorrectXmlFile() {
+	public void testReadingIncorrectXmlFileToScoreBuilder() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"));
+			fail("No exception was thrown when trying to read incorrectly formatted XML file");
+		} catch (IOException ioException) {
+			fail("Reading the score failed due to IOException when a parsing failure was expected");
+		} catch (ParsingFailureException e) {
+			// Pass the test, this exception is expected.
+		}
+	}
+
+	@Test
+	public void testReadingIncorrectMusicXmlFileToScore() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"));
+			fail("No exception was thrown when trying to read XML file that does not comply to MusicXml schema");
+		} catch (IOException ioException) {
+			fail("Reading the score failed due to IOException when a parsing failure was expected");
+		} catch (ParsingFailureException e) {
+			// Pass the test, this exception is expected.
+		}
+	}
+
+	@Test
+	public void testReadingIncorrectMusicXmlFileToScoreBuilder() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			reader.readScoreBuilder(
+					Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"));
+			fail("No exception was thrown when trying to read XML file that does not comply to MusicXml schema");
+		} catch (IOException ioException) {
+			fail("Reading the score failed due to IOException when a parsing failure was expected");
+		} catch (ParsingFailureException e) {
+			// Pass the test, this exception is expected.
+		}
+	}
+
+	@Test
+	public void testValidatingCorrectXmlFileWhenReadingToScore() {
 		final MusicXmlReader reader = new MusicXmlReaderDom(true);
 		try {
 			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"));
 		} catch (Exception e) {
 			fail("Exception " + e + " was thrown while validating valid MusicXml file");
 		}
-
 	}
 
 	@Test
-	public void testReadingFileThatDoesNotExist() {
+	public void testValidatingCorrectXmlFileWhenReadingToScoreBuilder() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"));
+		} catch (Exception e) {
+			fail("Exception " + e + " was thrown while validating valid MusicXml file");
+		}
+	}
+
+	@Test
+	public void testReadingFileThatDoesNotExistToScore() {
 		final MusicXmlReader reader = new MusicXmlReaderDom(true);
 		try {
 			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
+					+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"));
+		} catch (ParsingFailureException parsingFailure) {
+			fail("Reading the score failed due to parsing failure when an io expection was expected");
+		} catch (IOException ioException) {
+			// Pass the test, this exception is expected.
+		}
+	}
+
+	@Test
+	public void testReadingFileThatDoesNotExistToScoreBuilder() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
 					+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"));
 		} catch (ParsingFailureException parsingFailure) {
 			fail("Reading the score failed due to parsing failure when an io expection was expected");

@@ -4,19 +4,14 @@
  */
 package org.wmn4j.mir.pattern_discovery;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-import org.wmn4j.mir.pattern_discovery.NoteEventVector;
-import org.wmn4j.mir.pattern_discovery.PatternAlgorithms;
-import org.wmn4j.mir.pattern_discovery.PointSet;
-import org.wmn4j.mir.pattern_discovery.TEC;
+import static org.junit.Assert.assertTrue;
 
 /**
- *
  * @author Otso Björklund
  */
 public class PatternAlgorithmsTest {
@@ -54,9 +49,6 @@ public class PatternAlgorithmsTest {
 	@Test
 	public void testComputeTecs() {
 		final List<TEC> tecs = PatternAlgorithms.computeTecs(new PointSet(getDataset()));
-		for (TEC tec : tecs) {
-			System.out.println(tec);
-		}
 		assertTrue(tecsAreCorrect(tecs));
 	}
 }

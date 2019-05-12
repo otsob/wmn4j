@@ -4,10 +4,6 @@
  */
 package org.wmn4j.notation.iterators;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.wmn4j.notation.TestHelper;
@@ -16,11 +12,12 @@ import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Score;
-import org.wmn4j.notation.iterators.PartWiseScoreIterator;
-import org.wmn4j.notation.iterators.ScorePosition;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
- *
  * @author Otso Björklund
  */
 public class PartWiseScoreIteratorTest {
@@ -42,8 +39,6 @@ public class PartWiseScoreIteratorTest {
 		Durational next = null;
 		for (int i = 0; i < steps; ++i) {
 			next = this.iter.next();
-			System.out.println(next);
-			System.out.println(this.iter.getPositionOfPrevious());
 		}
 		return next;
 	}
