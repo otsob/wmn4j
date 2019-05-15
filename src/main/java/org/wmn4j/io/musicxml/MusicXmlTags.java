@@ -74,6 +74,7 @@ final class MusicXmlTags {
 	static final String PART = "part";
 	static final String PART_ID = "id";
 	static final String PART_NAME = "part-name";
+	static final String PART_NAME_ABBREVIATION = "part-abbreviation";
 	static final String PART_LIST = "part-list";
 	static final String PLIST_SCORE_PART = "score-part";
 
@@ -84,8 +85,13 @@ final class MusicXmlTags {
 
 	// Score info tags
 	static final String SCORE_MOVEMENT_TITLE = "movement-title";
+	static final String SCORE_WORK = "work";
+	static final String SCORE_WORK_TITLE = "work-title";
 	static final String SCORE_IDENTIFICATION = "identification";
 	static final String SCORE_IDENTIFICATION_CREATOR = "creator";
+	static final String SCORE_IDENTIFICATION_CREATOR_TYPE = "type";
+	static final String SCORE_IDENTIFICATION_COMPOSER = "composer";
+	static final String SCORE_IDENTIFICATION_ARRANGER = "arranger";
 	static final String SCORE_PARTWISE = "score-partwise";
 
 	private MusicXmlTags() {

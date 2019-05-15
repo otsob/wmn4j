@@ -97,7 +97,7 @@ public class MusicXmlReaderDomTest {
 	 * Expects the contents of the file "singleC.xml"
 	 */
 	private void assertSingleNoteScoreReadCorrectly(Score score) {
-		assertEquals("Single C", score.getTitle());
+		assertEquals("Single C", score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
 		assertEquals(1, score.getParts().size());
 
 		final Part part = score.getParts().get(0);
@@ -136,7 +136,7 @@ public class MusicXmlReaderDomTest {
 	 * Expects the contents of the file "twoMeasures.xml"
 	 */
 	private void assertChordsAndMultipleVoicesReadCorrectly(Score score) {
-		assertEquals("Two bar sample", score.getTitle());
+		assertEquals("Two bar sample", score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
 		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals(1, score.getParts().size());
 
@@ -209,7 +209,7 @@ public class MusicXmlReaderDomTest {
 	 * Expects the contents of the file "twoStavesAndMeasures.xml"
 	 */
 	private void assertScoreWithMultipleStavesReadCorrectly(Score score) {
-		assertEquals("Multistaff test file", score.getTitle());
+		assertEquals("Multistaff test file", score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
 		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals(2, score.getParts().size());
 
@@ -749,5 +749,47 @@ public class MusicXmlReaderDomTest {
 		Measure pickupMeasure = staff.getMeasure(0);
 		assertTrue(pickupMeasure.isPickUp());
 		assertEquals(0, pickupMeasure.getNumber());
+	}
+
+	@Test
+	public void testReadingAttributesIntoScore() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			Score scoreWithAttributes = reader
+					.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "attribute_reading_test.xml"));
+			assertScoreHasExpectedAttributes(scoreWithAttributes);
+		} catch (Exception exception) {
+			fail("Reading attributes test file failed with " + exception);
+		}
+	}
+
+	@Test
+	public void testReadingAttributesIntoScoreBuilder() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			ScoreBuilder scoreWithAttributesBuilder = reader
+					.readScoreBuilder(
+							Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "attribute_reading_test.xml"));
+			assertScoreHasExpectedAttributes(scoreWithAttributesBuilder.build());
+		} catch (Exception exception) {
+			fail("Reading attributes test file failed with " + exception);
+		}
+	}
+
+	private void assertScoreHasExpectedAttributes(Score score) {
+		assertEquals("Composition title", score.getTitle());
+		assertEquals("Composer name", score.getAttribute(Score.Attribute.COMPOSER));
+		assertEquals("Movement title", score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
+		assertEquals("Arranger name", score.getAttribute(Score.Attribute.ARRANGER));
+
+		List<Part> parts = score.getParts();
+		assertEquals(2, parts.size());
+		Part part1 = parts.get(0);
+		assertEquals("Part name 1", part1.getName());
+		assertEquals("Short part name 1", part1.getAttribute(Part.Attribute.ABBREVIATED_NAME));
+
+		Part part2 = parts.get(1);
+		assertEquals("Part name 2", part2.getName());
+		assertEquals("Short part name 2", part2.getAttribute(Part.Attribute.ABBREVIATED_NAME));
 	}
 }
