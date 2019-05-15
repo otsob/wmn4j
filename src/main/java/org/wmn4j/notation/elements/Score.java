@@ -40,11 +40,7 @@ public final class Score implements Iterable<Part> {
 		/**
 		 * The arranger.
 		 */
-		ARRANGER,
-		/**
-		 * The year of publication.
-		 */
-		YEAR
+		ARRANGER
 	}
 
 	private final Map<Attribute, String> scoreAttr;

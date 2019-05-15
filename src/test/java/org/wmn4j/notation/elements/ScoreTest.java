@@ -73,7 +73,6 @@ public class ScoreTest {
 		assertEquals(SUBTITLE, score.getAttribute(Score.Attribute.SUBTITLE));
 		assertEquals(COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals(ARRANGER, score.getAttribute(Score.Attribute.ARRANGER));
-		assertEquals("", score.getAttribute(Score.Attribute.YEAR));
 	}
 
 	@Test
