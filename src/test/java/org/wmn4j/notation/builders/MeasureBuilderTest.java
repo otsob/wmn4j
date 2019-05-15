@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.builders;
@@ -22,6 +21,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class MeasureBuilderTest {
@@ -42,7 +42,7 @@ public class MeasureBuilderTest {
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT));
 
 		final Measure measure = builder.build();
-		assertTrue(measure != null);
+		assertNotNull(measure);
 		assertEquals(Barline.DOUBLE, measure.getRightBarline());
 		assertEquals(Clefs.F, measure.getClef());
 		assertEquals(KeySignatures.DFLATMAJ_BFLATMIN, measure.getKeySignature());
@@ -69,7 +69,7 @@ public class MeasureBuilderTest {
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT));
 
 		final Measure measure = builder.build();
-		assertTrue(measure != null);
+		assertNotNull(measure);
 		assertEquals(Barline.DOUBLE, measure.getRightBarline());
 		assertEquals(Clefs.F, measure.getClef());
 		assertEquals(KeySignatures.DFLATMAJ_BFLATMIN, measure.getKeySignature());
@@ -99,7 +99,7 @@ public class MeasureBuilderTest {
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT));
 
 		final Measure measure = builder.build();
-		assertTrue(measure != null);
+		assertNotNull(measure);
 		assertEquals(Barline.DOUBLE, measure.getRightBarline());
 		assertEquals(Clefs.F, measure.getClef());
 		assertEquals(KeySignatures.DFLATMAJ_BFLATMIN, measure.getKeySignature());
@@ -197,6 +197,7 @@ public class MeasureBuilderTest {
 
 		final Note firstNote = (Note) measure.get(1, 0);
 		final Note secondNote = (Note) measure.get(1, 1);
+		assertTrue(firstNote.getFollowingTiedNote().isPresent());
 		assertEquals(secondNote, firstNote.getFollowingTiedNote().get());
 		assertTrue(secondNote.isTiedFromPrevious());
 	}
