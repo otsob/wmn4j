@@ -109,7 +109,7 @@ public class NoteBuilderTest {
 		final NoteBuilder copy = new NoteBuilder(builder);
 
 		builder.addArticulation(Articulation.FERMATA);
-		assertTrue(copy.getArticulations().size() == 1);
+		assertEquals(1, copy.getArticulations().size());
 		assertTrue(copy.getArticulations().contains(Articulation.STACCATO));
 	}
 
