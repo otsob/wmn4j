@@ -707,4 +707,47 @@ public class MusicXmlReaderDomTest {
 			// Pass the test, this exception is expected.
 		}
 	}
+
+	@Test
+	public void testReadingScoreWithPickupMeasure() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			Score scoreWithPickup = reader
+					.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "pickup_measure_test.xml"));
+			assertPickupMeasureReadCorrectly(scoreWithPickup);
+		} catch (Exception exception) {
+			fail("Reading score with pickup measure failed with " + exception);
+		}
+	}
+
+	@Test
+	public void testReadingScoreBuilderWithPickupMeasure() {
+		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		try {
+			ScoreBuilder scoreWithPickup = reader
+					.readScoreBuilder(
+							Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "pickup_measure_test.xml"));
+			assertPickupMeasureReadCorrectly(scoreWithPickup.build());
+		} catch (Exception exception) {
+			fail("Reading score with pickup measure failed with " + exception);
+		}
+	}
+
+	private void assertPickupMeasureReadCorrectly(Score score) {
+		assertEquals(1, score.getPartCount());
+		Part part = score.getParts().get(0);
+		assertFalse(part.isMultiStaff());
+		assertEquals(4, part.getMeasureCount());
+		assertEquals(3, part.getFullMeasureCount());
+
+		assertTrue(part instanceof SingleStaffPart);
+		Staff staff = ((SingleStaffPart) part).getStaff();
+		assertTrue(staff.hasPickupMeasure());
+		assertEquals(4, staff.getMeasureCount());
+		assertEquals(3, staff.getFullMeasureCount());
+
+		Measure pickupMeasure = staff.getMeasure(0);
+		assertTrue(pickupMeasure.isPickUp());
+		assertEquals(0, pickupMeasure.getNumber());
+	}
 }
