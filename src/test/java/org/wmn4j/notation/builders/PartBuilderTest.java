@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Clefs;
 import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.KeySignature;
 import org.wmn4j.notation.elements.KeySignatures;
 import org.wmn4j.notation.elements.Measure;
 import org.wmn4j.notation.elements.MeasureAttributes;
@@ -36,14 +35,12 @@ public class PartBuilderTest {
 	private final Map<Integer, List<DurationalBuilder>> measureContents;
 	private final MeasureAttributes measureAttr;
 
-	KeySignature keySig = KeySignatures.CMAJ_AMIN;
-
-	NoteBuilder C4 = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
-	NoteBuilder E4 = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF);
-	NoteBuilder G4 = new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF);
-	NoteBuilder C4Quarter = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-
 	public PartBuilderTest() {
+		NoteBuilder C4 = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
+		NoteBuilder E4 = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF);
+		NoteBuilder G4 = new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF);
+		NoteBuilder C4Quarter = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+
 		final Map<Integer, List<DurationalBuilder>> noteVoice = new HashMap<>();
 		noteVoice.put(0, new ArrayList<>());
 		noteVoice.get(0).add(C4Quarter);
@@ -173,15 +170,15 @@ public class PartBuilderTest {
 		assertTrue(part instanceof MultiStaffPart);
 		final MultiStaffPart mpart = (MultiStaffPart) part;
 		final List<Integer> staffNumbers = mpart.getStaffNumbers();
-		assertTrue(staffNumbers.size() == 2);
+		assertEquals(2, staffNumbers.size());
 		assertTrue(staffNumbers.contains(1));
 		assertTrue(staffNumbers.contains(2));
 
 		final Staff staff1 = mpart.getStaff(1);
-		assertTrue(staff1.getMeasureCount() == 5);
+		assertEquals(5, staff1.getMeasureCount());
 
 		final Staff staff2 = mpart.getStaff(2);
-		assertTrue(staff2.getMeasureCount() == 5);
+		assertEquals(5, staff2.getMeasureCount());
 	}
 
 	@Test
@@ -203,6 +200,7 @@ public class PartBuilderTest {
 		final Note firstNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 1).get(1, 0);
 		final Note secondNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 2).get(1, 0);
 
+		assertTrue(firstNote.getFollowingTiedNote().isPresent());
 		assertEquals(secondNote, firstNote.getFollowingTiedNote().get());
 		assertTrue(secondNote.isTiedFromPrevious());
 	}
