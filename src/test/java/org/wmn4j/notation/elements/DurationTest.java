@@ -1,27 +1,22 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.wmn4j.notation.elements.Duration;
-import org.wmn4j.notation.elements.Durations;
-
 /**
  * Unit tests for Duration class.
- *
- * @author Otso Björklund
  */
 public class DurationTest {
 
@@ -98,9 +93,9 @@ public class DurationTest {
 
 	@Test
 	public void testToDouble() {
-		assertTrue(new Double(0.25).equals(Durations.QUARTER.toDouble()));
-		assertTrue(new Double(0.5).equals(Durations.HALF.toDouble()));
-		assertFalse(new Double(0.49).equals(Durations.HALF.toDouble()));
+		assertEquals(0.25, Durations.QUARTER.toDouble(), 1e-6);
+		assertEquals(0.5, Durations.HALF.toDouble(), 1e-6);
+		assertFalse(0.49 == Durations.HALF.toDouble());
 	}
 
 	@Test
