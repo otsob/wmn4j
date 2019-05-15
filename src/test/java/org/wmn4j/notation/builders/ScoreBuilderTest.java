@@ -21,7 +21,7 @@ public class ScoreBuilderTest {
 	public ScoreBuilderTest() {
 	}
 
-	public static List<PartBuilder> getTestPartBuilders(int partCount, int measureCount) {
+	private static List<PartBuilder> getTestPartBuilders(int partCount, int measureCount) {
 		final List<PartBuilder> partBuilders = new ArrayList<>();
 
 		for (int p = 1; p <= partCount; ++p) {
