@@ -22,6 +22,7 @@ import org.wmn4j.notation.elements.Clef;
 import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.KeySignature;
 import org.wmn4j.notation.elements.KeySignatures;
+import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.elements.SingleStaffPart;
@@ -141,17 +142,41 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	 * ScoreBuilder.
 	 */
 	private void readScoreAttributesToBuilder(ScoreBuilder scoreBuilder, Document doc) {
-		// TODO: Extend this when the attributes of a score are increased.
-		final Node movementTitle = doc.getElementsByTagName(MusicXmlTags.SCORE_MOVEMENT_TITLE).item(0);
-		if (movementTitle != null) {
-			scoreBuilder.setAttribute(Score.Attribute.TITLE, movementTitle.getTextContent());
+
+		Node workNode = doc.getElementsByTagName(MusicXmlTags.SCORE_WORK).item(0);
+		if (workNode != null) {
+			Optional<Node> titleNode = DocHelper.findChild(workNode, MusicXmlTags.SCORE_WORK_TITLE);
+			if (titleNode.isPresent()) {
+				scoreBuilder.setAttribute(Score.Attribute.TITLE, titleNode.get().getTextContent());
+			}
 		}
 
-		final Node identification = doc.getElementsByTagName(MusicXmlTags.SCORE_IDENTIFICATION).item(0);
+		Node movementTitleNode = doc.getElementsByTagName(MusicXmlTags.SCORE_MOVEMENT_TITLE).item(0);
+		if (movementTitleNode != null) {
+			scoreBuilder.setAttribute(Score.Attribute.MOVEMENT_TITLE, movementTitleNode.getTextContent());
+		}
 
-		DocHelper.findChild(identification, MusicXmlTags.SCORE_IDENTIFICATION_CREATOR)
-				.ifPresent(creatorNode -> scoreBuilder.setAttribute(Score.Attribute.COMPOSER,
-						creatorNode.getTextContent()));
+		Node identificationNode = doc.getElementsByTagName(MusicXmlTags.SCORE_IDENTIFICATION).item(0);
+
+		if (identificationNode != null) {
+			List<Node> creatorNodes = DocHelper
+					.findChildren(identificationNode, MusicXmlTags.SCORE_IDENTIFICATION_CREATOR);
+
+			for (Node creatorNode : creatorNodes) {
+				final Optional<String> creatorType = DocHelper
+						.getAttributeValue(creatorNode, MusicXmlTags.SCORE_IDENTIFICATION_CREATOR_TYPE);
+
+				if (creatorType.isPresent()) {
+					if (creatorType.get().equals(MusicXmlTags.SCORE_IDENTIFICATION_COMPOSER)) {
+						scoreBuilder.setAttribute(Score.Attribute.COMPOSER, creatorNode.getTextContent());
+					}
+
+					if (creatorType.get().equals(MusicXmlTags.SCORE_IDENTIFICATION_ARRANGER)) {
+						scoreBuilder.setAttribute(Score.Attribute.ARRANGER, creatorNode.getTextContent());
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -183,19 +208,24 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 		// Read part attributes.
 		if (partsList != null) {
-			final NodeList scoreParts = partsList.getChildNodes();
-			for (int i = 0; i < scoreParts.getLength(); ++i) {
-				final Node child = scoreParts.item(i);
-				if (child.getNodeName().equals(MusicXmlTags.PLIST_SCORE_PART)) {
-					final String partId = child.getAttributes().getNamedItem(MusicXmlTags.PART_ID).getTextContent();
-
-					final String partName = DocHelper.findChild(child, MusicXmlTags.PART_NAME)
-							.map(partNameNode -> partNameNode.getTextContent())
-							.orElse(partId);
-
-					partBuilders.put(partId, new PartBuilder(partName));
-					// TODO: read the other part attributes into the partBuilder.
+			for (Node partInfoNode : DocHelper.findChildren(partsList, MusicXmlTags.PLIST_SCORE_PART)) {
+				Optional<String> partId = DocHelper.getAttributeValue(partInfoNode, MusicXmlTags.PART_ID);
+				if (partId.isEmpty()) {
+					LOG.warn("Part info is missing part id: ", partInfoNode);
+					continue;
 				}
+
+				final String partName = DocHelper.findChild(partInfoNode, MusicXmlTags.PART_NAME)
+						.map(partNameNode -> partNameNode.getTextContent())
+						.orElse(partId.get());
+
+				final PartBuilder partBuilder = new PartBuilder(partName);
+
+				DocHelper.findChild(partInfoNode, MusicXmlTags.PART_NAME_ABBREVIATION)
+						.ifPresent(abbreviaterPartNameNode -> partBuilder.setAttribute(Part.Attribute.ABBREVIATED_NAME,
+								abbreviaterPartNameNode.getTextContent()));
+
+				partBuilders.put(partId.get(), partBuilder);
 			}
 		}
 

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise version="3.1">
+  <work>
+    <work-title>Composition title</work-title>
+  </work>
+  <movement-title>Movement title</movement-title>
+  <identification>
+    <creator type="composer">Composer name</creator>
+    <creator type="arranger">Arranger name</creator>
+    <encoding>
+      <software>MuseScore 3.0.0</software>
+      <encoding-date>2019-05-15</encoding-date>
+      <supports element="accidental" type="yes"/>
+      <supports element="beam" type="yes"/>
+      <supports element="print" attribute="new-page" type="yes" value="yes"/>
+      <supports element="print" attribute="new-system" type="yes" value="yes"/>
+      <supports element="stem" type="yes"/>
+      </encoding>
+    </identification>
+  <defaults>
+    <scaling>
+      <millimeters>7.05556</millimeters>
+      <tenths>40</tenths>
+      </scaling>
+    <word-font font-family="FreeSerif" font-size="10"/>
+    <lyric-font font-family="FreeSerif" font-size="11"/>
+    </defaults>
+  <part-list>
+    <score-part id="P1">
+      <part-name>Part name 1</part-name>
+      <part-abbreviation>Short part name 1</part-abbreviation>
+    </score-part>
+    <score-part id="P2">
+      <part-name>Part name 2</part-name>
+      <part-abbreviation>Short part name 2</part-abbreviation>
+    </score-part>
+  </part-list>
+  <part id="P1">
+    <measure number="1" width="1077.16">
+      <attributes>
+        <divisions>1</divisions>
+        <key>
+          <fifths>0</fifths>
+          </key>
+        <time>
+          <beats>4</beats>
+          <beat-type>4</beat-type>
+          </time>
+        <clef>
+          <sign>G</sign>
+          <line>2</line>
+          </clef>
+        </attributes>
+      <note>
+        <rest/>
+        <duration>4</duration>
+        <voice>1</voice>
+        </note>
+      <barline location="right">
+        <bar-style>light-heavy</bar-style>
+        </barline>
+      </measure>
+    </part>
+    <part id="P2">
+      <measure number="1" width="1077.16">
+        <attributes>
+          <divisions>1</divisions>
+          <key>
+            <fifths>0</fifths>
+            </key>
+          <time>
+            <beats>4</beats>
+            <beat-type>4</beat-type>
+            </time>
+          <clef>
+            <sign>G</sign>
+            <line>2</line>
+            </clef>
+          </attributes>
+        <note>
+          <rest/>
+          <duration>4</duration>
+          <voice>1</voice>
+          </note>
+        <barline location="right">
+          <bar-style>light-heavy</bar-style>
+          </barline>
+        </measure>
+      </part>
+  </score-partwise>

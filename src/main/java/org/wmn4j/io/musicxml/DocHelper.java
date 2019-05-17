@@ -3,6 +3,7 @@
  */
 package org.wmn4j.io.musicxml;
 
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -59,6 +60,27 @@ final class DocHelper {
 		}
 
 		return foundChildren;
+	}
+
+	/**
+	 * Returns the value of the attribute with the given name for the node if the attribute is present.
+	 *
+	 * @param node          the node for which the attribute is returned if it is present.
+	 * @param attributeName the name of the attribute whose value is returned
+	 * @return the value of the attribute with the given name for the node if the attribute is present
+	 */
+	static Optional<String> getAttributeValue(Node node, String attributeName) {
+		NamedNodeMap attributes = node.getAttributes();
+		if (attributes == null) {
+			return Optional.empty();
+		}
+
+		Node attributeNode = attributes.getNamedItem(attributeName);
+		if (attributeNode == null) {
+			return Optional.empty();
+		}
+
+		return Optional.of(attributeNode.getTextContent());
 	}
 
 	private DocHelper() {

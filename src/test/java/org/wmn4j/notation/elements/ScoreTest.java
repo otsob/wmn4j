@@ -27,6 +27,7 @@ public class ScoreTest {
 	public static final String SCORE_NAME = "TestScore";
 	public static final String SUBTITLE = "Score subtitle";
 	public static final String COMPOSER_NAME = "TestComposer";
+	public static final String MOVEMENT_NAME = "TestMovement";
 	public static final String ARRANGER = "Test Arranger";
 
 	public ScoreTest() {
@@ -35,6 +36,7 @@ public class ScoreTest {
 	public static Map<Score.Attribute, String> getTestAttributes() {
 		final Map<Score.Attribute, String> attributes = new HashMap<>();
 		attributes.put(Score.Attribute.TITLE, SCORE_NAME);
+		attributes.put(Score.Attribute.MOVEMENT_TITLE, MOVEMENT_NAME);
 		attributes.put(Score.Attribute.SUBTITLE, SUBTITLE);
 		attributes.put(Score.Attribute.COMPOSER, COMPOSER_NAME);
 		attributes.put(Score.Attribute.ARRANGER, ARRANGER);
@@ -73,7 +75,7 @@ public class ScoreTest {
 		assertEquals(SUBTITLE, score.getAttribute(Score.Attribute.SUBTITLE));
 		assertEquals(COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals(ARRANGER, score.getAttribute(Score.Attribute.ARRANGER));
-		assertEquals("", score.getAttribute(Score.Attribute.YEAR));
+		assertEquals(MOVEMENT_NAME, score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
 	}
 
 	@Test

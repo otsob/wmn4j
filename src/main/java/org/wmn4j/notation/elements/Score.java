@@ -28,6 +28,11 @@ public final class Score implements Iterable<Part> {
 		TITLE,
 
 		/**
+		 * The title of the movement.
+		 */
+		MOVEMENT_TITLE,
+
+		/**
 		 * The subtitle of the score.
 		 */
 		SUBTITLE,
@@ -40,11 +45,7 @@ public final class Score implements Iterable<Part> {
 		/**
 		 * The arranger.
 		 */
-		ARRANGER,
-		/**
-		 * The year of publication.
-		 */
-		YEAR
+		ARRANGER
 	}
 
 	private final Map<Attribute, String> scoreAttr;
