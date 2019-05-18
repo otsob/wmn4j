@@ -12,16 +12,17 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class ChordTest {
 
-	List<Note> cMajorNotes;
-	Chord cMajor;
-	Chord dMajor;
-	Chord fMinor;
-	Chord dMinorMaj9;
+	private final List<Note> cMajorNotes;
+	private final Chord cMajor;
+	private final Chord dMajor;
+	private final Chord fMinor;
+	private final Chord dMinorMaj9;
 
 	public ChordTest() {
 		this.cMajorNotes = new ArrayList<>();
@@ -88,7 +89,7 @@ public class ChordTest {
 	public void testGetNoteDurationsSameForAllNotes() {
 		final Duration duration = this.dMinorMaj9.getDuration();
 		for (int i = 0; i < this.dMinorMaj9.getNoteCount(); ++i) {
-			assertTrue(duration.equals(this.dMinorMaj9.getNote(i).getDuration()));
+			assertEquals(duration, this.dMinorMaj9.getNote(i).getDuration());
 		}
 
 		try {
@@ -97,7 +98,7 @@ public class ChordTest {
 			final ArrayList<Note> notes = new ArrayList<>();
 			notes.add(a);
 			notes.add(b);
-			final Chord c = Chord.of(notes);
+			Chord.of(notes);
 			fail("Failed to throw IllegalArgumentException when "
 					+ "creating chord with notes whose durations are not the same");
 		} catch (final IllegalArgumentException e) {
@@ -126,30 +127,26 @@ public class ChordTest {
 
 	@Test
 	public void testGetDuration() {
-		assertFalse(this.cMajor.getDuration().equals(Durations.SIXTEENTH));
-		assertTrue(this.dMajor.getDuration().equals(Durations.QUARTER));
+		assertNotEquals(Durations.SIXTEENTH, this.cMajor.getDuration());
+		assertEquals(Durations.QUARTER, this.dMajor.getDuration());
 	}
 
 	@Test
 	public void testGetNote() {
-		assertTrue(this.cMajor.getNote(1).equals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER)));
-		assertTrue(this.dMajor.getNote(2).equals(Note.of(Pitch.of(Pitch.Base.A, 0, 3), Durations.QUARTER)));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER), this.cMajor.getNote(1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.A, 0, 3), Durations.QUARTER), this.dMajor.getNote(2));
 	}
 
 	@Test
 	public void testGetLowestNote() {
-		assertTrue(this.cMajor.getLowestNote()
-				.equals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
-		assertTrue(this.fMinor.getLowestNote()
-				.equals(Note.of(Pitch.of(Pitch.Base.F, 0, 4), Durations.QUARTER)));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), this.cMajor.getLowestNote());
+		assertEquals(Note.of(Pitch.of(Pitch.Base.F, 0, 4), Durations.QUARTER), this.fMinor.getLowestNote());
 	}
 
 	@Test
 	public void testGetHighestNote() {
-		assertTrue(this.cMajor.getHighestNote()
-				.equals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.QUARTER)));
-		assertTrue(this.fMinor.getHighestNote()
-				.equals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.QUARTER)));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.QUARTER), this.cMajor.getHighestNote());
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.QUARTER), this.fMinor.getHighestNote());
 	}
 
 	@Test
@@ -188,7 +185,7 @@ public class ChordTest {
 			final Chord illegalCMaj = this.cMajor.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHT));
 			fail("Failed to throw expected exception");
 		} catch (final IllegalArgumentException e) {
-			assertTrue(e instanceof IllegalArgumentException);
+			// Pass because exception is expected
 		}
 	}
 
