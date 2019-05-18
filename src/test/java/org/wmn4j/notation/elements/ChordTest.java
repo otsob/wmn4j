@@ -1,31 +1,20 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Test;
-import org.wmn4j.notation.elements.Articulation;
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Duration;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-/**
- *
- * @author Otso Björklund
- */
 public class ChordTest {
 
 	List<Note> cMajorNotes;
