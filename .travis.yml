@@ -14,3 +14,4 @@ deploy:
   keep-history: true
   on:
     branch: master
+    jdk: openjdk11
