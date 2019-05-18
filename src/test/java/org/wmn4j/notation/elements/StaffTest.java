@@ -4,10 +4,7 @@
  */
 package org.wmn4j.notation.elements;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,10 +12,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- *
  * @author Otso Björklund
  */
 public class StaffTest {
@@ -51,9 +50,9 @@ public class StaffTest {
 
 		try {
 			measures.add(origMeasures.get(0));
-			assertTrue("Did not throw UnsupportedOperationException", false);
+			fail("Did not throw UnsupportedOperationException");
 		} catch (final Exception e) {
-			assertTrue(e instanceof UnsupportedOperationException);
+			assertTrue(e instanceof UnsupportedOperationException, "Exception was of incorrect type: " + e);
 		}
 
 		final int sizeBeforeAddition = origMeasures.size();

@@ -4,18 +4,8 @@
  */
 package org.wmn4j.mir;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.junit.Ignore;
-import org.junit.Test;
-import org.wmn4j.mir.MonophonicPattern;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Durations;
@@ -23,7 +13,16 @@ import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Rest;
 
-@Ignore("These tests are unfinished and should be unignored once the logic is implemented")
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 public class MonophonicPatternTest {
 
 	final List<Durational> referenceNotes;
@@ -97,8 +96,8 @@ public class MonophonicPatternTest {
 
 		notes.add(Rest.of(Durations.QUARTER));
 
-		assertTrue("Adding rest to end of pattern should not make pattern inequal in pitches",
-				pattern1.equalsInPitch(new MonophonicPattern(notes)));
+		assertTrue(pattern1.equalsInPitch(new MonophonicPattern(notes)),
+				"Adding rest to end of pattern should not make pattern inequal in pitches");
 
 		notes.add(Note.of(Pitch.of(Pitch.Base.E, -1, 3), Durations.WHOLE));
 

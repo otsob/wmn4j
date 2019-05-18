@@ -4,7 +4,7 @@
 
 package org.wmn4j.notation.builders;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.Note;
@@ -13,8 +13,8 @@ import org.wmn4j.notation.elements.Pitch;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ChordBuilderTest {
 

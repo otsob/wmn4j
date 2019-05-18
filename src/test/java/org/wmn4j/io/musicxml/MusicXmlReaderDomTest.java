@@ -4,7 +4,7 @@
  */
 package org.wmn4j.io.musicxml;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.io.ParsingFailureException;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.builders.ScoreBuilder;
@@ -35,10 +35,11 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class MusicXmlReaderDomTest {
 
@@ -62,7 +63,7 @@ public class MusicXmlReaderDomTest {
 			fail("Parsing failed with exception " + e);
 		}
 
-		assertTrue("score is null", score != null);
+		assertNotNull(score);
 		return score;
 	}
 
@@ -77,7 +78,7 @@ public class MusicXmlReaderDomTest {
 			fail("Parsing failed with exception " + e);
 		}
 
-		assertTrue("score is null", scoreBuilder != null);
+		assertNotNull(scoreBuilder);
 		return scoreBuilder;
 	}
 
@@ -392,25 +393,25 @@ public class MusicXmlReaderDomTest {
 		final Staff lower = part.getStaff(2);
 
 		// Check upper staff
-		assertEquals("Incorrect clef measure 1 upper staff beginning", Clefs.G, upper.getMeasure(1).getClef());
-		assertTrue("Upper staff measure 1 does not contain a clef change", upper.getMeasure(1).containsClefChanges());
-		assertEquals("Incorrect number of clef changes", 1, upper.getMeasure(1).getClefChanges().size());
-		assertEquals("Incorrect clef change", Clefs.ALTO,
-				upper.getMeasure(1).getClefChanges().get(Durations.HALF.addDot()));
+		assertEquals(Clefs.G, upper.getMeasure(1).getClef(), "Incorrect clef measure 1 upper staff beginning");
+		assertTrue(upper.getMeasure(1).containsClefChanges(), "Upper staff measure 1 does not contain a clef change");
+		assertEquals(1, upper.getMeasure(1).getClefChanges().size(), "Incorrect number of clef changes");
+		assertEquals(Clefs.ALTO,
+				upper.getMeasure(1).getClefChanges().get(Durations.HALF.addDot()), "Incorrect clef change");
 
-		assertEquals("Incorrect clef measure 2 upper staff.", Clefs.ALTO, upper.getMeasure(2).getClef());
-		assertFalse("Upper staff measure 2 contains a clef change", upper.getMeasure(2).containsClefChanges());
+		assertEquals(Clefs.ALTO, upper.getMeasure(2).getClef(), "Incorrect clef measure 2 upper staff.");
+		assertFalse(upper.getMeasure(2).containsClefChanges(), "Upper staff measure 2 contains a clef change");
 
 		// Check lower staff
-		assertEquals("Incorrect clef in measure 1 lower staff", Clefs.F, lower.getMeasure(1).getClef());
-		assertTrue("Lower staff measure 1 does not contain a clef change", lower.getMeasure(1).containsClefChanges());
+		assertEquals(Clefs.F, lower.getMeasure(1).getClef(), "Incorrect clef in measure 1 lower staff");
+		assertTrue(lower.getMeasure(1).containsClefChanges(), "Lower staff measure 1 does not contain a clef change");
 		final Map<Duration, Clef> clefChanges = lower.getMeasure(1).getClefChanges();
-		assertEquals("Incorrect number of clef changes", 1, clefChanges.size());
+		assertEquals(1, clefChanges.size(), "Incorrect number of clef changes");
 		final Duration offset = Durations.HALF.add(Durations.SIXTEENTH.multiplyBy(3));
-		assertEquals("Incorrect clef change", Clefs.G, clefChanges.get(offset));
+		assertEquals(Clefs.G, clefChanges.get(offset), "Incorrect clef change");
 
-		assertEquals("Incorrect clef measure 2 of lower staff", Clefs.G, lower.getMeasure(2).getClef());
-		assertFalse("Lower staff measure 2 contians clef changes", lower.getMeasure(2).containsClefChanges());
+		assertEquals(Clefs.G, lower.getMeasure(2).getClef(), "Incorrect clef measure 2 of lower staff");
+		assertFalse(lower.getMeasure(2).containsClefChanges(), "Lower staff measure 2 contians clef changes");
 	}
 
 	@Test
@@ -483,7 +484,7 @@ public class MusicXmlReaderDomTest {
 			++measureCount;
 		}
 
-		assertEquals("Incorrect number of measures in multistaff part", 6, measureCount);
+		assertEquals(6, measureCount, "Incorrect number of measures in multistaff part");
 	}
 
 	@Test

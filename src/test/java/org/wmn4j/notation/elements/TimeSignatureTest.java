@@ -4,32 +4,18 @@
  */
 package org.wmn4j.notation.elements;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.TimeSignature;
-import org.wmn4j.notation.elements.TimeSignatures;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- *
  * @author Otso Björklund
  */
 public class TimeSignatureTest {
 
 	public TimeSignatureTest() {
-	}
-
-	@BeforeClass
-	public static void setUpClass() {
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
 	}
 
 	@Test

@@ -4,8 +4,8 @@
  */
 package org.wmn4j.notation.iterators;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Durations;
@@ -13,9 +13,10 @@ import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Score;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Otso Björklund
@@ -29,9 +30,9 @@ public class PartWiseScoreIteratorTest {
 		this.score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		assertTrue("Failed to read score", score != null);
+		assertNotNull(score);
 		this.iter = new PartWiseScoreIterator(this.score);
 	}
 
@@ -47,7 +48,7 @@ public class PartWiseScoreIteratorTest {
 	public void testHasNext() {
 		// There are 28 Durationals in the test score.
 		for (int i = 0; i < 28; ++i) {
-			assertTrue("Should have had next at " + i + "th iteration", this.iter.hasNext());
+			assertTrue(this.iter.hasNext(), "Should have had next at " + i + "th iteration");
 			this.iter.next();
 		}
 

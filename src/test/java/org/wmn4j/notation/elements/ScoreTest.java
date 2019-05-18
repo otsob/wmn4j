@@ -3,7 +3,7 @@
  */
 package org.wmn4j.notation.elements;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.builders.PartBuilder;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ScoreTest {
 
@@ -84,13 +84,13 @@ public class ScoreTest {
 		final List<Part> parts = getTestParts(5, 5);
 
 		final Score score = Score.of(attributes, parts);
-		assertEquals("Number of parts was incorrect before trying to modify.", 5, score.getPartCount());
+		assertEquals(5, score.getPartCount(), "Number of parts was incorrect before trying to modify.");
 		parts.add(parts.get(0));
-		assertEquals("Adding part to the list used for creating score changed score.", 5, score.getPartCount());
+		assertEquals(5, score.getPartCount(), "Adding part to the list used for creating score changed score.");
 
-		assertEquals("Score title was incorrect before trying to modify", SCORE_NAME, score.getTitle());
+		assertEquals(SCORE_NAME, score.getTitle(), "Score title was incorrect before trying to modify");
 		attributes.put(Score.Attribute.TITLE, "ModifiedName");
-		assertEquals("Score title was changed by modifying map used for creating score", SCORE_NAME, score.getTitle());
+		assertEquals(SCORE_NAME, score.getTitle(), "Score title was changed by modifying map used for creating score");
 
 		final List<Part> scoreParts = score.getParts();
 		try {
@@ -98,7 +98,7 @@ public class ScoreTest {
 		} catch (final Exception e) {
 			/* Do nothing */
 		}
-		assertEquals("Number of parts changed in score", 5, score.getPartCount());
+		assertEquals(5, score.getPartCount(), "Number of parts changed in score");
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class ScoreTest {
 			++parts;
 		}
 
-		assertEquals("Iterated through a wrong number of parts", partCount, parts);
+		assertEquals(partCount, parts, "Iterated through a wrong number of parts");
 
 		final Iterator<Part> iter = score.iterator();
 		iter.next();
@@ -134,7 +134,7 @@ public class ScoreTest {
 			score.getAtPosition(new ScorePosition(0, 1, 1, 5, 0));
 			fail("Did not throw exception");
 		} catch (final Exception e) {
-			assertTrue("Exception: " + e, e instanceof NoSuchElementException);
+			assertTrue(e instanceof NoSuchElementException, "Exception: " + e + " is of incorrect type");
 		}
 
 		// Test first note.

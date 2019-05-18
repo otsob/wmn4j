@@ -3,7 +3,7 @@
  */
 package org.wmn4j.notation.builders;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Clefs;
 import org.wmn4j.notation.elements.Duration;
@@ -19,10 +19,10 @@ import org.wmn4j.notation.elements.TimeSignatures;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MeasureBuilderTest {
 
@@ -138,13 +138,13 @@ public class MeasureBuilderTest {
 	public void testIsVoiceFull() {
 		MeasureBuilder builder = new MeasureBuilder(1);
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER));
-		assertFalse("Voice 0 is full for 4/4 measure after adding one quarter rest", builder.isFull(0));
+		assertFalse(builder.isFull(0), "Voice 0 is full for 4/4 measure after adding one quarter rest");
 		final NoteBuilder c = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER);
 		builder.addToVoice(0, c);
-		assertFalse("Voice 0 is full for 4/4 measure after adding two quarters", builder.isFull(0));
+		assertFalse(builder.isFull(0), "Voice 0 is full for 4/4 measure after adding two quarters");
 		builder.addToVoice(0, c);
 		builder.addToVoice(0, c);
-		assertTrue("Voice 0 is not full when 4 quarter durations added to 4/4", builder.isFull(0));
+		assertTrue(builder.isFull(0), "Voice 0 is not full when 4 quarter durations added to 4/4");
 
 		builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.CMAJ_AMIN);
@@ -154,23 +154,23 @@ public class MeasureBuilderTest {
 				.addToVoice(1, new RestBuilder(Durations.QUARTER.addDot()));
 		builder.addToVoice(0, new RestBuilder(Durations.SIXTEENTH_TRIPLET)).addToVoice(0,
 				new RestBuilder(Durations.SIXTEENTH_TRIPLET));
-		assertFalse("Voice 0 is full when 6/8 measure is lacking one sixteenth triplet", builder.isFull(0));
+		assertFalse(builder.isFull(0), "Voice 0 is full when 6/8 measure is lacking one sixteenth triplet");
 		builder.addToVoice(0, new RestBuilder(Durations.SIXTEENTH_TRIPLET));
-		assertTrue("Voice 0 is not full when 6/8 measure should be full.", builder.isFull(0));
-		assertFalse("Voice 1 is full for 6/8 measure when it should not be", builder.isFull(1));
+		assertTrue(builder.isFull(0), "Voice 0 is not full when 6/8 measure should be full.");
+		assertFalse(builder.isFull(1), "Voice 1 is full for 6/8 measure when it should not be");
 	}
 
 	@Test
 	public void testIsFull() {
 		MeasureBuilder builder = new MeasureBuilder(1);
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER));
-		assertFalse("builder for 4/4 is full after adding one quarter rest", builder.isFull());
+		assertFalse(builder.isFull(), "builder for 4/4 is full after adding one quarter rest");
 		final NoteBuilder c = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER);
 		builder.addToVoice(0, c);
-		assertFalse("builder for 4/4 is full only after adding two quarters", builder.isFull());
+		assertFalse(builder.isFull(), "builder for 4/4 is full only after adding two quarters");
 		builder.addToVoice(0, c);
 		builder.addToVoice(0, c);
-		assertTrue("builder is not full when 4 quarter durations added to 4/4", builder.isFull());
+		assertTrue(builder.isFull(), "builder is not full when 4 quarter durations added to 4/4");
 
 		builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT);
@@ -180,9 +180,9 @@ public class MeasureBuilderTest {
 				.addToVoice(1, new RestBuilder(Durations.QUARTER.addDot()));
 		builder.addToVoice(0, new RestBuilder(Durations.SIXTEENTH_TRIPLET)).addToVoice(0,
 				new RestBuilder(Durations.SIXTEENTH_TRIPLET));
-		assertFalse("builder is full when 6/8 measure is lacking one sixteenth triplet", builder.isFull());
+		assertFalse(builder.isFull(), "builder is full when 6/8 measure is lacking one sixteenth triplet");
 		builder.addToVoice(0, new RestBuilder(Durations.SIXTEENTH_TRIPLET));
-		assertTrue("builder is not full when 6/8 measure should be full.", builder.isFull());
+		assertTrue(builder.isFull(), "builder is not full when 6/8 measure should be full.");
 	}
 
 	@Test
@@ -265,15 +265,12 @@ public class MeasureBuilderTest {
 		builder.addToVoice(2, withEightDuration);
 
 		builder.trim();
-		assertEquals(
-				"Voice that had one durational with exactly the duration of the time signature was affected by trim.",
-				Durations.HALF, builder.get(0, 0).getDuration());
-		assertEquals(
-				"Voice that had one durational exceeding the duration specified by the time signature was not trimmed correctly.",
-				Durations.HALF, builder.get(1, 0).getDuration());
-		assertEquals(
-				"Voice that had one durational shorter than the duration specified by the time signature was affected by trim.",
-				Durations.EIGHT, builder.get(2, 0).getDuration());
+		assertEquals(Durations.HALF, builder.get(0, 0).getDuration(),
+				"Voice that had one durational with exactly the duration of the time signature was affected by trim.");
+		assertEquals(Durations.HALF, builder.get(1, 0).getDuration(),
+				"Voice that had one durational exceeding the duration specified by the time signature was not trimmed correctly.");
+		assertEquals(Durations.EIGHT, builder.get(2, 0).getDuration(),
+				"Voice that had one durational shorter than the duration specified by the time signature was affected by trim.");
 		builder.build();
 	}
 
@@ -289,15 +286,12 @@ public class MeasureBuilderTest {
 
 		builder.trim();
 
-		assertEquals(
-				"First element was affected by trim when it shouldn't have been.",
-				Durations.QUARTER, builder.get(0, 0).getDuration());
-		assertEquals(
-				"Second element was affected by trim when it shouldn't have been.",
-				Durations.EIGHT, builder.get(0, 1).getDuration());
-		assertEquals(
-				"Third element was not affected by trim when it should have been.",
-				Durations.EIGHT, builder.get(0, 2).getDuration());
+		assertEquals(Durations.QUARTER, builder.get(0, 0).getDuration(),
+				"First element was affected by trim when it shouldn't have been.");
+		assertEquals(Durations.EIGHT, builder.get(0, 1).getDuration(),
+				"Second element was affected by trim when it shouldn't have been.");
+		assertEquals(Durations.EIGHT, builder.get(0, 2).getDuration(),
+				"Third element was not affected by trim when it should have been.");
 
 		assertFalse(builder.isOverflowing());
 		builder.build();

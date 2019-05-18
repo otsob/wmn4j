@@ -3,7 +3,7 @@
  */
 package org.wmn4j.notation.elements;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,9 +11,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MarkingTest {
 
@@ -94,8 +94,9 @@ public class MarkingTest {
 		final Note first = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
 				Collections.emptySet(), List.of(Marking.Connection.beginningOf(slur, second)), null, false);
 
-		assertTrue("Incorrectly returned notes for a different slur",
-				Marking.of(Marking.Type.SLUR).getAffectedStartingFrom(first).isEmpty());
+		assertTrue(
+				Marking.of(Marking.Type.SLUR).getAffectedStartingFrom(first).isEmpty(),
+				"Incorrectly returned notes for a different slur");
 
 		assertEquals(3, slur.getAffectedStartingFrom(first).size());
 		assertEquals(2, slur.getAffectedStartingFrom(second).size());

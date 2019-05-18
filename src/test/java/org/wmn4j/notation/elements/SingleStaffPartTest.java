@@ -4,10 +4,7 @@
  */
 package org.wmn4j.notation.elements;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,10 +13,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- *
  * @author Otso Björklund
  */
 public class SingleStaffPartTest {
@@ -61,8 +60,8 @@ public class SingleStaffPartTest {
 		final List<Measure> measuresCopy = new ArrayList<>(this.measures);
 		final SingleStaffPart part = SingleStaffPart.of("Test part", measuresCopy);
 		measuresCopy.set(0, null);
-		assertTrue("Modifying list used to create part modified part also.",
-				part.getStaff().getMeasures().get(0) != null);
+		assertTrue(part.getStaff().getMeasures().get(0) != null,
+				"Modifying list used to create part modified part also.");
 	}
 
 	@Test
@@ -97,12 +96,12 @@ public class SingleStaffPartTest {
 		int measCount = 0;
 		int measureNumber = 1;
 		for (Measure m : part) {
-			assertEquals("Iterator went through measures in incorrect order", measureNumber++, m.getNumber());
+			assertEquals(measureNumber++, m.getNumber(), "Iterator went through measures in incorrect order");
 			++measCount;
 		}
 
-		assertEquals("Iterator did not go through all measures/went through measures multiple times.",
-				this.measureCount, measCount);
+		assertEquals(this.measureCount, measCount,
+				"Iterator did not go through all measures/went through measures multiple times.");
 	}
 
 	@Test
@@ -115,7 +114,8 @@ public class SingleStaffPartTest {
 			iter.remove();
 			fail("Removing through iterator did not cause exception");
 		} catch (final Exception e) {
-			/* Ignore */ }
+			/* Ignore */
+		}
 
 		assertEquals(this.measureCount, part.getStaff().getMeasures().size());
 	}

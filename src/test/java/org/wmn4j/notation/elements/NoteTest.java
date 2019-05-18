@@ -3,7 +3,7 @@
  */
 package org.wmn4j.notation.elements;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.builders.NoteBuilder;
 
 import java.util.ArrayList;
@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class NoteTest {
 
@@ -258,7 +258,7 @@ public class NoteTest {
 			/* Do nothing */
 		}
 
-		assertEquals("The ", 2, noteWithMarkingConnections.getMarkings().size());
+		assertEquals(2, noteWithMarkingConnections.getMarkings().size());
 	}
 
 	@Test

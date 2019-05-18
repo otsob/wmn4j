@@ -3,17 +3,15 @@
  */
 package org.wmn4j.notation.elements;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Unit tests for Duration class.
@@ -21,14 +19,6 @@ import static org.junit.Assert.fail;
 public class DurationTest {
 
 	public DurationTest() {
-	}
-
-	@BeforeClass
-	public static void setUpClass() {
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
 	}
 
 	@Test
@@ -162,8 +152,8 @@ public class DurationTest {
 			durations.add(Durations.QUARTER);
 		}
 
-		assertEquals("Four quarters did not add to whole note.", Durations.QUARTER.multiplyBy(numOfQuarters),
-				Duration.sumOf(durations));
+		assertEquals(Durations.QUARTER.multiplyBy(numOfQuarters),
+				Duration.sumOf(durations), "Four quarters did not add to whole note.");
 
 		durations = new ArrayList<>();
 		durations.add(Durations.EIGHT);
@@ -176,6 +166,6 @@ public class DurationTest {
 		durations.add(Durations.EIGHT_TRIPLET);
 		durations.add(Durations.EIGHT_TRIPLET);
 		durations.add(Durations.EIGHT_TRIPLET);
-		assertEquals("Mixed durations did not add to whole note.", Durations.WHOLE, Duration.sumOf(durations));
+		assertEquals(Durations.WHOLE, Duration.sumOf(durations), "Mixed durations did not add to whole note.");
 	}
 }

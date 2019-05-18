@@ -4,28 +4,16 @@
  */
 package org.wmn4j.notation.elements;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.wmn4j.notation.elements.PitchClass;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- *
  * @author Otso Björklund
  */
 public class PitchClassTest {
 
 	public PitchClassTest() {
-	}
-
-	@BeforeClass
-	public static void setUpClass() {
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
 	}
 
 	@Test

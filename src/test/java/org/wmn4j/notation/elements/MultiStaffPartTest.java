@@ -4,7 +4,7 @@
  */
 package org.wmn4j.notation.elements;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.TestHelper;
 
 import java.util.ArrayList;
@@ -13,9 +13,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Otso Björklund
@@ -53,8 +53,8 @@ public class MultiStaffPartTest {
 		testMeasures.add(TestHelper.getTestMeasure(1));
 		testStavesCopy.put(1, Staff.of(testMeasures));
 
-		assertTrue("Modifying map that was used to create MultiStaffPart changed the MultiStaffPart.",
-				part.getStaff(1).getMeasure(1) == this.testStaves.get(1).getMeasure(1));
+		assertTrue(part.getStaff(1).getMeasure(1) == this.testStaves.get(1).getMeasure(1),
+				"Modifying map that was used to create MultiStaffPart changed the MultiStaffPart.");
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class MultiStaffPartTest {
 			}
 		}
 
-		assertEquals("Iterator went through an unexpected number of measures.", expectedCount, count);
+		assertEquals(expectedCount, count, "Iterator went through an unexpected number of measures.");
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class MultiStaffPartTest {
 			}
 		}
 
-		assertEquals("Iterator went through an unexpected number of measures.", expectedCount, count);
+		assertEquals(expectedCount, count, "Iterator went through an unexpected number of measures.");
 	}
 
 	@Test

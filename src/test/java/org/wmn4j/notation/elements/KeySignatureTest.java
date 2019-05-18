@@ -4,33 +4,22 @@
  */
 package org.wmn4j.notation.elements;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- *
  * @author Otso Björklund
  */
 public class KeySignatureTest {
 
 	public KeySignatureTest() {
-	}
-
-	@BeforeClass
-	public static void setUpClass() {
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
 	}
 
 	@Test
@@ -40,7 +29,7 @@ public class KeySignatureTest {
 			final KeySignature illegalCustomKeySig = KeySignature.of(sharps, sharps);
 			fail("A KeySignature with the same note as sharp and flat was created without exception.");
 		} catch (final Exception e) {
-			assertTrue("Exception was of incorrect type.", e instanceof IllegalArgumentException);
+			assertTrue(e instanceof IllegalArgumentException, "Exception was of incorrect type.");
 		}
 	}
 

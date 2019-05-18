@@ -21,8 +21,15 @@ repositories {
 }
 
 dependencies {
-    implementation 'junit:junit:4.12'
+    testImplementation('org.junit.jupiter:junit-jupiter:5.4.2')
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+      events "skipped", "failed"
+    }
 }
 
 group = 'wmn4j'
