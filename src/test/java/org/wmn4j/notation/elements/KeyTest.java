@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class KeyTest {
+class KeyTest {
 
 	@Test
-	public void testGetKeySignature() {
+	void testGetKeySignature() {
 		assertTrue(Key.C_MAJOR.getKeySignature().equals(KeySignatures.CMAJ_AMIN));
 		assertTrue(Key.DFLAT_MAJOR.getKeySignature().equals(KeySignatures.DFLATMAJ_BFLATMIN));
 		assertTrue(Key.D_MAJOR.getKeySignature().equals(KeySignatures.DMAJ_BMIN));

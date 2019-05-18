@@ -13,18 +13,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class PCProfileTest {
+class PCProfileTest {
 
 	// By how much values are allowed fo differ
-	static final double EPS = 0.0000000001;
+	private static final double EPS = 0.0000000001;
 
-	static final Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+	private static final Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 	static final Note E4 = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT);
-	static final Note G4 = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT);
-	static final Note Csharp4 = Note.of(Pitch.of(Pitch.Base.C, 1, 4), Durations.SIXTEENTH);
+	private static final Note G4 = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT);
+	private static final Note Csharp4 = Note.of(Pitch.of(Pitch.Base.C, 1, 4), Durations.SIXTEENTH);
 
 	@Test
-	public void testSetIncorrectValue() {
+	void testSetIncorrectValue() {
 		final PCProfile profile = new PCProfile();
 
 		try {
@@ -37,7 +37,7 @@ public class PCProfileTest {
 	}
 
 	@Test
-	public void testAddWithDefaultWeightFunction() {
+	void testAddWithDefaultWeightFunction() {
 		final PCProfile profile = new PCProfile();
 		profile.add(C4);
 		assertEquals(1.0, profile.getValue(PitchClass.C), EPS, "Incorrect value for C");
@@ -47,7 +47,7 @@ public class PCProfileTest {
 	}
 
 	@Test
-	public void testAddWithDurationWeightFunction() {
+	void testAddWithDurationWeightFunction() {
 		final PCProfile profile = PCProfile.getDurationWeightedProfile();
 		profile.add(C4);
 		assertEquals(0.25, profile.getValue(PitchClass.C), EPS, "Incorrect value for C");
@@ -59,7 +59,7 @@ public class PCProfileTest {
 	}
 
 	@Test
-	public void testNormalizeWithDefaultWeightFunction() {
+	void testNormalizeWithDefaultWeightFunction() {
 		PCProfile profile = new PCProfile();
 		final int C4Count = 5;
 		final int G4Count = 3;
@@ -90,7 +90,7 @@ public class PCProfileTest {
 				profile.getValue(PitchClass.CSHARP_DFLAT), EPS, "Incorrect value for C sharp before normalization");
 	}
 
-	public static PCProfile getTestProfile(double... values) {
+	static PCProfile getTestProfile(double... values) {
 		final PCProfile profile = new PCProfile();
 		int i = 0;
 
@@ -102,7 +102,7 @@ public class PCProfileTest {
 	}
 
 	@Test
-	public void testCorrelation() {
+	void testCorrelation() {
 
 		// Profile for C-major from Krumhansl and Kessler.
 		final PCProfile cMajorProfile = getTestProfile(6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29,
@@ -124,7 +124,7 @@ public class PCProfileTest {
 	}
 
 	@Test
-	public void testEuclidean() {
+	void testEuclidean() {
 		// Profile for C-major from Krumhansl and Kessler.
 		final PCProfile a = getTestProfile(1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00);
 		// Profile for A minor from Krumhansl and Kessler.

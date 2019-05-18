@@ -14,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Otso Björklund
  */
-public class PatternAlgorithmsTest {
+class PatternAlgorithmsTest {
 
-	public PatternAlgorithmsTest() {
+	PatternAlgorithmsTest() {
 	}
 
 	private List<NoteEventVector> getDataset() {
@@ -47,7 +47,7 @@ public class PatternAlgorithmsTest {
 	}
 
 	@Test
-	public void testComputeTecs() {
+	void testComputeTecs() {
 		final List<TEC> tecs = PatternAlgorithms.computeTecs(new PointSet(getDataset()));
 		assertTrue(tecsAreCorrect(tecs));
 	}

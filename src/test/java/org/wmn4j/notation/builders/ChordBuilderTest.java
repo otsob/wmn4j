@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ChordBuilderTest {
+class ChordBuilderTest {
 
 	private List<NoteBuilder> getCMajorAsNoteBuilders() {
 		final NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
@@ -32,7 +32,7 @@ public class ChordBuilderTest {
 	}
 
 	@Test
-	public void testConstructorWithListOfNoteBuilders() {
+	void testConstructorWithListOfNoteBuilders() {
 		final ChordBuilder builder = new ChordBuilder(getCMajorAsNoteBuilders());
 
 		final Chord chord = builder.build();
@@ -43,7 +43,7 @@ public class ChordBuilderTest {
 	}
 
 	@Test
-	public void testConstructorWithListOfNoteBuildersCopiesNoteBuilders() {
+	void testConstructorWithListOfNoteBuildersCopiesNoteBuilders() {
 		final List<NoteBuilder> cMajor = getCMajorAsNoteBuilders();
 
 		final ChordBuilder builder = new ChordBuilder(cMajor);
@@ -57,7 +57,7 @@ public class ChordBuilderTest {
 	}
 
 	@Test
-	public void testConstructorWithSingleNoteBuilderCopiesNoteBuilder() {
+	void testConstructorWithSingleNoteBuilderCopiesNoteBuilder() {
 		final NoteBuilder note = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		final ChordBuilder builder = new ChordBuilder(note);
 
@@ -69,7 +69,7 @@ public class ChordBuilderTest {
 	}
 
 	@Test
-	public void testAddNoteBuilderCopiesNoteBuilder() {
+	void testAddNoteBuilderCopiesNoteBuilder() {
 		final List<NoteBuilder> cMajor = getCMajorAsNoteBuilders();
 		final ChordBuilder builder = new ChordBuilder(cMajor);
 
@@ -86,7 +86,7 @@ public class ChordBuilderTest {
 	}
 
 	@Test
-	public void testIterator() {
+	void testIterator() {
 		final ChordBuilder builder = new ChordBuilder(getCMajorAsNoteBuilders());
 
 		int builders = 0;
@@ -97,7 +97,7 @@ public class ChordBuilderTest {
 	}
 
 	@Test
-	public void testSetDuration() {
+	void testSetDuration() {
 		final ChordBuilder chordBuilder = new ChordBuilder(getCMajorAsNoteBuilders());
 		chordBuilder.setDuration(Durations.HALF);
 
@@ -108,7 +108,7 @@ public class ChordBuilderTest {
 	}
 
 	@Test
-	public void testRemoveIf() {
+	void testRemoveIf() {
 		final ChordBuilder chordBuilder = new ChordBuilder(getCMajorAsNoteBuilders());
 		chordBuilder.removeIf((NoteBuilder nb) -> nb.getPitch().equals(Pitch.of(Pitch.Base.C, 0, 4)));
 

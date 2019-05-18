@@ -9,22 +9,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RestTest {
+class RestTest {
 
 	@Test
-	public void testGetDuration() {
+	void testGetDuration() {
 		assertTrue(Rest.of(Durations.EIGHT).getDuration().equals(Durations.EIGHT));
 		assertFalse(Rest.of(Durations.QUARTER).getDuration().equals(Durations.EIGHT));
 	}
 
 	@Test
-	public void testToString() {
+	void testToString() {
 		assertEquals("R(1/4)", Rest.of(Durations.QUARTER).toString());
 		assertEquals("R(1/12)", Rest.of(Durations.EIGHT_TRIPLET).toString());
 	}
 
 	@Test
-	public void testEquals() {
+	void testEquals() {
 		final Rest quarter = Rest.of(Durations.QUARTER);
 		final Rest half = Rest.of(Durations.HALF);
 

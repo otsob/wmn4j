@@ -7,17 +7,17 @@ import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.elements.Score;
 
-public class MusicXmlWriterDomTest {
+class MusicXmlWriterDomTest {
 
-	public MusicXmlWriterDomTest() {
+	MusicXmlWriterDomTest() {
 	}
 
-	private Score readScore(String path) {
+	Score readScore(String path) {
 		return TestHelper.readScore(path);
 	}
 
 	@Test
-	public void testWritingSingleC() {
+	void testWritingSingleC() {
 
 	}
 

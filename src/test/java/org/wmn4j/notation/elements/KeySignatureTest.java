@@ -13,13 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class KeySignatureTest {
+class KeySignatureTest {
 
-	public KeySignatureTest() {
+	KeySignatureTest() {
 	}
 
 	@Test
-	public void testGetKeySigExceptions() {
+	void testGetKeySigExceptions() {
 		try {
 			final List<Pitch.Base> sharps = Arrays.asList(Pitch.Base.C);
 			final KeySignature illegalCustomKeySig = KeySignature.of(sharps, sharps);
@@ -30,20 +30,20 @@ public class KeySignatureTest {
 	}
 
 	@Test
-	public void testGetNumSharps() {
+	void testGetNumSharps() {
 		assertEquals(0, KeySignatures.CMAJ_AMIN.getNumberOfSharps());
 		assertEquals(1, KeySignatures.GMAJ_EMIN.getNumberOfSharps());
 		assertEquals(2, KeySignatures.DMAJ_BMIN.getNumberOfSharps());
 	}
 
 	@Test
-	public void testGetNumFlats() {
+	void testGetNumFlats() {
 		assertEquals(0, KeySignatures.CMAJ_AMIN.getNumberOfFlats());
 		assertEquals(4, KeySignatures.AFLATMAJ_FMIN.getNumberOfFlats());
 	}
 
 	@Test
-	public void testEquals() {
+	void testEquals() {
 		assertTrue(KeySignatures.CMAJ_AMIN.equals(KeySignatures.CMAJ_AMIN));
 		assertTrue(KeySignatures.EMAJ_CSHARPMIN.equals(KeySignatures.EMAJ_CSHARPMIN));
 		assertTrue(KeySignatures.EFLATMAJ_CMIN.equals(KeySignatures.EFLATMAJ_CMIN));

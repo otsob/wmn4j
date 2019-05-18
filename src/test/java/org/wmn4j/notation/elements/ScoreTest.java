@@ -25,10 +25,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class ScoreTest {
 
 	public static final String SCORE_NAME = "TestScore";
-	public static final String SUBTITLE = "Score subtitle";
+	private static final String SUBTITLE = "Score subtitle";
 	public static final String COMPOSER_NAME = "TestComposer";
-	public static final String MOVEMENT_NAME = "TestMovement";
-	public static final String ARRANGER = "Test Arranger";
+	private static final String MOVEMENT_NAME = "TestMovement";
+	private static final String ARRANGER = "Test Arranger";
 
 	public static Map<Score.Attribute, String> getTestAttributes() {
 		final Map<Score.Attribute, String> attributes = new HashMap<>();
@@ -40,7 +40,7 @@ public class ScoreTest {
 		return attributes;
 	}
 
-	public static List<Part> getTestParts(int partCount, int measureCount) {
+	static List<Part> getTestParts(int partCount, int measureCount) {
 		final List<Part> parts = new ArrayList<>();
 
 		for (int p = 1; p <= partCount; ++p) {
@@ -56,7 +56,7 @@ public class ScoreTest {
 	}
 
 	@Test
-	public void testHasAttribute() {
+	void testHasAttribute() {
 		final Map<Score.Attribute, String> attributes = new HashMap<>();
 		attributes.put(Score.Attribute.TITLE, SCORE_NAME);
 
@@ -66,7 +66,7 @@ public class ScoreTest {
 	}
 
 	@Test
-	public void testGetAttribute() {
+	void testGetAttribute() {
 		final Score score = Score.of(getTestAttributes(), getTestParts(5, 5));
 		assertEquals(SCORE_NAME, score.getAttribute(Score.Attribute.TITLE));
 		assertEquals(SUBTITLE, score.getAttribute(Score.Attribute.SUBTITLE));
@@ -76,7 +76,7 @@ public class ScoreTest {
 	}
 
 	@Test
-	public void testImmutability() {
+	void testImmutability() {
 		final Map<Score.Attribute, String> attributes = getTestAttributes();
 		final List<Part> parts = getTestParts(5, 5);
 
@@ -99,7 +99,7 @@ public class ScoreTest {
 	}
 
 	@Test
-	public void testIterator() {
+	void testIterator() {
 		final int partCount = 10;
 		final int measureCount = 10;
 		final Score score = Score.of(getTestAttributes(), getTestParts(partCount, measureCount));
@@ -124,7 +124,7 @@ public class ScoreTest {
 	}
 
 	@Test
-	public void testGetAtPositionLimits() {
+	void testGetAtPositionLimits() {
 		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 
 		try {
@@ -144,7 +144,7 @@ public class ScoreTest {
 	}
 
 	@Test
-	public void testIteratorAndGetAtPosition() {
+	void testIteratorAndGetAtPosition() {
 		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 		assertTrue(score != null);
 
@@ -157,7 +157,7 @@ public class ScoreTest {
 	}
 
 	@Test
-	public void testGetAtPositionInChord() {
+	void testGetAtPositionInChord() {
 		final Score score = TestHelper.readScore("musicxml/positionInChord.xml");
 		assertTrue(score != null);
 

@@ -9,17 +9,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TimeSignatureTest {
+class TimeSignatureTest {
 
 	@Test
-	public void testGetTimeSignature() {
+	void testGetTimeSignature() {
 		final TimeSignature timeSig = TimeSignature.of(4, 4);
 		assertEquals(4, timeSig.getBeatCount());
 		assertEquals(Durations.QUARTER, timeSig.getBeatDuration());
 	}
 
 	@Test
-	public void testGetTotalDuration() {
+	void testGetTotalDuration() {
 		assertEquals(Durations.WHOLE, TimeSignatures.FOUR_FOUR.getTotalDuration());
 		assertEquals(Durations.EIGHT.multiplyBy(6), TimeSignatures.SIX_EIGHT.getTotalDuration());
 		assertEquals(Durations.EIGHT.multiplyBy(13),
@@ -27,7 +27,7 @@ public class TimeSignatureTest {
 	}
 
 	@Test
-	public void testEquals() {
+	void testEquals() {
 		final TimeSignature timeSigA = TimeSignature.of(4, 4);
 		final TimeSignature timeSigB = TimeSignature.of(4, 4);
 		final TimeSignature timeSigC = TimeSignature.of(3, 4);
@@ -39,7 +39,7 @@ public class TimeSignatureTest {
 	}
 
 	@Test
-	public void testToString() {
+	void testToString() {
 		final TimeSignature timeSigA = TimeSignature.of(4, 4);
 		assertEquals("Time(4/4)", timeSigA.toString());
 	}

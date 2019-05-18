@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ScoreBuilderTest {
+class ScoreBuilderTest {
 
 	private static List<PartBuilder> getTestPartBuilders(int partCount, int measureCount) {
 		final List<PartBuilder> partBuilders = new ArrayList<>();
@@ -34,7 +34,7 @@ public class ScoreBuilderTest {
 	}
 
 	@Test
-	public void testBuildingScore() {
+	void testBuildingScore() {
 		final ScoreBuilder builder = new ScoreBuilder();
 		final Map<Score.Attribute, String> attributes = ScoreTest.getTestAttributes();
 		final List<PartBuilder> partBuilders = getTestPartBuilders(5, 5);
@@ -55,7 +55,7 @@ public class ScoreBuilderTest {
 	}
 
 	@Test
-	public void testPartsAreOfEqualLengthWhenBuilt() {
+	void testPartsAreOfEqualLengthWhenBuilt() {
 		final List<PartBuilder> partBuilders = getTestPartBuilders(3, 1);
 		PartBuilder first = partBuilders.get(0);
 		first.add(new MeasureBuilder(2));

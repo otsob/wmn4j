@@ -16,11 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class MultiStaffPartTest {
+class MultiStaffPartTest {
 
 	private final Map<Integer, Staff> testStaves;
 
-	public MultiStaffPartTest() {
+	MultiStaffPartTest() {
 		this.testStaves = new HashMap<>();
 		final List<Measure> measures = new ArrayList<>();
 		for (int i = 1; i <= 5; ++i) {
@@ -32,7 +32,7 @@ public class MultiStaffPartTest {
 	}
 
 	@Test
-	public void testPartHasName() {
+	void testPartHasName() {
 		final Map<Integer, Staff> testStavesCopy = new HashMap<>(this.testStaves);
 
 		final String partName = "Test staff";
@@ -41,7 +41,7 @@ public class MultiStaffPartTest {
 	}
 
 	@Test
-	public void testImmutability() {
+	void testImmutability() {
 		final Map<Integer, Staff> testStavesCopy = new HashMap<>(this.testStaves);
 		final MultiStaffPart part = MultiStaffPart.of("Test staff", testStavesCopy);
 
@@ -54,7 +54,7 @@ public class MultiStaffPartTest {
 	}
 
 	@Test
-	public void testIterator() {
+	void testIterator() {
 		final MultiStaffPart part = MultiStaffPart.of("Test staff", this.testStaves);
 
 		final int expectedCount = 10;
@@ -83,7 +83,7 @@ public class MultiStaffPartTest {
 	}
 
 	@Test
-	public void testIteratorWithPickupMeasure() {
+	void testIteratorWithPickupMeasure() {
 		final Map<Integer, Staff> staves = new HashMap<>();
 		final List<Measure> measures = new ArrayList<>();
 		for (int i = 0; i <= 4; ++i) {
@@ -121,7 +121,7 @@ public class MultiStaffPartTest {
 	}
 
 	@Test
-	public void testIteratorImmutability() {
+	void testIteratorImmutability() {
 		final MultiStaffPart part = MultiStaffPart.of("Test staff", this.testStaves);
 		final Iterator<Measure> iterator = part.iterator();
 		iterator.next();

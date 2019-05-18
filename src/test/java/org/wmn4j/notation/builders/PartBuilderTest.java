@@ -30,12 +30,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class PartBuilderTest {
+class PartBuilderTest {
 
 	private final Map<Integer, List<DurationalBuilder>> measureContents;
 	private final MeasureAttributes measureAttr;
 
-	public PartBuilderTest() {
+	PartBuilderTest() {
 		NoteBuilder C4 = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
 		NoteBuilder E4 = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF);
 		NoteBuilder G4 = new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF);
@@ -72,7 +72,7 @@ public class PartBuilderTest {
 	}
 
 	@Test
-	public void testGetStaffCount() {
+	void testGetStaffCount() {
 		final int measureCount = 5;
 		final PartBuilder builder = new PartBuilder("");
 		for (int i = 1; i <= measureCount; ++i) {
@@ -89,7 +89,7 @@ public class PartBuilderTest {
 	}
 
 	@Test
-	public void testGetMeasureCount() {
+	void testGetMeasureCount() {
 		PartBuilder builder = new PartBuilder("Test");
 		assertEquals(0, builder.getMeasureCount());
 
@@ -104,7 +104,7 @@ public class PartBuilderTest {
 	}
 
 	@Test
-	public void testGetStaffNumbers() {
+	void testGetStaffNumbers() {
 		PartBuilder builder = new PartBuilder("Test");
 		assertTrue(builder.getStaffNumbers().isEmpty());
 
@@ -119,7 +119,7 @@ public class PartBuilderTest {
 	}
 
 	@Test
-	public void testGetMeasureBuildersForStaff() {
+	void testGetMeasureBuildersForStaff() {
 		PartBuilder builder = new PartBuilder("Test");
 		assertTrue(builder.getStaffNumbers().isEmpty());
 
@@ -143,7 +143,7 @@ public class PartBuilderTest {
 	}
 
 	@Test
-	public void testBuildSingleStaffPart() {
+	void testBuildSingleStaffPart() {
 		final int measureCount = 5;
 		final PartBuilder builder = new PartBuilder("");
 		for (int i = 1; i <= measureCount; ++i) {
@@ -157,7 +157,7 @@ public class PartBuilderTest {
 	}
 
 	@Test
-	public void testBuildMultiStaffPart() {
+	void testBuildMultiStaffPart() {
 		final int measureCount = 5;
 		final PartBuilder builder = new PartBuilder("");
 		for (int i = 1; i <= measureCount; ++i) {
@@ -182,7 +182,7 @@ public class PartBuilderTest {
 	}
 
 	@Test
-	public void testBuildPartWithTieBetweenMeasures() {
+	void testBuildPartWithTieBetweenMeasures() {
 
 		final MeasureBuilder firstMeasureBuilder = new MeasureBuilder(1);
 		final NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.WHOLE);
@@ -206,7 +206,7 @@ public class PartBuilderTest {
 	}
 
 	@Test
-	public void testGivenBuilderWithMultipleStavesWhenBuiltPartsHavePadding() {
+	void testGivenBuilderWithMultipleStavesWhenBuiltPartsHavePadding() {
 		final MeasureBuilder firstMeasureBuilder = new MeasureBuilder(1);
 		final NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.WHOLE);
 		firstMeasureBuilder.addToVoice(1, firstNoteBuilder);
@@ -234,7 +234,7 @@ public class PartBuilderTest {
 	}
 
 	@Test
-	public void testGivenBuilderWithMultipleStavesAndTimeSignatureChangesWhenBuiltMeasuresHaveCorrectTimeSignatures() {
+	void testGivenBuilderWithMultipleStavesAndTimeSignatureChangesWhenBuiltMeasuresHaveCorrectTimeSignatures() {
 		final MeasureBuilder firstMeasureBuilder = new MeasureBuilder(1);
 		firstMeasureBuilder.setTimeSignature(TimeSignatures.SIX_EIGHT);
 		final MeasureBuilder secondMeasureBuilder = new MeasureBuilder(2);

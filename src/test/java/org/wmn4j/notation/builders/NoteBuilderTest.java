@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class NoteBuilderTest {
+class NoteBuilderTest {
 
 	@Test
-	public void testBuildingBasicNote() {
+	void testBuildingBasicNote() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		final Note note = builder.build();
 		assertFalse(note.hasArticulations());
@@ -31,7 +31,7 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testBuildingNoteWithAllAttributes() {
+	void testBuildingNoteWithAllAttributes() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		builder.addArticulation(Articulation.STACCATO);
 
@@ -55,7 +55,7 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testBuildingTiedNotes() {
+	void testBuildingTiedNotes() {
 		final NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		final NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER);
 		final NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
@@ -83,7 +83,7 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testCopyConstructor() {
+	void testCopyConstructor() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		final NoteBuilder copy = new NoteBuilder(builder);
 		assertNotSame(builder, copy);
@@ -99,7 +99,7 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testCopyConstructorArticulations() {
+	void testCopyConstructorArticulations() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		builder.addArticulation(Articulation.STACCATO);
 
@@ -111,7 +111,7 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testCopyConstructorsFollowingTiedIsCopiedAsWell() {
+	void testCopyConstructorsFollowingTiedIsCopiedAsWell() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		final NoteBuilder following = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
 		builder.addTieToFollowing(following);
@@ -122,7 +122,7 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testBuildingWitMultipleNotesInSlur() {
+	void testBuildingWitMultipleNotesInSlur() {
 		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER);
 		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
@@ -149,7 +149,7 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testBuildingWithMultipleNotesWithTiesInSlur() {
+	void testBuildingWithMultipleNotesWithTiesInSlur() {
 		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
@@ -185,7 +185,7 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testBuildingWithSlurAndGlissandoAndTie() {
+	void testBuildingWithSlurAndGlissandoAndTie() {
 		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
@@ -239,7 +239,7 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testBuildingWithLoopedSlur() {
+	void testBuildingWithLoopedSlur() {
 		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
@@ -260,7 +260,7 @@ public class NoteBuilderTest {
 	}
 
 	@Test
-	public void testBuildingWithLoopedTie() {
+	void testBuildingWithLoopedTie() {
 		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);

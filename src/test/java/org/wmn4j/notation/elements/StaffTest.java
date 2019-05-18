@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class StaffTest {
+class StaffTest {
 
 	static List<Measure> getTestMeasures() {
 		final List<Measure> measures = new ArrayList<>();
@@ -33,7 +33,7 @@ public class StaffTest {
 	}
 
 	@Test
-	public void testGetMeasures() {
+	void testGetMeasures() {
 		final List<Measure> origMeasures = getTestMeasures();
 		final Staff staff = Staff.of(origMeasures);
 
@@ -58,7 +58,7 @@ public class StaffTest {
 	}
 
 	@Test
-	public void testIterator() {
+	void testIterator() {
 		final List<Measure> origMeasures = getTestMeasures();
 		final Staff staff = Staff.of(origMeasures);
 
@@ -75,7 +75,7 @@ public class StaffTest {
 	}
 
 	@Test
-	public void testIteratorRemoveDisabled() {
+	void testIteratorRemoveDisabled() {
 		final List<Measure> origMeasures = getTestMeasures();
 		final Staff staff = Staff.of(origMeasures);
 
@@ -90,7 +90,7 @@ public class StaffTest {
 	}
 
 	@Test
-	public void testGetMeasure() {
+	void testGetMeasure() {
 		final List<Measure> measures = getTestMeasures();
 		final Staff staff = Staff.of(measures);
 
@@ -102,7 +102,7 @@ public class StaffTest {
 	}
 
 	@Test
-	public void testGetMeasureWithPickup() {
+	void testGetMeasureWithPickup() {
 		final List<Measure> measures = new ArrayList<>();
 		final List<Durational> voice = new ArrayList<>();
 		voice.add(Rest.of(Durations.WHOLE));

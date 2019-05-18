@@ -21,12 +21,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
-public class MonophonicPatternTest {
+@Disabled("These tests are unfinished and should be unignored once the logic is implemented") class MonophonicPatternTest {
 
-	final List<Durational> referenceNotes;
+	private final List<Durational> referenceNotes;
 
-	public MonophonicPatternTest() {
+	MonophonicPatternTest() {
 		final List<Durational> notes = new ArrayList<>();
 		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT));
 		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHT));
@@ -38,7 +37,7 @@ public class MonophonicPatternTest {
 	}
 
 	@Test
-	public void testMonophonicPatternListOfDurational() {
+	void testMonophonicPatternListOfDurational() {
 		try {
 			new MonophonicPattern(null);
 			fail("Was able to create pattern with null contents");
@@ -68,7 +67,7 @@ public class MonophonicPatternTest {
 	}
 
 	@Test
-	public void testEqualsPattern() {
+	void testEqualsPattern() {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 		final MonophonicPattern pattern2 = new MonophonicPattern(this.referenceNotes);
 
@@ -81,7 +80,7 @@ public class MonophonicPatternTest {
 	}
 
 	@Test
-	public void testEqualsInPitch() {
+	void testEqualsInPitch() {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 
 		final List<Durational> notes = new ArrayList<>();
@@ -104,7 +103,7 @@ public class MonophonicPatternTest {
 	}
 
 	@Test
-	public void testEqualsEnharmonicallyInPitch() {
+	void testEqualsEnharmonicallyInPitch() {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 
 		final List<Durational> notes = new ArrayList<>();
@@ -118,17 +117,17 @@ public class MonophonicPatternTest {
 	}
 
 	@Test
-	public void testEqualsInTransposedPitch() {
+	void testEqualsInTransposedPitch() {
 		// TODO
 	}
 
 	@Test
-	public void testEqualsInRhythm() {
+	void testEqualsInRhythm() {
 		// TODO
 	}
 
 	@Test
-	public void testEqualsInOnsets() {
+	void testEqualsInOnsets() {
 		// TODO
 	}
 }

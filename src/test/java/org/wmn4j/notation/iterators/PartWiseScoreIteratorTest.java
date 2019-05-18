@@ -17,17 +17,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PartWiseScoreIteratorTest {
+class PartWiseScoreIteratorTest {
 
 	private Score score = null;
 	private PartWiseScoreIterator iter = null;
 
-	public PartWiseScoreIteratorTest() {
+	PartWiseScoreIteratorTest() {
 		this.score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 	}
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 		assertNotNull(score);
 		this.iter = new PartWiseScoreIterator(this.score);
 	}
@@ -41,7 +41,7 @@ public class PartWiseScoreIteratorTest {
 	}
 
 	@Test
-	public void testHasNext() {
+	void testHasNext() {
 		// There are 28 Durationals in the test score.
 		for (int i = 0; i < 28; ++i) {
 			assertTrue(this.iter.hasNext(), "Should have had next at " + i + "th iteration");
@@ -52,7 +52,7 @@ public class PartWiseScoreIteratorTest {
 	}
 
 	@Test
-	public void testNext() {
+	void testNext() {
 		// Start at first note of top part.
 		Durational next = moveIterSteps(1);
 		assertTrue(next instanceof Note);
@@ -79,7 +79,7 @@ public class PartWiseScoreIteratorTest {
 	}
 
 	@Test
-	public void testCurrentPosition() {
+	void testCurrentPosition() {
 		final int topPartNumber = 0;
 		final int bottomPartNumber = 1;
 

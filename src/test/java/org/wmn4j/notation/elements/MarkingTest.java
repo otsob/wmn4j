@@ -15,12 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MarkingTest {
+class MarkingTest {
 
 	private final Note testNote = Note.of(Pitch.of(Pitch.Base.C, 1, 4), Durations.EIGHT);
 
 	@Test
-	public void testBeginningOf() {
+	void testBeginningOf() {
 		final Marking marking = Marking.of(Marking.Type.GLISSANDO);
 		Marking.Connection beginningArticulation = Marking.Connection.beginningOf(marking,
 				testNote);
@@ -34,7 +34,7 @@ public class MarkingTest {
 	}
 
 	@Test
-	public void testOf() {
+	void testOf() {
 		final Marking marking = Marking.of(Marking.Type.GLISSANDO);
 		Marking.Connection middleArticulation = Marking.Connection.of(marking,
 				testNote);
@@ -48,7 +48,7 @@ public class MarkingTest {
 	}
 
 	@Test
-	public void testEndOf() {
+	void testEndOf() {
 		final Marking marking = Marking.of(Marking.Type.GLISSANDO);
 		Marking.Connection middleArticulation = Marking.Connection.endOf(marking);
 		assertEquals(marking, middleArticulation.getMarking());
@@ -60,7 +60,7 @@ public class MarkingTest {
 	}
 
 	@Test
-	public void testGetFollowingNotes() {
+	void testGetFollowingNotes() {
 		final Marking slur = Marking.of(Marking.Type.SLUR);
 		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
 				Collections.emptySet(), List.of(Marking.Connection.endOf(slur)), null, false);
@@ -85,7 +85,7 @@ public class MarkingTest {
 	}
 
 	@Test
-	public void testGetAffectedStartingFrom() {
+	void testGetAffectedStartingFrom() {
 		final Marking slur = Marking.of(Marking.Type.SLUR);
 		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
 				Collections.emptySet(), List.of(Marking.Connection.endOf(slur)), null, false);

@@ -17,19 +17,19 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class SingleStaffPartTest {
+class SingleStaffPartTest {
 
-	final List<Measure> measures;
-	final int measureCount = 5;
+	private final List<Measure> measures;
+	private final int measureCount = 5;
 
-	KeySignature keySig = KeySignatures.CMAJ_AMIN;
+	private KeySignature keySig = KeySignatures.CMAJ_AMIN;
 
-	Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
-	Note E4 = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF);
-	Note G4 = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF);
-	Note C4Quarter = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+	private Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
+	private Note E4 = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF);
+	private Note G4 = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF);
+	private Note C4Quarter = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
-	public SingleStaffPartTest() {
+	SingleStaffPartTest() {
 		final Map<Integer, List<Durational>> noteVoice = new HashMap<>();
 		noteVoice.put(0, new ArrayList<>());
 		noteVoice.get(0).add(C4Quarter);
@@ -52,7 +52,7 @@ public class SingleStaffPartTest {
 	}
 
 	@Test
-	public void testImmutability() {
+	void testImmutability() {
 		final List<Measure> measuresCopy = new ArrayList<>(this.measures);
 		final SingleStaffPart part = SingleStaffPart.of("Test part", measuresCopy);
 		measuresCopy.set(0, null);
@@ -61,33 +61,33 @@ public class SingleStaffPartTest {
 	}
 
 	@Test
-	public void testGetName() {
+	void testGetName() {
 		final SingleStaffPart part = SingleStaffPart.of("Test part", this.measures);
 		assertEquals("Test part", part.getName());
 	}
 
 	@Test
-	public void testIsMultiStaff() {
+	void testIsMultiStaff() {
 		final SingleStaffPart part = SingleStaffPart.of("Test part", this.measures);
 		assertFalse(part.isMultiStaff());
 	}
 
 	@Test
-	public void testGetStaff() {
+	void testGetStaff() {
 		final SingleStaffPart part = SingleStaffPart.of("Test part", this.measures);
 		final Staff staff = part.getStaff();
 		assertEquals(5, staff.getMeasures().size());
 	}
 
 	@Test
-	public void getMeasure() {
+	void getMeasure() {
 		final SingleStaffPart part = SingleStaffPart.of("Test part", this.measures);
 		final Measure m = part.getMeasure(1);
 		assertTrue(m == this.measures.get(0));
 	}
 
 	@Test
-	public void testIterator() {
+	void testIterator() {
 		final SingleStaffPart part = SingleStaffPart.of("Test part", this.measures);
 		int measCount = 0;
 		int measureNumber = 1;
@@ -101,7 +101,7 @@ public class SingleStaffPartTest {
 	}
 
 	@Test
-	public void testIteratorImmutability() {
+	void testIteratorImmutability() {
 		final SingleStaffPart part = SingleStaffPart.of("Test part", this.measures);
 		final Iterator<Measure> iter = part.iterator();
 		iter.next();

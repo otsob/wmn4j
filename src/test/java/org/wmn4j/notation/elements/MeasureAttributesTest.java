@@ -13,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class MeasureAttributesTest {
+class MeasureAttributesTest {
 
 	@Test
-	public void testGetMeasureInfo() {
+	void testGetMeasureInfo() {
 		final MeasureAttributes attr = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Barline.SINGLE, Clefs.G);
 
@@ -29,7 +29,7 @@ public class MeasureAttributesTest {
 	}
 
 	@Test
-	public void testGetMeasureInfoWithInvalidParameters() {
+	void testGetMeasureInfoWithInvalidParameters() {
 
 		try {
 			final MeasureAttributes attr = MeasureAttributes.of(null, KeySignatures.CMAJ_AMIN, Barline.SINGLE,
@@ -69,7 +69,7 @@ public class MeasureAttributesTest {
 	}
 
 	@Test
-	public void testEquals() {
+	void testEquals() {
 
 		final Map<Duration, Clef> clefChangesA = new HashMap<>();
 		clefChangesA.put(Durations.HALF, Clefs.F);

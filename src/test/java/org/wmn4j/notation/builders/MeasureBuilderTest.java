@@ -24,10 +24,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MeasureBuilderTest {
+class MeasureBuilderTest {
 
 	@Test
-	public void testBuildMeasureBySettingParameters() {
+	void testBuildMeasureBySettingParameters() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
@@ -54,7 +54,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testBuildMeasureWithGivenAttributes() {
+	void testBuildMeasureWithGivenAttributes() {
 		final MeasureAttributes measureAttr = MeasureAttributes.of(TimeSignatures.SIX_EIGHT,
 				KeySignatures.DFLATMAJ_BFLATMIN, Barline.DOUBLE, Clefs.F);
 		final MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
@@ -81,7 +81,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testSetParametersUsedOverMeasureAttributes() {
+	void testSetParametersUsedOverMeasureAttributes() {
 		final MeasureAttributes measureAttr = MeasureAttributes.of(TimeSignatures.THREE_EIGHT,
 				KeySignatures.AMAJ_FSHARPMIN, Barline.REPEAT_RIGHT, Clefs.ALTO);
 		final MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
@@ -111,7 +111,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testAdditionOfVoices() {
+	void testAdditionOfVoices() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
@@ -132,7 +132,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testIsVoiceFull() {
+	void testIsVoiceFull() {
 		MeasureBuilder builder = new MeasureBuilder(1);
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER));
 		assertFalse(builder.isFull(0), "Voice 0 is full for 4/4 measure after adding one quarter rest");
@@ -158,7 +158,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testIsFull() {
+	void testIsFull() {
 		MeasureBuilder builder = new MeasureBuilder(1);
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER));
 		assertFalse(builder.isFull(), "builder for 4/4 is full after adding one quarter rest");
@@ -183,7 +183,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testBuildingMeasureWithTiedNotes() {
+	void testBuildingMeasureWithTiedNotes() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		final NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
 		final NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
@@ -200,7 +200,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testAllVoicesArePaddedWithRestsWhenBuilding() {
+	void testAllVoicesArePaddedWithRestsWhenBuilding() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.THREE_FOUR);
 		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
@@ -222,7 +222,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testIsVoiceOverflowing() {
+	void testIsVoiceOverflowing() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
 		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
@@ -235,7 +235,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testIsOverflowing() {
+	void testIsOverflowing() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
 		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
@@ -250,7 +250,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testTrimWithSingleElementPerVoice() {
+	void testTrimWithSingleElementPerVoice() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
 		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
@@ -272,7 +272,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testTrimWithMultipleElementsInVoice() {
+	void testTrimWithMultipleElementsInVoice() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
 
@@ -295,7 +295,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testBuildingWithoutPaddingAndTrimming() {
+	void testBuildingWithoutPaddingAndTrimming() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
 
@@ -321,7 +321,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testBuildingFullMeasureRest() {
+	void testBuildingFullMeasureRest() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
@@ -331,7 +331,7 @@ public class MeasureBuilderTest {
 	}
 
 	@Test
-	public void testBuildingWithAttributesOfAnotherBuilder() {
+	void testBuildingWithAttributesOfAnotherBuilder() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
