@@ -30,9 +30,6 @@ public class ScoreTest {
 	public static final String MOVEMENT_NAME = "TestMovement";
 	public static final String ARRANGER = "Test Arranger";
 
-	public ScoreTest() {
-	}
-
 	public static Map<Score.Attribute, String> getTestAttributes() {
 		final Map<Score.Attribute, String> attributes = new HashMap<>();
 		attributes.put(Score.Attribute.TITLE, SCORE_NAME);

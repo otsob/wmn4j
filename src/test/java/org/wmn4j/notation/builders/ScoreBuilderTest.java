@@ -18,9 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ScoreBuilderTest {
 
-	public ScoreBuilderTest() {
-	}
-
 	private static List<PartBuilder> getTestPartBuilders(int partCount, int measureCount) {
 		final List<PartBuilder> partBuilders = new ArrayList<>();
 

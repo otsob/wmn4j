@@ -1,4 +1,6 @@
-
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
 package org.wmn4j.notation.elements;
 
 import org.junit.jupiter.api.Test;
@@ -12,9 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class MeasureAttributesTest {
-
-	public MeasureAttributesTest() {
-	}
 
 	@Test
 	public void testGetMeasureInfo() {

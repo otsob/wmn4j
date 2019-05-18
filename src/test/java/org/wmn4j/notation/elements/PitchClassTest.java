@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
@@ -8,9 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * @author Otso Björklund
- */
 public class PitchClassTest {
 
 	public PitchClassTest() {
@@ -23,9 +19,6 @@ public class PitchClassTest {
 		assertEquals(11, PitchClass.B.toInt());
 	}
 
-	/**
-	 * Test of fromInt method, of class PitchClass.
-	 */
 	@Test
 	public void testFromInt() {
 		assertEquals(PitchClass.C, PitchClass.fromInt(12));

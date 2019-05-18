@@ -20,9 +20,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class NoteBuilderTest {
 
-	public NoteBuilderTest() {
-	}
-
 	@Test
 	public void testBuildingBasicNote() {
 		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);

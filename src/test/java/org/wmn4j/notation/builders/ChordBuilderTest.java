@@ -18,9 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ChordBuilderTest {
 
-	public ChordBuilderTest() {
-	}
-
 	private List<NoteBuilder> getCMajorAsNoteBuilders() {
 		final NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		final NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER);

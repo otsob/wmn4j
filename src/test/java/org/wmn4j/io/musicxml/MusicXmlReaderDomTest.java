@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.io.musicxml;
@@ -44,9 +43,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class MusicXmlReaderDomTest {
 
 	private static final String MUSICXML_FILE_PATH = "musicxml/";
-
-	public MusicXmlReaderDomTest() {
-	}
 
 	public MusicXmlReader getMusicXmlReader() {
 		return MusicXmlReader.getReader(false);

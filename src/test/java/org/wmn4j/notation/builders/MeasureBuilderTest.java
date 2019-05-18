@@ -26,9 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MeasureBuilderTest {
 
-	public MeasureBuilderTest() {
-	}
-
 	@Test
 	public void testBuildMeasureBySettingParameters() {
 		final MeasureBuilder builder = new MeasureBuilder(1);

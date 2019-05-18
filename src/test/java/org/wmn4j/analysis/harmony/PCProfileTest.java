@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.analysis.harmony;
 
@@ -15,9 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-/**
- * @author Otso Björklund
- */
 public class PCProfileTest {
 
 	// By how much values are allowed fo differ
@@ -27,9 +22,6 @@ public class PCProfileTest {
 	static final Note E4 = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT);
 	static final Note G4 = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT);
 	static final Note Csharp4 = Note.of(Pitch.of(Pitch.Base.C, 1, 4), Durations.SIXTEENTH);
-
-	public PCProfileTest() {
-	}
 
 	@Test
 	public void testSetIncorrectValue() {
