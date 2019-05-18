@@ -6,9 +6,12 @@ package org.wmn4j.notation.elements;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -187,6 +190,53 @@ public class ChordTest {
 		} catch (final IllegalArgumentException e) {
 			// Pass because exception is expected
 		}
+	}
+
+	@Test
+	public void testHasArticulations() {
+		List<Note> cMajorCopy = new ArrayList<>(this.cMajorNotes);
+		Set<Articulation> articulations = EnumSet.of(Articulation.ACCENT);
+		cMajorCopy.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.QUARTER, articulations));
+		Chord chordWithAccent = Chord.of(cMajorCopy);
+		assertTrue(chordWithAccent.hasArticulations());
+		assertFalse(cMajor.hasArticulations());
+	}
+
+	@Test
+	public void testHasArticulation() {
+		List<Note> cMajorNotesWithAccentAndStaccato = new ArrayList<>();
+		cMajorNotesWithAccentAndStaccato
+				.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER, EnumSet.of(Articulation.ACCENT)));
+		cMajorNotesWithAccentAndStaccato
+				.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER, EnumSet.of(Articulation.STACCATO)));
+		cMajorNotesWithAccentAndStaccato.add(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.QUARTER));
+		Chord cMajorWithArticulations = Chord.of(cMajorNotesWithAccentAndStaccato);
+
+		assertTrue(cMajorWithArticulations.hasArticulation(Articulation.STACCATO));
+		assertTrue(cMajorWithArticulations.hasArticulation(Articulation.ACCENT));
+		assertFalse(cMajorWithArticulations.hasArticulation(Articulation.TENUTO));
+
+		assertFalse(cMajor.hasArticulation(Articulation.STACCATO));
+		assertFalse(cMajor.hasArticulation(Articulation.ACCENT));
+	}
+
+	@Test
+	public void testGetArticulations() {
+		List<Note> cMajorNotesWithAccentAndStaccato = new ArrayList<>();
+		cMajorNotesWithAccentAndStaccato
+				.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER, EnumSet.of(Articulation.ACCENT)));
+		cMajorNotesWithAccentAndStaccato
+				.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER, EnumSet.of(Articulation.STACCATO)));
+		cMajorNotesWithAccentAndStaccato.add(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.QUARTER));
+		Chord cMajorWithArticulations = Chord.of(cMajorNotesWithAccentAndStaccato);
+
+		Collection<Articulation> articulations = cMajorWithArticulations.getArticulations();
+		assertEquals(2, articulations.size());
+		assertTrue(articulations.contains(Articulation.STACCATO));
+		assertTrue(articulations.contains(Articulation.ACCENT));
+		assertFalse(articulations.contains(Articulation.TENUTO));
+
+		assertTrue(cMajor.getArticulations().isEmpty());
 	}
 
 	@Test

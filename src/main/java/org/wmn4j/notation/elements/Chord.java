@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Represents a chord. This class should be used for chords where the notes are
@@ -24,7 +25,6 @@ public final class Chord implements Durational, Iterable<Note> {
 	 *
 	 * @param n A non-empty and non-null array of {@link Note} objects
 	 * @return a chord with the given notes
-	 *
 	 * @throws NullPointerException     if notes is null
 	 * @throws IllegalArgumentException if notes is empty or all Note objects in
 	 *                                  notes are not of same duration
@@ -38,7 +38,6 @@ public final class Chord implements Durational, Iterable<Note> {
 	 *
 	 * @param notes A non-empty and non-null Collection of {@link Note} objects
 	 * @return a chord with the given notes
-	 *
 	 * @throws NullPointerException     if notes is null.
 	 * @throws IllegalArgumentException if notes is empty or all Note objects in
 	 *                                  notes are not of same duration.
@@ -50,10 +49,10 @@ public final class Chord implements Durational, Iterable<Note> {
 	/**
 	 * Private constructor. Use static getters for getting an instance.
 	 *
+	 * @param notes the notes that are put in this Chord
 	 * @throws NullPointerException     if notes is null
 	 * @throws IllegalArgumentException if notes is empty or all Note objects in
 	 *                                  notes are not of same duration
-	 * @param notes the notes that are put in this Chord
 	 */
 	private Chord(Collection<Note> notes) {
 
@@ -84,10 +83,10 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * Returns the {@link Note} at the given index counting from lowest pitch in
 	 * this {@link Chord}.
 	 *
-	 * @throws IllegalArgumentException if fromLowest is smaller than 0 or at least
-	 *                                  the number of notes in this Chord
 	 * @param fromLowest index of note, 0 being the lowest note in the chord
 	 * @return the note from index fromLowest
+	 * @throws IllegalArgumentException if fromLowest is smaller than 0 or at least
+	 *                                  the number of notes in this Chord
 	 */
 	public Note getNote(int fromLowest) {
 		if (fromLowest < 0 || fromLowest >= this.notes.size()) {
@@ -192,11 +191,40 @@ public final class Chord implements Durational, Iterable<Note> {
 	}
 
 	/**
+	 * Returns true if this chord has articulations.
+	 *
+	 * @return true if this chord has articulations
+	 */
+	public boolean hasArticulations() {
+		return this.notes.stream().anyMatch(note -> note.hasArticulations());
+	}
+
+	/**
+	 * Returns true if this chord has the given articulation.
+	 *
+	 * @param articulation the articulation whose presence is checked
+	 * @return true if this chord has the given articulation
+	 */
+	public boolean hasArticulation(Articulation articulation) {
+		return this.notes.stream().anyMatch(note -> note.hasArticulation(articulation));
+	}
+
+	/**
+	 * Returns an unmodifiable view of all articulations defined for this chord.
+	 *
+	 * @return the articulations defined for this chord
+	 */
+	public Collection<Articulation> getArticulations() {
+		return this.notes.stream().flatMap(note -> note.getArticulations().stream())
+				.collect(Collectors.toUnmodifiableSet());
+	}
+
+	/**
 	 * Returns true if the given Object is equal to this.
 	 *
 	 * @param o Object against which this is compared for equality.
 	 * @return true if o is an instance of Chord and contains all and no other notes
-	 *         than the ones in this Chord.
+	 * than the ones in this Chord.
 	 */
 	@Override
 	public boolean equals(Object o) {
