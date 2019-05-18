@@ -28,7 +28,7 @@ dependencies {
 group = 'wmn4j'
 version = '0.0.1-SNAPSHOT'
 description = 'wmn4j'
-sourceCompatibility = '11'
+sourceCompatibility = '12'
 
 publishing {
     publications {
