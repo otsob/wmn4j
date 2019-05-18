@@ -602,11 +602,30 @@ public class MusicXmlReaderDomTest {
 	 * Expects the contents of the file "articulations.xml"
 	 */
 	private void assertScoreWithArticulationsReadCorrectly(Score score) {
-		final Measure measure = score.getPart(0).getMeasure(0, 1);
-		assertTrue(((Note) measure.get(1, 0)).hasArticulation(Articulation.STACCATO));
-		assertTrue(((Note) measure.get(1, 1)).hasArticulation(Articulation.ACCENT));
-		assertTrue(((Note) measure.get(1, 2)).hasArticulation(Articulation.TENUTO));
-		assertTrue(((Note) measure.get(1, 3)).hasArticulation(Articulation.FERMATA));
+		final Measure measureOne = score.getPart(0).getMeasure(0, 1);
+		assertTrue(((Note) measureOne.get(1, 0)).hasArticulation(Articulation.STACCATO));
+		assertTrue(((Note) measureOne.get(1, 1)).hasArticulation(Articulation.ACCENT));
+		assertTrue(((Note) measureOne.get(1, 2)).hasArticulation(Articulation.TENUTO));
+		assertTrue(((Note) measureOne.get(1, 3)).hasArticulation(Articulation.FERMATA));
+
+		final Measure measureTwo = score.getPart(0).getMeasure(0, 2);
+		Note firstNoteInMeasureTwo = (Note) measureTwo.get(1, 0);
+		assertTrue(firstNoteInMeasureTwo.hasArticulation(Articulation.STACCATO));
+		assertTrue(firstNoteInMeasureTwo.hasArticulation(Articulation.ACCENT));
+		assertTrue(firstNoteInMeasureTwo.hasArticulation(Articulation.TENUTO));
+		assertTrue(firstNoteInMeasureTwo.hasArticulation(Articulation.FERMATA));
+		assertEquals(4, firstNoteInMeasureTwo.getArticulations().size());
+
+		assertTrue(((Chord) measureTwo.get(1, 1)).hasArticulation(Articulation.STACCATO));
+
+		Chord secondChordInMeasureTwo = (Chord) measureTwo.get(1, 2);
+		assertEquals(3, secondChordInMeasureTwo.getArticulations().size());
+		assertTrue((secondChordInMeasureTwo.hasArticulation(Articulation.STACCATO)));
+		assertTrue((secondChordInMeasureTwo.hasArticulation(Articulation.ACCENT)));
+		assertTrue((secondChordInMeasureTwo.hasArticulation(Articulation.FERMATA)));
+		assertFalse((secondChordInMeasureTwo.hasArticulation(Articulation.TENUTO)));
+
+		assertFalse(((Note) measureTwo.get(1, 3)).hasArticulations());
 	}
 
 	@Test
