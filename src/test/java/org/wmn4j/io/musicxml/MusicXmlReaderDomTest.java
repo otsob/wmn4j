@@ -44,12 +44,12 @@ class MusicXmlReaderDomTest {
 
 	private static final String MUSICXML_FILE_PATH = "musicxml/";
 
-	MusicXmlReader getMusicXmlReader() {
-		return MusicXmlReader.getReader(false);
+	MusicXmlReader getMusicXmlReader(boolean validate) {
+		return new MusicXmlReaderDom(validate);
 	}
 
-	Score readScore(String testFileName) {
-		final MusicXmlReader reader = getMusicXmlReader();
+	Score readScore(String testFileName, boolean validate) {
+		final MusicXmlReader reader = getMusicXmlReader(validate);
 		Score score = null;
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
 
@@ -63,8 +63,8 @@ class MusicXmlReaderDomTest {
 		return score;
 	}
 
-	ScoreBuilder readScoreBuilder(String testFileName) {
-		final MusicXmlReader reader = getMusicXmlReader();
+	ScoreBuilder readScoreBuilder(String testFileName, boolean validate) {
+		final MusicXmlReader reader = getMusicXmlReader(validate);
 		ScoreBuilder scoreBuilder = null;
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
 
@@ -80,13 +80,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadScoreWithSingleNote() {
-		final Score score = readScore("singleC.xml");
+		final Score score = readScore("singleC.xml", false);
 		assertSingleNoteScoreReadCorrectly(score);
 	}
 
 	@Test
 	void testReadScoreBuilderWithSingleNote() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("singleC.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("singleC.xml", false);
 		assertSingleNoteScoreReadCorrectly(scoreBuilder.build());
 	}
 
@@ -119,13 +119,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testChordsAndMultipleVoicesReadToScore() {
-		final Score score = readScore("twoMeasures.xml");
+		final Score score = readScore("twoMeasures.xml", false);
 		assertChordsAndMultipleVoicesReadCorrectly(score);
 	}
 
 	@Test
 	void testChordsAndMultipleVoicesReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("twoMeasures.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("twoMeasures.xml", false);
 		assertChordsAndMultipleVoicesReadCorrectly(scoreBuilder.build());
 	}
 
@@ -192,13 +192,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadScoreWithMultipleStaves() {
-		final Score score = readScore("twoStavesAndMeasures.xml");
+		final Score score = readScore("twoStavesAndMeasures.xml", false);
 		assertScoreWithMultipleStavesReadCorrectly(score);
 	}
 
 	@Test
 	void testReadScoreBuilderWithMultipleStaves() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("twoStavesAndMeasures.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("twoStavesAndMeasures.xml", false);
 		assertScoreWithMultipleStavesReadCorrectly(scoreBuilder.build());
 	}
 
@@ -281,13 +281,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testBarlinesReadToScore() {
-		final Score score = readScore("barlines.xml");
+		final Score score = readScore("barlines.xml", false);
 		assertBarlinesReadCorrectly(score);
 	}
 
 	@Test
 	void testBarlinesReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("barlines.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("barlines.xml", false);
 		assertBarlinesReadCorrectly(scoreBuilder.build());
 	}
 
@@ -329,13 +329,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testClefsReadToScore() {
-		final Score score = readScore("clefs.xml");
+		final Score score = readScore("clefs.xml", false);
 		assertClefsReadCorrectly(score);
 	}
 
 	@Test
 	void testClefsReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("clefs.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("clefs.xml", false);
 		assertClefsReadCorrectly(scoreBuilder.build());
 	}
 
@@ -370,13 +370,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testMultiStaffClefsReadToScore() {
-		final Score score = readScore("multiStaffClefs.xml");
+		final Score score = readScore("multiStaffClefs.xml", false);
 		assertMultiStaffClefsReadCorrectlyToScore(score);
 	}
 
 	@Test
 	void testMultiStaffClefsReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("multiStaffClefs.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("multiStaffClefs.xml", false);
 		assertMultiStaffClefsReadCorrectlyToScore(scoreBuilder.build());
 	}
 
@@ -412,13 +412,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testKeySignaturesReadToScore() {
-		final Score score = readScore("keysigs.xml");
+		final Score score = readScore("keysigs.xml", false);
 		assertKeySignaturesReadToScoreCorrectly(score);
 	}
 
 	@Test
 	void testKeySignaturesReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("keysigs.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("keysigs.xml", false);
 		assertKeySignaturesReadToScoreCorrectly(scoreBuilder.build());
 	}
 
@@ -435,13 +435,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testMultiStaffPartReadToScore() {
-		final Score score = readScore("multistaff.xml");
+		final Score score = readScore("multistaff.xml", false);
 		assertMultiStaffPartReadCorrectly(score);
 	}
 
 	@Test
 	void testMultiStaffPartReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("multistaff.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("multistaff.xml", false);
 		assertMultiStaffPartReadCorrectly(scoreBuilder.build());
 	}
 
@@ -485,13 +485,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testTimeSignaturesReadToScore() {
-		final Score score = readScore("timesigs.xml");
+		final Score score = readScore("timesigs.xml", false);
 		assertTimeSignaturesReadCorrectly(score);
 	}
 
 	@Test
 	void testTimeSignaturesReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("timesigs.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("timesigs.xml", false);
 		assertTimeSignaturesReadCorrectly(scoreBuilder.build());
 	}
 
@@ -509,13 +509,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testTimeSignatureChangeReadToScore() {
-		final Score score = readScore("scoreIteratorTesting.xml");
+		final Score score = readScore("scoreIteratorTesting.xml", false);
 		assertTimeSignatureChangeReadCorrectly(score);
 	}
 
 	@Test
 	void testTimeSignatureChangeReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("scoreIteratorTesting.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("scoreIteratorTesting.xml", false);
 		assertTimeSignatureChangeReadCorrectly(scoreBuilder.build());
 	}
 
@@ -530,13 +530,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testTiedNotesReadToScore() {
-		final Score score = readScore("tieTesting.xml");
+		final Score score = readScore("tieTesting.xml", false);
 		assertTiedNotesReadCorrectly(score);
 	}
 
 	@Test
 	void testTiedNotesReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("tieTesting.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("tieTesting.xml", false);
 		assertTiedNotesReadCorrectly(scoreBuilder.build());
 	}
 
@@ -585,13 +585,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingScoreWithArticulations() {
-		final Score score = readScore("articulations.xml");
+		final Score score = readScore("articulations.xml", false);
 		assertScoreWithArticulationsReadCorrectly(score);
 	}
 
 	@Test
 	void testReadingScoreBuilderWithArticulations() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("articulations.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("articulations.xml", false);
 		assertScoreWithArticulationsReadCorrectly(scoreBuilder.build());
 	}
 
@@ -627,7 +627,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingIncorrectXmlFileToScore() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"));
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
@@ -640,7 +640,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingIncorrectXmlFileToScoreBuilder() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"));
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
@@ -653,7 +653,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingIncorrectMusicXmlFileToScore() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"));
 			fail("No exception was thrown when trying to read XML file that does not comply to MusicXml schema");
@@ -666,7 +666,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingIncorrectMusicXmlFileToScoreBuilder() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScoreBuilder(
 					Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"));
@@ -680,7 +680,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testValidatingCorrectXmlFileWhenReadingToScore() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"));
 		} catch (Exception e) {
@@ -690,7 +690,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testValidatingCorrectXmlFileWhenReadingToScoreBuilder() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"));
 		} catch (Exception e) {
@@ -700,7 +700,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingFileThatDoesNotExistToScore() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
 					+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"));
@@ -713,7 +713,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingFileThatDoesNotExistToScoreBuilder() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
 					+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"));
@@ -726,27 +726,14 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingScoreWithPickupMeasure() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
-		try {
-			Score scoreWithPickup = reader
-					.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "pickup_measure_test.xml"));
-			assertPickupMeasureReadCorrectly(scoreWithPickup);
-		} catch (Exception exception) {
-			fail("Reading score with pickup measure failed with " + exception);
-		}
+		Score scoreWithPickup = readScore("pickup_measure_test.xml", false);
+		assertPickupMeasureReadCorrectly(scoreWithPickup);
 	}
 
 	@Test
 	void testReadingScoreBuilderWithPickupMeasure() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
-		try {
-			ScoreBuilder scoreWithPickup = reader
-					.readScoreBuilder(
-							Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "pickup_measure_test.xml"));
-			assertPickupMeasureReadCorrectly(scoreWithPickup.build());
-		} catch (Exception exception) {
-			fail("Reading score with pickup measure failed with " + exception);
-		}
+		ScoreBuilder scoreWithPickup = readScoreBuilder("pickup_measure_test.xml", false);
+		assertPickupMeasureReadCorrectly(scoreWithPickup.build());
 	}
 
 	private void assertPickupMeasureReadCorrectly(Score score) {
@@ -769,27 +756,14 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingAttributesIntoScore() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
-		try {
-			Score scoreWithAttributes = reader
-					.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "attribute_reading_test.xml"));
-			assertScoreHasExpectedAttributes(scoreWithAttributes);
-		} catch (Exception exception) {
-			fail("Reading attributes test file failed with " + exception);
-		}
+		Score scoreWithAttributes = readScore("attribute_reading_test.xml", false);
+		assertScoreHasExpectedAttributes(scoreWithAttributes);
 	}
 
 	@Test
 	void testReadingAttributesIntoScoreBuilder() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
-		try {
-			ScoreBuilder scoreWithAttributesBuilder = reader
-					.readScoreBuilder(
-							Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "attribute_reading_test.xml"));
-			assertScoreHasExpectedAttributes(scoreWithAttributesBuilder.build());
-		} catch (Exception exception) {
-			fail("Reading attributes test file failed with " + exception);
-		}
+		ScoreBuilder scoreWithAttributesBuilder = readScoreBuilder("attribute_reading_test.xml", false);
+		assertScoreHasExpectedAttributes(scoreWithAttributesBuilder.build());
 	}
 
 	private void assertScoreHasExpectedAttributes(Score score) {
