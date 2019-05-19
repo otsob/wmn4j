@@ -736,6 +736,9 @@ class MusicXmlReaderDomTest {
 		assertPickupMeasureReadCorrectly(scoreWithPickup.build());
 	}
 
+	/*
+	 * Expects the contents of "pickup_measure_test.xml".
+	 */
 	private void assertPickupMeasureReadCorrectly(Score score) {
 		assertEquals(1, score.getPartCount());
 		Part part = score.getParts().get(0);
@@ -766,6 +769,9 @@ class MusicXmlReaderDomTest {
 		assertScoreHasExpectedAttributes(scoreWithAttributesBuilder.build());
 	}
 
+	/*
+	 * Expectes the contents of "attribute_reading_test.xml".
+	 */
 	private void assertScoreHasExpectedAttributes(Score score) {
 		assertEquals("Composition title", score.getTitle());
 		assertEquals("Composer name", score.getAttribute(Score.Attribute.COMPOSER));
