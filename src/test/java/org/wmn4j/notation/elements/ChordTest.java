@@ -3,7 +3,7 @@
  */
 package org.wmn4j.notation.elements;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,13 +13,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class ChordTest {
+class ChordTest {
 
 	private final List<Note> cMajorNotes;
 	private final Chord cMajor;
@@ -27,7 +27,7 @@ public class ChordTest {
 	private final Chord fMinor;
 	private final Chord dMinorMaj9;
 
-	public ChordTest() {
+	ChordTest() {
 		this.cMajorNotes = new ArrayList<>();
 		this.cMajorNotes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		this.cMajorNotes.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER));
@@ -56,7 +56,7 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testChordImmutable() {
+	void testChordImmutable() {
 
 		final List<Note> notes = new ArrayList<>(this.cMajorNotes);
 		final Chord cMaj = Chord.of(notes);
@@ -70,7 +70,7 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testGetNoteOrderCorrect() {
+	void testGetNoteOrderCorrect() {
 		for (int i = 0; i < cMajor.getNoteCount(); ++i) {
 			if (i != 0) {
 				assertFalse(cMajor.getNote(i - 1).getPitch().isHigherThan(cMajor.getNote(i).getPitch()));
@@ -79,7 +79,7 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testVarargsFactory() {
+	void testVarargsFactory() {
 		final Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
 		final Note E4 = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT);
 		final Chord dyad = Chord.of(C4, E4);
@@ -89,7 +89,7 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testGetNoteDurationsSameForAllNotes() {
+	void testGetNoteDurationsSameForAllNotes() {
 		final Duration duration = this.dMinorMaj9.getDuration();
 		for (int i = 0; i < this.dMinorMaj9.getNoteCount(); ++i) {
 			assertEquals(duration, this.dMinorMaj9.getNote(i).getDuration());
@@ -110,13 +110,13 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testContainsPitch() {
+	void testContainsPitch() {
 		assertTrue(this.cMajor.contains(Pitch.of(Pitch.Base.C, 0, 4)));
 		assertFalse(this.cMajor.contains(Pitch.of(Pitch.Base.C, 1, 4)));
 	}
 
 	@Test
-	public void testContainstNote() {
+	void testContainstNote() {
 		assertTrue(this.cMajor.contains(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
 		assertFalse(this.cMajor.contains(Note.of(Pitch.of(Pitch.Base.C, -1, 4), Durations.QUARTER)));
 		final HashSet<Articulation> articulations = new HashSet<>();
@@ -129,7 +129,7 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testGetDuration() {
+	void testGetDuration() {
 		assertNotEquals(Durations.SIXTEENTH, this.cMajor.getDuration());
 		assertEquals(Durations.QUARTER, this.dMajor.getDuration());
 	}
@@ -141,25 +141,25 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testGetLowestNote() {
+	void testGetLowestNote() {
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), this.cMajor.getLowestNote());
 		assertEquals(Note.of(Pitch.of(Pitch.Base.F, 0, 4), Durations.QUARTER), this.fMinor.getLowestNote());
 	}
 
 	@Test
-	public void testGetHighestNote() {
+	void testGetHighestNote() {
 		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.QUARTER), this.cMajor.getHighestNote());
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.QUARTER), this.fMinor.getHighestNote());
 	}
 
 	@Test
-	public void testGetNoteCount() {
+	void testGetNoteCount() {
 		assertEquals(3, this.cMajor.getNoteCount());
 		assertEquals(5, this.dMinorMaj9.getNoteCount());
 	}
 
 	@Test
-	public void testEquals() {
+	void testEquals() {
 		final ArrayList<Note> cMajorNotes = new ArrayList<>();
 		cMajorNotes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		cMajorNotes.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER));
@@ -172,13 +172,13 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testToString() {
+	void testToString() {
 		assertEquals("[C4(1/4),E4(1/4),G4(1/4)]", this.cMajor.toString());
 		assertEquals("[D3(1/4),F#3(1/4),A3(1/4)]", this.dMajor.toString());
 	}
 
 	@Test
-	public void testAddNote() {
+	void testAddNote() {
 		final Chord cMaj = this.cMajor.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.QUARTER));
 		assertFalse(this.cMajor.equals(cMaj));
 		assertEquals(4, cMaj.getNoteCount());
@@ -193,7 +193,7 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testHasArticulations() {
+	void testHasArticulations() {
 		List<Note> cMajorCopy = new ArrayList<>(this.cMajorNotes);
 		Set<Articulation> articulations = EnumSet.of(Articulation.ACCENT);
 		cMajorCopy.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.QUARTER, articulations));
@@ -203,7 +203,7 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testHasArticulation() {
+	void testHasArticulation() {
 		List<Note> cMajorNotesWithAccentAndStaccato = new ArrayList<>();
 		cMajorNotesWithAccentAndStaccato
 				.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER, EnumSet.of(Articulation.ACCENT)));
@@ -221,7 +221,7 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testGetArticulations() {
+	void testGetArticulations() {
 		List<Note> cMajorNotesWithAccentAndStaccato = new ArrayList<>();
 		cMajorNotesWithAccentAndStaccato
 				.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER, EnumSet.of(Articulation.ACCENT)));
@@ -240,7 +240,7 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testRemoveNote() {
+	void testRemoveNote() {
 		final Chord D_FSharp = this.dMajor.remove(Note.of(Pitch.of(Pitch.Base.A, 0, 3), Durations.QUARTER));
 		assertFalse(this.dMajor.equals(D_FSharp));
 		assertEquals(2, D_FSharp.getNoteCount());
@@ -248,7 +248,7 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testRemovePitch() {
+	void testRemovePitch() {
 		final Chord D_FSharp = this.dMajor.remove(Pitch.of(Pitch.Base.A, 0, 3));
 		assertFalse(this.dMajor.equals(D_FSharp));
 		assertEquals(2, D_FSharp.getNoteCount());
@@ -256,7 +256,7 @@ public class ChordTest {
 	}
 
 	@Test
-	public void testIteration() {
+	void testIteration() {
 		final ArrayList<Note> cMajorNotes = new ArrayList<>();
 		cMajorNotes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		cMajorNotes.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER));
@@ -279,7 +279,7 @@ public class ChordTest {
 		}
 
 		for (Note note : cMajorNotes) {
-			assertTrue("Iterator violated immutability of Chord", cMaj.contains(note));
+			assertTrue(cMaj.contains(note), "Iterator violated immutability of Chord");
 		}
 	}
 }

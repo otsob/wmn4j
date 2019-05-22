@@ -1,40 +1,30 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.analysis.harmony;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import org.junit.Test;
-import org.wmn4j.analysis.harmony.PCProfile;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.PitchClass;
 
-/**
- *
- * @author Otso Björklund
- */
-public class PCProfileTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+class PCProfileTest {
 
 	// By how much values are allowed fo differ
-	static final double EPS = 0.0000000001;
+	private static final double EPS = 0.0000000001;
 
-	static final Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+	private static final Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 	static final Note E4 = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT);
-	static final Note G4 = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT);
-	static final Note Csharp4 = Note.of(Pitch.of(Pitch.Base.C, 1, 4), Durations.SIXTEENTH);
-
-	public PCProfileTest() {
-	}
+	private static final Note G4 = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT);
+	private static final Note Csharp4 = Note.of(Pitch.of(Pitch.Base.C, 1, 4), Durations.SIXTEENTH);
 
 	@Test
-	public void testSetIncorrectValue() {
+	void testSetIncorrectValue() {
 		final PCProfile profile = new PCProfile();
 
 		try {
@@ -47,29 +37,29 @@ public class PCProfileTest {
 	}
 
 	@Test
-	public void testAddWithDefaultWeightFunction() {
+	void testAddWithDefaultWeightFunction() {
 		final PCProfile profile = new PCProfile();
 		profile.add(C4);
-		assertEquals("Incorrect value for C", 1.0, profile.getValue(PitchClass.C), EPS);
-		assertEquals("Incorrect value for Csharp", 0.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
+		assertEquals(1.0, profile.getValue(PitchClass.C), EPS, "Incorrect value for C");
+		assertEquals(0.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS, "Incorrect value for Csharp");
 		profile.add(Csharp4);
-		assertEquals("Incorrect value for Csharp", 1.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
+		assertEquals(1.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS, "Incorrect value for Csharp");
 	}
 
 	@Test
-	public void testAddWithDurationWeightFunction() {
+	void testAddWithDurationWeightFunction() {
 		final PCProfile profile = PCProfile.getDurationWeightedProfile();
 		profile.add(C4);
-		assertEquals("Incorrect value for C", 0.25, profile.getValue(PitchClass.C), EPS);
-		assertEquals("Incorrect value for Csharp", 0.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
+		assertEquals(0.25, profile.getValue(PitchClass.C), EPS, "Incorrect value for C");
+		assertEquals(0.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS, "Incorrect value for Csharp");
 		profile.add(Csharp4);
-		assertEquals("Incorrect value for Csharp", 1.0 / 16.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
+		assertEquals(1.0 / 16.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS, "Incorrect value for Csharp");
 		profile.add(C4);
-		assertEquals("Incorrect value for C", 0.5, profile.getValue(PitchClass.C), EPS);
+		assertEquals(0.5, profile.getValue(PitchClass.C), EPS, "Incorrect value for C");
 	}
 
 	@Test
-	public void testNormalizeWithDefaultWeightFunction() {
+	void testNormalizeWithDefaultWeightFunction() {
 		PCProfile profile = new PCProfile();
 		final int C4Count = 5;
 		final int G4Count = 3;
@@ -87,20 +77,20 @@ public class PCProfileTest {
 			profile.add(Csharp4);
 		}
 
-		assertEquals("Incorrect value for C before normalization", C4Count, profile.getValue(PitchClass.C), EPS);
-		assertEquals("Incorrect value for G before normalization", G4Count, profile.getValue(PitchClass.G), EPS);
-		assertEquals("Incorrect value for C sharp before normalization", CsharpCount,
-				profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
+		assertEquals(C4Count, profile.getValue(PitchClass.C), EPS, "Incorrect value for C before normalization");
+		assertEquals(G4Count, profile.getValue(PitchClass.G), EPS, "Incorrect value for G before normalization");
+		assertEquals(CsharpCount,
+				profile.getValue(PitchClass.CSHARP_DFLAT), EPS, "Incorrect value for C sharp before normalization");
 
 		profile = profile.normalize();
 
-		assertEquals("Incorrect value for C before normalization", 1.0, profile.getValue(PitchClass.C), EPS);
-		assertEquals("Incorrect value for G before normalization", 3.0 / 5.0, profile.getValue(PitchClass.G), EPS);
-		assertEquals("Incorrect value for C sharp before normalization", 2.0 / 5.0,
-				profile.getValue(PitchClass.CSHARP_DFLAT), EPS);
+		assertEquals(1.0, profile.getValue(PitchClass.C), EPS, "Incorrect value for C before normalization");
+		assertEquals(3.0 / 5.0, profile.getValue(PitchClass.G), EPS, "Incorrect value for G before normalization");
+		assertEquals(2.0 / 5.0,
+				profile.getValue(PitchClass.CSHARP_DFLAT), EPS, "Incorrect value for C sharp before normalization");
 	}
 
-	public static PCProfile getTestProfile(double... values) {
+	static PCProfile getTestProfile(double... values) {
 		final PCProfile profile = new PCProfile();
 		int i = 0;
 
@@ -112,7 +102,7 @@ public class PCProfileTest {
 	}
 
 	@Test
-	public void testCorrelation() {
+	void testCorrelation() {
 
 		// Profile for C-major from Krumhansl and Kessler.
 		final PCProfile cMajorProfile = getTestProfile(6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29,
@@ -121,27 +111,29 @@ public class PCProfileTest {
 		final PCProfile aMinorProfile = getTestProfile(5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17, 6.33, 2.68,
 				3.52);
 
-		assertEquals("Incorrect correlation for c major profile with itself", 1.0,
-				PCProfile.correlation(cMajorProfile, cMajorProfile), EPS);
+		assertEquals(1.0,
+				PCProfile.correlation(cMajorProfile, cMajorProfile), EPS,
+				"Incorrect correlation for c major profile with itself");
 
-		assertEquals("Incorrect correlation between c major and a minor profiles", 0.6496,
-				PCProfile.correlation(cMajorProfile, aMinorProfile), 0.0001);
+		assertEquals(0.6496,
+				PCProfile.correlation(cMajorProfile, aMinorProfile), 0.0001,
+				"Incorrect correlation between c major and a minor profiles");
 
-		assertEquals("Correlation should be symmetric but is not", PCProfile.correlation(cMajorProfile, aMinorProfile),
-				PCProfile.correlation(aMinorProfile, cMajorProfile), EPS);
+		assertEquals(PCProfile.correlation(cMajorProfile, aMinorProfile),
+				PCProfile.correlation(aMinorProfile, cMajorProfile), EPS, "Correlation should be symmetric but is not");
 	}
 
 	@Test
-	public void testEuclidean() {
+	void testEuclidean() {
 		// Profile for C-major from Krumhansl and Kessler.
 		final PCProfile a = getTestProfile(1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00);
 		// Profile for A minor from Krumhansl and Kessler.
 		final PCProfile b = getTestProfile(5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17, 6.33, 2.68, 3.52);
 
-		assertEquals("Incorrect distance when computing distance with itself", 0.0, PCProfile.euclidean(b, b), EPS);
+		assertEquals(0.0, PCProfile.euclidean(b, b), EPS, "Incorrect distance when computing distance with itself");
 
 		final PCProfile c = getTestProfile(0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
 
-		assertEquals("Incorrect value", Math.sqrt(12.0), PCProfile.euclidean(a, c), EPS);
+		assertEquals(Math.sqrt(12.0), PCProfile.euclidean(a, c), EPS, "Incorrect value");
 	}
 }

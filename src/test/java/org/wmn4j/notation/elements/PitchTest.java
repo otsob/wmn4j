@@ -1,38 +1,18 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.PitchClass;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- *
- * @author Otso Björklund
- */
-public class PitchTest {
-
-	public PitchTest() {
-	}
-
-	@BeforeClass
-	public static void setUpClass() {
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
-	}
+class PitchTest {
 
 	@Test
-	public void testToInt() {
+	void testToInt() {
 		assertEquals(12, Pitch.of(Pitch.Base.C, 0, 0).toInt());
 		assertEquals(60, Pitch.of(Pitch.Base.C, 0, 4).toInt());
 		assertEquals(66, Pitch.of(Pitch.Base.F, 1, 4).toInt());
@@ -40,21 +20,21 @@ public class PitchTest {
 	}
 
 	@Test
-	public void testGetPitchClass() {
+	void testGetPitchClass() {
 		assertEquals(PitchClass.C, Pitch.of(Pitch.Base.C, 0, 5).getPitchClass());
 		assertEquals(PitchClass.GSHARP_AFLAT, Pitch.of(Pitch.Base.A, -1, 3).getPitchClass());
 		assertEquals(PitchClass.B, Pitch.of(Pitch.Base.B, 0, 2).getPitchClass());
 	}
 
 	@Test
-	public void testGetPCNumber() {
+	void testGetPCNumber() {
 		assertEquals(0, Pitch.of(Pitch.Base.C, 0, 5).getPitchClassNumber());
 		assertEquals(8, Pitch.of(Pitch.Base.A, -1, 3).getPitchClassNumber());
 		assertEquals(11, Pitch.of(Pitch.Base.B, 0, 2).getPitchClassNumber());
 	}
 
 	@Test
-	public void testToString() {
+	void testToString() {
 		assertEquals("F0", Pitch.of(Pitch.Base.F, 0, 0).toString());
 		assertEquals("Eb2", Pitch.of(Pitch.Base.E, -1, 2).toString());
 		assertEquals("G#3", Pitch.of(Pitch.Base.G, 1, 3).toString());
@@ -63,7 +43,7 @@ public class PitchTest {
 	}
 
 	@Test
-	public void testEquals() {
+	void testEquals() {
 		assertTrue(Pitch.of(Pitch.Base.C, 0, 2).equals(Pitch.of(Pitch.Base.C, 0, 2)));
 		assertTrue(Pitch.of(Pitch.Base.C, 1, 3).equals(Pitch.of(Pitch.Base.C, 1, 3)));
 		assertTrue(Pitch.of(Pitch.Base.C, -1, 2).equals(Pitch.of(Pitch.Base.C, -1, 2)));
@@ -74,28 +54,28 @@ public class PitchTest {
 	}
 
 	@Test
-	public void testEqualsEnharmonically() {
+	void testEqualsEnharmonically() {
 		assertTrue(Pitch.of(Pitch.Base.C, 1, 2).equalsEnharmonically(Pitch.of(Pitch.Base.C, 1, 2)));
 		assertTrue(Pitch.of(Pitch.Base.C, 1, 2).equalsEnharmonically(Pitch.of(Pitch.Base.D, -1, 2)));
 		assertFalse(Pitch.of(Pitch.Base.C, 1, 2).equalsEnharmonically(Pitch.of(Pitch.Base.D, -1, 3)));
 	}
 
 	@Test
-	public void testHigherThan() {
+	void testHigherThan() {
 		assertTrue(Pitch.of(Pitch.Base.C, 0, 3).isHigherThan(Pitch.of(Pitch.Base.C, 0, 2)));
 		assertFalse(Pitch.of(Pitch.Base.C, 0, 1).isHigherThan(Pitch.of(Pitch.Base.C, 0, 1)));
 		assertFalse(Pitch.of(Pitch.Base.C, 0, 2).isHigherThan(Pitch.of(Pitch.Base.C, 0, 3)));
 	}
 
 	@Test
-	public void testLowerThan() {
+	void testLowerThan() {
 		assertTrue(Pitch.of(Pitch.Base.C, 0, 2).isLowerThan(Pitch.of(Pitch.Base.C, 1, 2)));
 		assertFalse(Pitch.of(Pitch.Base.E, 1, 4).isLowerThan(Pitch.of(Pitch.Base.D, 0, 4)));
 		assertFalse(Pitch.of(Pitch.Base.C, 0, 4).isLowerThan(Pitch.of(Pitch.Base.C, 0, 3)));
 	}
 
 	@Test
-	public void testCompareTo() {
+	void testCompareTo() {
 		assertTrue(0 == Pitch.of(Pitch.Base.C, 0, 2).compareTo(Pitch.of(Pitch.Base.C, 0, 2)));
 		assertTrue(0 > Pitch.of(Pitch.Base.C, -1, 2).compareTo(Pitch.of(Pitch.Base.C, 0, 2)));
 		assertTrue(0 < Pitch.of(Pitch.Base.E, 0, 3).compareTo(Pitch.of(Pitch.Base.D, 1, 3)));

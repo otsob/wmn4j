@@ -1,13 +1,9 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,16 +11,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-/**
- *
- * @author Otso Björklund
- */
-public class StaffTest {
-
-	public StaffTest() {
-	}
+class StaffTest {
 
 	static List<Measure> getTestMeasures() {
 		final List<Measure> measures = new ArrayList<>();
@@ -41,7 +33,7 @@ public class StaffTest {
 	}
 
 	@Test
-	public void testGetMeasures() {
+	void testGetMeasures() {
 		final List<Measure> origMeasures = getTestMeasures();
 		final Staff staff = Staff.of(origMeasures);
 
@@ -51,9 +43,9 @@ public class StaffTest {
 
 		try {
 			measures.add(origMeasures.get(0));
-			assertTrue("Did not throw UnsupportedOperationException", false);
+			fail("Did not throw UnsupportedOperationException");
 		} catch (final Exception e) {
-			assertTrue(e instanceof UnsupportedOperationException);
+			assertTrue(e instanceof UnsupportedOperationException, "Exception was of incorrect type: " + e);
 		}
 
 		final int sizeBeforeAddition = origMeasures.size();
@@ -66,7 +58,7 @@ public class StaffTest {
 	}
 
 	@Test
-	public void testIterator() {
+	void testIterator() {
 		final List<Measure> origMeasures = getTestMeasures();
 		final Staff staff = Staff.of(origMeasures);
 
@@ -83,7 +75,7 @@ public class StaffTest {
 	}
 
 	@Test
-	public void testIteratorRemoveDisabled() {
+	void testIteratorRemoveDisabled() {
 		final List<Measure> origMeasures = getTestMeasures();
 		final Staff staff = Staff.of(origMeasures);
 
@@ -98,7 +90,7 @@ public class StaffTest {
 	}
 
 	@Test
-	public void testGetMeasure() {
+	void testGetMeasure() {
 		final List<Measure> measures = getTestMeasures();
 		final Staff staff = Staff.of(measures);
 
@@ -110,7 +102,7 @@ public class StaffTest {
 	}
 
 	@Test
-	public void testGetMeasureWithPickup() {
+	void testGetMeasureWithPickup() {
 		final List<Measure> measures = new ArrayList<>();
 		final List<Durational> voice = new ArrayList<>();
 		voice.add(Rest.of(Durations.WHOLE));

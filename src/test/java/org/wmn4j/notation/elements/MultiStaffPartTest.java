@@ -1,10 +1,9 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.TestHelper;
 
 import java.util.ArrayList;
@@ -13,18 +12,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-/**
- * @author Otso Björklund
- */
-public class MultiStaffPartTest {
+class MultiStaffPartTest {
 
 	private final Map<Integer, Staff> testStaves;
 
-	public MultiStaffPartTest() {
+	MultiStaffPartTest() {
 		this.testStaves = new HashMap<>();
 		final List<Measure> measures = new ArrayList<>();
 		for (int i = 1; i <= 5; ++i) {
@@ -36,7 +32,7 @@ public class MultiStaffPartTest {
 	}
 
 	@Test
-	public void testPartHasName() {
+	void testPartHasName() {
 		final Map<Integer, Staff> testStavesCopy = new HashMap<>(this.testStaves);
 
 		final String partName = "Test staff";
@@ -45,7 +41,7 @@ public class MultiStaffPartTest {
 	}
 
 	@Test
-	public void testImmutability() {
+	void testImmutability() {
 		final Map<Integer, Staff> testStavesCopy = new HashMap<>(this.testStaves);
 		final MultiStaffPart part = MultiStaffPart.of("Test staff", testStavesCopy);
 
@@ -53,12 +49,12 @@ public class MultiStaffPartTest {
 		testMeasures.add(TestHelper.getTestMeasure(1));
 		testStavesCopy.put(1, Staff.of(testMeasures));
 
-		assertTrue("Modifying map that was used to create MultiStaffPart changed the MultiStaffPart.",
-				part.getStaff(1).getMeasure(1) == this.testStaves.get(1).getMeasure(1));
+		assertTrue(part.getStaff(1).getMeasure(1) == this.testStaves.get(1).getMeasure(1),
+				"Modifying map that was used to create MultiStaffPart changed the MultiStaffPart.");
 	}
 
 	@Test
-	public void testIterator() {
+	void testIterator() {
 		final MultiStaffPart part = MultiStaffPart.of("Test staff", this.testStaves);
 
 		final int expectedCount = 10;
@@ -83,11 +79,11 @@ public class MultiStaffPartTest {
 			}
 		}
 
-		assertEquals("Iterator went through an unexpected number of measures.", expectedCount, count);
+		assertEquals(expectedCount, count, "Iterator went through an unexpected number of measures.");
 	}
 
 	@Test
-	public void testIteratorWithPickupMeasure() {
+	void testIteratorWithPickupMeasure() {
 		final Map<Integer, Staff> staves = new HashMap<>();
 		final List<Measure> measures = new ArrayList<>();
 		for (int i = 0; i <= 4; ++i) {
@@ -121,11 +117,11 @@ public class MultiStaffPartTest {
 			}
 		}
 
-		assertEquals("Iterator went through an unexpected number of measures.", expectedCount, count);
+		assertEquals(expectedCount, count, "Iterator went through an unexpected number of measures.");
 	}
 
 	@Test
-	public void testIteratorImmutability() {
+	void testIteratorImmutability() {
 		final MultiStaffPart part = MultiStaffPart.of("Test staff", this.testStaves);
 		final Iterator<Measure> iterator = part.iterator();
 		iterator.next();

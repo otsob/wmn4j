@@ -3,7 +3,7 @@
  */
 package org.wmn4j.notation.elements;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.builders.NoteBuilder;
 
 import java.util.ArrayList;
@@ -14,15 +14,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class NoteTest {
+class NoteTest {
 
 	@Test
-	public void testEquals() {
+	void testEquals() {
 		final Note A1 = Note.of(Pitch.Base.A, 0, 1, Durations.QUARTER);
 		final Note A1differentDur = Note.of(Pitch.Base.A, 0, 1, Durations.EIGHT);
 		final Note A1Copy = Note.of(Pitch.Base.A, 0, 1, Durations.QUARTER);
@@ -53,7 +53,7 @@ public class NoteTest {
 	}
 
 	@Test
-	public void testCreatingInvalidNote() {
+	void testCreatingInvalidNote() {
 
 		try {
 			Note.of(Pitch.Base.C, 5, 1, Durations.QUARTER);
@@ -78,7 +78,7 @@ public class NoteTest {
 	}
 
 	@Test
-	public void testHasArticulation() {
+	void testHasArticulation() {
 		final Pitch pitch = Pitch.of(Pitch.Base.C, 0, 1);
 		final Set<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
@@ -87,7 +87,7 @@ public class NoteTest {
 	}
 
 	@Test
-	public void testHasArticulations() {
+	void testHasArticulations() {
 		final Pitch pitch = Pitch.of(Pitch.Base.C, 0, 1);
 		final HashSet<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
@@ -96,7 +96,7 @@ public class NoteTest {
 	}
 
 	@Test
-	public void testGetArticulations() {
+	void testGetArticulations() {
 		final Pitch pitch = Pitch.of(Pitch.Base.C, 0, 1);
 		assertTrue(Note.of(pitch, Durations.EIGHT).getArticulations().isEmpty());
 
@@ -120,7 +120,7 @@ public class NoteTest {
 	}
 
 	@Test
-	public void testTies() {
+	void testTies() {
 		final NoteBuilder firstBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		final NoteBuilder secondBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
 		firstBuilder.addTieToFollowing(secondBuilder);
@@ -138,7 +138,7 @@ public class NoteTest {
 	}
 
 	@Test
-	public void testTiedDuration() {
+	void testTiedDuration() {
 		final Note untied = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		assertEquals(Durations.QUARTER, untied.getTiedDuration());
 
@@ -168,7 +168,7 @@ public class NoteTest {
 	}
 
 	@Test
-	public void testBeginsAndEndsMarking() {
+	void testBeginsAndEndsMarking() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
 
 		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
@@ -188,7 +188,7 @@ public class NoteTest {
 	}
 
 	@Test
-	public void testHasMarkingConnection() {
+	void testHasMarkingConnection() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
 		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
 		List<Marking.Connection> markingConnections = new ArrayList<>();
@@ -204,7 +204,7 @@ public class NoteTest {
 	}
 
 	@Test
-	public void testEqualsAndHashCodeWithMarkings() {
+	void testEqualsAndHashCodeWithMarkings() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
 
 		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
@@ -234,7 +234,7 @@ public class NoteTest {
 	}
 
 	@Test
-	public void testGetMarkingConnections() {
+	void testGetMarkingConnections() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
 
 		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
@@ -258,11 +258,11 @@ public class NoteTest {
 			/* Do nothing */
 		}
 
-		assertEquals("The ", 2, noteWithMarkingConnections.getMarkings().size());
+		assertEquals(2, noteWithMarkingConnections.getMarkings().size());
 	}
 
 	@Test
-	public void testGetMarkingConnection() {
+	void testGetMarkingConnection() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
 		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
 		List<Marking.Connection> markingConnections = new ArrayList<>();

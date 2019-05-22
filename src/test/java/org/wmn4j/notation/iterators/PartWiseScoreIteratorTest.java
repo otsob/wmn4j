@@ -1,11 +1,10 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.iterators;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Durations;
@@ -13,25 +12,23 @@ import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Score;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * @author Otso Björklund
- */
-public class PartWiseScoreIteratorTest {
+class PartWiseScoreIteratorTest {
 
 	private Score score = null;
 	private PartWiseScoreIterator iter = null;
 
-	public PartWiseScoreIteratorTest() {
+	PartWiseScoreIteratorTest() {
 		this.score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 	}
 
-	@Before
-	public void setUp() throws Exception {
-		assertTrue("Failed to read score", score != null);
+	@BeforeEach
+	void setUp() throws Exception {
+		assertNotNull(score);
 		this.iter = new PartWiseScoreIterator(this.score);
 	}
 
@@ -44,10 +41,10 @@ public class PartWiseScoreIteratorTest {
 	}
 
 	@Test
-	public void testHasNext() {
+	void testHasNext() {
 		// There are 28 Durationals in the test score.
 		for (int i = 0; i < 28; ++i) {
-			assertTrue("Should have had next at " + i + "th iteration", this.iter.hasNext());
+			assertTrue(this.iter.hasNext(), "Should have had next at " + i + "th iteration");
 			this.iter.next();
 		}
 
@@ -55,7 +52,7 @@ public class PartWiseScoreIteratorTest {
 	}
 
 	@Test
-	public void testNext() {
+	void testNext() {
 		// Start at first note of top part.
 		Durational next = moveIterSteps(1);
 		assertTrue(next instanceof Note);
@@ -82,7 +79,7 @@ public class PartWiseScoreIteratorTest {
 	}
 
 	@Test
-	public void testCurrentPosition() {
+	void testCurrentPosition() {
 		final int topPartNumber = 0;
 		final int bottomPartNumber = 1;
 

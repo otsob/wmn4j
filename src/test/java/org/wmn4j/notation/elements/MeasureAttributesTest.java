@@ -1,33 +1,22 @@
-
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
 package org.wmn4j.notation.elements;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class MeasureAttributesTest {
-
-	public MeasureAttributesTest() {
-	}
-
-	@BeforeClass
-	public static void setUpClass() {
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
-	}
+class MeasureAttributesTest {
 
 	@Test
-	public void testGetMeasureInfo() {
+	void testGetMeasureInfo() {
 		final MeasureAttributes attr = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Barline.SINGLE, Clefs.G);
 
@@ -40,7 +29,7 @@ public class MeasureAttributesTest {
 	}
 
 	@Test
-	public void testGetMeasureInfoWithInvalidParameters() {
+	void testGetMeasureInfoWithInvalidParameters() {
 
 		try {
 			final MeasureAttributes attr = MeasureAttributes.of(null, KeySignatures.CMAJ_AMIN, Barline.SINGLE,
@@ -80,7 +69,7 @@ public class MeasureAttributesTest {
 	}
 
 	@Test
-	public void testEquals() {
+	void testEquals() {
 
 		final Map<Duration, Clef> clefChangesA = new HashMap<>();
 		clefChangesA.put(Durations.HALF, Clefs.F);

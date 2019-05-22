@@ -1,10 +1,9 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.notation.elements;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,27 +12,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-/**
- * @author Otso Björklund
- */
-public class MeasureTest {
+class MeasureTest {
 
-	Map<Integer, List<Durational>> singleNoteVoice = new HashMap<>();
-	Map<Integer, List<Durational>> multipleNoteVoices = new HashMap<>();
+	private Map<Integer, List<Durational>> singleNoteVoice = new HashMap<>();
+	private Map<Integer, List<Durational>> multipleNoteVoices = new HashMap<>();
 
-	KeySignature keySig = KeySignatures.CMAJ_AMIN;
+	private KeySignature keySig = KeySignatures.CMAJ_AMIN;
 
-	Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
-	Note E4 = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF);
-	Note G4 = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF);
-	Note C4Quarter = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+	private Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
+	private Note E4 = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF);
+	private Note G4 = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF);
+	private Note C4Quarter = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
-	public MeasureTest() {
+	MeasureTest() {
 		final List<Durational> voiceContents = new ArrayList<>();
 		voiceContents.add(C4Quarter);
 		voiceContents.add(Rest.of(Durations.QUARTER));
@@ -49,7 +45,7 @@ public class MeasureTest {
 	}
 
 	@Test
-	public void testCreatingIllegalMeasureThrowsException() {
+	void testCreatingIllegalMeasureThrowsException() {
 		// Test exceptions thrown correctly for illegal arguments
 		try {
 			final Measure m = Measure.of(-1, this.multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
@@ -67,7 +63,7 @@ public class MeasureTest {
 	}
 
 	@Test
-	public void testVoicesImmutable() {
+	void testVoicesImmutable() {
 		final Map<Integer, List<Durational>> voices = new HashMap<>();
 		final List<Durational> voice = new ArrayList<>();
 		voice.add(C4);
@@ -78,11 +74,11 @@ public class MeasureTest {
 		// Test that modifying the original voices list does no affect measure created
 		// using it.
 		voices.get(0).add(C4);
-		assertEquals("Modifying list from which measure is created changes measure", 1, measure.getVoice(0).size());
+		assertEquals(1, measure.getVoice(0).size(), "Modifying list from which measure is created changes measure");
 	}
 
 	@Test
-	public void testGetVoice() {
+	void testGetVoice() {
 		final Measure m = Measure.of(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 		assertTrue(m.getVoice(1).contains(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF)));
 		assertTrue(m.getVoice(0).contains(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
@@ -97,13 +93,13 @@ public class MeasureTest {
 	}
 
 	@Test
-	public void testGetNumber() {
+	void testGetNumber() {
 		assertEquals(1, Measure.of(1, singleNoteVoice, TimeSignatures.FOUR_FOUR, keySig, Clefs.G).getNumber());
 		assertEquals(512, Measure.of(512, singleNoteVoice, TimeSignatures.FOUR_FOUR, keySig, Clefs.G).getNumber());
 	}
 
 	@Test
-	public void testIteratorWithSingleVoiceMeasure() {
+	void testIteratorWithSingleVoiceMeasure() {
 		final Measure singleVoiceMeasure = Measure.of(1, singleNoteVoice, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 		final int noteCount = 0;
 
@@ -122,7 +118,7 @@ public class MeasureTest {
 	}
 
 	@Test
-	public void testIteratorWithMultiVoiceMeasure() {
+	void testIteratorWithMultiVoiceMeasure() {
 		final Measure multiVoiceMeasure = Measure.of(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 		final int noteCount = 0;
 
@@ -144,7 +140,7 @@ public class MeasureTest {
 	}
 
 	@Test
-	public void testIteratorRemoveDisabled() {
+	void testIteratorRemoveDisabled() {
 		final Measure m = Measure.of(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
 
 		try {
@@ -158,7 +154,7 @@ public class MeasureTest {
 	}
 
 	@Test
-	public void testIteratorWithEmptyMeasure() {
+	void testIteratorWithEmptyMeasure() {
 		final Map<Integer, List<Durational>> voices = new HashMap<>();
 		voices.put(0, new ArrayList<>());
 		final Measure emptyMeasure = Measure.of(1, voices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
@@ -174,7 +170,7 @@ public class MeasureTest {
 	}
 
 	@Test
-	public void testIteratorWithNonContiguousVoiceNumbers() {
+	void testIteratorWithNonContiguousVoiceNumbers() {
 		final List<Durational> noteList = this.singleNoteVoice.get(0);
 		final Map<Integer, List<Durational>> noteVoices = new HashMap<>();
 		noteVoices.put(1, noteList);
@@ -190,16 +186,16 @@ public class MeasureTest {
 		int count = 0;
 		int indexInExpected = 0;
 		for (Durational d : measure) {
-			assertEquals("Iterator did not return the expected object", expected.get(indexInExpected++), d);
+			assertEquals(expected.get(indexInExpected++), d, "Iterator did not return the expected object");
 			++count;
 		}
 
-		assertEquals("Iterator iterated through a number of objects different from size of expected", expected.size(),
-				count);
+		assertEquals(expected.size(),
+				count, "Iterator iterated through a number of objects different from size of expected");
 	}
 
 	@Test
-	public void testFullMeasureRest() {
+	void testFullMeasureRest() {
 		final List<Durational> noteList = this.singleNoteVoice.get(0);
 		final Map<Integer, List<Durational>> noteVoices = new HashMap<>();
 		noteVoices.put(1, noteList);
@@ -222,7 +218,7 @@ public class MeasureTest {
 	}
 
 	@Test
-	public void testPickUpMeasure() {
+	void testPickUpMeasure() {
 		final MeasureAttributes attributes = MeasureAttributes
 				.of(TimeSignatures.FOUR_FOUR, keySig, Barline.SINGLE, Clefs.G);
 		final Measure pickupMeasure = Measure.pickupOf(this.multipleNoteVoices, attributes);

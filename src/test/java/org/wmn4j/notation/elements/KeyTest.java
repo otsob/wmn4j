@@ -1,16 +1,16 @@
-
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
 package org.wmn4j.notation.elements;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-public class KeyTest {
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-	public KeyTest() {
-	}
+class KeyTest {
 
 	@Test
-	public void testGetKeySignature() {
+	void testGetKeySignature() {
 		assertTrue(Key.C_MAJOR.getKeySignature().equals(KeySignatures.CMAJ_AMIN));
 		assertTrue(Key.DFLAT_MAJOR.getKeySignature().equals(KeySignatures.DFLATMAJ_BFLATMIN));
 		assertTrue(Key.D_MAJOR.getKeySignature().equals(KeySignatures.DMAJ_BMIN));

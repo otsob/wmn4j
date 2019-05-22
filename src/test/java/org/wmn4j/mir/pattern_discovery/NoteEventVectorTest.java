@@ -4,23 +4,22 @@
  */
 package org.wmn4j.mir.pattern_discovery;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.mir.pattern_discovery.NoteEventVector;
 
 /**
- *
  * @author Otso Björklund
  */
-public class NoteEventVectorTest {
+class NoteEventVectorTest {
 
 	private final NoteEventVector a;
 	private final NoteEventVector b;
 
-	public NoteEventVectorTest() {
+	NoteEventVectorTest() {
 		final double[] componentsA = { 0, 0, 0 };
 		this.a = new NoteEventVector(componentsA);
 
@@ -29,7 +28,7 @@ public class NoteEventVectorTest {
 	}
 
 	@Test
-	public void testAdd() {
+	void testAdd() {
 		final NoteEventVector vec1 = this.a.add(this.b);
 		assertEquals(this.b, vec1);
 
@@ -41,7 +40,7 @@ public class NoteEventVectorTest {
 	}
 
 	@Test
-	public void testSubtract() {
+	void testSubtract() {
 		final NoteEventVector vec1 = this.b.subtract(this.b);
 		assertEquals(this.a, vec1);
 
@@ -53,7 +52,7 @@ public class NoteEventVectorTest {
 	}
 
 	@Test
-	public void testCompareTo() {
+	void testCompareTo() {
 		final double[] components1 = { 0, 0, 0 };
 		final NoteEventVector vec1 = new NoteEventVector(components1);
 
@@ -66,13 +65,13 @@ public class NoteEventVectorTest {
 	}
 
 	@Test
-	public void testEquals() {
+	void testEquals() {
 		assertEquals(this.a, this.a);
 		assertFalse(this.a.equals(this.b));
 	}
 
 	@Test
-	public void testHashCode() {
+	void testHashCode() {
 		final double[] components1 = { 0, 0, 0 };
 		final NoteEventVector vec1 = new NoteEventVector(components1);
 		assertEquals(this.a.hashCode(), vec1.hashCode());

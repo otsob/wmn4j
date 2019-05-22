@@ -1,21 +1,10 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.mir;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.junit.Ignore;
-import org.junit.Test;
-import org.wmn4j.mir.MonophonicPattern;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Durations;
@@ -23,12 +12,20 @@ import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Rest;
 
-@Ignore("These tests are unfinished and should be unignored once the logic is implemented")
-public class MonophonicPatternTest {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-	final List<Durational> referenceNotes;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-	public MonophonicPatternTest() {
+@Disabled("These tests are unfinished and should be unignored once the logic is implemented") class MonophonicPatternTest {
+
+	private final List<Durational> referenceNotes;
+
+	MonophonicPatternTest() {
 		final List<Durational> notes = new ArrayList<>();
 		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT));
 		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHT));
@@ -40,7 +37,7 @@ public class MonophonicPatternTest {
 	}
 
 	@Test
-	public void testMonophonicPatternListOfDurational() {
+	void testMonophonicPatternListOfDurational() {
 		try {
 			new MonophonicPattern(null);
 			fail("Was able to create pattern with null contents");
@@ -70,7 +67,7 @@ public class MonophonicPatternTest {
 	}
 
 	@Test
-	public void testEqualsPattern() {
+	void testEqualsPattern() {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 		final MonophonicPattern pattern2 = new MonophonicPattern(this.referenceNotes);
 
@@ -83,7 +80,7 @@ public class MonophonicPatternTest {
 	}
 
 	@Test
-	public void testEqualsInPitch() {
+	void testEqualsInPitch() {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 
 		final List<Durational> notes = new ArrayList<>();
@@ -97,8 +94,8 @@ public class MonophonicPatternTest {
 
 		notes.add(Rest.of(Durations.QUARTER));
 
-		assertTrue("Adding rest to end of pattern should not make pattern inequal in pitches",
-				pattern1.equalsInPitch(new MonophonicPattern(notes)));
+		assertTrue(pattern1.equalsInPitch(new MonophonicPattern(notes)),
+				"Adding rest to end of pattern should not make pattern inequal in pitches");
 
 		notes.add(Note.of(Pitch.of(Pitch.Base.E, -1, 3), Durations.WHOLE));
 
@@ -106,7 +103,7 @@ public class MonophonicPatternTest {
 	}
 
 	@Test
-	public void testEqualsEnharmonicallyInPitch() {
+	void testEqualsEnharmonicallyInPitch() {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 
 		final List<Durational> notes = new ArrayList<>();
@@ -120,17 +117,17 @@ public class MonophonicPatternTest {
 	}
 
 	@Test
-	public void testEqualsInTransposedPitch() {
+	void testEqualsInTransposedPitch() {
 		// TODO
 	}
 
 	@Test
-	public void testEqualsInRhythm() {
+	void testEqualsInRhythm() {
 		// TODO
 	}
 
 	@Test
-	public void testEqualsInOnsets() {
+	void testEqualsInOnsets() {
 		// TODO
 	}
 }
