@@ -1,183 +1,265 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
-<score-partwise version="3.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise version="3.1">
   <movement-title>Articulation tests</movement-title>
   <identification>
     <rights>©</rights>
     <encoding>
-      <software>Finale 2014.5 for Mac</software>
-      <software>Dolet Light for Finale 2014.5</software>
-      <encoding-date>2018-05-02</encoding-date>
-      <supports attribute="new-system" element="print" type="yes" value="yes"/>
-      <supports attribute="new-page" element="print" type="yes" value="yes"/>
+      <software>MuseScore 3.0.0</software>
+      <encoding-date>2019-05-18</encoding-date>
       <supports element="accidental" type="yes"/>
       <supports element="beam" type="yes"/>
+      <supports element="print" attribute="new-page" type="yes" value="yes"/>
+      <supports element="print" attribute="new-system" type="yes" value="yes"/>
       <supports element="stem" type="yes"/>
-    </encoding>
-  </identification>
+      </encoding>
+    </identification>
   <defaults>
     <scaling>
       <millimeters>7.2319</millimeters>
       <tenths>40</tenths>
-    </scaling>
-    <page-layout>
-      <page-height>1545</page-height>
-      <page-width>1194</page-width>
-      <page-margins type="both">
-        <left-margin>140</left-margin>
-        <right-margin>70</right-margin>
-        <top-margin>70</top-margin>
-        <bottom-margin>70</bottom-margin>
-      </page-margins>
-    </page-layout>
-    <system-layout>
-      <system-margins>
-        <left-margin>0</left-margin>
-        <right-margin>0</right-margin>
-      </system-margins>
-      <system-distance>121</system-distance>
-      <top-system-distance>70</top-system-distance>
-    </system-layout>
-    <appearance>
-      <line-width type="stem">0.7487</line-width>
-      <line-width type="beam">5</line-width>
-      <line-width type="staff">0.7487</line-width>
-      <line-width type="light barline">0.7487</line-width>
-      <line-width type="heavy barline">5</line-width>
-      <line-width type="leger">0.7487</line-width>
-      <line-width type="ending">0.7487</line-width>
-      <line-width type="wedge">0.7487</line-width>
-      <line-width type="enclosure">0.7487</line-width>
-      <line-width type="tuplet bracket">0.7487</line-width>
-      <note-size type="grace">60</note-size>
-      <note-size type="cue">60</note-size>
-      <distance type="hyphen">120</distance>
-      <distance type="beam">8</distance>
-    </appearance>
-    <music-font font-family="Maestro,engraved" font-size="20.5"/>
-    <word-font font-family="Times New Roman" font-size="10.25"/>
-  </defaults>
+      </scaling>
+    <word-font font-family="FreeSerif" font-size="10"/>
+    <lyric-font font-family="FreeSerif" font-size="11"/>
+    </defaults>
   <credit page="1">
-    <credit-type>title</credit-type>
-    <credit-words default-x="632" default-y="1475" font-size="24" justify="center" valign="top">Articulation tests</credit-words>
-  </credit>
+    <credit-words default-x="55.3105" default-y="1559.01" justify="left" valign="bottom" font-size="12">Score</credit-words>
+    </credit>
   <credit page="1">
-    <credit-type>rights</credit-type>
-    <credit-words default-x="632" default-y="53" font-size="10" justify="center" valign="bottom">©</credit-words>
-  </credit>
+    <credit-words default-x="580.921" default-y="1586.99" justify="center" valign="top" font-size="24">Articulation tests</credit-words>
+    </credit>
   <credit page="1">
-    <credit-words default-x="140" default-y="1478" font-size="12" valign="top">Score</credit-words>
-  </credit>
+    <credit-words default-x="580.921" default-y="110.621" justify="center" valign="bottom" font-size="8">©</credit-words>
+    </credit>
   <part-list>
     <score-part id="P1">
       <part-name print-object="no">MusicXML Part</part-name>
       <score-instrument id="P1-I1">
         <instrument-name>ARIA Pvoice</instrument-name>
-        <virtual-instrument>
-          <virtual-library>Garritan Instruments for Finale</virtual-library>
-          <virtual-name>005. Keyboards/Steinway Piano</virtual-name>
-        </virtual-instrument>
-      </score-instrument>
-      <midi-device>Bank 1</midi-device>
+        </score-instrument>
+      <midi-device id="P1-I1" port="1"></midi-device>
       <midi-instrument id="P1-I1">
         <midi-channel>1</midi-channel>
         <midi-program>1</midi-program>
-        <volume>80</volume>
+        <volume>79.5276</volume>
         <pan>0</pan>
-      </midi-instrument>
-    </score-part>
-  </part-list>
-  <!--=========================================================-->
+        </midi-instrument>
+      </score-part>
+    </part-list>
   <part id="P1">
-    <measure number="1" width="913">
+    <measure number="1" width="550.74">
       <print>
         <system-layout>
           <system-margins>
-            <left-margin>70</left-margin>
-            <right-margin>0</right-margin>
-          </system-margins>
-          <top-system-distance>177</top-system-distance>
-        </system-layout>
-        <measure-numbering>system</measure-numbering>
-      </print>
+            <left-margin>0.00</left-margin>
+            <right-margin>0.00</right-margin>
+            </system-margins>
+          <top-system-distance>98.00</top-system-distance>
+          </system-layout>
+        </print>
       <attributes>
-        <divisions>2</divisions>
+        <divisions>1</divisions>
         <key>
           <fifths>0</fifths>
-          <mode>major</mode>
-        </key>
+          </key>
         <time>
           <beats>4</beats>
           <beat-type>4</beat-type>
-        </time>
+          </time>
         <clef>
           <sign>G</sign>
           <line>2</line>
-        </clef>
-      </attributes>
-      <sound tempo="120"/>
-      <note default-x="86">
+          </clef>
+        </attributes>
+      <note default-x="73.07" default-y="-50.00">
         <pitch>
           <step>C</step>
           <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
+          </pitch>
+        <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem default-y="-14">up</stem>
+        <stem>up</stem>
         <notations>
           <articulations>
-            <staccato default-x="3" default-y="-63" placement="below"/>
-          </articulations>
-        </notations>
-      </note>
-      <note default-x="291">
+            <staccato/>
+            </articulations>
+          </notations>
+        </note>
+      <note default-x="192.09" default-y="-50.00">
         <pitch>
           <step>C</step>
           <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
+          </pitch>
+        <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem default-y="-14">up</stem>
+        <stem>up</stem>
         <notations>
           <articulations>
-            <accent default-x="-1" default-y="-70" placement="below"/>
-          </articulations>
-        </notations>
-      </note>
-      <note default-x="495">
+            <accent/>
+            </articulations>
+          </notations>
+        </note>
+      <note default-x="311.11" default-y="-50.00">
         <pitch>
           <step>C</step>
           <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
+          </pitch>
+        <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem default-y="-14">up</stem>
+        <stem>up</stem>
         <notations>
           <articulations>
-            <tenuto default-x="1" default-y="-61" placement="below"/>
-          </articulations>
-        </notations>
-      </note>
-      <note default-x="699">
+            <tenuto/>
+            </articulations>
+          </notations>
+        </note>
+      <note default-x="430.13" default-y="-50.00">
         <pitch>
           <step>C</step>
           <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
+          </pitch>
+        <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem default-y="-14">up</stem>
+        <stem>up</stem>
         <notations>
-          <fermata default-x="-5" default-y="5" type="upright"/>
-        </notations>
-      </note>
+          <fermata type="upright"/>
+          </notations>
+        </note>
+      </measure>
+    <measure number="2" width="500.48">
+      <note default-x="13.80" default-y="-50.00">
+        <pitch>
+          <step>C</step>
+          <octave>4</octave>
+          </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        <notations>
+          <fermata type="upright"/>
+          <articulations>
+            <staccato/>
+            <tenuto/>
+            <accent/>
+            </articulations>
+          </notations>
+        </note>
+      <note default-x="132.82" default-y="-50.00">
+        <pitch>
+          <step>C</step>
+          <octave>4</octave>
+          </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        <notations>
+          <articulations>
+            <staccato/>
+            </articulations>
+          </notations>
+        </note>
+      <note default-x="132.82" default-y="-40.00">
+        <chord/>
+        <pitch>
+          <step>E</step>
+          <octave>4</octave>
+          </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        </note>
+      <note default-x="132.82" default-y="-30.00">
+        <chord/>
+        <pitch>
+          <step>G</step>
+          <octave>4</octave>
+          </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        </note>
+      <note default-x="132.82" default-y="-15.00">
+        <chord/>
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+          </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        </note>
+      <note default-x="251.84" default-y="-50.00">
+        <pitch>
+          <step>C</step>
+          <octave>4</octave>
+          </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        <notations>
+          <fermata type="upright"/>
+          <articulations>
+            <staccato/>
+            <accent/>
+            </articulations>
+          </notations>
+        </note>
+      <note default-x="251.84" default-y="-40.00">
+        <chord/>
+        <pitch>
+          <step>E</step>
+          <octave>4</octave>
+          </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        </note>
+      <note default-x="251.84" default-y="-30.00">
+        <chord/>
+        <pitch>
+          <step>G</step>
+          <octave>4</octave>
+          </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        </note>
+      <note default-x="251.84" default-y="-15.00">
+        <chord/>
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+          </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        </note>
+      <note default-x="370.86" default-y="-50.00">
+        <pitch>
+          <step>C</step>
+          <octave>4</octave>
+          </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        </note>
       <barline location="right">
         <bar-style>light-heavy</bar-style>
-      </barline>
-    </measure>
-  </part>
-  <!--=========================================================-->
-</score-partwise>
+        </barline>
+      </measure>
+    </part>
+  </score-partwise>
