@@ -248,15 +248,15 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		// Read measure node by node, create measure and add to list
 		final NodeList measureNodes = partNode.getChildNodes();
 
-		// Used for keeping track of possible tie beginnings.
-		final TieBeginningContainer tieBeginnings = new TieBeginningContainer();
+		// Used for keeping track of and resolving possible connected notations.
+		final ConnectedNotations connectedNotations = new ConnectedNotations();
 
 		for (int i = 0; i < measureNodes.getLength(); ++i) {
 			final Node measureNode = measureNodes.item(i);
 
 			// Make sure that the node really is a measure node.
 			if (measureNode.getNodeName().equals(MusicXmlTags.MEASURE)) {
-				readMeasureIntoPartBuilder(partBuilder, measureNode, contexts, staves, tieBeginnings);
+				readMeasureIntoPartBuilder(partBuilder, measureNode, contexts, staves, connectedNotations);
 			}
 		}
 	}
@@ -292,7 +292,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	 * and add it to the PartBuilder.
 	 */
 	private void readMeasureIntoPartBuilder(PartBuilder partBuilder, Node measureNode, Map<Integer, Context> contexts,
-			int staves, TieBeginningContainer tieBuffer) {
+			int staves, ConnectedNotations connectedNotations) {
 
 		final int measureNumber = Integer
 				.parseInt(measureNode.getAttributes().getNamedItem(MusicXmlTags.MEASURE_NUM).getTextContent());
@@ -325,7 +325,8 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 			// Handle note element
 			if (node.getNodeName().equals(MusicXmlTags.NOTE) && !isGraceNote(node)) {
-				readNoteElementIntoMeasureBuilder(node, measureBuilders, chordBuffers, offsets, contexts, tieBuffer);
+				readNoteElementIntoMeasureBuilder(node, measureBuilders, chordBuffers, offsets, contexts,
+						connectedNotations);
 			}
 
 			// Handle clef changes
@@ -399,7 +400,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	 */
 	private void readNoteElementIntoMeasureBuilder(Node noteNode, Map<Integer, MeasureBuilder> measureBuilders,
 			Map<Integer, ChordBuffer> chordBuffers, Map<Integer, List<Duration>> offsets,
-			Map<Integer, Context> contexts, TieBeginningContainer tieBeginnings) {
+			Map<Integer, Context> contexts, ConnectedNotations connectedNotations) {
 		final int staffNumber = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_STAFF)
 				.map(staffNode -> Integer.parseInt(staffNode.getTextContent()))
 				.orElse(MIN_STAFF_NUMBER);
@@ -418,22 +419,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			final Pitch pitch = getPitch(noteNode);
 			final NoteBuilder noteBuilder = new NoteBuilder(pitch, duration);
 
-			// Handle ties
-			if (endsTie(noteNode)) {
-				final NoteBuilder tieBeginner = tieBeginnings.popMatchingBeginningFromStaff(staffNumber, noteBuilder);
-				if (tieBeginner != null) {
-					tieBeginner.addTieToFollowing(noteBuilder);
-				} else {
-					noteBuilder.setIsTiedFromPrevious(true);
-				}
-			}
-
-			if (startsTie(noteNode)) {
-				tieBeginnings.addToStaff(staffNumber, noteBuilder);
-			}
-
-			DocHelper.findChild(noteNode, MusicXmlTags.NOTATIONS)
-					.ifPresent(notationsNode -> addNotations(notationsNode, noteBuilder));
+			resolveTiesAndNotations(noteNode, connectedNotations, staffNumber, noteBuilder);
 
 			if (hasChordTag(noteNode)) {
 				chordBuffers.get(staffNumber).addNote(noteBuilder, voice);
@@ -444,7 +430,33 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 	}
 
-	private void addNotations(Node notationsNode, NoteBuilder noteBuilder) {
+	private void resolveTiesAndNotations(Node noteNode, ConnectedNotations connectedNotations,
+			int staffNumber, NoteBuilder noteBuilder) {
+
+		// Handle ties
+		if (endsTie(noteNode)) {
+			final NoteBuilder tieBeginner = connectedNotations.popTieBeginningFromStaff(staffNumber, noteBuilder);
+			if (tieBeginner != null) {
+				tieBeginner.addTieToFollowing(noteBuilder);
+			} else {
+				noteBuilder.setIsTiedFromPrevious(true);
+			}
+		}
+
+		if (startsTie(noteNode)) {
+			connectedNotations.addTieBeginningToStaff(staffNumber, noteBuilder);
+		}
+
+		Optional<Node> notationsNodeOptional = DocHelper.findChild(noteNode, MusicXmlTags.NOTATIONS);
+
+		if (notationsNodeOptional.isPresent()) {
+			final Node notationsNode = notationsNodeOptional.get();
+			addArticulations(notationsNode, noteBuilder);
+
+		}
+	}
+
+	private void addArticulations(Node notationsNode, NoteBuilder noteBuilder) {
 		final Optional<Node> articulationsNode = DocHelper.findChild(notationsNode, MusicXmlTags.NOTE_ARTICULATIONS);
 
 		if (articulationsNode.isPresent()) {
@@ -853,27 +865,27 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	}
 
 	/**
-	 * Class for keeping track of tie beginning NoteBuilders.
+	 * Class for keeping track of connected notations such as ties, slurs etc.
 	 */
-	private class TieBeginningContainer {
+	private class ConnectedNotations {
 
 		private final Map<Integer, List<NoteBuilder>> tieStarts = new HashMap<>();
 
-		void addToStaff(int staffNumber, NoteBuilder builder) {
+		void addTieBeginningToStaff(int staffNumber, NoteBuilder tieBeginning) {
 			if (!this.tieStarts.containsKey(staffNumber)) {
 				this.tieStarts.put(staffNumber, new ArrayList<>());
 			}
 
-			this.tieStarts.get(staffNumber).add(builder);
+			this.tieStarts.get(staffNumber).add(tieBeginning);
 		}
 
-		NoteBuilder popMatchingBeginningFromStaff(int staff, NoteBuilder builder) {
+		NoteBuilder popTieBeginningFromStaff(int staff, NoteBuilder tieEnd) {
 			NoteBuilder matching = null;
 
 			if (this.tieStarts.keySet().contains(staff)) {
 				for (int i = 0; i < this.tieStarts.get(staff).size(); ++i) {
-					final NoteBuilder b = this.tieStarts.get(staff).get(i);
-					if (b.getPitch().equals(builder.getPitch())) {
+					final NoteBuilder tieBeginning = this.tieStarts.get(staff).get(i);
+					if (tieBeginning.getPitch().equals(tieEnd.getPitch())) {
 						matching = this.tieStarts.get(staff).remove(i);
 						break;
 					}
