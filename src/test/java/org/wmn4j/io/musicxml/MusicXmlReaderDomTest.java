@@ -895,4 +895,179 @@ class MusicXmlReaderDomTest {
 		assertTrue(twelthNote.ends(Marking.Type.GLISSANDO));
 		assertTrue(twelthNote.ends(Marking.Type.SLUR));
 	}
+
+	@Test
+	void testReadingMarkingsIntoScoreFromMultipleStavesAndVoices() {
+		Score scoreWitMarkings = readScore("multi_staff_multi_voice_marking_test.xml", false);
+		assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreWitMarkings);
+	}
+
+	@Test
+	void testReadingMarkingsIntoScoreBuilderFromMultipleStavesAndVoices() {
+		ScoreBuilder scoreBuilderWitMarkings = readScoreBuilder("multi_staff_multi_voice_marking_test.xml", false);
+		assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreBuilderWitMarkings.build());
+	}
+
+	/*
+	 * Expects the content of "multi_staff_multi_voice_marking_test.xml".
+	 */
+	private void assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(Score score) {
+		assertEquals(1, score.getPartCount(), "Score is expected to have single part");
+		assertTrue(score.getPart(0) instanceof MultiStaffPart,
+				"The only part in the score is expected to have multiple staves");
+
+		MultiStaffPart part = (MultiStaffPart) score.getPart(0);
+		final Staff topStaff = part.getStaff(1);
+		final Staff bottomStaff = part.getStaff(2);
+
+		final Measure topStaffFirstMeasure = topStaff.getMeasure(1);
+		final int topStaffSingleVoiceNumber = topStaffFirstMeasure.getVoiceNumbers().get(0);
+
+		// Check top staff of first measure
+		final Note firstNoteInTopStaff = (Note) topStaffFirstMeasure.get(topStaffSingleVoiceNumber, 0);
+		assertEquals(1, firstNoteInTopStaff.getMarkings().size());
+		assertTrue(firstNoteInTopStaff.begins(Marking.Type.SLUR));
+
+		final Note secondNoteInTopStaff = (Note) topStaffFirstMeasure.get(topStaffSingleVoiceNumber, 1);
+		assertEquals(2, secondNoteInTopStaff.getMarkings().size());
+		assertTrue(secondNoteInTopStaff.begins(Marking.Type.SLUR));
+		assertFalse(secondNoteInTopStaff.ends(Marking.Type.SLUR));
+
+		final Note thirdNoteInTopStaff = (Note) topStaffFirstMeasure.get(topStaffSingleVoiceNumber, 2);
+		assertEquals(2, thirdNoteInTopStaff.getMarkings().size());
+		assertTrue(thirdNoteInTopStaff.ends(Marking.Type.SLUR));
+		assertFalse(thirdNoteInTopStaff.begins(Marking.Type.SLUR));
+
+		final Note fourthNoteInTopStaff = (Note) topStaffFirstMeasure.get(topStaffSingleVoiceNumber, 3);
+		assertEquals(1, fourthNoteInTopStaff.getMarkings().size());
+		assertTrue(fourthNoteInTopStaff.ends(Marking.Type.SLUR));
+
+		final Marking slurFromFirstToThirdNote = firstNoteInTopStaff.getMarkings().stream().findFirst().orElseThrow();
+		List<Note> notesInSlurFromFirstToThirdNote = slurFromFirstToThirdNote
+				.getAffectedStartingFrom(firstNoteInTopStaff);
+		assertEquals(3, notesInSlurFromFirstToThirdNote.size());
+		assertEquals(firstNoteInTopStaff, notesInSlurFromFirstToThirdNote.get(0));
+		assertEquals(secondNoteInTopStaff, notesInSlurFromFirstToThirdNote.get(1));
+		assertEquals(thirdNoteInTopStaff, notesInSlurFromFirstToThirdNote.get(2));
+
+		final Marking slurFromSecondToFourthNote = secondNoteInTopStaff.getMarkings().stream()
+				.filter(marking -> secondNoteInTopStaff.getMarkingConnection(marking).get().isBeginning())
+				.findAny()
+				.orElseThrow();
+
+		List<Note> notesInSlurFromSecondToFourthNote = slurFromSecondToFourthNote
+				.getAffectedStartingFrom(secondNoteInTopStaff);
+		assertEquals(3, notesInSlurFromSecondToFourthNote.size());
+		assertEquals(secondNoteInTopStaff, notesInSlurFromSecondToFourthNote.get(0));
+		assertEquals(thirdNoteInTopStaff, notesInSlurFromSecondToFourthNote.get(1));
+		assertEquals(fourthNoteInTopStaff, notesInSlurFromSecondToFourthNote.get(2));
+
+		// Check bottom staff of first measure
+		final Measure bottomStaffFirstMeasure = bottomStaff.getMeasure(1);
+		final int bottomStaffSingleVoiceNumber = bottomStaffFirstMeasure.getVoiceNumbers().get(0);
+
+		assertTrue(bottomStaffFirstMeasure.get(bottomStaffSingleVoiceNumber, 0).isRest());
+
+		final Note firstNoteInBottomStaff = (Note) bottomStaffFirstMeasure.get(bottomStaffSingleVoiceNumber, 1);
+		assertEquals(1, firstNoteInBottomStaff.getMarkings().size());
+		assertTrue(firstNoteInBottomStaff.begins(Marking.Type.SLUR));
+
+		final Note secondNoteInBottomStaff = (Note) bottomStaffFirstMeasure.get(bottomStaffSingleVoiceNumber, 2);
+		assertEquals(1, secondNoteInBottomStaff.getMarkings().size());
+		assertTrue(secondNoteInBottomStaff.ends(Marking.Type.SLUR));
+
+		final Marking bottomStaffFirstMeasureSlur = firstNoteInBottomStaff.getMarkings().stream().findFirst()
+				.orElseThrow();
+		final List<Note> bottomStaffFirstMeasureSlurNotes = bottomStaffFirstMeasureSlur
+				.getAffectedStartingFrom(firstNoteInBottomStaff);
+		assertEquals(2, bottomStaffFirstMeasureSlurNotes.size());
+		assertEquals(firstNoteInBottomStaff, bottomStaffFirstMeasureSlurNotes.get(0));
+		assertEquals(secondNoteInBottomStaff, bottomStaffFirstMeasureSlurNotes.get(1));
+
+		assertTrue(bottomStaffFirstMeasure.get(bottomStaffSingleVoiceNumber, 3).isRest());
+
+		final Measure topStaffSecondMeasure = topStaff.getMeasure(2);
+
+		final List<Integer> topStaffVoiceNumbers = topStaffSecondMeasure.getVoiceNumbers();
+		assertEquals(2, topStaffVoiceNumbers.size());
+		final int topStaffTopVoice = topStaffVoiceNumbers.get(0);
+		final int topStaffBottomVoice = topStaffVoiceNumbers.get(1);
+
+		// Check top voice in second measure top staff
+		Note fifthNoteInTopStaffTopVoice = (Note) topStaffSecondMeasure.get(topStaffTopVoice, 0);
+		assertEquals(1, fifthNoteInTopStaffTopVoice.getMarkings().size());
+		assertTrue(fifthNoteInTopStaffTopVoice.begins(Marking.Type.SLUR));
+
+		Note sixthNoteInTopStaffTopVoice = (Note) topStaffSecondMeasure.get(topStaffTopVoice, 1);
+		assertEquals(2, sixthNoteInTopStaffTopVoice.getMarkings().size());
+		assertTrue(sixthNoteInTopStaffTopVoice.hasMarking(Marking.Type.SLUR));
+		assertFalse(sixthNoteInTopStaffTopVoice.begins(Marking.Type.SLUR));
+		assertFalse(sixthNoteInTopStaffTopVoice.ends(Marking.Type.SLUR));
+		assertTrue(sixthNoteInTopStaffTopVoice.begins(Marking.Type.GLISSANDO));
+
+		Note seventhNoteInTopStaffTopVoice = (Note) topStaffSecondMeasure.get(topStaffTopVoice, 2);
+		assertEquals(2, seventhNoteInTopStaffTopVoice.getMarkings().size());
+		assertTrue(seventhNoteInTopStaffTopVoice.ends(Marking.Type.SLUR));
+		assertTrue(seventhNoteInTopStaffTopVoice.ends(Marking.Type.GLISSANDO));
+
+		final Marking slurBetweenTopVoiceNotes = fifthNoteInTopStaffTopVoice.getMarkings().stream().findFirst()
+				.orElseThrow();
+		final List<Note> notesInSlurBetweenTopVoiceNotes = slurBetweenTopVoiceNotes
+				.getAffectedStartingFrom(fifthNoteInTopStaffTopVoice);
+		assertEquals(3, notesInSlurBetweenTopVoiceNotes.size());
+		assertEquals(fifthNoteInTopStaffTopVoice, notesInSlurBetweenTopVoiceNotes.get(0));
+		assertEquals(sixthNoteInTopStaffTopVoice, notesInSlurBetweenTopVoiceNotes.get(1));
+		assertEquals(seventhNoteInTopStaffTopVoice, notesInSlurBetweenTopVoiceNotes.get(2));
+
+		final Marking glissandoInTopVoice = sixthNoteInTopStaffTopVoice.getMarkings().stream()
+				.filter(marking -> sixthNoteInTopStaffTopVoice.getMarkingConnection(marking).get().isBeginning())
+				.findAny()
+				.orElseThrow();
+
+		final List<Note> notesInTopVoiceGlissando = glissandoInTopVoice
+				.getAffectedStartingFrom(sixthNoteInTopStaffTopVoice);
+		assertEquals(2, notesInTopVoiceGlissando.size());
+		assertEquals(sixthNoteInTopStaffTopVoice, notesInTopVoiceGlissando.get(0));
+		assertEquals(seventhNoteInTopStaffTopVoice, notesInTopVoiceGlissando.get(1));
+
+		// Check notes in lower voice of top staff measure 2
+		Note fifthNoteInTopStaffBottomVoice = (Note) topStaffSecondMeasure.get(topStaffBottomVoice, 0);
+		assertEquals(2, fifthNoteInTopStaffBottomVoice.getMarkings().size());
+		assertTrue(fifthNoteInTopStaffBottomVoice.begins(Marking.Type.SLUR));
+		assertTrue(fifthNoteInTopStaffBottomVoice.begins(Marking.Type.GLISSANDO));
+
+		Note sixthNoteInTopStaffBottomVoice = (Note) topStaffSecondMeasure.get(topStaffBottomVoice, 1);
+		assertEquals(2, sixthNoteInTopStaffBottomVoice.getMarkings().size());
+		assertTrue(sixthNoteInTopStaffBottomVoice.ends(Marking.Type.GLISSANDO));
+		assertTrue(sixthNoteInTopStaffBottomVoice.hasMarking(Marking.Type.SLUR));
+		assertFalse(sixthNoteInTopStaffBottomVoice.begins(Marking.Type.SLUR));
+		assertFalse(sixthNoteInTopStaffBottomVoice.ends(Marking.Type.SLUR));
+
+		Note seventhNoteInTopStaffBottomVoice = (Note) topStaffSecondMeasure.get(topStaffBottomVoice, 2);
+		assertEquals(1, seventhNoteInTopStaffBottomVoice.getMarkings().size());
+		assertTrue(seventhNoteInTopStaffBottomVoice.ends(Marking.Type.SLUR));
+
+		final Marking slurBetweenBottomVoiceNotes = fifthNoteInTopStaffBottomVoice.getMarkings().stream()
+				.filter(marking -> marking.getType().equals(Marking.Type.SLUR))
+				.findAny()
+				.orElseThrow();
+
+		final List<Note> notesInSlurBetweenBottomVoiceNotes = slurBetweenBottomVoiceNotes
+				.getAffectedStartingFrom(fifthNoteInTopStaffBottomVoice);
+		assertEquals(3, notesInSlurBetweenBottomVoiceNotes.size());
+		assertEquals(fifthNoteInTopStaffBottomVoice, notesInSlurBetweenBottomVoiceNotes.get(0));
+		assertEquals(sixthNoteInTopStaffBottomVoice, notesInSlurBetweenBottomVoiceNotes.get(1));
+		assertEquals(seventhNoteInTopStaffBottomVoice, notesInSlurBetweenBottomVoiceNotes.get(2));
+
+		final Marking glissandoInBottomVoice = fifthNoteInTopStaffBottomVoice.getMarkings().stream()
+				.filter(marking -> marking.getType().equals(Marking.Type.GLISSANDO))
+				.findAny()
+				.orElseThrow();
+
+		final List<Note> notesInBottomVoiceGlissando = glissandoInBottomVoice
+				.getAffectedStartingFrom(fifthNoteInTopStaffBottomVoice);
+		assertEquals(2, notesInTopVoiceGlissando.size());
+		assertEquals(fifthNoteInTopStaffBottomVoice, notesInBottomVoiceGlissando.get(0));
+		assertEquals(sixthNoteInTopStaffBottomVoice, notesInBottomVoiceGlissando.get(1));
+	}
 }
