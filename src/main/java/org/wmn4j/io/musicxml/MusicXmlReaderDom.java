@@ -522,11 +522,13 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		if (articulationsNode.isPresent()) {
 			for (int i = 0; i < articulationsNode.get().getChildNodes().getLength(); ++i) {
 				final Node articulationNode = articulationsNode.get().getChildNodes().item(i);
-				final Articulation articulation = getArticulation(articulationNode.getNodeName());
-				if (articulation != null) {
-					noteBuilder.addArticulation(articulation);
-				} else {
-					LOG.warn("Articulation of type " + articulationNode.getNodeName() + " not supported");
+				if (articulationNode.getNodeType() == Node.ELEMENT_NODE) {
+					final Articulation articulation = getArticulation(articulationNode.getNodeName());
+					if (articulation != null) {
+						noteBuilder.addArticulation(articulation);
+					} else {
+						LOG.warn("Articulation of type " + articulationNode.getNodeName() + " not supported");
+					}
 				}
 			}
 		}
