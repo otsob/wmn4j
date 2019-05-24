@@ -22,6 +22,7 @@ import org.wmn4j.notation.elements.Clef;
 import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.KeySignature;
 import org.wmn4j.notation.elements.KeySignatures;
+import org.wmn4j.notation.elements.Marking;
 import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Score;
@@ -41,10 +42,15 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * A parser for MusicXML files.
@@ -419,7 +425,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			final Pitch pitch = getPitch(noteNode);
 			final NoteBuilder noteBuilder = new NoteBuilder(pitch, duration);
 
-			resolveTiesAndNotations(noteNode, connectedNotations, staffNumber, noteBuilder);
+			resolveTiesAndNotations(voice, noteNode, connectedNotations, staffNumber, noteBuilder);
 
 			if (hasChordTag(noteNode)) {
 				chordBuffers.get(staffNumber).addNote(noteBuilder, voice);
@@ -430,7 +436,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 	}
 
-	private void resolveTiesAndNotations(Node noteNode, ConnectedNotations connectedNotations,
+	private void resolveTiesAndNotations(int voiceNumber, Node noteNode, ConnectedNotations connectedNotations,
 			int staffNumber, NoteBuilder noteBuilder) {
 
 		// Handle ties
@@ -447,13 +453,67 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			connectedNotations.addTieBeginningToStaff(staffNumber, noteBuilder);
 		}
 
-		Optional<Node> notationsNodeOptional = DocHelper.findChild(noteNode, MusicXmlTags.NOTATIONS);
+		final Optional<Node> notationsNodeOptional = DocHelper.findChild(noteNode, MusicXmlTags.NOTATIONS);
+		notationsNodeOptional.ifPresent(notationsNode -> addArticulations(notationsNode, noteBuilder));
 
-		if (notationsNodeOptional.isPresent()) {
-			final Node notationsNode = notationsNodeOptional.get();
-			addArticulations(notationsNode, noteBuilder);
+		addMarkings(voiceNumber, notationsNodeOptional, noteBuilder, connectedNotations);
+	}
 
+	private void addMarkings(int voiceNumber, Optional<Node> notationsNode, NoteBuilder noteBuilder,
+			ConnectedNotations connectedNotations) {
+
+		final Set<UnresolvedMarking> startedMarkings = new HashSet<>();
+
+		// Handle the beginnings and ends of markings if the notations node is present
+		if (notationsNode.isPresent()) {
+			for (Node markingNode : getMarkingNodes(notationsNode.get())) {
+				final String markingPositionType = DocHelper.getAttributeValue(markingNode, MusicXmlTags.MARKING_TYPE)
+						.orElseThrow();
+
+				// Marking number can be omitted in MusicXML. In that case should default to 1.
+				final int markingNumber = DocHelper.getAttributeValue(markingNode, MusicXmlTags.MARKING_NUMBER)
+						.map(stringValue -> Integer.parseInt(stringValue)).orElse(1);
+
+				final Marking.Type markingType = getMarkingType(markingNode);
+
+				if (markingPositionType.equals(MusicXmlTags.MARKING_TYPE_START)) {
+					UnresolvedMarking startedMarking = connectedNotations
+							.createAndAddStartOfMarking(voiceNumber, markingNumber, markingType, noteBuilder);
+					startedMarkings.add(startedMarking);
+				} else if (markingPositionType.equals(MusicXmlTags.MARKING_TYPE_STOP)) {
+					connectedNotations.endMarking(voiceNumber, markingNumber, markingType, noteBuilder);
+				}
+			}
 		}
+
+		if (connectedNotations.hasUnresolvedMarkings(voiceNumber)) {
+			connectedNotations.addToUnresolvedMarkings(voiceNumber, noteBuilder, startedMarkings);
+		}
+	}
+
+	private Collection<Node> getMarkingNodes(Node notationsNode) {
+		Collection<Node> markingNodes = new ArrayList<>();
+		NodeList notationsChildren = notationsNode.getChildNodes();
+		for (int i = 0; i < notationsChildren.getLength(); ++i) {
+			Node childNode = notationsChildren.item(i);
+			if (MusicXmlTags.MARKING_NODE_NAMES.contains(childNode.getNodeName())) {
+				markingNodes.add(childNode);
+			}
+		}
+
+		return markingNodes;
+	}
+
+	private Marking.Type getMarkingType(Node markingNode) {
+		switch (markingNode.getNodeName()) {
+		case MusicXmlTags.SLUR:
+			return Marking.Type.SLUR;
+		case MusicXmlTags.GLISSANDO:
+			return Marking.Type.GLISSANDO;
+		}
+
+		LOG.warn("Tried to parse unsupported marking type: " + markingNode.getNodeName());
+		return null;
 	}
 
 	private void addArticulations(Node notationsNode, NoteBuilder noteBuilder) {
@@ -870,6 +930,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	private class ConnectedNotations {
 
 		private final Map<Integer, List<NoteBuilder>> tieStarts = new HashMap<>();
+		private final Map<Integer, Collection<UnresolvedMarking>> unresolvedMarkingsPerVoice = new HashMap<>();
 
 		void addTieBeginningToStaff(int staffNumber, NoteBuilder tieBeginning) {
 			if (!this.tieStarts.containsKey(staffNumber)) {
@@ -893,6 +954,107 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			}
 
 			return matching;
+		}
+
+		boolean hasUnresolvedMarkings(int voiceNumber) {
+			return unresolvedMarkingsPerVoice.containsKey(voiceNumber) && !unresolvedMarkingsPerVoice.get(voiceNumber)
+					.isEmpty();
+		}
+
+		UnresolvedMarking createAndAddStartOfMarking(int voiceNumber, int markingNumber, Marking.Type markingType,
+				NoteBuilder firstBuilder) {
+			if (!unresolvedMarkingsPerVoice.containsKey(voiceNumber)) {
+				unresolvedMarkingsPerVoice.put(voiceNumber, new ArrayList<>());
+			}
+
+			UnresolvedMarking unresolvedMarking = new UnresolvedMarking(markingNumber, markingType);
+			unresolvedMarking.addNoteBuilder(firstBuilder);
+			unresolvedMarkingsPerVoice.get(voiceNumber).add(unresolvedMarking);
+			return unresolvedMarking;
+		}
+
+		void addToUnresolvedMarkings(int voiceNumber, NoteBuilder builder, Set<UnresolvedMarking> markingsToIgnore) {
+			unresolvedMarkingsPerVoice.getOrDefault(voiceNumber, Collections.emptyList()).stream()
+					.filter(unresolvedMarking -> !markingsToIgnore.contains(unresolvedMarking))
+					.forEach(unresolvedMarking -> unresolvedMarking.addNoteBuilder(builder));
+		}
+
+		void endMarking(int voiceNumber, int markingNumber, Marking.Type markingType, NoteBuilder lastBuilder) {
+			final Collection<UnresolvedMarking> markingsForVoice = unresolvedMarkingsPerVoice
+					.getOrDefault(voiceNumber, Collections.emptyList());
+
+			Optional<UnresolvedMarking> unresolvedMarkingToEndOpt = markingsForVoice
+					.stream()
+					.filter(unresolvedMarking -> unresolvedMarking.getMarkingType().equals(markingType)
+							&& unresolvedMarking.getMarkingNumber() == markingNumber)
+					.findFirst();
+
+			if (unresolvedMarkingToEndOpt.isPresent()) {
+				UnresolvedMarking unresolvedMarkingToEnd = unresolvedMarkingToEndOpt.get();
+				unresolvedMarkingToEnd.addNoteBuilder(lastBuilder);
+				unresolvedMarkingToEnd.resolve();
+				markingsForVoice.remove(unresolvedMarkingToEnd);
+
+			} else {
+				LOG.warn("Cannot correctly resolve a marking that was started in a different voice."
+						+ " Trying to resolve marking in voice "
+						+ voiceNumber + " with type " + markingType + " and number " + markingNumber);
+			}
+		}
+	}
+
+	/*
+	 * Class for keeping track of unresolved markings.
+	 */
+	private class UnresolvedMarking {
+
+		private final int markingNumber;
+		private final Marking.Type markingType;
+		private final List<NoteBuilder> connectedNoteBuilders;
+
+		UnresolvedMarking(int markingNumber, Marking.Type markingType) {
+			this.markingNumber = markingNumber;
+			this.markingType = markingType;
+			this.connectedNoteBuilders = new ArrayList<>();
+		}
+
+		int getMarkingNumber() {
+			return markingNumber;
+		}
+
+		Marking.Type getMarkingType() {
+			return markingType;
+		}
+
+		void addNoteBuilder(NoteBuilder builder) {
+			connectedNoteBuilders.add(builder);
+		}
+
+		void resolve() {
+			final Marking marking = Marking.of(markingType);
+			for (int i = 0; i < connectedNoteBuilders.size() - 1; ++i) {
+				connectedNoteBuilders.get(i).connectWith(marking, connectedNoteBuilders.get(i + 1));
+			}
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) {
+				return true;
+			}
+
+			if (!(o instanceof UnresolvedMarking)) {
+				return false;
+			}
+
+			UnresolvedMarking other = (UnresolvedMarking) o;
+			return markingNumber == other.markingNumber
+					&& markingType.equals(other.markingType);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(markingNumber, markingType);
 		}
 	}
 }
