@@ -3,6 +3,9 @@
  */
 package org.wmn4j.io.musicxml;
 
+import java.util.Collections;
+import java.util.Set;
+
 final class MusicXmlTags {
 
 	// Barline tags
@@ -69,6 +72,16 @@ final class MusicXmlTags {
 	static final String ACCENT = "accent";
 	static final String TENUTO = "tenuto";
 	static final String FERMATA = "fermata";
+
+	// Markings
+	static final String SLUR = "slur";
+	static final String GLISSANDO = "glissando";
+	static final String MARKING_NUMBER = "number";
+	static final String MARKING_TYPE = "type";
+	static final String MARKING_TYPE_START = "start";
+	static final String MARKING_TYPE_STOP = "stop";
+
+	static final Set<String> MARKING_NODE_NAMES = Collections.unmodifiableSet(Set.of(SLUR, GLISSANDO));
 
 	// Part tags
 	static final String PART = "part";

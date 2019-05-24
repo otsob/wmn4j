@@ -16,6 +16,7 @@ import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.KeySignatures;
+import org.wmn4j.notation.elements.Marking;
 import org.wmn4j.notation.elements.Measure;
 import org.wmn4j.notation.elements.MultiStaffPart;
 import org.wmn4j.notation.elements.Note;
@@ -44,12 +45,12 @@ class MusicXmlReaderDomTest {
 
 	private static final String MUSICXML_FILE_PATH = "musicxml/";
 
-	MusicXmlReader getMusicXmlReader() {
-		return MusicXmlReader.getReader(false);
+	MusicXmlReader getMusicXmlReader(boolean validate) {
+		return new MusicXmlReaderDom(validate);
 	}
 
-	Score readScore(String testFileName) {
-		final MusicXmlReader reader = getMusicXmlReader();
+	Score readScore(String testFileName, boolean validate) {
+		final MusicXmlReader reader = getMusicXmlReader(validate);
 		Score score = null;
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
 
@@ -63,8 +64,8 @@ class MusicXmlReaderDomTest {
 		return score;
 	}
 
-	ScoreBuilder readScoreBuilder(String testFileName) {
-		final MusicXmlReader reader = getMusicXmlReader();
+	ScoreBuilder readScoreBuilder(String testFileName, boolean validate) {
+		final MusicXmlReader reader = getMusicXmlReader(validate);
 		ScoreBuilder scoreBuilder = null;
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
 
@@ -80,13 +81,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadScoreWithSingleNote() {
-		final Score score = readScore("singleC.xml");
+		final Score score = readScore("singleC.xml", false);
 		assertSingleNoteScoreReadCorrectly(score);
 	}
 
 	@Test
 	void testReadScoreBuilderWithSingleNote() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("singleC.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("singleC.xml", false);
 		assertSingleNoteScoreReadCorrectly(scoreBuilder.build());
 	}
 
@@ -119,13 +120,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testChordsAndMultipleVoicesReadToScore() {
-		final Score score = readScore("twoMeasures.xml");
+		final Score score = readScore("twoMeasures.xml", false);
 		assertChordsAndMultipleVoicesReadCorrectly(score);
 	}
 
 	@Test
 	void testChordsAndMultipleVoicesReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("twoMeasures.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("twoMeasures.xml", false);
 		assertChordsAndMultipleVoicesReadCorrectly(scoreBuilder.build());
 	}
 
@@ -192,13 +193,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadScoreWithMultipleStaves() {
-		final Score score = readScore("twoStavesAndMeasures.xml");
+		final Score score = readScore("twoStavesAndMeasures.xml", false);
 		assertScoreWithMultipleStavesReadCorrectly(score);
 	}
 
 	@Test
 	void testReadScoreBuilderWithMultipleStaves() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("twoStavesAndMeasures.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("twoStavesAndMeasures.xml", false);
 		assertScoreWithMultipleStavesReadCorrectly(scoreBuilder.build());
 	}
 
@@ -281,13 +282,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testBarlinesReadToScore() {
-		final Score score = readScore("barlines.xml");
+		final Score score = readScore("barlines.xml", false);
 		assertBarlinesReadCorrectly(score);
 	}
 
 	@Test
 	void testBarlinesReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("barlines.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("barlines.xml", false);
 		assertBarlinesReadCorrectly(scoreBuilder.build());
 	}
 
@@ -329,13 +330,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testClefsReadToScore() {
-		final Score score = readScore("clefs.xml");
+		final Score score = readScore("clefs.xml", false);
 		assertClefsReadCorrectly(score);
 	}
 
 	@Test
 	void testClefsReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("clefs.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("clefs.xml", false);
 		assertClefsReadCorrectly(scoreBuilder.build());
 	}
 
@@ -370,13 +371,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testMultiStaffClefsReadToScore() {
-		final Score score = readScore("multiStaffClefs.xml");
+		final Score score = readScore("multiStaffClefs.xml", false);
 		assertMultiStaffClefsReadCorrectlyToScore(score);
 	}
 
 	@Test
 	void testMultiStaffClefsReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("multiStaffClefs.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("multiStaffClefs.xml", false);
 		assertMultiStaffClefsReadCorrectlyToScore(scoreBuilder.build());
 	}
 
@@ -412,13 +413,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testKeySignaturesReadToScore() {
-		final Score score = readScore("keysigs.xml");
+		final Score score = readScore("keysigs.xml", false);
 		assertKeySignaturesReadToScoreCorrectly(score);
 	}
 
 	@Test
 	void testKeySignaturesReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("keysigs.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("keysigs.xml", false);
 		assertKeySignaturesReadToScoreCorrectly(scoreBuilder.build());
 	}
 
@@ -435,13 +436,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testMultiStaffPartReadToScore() {
-		final Score score = readScore("multistaff.xml");
+		final Score score = readScore("multistaff.xml", false);
 		assertMultiStaffPartReadCorrectly(score);
 	}
 
 	@Test
 	void testMultiStaffPartReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("multistaff.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("multistaff.xml", false);
 		assertMultiStaffPartReadCorrectly(scoreBuilder.build());
 	}
 
@@ -485,13 +486,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testTimeSignaturesReadToScore() {
-		final Score score = readScore("timesigs.xml");
+		final Score score = readScore("timesigs.xml", false);
 		assertTimeSignaturesReadCorrectly(score);
 	}
 
 	@Test
 	void testTimeSignaturesReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("timesigs.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("timesigs.xml", false);
 		assertTimeSignaturesReadCorrectly(scoreBuilder.build());
 	}
 
@@ -509,13 +510,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testTimeSignatureChangeReadToScore() {
-		final Score score = readScore("scoreIteratorTesting.xml");
+		final Score score = readScore("scoreIteratorTesting.xml", false);
 		assertTimeSignatureChangeReadCorrectly(score);
 	}
 
 	@Test
 	void testTimeSignatureChangeReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("scoreIteratorTesting.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("scoreIteratorTesting.xml", false);
 		assertTimeSignatureChangeReadCorrectly(scoreBuilder.build());
 	}
 
@@ -530,13 +531,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testTiedNotesReadToScore() {
-		final Score score = readScore("tieTesting.xml");
+		final Score score = readScore("tieTesting.xml", false);
 		assertTiedNotesReadCorrectly(score);
 	}
 
 	@Test
 	void testTiedNotesReadToScoreBuilder() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("tieTesting.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("tieTesting.xml", false);
 		assertTiedNotesReadCorrectly(scoreBuilder.build());
 	}
 
@@ -585,13 +586,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingScoreWithArticulations() {
-		final Score score = readScore("articulations.xml");
+		final Score score = readScore("articulations.xml", false);
 		assertScoreWithArticulationsReadCorrectly(score);
 	}
 
 	@Test
 	void testReadingScoreBuilderWithArticulations() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("articulations.xml");
+		final ScoreBuilder scoreBuilder = readScoreBuilder("articulations.xml", false);
 		assertScoreWithArticulationsReadCorrectly(scoreBuilder.build());
 	}
 
@@ -627,7 +628,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingIncorrectXmlFileToScore() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"));
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
@@ -640,7 +641,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingIncorrectXmlFileToScoreBuilder() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"));
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
@@ -653,7 +654,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingIncorrectMusicXmlFileToScore() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"));
 			fail("No exception was thrown when trying to read XML file that does not comply to MusicXml schema");
@@ -666,7 +667,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingIncorrectMusicXmlFileToScoreBuilder() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScoreBuilder(
 					Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"));
@@ -680,7 +681,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testValidatingCorrectXmlFileWhenReadingToScore() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"));
 		} catch (Exception e) {
@@ -690,7 +691,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testValidatingCorrectXmlFileWhenReadingToScoreBuilder() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"));
 		} catch (Exception e) {
@@ -700,7 +701,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingFileThatDoesNotExistToScore() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
 					+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"));
@@ -713,7 +714,7 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingFileThatDoesNotExistToScoreBuilder() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = getMusicXmlReader(true);
 		try {
 			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
 					+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"));
@@ -726,29 +727,19 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingScoreWithPickupMeasure() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
-		try {
-			Score scoreWithPickup = reader
-					.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "pickup_measure_test.xml"));
-			assertPickupMeasureReadCorrectly(scoreWithPickup);
-		} catch (Exception exception) {
-			fail("Reading score with pickup measure failed with " + exception);
-		}
+		Score scoreWithPickup = readScore("pickup_measure_test.xml", false);
+		assertPickupMeasureReadCorrectly(scoreWithPickup);
 	}
 
 	@Test
 	void testReadingScoreBuilderWithPickupMeasure() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
-		try {
-			ScoreBuilder scoreWithPickup = reader
-					.readScoreBuilder(
-							Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "pickup_measure_test.xml"));
-			assertPickupMeasureReadCorrectly(scoreWithPickup.build());
-		} catch (Exception exception) {
-			fail("Reading score with pickup measure failed with " + exception);
-		}
+		ScoreBuilder scoreWithPickup = readScoreBuilder("pickup_measure_test.xml", false);
+		assertPickupMeasureReadCorrectly(scoreWithPickup.build());
 	}
 
+	/*
+	 * Expects the contents of "pickup_measure_test.xml".
+	 */
 	private void assertPickupMeasureReadCorrectly(Score score) {
 		assertEquals(1, score.getPartCount());
 		Part part = score.getParts().get(0);
@@ -769,29 +760,19 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingAttributesIntoScore() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
-		try {
-			Score scoreWithAttributes = reader
-					.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "attribute_reading_test.xml"));
-			assertScoreHasExpectedAttributes(scoreWithAttributes);
-		} catch (Exception exception) {
-			fail("Reading attributes test file failed with " + exception);
-		}
+		Score scoreWithAttributes = readScore("attribute_reading_test.xml", false);
+		assertScoreHasExpectedAttributes(scoreWithAttributes);
 	}
 
 	@Test
 	void testReadingAttributesIntoScoreBuilder() {
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
-		try {
-			ScoreBuilder scoreWithAttributesBuilder = reader
-					.readScoreBuilder(
-							Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "attribute_reading_test.xml"));
-			assertScoreHasExpectedAttributes(scoreWithAttributesBuilder.build());
-		} catch (Exception exception) {
-			fail("Reading attributes test file failed with " + exception);
-		}
+		ScoreBuilder scoreWithAttributesBuilder = readScoreBuilder("attribute_reading_test.xml", false);
+		assertScoreHasExpectedAttributes(scoreWithAttributesBuilder.build());
 	}
 
+	/*
+	 * Expectes the contents of "attribute_reading_test.xml".
+	 */
 	private void assertScoreHasExpectedAttributes(Score score) {
 		assertEquals("Composition title", score.getTitle());
 		assertEquals("Composer name", score.getAttribute(Score.Attribute.COMPOSER));
@@ -807,5 +788,286 @@ class MusicXmlReaderDomTest {
 		Part part2 = parts.get(1);
 		assertEquals("Part name 2", part2.getName());
 		assertEquals("Short part name 2", part2.getAttribute(Part.Attribute.ABBREVIATED_NAME));
+	}
+
+	@Test
+	void testReadingMarkingsIntoScoreFromSingleVoice() {
+		Score scoreWitMarkings = readScore("single_staff_single_voice_marking_test.xml", false);
+		assertMarkingsReadCorrectlyFromSingleVoiceToScore(scoreWitMarkings);
+	}
+
+	@Test
+	void testReadingMarkingsIntoScoreBuilderFromSingleVoice() {
+		ScoreBuilder scoreWitMarkings = readScoreBuilder("single_staff_single_voice_marking_test.xml", false);
+		assertMarkingsReadCorrectlyFromSingleVoiceToScore(scoreWitMarkings.build());
+	}
+
+	/*
+	 * Expects the contents of "single_staff_single_voice_marking_test.xml".
+	 */
+	private void assertMarkingsReadCorrectlyFromSingleVoiceToScore(Score score) {
+		final Part part = score.getPart(0);
+		final Measure firstMeasure = part.getMeasure(1, 1);
+		final int voiceNumber = firstMeasure.getVoiceNumbers().iterator().next();
+
+		final Note firstNote = (Note) firstMeasure.get(voiceNumber, 0);
+		final Note secondNote = (Note) firstMeasure.get(voiceNumber, 1);
+
+		assertTrue(firstNote.hasMarking(Marking.Type.SLUR));
+		assertTrue(firstNote.begins(Marking.Type.SLUR));
+		assertEquals(1, firstNote.getMarkings().size());
+		Marking slurBetweenSecondAndFirst = firstNote.getMarkings().stream().findFirst().orElseThrow();
+		assertEquals(secondNote,
+				firstNote.getMarkingConnection(slurBetweenSecondAndFirst).get().getFollowingNote().get());
+
+		assertTrue(secondNote.hasMarkings());
+		assertTrue(secondNote.ends(Marking.Type.SLUR));
+		assertEquals(1, secondNote.getMarkings().size());
+
+		final Note thirdNote = (Note) firstMeasure.get(voiceNumber, 2);
+		final Note fourthNote = (Note) firstMeasure.get(voiceNumber, 3);
+
+		assertTrue(thirdNote.hasMarking(Marking.Type.GLISSANDO));
+		assertTrue(thirdNote.begins(Marking.Type.GLISSANDO));
+		assertEquals(1, thirdNote.getMarkings().size());
+		Marking glissandoBetweenThirdAndFourth = thirdNote.getMarkings().stream().findFirst().orElseThrow();
+		assertEquals(fourthNote,
+				thirdNote.getMarkingConnection(glissandoBetweenThirdAndFourth).get().getFollowingNote().get());
+
+		assertTrue(fourthNote.hasMarkings());
+		assertTrue(fourthNote.ends(Marking.Type.GLISSANDO));
+		assertEquals(1, fourthNote.getMarkings().size());
+
+		final Note fifthNote = (Note) firstMeasure.get(voiceNumber, 4);
+		assertEquals(1, fifthNote.getMarkings().size());
+		assertTrue(fifthNote.begins(Marking.Type.SLUR));
+
+		final Note sixthNote = (Note) firstMeasure.get(voiceNumber, 5);
+		assertEquals(1, sixthNote.getMarkings().size());
+		assertTrue(sixthNote.hasMarking(Marking.Type.SLUR));
+		assertFalse(sixthNote.begins(Marking.Type.SLUR));
+		assertFalse(sixthNote.ends(Marking.Type.SLUR));
+
+		final Note seventhNote = (Note) firstMeasure.get(voiceNumber, 6);
+		assertEquals(1, seventhNote.getMarkings().size());
+		assertTrue(seventhNote.ends(Marking.Type.SLUR));
+
+		final Marking slurFromFifthToSeventhNote = fifthNote.getMarkings().stream().findAny().orElseThrow();
+		final List<Note> notesInSlurFromFifthToSeventhNote = slurFromFifthToSeventhNote
+				.getAffectedStartingFrom(fifthNote);
+		assertEquals(3, notesInSlurFromFifthToSeventhNote.size());
+		assertEquals(fifthNote, notesInSlurFromFifthToSeventhNote.get(0));
+		assertEquals(sixthNote, notesInSlurFromFifthToSeventhNote.get(1));
+		assertEquals(seventhNote, notesInSlurFromFifthToSeventhNote.get(2));
+
+		final Measure secondMeasure = part.getMeasure(1, 2);
+
+		final Note eightNote = (Note) secondMeasure.get(voiceNumber, 0);
+		assertEquals(1, eightNote.getMarkings().size());
+		assertTrue(eightNote.begins(Marking.Type.SLUR));
+
+		final Note ninthNote = (Note) secondMeasure.get(voiceNumber, 1);
+		assertEquals(1, ninthNote.getMarkings().size());
+		assertTrue(ninthNote.hasMarking(Marking.Type.SLUR));
+		assertFalse(ninthNote.begins(Marking.Type.SLUR));
+		assertFalse(ninthNote.ends(Marking.Type.SLUR));
+
+		assertTrue(secondMeasure.get(voiceNumber, 2) instanceof Rest);
+
+		final Note tenthNote = (Note) secondMeasure.get(voiceNumber, 3);
+		assertEquals(1, tenthNote.getMarkings().size());
+		assertTrue(tenthNote.ends(Marking.Type.SLUR));
+
+		final Marking slurFromEightToTenthNote = eightNote.getMarkings().stream().findAny().orElseThrow();
+		final List<Note> notesInSlurFromEightToTenthNote = slurFromEightToTenthNote.getAffectedStartingFrom(eightNote);
+		assertEquals(3, notesInSlurFromEightToTenthNote.size());
+		assertEquals(eightNote, notesInSlurFromEightToTenthNote.get(0));
+		assertEquals(ninthNote, notesInSlurFromEightToTenthNote.get(1));
+		assertEquals(tenthNote, notesInSlurFromEightToTenthNote.get(2));
+
+		final Note eleventhNote = (Note) secondMeasure.get(voiceNumber, 4);
+		assertEquals(2, eleventhNote.getMarkings().size());
+		assertTrue(eleventhNote.begins(Marking.Type.GLISSANDO));
+		assertTrue(eleventhNote.begins(Marking.Type.SLUR));
+
+		final Note twelthNote = (Note) secondMeasure.get(voiceNumber, 5);
+		assertEquals(2, twelthNote.getMarkings().size());
+		assertTrue(twelthNote.ends(Marking.Type.GLISSANDO));
+		assertTrue(twelthNote.ends(Marking.Type.SLUR));
+	}
+
+	@Test
+	void testReadingMarkingsIntoScoreFromMultipleStavesAndVoices() {
+		Score scoreWitMarkings = readScore("multi_staff_multi_voice_marking_test.xml", false);
+		assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreWitMarkings);
+	}
+
+	@Test
+	void testReadingMarkingsIntoScoreBuilderFromMultipleStavesAndVoices() {
+		ScoreBuilder scoreBuilderWitMarkings = readScoreBuilder("multi_staff_multi_voice_marking_test.xml", false);
+		assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreBuilderWitMarkings.build());
+	}
+
+	/*
+	 * Expects the content of "multi_staff_multi_voice_marking_test.xml".
+	 */
+	private void assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(Score score) {
+		assertEquals(1, score.getPartCount(), "Score is expected to have single part");
+		assertTrue(score.getPart(0) instanceof MultiStaffPart,
+				"The only part in the score is expected to have multiple staves");
+
+		MultiStaffPart part = (MultiStaffPart) score.getPart(0);
+		final Staff topStaff = part.getStaff(1);
+		final Staff bottomStaff = part.getStaff(2);
+
+		final Measure topStaffFirstMeasure = topStaff.getMeasure(1);
+		final int topStaffSingleVoiceNumber = topStaffFirstMeasure.getVoiceNumbers().get(0);
+
+		// Check top staff of first measure
+		final Note firstNoteInTopStaff = (Note) topStaffFirstMeasure.get(topStaffSingleVoiceNumber, 0);
+		assertEquals(1, firstNoteInTopStaff.getMarkings().size());
+		assertTrue(firstNoteInTopStaff.begins(Marking.Type.SLUR));
+
+		final Note secondNoteInTopStaff = (Note) topStaffFirstMeasure.get(topStaffSingleVoiceNumber, 1);
+		assertEquals(2, secondNoteInTopStaff.getMarkings().size());
+		assertTrue(secondNoteInTopStaff.begins(Marking.Type.SLUR));
+		assertFalse(secondNoteInTopStaff.ends(Marking.Type.SLUR));
+
+		final Note thirdNoteInTopStaff = (Note) topStaffFirstMeasure.get(topStaffSingleVoiceNumber, 2);
+		assertEquals(2, thirdNoteInTopStaff.getMarkings().size());
+		assertTrue(thirdNoteInTopStaff.ends(Marking.Type.SLUR));
+		assertFalse(thirdNoteInTopStaff.begins(Marking.Type.SLUR));
+
+		final Note fourthNoteInTopStaff = (Note) topStaffFirstMeasure.get(topStaffSingleVoiceNumber, 3);
+		assertEquals(1, fourthNoteInTopStaff.getMarkings().size());
+		assertTrue(fourthNoteInTopStaff.ends(Marking.Type.SLUR));
+
+		final Marking slurFromFirstToThirdNote = firstNoteInTopStaff.getMarkings().stream().findFirst().orElseThrow();
+		List<Note> notesInSlurFromFirstToThirdNote = slurFromFirstToThirdNote
+				.getAffectedStartingFrom(firstNoteInTopStaff);
+		assertEquals(3, notesInSlurFromFirstToThirdNote.size());
+		assertEquals(firstNoteInTopStaff, notesInSlurFromFirstToThirdNote.get(0));
+		assertEquals(secondNoteInTopStaff, notesInSlurFromFirstToThirdNote.get(1));
+		assertEquals(thirdNoteInTopStaff, notesInSlurFromFirstToThirdNote.get(2));
+
+		final Marking slurFromSecondToFourthNote = secondNoteInTopStaff.getMarkings().stream()
+				.filter(marking -> secondNoteInTopStaff.getMarkingConnection(marking).get().isBeginning())
+				.findAny()
+				.orElseThrow();
+
+		List<Note> notesInSlurFromSecondToFourthNote = slurFromSecondToFourthNote
+				.getAffectedStartingFrom(secondNoteInTopStaff);
+		assertEquals(3, notesInSlurFromSecondToFourthNote.size());
+		assertEquals(secondNoteInTopStaff, notesInSlurFromSecondToFourthNote.get(0));
+		assertEquals(thirdNoteInTopStaff, notesInSlurFromSecondToFourthNote.get(1));
+		assertEquals(fourthNoteInTopStaff, notesInSlurFromSecondToFourthNote.get(2));
+
+		// Check bottom staff of first measure
+		final Measure bottomStaffFirstMeasure = bottomStaff.getMeasure(1);
+		final int bottomStaffSingleVoiceNumber = bottomStaffFirstMeasure.getVoiceNumbers().get(0);
+
+		assertTrue(bottomStaffFirstMeasure.get(bottomStaffSingleVoiceNumber, 0).isRest());
+
+		final Note firstNoteInBottomStaff = (Note) bottomStaffFirstMeasure.get(bottomStaffSingleVoiceNumber, 1);
+		assertEquals(1, firstNoteInBottomStaff.getMarkings().size());
+		assertTrue(firstNoteInBottomStaff.begins(Marking.Type.SLUR));
+
+		final Note secondNoteInBottomStaff = (Note) bottomStaffFirstMeasure.get(bottomStaffSingleVoiceNumber, 2);
+		assertEquals(1, secondNoteInBottomStaff.getMarkings().size());
+		assertTrue(secondNoteInBottomStaff.ends(Marking.Type.SLUR));
+
+		final Marking bottomStaffFirstMeasureSlur = firstNoteInBottomStaff.getMarkings().stream().findFirst()
+				.orElseThrow();
+		final List<Note> bottomStaffFirstMeasureSlurNotes = bottomStaffFirstMeasureSlur
+				.getAffectedStartingFrom(firstNoteInBottomStaff);
+		assertEquals(2, bottomStaffFirstMeasureSlurNotes.size());
+		assertEquals(firstNoteInBottomStaff, bottomStaffFirstMeasureSlurNotes.get(0));
+		assertEquals(secondNoteInBottomStaff, bottomStaffFirstMeasureSlurNotes.get(1));
+
+		assertTrue(bottomStaffFirstMeasure.get(bottomStaffSingleVoiceNumber, 3).isRest());
+
+		final Measure topStaffSecondMeasure = topStaff.getMeasure(2);
+
+		final List<Integer> topStaffVoiceNumbers = topStaffSecondMeasure.getVoiceNumbers();
+		assertEquals(2, topStaffVoiceNumbers.size());
+		final int topStaffTopVoice = topStaffVoiceNumbers.get(0);
+		final int topStaffBottomVoice = topStaffVoiceNumbers.get(1);
+
+		// Check top voice in second measure top staff
+		Note fifthNoteInTopStaffTopVoice = (Note) topStaffSecondMeasure.get(topStaffTopVoice, 0);
+		assertEquals(1, fifthNoteInTopStaffTopVoice.getMarkings().size());
+		assertTrue(fifthNoteInTopStaffTopVoice.begins(Marking.Type.SLUR));
+
+		Note sixthNoteInTopStaffTopVoice = (Note) topStaffSecondMeasure.get(topStaffTopVoice, 1);
+		assertEquals(2, sixthNoteInTopStaffTopVoice.getMarkings().size());
+		assertTrue(sixthNoteInTopStaffTopVoice.hasMarking(Marking.Type.SLUR));
+		assertFalse(sixthNoteInTopStaffTopVoice.begins(Marking.Type.SLUR));
+		assertFalse(sixthNoteInTopStaffTopVoice.ends(Marking.Type.SLUR));
+		assertTrue(sixthNoteInTopStaffTopVoice.begins(Marking.Type.GLISSANDO));
+
+		Note seventhNoteInTopStaffTopVoice = (Note) topStaffSecondMeasure.get(topStaffTopVoice, 2);
+		assertEquals(2, seventhNoteInTopStaffTopVoice.getMarkings().size());
+		assertTrue(seventhNoteInTopStaffTopVoice.ends(Marking.Type.SLUR));
+		assertTrue(seventhNoteInTopStaffTopVoice.ends(Marking.Type.GLISSANDO));
+
+		final Marking slurBetweenTopVoiceNotes = fifthNoteInTopStaffTopVoice.getMarkings().stream().findFirst()
+				.orElseThrow();
+		final List<Note> notesInSlurBetweenTopVoiceNotes = slurBetweenTopVoiceNotes
+				.getAffectedStartingFrom(fifthNoteInTopStaffTopVoice);
+		assertEquals(3, notesInSlurBetweenTopVoiceNotes.size());
+		assertEquals(fifthNoteInTopStaffTopVoice, notesInSlurBetweenTopVoiceNotes.get(0));
+		assertEquals(sixthNoteInTopStaffTopVoice, notesInSlurBetweenTopVoiceNotes.get(1));
+		assertEquals(seventhNoteInTopStaffTopVoice, notesInSlurBetweenTopVoiceNotes.get(2));
+
+		final Marking glissandoInTopVoice = sixthNoteInTopStaffTopVoice.getMarkings().stream()
+				.filter(marking -> sixthNoteInTopStaffTopVoice.getMarkingConnection(marking).get().isBeginning())
+				.findAny()
+				.orElseThrow();
+
+		final List<Note> notesInTopVoiceGlissando = glissandoInTopVoice
+				.getAffectedStartingFrom(sixthNoteInTopStaffTopVoice);
+		assertEquals(2, notesInTopVoiceGlissando.size());
+		assertEquals(sixthNoteInTopStaffTopVoice, notesInTopVoiceGlissando.get(0));
+		assertEquals(seventhNoteInTopStaffTopVoice, notesInTopVoiceGlissando.get(1));
+
+		// Check notes in lower voice of top staff measure 2
+		Note fifthNoteInTopStaffBottomVoice = (Note) topStaffSecondMeasure.get(topStaffBottomVoice, 0);
+		assertEquals(2, fifthNoteInTopStaffBottomVoice.getMarkings().size());
+		assertTrue(fifthNoteInTopStaffBottomVoice.begins(Marking.Type.SLUR));
+		assertTrue(fifthNoteInTopStaffBottomVoice.begins(Marking.Type.GLISSANDO));
+
+		Note sixthNoteInTopStaffBottomVoice = (Note) topStaffSecondMeasure.get(topStaffBottomVoice, 1);
+		assertEquals(2, sixthNoteInTopStaffBottomVoice.getMarkings().size());
+		assertTrue(sixthNoteInTopStaffBottomVoice.ends(Marking.Type.GLISSANDO));
+		assertTrue(sixthNoteInTopStaffBottomVoice.hasMarking(Marking.Type.SLUR));
+		assertFalse(sixthNoteInTopStaffBottomVoice.begins(Marking.Type.SLUR));
+		assertFalse(sixthNoteInTopStaffBottomVoice.ends(Marking.Type.SLUR));
+
+		Note seventhNoteInTopStaffBottomVoice = (Note) topStaffSecondMeasure.get(topStaffBottomVoice, 2);
+		assertEquals(1, seventhNoteInTopStaffBottomVoice.getMarkings().size());
+		assertTrue(seventhNoteInTopStaffBottomVoice.ends(Marking.Type.SLUR));
+
+		final Marking slurBetweenBottomVoiceNotes = fifthNoteInTopStaffBottomVoice.getMarkings().stream()
+				.filter(marking -> marking.getType().equals(Marking.Type.SLUR))
+				.findAny()
+				.orElseThrow();
+
+		final List<Note> notesInSlurBetweenBottomVoiceNotes = slurBetweenBottomVoiceNotes
+				.getAffectedStartingFrom(fifthNoteInTopStaffBottomVoice);
+		assertEquals(3, notesInSlurBetweenBottomVoiceNotes.size());
+		assertEquals(fifthNoteInTopStaffBottomVoice, notesInSlurBetweenBottomVoiceNotes.get(0));
+		assertEquals(sixthNoteInTopStaffBottomVoice, notesInSlurBetweenBottomVoiceNotes.get(1));
+		assertEquals(seventhNoteInTopStaffBottomVoice, notesInSlurBetweenBottomVoiceNotes.get(2));
+
+		final Marking glissandoInBottomVoice = fifthNoteInTopStaffBottomVoice.getMarkings().stream()
+				.filter(marking -> marking.getType().equals(Marking.Type.GLISSANDO))
+				.findAny()
+				.orElseThrow();
+
+		final List<Note> notesInBottomVoiceGlissando = glissandoInBottomVoice
+				.getAffectedStartingFrom(fifthNoteInTopStaffBottomVoice);
+		assertEquals(2, notesInTopVoiceGlissando.size());
+		assertEquals(fifthNoteInTopStaffBottomVoice, notesInBottomVoiceGlissando.get(0));
+		assertEquals(sixthNoteInTopStaffBottomVoice, notesInBottomVoiceGlissando.get(1));
 	}
 }
