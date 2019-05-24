@@ -16,6 +16,7 @@ import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.KeySignatures;
+import org.wmn4j.notation.elements.Marking;
 import org.wmn4j.notation.elements.Measure;
 import org.wmn4j.notation.elements.MultiStaffPart;
 import org.wmn4j.notation.elements.Note;
@@ -787,5 +788,111 @@ class MusicXmlReaderDomTest {
 		Part part2 = parts.get(1);
 		assertEquals("Part name 2", part2.getName());
 		assertEquals("Short part name 2", part2.getAttribute(Part.Attribute.ABBREVIATED_NAME));
+	}
+
+	@Test
+	void testReadingMarkingsIntoScoreFromSingleVoice() {
+		Score scoreWitMarkings = readScore("single_staff_single_voice_marking_test.xml", false);
+		assertMarkingsReadCorrectlyFromSingleVoiceToScore(scoreWitMarkings);
+	}
+
+	@Test
+	void testReadingMarkingsIntoScoreBuilderFromSingleVoice() {
+		ScoreBuilder scoreWitMarkings = readScoreBuilder("single_staff_single_voice_marking_test.xml", false);
+		assertMarkingsReadCorrectlyFromSingleVoiceToScore(scoreWitMarkings.build());
+	}
+
+	/*
+	 * Expects the contents of "single_staff_single_voice_marking_test.xml".
+	 */
+	private void assertMarkingsReadCorrectlyFromSingleVoiceToScore(Score score) {
+		final Part part = score.getPart(0);
+		final Measure firstMeasure = part.getMeasure(1, 1);
+		final int voiceNumber = firstMeasure.getVoiceNumbers().iterator().next();
+
+		final Note firstNote = (Note) firstMeasure.get(voiceNumber, 0);
+		final Note secondNote = (Note) firstMeasure.get(voiceNumber, 1);
+
+		assertTrue(firstNote.hasMarking(Marking.Type.SLUR));
+		assertTrue(firstNote.begins(Marking.Type.SLUR));
+		assertEquals(1, firstNote.getMarkings().size());
+		Marking slurBetweenSecondAndFirst = firstNote.getMarkings().stream().findFirst().orElseThrow();
+		assertEquals(secondNote,
+				firstNote.getMarkingConnection(slurBetweenSecondAndFirst).get().getFollowingNote().get());
+
+		assertTrue(secondNote.hasMarkings());
+		assertTrue(secondNote.ends(Marking.Type.SLUR));
+		assertEquals(1, secondNote.getMarkings().size());
+
+		final Note thirdNote = (Note) firstMeasure.get(voiceNumber, 2);
+		final Note fourthNote = (Note) firstMeasure.get(voiceNumber, 3);
+
+		assertTrue(thirdNote.hasMarking(Marking.Type.GLISSANDO));
+		assertTrue(thirdNote.begins(Marking.Type.GLISSANDO));
+		assertEquals(1, thirdNote.getMarkings().size());
+		Marking glissandoBetweenThirdAndFourth = thirdNote.getMarkings().stream().findFirst().orElseThrow();
+		assertEquals(fourthNote,
+				thirdNote.getMarkingConnection(glissandoBetweenThirdAndFourth).get().getFollowingNote().get());
+
+		assertTrue(fourthNote.hasMarkings());
+		assertTrue(fourthNote.ends(Marking.Type.GLISSANDO));
+		assertEquals(1, fourthNote.getMarkings().size());
+
+		final Note fifthNote = (Note) firstMeasure.get(voiceNumber, 4);
+		assertEquals(1, fifthNote.getMarkings().size());
+		assertTrue(fifthNote.begins(Marking.Type.SLUR));
+
+		final Note sixthNote = (Note) firstMeasure.get(voiceNumber, 5);
+		assertEquals(1, sixthNote.getMarkings().size());
+		assertTrue(sixthNote.hasMarking(Marking.Type.SLUR));
+		assertFalse(sixthNote.begins(Marking.Type.SLUR));
+		assertFalse(sixthNote.ends(Marking.Type.SLUR));
+
+		final Note seventhNote = (Note) firstMeasure.get(voiceNumber, 6);
+		assertEquals(1, seventhNote.getMarkings().size());
+		assertTrue(seventhNote.ends(Marking.Type.SLUR));
+
+		final Marking slurFromFifthToSeventhNote = fifthNote.getMarkings().stream().findAny().orElseThrow();
+		final List<Note> notesInSlurFromFifthToSeventhNote = slurFromFifthToSeventhNote
+				.getAffectedStartingFrom(fifthNote);
+		assertEquals(3, notesInSlurFromFifthToSeventhNote.size());
+		assertEquals(fifthNote, notesInSlurFromFifthToSeventhNote.get(0));
+		assertEquals(sixthNote, notesInSlurFromFifthToSeventhNote.get(1));
+		assertEquals(seventhNote, notesInSlurFromFifthToSeventhNote.get(2));
+
+		final Measure secondMeasure = part.getMeasure(1, 2);
+
+		final Note eightNote = (Note) secondMeasure.get(voiceNumber, 0);
+		assertEquals(1, eightNote.getMarkings().size());
+		assertTrue(eightNote.begins(Marking.Type.SLUR));
+
+		final Note ninthNote = (Note) secondMeasure.get(voiceNumber, 1);
+		assertEquals(1, ninthNote.getMarkings().size());
+		assertTrue(ninthNote.hasMarking(Marking.Type.SLUR));
+		assertFalse(ninthNote.begins(Marking.Type.SLUR));
+		assertFalse(ninthNote.ends(Marking.Type.SLUR));
+
+		assertTrue(secondMeasure.get(voiceNumber, 2) instanceof Rest);
+
+		final Note tenthNote = (Note) secondMeasure.get(voiceNumber, 3);
+		assertEquals(1, tenthNote.getMarkings().size());
+		assertTrue(tenthNote.ends(Marking.Type.SLUR));
+
+		final Marking slurFromEightToTenthNote = eightNote.getMarkings().stream().findAny().orElseThrow();
+		final List<Note> notesInSlurFromEightToTenthNote = slurFromEightToTenthNote.getAffectedStartingFrom(eightNote);
+		assertEquals(3, notesInSlurFromEightToTenthNote.size());
+		assertEquals(eightNote, notesInSlurFromEightToTenthNote.get(0));
+		assertEquals(ninthNote, notesInSlurFromEightToTenthNote.get(1));
+		assertEquals(tenthNote, notesInSlurFromEightToTenthNote.get(2));
+
+		final Note eleventhNote = (Note) secondMeasure.get(voiceNumber, 4);
+		assertEquals(2, eleventhNote.getMarkings().size());
+		assertTrue(eleventhNote.begins(Marking.Type.GLISSANDO));
+		assertTrue(eleventhNote.begins(Marking.Type.SLUR));
+
+		final Note twelthNote = (Note) secondMeasure.get(voiceNumber, 5);
+		assertEquals(2, twelthNote.getMarkings().size());
+		assertTrue(twelthNote.ends(Marking.Type.GLISSANDO));
+		assertTrue(twelthNote.ends(Marking.Type.SLUR));
 	}
 }
