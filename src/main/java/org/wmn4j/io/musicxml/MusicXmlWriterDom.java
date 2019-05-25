@@ -7,6 +7,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
+import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Clef;
 import org.wmn4j.notation.elements.Duration;
@@ -185,9 +186,17 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		final Element measureElement = doc.createElement(MusicXmlTags.MEASURE);
 		measureElement.setAttribute(MusicXmlTags.MEASURE_NUM, Integer.toString(measure.getNumber()));
 
+		//Left barline
+		if (!measure.getLeftBarline().equals(Barline.SINGLE) && !measure.getLeftBarline().equals(Barline.NONE)) {
+			measureElement.appendChild(
+					createBarlineElement(measure.getLeftBarline(), MusicXmlTags.BARLINE_LOCATION_LEFT));
+		}
+
+		//Attributes
 		final Optional<Element> attributes = createMeasureAttributesElement(measure, prevMeasure);
 		attributes.ifPresent(attrElement -> measureElement.appendChild(attrElement));
 
+		//Notes
 		final List<Integer> voiceNumber = measure.getVoiceNumbers();
 		for (Integer voiceNumbers : voiceNumber) {
 			for (Durational dur : measure.getVoice(voiceNumbers)) {
@@ -210,7 +219,57 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			// Backup
 		}
 
+		//Right barline
+		if (!measure.getRightBarline().equals(Barline.SINGLE) && !measure.getRightBarline().equals(Barline.NONE)) {
+			measureElement.appendChild(
+					createBarlineElement(measure.getRightBarline(), MusicXmlTags.BARLINE_LOCATION_RIGHT));
+		}
+
 		return measureElement;
+	}
+
+	private Element createBarlineElement(Barline barline, String location) {
+		Element barlineElement = doc.createElement(MusicXmlTags.BARLINE);
+		barlineElement.setAttribute(MusicXmlTags.BARLINE_LOCATION, location);
+
+		Element barStyleElement = doc.createElement(MusicXmlTags.BARLINE_STYLE);
+		Element repeatDir = null;
+		switch (barline) {
+			case DOUBLE:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_LIGHT_LIGHT);
+				break;
+			case REPEAT_LEFT:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_HEAVY_LIGHT);
+				repeatDir = doc.createElement(MusicXmlTags.BARLINE_REPEAT);
+				repeatDir.setAttribute(MusicXmlTags.BARLINE_REPEAT_DIR, MusicXmlTags.BARLINE_REPEAT_DIR_FORWARD);
+				break;
+			case REPEAT_RIGHT:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY);
+				repeatDir = doc.createElement(MusicXmlTags.BARLINE_REPEAT);
+				repeatDir.setAttribute(MusicXmlTags.BARLINE_REPEAT_DIR, MusicXmlTags.BARLINE_REPEAT_DIR_BACKWARD);
+				break;
+			case FINAL:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY);
+				break;
+			case DASHED:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_DASHED);
+				break;
+			case THICK:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_HEAVY);
+				break;
+			case INVISIBLE:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_INVISIBLE);
+				break;
+			default:
+				throw new IllegalStateException("Unexpected barline type: " + barline);
+		}
+
+		barlineElement.appendChild(barStyleElement);
+		if (repeatDir != null) {
+			barlineElement.appendChild(repeatDir);
+		}
+
+		return barlineElement;
 	}
 
 	private Optional<Element> createMeasureAttributesElement(Measure measure, Measure prevMeasure) {

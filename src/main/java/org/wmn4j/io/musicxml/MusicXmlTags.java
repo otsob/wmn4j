@@ -18,6 +18,7 @@ final class MusicXmlTags {
 	static final String BARLINE_REPEAT_DIR_FORWARD = "forward";
 	static final String BARLINE_REPEAT_DIR_BACKWARD = "backward";
 	static final String BARLINE_STYLE = "bar-style";
+	static final String BARLINE_STYLE_REGULAR = "regular";
 	static final String BARLINE_STYLE_DASHED = "dashed";
 	static final String BARLINE_STYLE_HEAVY = "heavy";
 	static final String BARLINE_STYLE_HEAVY_LIGHT = "heavy-light";

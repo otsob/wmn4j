@@ -144,5 +144,13 @@ class MusicXmlWriterDomTest {
 
 		MusicXmlFileChecks.assertTimeSignaturesReadCorrectly(writtenScore);
 	}
+
+	@Test
+	void testWritingBarlines() {
+		Score score = readMusicXmlTestFile("barlines.xml", false);
+		Score writtenScore = writeScore(score);
+
+		MusicXmlFileChecks.assertBarlinesReadCorrectly(writtenScore);
+	}
 	
 }
