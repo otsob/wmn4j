@@ -106,6 +106,7 @@ final class MusicXmlTags {
 	static final String SCORE_IDENTIFICATION_COMPOSER = "composer";
 	static final String SCORE_IDENTIFICATION_ARRANGER = "arranger";
 	static final String SCORE_PARTWISE = "score-partwise";
+	static final String MUSICXML_VERSION = "version";
 
 	private MusicXmlTags() {
 	}

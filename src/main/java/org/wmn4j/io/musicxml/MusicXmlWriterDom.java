@@ -39,6 +39,7 @@ import java.util.TreeMap;
 class MusicXmlWriterDom implements MusicXmlWriter {
 
 	private Document doc;
+	private final String MUSICXML_VERSION_NUMBER = "3.1";
 	private final Score score;
 	private final SortedMap<String, Part> partIdMap = new TreeMap<>();
 	private final int divisions;
@@ -57,6 +58,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			// root elements
 			this.doc = docBuilder.newDocument();
 			final Element rootElement = this.doc.createElement(MusicXmlTags.SCORE_PARTWISE);
+			rootElement.setAttribute(MusicXmlTags.MUSICXML_VERSION, MUSICXML_VERSION_NUMBER);
 			this.doc.appendChild(rootElement);
 
 			// staff elements
@@ -76,7 +78,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
 			final DOMImplementation domImpl = doc.getImplementation();
 			final DocumentType doctype = domImpl.createDocumentType("doctype",
-					"-//Recordare//DTD MusicXML 3.0 Partwise//EN",
+					"-//Recordare//DTD MusicXML " + MUSICXML_VERSION_NUMBER + " Partwise//EN",
 					"http://www.musicxml.org/dtds/partwise.dtd");
 			transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, doctype.getPublicId());
 			transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
