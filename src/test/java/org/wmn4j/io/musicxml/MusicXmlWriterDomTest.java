@@ -161,4 +161,12 @@ class MusicXmlWriterDomTest {
 		MusicXmlFileChecks.assertChordsAndMultipleVoicesReadCorrectly(writtenScore);
 	}
 
+	@Test
+	void testWritingPickupMeasure() {
+		Score score = readMusicXmlTestFile("pickup_measure_test.xml", false);
+		Score writtenScore = writeScore(score);
+
+		MusicXmlFileChecks.assertPickupMeasureReadCorrectly(writtenScore);
+	}
+
 }
