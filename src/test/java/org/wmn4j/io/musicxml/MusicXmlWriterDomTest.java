@@ -152,5 +152,13 @@ class MusicXmlWriterDomTest {
 
 		MusicXmlFileChecks.assertBarlinesReadCorrectly(writtenScore);
 	}
-	
+
+	@Test
+	void testWritingMultipleVoicesAndChords() {
+		Score score = readMusicXmlTestFile("twoMeasures.xml", false);
+		Score writtenScore = writeScore(score);
+
+		MusicXmlFileChecks.assertChordsAndMultipleVoicesReadCorrectly(writtenScore);
+	}
+
 }

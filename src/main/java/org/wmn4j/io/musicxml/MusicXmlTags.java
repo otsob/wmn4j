@@ -48,6 +48,8 @@ final class MusicXmlTags {
 	static final String MEAS_ATTR_KEY_FIFTHS = "fifths";
 	static final String MEAS_ATTR_STAVES = "staves";
 	static final String MEAS_ATTR_STAFF_NUMBER = "number";
+	static final String MEASURE_BACKUP = "backup";
+	static final String MEASURE_FORWARD = "forward";
 
 	// Note tags
 	static final String NOTE = "note";

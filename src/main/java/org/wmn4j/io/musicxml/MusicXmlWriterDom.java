@@ -197,26 +197,46 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		attributes.ifPresent(attrElement -> measureElement.appendChild(attrElement));
 
 		//Notes
-		final List<Integer> voiceNumber = measure.getVoiceNumbers();
-		for (Integer voiceNumbers : voiceNumber) {
-			for (Durational dur : measure.getVoice(voiceNumbers)) {
+		final List<Integer> voiceNumbers = measure.getVoiceNumbers();
+		int voicesHandled = 0;
+		for (Integer voiceNumber : voiceNumbers) {
+
+			Duration cumulatedDuration = null;
+			for (Durational dur : measure.getVoice(voiceNumber)) {
+				if (cumulatedDuration == null) {
+					cumulatedDuration = dur.getDuration();
+				} else {
+					cumulatedDuration = cumulatedDuration.add(dur.getDuration());
+				}
+
 				if (dur instanceof Rest) {
-					measureElement.appendChild(createRestElement((Rest) dur, voiceNumbers, 0));
+					measureElement.appendChild(createRestElement((Rest) dur, voiceNumber, 0));
 				}
 
 				if (dur instanceof Note) {
-					measureElement.appendChild(createNoteElement((Note) dur, voiceNumbers, 0, false));
+					measureElement.appendChild(createNoteElement((Note) dur, voiceNumber, 0, false));
 				}
 
 				if (dur instanceof Chord) {
 					boolean useChordTag = false;
 					for (Note note : (Chord) dur) {
-						measureElement.appendChild(createNoteElement(note, voiceNumbers, 0, useChordTag));
+						measureElement.appendChild(createNoteElement(note, voiceNumber, 0, useChordTag));
 						useChordTag = true;
 					}
 				}
 			}
-			// Backup
+
+			// In case of multiple voices, backup to the beginning of the measure
+			// Do not backup if it is the last voice to be handled
+			voicesHandled++;
+			if (voicesHandled < measure.getVoiceCount()) {
+				measureElement.appendChild(createBackupElement(cumulatedDuration));
+			} else {
+				if (cumulatedDuration.isShorterThan(measure.getTimeSignature().getTotalDuration())) {
+					Duration duration = measure.getTimeSignature().getTotalDuration().subtract(cumulatedDuration);
+					measureElement.appendChild(createForwardElement(duration));
+				}
+			}
 		}
 
 		//Right barline
@@ -370,16 +390,40 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return clefElement;
 	}
 
+	private Element createBackupElement(Duration duration) {
+		Element backupElement = doc.createElement(MusicXmlTags.MEASURE_BACKUP);
+		Element durationElement = doc.createElement(MusicXmlTags.NOTE_DURATION);
+		durationElement.setTextContent(Integer.toString(divisionCountOf(duration)));
+		backupElement.appendChild(durationElement);
+		return backupElement;
+	}
+
+	private Element createForwardElement(Duration duration) {
+		Element forwardElement = doc.createElement(MusicXmlTags.MEASURE_FORWARD);
+		Element durationElement = doc.createElement(MusicXmlTags.NOTE_DURATION);
+		durationElement.setTextContent(Integer.toString(divisionCountOf(duration)));
+		forwardElement.appendChild(durationElement);
+		return forwardElement;
+	}
+
 	private Element createNoteElement(Note note, int voice, int staff, boolean chordTag) {
 		final Element noteElement = this.doc.createElement(MusicXmlTags.NOTE);
-		noteElement.appendChild(createPitchElement(note.getPitch()));
-		noteElement.appendChild(createDurationElement(note.getDuration()));
 
 		// TODO: Write other attributes.
+		//Chord
 		if (chordTag) {
 			final Element chordElement = this.doc.createElement(MusicXmlTags.NOTE_CHORD);
 			noteElement.appendChild(chordElement);
 		}
+
+		//Pitch
+		noteElement.appendChild(createPitchElement(note.getPitch()));
+
+		//Duration
+		noteElement.appendChild(createDurationElement(note.getDuration()));
+
+		//Voice
+		noteElement.appendChild(createVoiceElement(voice));
 
 		return noteElement;
 	}
@@ -391,6 +435,12 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		durationElement.setTextContent(Integer.toString(durValue));
 
 		return durationElement;
+	}
+
+	private Element createVoiceElement(int voice) {
+		Element voiceElement = doc.createElement(MusicXmlTags.NOTE_VOICE);
+		voiceElement.setTextContent(Integer.toString(voice));
+		return voiceElement;
 	}
 
 	private int divisionCountOf(Duration duration) {
@@ -420,7 +470,10 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		final Element restElement = this.doc.createElement(MusicXmlTags.NOTE);
 		restElement.appendChild(this.doc.createElement(MusicXmlTags.NOTE_REST));
 		restElement.appendChild(createDurationElement(rest.getDuration()));
-		// TODO: Set voice and staff
+
+		// TODO: Set staff
+		//Voice
+		restElement.appendChild(createVoiceElement(voice));
 
 		return restElement;
 	}
