@@ -55,7 +55,7 @@ class MusicXmlWriterDomTest {
 	private Score writeScore(Score score) {
 		MusicXmlWriterDom writer = new MusicXmlWriterDom(score);
 		Path file = temporaryDirectory.resolve("file.xml");
-		writer.writeToFile(file.toString());
+		writer.writeToFile(file);
 
 		//For debugging
 		//printLines(file);

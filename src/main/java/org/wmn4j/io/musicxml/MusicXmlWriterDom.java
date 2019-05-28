@@ -37,6 +37,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.math.BigInteger;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +63,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	@Override
-	public void writeToFile(String path) {
+	public void writeToFile(Path path) {
 		try {
 			final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -96,7 +97,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
 
 			final DOMSource source = new DOMSource(doc);
-			final StreamResult result = new StreamResult(new File(path));
+			final StreamResult result = new StreamResult(new File(path.toString()));
 
 			transformer.transform(source, result);
 
