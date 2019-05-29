@@ -19,10 +19,8 @@ import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 import org.wmn4j.notation.iterators.ScoreIterator;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -34,11 +32,10 @@ class MusicXmlWriterDomTest {
 	@TempDir
 	Path temporaryDirectory;
 
-	private static final String MUSICXML_FILE_PATH = "musicxml/";
-
+	private final String MUSICXML_FILE_PATH = "musicxml/";
 
 	private Score readMusicXmlTestFile(String testFileName, boolean validate) {
-		final MusicXmlReader reader = new MusicXmlReaderDom(validate);
+		final MusicXmlReader reader = MusicXmlReader.getReader(validate);
 		Score score = null;
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
 
@@ -52,15 +49,12 @@ class MusicXmlWriterDomTest {
 		return score;
 	}
 
-	private Score writeScore(Score score) {
+	private Score writeAndReadScore(Score score) {
 		MusicXmlWriterDom writer = new MusicXmlWriterDom(score);
 		Path file = temporaryDirectory.resolve("file.xml");
 		writer.writeToFile(file);
 
-		//For debugging
-		//printLines(file);
-
-		final MusicXmlReader reader = new MusicXmlReaderDom(true);
+		final MusicXmlReader reader = MusicXmlReader.getReader(true);
 		Score writtenScore = null;
 
 		try {
@@ -71,23 +65,6 @@ class MusicXmlWriterDomTest {
 
 		assertNotNull(writtenScore);
 		return writtenScore;
-	}
-
-	/**
-	 * Easy way to print the contents of a file for debugging
-	 * @param file Path to the file to print
-	 */
-	private void printLines(Path file) {
-		List<String> lines = null;
-		try {
-			lines = Files.readAllLines(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		for(String line : lines) {
-			System.out.println(line);
-		}
 	}
 
 	@Test
@@ -104,7 +81,7 @@ class MusicXmlWriterDomTest {
 		scoreBuilder.addPart(partBuilder);
 		Score score = scoreBuilder.build();
 
-		Score writtenScore = writeScore(score);
+		Score writtenScore = writeAndReadScore(score);
 
 		ScoreIterator iterator = new PartWiseScoreIterator(writtenScore);
 
@@ -132,7 +109,7 @@ class MusicXmlWriterDomTest {
 	@Test
 	void testWritingKeySignatures() {
 		Score score = readMusicXmlTestFile("keysigs.xml", false);
-		Score writtenScore = writeScore(score);
+		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertKeySignaturesReadToScoreCorrectly(writtenScore);
 	}
@@ -140,7 +117,7 @@ class MusicXmlWriterDomTest {
 	@Test
 	void testWritingTimeSignatures() {
 		Score score = readMusicXmlTestFile("timesigs.xml", false);
-		Score writtenScore = writeScore(score);
+		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertTimeSignaturesReadCorrectly(writtenScore);
 	}
@@ -148,7 +125,7 @@ class MusicXmlWriterDomTest {
 	@Test
 	void testWritingBarlines() {
 		Score score = readMusicXmlTestFile("barlines.xml", false);
-		Score writtenScore = writeScore(score);
+		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertBarlinesReadCorrectly(writtenScore);
 	}
@@ -156,7 +133,7 @@ class MusicXmlWriterDomTest {
 	@Test
 	void testWritingMultipleVoicesAndChords() {
 		Score score = readMusicXmlTestFile("twoMeasures.xml", false);
-		Score writtenScore = writeScore(score);
+		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertChordsAndMultipleVoicesReadCorrectly(writtenScore);
 	}
@@ -164,7 +141,7 @@ class MusicXmlWriterDomTest {
 	@Test
 	void testWritingPickupMeasure() {
 		Score score = readMusicXmlTestFile("pickup_measure_test.xml", false);
-		Score writtenScore = writeScore(score);
+		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertPickupMeasureReadCorrectly(writtenScore);
 	}
