@@ -5,11 +5,14 @@ package org.wmn4j.mir;
 
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.Pitch;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * A class for representing monophonic musical patterns. In a monophonic pattern
@@ -64,8 +67,21 @@ public final class MonophonicPattern implements Pattern {
 
 	@Override
 	public boolean equalsInPitch(Pattern other) {
-		// TODO Auto-generated method stub
+		if (other instanceof MonophonicPattern) {
+			List<Pitch> pitchesOfOther = ((MonophonicPattern) other).toPitchList();
+			List<Pitch> pitchesOfThis = this.toPitchList();
+
+			return pitchesOfThis.equals(pitchesOfOther);
+		}
+
 		return false;
+	}
+
+	private List<Pitch> toPitchList() {
+		return getContents().stream()
+				.filter(durational -> durational instanceof Note)
+				.map(durational -> ((Note) durational).getPitch())
+				.collect(Collectors.toList());
 	}
 
 	@Override

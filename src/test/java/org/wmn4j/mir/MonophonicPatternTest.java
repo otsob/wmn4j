@@ -107,28 +107,29 @@ class MonophonicPatternTest {
 		assertTrue(pattern.isMonophonic());
 	}
 
-	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 	@Test
 	void testEqualsInPitch() {
-		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
+		final MonophonicPattern pattern = new MonophonicPattern(this.referenceNotes);
 
 		final List<Durational> notes = new ArrayList<>();
 		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
 		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
-		notes.add(Rest.of(Durations.QUARTER));
 		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
 		notes.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.WHOLE));
 
-		assertTrue(pattern1.equalsInPitch(new MonophonicPattern(notes)));
+		assertTrue(pattern.equalsInPitch(new MonophonicPattern(notes)));
 
 		notes.add(Rest.of(Durations.QUARTER));
 
-		assertTrue(pattern1.equalsInPitch(new MonophonicPattern(notes)),
+		assertTrue(pattern.equalsInPitch(new MonophonicPattern(notes)),
 				"Adding rest to end of pattern should not make pattern inequal in pitches");
 
-		notes.add(Note.of(Pitch.of(Pitch.Base.E, -1, 3), Durations.WHOLE));
+		notes.set(1, Note.of(Pitch.of(Pitch.Base.E, -1, 3), Durations.WHOLE));
+		assertFalse(pattern.equalsInPitch(new MonophonicPattern(notes)));
 
-		assertFalse(pattern1.equalsInPitch(new MonophonicPattern(notes)));
+		List<Durational> referenceNotesWithAddition = new ArrayList<>(referenceNotes);
+		referenceNotesWithAddition.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+		assertFalse(pattern.equalsInPitch(new MonophonicPattern(referenceNotesWithAddition)));
 	}
 
 	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
