@@ -31,6 +31,10 @@ test {
     }
 }
 
+javadoc {
+    options.header().setNoTimestamp(true)
+}
+
 group = 'wmn4j'
 version = '0.0.1-SNAPSHOT'
 description = 'wmn4j'
