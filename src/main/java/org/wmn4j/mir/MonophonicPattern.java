@@ -22,8 +22,7 @@ public final class MonophonicPattern implements Pattern {
 	/**
 	 * Constructor.
 	 *
-	 * @param contents the notation elements in temporal order that make up the
-	 *                 pattern
+	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
 	 */
 	public MonophonicPattern(List<Durational> contents) {
 		this.contents = Collections.unmodifiableList(new ArrayList<>(contents));
@@ -39,9 +38,9 @@ public final class MonophonicPattern implements Pattern {
 	}
 
 	/**
-	 * Returns the notation elements in temporal order that make up the pattern.
+	 * Returns an unmodifiable view of the notation elements in temporal order that make up the pattern.
 	 *
-	 * @return the notation elements in temporal order that make up the pattern
+	 * @return an unmodifiable view of the notation elements in temporal order that make up the pattern
 	 */
 	public List<Durational> getContents() {
 		return this.contents;
