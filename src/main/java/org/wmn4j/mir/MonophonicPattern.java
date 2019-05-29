@@ -9,6 +9,7 @@ import org.wmn4j.notation.elements.Durational;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A class for representing monophonic musical patterns. In a monophonic pattern
@@ -89,5 +90,23 @@ public final class MonophonicPattern implements Pattern {
 	public boolean equalsInOnsets(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (!(o instanceof MonophonicPattern)) {
+			return false;
+		}
+
+		return getContents().equals(((MonophonicPattern) o).getContents());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(contents);
 	}
 }

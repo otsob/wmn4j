@@ -66,13 +66,15 @@ class MonophonicPatternTest {
 		}
 	}
 
-	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 	@Test
-	void testEqualsPattern() {
+	void testEquals() {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 		final MonophonicPattern pattern2 = new MonophonicPattern(this.referenceNotes);
 
+		assertEquals(pattern1, pattern1);
+
 		assertEquals(pattern1, pattern2);
+		assertEquals(pattern2, pattern1);
 
 		final List<Durational> modifiedNotes = new ArrayList<>(this.referenceNotes);
 		modifiedNotes.add(Rest.of(Durations.QUARTER));
