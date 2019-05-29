@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -63,6 +64,24 @@ class MonophonicPatternTest {
 			fail("Was able to create pattern with Chord in contents");
 		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
+		}
+	}
+
+	@Test
+	void testImmutability() {
+		List<Durational> contents = new ArrayList<>(referenceNotes);
+
+		final MonophonicPattern pattern = new MonophonicPattern(contents);
+		assertEquals(contents, pattern.getContents());
+
+		contents.add(Rest.of(Durations.QUARTER));
+		assertNotEquals(pattern.getContents().size(), contents.size());
+
+		try {
+			pattern.getContents().add(Rest.of(Durations.QUARTER));
+			fail("Was able to add to contents of pattern");
+		} catch (Exception e) {
+			// Pass, exception is expected.
 		}
 	}
 
