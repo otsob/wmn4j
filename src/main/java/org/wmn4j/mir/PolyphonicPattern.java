@@ -5,21 +5,9 @@
 package org.wmn4j.mir;
 
 /**
- *
  * @author Otso Björklund
  */
 public final class PolyphonicPattern implements Pattern {
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equals(wmnlibmir.Pattern)
-	 */
-	@Override
-	public boolean equals(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	/*
 	 * (non-Javadoc)

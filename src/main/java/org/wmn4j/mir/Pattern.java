@@ -14,15 +14,6 @@ package org.wmn4j.mir;
 public interface Pattern {
 
 	/**
-	 * Returns true if this <code>Pattern</code> is equal to other.
-	 *
-	 * @param other the <code>Pattern</code> this is compared against for equality
-	 * @return true if this pattern contains the exact same notes, rest, and chords
-	 * in the same order as other. Otherwise returns false.
-	 */
-	boolean equals(Pattern other);
-
-	/**
 	 * Returns true if this pattern does not contain any notes occur simultaneously,
 	 * otherwise returns false.
 	 *
