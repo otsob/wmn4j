@@ -1,22 +1,19 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.mir;
+
+import org.wmn4j.notation.elements.Chord;
+import org.wmn4j.notation.elements.Durational;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Durational;
-
 /**
  * A class for representing monophonic musical patterns. In a monophonic pattern
  * no notes occur simultaneously. The pattern cannot contain chords and does not
  * consist of multiple voices. This class is immutable.
- *
- * @author Otso Björklund
  */
 public final class MonophonicPattern implements Pattern {
 
