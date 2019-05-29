@@ -37,7 +37,7 @@ class MonophonicPatternTest {
 	}
 
 	@Test
-	void testMonophonicPatternListOfDurational() {
+	void testCreatingMonophonicPatternFromListOfDurationals() {
 		try {
 			new MonophonicPattern(null);
 			fail("Was able to create pattern with null contents");
