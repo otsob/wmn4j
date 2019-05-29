@@ -4,7 +4,6 @@
 
 plugins {
     id 'java'
-    id 'maven-publish'
     id 'checkstyle'
 }
 
@@ -32,18 +31,14 @@ test {
     }
 }
 
+javadoc {
+    options.header().setNoTimestamp(true)
+}
+
 group = 'wmn4j'
 version = '0.0.1-SNAPSHOT'
 description = 'wmn4j'
 sourceCompatibility = '12'
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
-        }
-    }
-}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
