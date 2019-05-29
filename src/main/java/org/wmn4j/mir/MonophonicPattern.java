@@ -64,8 +64,7 @@ public final class MonophonicPattern implements Pattern {
 
 	@Override
 	public boolean isMonophonic() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

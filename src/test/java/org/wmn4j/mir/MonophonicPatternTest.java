@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@Disabled("These tests are unfinished and should be unignored once the logic is implemented") class MonophonicPatternTest {
+class MonophonicPatternTest {
 
 	private final List<Durational> referenceNotes;
 
@@ -66,6 +66,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 		}
 	}
 
+	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 	@Test
 	void testEqualsPattern() {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
@@ -79,6 +80,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 		assertFalse(pattern1.equals(new MonophonicPattern(modifiedNotes)));
 	}
 
+	@Test
+	void testIsMonophonic() {
+		final MonophonicPattern pattern = new MonophonicPattern(this.referenceNotes);
+		assertTrue(pattern.isMonophonic());
+	}
+
+	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 	@Test
 	void testEqualsInPitch() {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
@@ -102,6 +110,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 		assertFalse(pattern1.equalsInPitch(new MonophonicPattern(notes)));
 	}
 
+	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 	@Test
 	void testEqualsEnharmonicallyInPitch() {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
@@ -116,16 +125,19 @@ import static org.junit.jupiter.api.Assertions.fail;
 		assertTrue(pattern1.equalsEnharmonicallyInPitch(new MonophonicPattern(notes)));
 	}
 
+	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 	@Test
 	void testEqualsInTransposedPitch() {
 		// TODO
 	}
 
+	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 	@Test
 	void testEqualsInRhythm() {
 		// TODO
 	}
 
+	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 	@Test
 	void testEqualsInOnsets() {
 		// TODO
