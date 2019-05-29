@@ -61,6 +61,22 @@ public final class Clef {
 		return new Clef(Objects.requireNonNull(symbol), line);
 	}
 
+	/**
+	 * Returns the symbol of this clef.
+	 * @return the symbol of this clef
+	 */
+	public Symbol getSymbol() {
+		return symbol;
+	}
+
+	/**
+	 * Returns the line of the staff (counted from bottom up) on which the clef is.
+	 * @return the line of the staff on which the clef is.
+	 */
+	public int getLine() {
+		return line;
+	}
+
 	private Clef(Symbol symbol, int line) {
 		this.symbol = symbol;
 		this.line = line;

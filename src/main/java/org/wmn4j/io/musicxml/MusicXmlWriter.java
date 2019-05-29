@@ -5,6 +5,8 @@ package org.wmn4j.io.musicxml;
 
 import org.wmn4j.notation.elements.Score;
 
+import java.nio.file.Path;
+
 /**
  * Represents a writer for MusicXML files.
  */
@@ -26,6 +28,6 @@ public interface MusicXmlWriter {
 	 *
 	 * @param path the output path for the MusicXML file
 	 */
-	void writeToFile(String path);
+	void writeToFile(Path path);
 
 }

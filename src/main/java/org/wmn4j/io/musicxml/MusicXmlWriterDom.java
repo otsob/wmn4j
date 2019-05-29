@@ -7,10 +7,13 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
+import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Chord;
+import org.wmn4j.notation.elements.Clef;
 import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Durations;
+import org.wmn4j.notation.elements.KeySignature;
 import org.wmn4j.notation.elements.Measure;
 import org.wmn4j.notation.elements.MultiStaffPart;
 import org.wmn4j.notation.elements.Note;
@@ -19,6 +22,7 @@ import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Rest;
 import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.elements.SingleStaffPart;
+import org.wmn4j.notation.elements.TimeSignature;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 import org.wmn4j.notation.iterators.ScoreIterator;
 
@@ -32,16 +36,26 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.math.BigInteger;
+import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 class MusicXmlWriterDom implements MusicXmlWriter {
 
 	private Document doc;
+	private final String MUSICXML_VERSION_NUMBER = "3.1";
 	private final Score score;
 	private final SortedMap<String, Part> partIdMap = new TreeMap<>();
 	private final int divisions;
+
+	private KeySignature keySigInEffect;
+	private TimeSignature timeSigInEffect;
+	private Clef clefInEffect;
 
 	MusicXmlWriterDom(Score score) {
 		this.score = score;
@@ -49,7 +63,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	@Override
-	public void writeToFile(String path) {
+	public void writeToFile(Path path) {
 		try {
 			final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -57,6 +71,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			// root elements
 			this.doc = docBuilder.newDocument();
 			final Element rootElement = this.doc.createElement(MusicXmlTags.SCORE_PARTWISE);
+			rootElement.setAttribute(MusicXmlTags.MUSICXML_VERSION, MUSICXML_VERSION_NUMBER);
 			this.doc.appendChild(rootElement);
 
 			// staff elements
@@ -76,20 +91,16 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
 			final DOMImplementation domImpl = doc.getImplementation();
 			final DocumentType doctype = domImpl.createDocumentType("doctype",
-					"-//Recordare//DTD MusicXML 3.0 Partwise//EN",
+					"-//Recordare//DTD MusicXML " + MUSICXML_VERSION_NUMBER + " Partwise//EN",
 					"http://www.musicxml.org/dtds/partwise.dtd");
 			transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, doctype.getPublicId());
 			transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
 
 			final DOMSource source = new DOMSource(doc);
-			final StreamResult result = new StreamResult(new File(path));
-
-			// Output to console for testing
-			// StreamResult result = new StreamResult(System.out);
+			final StreamResult result = new StreamResult(new File(path.toString()));
 
 			transformer.transform(source, result);
 
-			System.out.println("File saved!");
 			this.doc = null;
 
 		} catch (final ParserConfigurationException pce) {
@@ -100,18 +111,23 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private int computeDivisions(Score score) {
+		Set<Integer> denominators = new HashSet<>();
 
 		final ScoreIterator iter = new PartWiseScoreIterator(score);
-		Duration shortest = Durations.QUARTER;
-
 		while (iter.hasNext()) {
-			final Duration dur = iter.next().getDuration();
-			if (dur.isShorterThan(shortest)) {
-				shortest = dur;
-			}
+			denominators.add(iter.next().getDuration().getDenominator());
 		}
 
-		return 1;
+		//Find lowest common denominator of all the different denominators of Durationals in the Score
+		//Start with the denominator of a quarter, because in MusicXML divisions are set in terms of
+		//divisions per quarter note
+		int lcd = Durations.QUARTER.getDenominator();
+		for (Integer denominator : denominators) {
+			lcd = (lcd * denominator)
+					/ BigInteger.valueOf(lcd).gcd(BigInteger.valueOf(denominator)).intValue();
+		}
+
+		return lcd / Durations.QUARTER.getDenominator();
 	}
 
 	private void writePartList(Element scoreRoot) {
@@ -150,10 +166,14 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		final Element partElement = doc.createElement(MusicXmlTags.PART);
 		partElement.setAttribute(MusicXmlTags.PART_ID, partId);
 
-		final Measure prevMeasure = null;
+		Measure prevMeasure = null;
+		timeSigInEffect = null;
+		keySigInEffect = null;
+		clefInEffect = null;
 
 		for (Measure measure : part) {
 			partElement.appendChild(createMeasureElement(measure, prevMeasure));
+			prevMeasure = measure;
 		}
 
 		return partElement;
@@ -167,62 +187,268 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		final Element measureElement = doc.createElement(MusicXmlTags.MEASURE);
 		measureElement.setAttribute(MusicXmlTags.MEASURE_NUM, Integer.toString(measure.getNumber()));
 
-		if (prevMeasure == null) {
-			final Element attributes = createMeasureAttributesElement(measure, null);
+		//Left barline
+		if (!measure.getLeftBarline().equals(Barline.SINGLE) && !measure.getLeftBarline().equals(Barline.NONE)) {
+			measureElement.appendChild(
+					createBarlineElement(measure.getLeftBarline(), MusicXmlTags.BARLINE_LOCATION_LEFT));
 		}
 
-		final List<Integer> voiceNumber = measure.getVoiceNumbers();
-		for (Integer voiceNumbers : voiceNumber) {
-			for (Durational dur : measure.getVoice(voiceNumbers)) {
+		//Attributes
+		final Optional<Element> attributes = createMeasureAttributesElement(measure, prevMeasure);
+		attributes.ifPresent(attrElement -> measureElement.appendChild(attrElement));
+
+		//Notes
+		final List<Integer> voiceNumbers = measure.getVoiceNumbers();
+		int voicesHandled = 0;
+		for (Integer voiceNumber : voiceNumbers) {
+
+			Duration cumulatedDuration = null;
+			for (Durational dur : measure.getVoice(voiceNumber)) {
+				if (cumulatedDuration == null) {
+					cumulatedDuration = dur.getDuration();
+				} else {
+					cumulatedDuration = cumulatedDuration.add(dur.getDuration());
+				}
+
 				if (dur instanceof Rest) {
-					measureElement.appendChild(createRestElement((Rest) dur, voiceNumbers, 0));
+					measureElement.appendChild(createRestElement((Rest) dur, voiceNumber, 0));
 				}
 
 				if (dur instanceof Note) {
-					measureElement.appendChild(createNoteElement((Note) dur, voiceNumbers, 0, false));
+					measureElement.appendChild(createNoteElement((Note) dur, voiceNumber, 0, false));
 				}
 
 				if (dur instanceof Chord) {
 					boolean useChordTag = false;
 					for (Note note : (Chord) dur) {
-						measureElement.appendChild(createNoteElement(note, voiceNumbers, 0, useChordTag));
+						measureElement.appendChild(createNoteElement(note, voiceNumber, 0, useChordTag));
 						useChordTag = true;
 					}
 				}
 			}
-			// Backup
+
+			// In case of multiple voices, backup to the beginning of the measure
+			// Do not backup if it is the last voice to be handled
+			voicesHandled++;
+			if (voicesHandled < measure.getVoiceCount()) {
+				measureElement.appendChild(createBackupElement(cumulatedDuration));
+			} else {
+				if (!measure.isPickUp()
+						&& cumulatedDuration.isShorterThan(measure.getTimeSignature().getTotalDuration())) {
+					Duration duration = measure.getTimeSignature().getTotalDuration().subtract(cumulatedDuration);
+					measureElement.appendChild(createForwardElement(duration));
+				}
+			}
+		}
+
+		//Right barline
+		if (!measure.getRightBarline().equals(Barline.SINGLE) && !measure.getRightBarline().equals(Barline.NONE)) {
+			measureElement.appendChild(
+					createBarlineElement(measure.getRightBarline(), MusicXmlTags.BARLINE_LOCATION_RIGHT));
 		}
 
 		return measureElement;
 	}
 
-	private Element createMeasureAttributesElement(Measure measure, Measure prevMeasure) {
-		final Element attrElement = this.doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
+	private Element createBarlineElement(Barline barline, String location) {
+		Element barlineElement = doc.createElement(MusicXmlTags.BARLINE);
+		barlineElement.setAttribute(MusicXmlTags.BARLINE_LOCATION, location);
 
-		return attrElement;
+		Element barStyleElement = doc.createElement(MusicXmlTags.BARLINE_STYLE);
+		Element repeatDir = null;
+		switch (barline) {
+			case DOUBLE:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_LIGHT_LIGHT);
+				break;
+			case REPEAT_LEFT:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_HEAVY_LIGHT);
+				repeatDir = doc.createElement(MusicXmlTags.BARLINE_REPEAT);
+				repeatDir.setAttribute(MusicXmlTags.BARLINE_REPEAT_DIR, MusicXmlTags.BARLINE_REPEAT_DIR_FORWARD);
+				break;
+			case REPEAT_RIGHT:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY);
+				repeatDir = doc.createElement(MusicXmlTags.BARLINE_REPEAT);
+				repeatDir.setAttribute(MusicXmlTags.BARLINE_REPEAT_DIR, MusicXmlTags.BARLINE_REPEAT_DIR_BACKWARD);
+				break;
+			case FINAL:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY);
+				break;
+			case DASHED:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_DASHED);
+				break;
+			case THICK:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_HEAVY);
+				break;
+			case INVISIBLE:
+				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_INVISIBLE);
+				break;
+			default:
+				throw new IllegalStateException("Unexpected barline type: " + barline);
+		}
+
+		barlineElement.appendChild(barStyleElement);
+		if (repeatDir != null) {
+			barlineElement.appendChild(repeatDir);
+		}
+
+		return barlineElement;
+	}
+
+	private Optional<Element> createMeasureAttributesElement(Measure measure, Measure prevMeasure) {
+		final Element attrElement = doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
+
+		//Divisions
+		if (prevMeasure == null) {
+			attrElement.appendChild(createDivisionsElement());
+		}
+
+		//Key signature
+		if (!measure.getKeySignature().equals(keySigInEffect)) {
+			attrElement.appendChild(createKeySignatureElement(measure));
+			this.keySigInEffect = measure.getKeySignature();
+		}
+
+		//Time signature
+		if (!measure.getTimeSignature().equals(timeSigInEffect)) {
+			attrElement.appendChild(createTimeSignatureElement(measure));
+			this.timeSigInEffect = measure.getTimeSignature();
+		}
+
+		//Clef
+		if (!measure.getClef().equals(clefInEffect)) {
+			attrElement.appendChild(createClefElement(measure));
+			this.clefInEffect = measure.getClef();
+		}
+
+		if (attrElement.hasChildNodes()) {
+			return Optional.of(attrElement);
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	private Element createDivisionsElement() {
+		Element divisionsElement = doc.createElement(MusicXmlTags.MEAS_ATTR_DIVS);
+		divisionsElement.setTextContent(Integer.toString(divisions));
+		return divisionsElement;
+	}
+
+	private Element createKeySignatureElement(Measure measure) {
+		Element keySigElement = doc.createElement(MusicXmlTags.MEAS_ATTR_KEY);
+		Element fifthsElement = doc.createElement(MusicXmlTags.MEAS_ATTR_KEY_FIFTHS);
+
+		int fifths = measure.getKeySignature().getNumberOfSharps();
+		if (fifths == 0) {
+			fifths = measure.getKeySignature().getNumberOfFlats() * -1;
+		}
+		fifthsElement.setTextContent(Integer.toString(fifths));
+
+		keySigElement.appendChild(fifthsElement);
+
+		return keySigElement;
+	}
+
+	private Element createTimeSignatureElement(Measure measure) {
+		Element timeSigElement = doc.createElement(MusicXmlTags.MEAS_ATTR_TIME);
+		Element beatsElement = doc.createElement(MusicXmlTags.MEAS_ATTR_BEATS);
+		Element beatTypeElement = doc.createElement(MusicXmlTags.MEAS_ATTR_BEAT_TYPE);
+
+		beatsElement.setTextContent(Integer.toString(measure.getTimeSignature().getBeatCount()));
+		beatTypeElement.setTextContent(Integer.toString(measure.getTimeSignature().getBeatDuration().getDenominator()));
+
+		timeSigElement.appendChild(beatsElement);
+		timeSigElement.appendChild(beatTypeElement);
+
+		return timeSigElement;
+	}
+
+	private Element createClefElement(Measure measure) {
+		Element clefElement = doc.createElement(MusicXmlTags.CLEF);
+		Element signElement = doc.createElement(MusicXmlTags.CLEF_SIGN);
+
+		switch (measure.getClef().getSymbol()) {
+			case G:
+				signElement.setTextContent("G");
+				break;
+			case F:
+				signElement.setTextContent("F");
+				break;
+			case C:
+				signElement.setTextContent("C");
+				break;
+			case PERCUSSION:
+				signElement.setTextContent("percussion");
+				break;
+			default:
+				throw new IllegalStateException("Unexpected clef symbol: " + measure.getClef().getSymbol());
+		}
+
+		Element lineElement = doc.createElement(MusicXmlTags.CLEF_LINE);
+		lineElement.setTextContent(Integer.toString(measure.getClef().getLine()));
+
+		clefElement.appendChild(signElement);
+		clefElement.appendChild(lineElement);
+
+		return clefElement;
+	}
+
+	private Element createBackupElement(Duration duration) {
+		Element backupElement = doc.createElement(MusicXmlTags.MEASURE_BACKUP);
+		Element durationElement = doc.createElement(MusicXmlTags.NOTE_DURATION);
+		durationElement.setTextContent(Integer.toString(divisionCountOf(duration)));
+		backupElement.appendChild(durationElement);
+		return backupElement;
+	}
+
+	private Element createForwardElement(Duration duration) {
+		Element forwardElement = doc.createElement(MusicXmlTags.MEASURE_FORWARD);
+		Element durationElement = doc.createElement(MusicXmlTags.NOTE_DURATION);
+		durationElement.setTextContent(Integer.toString(divisionCountOf(duration)));
+		forwardElement.appendChild(durationElement);
+		return forwardElement;
 	}
 
 	private Element createNoteElement(Note note, int voice, int staff, boolean chordTag) {
 		final Element noteElement = this.doc.createElement(MusicXmlTags.NOTE);
-		noteElement.appendChild(createPitchElement(note.getPitch()));
-		noteElement.appendChild(createDurationElement(note.getDuration()));
 
 		// TODO: Write other attributes.
+		//Chord
 		if (chordTag) {
 			final Element chordElement = this.doc.createElement(MusicXmlTags.NOTE_CHORD);
 			noteElement.appendChild(chordElement);
 		}
+
+		//Pitch
+		noteElement.appendChild(createPitchElement(note.getPitch()));
+
+		//Duration
+		noteElement.appendChild(createDurationElement(note.getDuration()));
+
+		//Voice
+		noteElement.appendChild(createVoiceElement(voice));
 
 		return noteElement;
 	}
 
 	private Element createDurationElement(Duration duration) {
 		final Element durationElement = this.doc.createElement(MusicXmlTags.NOTE_DURATION);
-		final int durValue = 1;
+		final int durValue = divisionCountOf(duration);
 
 		durationElement.setTextContent(Integer.toString(durValue));
 
 		return durationElement;
+	}
+
+	private Element createVoiceElement(int voice) {
+		Element voiceElement = doc.createElement(MusicXmlTags.NOTE_VOICE);
+		voiceElement.setTextContent(Integer.toString(voice));
+		return voiceElement;
+	}
+
+	private int divisionCountOf(Duration duration) {
+		return ((this.divisions * Durations.QUARTER.getDenominator())
+				/ duration.getDenominator())
+				* duration.getNumerator();
 	}
 
 	private Element createPitchElement(Pitch pitch) {
@@ -246,7 +472,10 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		final Element restElement = this.doc.createElement(MusicXmlTags.NOTE);
 		restElement.appendChild(this.doc.createElement(MusicXmlTags.NOTE_REST));
 		restElement.appendChild(createDurationElement(rest.getDuration()));
-		// TODO: Set voice and staff
+
+		// TODO: Set staff
+		//Voice
+		restElement.appendChild(createVoiceElement(voice));
 
 		return restElement;
 	}

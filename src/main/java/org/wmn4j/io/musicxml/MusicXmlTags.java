@@ -18,6 +18,7 @@ final class MusicXmlTags {
 	static final String BARLINE_REPEAT_DIR_FORWARD = "forward";
 	static final String BARLINE_REPEAT_DIR_BACKWARD = "backward";
 	static final String BARLINE_STYLE = "bar-style";
+	static final String BARLINE_STYLE_REGULAR = "regular";
 	static final String BARLINE_STYLE_DASHED = "dashed";
 	static final String BARLINE_STYLE_HEAVY = "heavy";
 	static final String BARLINE_STYLE_HEAVY_LIGHT = "heavy-light";
@@ -47,6 +48,8 @@ final class MusicXmlTags {
 	static final String MEAS_ATTR_KEY_FIFTHS = "fifths";
 	static final String MEAS_ATTR_STAVES = "staves";
 	static final String MEAS_ATTR_STAFF_NUMBER = "number";
+	static final String MEASURE_BACKUP = "backup";
+	static final String MEASURE_FORWARD = "forward";
 
 	// Note tags
 	static final String NOTE = "note";
@@ -106,6 +109,7 @@ final class MusicXmlTags {
 	static final String SCORE_IDENTIFICATION_COMPOSER = "composer";
 	static final String SCORE_IDENTIFICATION_ARRANGER = "arranger";
 	static final String SCORE_PARTWISE = "score-partwise";
+	static final String MUSICXML_VERSION = "version";
 
 	private MusicXmlTags() {
 	}

@@ -72,8 +72,6 @@ class MusicXmlFileChecks {
 	 * Expects the contents of the file "twoMeasures.xml"
 	 */
 	static void assertChordsAndMultipleVoicesReadCorrectly(Score score) {
-		assertEquals("Two bar sample", score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
-		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals(1, score.getParts().size());
 
 		final Part part = score.getParts().get(0);
