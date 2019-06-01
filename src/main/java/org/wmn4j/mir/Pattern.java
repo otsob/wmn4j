@@ -83,14 +83,14 @@ public interface Pattern {
 	boolean equalsInTransposedPitch(Pattern other);
 
 	/**
-	 * Returns true if this pattern has the same rhythm as other. Both
-	 * the onsets and durations must match for rhythms to be considered equal.
+	 * Returns true if this pattern has the same durations as the other pattern. The durations of notes in this pattern
+	 * must match the durations of notes in the given pattern and the durations of rests in this must match the
+	 * durations of the rests in the given pattern.
 	 * Pitches are ignored.
 	 *
 	 * @param other the pattern against which this is compared for
-	 *              rhythm equality.
-	 * @return true if this pattern has the same rhythm as other,
-	 * otherwise returns false
+	 *              durational equality
+	 * @return true if this pattern has the same durations as the other pattern
 	 */
-	boolean equalsInRhythm(Pattern other);
+	boolean equalsInDurations(Pattern other);
 }

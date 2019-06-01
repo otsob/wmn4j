@@ -65,10 +65,10 @@ public final class PolyphonicPattern implements Pattern {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see wmnlibmir.Pattern#equalsInRhythm(wmnlibmir.Pattern)
+	 * @see wmnlibmir.Pattern#equalsInDurations(wmnlibmir.Pattern)
 	 */
 	@Override
-	public boolean equalsInRhythm(Pattern other) {
+	public boolean equalsInDurations(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}

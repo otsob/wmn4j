@@ -103,7 +103,7 @@ final class MonophonicPattern implements Pattern {
 	}
 
 	@Override
-	public boolean equalsInRhythm(Pattern other) {
+	public boolean equalsInDurations(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}
