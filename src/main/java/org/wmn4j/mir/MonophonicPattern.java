@@ -86,7 +86,17 @@ public final class MonophonicPattern implements Pattern {
 
 	@Override
 	public boolean equalsEnharmonically(Pattern other) {
-		// TODO Auto-generated method stub
+		if (other instanceof MonophonicPattern) {
+			List<Integer> pitchNumbersOfOther = ((MonophonicPattern) other).toPitchList().stream()
+					.map(pitch -> pitch.toInt()).collect(
+							Collectors.toList());
+
+			List<Integer> pitchNumbersOfThis = this.toPitchList().stream().map(pitch -> pitch.toInt()).collect(
+					Collectors.toList());
+
+			return pitchNumbersOfOther.equals(pitchNumbersOfThis);
+		}
+
 		return false;
 	}
 

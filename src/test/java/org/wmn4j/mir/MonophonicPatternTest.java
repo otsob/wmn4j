@@ -132,19 +132,46 @@ class MonophonicPatternTest {
 		assertFalse(pattern.equalsInPitch(new MonophonicPattern(referenceNotesWithAddition)));
 	}
 
-	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 	@Test
 	void testEqualsEnharmonically() {
-		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
+		final MonophonicPattern pattern = new MonophonicPattern(this.referenceNotes);
 
-		final List<Durational> notes = new ArrayList<>();
-		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
-		notes.add(Rest.of(Durations.QUARTER));
-		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
-		notes.add(Note.of(Pitch.of(Pitch.Base.A, 1, 3), Durations.WHOLE));
+		assertTrue(pattern.equalsEnharmonically(new MonophonicPattern(referenceNotes)));
 
-		assertTrue(pattern1.equalsEnharmonically(new MonophonicPattern(notes)));
+		final List<Durational> samePitchesWithDifferentDurations = new ArrayList<>();
+		samePitchesWithDifferentDurations.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
+		samePitchesWithDifferentDurations.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
+		samePitchesWithDifferentDurations.add(Rest.of(Durations.QUARTER));
+		samePitchesWithDifferentDurations.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
+		samePitchesWithDifferentDurations.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.WHOLE));
+
+		assertTrue(pattern.equalsEnharmonically(new MonophonicPattern(samePitchesWithDifferentDurations)),
+				"Difference in durations affected enharmonic equality when it shouldn't have affected it.");
+
+		final List<Durational> samePitchesWithDifferentSpellings = new ArrayList<>();
+		samePitchesWithDifferentSpellings.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT));
+		samePitchesWithDifferentSpellings.add(Note.of(Pitch.of(Pitch.Base.D, -2, 5), Durations.EIGHT));
+		samePitchesWithDifferentSpellings.add(Rest.of(Durations.QUARTER));
+		samePitchesWithDifferentSpellings.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
+		samePitchesWithDifferentSpellings.add(Note.of(Pitch.of(Pitch.Base.A, 1, 3), Durations.QUARTER));
+
+		assertTrue(pattern.equalsEnharmonically(new MonophonicPattern(samePitchesWithDifferentSpellings)),
+				"Difference in note spellings affected enharmonic equality when it shouldn't have affected it.");
+
+		final List<Durational> notesWithAdditionalRestAtEnd = new ArrayList<>(referenceNotes);
+		notesWithAdditionalRestAtEnd.add(Rest.of(Durations.QUARTER));
+
+		assertTrue(pattern.equalsEnharmonically(new MonophonicPattern(notesWithAdditionalRestAtEnd)),
+				"Adding rest to end of pattern should not make patterns unequal enharmonically.");
+
+		final List<Durational> enharmonicallyUnequalPitches = new ArrayList<>();
+		enharmonicallyUnequalPitches.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT));
+		enharmonicallyUnequalPitches.add(Note.of(Pitch.of(Pitch.Base.D, 0, 5), Durations.EIGHT));
+		enharmonicallyUnequalPitches.add(Rest.of(Durations.QUARTER));
+		enharmonicallyUnequalPitches.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
+		enharmonicallyUnequalPitches.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+
+		assertFalse(pattern.equalsEnharmonically(new MonophonicPattern(enharmonicallyUnequalPitches)));
 	}
 
 	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
