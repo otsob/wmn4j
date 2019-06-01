@@ -34,10 +34,10 @@ public final class PolyphonicPattern implements Pattern {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see wmnlibmir.Pattern#equalsEnharmonicallyInPitch(wmnlibmir.Pattern)
+	 * @see wmnlibmir.Pattern#equalsEnharmonically(wmnlibmir.Pattern)
 	 */
 	@Override
-	public boolean equalsEnharmonicallyInPitch(Pattern other) {
+	public boolean equalsEnharmonically(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}

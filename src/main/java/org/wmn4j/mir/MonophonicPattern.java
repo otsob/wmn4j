@@ -85,7 +85,7 @@ public final class MonophonicPattern implements Pattern {
 	}
 
 	@Override
-	public boolean equalsEnharmonicallyInPitch(Pattern other) {
+	public boolean equalsEnharmonically(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}

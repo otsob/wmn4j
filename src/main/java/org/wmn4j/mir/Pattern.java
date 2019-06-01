@@ -45,7 +45,7 @@ public interface Pattern {
 	 * @return true if this pattern contains the enharmonically same
 	 * pitches in the same order as other, otherwise returns false
 	 */
-	boolean equalsEnharmonicallyInPitch(Pattern other);
+	boolean equalsEnharmonically(Pattern other);
 
 	/**
 	 * Returns true if this pattern can be transposed so that its

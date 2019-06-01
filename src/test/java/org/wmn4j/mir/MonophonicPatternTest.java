@@ -134,7 +134,7 @@ class MonophonicPatternTest {
 
 	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 	@Test
-	void testEqualsEnharmonicallyInPitch() {
+	void testEqualsEnharmonically() {
 		final MonophonicPattern pattern1 = new MonophonicPattern(this.referenceNotes);
 
 		final List<Durational> notes = new ArrayList<>();
@@ -144,7 +144,7 @@ class MonophonicPatternTest {
 		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
 		notes.add(Note.of(Pitch.of(Pitch.Base.A, 1, 3), Durations.WHOLE));
 
-		assertTrue(pattern1.equalsEnharmonicallyInPitch(new MonophonicPattern(notes)));
+		assertTrue(pattern1.equalsEnharmonically(new MonophonicPattern(notes)));
 	}
 
 	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
