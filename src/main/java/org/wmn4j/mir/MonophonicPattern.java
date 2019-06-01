@@ -7,6 +7,7 @@ import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Pitch;
+import org.wmn4j.notation.elements.Pitched;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -98,8 +99,36 @@ final class MonophonicPattern implements Pattern {
 
 	@Override
 	public boolean equalsTranspositionally(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
+		if (!other.isMonophonic()) {
+			return false;
+		}
+
+		return createIntervalNumberList(getContents()).equals(createIntervalNumberList(other.getContents()));
+	}
+
+	/*
+	 * Returns a list of the intervals between consecutive pitches in the contents list. The intervals
+	 * are expressed as integers denoting how many half-steps the interval consists of.
+	 */
+	private static List<Integer> createIntervalNumberList(List<Durational> contents) {
+		List<Pitched> pitchedElements = contents.stream().filter(durational -> durational instanceof Pitched)
+				.map(durational -> (Pitched) durational).collect(Collectors.toList());
+
+		// If size is at most 1, then there are no intervals between adjacent notes of the pattern.
+		if (pitchedElements.size() <= 1) {
+			return Collections.emptyList();
+		}
+
+		List<Integer> intervalNumbers = new ArrayList<>();
+		int previous = pitchedElements.get(0).getPitch().toInt();
+
+		for (int i = 1; i < pitchedElements.size(); ++i) {
+			final int current = pitchedElements.get(i).getPitch().toInt();
+			intervalNumbers.add(current - previous);
+			previous = current;
+		}
+
+		return intervalNumbers;
 	}
 
 	@Override

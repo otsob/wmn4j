@@ -73,6 +73,7 @@ public interface Pattern {
 	/**
 	 * Returns true if this pattern can be transposed chromatically so that its
 	 * pitches are enharmonically equal to those of other, otherwise returns false.
+	 * Durations are not considered in the comparison.
 	 *
 	 * @param other the pattern against which this is compared for
 	 *              transposed enharmonic pitch equality.
