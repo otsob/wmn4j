@@ -54,10 +54,10 @@ public final class PolyphonicPattern implements Pattern {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see wmnlibmir.Pattern#equalsInTransposedPitch(wmnlibmir.Pattern)
+	 * @see wmnlibmir.Pattern#equalsTranspositionally(wmnlibmir.Pattern)
 	 */
 	@Override
-	public boolean equalsInTransposedPitch(Pattern other) {
+	public boolean equalsTranspositionally(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -71,16 +71,16 @@ public interface Pattern {
 	boolean equalsEnharmonically(Pattern other);
 
 	/**
-	 * Returns true if this pattern can be transposed so that its
+	 * Returns true if this pattern can be transposed chromatically so that its
 	 * pitches are enharmonically equal to those of other, otherwise returns false.
 	 *
 	 * @param other the pattern against which this is compared for
 	 *              transposed enharmonic pitch equality.
-	 * @return true if this pattern can be transposed so that its
+	 * @return true if this pattern can be transposed chromatically so that its
 	 * pitches are enharmonically equal to those of other, otherwise returns
 	 * false
 	 */
-	boolean equalsInTransposedPitch(Pattern other);
+	boolean equalsTranspositionally(Pattern other);
 
 	/**
 	 * Returns true if this pattern has the same durations as the other pattern. The durations of notes in this pattern

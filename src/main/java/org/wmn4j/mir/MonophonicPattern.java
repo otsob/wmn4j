@@ -97,7 +97,7 @@ final class MonophonicPattern implements Pattern {
 	}
 
 	@Override
-	public boolean equalsInTransposedPitch(Pattern other) {
+	public boolean equalsTranspositionally(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}

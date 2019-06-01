@@ -182,7 +182,7 @@ class MonophonicPatternTest {
 
 	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 	@Test
-	void testEqualsInTransposedPitch() {
+	void testEqualsTranspositionally() {
 		// TODO
 	}
 
