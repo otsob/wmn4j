@@ -104,7 +104,33 @@ final class MonophonicPattern implements Pattern {
 
 	@Override
 	public boolean equalsInDurations(Pattern other) {
-		// TODO Auto-generated method stub
+		if (other.isMonophonic()) {
+			final List<Durational> contentsOfThis = getContents();
+			final List<Durational> contentsOfOther = other.getContents();
+
+			if (contentsOfThis.size() == contentsOfOther.size()) {
+				for (int i = 0; i < contentsOfThis.size(); ++i) {
+
+					final Durational durationalInThis = contentsOfThis.get(i);
+					final Durational durationalInOther = contentsOfOther.get(i);
+
+					final boolean bothAreOfSameType =
+							(durationalInThis.isRest() && durationalInOther.isRest()) || (!durationalInThis.isRest()
+									&& !durationalInOther.isRest());
+
+					if (!bothAreOfSameType) {
+						return false;
+					}
+
+					if (!contentsOfThis.get(i).getDuration().equals(contentsOfOther.get(i).getDuration())) {
+						return false;
+					}
+				}
+
+				return true;
+			}
+		}
+
 		return false;
 	}
 

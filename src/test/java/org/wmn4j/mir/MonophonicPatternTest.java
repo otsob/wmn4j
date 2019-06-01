@@ -186,9 +186,50 @@ class MonophonicPatternTest {
 		// TODO
 	}
 
-	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
 	@Test
 	void testEqualsInDurations() {
-		// TODO
+		final Pattern pattern = createMonophonicPattern(referenceNotes);
+		assertTrue(pattern.equalsInDurations(createMonophonicPattern(referenceNotes)));
+
+		List<Durational> withSameDurationsButDifferentPitches = new ArrayList<>();
+		withSameDurationsButDifferentPitches.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHT));
+		withSameDurationsButDifferentPitches.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHT));
+		withSameDurationsButDifferentPitches.add(Rest.of(Durations.QUARTER));
+		withSameDurationsButDifferentPitches.add(Note.of(Pitch.of(Pitch.Base.D, -1, 4), Durations.QUARTER));
+		withSameDurationsButDifferentPitches.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+
+		assertTrue(pattern.equalsInDurations(createMonophonicPattern(withSameDurationsButDifferentPitches)));
+
+		List<Durational> withDifferentNoteDurations = new ArrayList<>();
+		withDifferentNoteDurations.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT));
+		withDifferentNoteDurations.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
+		withDifferentNoteDurations.add(Rest.of(Durations.QUARTER));
+		withDifferentNoteDurations.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
+		withDifferentNoteDurations.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+
+		assertFalse(pattern.equalsInDurations(createMonophonicPattern(withDifferentNoteDurations)));
+
+		List<Durational> withDifferentRestDurations = new ArrayList<>();
+		withDifferentRestDurations.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT));
+		withDifferentRestDurations.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHT));
+		withDifferentRestDurations.add(Rest.of(Durations.EIGHT));
+		withDifferentRestDurations.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
+		withDifferentRestDurations.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+
+		assertFalse(pattern.equalsInDurations(createMonophonicPattern(withDifferentRestDurations)));
+
+		final List<Durational> withRestInAPlaceWhereReferenceHasANote = new ArrayList<>();
+		withRestInAPlaceWhereReferenceHasANote.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT));
+		withRestInAPlaceWhereReferenceHasANote.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHT));
+		withRestInAPlaceWhereReferenceHasANote.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
+		withRestInAPlaceWhereReferenceHasANote.add(Rest.of(Durations.QUARTER));
+		withRestInAPlaceWhereReferenceHasANote.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+
+		assertFalse(pattern.equalsInDurations(createMonophonicPattern(withRestInAPlaceWhereReferenceHasANote)));
+
+		final List<Durational> withAddedDurationAtEnd = new ArrayList<>(referenceNotes);
+		withAddedDurationAtEnd.add(Rest.of(Durations.SIXTEENTH));
+
+		assertFalse(pattern.equalsInDurations(createMonophonicPattern(withAddedDurationAtEnd)));
 	}
 }
