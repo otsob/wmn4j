@@ -93,16 +93,4 @@ public interface Pattern {
 	 * otherwise returns false
 	 */
 	boolean equalsInRhythm(Pattern other);
-
-	/**
-	 * Returns true if the onset times of notes in this pattern match
-	 * the onset times of notes in other, otherwise returns false. Pitches are
-	 * ignored.
-	 *
-	 * @param other the pattern against which this is compared for
-	 *              onset equality.
-	 * @return true if the onset times of notes in this pattern match
-	 * the onset times of notes in other, otherwise returns false
-	 */
-	boolean equalsInOnsets(Pattern other);
 }

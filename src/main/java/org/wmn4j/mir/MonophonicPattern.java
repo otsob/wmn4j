@@ -109,12 +109,6 @@ final class MonophonicPattern implements Pattern {
 	}
 
 	@Override
-	public boolean equalsInOnsets(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;

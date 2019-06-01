@@ -72,16 +72,4 @@ public final class PolyphonicPattern implements Pattern {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equalsInOnsets(wmnlibmir.Pattern)
-	 */
-	@Override
-	public boolean equalsInOnsets(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }

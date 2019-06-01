@@ -191,10 +191,4 @@ class MonophonicPatternTest {
 	void testEqualsInRhythm() {
 		// TODO
 	}
-
-	@Disabled("These tests are unfinished and should be unignored once the logic is implemented")
-	@Test
-	void testEqualsInOnsets() {
-		// TODO
-	}
 }
