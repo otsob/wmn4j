@@ -4,10 +4,19 @@
  */
 package org.wmn4j.mir;
 
+import org.wmn4j.notation.elements.Durational;
+
+import java.util.List;
+
 /**
  * @author Otso Björklund
  */
 public final class PolyphonicPattern implements Pattern {
+
+	@Override
+	public List<Durational> getContents() {
+		return null;
+	}
 
 	/*
 	 * (non-Javadoc)

@@ -3,6 +3,10 @@
  */
 package org.wmn4j.mir;
 
+import org.wmn4j.notation.elements.Durational;
+
+import java.util.List;
+
 /**
  * Interface for musical patterns. The patterns can represent motifs, melodies,
  * or segments of polyphonic music. A pattern is a sequence of notes, chords,
@@ -12,6 +16,25 @@ package org.wmn4j.mir;
  * in multiple voices.
  */
 public interface Pattern {
+
+	/**
+	 * Returns a monophonic pattern with the given contents. The contents must be strictly monophonic, i.e., they cannot
+	 * contain any chords.
+	 *
+	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
+	 * @return a pattern with the given contents
+	 */
+	static Pattern monophonicOf(List<Durational> contents) {
+		return new MonophonicPattern(contents);
+	}
+
+	/**
+	 * Returns the contents of this pattern. For monophonic patterns the contents are returned in temporal order. For
+	 * polyphonic patterns the order is not specified.
+	 *
+	 * @return the contents of this pattern
+	 */
+	List<Durational> getContents();
 
 	/**
 	 * Returns true if this pattern does not contain any notes occur simultaneously,

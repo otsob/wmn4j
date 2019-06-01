@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * no notes occur simultaneously. The pattern cannot contain chords and does not
  * consist of multiple voices. This class is immutable.
  */
-public final class MonophonicPattern implements Pattern {
+final class MonophonicPattern implements Pattern {
 
 	private final List<Durational> contents;
 
@@ -28,7 +28,7 @@ public final class MonophonicPattern implements Pattern {
 	 *
 	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
 	 */
-	public MonophonicPattern(List<Durational> contents) {
+	MonophonicPattern(List<Durational> contents) {
 		this.contents = Collections.unmodifiableList(new ArrayList<>(contents));
 		if (this.contents == null) {
 			throw new NullPointerException("Cannot create pattern with null contents");
@@ -41,11 +41,7 @@ public final class MonophonicPattern implements Pattern {
 		}
 	}
 
-	/**
-	 * Returns an unmodifiable view of the notation elements in temporal order that make up the pattern.
-	 *
-	 * @return an unmodifiable view of the notation elements in temporal order that make up the pattern
-	 */
+	@Override
 	public List<Durational> getContents() {
 		return this.contents;
 	}
@@ -67,9 +63,9 @@ public final class MonophonicPattern implements Pattern {
 
 	@Override
 	public boolean equalsInPitch(Pattern other) {
-		if (other instanceof MonophonicPattern) {
-			List<Pitch> pitchesOfOther = ((MonophonicPattern) other).toPitchList();
-			List<Pitch> pitchesOfThis = this.toPitchList();
+		if (other.isMonophonic()) {
+			List<Pitch> pitchesOfOther = toPitchList(other.getContents());
+			List<Pitch> pitchesOfThis = toPitchList(getContents());
 
 			return pitchesOfThis.equals(pitchesOfOther);
 		}
@@ -77,8 +73,8 @@ public final class MonophonicPattern implements Pattern {
 		return false;
 	}
 
-	private List<Pitch> toPitchList() {
-		return getContents().stream()
+	private static List<Pitch> toPitchList(List<Durational> contents) {
+		return contents.stream()
 				.filter(durational -> durational instanceof Note)
 				.map(durational -> ((Note) durational).getPitch())
 				.collect(Collectors.toList());
@@ -86,12 +82,12 @@ public final class MonophonicPattern implements Pattern {
 
 	@Override
 	public boolean equalsEnharmonically(Pattern other) {
-		if (other instanceof MonophonicPattern) {
-			List<Integer> pitchNumbersOfOther = ((MonophonicPattern) other).toPitchList().stream()
+		if (other.isMonophonic()) {
+			List<Integer> pitchNumbersOfOther = toPitchList(other.getContents()).stream()
 					.map(pitch -> pitch.toInt()).collect(
 							Collectors.toList());
 
-			List<Integer> pitchNumbersOfThis = this.toPitchList().stream().map(pitch -> pitch.toInt()).collect(
+			List<Integer> pitchNumbersOfThis = toPitchList(getContents()).stream().map(pitch -> pitch.toInt()).collect(
 					Collectors.toList());
 
 			return pitchNumbersOfOther.equals(pitchNumbersOfThis);
@@ -124,11 +120,17 @@ public final class MonophonicPattern implements Pattern {
 			return true;
 		}
 
-		if (!(o instanceof MonophonicPattern)) {
+		if (!(o instanceof Pattern)) {
 			return false;
 		}
 
-		return getContents().equals(((MonophonicPattern) o).getContents());
+		Pattern other = (Pattern) o;
+
+		if (!other.isMonophonic()) {
+			return false;
+		}
+
+		return getContents().equals(other.getContents());
 	}
 
 	@Override
