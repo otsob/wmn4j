@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -171,51 +171,43 @@ implements <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>
 <tbody>
 <tr class="altColor" id="i0">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(org.wmn4j.mir.Pattern)">equals</a></span>&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equalsEnharmonically(org.wmn4j.mir.Pattern)">equalsEnharmonically</a></span>&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</code></th>
 <td class="colLast">
-<div class="block">Returns true if this <code>Pattern</code> is equal to other.</div>
+<div class="block">Returns true if this pattern contains the enharmonically same
+ pitches in the same order as other, otherwise returns false.</div>
 </td>
 </tr>
 <tr class="rowColor" id="i1">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equalsEnharmonicallyInPitch(org.wmn4j.mir.Pattern)">equalsEnharmonicallyInPitch</a></span>&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equalsInDurations(org.wmn4j.mir.Pattern)">equalsInDurations</a></span>&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</code></th>
 <td class="colLast">
-<div class="block">Returns true if this <code>Pattern</code> contains the enharmonically same
- pitches in the same order as other, otherwise returns false.</div>
+<div class="block">Returns true if this pattern has the same durations as the other pattern.</div>
 </td>
 </tr>
 <tr class="altColor" id="i2">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equalsInOnsets(org.wmn4j.mir.Pattern)">equalsInOnsets</a></span>&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equalsInPitch(org.wmn4j.mir.Pattern)">equalsInPitch</a></span>&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</code></th>
 <td class="colLast">
-<div class="block">Returns true if the onset times of notes in this <code>Pattern</code> match
- the onset times of notes in other, otherwise returns false.</div>
+<div class="block">Returns true if this pattern contains the same pitches in the
+ same order as other, otherwise returns false.</div>
 </td>
 </tr>
 <tr class="rowColor" id="i3">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equalsInPitch(org.wmn4j.mir.Pattern)">equalsInPitch</a></span>&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equalsTranspositionally(org.wmn4j.mir.Pattern)">equalsTranspositionally</a></span>&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</code></th>
 <td class="colLast">
-<div class="block">Returns true if this <code>Pattern</code> contains the same pitches in the
- same order as other, otherwise returns false.</div>
-</td>
-</tr>
-<tr class="altColor" id="i4">
-<td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equalsInRhythm(org.wmn4j.mir.Pattern)">equalsInRhythm</a></span>&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</code></th>
-<td class="colLast">
-<div class="block">Returns true if this <code>Pattern</code> has the same rhythm as other.</div>
-</td>
-</tr>
-<tr class="rowColor" id="i5">
-<td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equalsInTransposedPitch(org.wmn4j.mir.Pattern)">equalsInTransposedPitch</a></span>&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</code></th>
-<td class="colLast">
-<div class="block">Returns true if this <code>Pattern</code> can be transposed so that its
+<div class="block">Returns true if this pattern can be transposed chromatically so that its
  pitches are enharmonically equal to those of other, otherwise returns false.</div>
 </td>
 </tr>
-<tr class="altColor" id="i6">
+<tr class="altColor" id="i4">
+<td class="colFirst"><code>java.util.List&lt;<a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getContents()">getContents</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns the contents of this pattern.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i5">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isMonophonic()">isMonophonic</a></span>()</code></th>
 <td class="colLast">
@@ -269,23 +261,21 @@ implements <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="equals(org.wmn4j.mir.Pattern)">
+<a id="getContents()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>equals</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;equals&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Pattern.html#equals(org.wmn4j.mir.Pattern)">Pattern</a></code></span></div>
-<div class="block">Returns true if this <code>Pattern</code> is equal to other.</div>
+<h4>getContents</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;getContents()</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Pattern.html#getContents()">Pattern</a></code></span></div>
+<div class="block">Returns the contents of this pattern. For monophonic patterns the contents are returned in temporal order. For
+ polyphonic patterns the order is not specified.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="Pattern.html#equals(org.wmn4j.mir.Pattern)">equals</a></code>&nbsp;in interface&nbsp;<code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - the <code>Pattern</code> this is compared against for equality</dd>
+<dd><code><a href="Pattern.html#getContents()">getContents</a></code>&nbsp;in interface&nbsp;<code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this pattern contains the exact same notes, rest, and chords
-         in the same order as other. Otherwise returns false.</dd>
+<dd>the contents of this pattern</dd>
 </dl>
 </li>
 </ul>
@@ -304,7 +294,7 @@ implements <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>
 <dd><code><a href="Pattern.html#isMonophonic()">isMonophonic</a></code>&nbsp;in interface&nbsp;<code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if this pattern does not contain any notes occur simultaneously.
-         Otherwise returns false.</dd>
+ Otherwise returns false.</dd>
 </dl>
 </li>
 </ul>
@@ -316,111 +306,89 @@ implements <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>
 <h4>equalsInPitch</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;equalsInPitch&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Pattern.html#equalsInPitch(org.wmn4j.mir.Pattern)">Pattern</a></code></span></div>
-<div class="block">Returns true if this <code>Pattern</code> contains the same pitches in the
+<div class="block">Returns true if this pattern contains the same pitches in the
  same order as other, otherwise returns false. The pitches must be spelled the
  same way for the patterns to be considered equal in pitch. Rhythm is ignored.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Pattern.html#equalsInPitch(org.wmn4j.mir.Pattern)">equalsInPitch</a></code>&nbsp;in interface&nbsp;<code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - the <code>Pattern</code> against which this is compared for
+<dd><code>other</code> - the pattern against which this is compared for
               pitch equality.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this <code>Pattern</code> contains the same pitches in the
-         same order as other, otherwise returns false</dd>
+<dd>true if this pattern contains the same pitches in the
+ same order as other, otherwise returns false</dd>
 </dl>
 </li>
 </ul>
-<a id="equalsEnharmonicallyInPitch(org.wmn4j.mir.Pattern)">
+<a id="equalsEnharmonically(org.wmn4j.mir.Pattern)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>equalsEnharmonicallyInPitch</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;equalsEnharmonicallyInPitch&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Pattern.html#equalsEnharmonicallyInPitch(org.wmn4j.mir.Pattern)">Pattern</a></code></span></div>
-<div class="block">Returns true if this <code>Pattern</code> contains the enharmonically same
+<h4>equalsEnharmonically</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;equalsEnharmonically&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Pattern.html#equalsEnharmonically(org.wmn4j.mir.Pattern)">Pattern</a></code></span></div>
+<div class="block">Returns true if this pattern contains the enharmonically same
  pitches in the same order as other, otherwise returns false. The pitch
  spellings are not considered, but they are compared using enharmonic
  equality. Rhythm is ignored.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="Pattern.html#equalsEnharmonicallyInPitch(org.wmn4j.mir.Pattern)">equalsEnharmonicallyInPitch</a></code>&nbsp;in interface&nbsp;<code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
+<dd><code><a href="Pattern.html#equalsEnharmonically(org.wmn4j.mir.Pattern)">equalsEnharmonically</a></code>&nbsp;in interface&nbsp;<code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - the <code>Pattern</code> against which this is compared for
+<dd><code>other</code> - the pattern against which this is compared for
               enharmonic pitch equality.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this <code>Pattern</code> contains the enharmonically same
-         pitches in the same order as other, otherwise returns false</dd>
+<dd>true if this pattern contains the enharmonically same
+ pitches in the same order as other, otherwise returns false</dd>
 </dl>
 </li>
 </ul>
-<a id="equalsInTransposedPitch(org.wmn4j.mir.Pattern)">
+<a id="equalsTranspositionally(org.wmn4j.mir.Pattern)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>equalsInTransposedPitch</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;equalsInTransposedPitch&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Pattern.html#equalsInTransposedPitch(org.wmn4j.mir.Pattern)">Pattern</a></code></span></div>
-<div class="block">Returns true if this <code>Pattern</code> can be transposed so that its
- pitches are enharmonically equal to those of other, otherwise returns false.</div>
+<h4>equalsTranspositionally</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;equalsTranspositionally&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Pattern.html#equalsTranspositionally(org.wmn4j.mir.Pattern)">Pattern</a></code></span></div>
+<div class="block">Returns true if this pattern can be transposed chromatically so that its
+ pitches are enharmonically equal to those of other, otherwise returns false.
+ Durations are not considered in the comparison.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="Pattern.html#equalsInTransposedPitch(org.wmn4j.mir.Pattern)">equalsInTransposedPitch</a></code>&nbsp;in interface&nbsp;<code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
+<dd><code><a href="Pattern.html#equalsTranspositionally(org.wmn4j.mir.Pattern)">equalsTranspositionally</a></code>&nbsp;in interface&nbsp;<code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - the <code>Pattern</code> against which this is compared for
+<dd><code>other</code> - the pattern against which this is compared for
               transposed enharmonic pitch equality.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this <code>Pattern</code> can be transposed so that its
-         pitches are enharmonically equal to those of other, otherwise returns
-         false</dd>
+<dd>true if this pattern can be transposed chromatically so that its
+ pitches are enharmonically equal to those of other, otherwise returns
+ false</dd>
 </dl>
 </li>
 </ul>
-<a id="equalsInRhythm(org.wmn4j.mir.Pattern)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>equalsInRhythm</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;equalsInRhythm&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Pattern.html#equalsInRhythm(org.wmn4j.mir.Pattern)">Pattern</a></code></span></div>
-<div class="block">Returns true if this <code>Pattern</code> has the same rhythm as other. Both
- the onsets and durations must match for rhythms to be considered equal.
- Pitches are ignored.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="Pattern.html#equalsInRhythm(org.wmn4j.mir.Pattern)">equalsInRhythm</a></code>&nbsp;in interface&nbsp;<code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - the <code>Pattern</code> against which this is compared for
-              rhythm equality.</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this <code>Pattern</code> has the same rhythm as other,
-         otherwise returns false</dd>
-</dl>
-</li>
-</ul>
-<a id="equalsInOnsets(org.wmn4j.mir.Pattern)">
+<a id="equalsInDurations(org.wmn4j.mir.Pattern)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>equalsInOnsets</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;equalsInOnsets&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Pattern.html#equalsInOnsets(org.wmn4j.mir.Pattern)">Pattern</a></code></span></div>
-<div class="block">Returns true if the onset times of notes in this <code>Pattern</code> match
- the onset times of notes in other, otherwise returns false. Pitches are
- ignored.</div>
+<h4>equalsInDurations</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;equalsInDurations&#8203;(<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;other)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Pattern.html#equalsInDurations(org.wmn4j.mir.Pattern)">Pattern</a></code></span></div>
+<div class="block">Returns true if this pattern has the same durations as the other pattern. The durations of notes in this pattern
+ must match the durations of notes in the given pattern and the durations of rests in this must match the
+ durations of the rests in the given pattern.
+ Pitches are ignored.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="Pattern.html#equalsInOnsets(org.wmn4j.mir.Pattern)">equalsInOnsets</a></code>&nbsp;in interface&nbsp;<code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
+<dd><code><a href="Pattern.html#equalsInDurations(org.wmn4j.mir.Pattern)">equalsInDurations</a></code>&nbsp;in interface&nbsp;<code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>other</code> - the <code>Pattern</code> against which this is compared for
-              onset equality.</dd>
+<dd><code>other</code> - the pattern against which this is compared for
+              durational equality</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if the onset times of notes in this <code>Pattern</code> match
-         the onset times of notes in other, otherwise returns false</dd>
+<dd>true if this pattern has the same durations as the other pattern</dd>
 </dl>
 </li>
 </ul>

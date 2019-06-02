@@ -559,13 +559,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns true if this position is equal to the given object.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/MonophonicPattern.html#equals(org.wmn4j.mir.Pattern)">equals(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/MonophonicPattern.html" title="class in org.wmn4j.mir">MonophonicPattern</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#equals(org.wmn4j.mir.Pattern)">equals(Pattern)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#equalsEnharmonically(org.wmn4j.mir.Pattern)">equalsEnharmonically(Pattern)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
-<div class="block">Returns true if this <code>Pattern</code> is equal to other.</div>
+<div class="block">Returns true if this pattern contains the enharmonically same
+ pitches in the same order as other, otherwise returns false.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equals(org.wmn4j.mir.Pattern)">equals(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equalsEnharmonically(org.wmn4j.mir.Pattern)">equalsEnharmonically(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Pitch.html#equalsEnharmonically(org.wmn4j.notation.elements.Pitch)">equalsEnharmonically(Pitch)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a></dt>
 <dd>
@@ -573,29 +572,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  <a href="http://en.wikipedia.org/wiki/Enharmonic">enharmonically</a> equal to
  the given pitch.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/MonophonicPattern.html#equalsEnharmonicallyInPitch(org.wmn4j.mir.Pattern)">equalsEnharmonicallyInPitch(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/MonophonicPattern.html" title="class in org.wmn4j.mir">MonophonicPattern</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#equalsEnharmonicallyInPitch(org.wmn4j.mir.Pattern)">equalsEnharmonicallyInPitch(Pattern)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#equalsInDurations(org.wmn4j.mir.Pattern)">equalsInDurations(Pattern)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
-<div class="block">Returns true if this <code>Pattern</code> contains the enharmonically same
- pitches in the same order as other, otherwise returns false.</div>
+<div class="block">Returns true if this pattern has the same durations as the other pattern.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equalsEnharmonicallyInPitch(org.wmn4j.mir.Pattern)">equalsEnharmonicallyInPitch(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/MonophonicPattern.html#equalsInOnsets(org.wmn4j.mir.Pattern)">equalsInOnsets(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/MonophonicPattern.html" title="class in org.wmn4j.mir">MonophonicPattern</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#equalsInOnsets(org.wmn4j.mir.Pattern)">equalsInOnsets(Pattern)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
-<dd>
-<div class="block">Returns true if the onset times of notes in this <code>Pattern</code> match
- the onset times of notes in other, otherwise returns false.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equalsInOnsets(org.wmn4j.mir.Pattern)">equalsInOnsets(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/MonophonicPattern.html#equalsInPitch(org.wmn4j.mir.Pattern)">equalsInPitch(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/MonophonicPattern.html" title="class in org.wmn4j.mir">MonophonicPattern</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equalsInDurations(org.wmn4j.mir.Pattern)">equalsInDurations(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#equalsInPitch(org.wmn4j.mir.Pattern)">equalsInPitch(Pattern)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
-<div class="block">Returns true if this <code>Pattern</code> contains the same pitches in the
+<div class="block">Returns true if this pattern contains the same pitches in the
  same order as other, otherwise returns false.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equalsInPitch(org.wmn4j.mir.Pattern)">equalsInPitch(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
@@ -604,22 +589,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns true if this note is equal to the given note in pitch and duration.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/MonophonicPattern.html#equalsInRhythm(org.wmn4j.mir.Pattern)">equalsInRhythm(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/MonophonicPattern.html" title="class in org.wmn4j.mir">MonophonicPattern</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#equalsInRhythm(org.wmn4j.mir.Pattern)">equalsInRhythm(Pattern)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#equalsTranspositionally(org.wmn4j.mir.Pattern)">equalsTranspositionally(Pattern)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
-<div class="block">Returns true if this <code>Pattern</code> has the same rhythm as other.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equalsInRhythm(org.wmn4j.mir.Pattern)">equalsInRhythm(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/MonophonicPattern.html#equalsInTransposedPitch(org.wmn4j.mir.Pattern)">equalsInTransposedPitch(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/MonophonicPattern.html" title="class in org.wmn4j.mir">MonophonicPattern</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#equalsInTransposedPitch(org.wmn4j.mir.Pattern)">equalsInTransposedPitch(Pattern)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
-<dd>
-<div class="block">Returns true if this <code>Pattern</code> can be transposed so that its
+<div class="block">Returns true if this pattern can be transposed chromatically so that its
  pitches are enharmonically equal to those of other, otherwise returns false.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equalsInTransposedPitch(org.wmn4j.mir.Pattern)">equalsInTransposedPitch(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equalsTranspositionally(org.wmn4j.mir.Pattern)">equalsTranspositionally(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#euclidean(org.wmn4j.analysis.harmony.PCProfile,org.wmn4j.analysis.harmony.PCProfile)">euclidean(PCProfile, PCProfile)</a></span> - Static method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
 <dd>
@@ -798,10 +773,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the clef chagnes specified in the attributes.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/MonophonicPattern.html#getContents()">getContents()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/MonophonicPattern.html" title="class in org.wmn4j.mir">MonophonicPattern</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#getContents()">getContents()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
-<div class="block">Returns the notation elements in temporal order that make up the pattern.</div>
+<div class="block">Returns the contents of this pattern.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#getContents()">getContents()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Duration.html#getDenominator()">getDenominator()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></dt>
 <dd>
 <div class="block">Returns the denominator of this duration.</div>
@@ -1366,8 +1343,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns true if this is lower than the given pitch.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/MonophonicPattern.html#isMonophonic()">isMonophonic()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/MonophonicPattern.html" title="class in org.wmn4j.mir">MonophonicPattern</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#isMonophonic()">isMonophonic()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
 <div class="block">Returns true if this pattern does not contain any notes occur simultaneously,
@@ -1521,13 +1496,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Iterator for <a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> objects in a measure.</div>
 </dd>
-<dt><a href="org/wmn4j/mir/MonophonicPattern.html" title="class in org.wmn4j.mir"><span class="typeNameLink">MonophonicPattern</span></a> - Class in <a href="org/wmn4j/mir/package-summary.html">org.wmn4j.mir</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#monophonicOf(java.util.List)">monophonicOf(List&lt;Durational&gt;)</a></span> - Static method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
-<div class="block">A class for representing monophonic musical patterns.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/MonophonicPattern.html#%3Cinit%3E(java.util.List)">MonophonicPattern(List&lt;Durational&gt;)</a></span> - Constructor for class org.wmn4j.mir.<a href="org/wmn4j/mir/MonophonicPattern.html" title="class in org.wmn4j.mir">MonophonicPattern</a></dt>
-<dd>
-<div class="block">Constructor.</div>
+<div class="block">Returns a monophonic pattern with the given contents.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Score.Attribute.html#MOVEMENT_TITLE">MOVEMENT_TITLE</a></span> - org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a></dt>
 <dd>
@@ -2150,8 +2121,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  number</a> of this pitch class.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#toString()">toString()</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/MonophonicPattern.html#toString()">toString()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/MonophonicPattern.html" title="class in org.wmn4j.mir">MonophonicPattern</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Chord.html#toString()">toString()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></dt>
 <dd>&nbsp;</dd>
