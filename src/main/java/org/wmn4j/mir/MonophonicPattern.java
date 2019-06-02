@@ -1,34 +1,35 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.mir;
 
+import org.wmn4j.notation.elements.Chord;
+import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.elements.Note;
+import org.wmn4j.notation.elements.Pitch;
+import org.wmn4j.notation.elements.Pitched;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Durational;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * A class for representing monophonic musical patterns. In a monophonic pattern
  * no notes occur simultaneously. The pattern cannot contain chords and does not
  * consist of multiple voices. This class is immutable.
- *
- * @author Otso Björklund
  */
-public final class MonophonicPattern implements Pattern {
+final class MonophonicPattern implements Pattern {
 
 	private final List<Durational> contents;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param contents the notation elements in temporal order that make up the
-	 *                 pattern
+	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
 	 */
-	public MonophonicPattern(List<Durational> contents) {
+	MonophonicPattern(List<Durational> contents) {
 		this.contents = Collections.unmodifiableList(new ArrayList<>(contents));
 		if (this.contents == null) {
 			throw new NullPointerException("Cannot create pattern with null contents");
@@ -41,11 +42,7 @@ public final class MonophonicPattern implements Pattern {
 		}
 	}
 
-	/**
-	 * Returns the notation elements in temporal order that make up the pattern.
-	 *
-	 * @return the notation elements in temporal order that make up the pattern
-	 */
+	@Override
 	public List<Durational> getContents() {
 		return this.contents;
 	}
@@ -61,44 +58,132 @@ public final class MonophonicPattern implements Pattern {
 	}
 
 	@Override
-	public boolean equals(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public boolean isMonophonic() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean equalsInPitch(Pattern other) {
-		// TODO Auto-generated method stub
+		if (other.isMonophonic()) {
+			List<Pitch> pitchesOfOther = toPitchList(other.getContents());
+			List<Pitch> pitchesOfThis = toPitchList(getContents());
+
+			return pitchesOfThis.equals(pitchesOfOther);
+		}
+
+		return false;
+	}
+
+	private static List<Pitch> toPitchList(List<Durational> contents) {
+		return contents.stream()
+				.filter(durational -> durational instanceof Note)
+				.map(durational -> ((Note) durational).getPitch())
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public boolean equalsEnharmonically(Pattern other) {
+		if (other.isMonophonic()) {
+			List<Integer> pitchNumbersOfOther = toPitchList(other.getContents()).stream()
+					.map(pitch -> pitch.toInt()).collect(
+							Collectors.toList());
+
+			List<Integer> pitchNumbersOfThis = toPitchList(getContents()).stream().map(pitch -> pitch.toInt()).collect(
+					Collectors.toList());
+
+			return pitchNumbersOfOther.equals(pitchNumbersOfThis);
+		}
+
 		return false;
 	}
 
 	@Override
-	public boolean equalsEnharmonicallyInPitch(Pattern other) {
-		// TODO Auto-generated method stub
+	public boolean equalsTranspositionally(Pattern other) {
+		if (!other.isMonophonic()) {
+			return false;
+		}
+
+		return createIntervalNumberList(getContents()).equals(createIntervalNumberList(other.getContents()));
+	}
+
+	/*
+	 * Returns a list of the intervals between consecutive pitches in the contents list. The intervals
+	 * are expressed as integers denoting how many half-steps the interval consists of.
+	 */
+	private static List<Integer> createIntervalNumberList(List<Durational> contents) {
+		List<Pitched> pitchedElements = contents.stream().filter(durational -> durational instanceof Pitched)
+				.map(durational -> (Pitched) durational).collect(Collectors.toList());
+
+		// If size is at most 1, then there are no intervals between adjacent notes of the pattern.
+		if (pitchedElements.size() <= 1) {
+			return Collections.emptyList();
+		}
+
+		List<Integer> intervalNumbers = new ArrayList<>();
+		int previous = pitchedElements.get(0).getPitch().toInt();
+
+		for (int i = 1; i < pitchedElements.size(); ++i) {
+			final int current = pitchedElements.get(i).getPitch().toInt();
+			intervalNumbers.add(current - previous);
+			previous = current;
+		}
+
+		return intervalNumbers;
+	}
+
+	@Override
+	public boolean equalsInDurations(Pattern other) {
+		if (other.isMonophonic()) {
+			final List<Durational> contentsOfThis = getContents();
+			final List<Durational> contentsOfOther = other.getContents();
+
+			if (contentsOfThis.size() == contentsOfOther.size()) {
+				for (int i = 0; i < contentsOfThis.size(); ++i) {
+
+					final Durational durationalInThis = contentsOfThis.get(i);
+					final Durational durationalInOther = contentsOfOther.get(i);
+
+					final boolean bothAreOfSameType =
+							(durationalInThis.isRest() && durationalInOther.isRest()) || (!durationalInThis.isRest()
+									&& !durationalInOther.isRest());
+
+					if (!bothAreOfSameType) {
+						return false;
+					}
+
+					if (!contentsOfThis.get(i).getDuration().equals(contentsOfOther.get(i).getDuration())) {
+						return false;
+					}
+				}
+
+				return true;
+			}
+		}
+
 		return false;
 	}
 
 	@Override
-	public boolean equalsInTransposedPitch(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (!(o instanceof Pattern)) {
+			return false;
+		}
+
+		Pattern other = (Pattern) o;
+
+		if (!other.isMonophonic()) {
+			return false;
+		}
+
+		return getContents().equals(other.getContents());
 	}
 
 	@Override
-	public boolean equalsInRhythm(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean equalsInOnsets(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
+	public int hashCode() {
+		return Objects.hashCode(contents);
 	}
 }

@@ -1,8 +1,11 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.mir;
+
+import org.wmn4j.notation.elements.Durational;
+
+import java.util.List;
 
 /**
  * Interface for musical patterns. The patterns can represent motifs, melodies,
@@ -11,87 +14,84 @@ package org.wmn4j.mir;
  * there are no simultaneously occurring notes or chords. In a polyphonic
  * pattern there can be multiple notes occurring at the same time in chords or
  * in multiple voices.
- *
- * @author Otso Björklund
  */
 public interface Pattern {
 
 	/**
-	 * Returns true if this <code>Pattern</code> is equal to other.
+	 * Returns a monophonic pattern with the given contents. The contents must be strictly monophonic, i.e., they cannot
+	 * contain any chords.
 	 *
-	 * @param other the <code>Pattern</code> this is compared against for equality
-	 * @return true if this pattern contains the exact same notes, rest, and chords
-	 *         in the same order as other. Otherwise returns false.
+	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
+	 * @return a pattern with the given contents
 	 */
-	boolean equals(Pattern other);
+	static Pattern monophonicOf(List<Durational> contents) {
+		return new MonophonicPattern(contents);
+	}
+
+	/**
+	 * Returns the contents of this pattern. For monophonic patterns the contents are returned in temporal order. For
+	 * polyphonic patterns the order is not specified.
+	 *
+	 * @return the contents of this pattern
+	 */
+	List<Durational> getContents();
 
 	/**
 	 * Returns true if this pattern does not contain any notes occur simultaneously,
 	 * otherwise returns false.
 	 *
 	 * @return true if this pattern does not contain any notes occur simultaneously.
-	 *         Otherwise returns false.
+	 * Otherwise returns false.
 	 */
 	boolean isMonophonic();
 
 	/**
-	 * Returns true if this <code>Pattern</code> contains the same pitches in the
+	 * Returns true if this pattern contains the same pitches in the
 	 * same order as other, otherwise returns false. The pitches must be spelled the
 	 * same way for the patterns to be considered equal in pitch. Rhythm is ignored.
 	 *
-	 * @param other the <code>Pattern</code> against which this is compared for
+	 * @param other the pattern against which this is compared for
 	 *              pitch equality.
-	 * @return true if this <code>Pattern</code> contains the same pitches in the
-	 *         same order as other, otherwise returns false
+	 * @return true if this pattern contains the same pitches in the
+	 * same order as other, otherwise returns false
 	 */
 	boolean equalsInPitch(Pattern other);
 
 	/**
-	 * Returns true if this <code>Pattern</code> contains the enharmonically same
+	 * Returns true if this pattern contains the enharmonically same
 	 * pitches in the same order as other, otherwise returns false. The pitch
 	 * spellings are not considered, but they are compared using enharmonic
 	 * equality. Rhythm is ignored.
 	 *
-	 * @param other the <code>Pattern</code> against which this is compared for
+	 * @param other the pattern against which this is compared for
 	 *              enharmonic pitch equality.
-	 * @return true if this <code>Pattern</code> contains the enharmonically same
-	 *         pitches in the same order as other, otherwise returns false
+	 * @return true if this pattern contains the enharmonically same
+	 * pitches in the same order as other, otherwise returns false
 	 */
-	boolean equalsEnharmonicallyInPitch(Pattern other);
+	boolean equalsEnharmonically(Pattern other);
 
 	/**
-	 * Returns true if this <code>Pattern</code> can be transposed so that its
+	 * Returns true if this pattern can be transposed chromatically so that its
 	 * pitches are enharmonically equal to those of other, otherwise returns false.
+	 * Durations are not considered in the comparison.
 	 *
-	 * @param other the <code>Pattern</code> against which this is compared for
+	 * @param other the pattern against which this is compared for
 	 *              transposed enharmonic pitch equality.
-	 * @return true if this <code>Pattern</code> can be transposed so that its
-	 *         pitches are enharmonically equal to those of other, otherwise returns
-	 *         false
+	 * @return true if this pattern can be transposed chromatically so that its
+	 * pitches are enharmonically equal to those of other, otherwise returns
+	 * false
 	 */
-	boolean equalsInTransposedPitch(Pattern other);
+	boolean equalsTranspositionally(Pattern other);
 
 	/**
-	 * Returns true if this <code>Pattern</code> has the same rhythm as other. Both
-	 * the onsets and durations must match for rhythms to be considered equal.
+	 * Returns true if this pattern has the same durations as the other pattern. The durations of notes in this pattern
+	 * must match the durations of notes in the given pattern and the durations of rests in this must match the
+	 * durations of the rests in the given pattern.
 	 * Pitches are ignored.
 	 *
-	 * @param other the <code>Pattern</code> against which this is compared for
-	 *              rhythm equality.
-	 * @return true if this <code>Pattern</code> has the same rhythm as other,
-	 *         otherwise returns false
+	 * @param other the pattern against which this is compared for
+	 *              durational equality
+	 * @return true if this pattern has the same durations as the other pattern
 	 */
-	boolean equalsInRhythm(Pattern other);
-
-	/**
-	 * Returns true if the onset times of notes in this <code>Pattern</code> match
-	 * the onset times of notes in other, otherwise returns false. Pitches are
-	 * ignored.
-	 *
-	 * @param other the <code>Pattern</code> against which this is compared for
-	 *              onset equality.
-	 * @return true if the onset times of notes in this <code>Pattern</code> match
-	 *         the onset times of notes in other, otherwise returns false
-	 */
-	boolean equalsInOnsets(Pattern other);
+	boolean equalsInDurations(Pattern other);
 }

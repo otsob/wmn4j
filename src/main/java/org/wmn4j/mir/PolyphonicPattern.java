@@ -4,21 +4,18 @@
  */
 package org.wmn4j.mir;
 
+import org.wmn4j.notation.elements.Durational;
+
+import java.util.List;
+
 /**
- *
  * @author Otso Björklund
  */
 public final class PolyphonicPattern implements Pattern {
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equals(wmnlibmir.Pattern)
-	 */
 	@Override
-	public boolean equals(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
+	public List<Durational> getContents() {
+		return null;
 	}
 
 	/*
@@ -46,10 +43,10 @@ public final class PolyphonicPattern implements Pattern {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see wmnlibmir.Pattern#equalsEnharmonicallyInPitch(wmnlibmir.Pattern)
+	 * @see wmnlibmir.Pattern#equalsEnharmonically(wmnlibmir.Pattern)
 	 */
 	@Override
-	public boolean equalsEnharmonicallyInPitch(Pattern other) {
+	public boolean equalsEnharmonically(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -57,10 +54,10 @@ public final class PolyphonicPattern implements Pattern {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see wmnlibmir.Pattern#equalsInTransposedPitch(wmnlibmir.Pattern)
+	 * @see wmnlibmir.Pattern#equalsTranspositionally(wmnlibmir.Pattern)
 	 */
 	@Override
-	public boolean equalsInTransposedPitch(Pattern other) {
+	public boolean equalsTranspositionally(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -68,23 +65,11 @@ public final class PolyphonicPattern implements Pattern {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see wmnlibmir.Pattern#equalsInRhythm(wmnlibmir.Pattern)
+	 * @see wmnlibmir.Pattern#equalsInDurations(wmnlibmir.Pattern)
 	 */
 	@Override
-	public boolean equalsInRhythm(Pattern other) {
+	public boolean equalsInDurations(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equalsInOnsets(wmnlibmir.Pattern)
-	 */
-	@Override
-	public boolean equalsInOnsets(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }
