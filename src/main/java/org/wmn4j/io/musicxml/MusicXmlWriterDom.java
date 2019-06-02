@@ -304,19 +304,19 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 
 		//Key signature
 		if (!measure.getKeySignature().equals(keySigInEffect)) {
-			attrElement.appendChild(createKeySignatureElement(measure));
+			attrElement.appendChild(createKeySignatureElement(measure.getKeySignature()));
 			this.keySigInEffect = measure.getKeySignature();
 		}
 
 		//Time signature
 		if (!measure.getTimeSignature().equals(timeSigInEffect)) {
-			attrElement.appendChild(createTimeSignatureElement(measure));
+			attrElement.appendChild(createTimeSignatureElement(measure.getTimeSignature()));
 			this.timeSigInEffect = measure.getTimeSignature();
 		}
 
 		//Clef
 		if (!measure.getClef().equals(clefInEffect)) {
-			attrElement.appendChild(createClefElement(measure));
+			attrElement.appendChild(createClefElement(measure.getClef()));
 			this.clefInEffect = measure.getClef();
 		}
 
@@ -333,13 +333,13 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return divisionsElement;
 	}
 
-	private Element createKeySignatureElement(Measure measure) {
+	private Element createKeySignatureElement(KeySignature keySignature) {
 		Element keySigElement = doc.createElement(MusicXmlTags.MEAS_ATTR_KEY);
 		Element fifthsElement = doc.createElement(MusicXmlTags.MEAS_ATTR_KEY_FIFTHS);
 
-		int fifths = measure.getKeySignature().getNumberOfSharps();
+		int fifths = keySignature.getNumberOfSharps();
 		if (fifths == 0) {
-			fifths = measure.getKeySignature().getNumberOfFlats() * -1;
+			fifths = keySignature.getNumberOfFlats() * -1;
 		}
 		fifthsElement.setTextContent(Integer.toString(fifths));
 
@@ -348,13 +348,13 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return keySigElement;
 	}
 
-	private Element createTimeSignatureElement(Measure measure) {
+	private Element createTimeSignatureElement(TimeSignature timeSignature) {
 		Element timeSigElement = doc.createElement(MusicXmlTags.MEAS_ATTR_TIME);
 		Element beatsElement = doc.createElement(MusicXmlTags.MEAS_ATTR_BEATS);
 		Element beatTypeElement = doc.createElement(MusicXmlTags.MEAS_ATTR_BEAT_TYPE);
 
-		beatsElement.setTextContent(Integer.toString(measure.getTimeSignature().getBeatCount()));
-		beatTypeElement.setTextContent(Integer.toString(measure.getTimeSignature().getBeatDuration().getDenominator()));
+		beatsElement.setTextContent(Integer.toString(timeSignature.getBeatCount()));
+		beatTypeElement.setTextContent(Integer.toString(timeSignature.getBeatDuration().getDenominator()));
 
 		timeSigElement.appendChild(beatsElement);
 		timeSigElement.appendChild(beatTypeElement);
@@ -362,11 +362,11 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return timeSigElement;
 	}
 
-	private Element createClefElement(Measure measure) {
+	private Element createClefElement(Clef clef) {
 		Element clefElement = doc.createElement(MusicXmlTags.CLEF);
 		Element signElement = doc.createElement(MusicXmlTags.CLEF_SIGN);
 
-		switch (measure.getClef().getSymbol()) {
+		switch (clef.getSymbol()) {
 			case G:
 				signElement.setTextContent("G");
 				break;
@@ -380,11 +380,11 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 				signElement.setTextContent("percussion");
 				break;
 			default:
-				throw new IllegalStateException("Unexpected clef symbol: " + measure.getClef().getSymbol());
+				throw new IllegalStateException("Unexpected clef symbol: " + clef.getSymbol());
 		}
 
 		Element lineElement = doc.createElement(MusicXmlTags.CLEF_LINE);
-		lineElement.setTextContent(Integer.toString(measure.getClef().getLine()));
+		lineElement.setTextContent(Integer.toString(clef.getLine()));
 
 		clefElement.appendChild(signElement);
 		clefElement.appendChild(lineElement);
