@@ -123,6 +123,14 @@ class MusicXmlWriterDomTest {
 	}
 
 	@Test
+	void testWritingClefs() {
+		Score score = readMusicXmlTestFile("clefs.xml", false);
+		Score writtenScore = writeAndReadScore(score);
+
+		MusicXmlFileChecks.assertClefsReadCorrectly(writtenScore);
+	}
+
+	@Test
 	void testWritingBarlines() {
 		Score score = readMusicXmlTestFile("barlines.xml", false);
 		Score writtenScore = writeAndReadScore(score);

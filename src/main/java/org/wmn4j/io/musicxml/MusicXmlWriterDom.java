@@ -38,8 +38,12 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.math.BigInteger;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
@@ -197,6 +201,9 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		final Optional<Element> attributes = createMeasureAttributesElement(measure, prevMeasure);
 		attributes.ifPresent(attrElement -> measureElement.appendChild(attrElement));
 
+		//Set up handling possible mid-measure clef changes
+		Map<Duration, Clef> undealtClefChanges = new HashMap<>(measure.getClefChanges());
+
 		//Notes
 		final List<Integer> voiceNumbers = measure.getVoiceNumbers();
 		int voicesHandled = 0;
@@ -225,6 +232,10 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 						useChordTag = true;
 					}
 				}
+
+				// Handle mid-measure clef changes
+				handleMidMeasureClefChanges(measureElement, undealtClefChanges, cumulatedDuration);
+
 			}
 
 			// In case of multiple voices, backup to the beginning of the measure
@@ -390,6 +401,43 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		clefElement.appendChild(lineElement);
 
 		return clefElement;
+	}
+
+	private void handleMidMeasureClefChanges(
+			Element measureElement, Map<Duration, Clef> undealtClefChanges, Duration cumulatedDuration) {
+
+		List<Duration> offsets = new ArrayList<>(undealtClefChanges.keySet());
+		Collections.sort(offsets);
+		for (Duration offset : offsets) {
+
+			if (offset.isShorterThan(cumulatedDuration) || offset.equals(cumulatedDuration)) {
+
+				// Backup
+				if (!offset.equals(cumulatedDuration)) {
+					Element backupElement = createBackupElement(cumulatedDuration.subtract(offset));
+					measureElement.appendChild(backupElement);
+				}
+
+				// Clef
+				Element attributesElement = doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
+				Element clefElement = createClefElement(undealtClefChanges.get(offset));
+
+				attributesElement.appendChild(clefElement);
+				measureElement.appendChild(attributesElement);
+
+				clefInEffect = undealtClefChanges.get(offset);
+
+				undealtClefChanges.remove(offset);
+
+				// Forward
+				if (!offset.equals(cumulatedDuration)) {
+					Element forwardElement = createForwardElement(cumulatedDuration.subtract(offset));
+					measureElement.appendChild(forwardElement);
+				}
+
+			}
+
+		}
 	}
 
 	private Element createBackupElement(Duration duration) {
