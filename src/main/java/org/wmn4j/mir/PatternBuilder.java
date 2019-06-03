@@ -3,6 +3,7 @@
  */
 package org.wmn4j.mir;
 
+import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public final class PatternBuilder {
 
 	private static final int DEFAULT_VOICE_NUMBER = 0;
 	private final Map<Integer, List<Durational>> voices;
+	private boolean isMonophonic = true;
 
 	/**
 	 * Constructor that creates an empty builder.
@@ -49,7 +51,21 @@ public final class PatternBuilder {
 			voices.put(voice, new ArrayList<>());
 		}
 
+		if (durational instanceof Chord || voices.keySet().size() > 1) {
+			isMonophonic = false;
+		}
+
 		voices.get(voice).add(durational);
+	}
+
+	/**
+	 * Returns true if this builder only has monophonic contents, that is, there are no simultaneously sounding notes
+	 * set in the contents of this builder.
+	 *
+	 * @return true if this builder only has monophonic contents
+	 */
+	public boolean isMonophonic() {
+		return isMonophonic;
 	}
 
 	/**

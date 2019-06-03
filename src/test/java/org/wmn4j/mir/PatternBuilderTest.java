@@ -10,6 +10,7 @@ import org.wmn4j.notation.elements.Rest;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PatternBuilderTest {
 
@@ -35,6 +36,7 @@ class PatternBuilderTest {
 		final Note sixthElement = Note.of(Pitch.of(Pitch.Base.B, -1, 4), Durations.SIXTEENTH);
 		builder.add(sixthElement);
 
+		assertTrue(builder.isMonophonic());
 		final Pattern pattern = builder.build();
 
 		final List<Durational> patternContents = pattern.getContents();
@@ -45,6 +47,8 @@ class PatternBuilderTest {
 		assertEquals(fourthElement, patternContents.get(3));
 		assertEquals(fifthElement, patternContents.get(4));
 		assertEquals(sixthElement, patternContents.get(5));
+
+		assertTrue(pattern.isMonophonic());
 	}
 
 }
