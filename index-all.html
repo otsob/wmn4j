@@ -122,6 +122,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Add the pitch class/classes of durational to this <code>PCProfile</code>.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#add(org.wmn4j.notation.elements.Durational)">add(Durational)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
+<dd>
+<div class="block">Adds the given durational to the default voice in this builder.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#add(org.wmn4j.notation.elements.Note)">add(Note)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
 <dd>
 <div class="block">Add to the pitch class bin of the pitch class of note.</div>
@@ -158,6 +162,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#addToVoice(int,org.wmn4j.notation.builders.DurationalBuilder)">addToVoice(int, DurationalBuilder)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
 <div class="block">Append a <a href="org/wmn4j/notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders"><code>DurationalBuilder</code></a> to the voice with the given number.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#addToVoice(org.wmn4j.notation.elements.Durational,int)">addToVoice(Durational, int)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
+<dd>
+<div class="block">Adds the given durational to the voice with the given number.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#addVoice()">addVoice()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
@@ -1348,6 +1356,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Returns true if this pattern does not contain any notes occur simultaneously,
  otherwise returns false.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#isMonophonic()">isMonophonic()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
+<dd>
+<div class="block">Returns true if this builder only has monophonic contents, that is, there are no simultaneously sounding notes
+ set in the contents of this builder.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#isMonophonic()">isMonophonic()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/MultiStaffPart.html#isMultiStaff()">isMultiStaff()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/MultiStaffPart.html" title="class in org.wmn4j.notation.elements">MultiStaffPart</a></dt>
@@ -1754,7 +1767,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir"><span class="typeNameLink">PatternBuilder</span></a> - Class in <a href="org/wmn4j/mir/package-summary.html">org.wmn4j.mir</a></dt>
 <dd>
-<div class="block">Class for building pattern instances.</div>
+<div class="block">Class for building <a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a> instances.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#%3Cinit%3E()">PatternBuilder()</a></span> - Constructor for class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
 <dd>

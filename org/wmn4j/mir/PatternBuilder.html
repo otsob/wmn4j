@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -116,7 +116,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public final class <span class="typeNameLabel">PatternBuilder</span>
 extends java.lang.Object</pre>
-<div class="block">Class for building pattern instances.</div>
+<div class="block">Class for building <a href="Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a> instances.</div>
 </li>
 </ul>
 </div>
@@ -168,10 +168,33 @@ extends java.lang.Object</pre>
 </tr>
 <tbody>
 <tr class="altColor" id="i0">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#add(org.wmn4j.notation.elements.Durational)">add</a></span>&#8203;(<a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&nbsp;durational)</code></th>
+<td class="colLast">
+<div class="block">Adds the given durational to the default voice in this builder.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i1">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addToVoice(org.wmn4j.notation.elements.Durational,int)">addToVoice</a></span>&#8203;(<a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&nbsp;durational,
+          int&nbsp;voice)</code></th>
+<td class="colLast">
+<div class="block">Adds the given durational to the voice with the given number.</div>
+</td>
+</tr>
+<tr class="altColor" id="i2">
 <td class="colFirst"><code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#build()">build</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns a pattern instance with the contents set into this builder.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i3">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isMonophonic()">isMonophonic</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns true if this builder only has monophonic contents, that is, there are no simultaneously sounding notes
+ set in the contents of this builder.</div>
 </td>
 </tr>
 </tbody>
@@ -221,6 +244,55 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="add(org.wmn4j.notation.elements.Durational)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>add</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;add&#8203;(<a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&nbsp;durational)</pre>
+<div class="block">Adds the given durational to the default voice in this builder. This method is intended for constructing
+ monophonic patterns, the <a href="#addToVoice(org.wmn4j.notation.elements.Durational,int)"><code>addToVoice</code></a> method can be used for constructing
+ polyphonic patterns.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>durational</code> - the durational that is added to the default voice in this builder</dd>
+</dl>
+</li>
+</ul>
+<a id="addToVoice(org.wmn4j.notation.elements.Durational,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addToVoice</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addToVoice&#8203;(<a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&nbsp;durational,
+                       int&nbsp;voice)</pre>
+<div class="block">Adds the given durational to the voice with the given number. This method is intended for constructing polyphonic
+ patterns, the <a href="#add(org.wmn4j.notation.elements.Durational)"><code>add</code></a> method can be used for constructing
+ monophonic patterns.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>durational</code> - the durational that is added to the given voice in this builder</dd>
+<dd><code>voice</code> - the number of the voice to which the durational is added</dd>
+</dl>
+</li>
+</ul>
+<a id="isMonophonic()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isMonophonic</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;isMonophonic()</pre>
+<div class="block">Returns true if this builder only has monophonic contents, that is, there are no simultaneously sounding notes
+ set in the contents of this builder.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>true if this builder only has monophonic contents</dd>
+</dl>
+</li>
+</ul>
 <a id="build()">
 <!--   -->
 </a>
