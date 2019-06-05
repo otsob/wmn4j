@@ -38,8 +38,12 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.math.BigInteger;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
@@ -197,6 +201,9 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		final Optional<Element> attributes = createMeasureAttributesElement(measure, prevMeasure);
 		attributes.ifPresent(attrElement -> measureElement.appendChild(attrElement));
 
+		//Set up handling possible mid-measure clef changes
+		Map<Duration, Clef> undealtClefChanges = new HashMap<>(measure.getClefChanges());
+
 		//Notes
 		final List<Integer> voiceNumbers = measure.getVoiceNumbers();
 		int voicesHandled = 0;
@@ -225,6 +232,10 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 						useChordTag = true;
 					}
 				}
+
+				// Handle mid-measure clef changes
+				handleMidMeasureClefChanges(measureElement, undealtClefChanges, cumulatedDuration);
+
 			}
 
 			// In case of multiple voices, backup to the beginning of the measure
@@ -304,19 +315,19 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 
 		//Key signature
 		if (!measure.getKeySignature().equals(keySigInEffect)) {
-			attrElement.appendChild(createKeySignatureElement(measure));
+			attrElement.appendChild(createKeySignatureElement(measure.getKeySignature()));
 			this.keySigInEffect = measure.getKeySignature();
 		}
 
 		//Time signature
 		if (!measure.getTimeSignature().equals(timeSigInEffect)) {
-			attrElement.appendChild(createTimeSignatureElement(measure));
+			attrElement.appendChild(createTimeSignatureElement(measure.getTimeSignature()));
 			this.timeSigInEffect = measure.getTimeSignature();
 		}
 
 		//Clef
 		if (!measure.getClef().equals(clefInEffect)) {
-			attrElement.appendChild(createClefElement(measure));
+			attrElement.appendChild(createClefElement(measure.getClef()));
 			this.clefInEffect = measure.getClef();
 		}
 
@@ -333,13 +344,13 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return divisionsElement;
 	}
 
-	private Element createKeySignatureElement(Measure measure) {
+	private Element createKeySignatureElement(KeySignature keySignature) {
 		Element keySigElement = doc.createElement(MusicXmlTags.MEAS_ATTR_KEY);
 		Element fifthsElement = doc.createElement(MusicXmlTags.MEAS_ATTR_KEY_FIFTHS);
 
-		int fifths = measure.getKeySignature().getNumberOfSharps();
+		int fifths = keySignature.getNumberOfSharps();
 		if (fifths == 0) {
-			fifths = measure.getKeySignature().getNumberOfFlats() * -1;
+			fifths = keySignature.getNumberOfFlats() * -1;
 		}
 		fifthsElement.setTextContent(Integer.toString(fifths));
 
@@ -348,13 +359,13 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return keySigElement;
 	}
 
-	private Element createTimeSignatureElement(Measure measure) {
+	private Element createTimeSignatureElement(TimeSignature timeSignature) {
 		Element timeSigElement = doc.createElement(MusicXmlTags.MEAS_ATTR_TIME);
 		Element beatsElement = doc.createElement(MusicXmlTags.MEAS_ATTR_BEATS);
 		Element beatTypeElement = doc.createElement(MusicXmlTags.MEAS_ATTR_BEAT_TYPE);
 
-		beatsElement.setTextContent(Integer.toString(measure.getTimeSignature().getBeatCount()));
-		beatTypeElement.setTextContent(Integer.toString(measure.getTimeSignature().getBeatDuration().getDenominator()));
+		beatsElement.setTextContent(Integer.toString(timeSignature.getBeatCount()));
+		beatTypeElement.setTextContent(Integer.toString(timeSignature.getBeatDuration().getDenominator()));
 
 		timeSigElement.appendChild(beatsElement);
 		timeSigElement.appendChild(beatTypeElement);
@@ -362,11 +373,11 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return timeSigElement;
 	}
 
-	private Element createClefElement(Measure measure) {
+	private Element createClefElement(Clef clef) {
 		Element clefElement = doc.createElement(MusicXmlTags.CLEF);
 		Element signElement = doc.createElement(MusicXmlTags.CLEF_SIGN);
 
-		switch (measure.getClef().getSymbol()) {
+		switch (clef.getSymbol()) {
 			case G:
 				signElement.setTextContent("G");
 				break;
@@ -380,16 +391,53 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 				signElement.setTextContent("percussion");
 				break;
 			default:
-				throw new IllegalStateException("Unexpected clef symbol: " + measure.getClef().getSymbol());
+				throw new IllegalStateException("Unexpected clef symbol: " + clef.getSymbol());
 		}
 
 		Element lineElement = doc.createElement(MusicXmlTags.CLEF_LINE);
-		lineElement.setTextContent(Integer.toString(measure.getClef().getLine()));
+		lineElement.setTextContent(Integer.toString(clef.getLine()));
 
 		clefElement.appendChild(signElement);
 		clefElement.appendChild(lineElement);
 
 		return clefElement;
+	}
+
+	private void handleMidMeasureClefChanges(
+			Element measureElement, Map<Duration, Clef> undealtClefChanges, Duration cumulatedDuration) {
+
+		List<Duration> offsets = new ArrayList<>(undealtClefChanges.keySet());
+		Collections.sort(offsets);
+		for (Duration offset : offsets) {
+
+			if (offset.isShorterThan(cumulatedDuration) || offset.equals(cumulatedDuration)) {
+
+				// Backup
+				if (!offset.equals(cumulatedDuration)) {
+					Element backupElement = createBackupElement(cumulatedDuration.subtract(offset));
+					measureElement.appendChild(backupElement);
+				}
+
+				// Clef
+				Element attributesElement = doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
+				Element clefElement = createClefElement(undealtClefChanges.get(offset));
+
+				attributesElement.appendChild(clefElement);
+				measureElement.appendChild(attributesElement);
+
+				clefInEffect = undealtClefChanges.get(offset);
+
+				undealtClefChanges.remove(offset);
+
+				// Forward
+				if (!offset.equals(cumulatedDuration)) {
+					Element forwardElement = createForwardElement(cumulatedDuration.subtract(offset));
+					measureElement.appendChild(forwardElement);
+				}
+
+			}
+
+		}
 	}
 
 	private Element createBackupElement(Duration duration) {
