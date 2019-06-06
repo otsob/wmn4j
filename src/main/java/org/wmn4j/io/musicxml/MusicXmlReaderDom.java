@@ -323,13 +323,22 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		for (int i = 0; i < measureChildren.getLength(); ++i) {
 			final Node node = measureChildren.item(i);
 
-			// Handle measure attributes that occur in the beginning of measure
-			if (offsets.get(MIN_STAFF_NUMBER).isEmpty() && node.getNodeName()
+			if (node.getNodeName()
 					.equals(MusicXmlTags.MEASURE_ATTRIBUTES)) {
-				updateContexts(node, contexts);
 
-				for (Integer staff : contexts.keySet()) {
-					lastClefs.put(staff, contexts.get(staff).getClef());
+				// Handle measure attributes that occur in the beginning of measure
+				final boolean noNotesReadYet = offsets.values().stream()
+						.allMatch(offsetValues -> offsetValues.isEmpty());
+
+				if (noNotesReadYet) {
+					updateContexts(node, contexts);
+
+					for (Integer staff : contexts.keySet()) {
+						lastClefs.put(staff, contexts.get(staff).getClef());
+					}
+				} else {
+					// Handle clef change
+					addClefChange(node, measureBuilders, offsets, lastClefs, backupDuration, staffNumberOfPreviousNote);
 				}
 			}
 
@@ -343,11 +352,6 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				staffNumberOfPreviousNote = readNoteElementIntoMeasureBuilder(node, measureBuilders, chordBuffers,
 						offsets, contexts,
 						connectedNotations);
-			}
-
-			// Handle clef changes
-			if (node.getNodeName().equals(MusicXmlTags.MEASURE_ATTRIBUTES)) {
-				addClefChange(node, measureBuilders, offsets, lastClefs, backupDuration, staffNumberOfPreviousNote);
 			}
 
 			// Handle barlines
