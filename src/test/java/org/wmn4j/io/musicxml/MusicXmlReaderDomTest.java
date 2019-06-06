@@ -7,38 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.wmn4j.io.ParsingFailureException;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.builders.ScoreBuilder;
-import org.wmn4j.notation.elements.Articulation;
-import org.wmn4j.notation.elements.Barline;
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Clef;
-import org.wmn4j.notation.elements.Clefs;
-import org.wmn4j.notation.elements.Duration;
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.KeySignatures;
-import org.wmn4j.notation.elements.Marking;
-import org.wmn4j.notation.elements.Measure;
-import org.wmn4j.notation.elements.MultiStaffPart;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Part;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.Rest;
 import org.wmn4j.notation.elements.Score;
-import org.wmn4j.notation.elements.SingleStaffPart;
-import org.wmn4j.notation.elements.Staff;
-import org.wmn4j.notation.elements.TimeSignature;
-import org.wmn4j.notation.elements.TimeSignatures;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class MusicXmlReaderDomTest {
@@ -367,6 +342,21 @@ class MusicXmlReaderDomTest {
 	@Test
 	void testReadingMarkingsIntoScoreBuilderFromMultipleStavesAndVoices() {
 		ScoreBuilder scoreBuilderWitMarkings = readScoreBuilder("multi_staff_multi_voice_marking_test.xml", false);
-		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreBuilderWitMarkings.build());
+		MusicXmlFileChecks
+				.assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreBuilderWitMarkings.build());
+	}
+
+	@Test
+	void testGivenFileWhereNoteContinuesOverClefChangeWhenScoreIsReadThenClefChangeIsCorrect() {
+		Score scoreWithClefChange = readScore("clef_change_where_note_in_another_voice_carries_over.xml", false);
+		MusicXmlFileChecks.assertClefChangeInCorrectPlaceWhenNoteCarriesOverClefChange(scoreWithClefChange);
+	}
+
+	@Test
+	void testGivenFileWhereNoteContinuesOverClefChangeWhenScoreBuilderIsReadThenClefChangeIsCorrect() {
+		ScoreBuilder scoreBuilderWithClefChange = readScoreBuilder(
+				"clef_change_where_note_in_another_voice_carries_over.xml", false);
+		MusicXmlFileChecks
+				.assertClefChangeInCorrectPlaceWhenNoteCarriesOverClefChange(scoreBuilderWithClefChange.build());
 	}
 }

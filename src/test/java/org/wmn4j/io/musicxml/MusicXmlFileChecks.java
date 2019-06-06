@@ -3,7 +3,6 @@
  */
 package org.wmn4j.io.musicxml;
 
-
 import org.wmn4j.notation.elements.Articulation;
 import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Chord;
@@ -738,5 +737,27 @@ class MusicXmlFileChecks {
 		assertEquals(2, notesInTopVoiceGlissando.size());
 		assertEquals(fifthNoteInTopStaffBottomVoice, notesInBottomVoiceGlissando.get(0));
 		assertEquals(sixthNoteInTopStaffBottomVoice, notesInBottomVoiceGlissando.get(1));
+	}
+
+	/*
+	 * Expects the contents of "clef_change_where_note_in_another_voice_carries_over.xml".
+	 */
+	static void assertClefChangeInCorrectPlaceWhenNoteCarriesOverClefChange(Score score) {
+		final Measure measure = score.getPart(0).getMeasure(1, 1);
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.QUARTER), measure.get(1, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.D, 0, 5), Durations.HALF), measure.get(1, 1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.F, 0, 5), Durations.QUARTER), measure.get(1, 2));
+
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.QUARTER), measure.get(2, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.QUARTER), measure.get(2, 1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 3), Durations.QUARTER), measure.get(2, 2));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 3), Durations.QUARTER), measure.get(2, 3));
+
+		assertEquals(Clefs.G, measure.getClef());
+		final Map<Duration, Clef> clefChanges = measure.getClefChanges();
+
+		assertEquals(1, clefChanges.size());
+		assertTrue(clefChanges.containsKey(Durations.HALF));
+		assertEquals(Clefs.ALTO, clefChanges.get(Durations.HALF));
 	}
 }

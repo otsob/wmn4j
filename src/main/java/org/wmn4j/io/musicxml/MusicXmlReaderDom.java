@@ -309,19 +309,23 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		final Map<Integer, Clef> lastClefs = new HashMap<>();
 
 		// Initialize the helper data structures.
-		for (int staff = SingleStaffPart.STAFF_NUMBER; staff <= staves; ++staff) {
+		for (int staff = MIN_STAFF_NUMBER; staff <= staves; ++staff) {
 			measureBuilders.put(staff, new MeasureBuilder(measureNumber));
 			chordBuffers.put(staff, new ChordBuffer());
 			offsets.put(staff, new ArrayList<>());
 			lastClefs.put(staff, contexts.get(staff).getClef());
 		}
 
+		Duration backupDuration = null;
+		int staffNumberOfPreviousNote = MIN_STAFF_NUMBER;
+
 		final NodeList measureChildren = measureNode.getChildNodes();
 		for (int i = 0; i < measureChildren.getLength(); ++i) {
 			final Node node = measureChildren.item(i);
 
 			// Handle measure attributes that occur in the beginning of measure
-			if (offsets.get(1).isEmpty() && node.getNodeName().equals(MusicXmlTags.MEASURE_ATTRIBUTES)) {
+			if (offsets.get(MIN_STAFF_NUMBER).isEmpty() && node.getNodeName()
+					.equals(MusicXmlTags.MEASURE_ATTRIBUTES)) {
 				updateContexts(node, contexts);
 
 				for (Integer staff : contexts.keySet()) {
@@ -329,15 +333,21 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				}
 			}
 
+			// Handle backup element
+			if (node.getNodeName().equals(MusicXmlTags.MEASURE_BACKUP)) {
+				backupDuration = getBackupDuration(node, contexts.get(staffNumberOfPreviousNote));
+			}
+
 			// Handle note element
 			if (node.getNodeName().equals(MusicXmlTags.NOTE) && !isGraceNote(node)) {
-				readNoteElementIntoMeasureBuilder(node, measureBuilders, chordBuffers, offsets, contexts,
+				staffNumberOfPreviousNote = readNoteElementIntoMeasureBuilder(node, measureBuilders, chordBuffers,
+						offsets, contexts,
 						connectedNotations);
 			}
 
 			// Handle clef changes
 			if (node.getNodeName().equals(MusicXmlTags.MEASURE_ATTRIBUTES)) {
-				addClefChange(node, measureBuilders, offsets, lastClefs);
+				addClefChange(node, measureBuilders, offsets, lastClefs, backupDuration, staffNumberOfPreviousNote);
 			}
 
 			// Handle barlines
@@ -362,11 +372,22 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 	}
 
+	private Duration getBackupDuration(Node backupNode, Context context) {
+		Duration backupDuration = getDuration(backupNode, context.getDivisions());
+		// In case the backup is to the beginning of the measure, do not consider it.
+		if (backupDuration != null && backupDuration.equals(context.getTimeSig().getTotalDuration())) {
+			backupDuration = null;
+		}
+
+		return backupDuration;
+	}
+
 	private void addClefChange(Node node, Map<Integer, MeasureBuilder> measureBuilders,
-			Map<Integer, List<Duration>> offsets, Map<Integer, Clef> lastClefs) {
+			Map<Integer, List<Duration>> offsets, Map<Integer, Clef> lastClefs, Duration backupDuration,
+			int staffNumberOfPreviousNote) {
 		Clef clef = null;
 		final Optional<Node> clefNode = DocHelper.findChild(node, MusicXmlTags.CLEF);
-		int clefStaff = 1;
+		int clefStaff = staffNumberOfPreviousNote;
 
 		if (clefNode.isPresent()) {
 			clef = MusicXmlReaderDom.this.getClef(clefNode.get());
@@ -377,7 +398,11 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			}
 		}
 		if (clef != null && !offsets.get(clefStaff).isEmpty()) {
-			final Duration cumulatedDur = Duration.sumOf(offsets.get(clefStaff));
+			Duration cumulatedDur = Duration.sumOf(offsets.get(clefStaff));
+			if (backupDuration != null) {
+				cumulatedDur = cumulatedDur.subtract(backupDuration);
+			}
+
 			measureBuilders.get(clefStaff).addClefChange(cumulatedDur, clef);
 			lastClefs.put(clefStaff, clef);
 		}
@@ -404,7 +429,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	 * Read a note element. A note element can be a rest, note, grace note, or a
 	 * note in a chord.
 	 */
-	private void readNoteElementIntoMeasureBuilder(Node noteNode, Map<Integer, MeasureBuilder> measureBuilders,
+	private int readNoteElementIntoMeasureBuilder(Node noteNode, Map<Integer, MeasureBuilder> measureBuilders,
 			Map<Integer, ChordBuffer> chordBuffers, Map<Integer, List<Duration>> offsets,
 			Map<Integer, Context> contexts, ConnectedNotations connectedNotations) {
 		final int staffNumber = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_STAFF)
@@ -434,6 +459,8 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				chordBuffers.get(staffNumber).addNote(noteBuilder, voice);
 			}
 		}
+
+		return staffNumber;
 	}
 
 	private void resolveTiesAndNotations(int voiceNumber, Node noteNode, ConnectedNotations connectedNotations,
@@ -833,13 +860,17 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		return null;
 	}
 
-	private Duration getDuration(Node noteNode, int divisions) {
-		final Optional<Node> durationNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_DURATION);
+	private Duration getDuration(Node nodeWithDuration, int divisions) {
+		final Optional<Node> durationNode = DocHelper.findChild(nodeWithDuration, MusicXmlTags.NOTE_DURATION);
 		if (durationNode.isPresent()) {
 			final int nominator = Integer.parseInt(durationNode.get().getTextContent());
-			// In MusicXml divisions is the number of parts into which a quarter note
-			// is divided. Therefore divisions needs to be multiplied by 4.
-			return Duration.of(nominator, divisions * 4);
+
+			// Backup elements may have 0 duration, therefore this must be checked.
+			if (nominator != 0) {
+				// In MusicXml divisions is the number of parts into which a quarter note
+				// is divided. Therefore divisions needs to be multiplied by 4.
+				return Duration.of(nominator, divisions * 4);
+			}
 		}
 
 		return null;
