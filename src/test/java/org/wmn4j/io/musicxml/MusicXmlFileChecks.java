@@ -459,7 +459,7 @@ class MusicXmlFileChecks {
 		assertEquals(3, staff.getFullMeasureCount());
 
 		Measure pickupMeasure = staff.getMeasure(0);
-		assertTrue(pickupMeasure.isPickUp());
+		assertTrue(pickupMeasure.isPickup());
 		assertEquals(0, pickupMeasure.getNumber());
 	}
 

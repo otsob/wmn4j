@@ -223,10 +223,10 @@ class MeasureTest {
 				.of(TimeSignatures.FOUR_FOUR, keySig, Barline.SINGLE, Clefs.G);
 		final Measure pickupMeasure = Measure.pickupOf(this.multipleNoteVoices, attributes);
 
-		assertTrue(pickupMeasure.isPickUp());
+		assertTrue(pickupMeasure.isPickup());
 
 		final Measure nonPickup = Measure.of(1, this.multipleNoteVoices, attributes);
 
-		assertFalse(nonPickup.isPickUp());
+		assertFalse(nonPickup.isPickup());
 	}
 }
