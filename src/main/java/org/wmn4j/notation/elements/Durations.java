@@ -25,7 +25,7 @@ public final class Durations {
 	/**
 	 * Constant value for eight note duration.
 	 */
-	public static final Duration EIGHT = Duration.of(1, 8);
+	public static final Duration EIGHTH = Duration.of(1, 8);
 
 	/**
 	 * Constant value for sixteenth note duration.
@@ -50,7 +50,7 @@ public final class Durations {
 	/**
 	 * Constant value for eight note triplet duration.
 	 */
-	public static final Duration EIGHT_TRIPLET = Duration.of(1, 12);
+	public static final Duration EIGHTH_TRIPLET = Duration.of(1, 12);
 
 	/**
 	 * Constant value for sixteenth note triplet duration.

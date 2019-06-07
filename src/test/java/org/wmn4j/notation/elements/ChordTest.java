@@ -47,11 +47,11 @@ class ChordTest {
 		this.fMinor = Chord.of(fMinorNotes);
 
 		final ArrayList<Note> DminorMaj9Notes = new ArrayList<>();
-		DminorMaj9Notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHT));
-		DminorMaj9Notes.add(Note.of(Pitch.of(Pitch.Base.F, 0, 4), Durations.EIGHT));
-		DminorMaj9Notes.add(Note.of(Pitch.of(Pitch.Base.A, 0, 4), Durations.EIGHT));
-		DminorMaj9Notes.add(Note.of(Pitch.of(Pitch.Base.C, 1, 5), Durations.EIGHT));
-		DminorMaj9Notes.add(Note.of(Pitch.of(Pitch.Base.E, 0, 5), Durations.EIGHT));
+		DminorMaj9Notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+		DminorMaj9Notes.add(Note.of(Pitch.of(Pitch.Base.F, 0, 4), Durations.EIGHTH));
+		DminorMaj9Notes.add(Note.of(Pitch.of(Pitch.Base.A, 0, 4), Durations.EIGHTH));
+		DminorMaj9Notes.add(Note.of(Pitch.of(Pitch.Base.C, 1, 5), Durations.EIGHTH));
+		DminorMaj9Notes.add(Note.of(Pitch.of(Pitch.Base.E, 0, 5), Durations.EIGHTH));
 		this.dMinorMaj9 = Chord.of(DminorMaj9Notes);
 	}
 
@@ -64,7 +64,7 @@ class ChordTest {
 
 		// Test that modifying the list of notes used to create the chord does not
 		// modify the chord.
-		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHT));
+		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
 		assertEquals(3, cMaj.getNoteCount());
 		assertEquals(this.cMajor, cMaj);
 	}
@@ -80,8 +80,8 @@ class ChordTest {
 
 	@Test
 	void testVarargsFactory() {
-		final Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
-		final Note E4 = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT);
+		final Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final Note E4 = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH);
 		final Chord dyad = Chord.of(C4, E4);
 		assertEquals(2, dyad.getNoteCount());
 		assertTrue(dyad.contains(E4));
@@ -96,7 +96,7 @@ class ChordTest {
 		}
 
 		try {
-			final Note a = Note.of(Pitch.of(Pitch.Base.A, 0, 3), Durations.EIGHT);
+			final Note a = Note.of(Pitch.of(Pitch.Base.A, 0, 3), Durations.EIGHTH);
 			final Note b = Note.of(Pitch.of(Pitch.Base.A, 0, 3), Durations.QUARTER);
 			final ArrayList<Note> notes = new ArrayList<>();
 			notes.add(a);
@@ -185,7 +185,7 @@ class ChordTest {
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.QUARTER), cMaj.getHighestNote());
 
 		try {
-			final Chord illegalCMaj = this.cMajor.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHT));
+			final Chord illegalCMaj = this.cMajor.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH));
 			fail("Failed to throw expected exception");
 		} catch (final IllegalArgumentException e) {
 			// Pass because exception is expected

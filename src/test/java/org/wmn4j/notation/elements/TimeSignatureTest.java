@@ -21,9 +21,9 @@ class TimeSignatureTest {
 	@Test
 	void testGetTotalDuration() {
 		assertEquals(Durations.WHOLE, TimeSignatures.FOUR_FOUR.getTotalDuration());
-		assertEquals(Durations.EIGHT.multiplyBy(6), TimeSignatures.SIX_EIGHT.getTotalDuration());
-		assertEquals(Durations.EIGHT.multiplyBy(13),
-				TimeSignature.of(13, Durations.EIGHT).getTotalDuration());
+		assertEquals(Durations.EIGHTH.multiplyBy(6), TimeSignatures.SIX_EIGHT.getTotalDuration());
+		assertEquals(Durations.EIGHTH.multiplyBy(13),
+				TimeSignature.of(13, Durations.EIGHTH).getTotalDuration());
 	}
 
 	@Test

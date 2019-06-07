@@ -94,16 +94,16 @@ class MusicXmlFileChecks {
 		List<Durational> voiceOne = measureOne.getVoice(1);
 		assertEquals(8, voiceOne.size());
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), voiceOne.get(0));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT), voiceOne.get(1));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT), voiceOne.get(2));
-		assertEquals(Rest.of(Durations.EIGHT), voiceOne.get(3));
-		final Chord cMajor = Chord.of(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT),
-				Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT),
-				Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHT));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), voiceOne.get(1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), voiceOne.get(2));
+		assertEquals(Rest.of(Durations.EIGHTH), voiceOne.get(3));
+		final Chord cMajor = Chord.of(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
+				Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH),
+				Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
 		assertEquals(cMajor, voiceOne.get(4));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHT_TRIPLET), voiceOne.get(5));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHT_TRIPLET), voiceOne.get(6));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHT_TRIPLET), voiceOne.get(7));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH_TRIPLET), voiceOne.get(5));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH_TRIPLET), voiceOne.get(6));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH_TRIPLET), voiceOne.get(7));
 
 		// Verify data of measure two
 		final Measure measureTwo = staff.getMeasures().get(1);
@@ -366,7 +366,7 @@ class MusicXmlFileChecks {
 	static void assertTimeSignatureChangeReadCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
 		final Durational n = part.getMeasure(2).getVoice(1).get(0);
-		assertEquals(Durations.EIGHT, n.getDuration());
+		assertEquals(Durations.EIGHTH, n.getDuration());
 	}
 
 	/*

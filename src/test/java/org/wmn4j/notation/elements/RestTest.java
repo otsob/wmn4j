@@ -13,14 +13,14 @@ class RestTest {
 
 	@Test
 	void testGetDuration() {
-		assertTrue(Rest.of(Durations.EIGHT).getDuration().equals(Durations.EIGHT));
-		assertFalse(Rest.of(Durations.QUARTER).getDuration().equals(Durations.EIGHT));
+		assertTrue(Rest.of(Durations.EIGHTH).getDuration().equals(Durations.EIGHTH));
+		assertFalse(Rest.of(Durations.QUARTER).getDuration().equals(Durations.EIGHTH));
 	}
 
 	@Test
 	void testToString() {
 		assertEquals("R(1/4)", Rest.of(Durations.QUARTER).toString());
-		assertEquals("R(1/12)", Rest.of(Durations.EIGHT_TRIPLET).toString());
+		assertEquals("R(1/12)", Rest.of(Durations.EIGHTH_TRIPLET).toString());
 	}
 
 	@Test
