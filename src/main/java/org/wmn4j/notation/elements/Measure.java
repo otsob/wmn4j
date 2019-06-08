@@ -249,7 +249,7 @@ public final class Measure implements Iterable<Durational> {
 	 *
 	 * @return true if this measure is a pickup measure.
 	 */
-	public boolean isPickUp() {
+	public boolean isPickup() {
 		return this.getNumber() == 0;
 	}
 

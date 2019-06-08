@@ -244,7 +244,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			if (voicesHandled < measure.getVoiceCount()) {
 				measureElement.appendChild(createBackupElement(cumulatedDuration));
 			} else {
-				if (!measure.isPickUp()
+				if (!measure.isPickup()
 						&& cumulatedDuration.isShorterThan(measure.getTimeSignature().getTotalDuration())) {
 					Duration duration = measure.getTimeSignature().getTotalDuration().subtract(cumulatedDuration);
 					measureElement.appendChild(createForwardElement(duration));

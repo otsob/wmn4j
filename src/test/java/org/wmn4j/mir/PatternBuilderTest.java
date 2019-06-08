@@ -18,10 +18,10 @@ class PatternBuilderTest {
 	void testGivenMonophonicContentsWhenBuiltMonophonicPatternIsCreated() {
 		final PatternBuilder builder = new PatternBuilder();
 
-		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
 		builder.add(firstElement);
 
-		final Note secondElement = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHT);
+		final Note secondElement = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH);
 		builder.add(secondElement);
 
 		final Rest thirdElement = Rest.of(Durations.QUARTER);
@@ -30,7 +30,7 @@ class PatternBuilderTest {
 		final Note fourthElement = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.SIXTEENTH);
 		builder.add(fourthElement);
 
-		final Rest fifthElement = Rest.of(Durations.EIGHT);
+		final Rest fifthElement = Rest.of(Durations.EIGHTH);
 		builder.add(fifthElement);
 
 		final Note sixthElement = Note.of(Pitch.of(Pitch.Base.B, -1, 4), Durations.SIXTEENTH);

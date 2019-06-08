@@ -54,7 +54,7 @@ class DurationTest {
 		final Duration notQuarter = Duration.of(1, 8);
 		assertFalse(notQuarter.equals(quarter));
 
-		assertFalse(Durations.EIGHT_TRIPLET.equals(Durations.THIRTYSECOND));
+		assertFalse(Durations.EIGHTH_TRIPLET.equals(Durations.THIRTYSECOND));
 	}
 
 	@Test
@@ -71,7 +71,7 @@ class DurationTest {
 	@Test
 	void testToString() {
 		assertEquals("(1/4)", Duration.of(1, 4).toString());
-		assertEquals("(1/8)", Durations.EIGHT.toString());
+		assertEquals("(1/8)", Durations.EIGHTH.toString());
 		assertEquals("(1/16)", Duration.of(1, 16).toString());
 	}
 
@@ -84,52 +84,52 @@ class DurationTest {
 
 	@Test
 	void testAdd() {
-		assertEquals(Durations.EIGHT, Durations.SIXTEENTH.add(Durations.SIXTEENTH));
+		assertEquals(Durations.EIGHTH, Durations.SIXTEENTH.add(Durations.SIXTEENTH));
 		assertEquals(Durations.QUARTER,
-				Durations.EIGHT_TRIPLET.add(Durations.EIGHT_TRIPLET.add(Durations.EIGHT_TRIPLET)));
+				Durations.EIGHTH_TRIPLET.add(Durations.EIGHTH_TRIPLET.add(Durations.EIGHTH_TRIPLET)));
 		assertEquals(Duration.of(1, 8), Duration.of(3, 32).add(Duration.of(1, 32)));
 	}
 
 	@Test
 	void testSubtract() {
-		assertEquals(Durations.EIGHT, Durations.QUARTER.subtract(Durations.EIGHT));
-		assertEquals(Durations.QUARTER.addDot(), Durations.HALF.subtract(Durations.EIGHT));
-		assertEquals(Duration.of(2, 12), Durations.QUARTER.subtract(Durations.EIGHT_TRIPLET));
+		assertEquals(Durations.EIGHTH, Durations.QUARTER.subtract(Durations.EIGHTH));
+		assertEquals(Durations.QUARTER.addDot(), Durations.HALF.subtract(Durations.EIGHTH));
+		assertEquals(Duration.of(2, 12), Durations.QUARTER.subtract(Durations.EIGHTH_TRIPLET));
 	}
 
 	@Test
 	void testMultiplyBy() {
-		assertEquals(Durations.QUARTER, Durations.EIGHT.multiplyBy(2));
-		assertEquals(Durations.QUARTER, Durations.EIGHT_TRIPLET.multiplyBy(3));
-		assertEquals(Durations.EIGHT.addDot(), Durations.SIXTEENTH.multiplyBy(3));
+		assertEquals(Durations.QUARTER, Durations.EIGHTH.multiplyBy(2));
+		assertEquals(Durations.QUARTER, Durations.EIGHTH_TRIPLET.multiplyBy(3));
+		assertEquals(Durations.EIGHTH.addDot(), Durations.SIXTEENTH.multiplyBy(3));
 	}
 
 	@Test
 	void testDivideBy() {
-		assertEquals(Durations.EIGHT, Durations.QUARTER.divideBy(2));
+		assertEquals(Durations.EIGHTH, Durations.QUARTER.divideBy(2));
 		assertEquals(Durations.QUARTER, Durations.WHOLE.divideBy(4));
 		assertEquals(Duration.of(1, 20), Durations.QUARTER.divideBy(5));
 	}
 
 	@Test
 	void testLongerThan() {
-		assertTrue(Durations.QUARTER.isLongerThan(Durations.EIGHT));
-		assertFalse(Durations.EIGHT_TRIPLET.isLongerThan(Durations.EIGHT));
+		assertTrue(Durations.QUARTER.isLongerThan(Durations.EIGHTH));
+		assertFalse(Durations.EIGHTH_TRIPLET.isLongerThan(Durations.EIGHTH));
 	}
 
 	@Test
 	void testShorterThan() {
-		assertTrue(Durations.SIXTEENTH.isShorterThan(Durations.EIGHT));
-		assertFalse(Durations.EIGHT_TRIPLET.isShorterThan(Durations.THIRTYSECOND));
+		assertTrue(Durations.SIXTEENTH.isShorterThan(Durations.EIGHTH));
+		assertFalse(Durations.EIGHTH_TRIPLET.isShorterThan(Durations.THIRTYSECOND));
 	}
 
 	@Test
 	void testCompareTo() {
-		assertEquals(0, Durations.EIGHT.compareTo(Durations.EIGHT));
+		assertEquals(0, Durations.EIGHTH.compareTo(Durations.EIGHTH));
 		assertTrue(0 > Durations.QUARTER.compareTo(Durations.HALF));
 		assertTrue(0 < Durations.HALF.compareTo(Durations.QUARTER));
 		assertTrue(0 > Durations.QUARTER.compareTo(Durations.QUARTER.addDot()));
-		assertTrue(0 < Durations.QUARTER.compareTo(Durations.EIGHT_TRIPLET.addDot()));
+		assertTrue(0 < Durations.QUARTER.compareTo(Durations.EIGHTH_TRIPLET.addDot()));
 	}
 
 	@Test
@@ -150,16 +150,16 @@ class DurationTest {
 				Duration.sumOf(durations), "Four quarters did not add to whole note.");
 
 		durations = new ArrayList<>();
-		durations.add(Durations.EIGHT);
+		durations.add(Durations.EIGHTH);
 		durations.add(Durations.SIXTEENTH);
 		durations.add(Durations.SIXTEENTH);
 		durations.add(Durations.QUARTER.addDot());
 		durations.add(Durations.SIXTEENTH_TRIPLET);
 		durations.add(Durations.SIXTEENTH_TRIPLET);
 		durations.add(Durations.SIXTEENTH_TRIPLET);
-		durations.add(Durations.EIGHT_TRIPLET);
-		durations.add(Durations.EIGHT_TRIPLET);
-		durations.add(Durations.EIGHT_TRIPLET);
+		durations.add(Durations.EIGHTH_TRIPLET);
+		durations.add(Durations.EIGHTH_TRIPLET);
+		durations.add(Durations.EIGHTH_TRIPLET);
 		assertEquals(Durations.WHOLE, Duration.sumOf(durations), "Mixed durations did not add to whole note.");
 	}
 }

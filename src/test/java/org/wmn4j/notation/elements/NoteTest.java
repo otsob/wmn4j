@@ -24,7 +24,7 @@ class NoteTest {
 	@Test
 	void testEquals() {
 		final Note A1 = Note.of(Pitch.Base.A, 0, 1, Durations.QUARTER);
-		final Note A1differentDur = Note.of(Pitch.Base.A, 0, 1, Durations.EIGHT);
+		final Note A1differentDur = Note.of(Pitch.Base.A, 0, 1, Durations.EIGHTH);
 		final Note A1Copy = Note.of(Pitch.Base.A, 0, 1, Durations.QUARTER);
 		final Note B1 = Note.of(Pitch.Base.B, 0, 1, Durations.QUARTER);
 		final Note Asharp1 = Note.of(Pitch.Base.A, 1, 1, Durations.QUARTER);
@@ -41,12 +41,12 @@ class NoteTest {
 		final Pitch pitch = Pitch.of(Pitch.Base.C, 0, 1);
 		final HashSet<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
-		final Note note1 = Note.of(pitch, Durations.EIGHT, articulations);
+		final Note note1 = Note.of(pitch, Durations.EIGHTH, articulations);
 		articulations.add(Articulation.TENUTO);
-		final Note note2 = Note.of(pitch, Durations.EIGHT, articulations);
-		final Note note3 = Note.of(pitch, Durations.EIGHT, articulations);
+		final Note note2 = Note.of(pitch, Durations.EIGHTH, articulations);
+		final Note note3 = Note.of(pitch, Durations.EIGHTH, articulations);
 
-		assertFalse(note1.equals(Note.of(pitch, Durations.EIGHT)));
+		assertFalse(note1.equals(Note.of(pitch, Durations.EIGHTH)));
 		assertFalse(note1.equals(note2));
 		assertTrue(note2.equals(note2));
 		assertTrue(note2.equals(note3));
@@ -82,8 +82,8 @@ class NoteTest {
 		final Pitch pitch = Pitch.of(Pitch.Base.C, 0, 1);
 		final Set<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
-		assertTrue(Note.of(pitch, Durations.EIGHT, articulations).hasArticulation(Articulation.STACCATO));
-		assertFalse(Note.of(pitch, Durations.EIGHT).hasArticulation(Articulation.STACCATO));
+		assertTrue(Note.of(pitch, Durations.EIGHTH, articulations).hasArticulation(Articulation.STACCATO));
+		assertFalse(Note.of(pitch, Durations.EIGHTH).hasArticulation(Articulation.STACCATO));
 	}
 
 	@Test
@@ -91,19 +91,19 @@ class NoteTest {
 		final Pitch pitch = Pitch.of(Pitch.Base.C, 0, 1);
 		final HashSet<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
-		assertTrue(Note.of(pitch, Durations.EIGHT, articulations).hasArticulations());
-		assertFalse(Note.of(pitch, Durations.EIGHT).hasArticulations());
+		assertTrue(Note.of(pitch, Durations.EIGHTH, articulations).hasArticulations());
+		assertFalse(Note.of(pitch, Durations.EIGHTH).hasArticulations());
 	}
 
 	@Test
 	void testGetArticulations() {
 		final Pitch pitch = Pitch.of(Pitch.Base.C, 0, 1);
-		assertTrue(Note.of(pitch, Durations.EIGHT).getArticulations().isEmpty());
+		assertTrue(Note.of(pitch, Durations.EIGHTH).getArticulations().isEmpty());
 
 		final Set<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
 		articulations.add(Articulation.TENUTO);
-		final Note note = Note.of(pitch, Durations.EIGHT, articulations);
+		final Note note = Note.of(pitch, Durations.EIGHTH, articulations);
 
 		final Collection<Articulation> artic = note.getArticulations();
 		assertEquals(2, artic.size());
@@ -122,7 +122,7 @@ class NoteTest {
 	@Test
 	void testTies() {
 		final NoteBuilder firstBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		final NoteBuilder secondBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		final NoteBuilder secondBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
 		firstBuilder.addTieToFollowing(secondBuilder);
 
 		final Note secondNote = secondBuilder.build();
@@ -143,19 +143,19 @@ class NoteTest {
 		assertEquals(Durations.QUARTER, untied.getTiedDuration());
 
 		final NoteBuilder firstBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		final NoteBuilder secondBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		final NoteBuilder secondBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
 		firstBuilder.addTieToFollowing(secondBuilder);
 
 		Note firstNote = firstBuilder.build();
 		Note secondNote = secondBuilder.build();
 
 		assertEquals(Durations.QUARTER.addDot(), firstNote.getTiedDuration());
-		assertEquals(Durations.EIGHT, secondNote.getTiedDuration());
+		assertEquals(Durations.EIGHTH, secondNote.getTiedDuration());
 
 		firstBuilder.clearCache();
 		secondBuilder.clearCache();
 
-		final NoteBuilder thirdBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		final NoteBuilder thirdBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
 		secondBuilder.addTieToFollowing(thirdBuilder);
 
 		firstNote = firstBuilder.build();
@@ -164,12 +164,12 @@ class NoteTest {
 
 		assertEquals(Durations.HALF, firstNote.getTiedDuration());
 		assertEquals(Durations.QUARTER, secondNote.getTiedDuration());
-		assertEquals(Durations.EIGHT, thirdNote.getTiedDuration());
+		assertEquals(Durations.EIGHTH, thirdNote.getTiedDuration());
 	}
 
 	@Test
 	void testBeginsAndEndsMarking() {
-		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
 
 		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
 		Marking.Connection glissandoEnd = Marking.Connection.endOf(Marking.of(Marking.Type.GLISSANDO));
@@ -177,7 +177,7 @@ class NoteTest {
 		markingConnections.add(slurBeginning);
 		markingConnections.add(glissandoEnd);
 
-		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), markingConnections, null, false);
 
 		assertTrue(noteWithMarkingConnections.begins(Marking.Type.SLUR));
@@ -189,12 +189,12 @@ class NoteTest {
 
 	@Test
 	void testHasMarkingConnection() {
-		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
 		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
 		List<Marking.Connection> markingConnections = new ArrayList<>();
 		markingConnections.add(slurBeginning);
 
-		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), markingConnections, null, false);
 
 		assertTrue(noteThatBeginsSlur.hasMarkings());
@@ -205,24 +205,24 @@ class NoteTest {
 
 	@Test
 	void testEqualsAndHashCodeWithMarkings() {
-		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
 
 		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
 		Marking.Connection glissandoEnd = Marking.Connection.endOf(Marking.of(Marking.Type.GLISSANDO));
 		List<Marking.Connection> markingConnections = new ArrayList<>();
 
 		markingConnections.add(slurBeginning);
-		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), markingConnections, null, false);
 
 		Marking.Connection slurEnd = Marking.Connection.endOf(Marking.of(Marking.Type.SLUR));
 		List<Marking.Connection> slurEndList = new ArrayList<>();
 		slurEndList.add(slurEnd);
-		final Note noteThatEndsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note noteThatEndsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), slurEndList, null, false);
 
 		markingConnections.add(glissandoEnd);
-		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), markingConnections, null, false);
 
 		assertEquals(noteThatBeginsSlur, noteThatEndsSlur);
@@ -235,7 +235,7 @@ class NoteTest {
 
 	@Test
 	void testGetMarkingConnections() {
-		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
 
 		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
 		Marking.Connection glissandoEnd = Marking.Connection.endOf(Marking.of(Marking.Type.GLISSANDO));
@@ -243,7 +243,7 @@ class NoteTest {
 		markingConnections.add(slurBeginning);
 		markingConnections.add(glissandoEnd);
 
-		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), markingConnections, null, false);
 
 		final Collection<Marking> markingsInNote = noteWithMarkingConnections.getMarkings();
@@ -263,12 +263,12 @@ class NoteTest {
 
 	@Test
 	void testGetMarkingConnection() {
-		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT);
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
 		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
 		List<Marking.Connection> markingConnections = new ArrayList<>();
 		markingConnections.add(slurBeginning);
 
-		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), markingConnections, null, false);
 
 		Optional<Marking.Connection> slurBeginningOptional = noteThatBeginsSlur

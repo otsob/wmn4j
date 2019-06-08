@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MarkingTest {
 
-	private final Note testNote = Note.of(Pitch.of(Pitch.Base.C, 1, 4), Durations.EIGHT);
+	private final Note testNote = Note.of(Pitch.of(Pitch.Base.C, 1, 4), Durations.EIGHTH);
 
 	@Test
 	void testBeginningOf() {
@@ -62,11 +62,11 @@ class MarkingTest {
 	@Test
 	void testGetFollowingNotes() {
 		final Marking slur = Marking.of(Marking.Type.SLUR);
-		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), List.of(Marking.Connection.endOf(slur)), null, false);
-		final Note second = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note second = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), List.of(Marking.Connection.of(slur, third)), null, false);
-		final Note first = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note first = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), List.of(Marking.Connection.beginningOf(slur, second)), null, false);
 
 		assertEquals(second, first.getMarkingConnection(slur).get().getFollowingNote().get());
@@ -87,11 +87,11 @@ class MarkingTest {
 	@Test
 	void testGetAffectedStartingFrom() {
 		final Marking slur = Marking.of(Marking.Type.SLUR);
-		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), List.of(Marking.Connection.endOf(slur)), null, false);
-		final Note second = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note second = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), List.of(Marking.Connection.of(slur, third)), null, false);
-		final Note first = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHT,
+		final Note first = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), List.of(Marking.Connection.beginningOf(slur, second)), null, false);
 
 		assertTrue(
