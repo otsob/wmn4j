@@ -379,16 +379,16 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 
 		switch (clef.getSymbol()) {
 			case G:
-				signElement.setTextContent("G");
+				signElement.setTextContent(MusicXmlTags.CLEF_G);
 				break;
 			case F:
-				signElement.setTextContent("F");
+				signElement.setTextContent(MusicXmlTags.CLEF_F);
 				break;
 			case C:
-				signElement.setTextContent("C");
+				signElement.setTextContent(MusicXmlTags.CLEF_C);
 				break;
 			case PERCUSSION:
-				signElement.setTextContent("percussion");
+				signElement.setTextContent(MusicXmlTags.CLEF_PERC);
 				break;
 			default:
 				throw new IllegalStateException("Unexpected clef symbol: " + clef.getSymbol());
