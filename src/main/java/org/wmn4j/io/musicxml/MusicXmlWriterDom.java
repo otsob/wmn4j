@@ -466,14 +466,17 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			noteElement.appendChild(chordElement);
 		}
 
-		//Pitch
+		// Pitch
 		noteElement.appendChild(createPitchElement(note.getPitch()));
 
-		//Duration
+		// Duration
 		noteElement.appendChild(createDurationElement(note.getDuration()));
 
-		//Voice
+		// Voice
 		noteElement.appendChild(createVoiceElement(voice));
+
+		// Appearance
+		addDurationAppearanceElementsToNoteElement(noteElement, note.getDuration());
 
 		return noteElement;
 	}
@@ -522,10 +525,17 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		restElement.appendChild(createDurationElement(rest.getDuration()));
 
 		// TODO: Set staff
-		//Voice
+		// Add voice
 		restElement.appendChild(createVoiceElement(voice));
+
+		// Add duration appearance
+		addDurationAppearanceElementsToNoteElement(restElement, rest.getDuration());
 
 		return restElement;
 	}
 
+	private void addDurationAppearanceElementsToNoteElement(Element noteElement, Duration duration) {
+		DurationAppearanceProvider.INSTANCE.getAppearanceElements(duration, this.doc)
+				.forEach(element -> noteElement.appendChild(element));
+	}
 }
