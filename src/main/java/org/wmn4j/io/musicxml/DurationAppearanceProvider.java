@@ -55,11 +55,32 @@ enum DurationAppearanceProvider {
 
 		final Collection<Element> elements = new ArrayList<>();
 		if (basicDurationAppearances.containsKey(duration)) {
-			final Element typeElement = document.createElement(MusicXmlTags.NOTE_DURATION_TYPE);
-			typeElement.setTextContent(basicDurationAppearances.get(duration));
-			elements.add(typeElement);
+			elements.add(getBasicDurationType(duration, document));
+		} else if (isBasicDottedDuration(duration)) {
+			final Duration basicDurationType = Duration.of(2 * duration.getNumerator() / 3, duration.getDenominator());
+			if (basicDurationAppearances.containsKey(basicDurationType)) {
+				elements.add(getBasicDurationType(basicDurationType, document));
+				elements.add(createDotElement(document));
+			}
 		}
 
 		return elements;
 	}
+
+	private boolean isBasicDottedDuration(Duration duration) {
+		// Basic dotted durations always have a numerator that is divisible by 3 and a denominator that is a power of 2.
+		final int denominator = duration.getDenominator();
+		return duration.getNumerator() % 3 == 0 && ((denominator & (denominator - 1)) == 0);
+	}
+
+	private Element createDotElement(Document document) {
+		return document.createElement(MusicXmlTags.DOT);
+	}
+
+	private Element getBasicDurationType(Duration duration, Document document) {
+		final Element typeElement = document.createElement(MusicXmlTags.NOTE_DURATION_TYPE);
+		typeElement.setTextContent(basicDurationAppearances.get(duration));
+		return typeElement;
+	}
+
 }

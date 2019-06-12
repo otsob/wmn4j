@@ -8,8 +8,10 @@ import org.wmn4j.notation.elements.Duration;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.Collection;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class DurationAppearanceProviderTest {
@@ -81,5 +83,67 @@ class DurationAppearanceProviderTest {
 		Element onlyElement = elements.iterator().next();
 		assertEquals(MusicXmlTags.NOTE_DURATION_TYPE, onlyElement.getNodeName());
 		assertEquals(expectedContent, onlyElement.getTextContent());
+	}
+
+	@Test
+	void testGivenDottedDurationCorrectTypeAndDotElementAreReturned() {
+
+		final DurationAppearanceProvider provider = DurationAppearanceProvider.INSTANCE;
+		final Document document = createDocument();
+
+		final Duration dottedSixteenth = Duration.of(1, 16).addDot();
+
+		assertDottedDurationHasCorrectTypeAndDot(
+				provider.getAppearanceElements(dottedSixteenth, document), MusicXmlTags.NOTE_TYPE_16TH);
+
+		final Duration dottedEighth = Duration.of(1, 8).addDot();
+
+		assertDottedDurationHasCorrectTypeAndDot(
+				provider.getAppearanceElements(dottedEighth, document), MusicXmlTags.NOTE_TYPE_EIGHTH);
+
+		final Duration dottedQuarter = Duration.of(1, 4).addDot();
+
+		assertDottedDurationHasCorrectTypeAndDot(
+				provider.getAppearanceElements(dottedQuarter, document), MusicXmlTags.NOTE_TYPE_QUARTER);
+
+		final Duration dottedHalf = Duration.of(1, 2).addDot();
+
+		assertDottedDurationHasCorrectTypeAndDot(
+				provider.getAppearanceElements(dottedHalf, document), MusicXmlTags.NOTE_TYPE_HALF);
+	}
+
+	private void assertDottedDurationHasCorrectTypeAndDot(Collection<Element> elements, String expectedContent) {
+		assertEquals(2, elements.size(), "Elements should contains two elements, type and dot.");
+
+		Optional<Element> onlyElementOpt = elements.stream()
+				.filter(element -> element.getNodeName().equals(MusicXmlTags.NOTE_DURATION_TYPE)).findAny();
+
+		assertTrue(onlyElementOpt.isPresent(), "Did not find expected type element");
+
+		Element typeElement = onlyElementOpt.get();
+		assertEquals(MusicXmlTags.NOTE_DURATION_TYPE, typeElement.getNodeName());
+		assertEquals(expectedContent, typeElement.getTextContent());
+
+		assertTrue(elements.stream().filter(element -> element.getNodeName().equals(MusicXmlTags.DOT)).findAny()
+				.isPresent(), "elements list does not contain dot element");
+	}
+
+	@Test
+	void testGivenNonDottedDurationNoDotElementIsReturned() {
+		final DurationAppearanceProvider provider = DurationAppearanceProvider.INSTANCE;
+		final Document document = createDocument();
+
+		final Duration eight = Duration.of(1, 8);
+		Collection<Element> eighthAppearanceElements = provider.getAppearanceElements(eight, document);
+		assertTrue(eighthAppearanceElements.stream().filter(element -> element.getNodeName().equals(MusicXmlTags.DOT))
+				.findAny()
+				.isEmpty(), "elements contained dot element that it should not contain");
+
+		final Duration quintupletDuration = Duration.of(3, 1111);
+		Collection<Element> quintupletAppearanceElements = provider.getAppearanceElements(quintupletDuration, document);
+		assertTrue(
+				quintupletAppearanceElements.stream().filter(element -> element.getNodeName().equals(MusicXmlTags.DOT))
+						.findAny()
+						.isEmpty(), "elements contained dot element that it should not contain");
 	}
 }

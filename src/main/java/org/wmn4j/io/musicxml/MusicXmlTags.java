@@ -70,6 +70,7 @@ final class MusicXmlTags {
 	static final String NOTATIONS = "notations";
 	static final String NOTE_ARTICULATIONS = "articulations";
 	static final String NOTE_DURATION_TYPE = "type";
+	static final String DOT = "dot";
 
 	// Note appearances supported in MusicXML
 	static final String NOTE_TYPE_1024TH = "1024th";
