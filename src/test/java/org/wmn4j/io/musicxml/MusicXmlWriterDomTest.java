@@ -216,4 +216,41 @@ class MusicXmlWriterDomTest {
 		final Node durationTypeNode = durationTypeNodes.get(0);
 		assertEquals(expectedDurationTypeText, durationTypeNode.getTextContent());
 	}
+
+	@Test
+	void testWritingBasicDottedNoteAppearances() {
+		final Score score = readMusicXmlTestFile("basic_dotted_duration_appearances.xml", false);
+
+		MusicXmlWriter writer = new MusicXmlWriterDom(score);
+		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
+		writer.writeToFile(filePath);
+
+		final Document document = readDocument(filePath);
+		final Node partNode = document.getElementsByTagName(MusicXmlTags.PART).item(0);
+		assertNotNull(partNode);
+
+		final Optional<Node> measureNode = DocHelper.findChild(partNode, MusicXmlTags.MEASURE);
+		assertTrue(measureNode.isPresent());
+
+		final List<Node> noteNodes = DocHelper.findChildren(measureNode.get(), MusicXmlTags.NOTE).stream()
+				.filter(node -> DocHelper.findChild(node, MusicXmlTags.NOTE_REST).isEmpty())
+				.collect(Collectors.toList());
+
+		assertEquals(8, noteNodes.size(), "Wrong number of note notes found in written test document");
+
+		assertBasicDottedNoteAppearance("32th", noteNodes.get(0));
+		assertBasicDottedNoteAppearance("16th", noteNodes.get(1));
+		assertBasicDottedNoteAppearance("eighth", noteNodes.get(2));
+		assertBasicDottedNoteAppearance("quarter", noteNodes.get(3));
+		assertBasicDottedNoteAppearance("half", noteNodes.get(4));
+		assertBasicDottedNoteAppearance("whole", noteNodes.get(5));
+		assertBasicDottedNoteAppearance("breve", noteNodes.get(6));
+		assertBasicDottedNoteAppearance("long", noteNodes.get(7));
+	}
+
+	private void assertBasicDottedNoteAppearance(String expectedDurationTypeText, Node noteNode) {
+		assertNoteNodeDurationTypeElement(expectedDurationTypeText, noteNode);
+		List<Node> dotNodes = DocHelper.findChildren(noteNode, MusicXmlTags.DOT);
+		assertEquals(1, dotNodes.size(), "Incorrect number of dot nodes");
+	}
 }
