@@ -88,6 +88,10 @@ final class MusicXmlTags {
 	static final String NOTE_TYPE_LONG = "long";
 	static final String NOTE_TYPE_MAXIMA = "maxima";
 
+	static final String TIME_MODIFICATION = "time-modification";
+	static final String TIME_MODIFICATION_ACTUAL_NOTES = "actual-notes";
+	static final String TIME_MODIFICATION_NORMAL_NOTES = "normal-notes";
+
 	// Articulations
 	static final String STACCATO = "staccato";
 	static final String ACCENT = "accent";

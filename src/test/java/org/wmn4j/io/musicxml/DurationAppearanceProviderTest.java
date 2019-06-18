@@ -3,7 +3,10 @@ package org.wmn4j.io.musicxml;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.wmn4j.notation.elements.Duration;
+import org.wmn4j.notation.elements.Durations;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -145,5 +148,67 @@ class DurationAppearanceProviderTest {
 				quintupletAppearanceElements.stream().filter(element -> element.getNodeName().equals(MusicXmlTags.DOT))
 						.findAny()
 						.isEmpty(), "elements contained dot element that it should not contain");
+	}
+
+	@Test
+	void testGivenTupletCorrectTimeModificationsAreReturned() {
+		final DurationAppearanceProvider provider = DurationAppearanceProvider.INSTANCE;
+		final Document document = createDocument();
+
+		final Duration eighthTriplet = Durations.EIGHTH_TRIPLET;
+		final Collection<Element> eighthTripletAppearance = provider.getAppearanceElements(eighthTriplet, document);
+		assertTupletAppearanceElements(eighthTripletAppearance, MusicXmlTags.NOTE_TYPE_EIGHTH, 3, 2);
+
+		final Duration sixteenthQuintuplet = Duration.of(1, 20);
+		final Collection<Element> sixteenthQuintupletAppearance = provider
+				.getAppearanceElements(sixteenthQuintuplet, document);
+		assertTupletAppearanceElements(sixteenthQuintupletAppearance, MusicXmlTags.NOTE_TYPE_16TH, 5, 4);
+
+		final Duration sixteenthSeptuplet = Duration.of(1, 28);
+		final Collection<Element> sixteenthSeptupletAppearance = provider
+				.getAppearanceElements(sixteenthSeptuplet, document);
+		assertTupletAppearanceElements(sixteenthSeptupletAppearance, MusicXmlTags.NOTE_TYPE_16TH, 7, 4);
+
+		final Duration halfTriplet = Duration.of(1, 3);
+		final Collection<Element> halfTripletAppearance = provider.getAppearanceElements(halfTriplet, document);
+		assertTupletAppearanceElements(halfTripletAppearance, MusicXmlTags.NOTE_TYPE_HALF, 3, 2);
+	}
+
+	private void assertTupletAppearanceElements(Collection<Element> elements, String expectedAppearance,
+			int timeModificationActual, int timeModificationNormal) {
+
+		Optional<Element> onlyElementOpt = elements.stream()
+				.filter(element -> element.getNodeName().equals(MusicXmlTags.NOTE_DURATION_TYPE)).findAny();
+
+		assertTrue(onlyElementOpt.isPresent(), "Did not find expected type element");
+
+		Element typeElement = onlyElementOpt.get();
+		assertEquals(MusicXmlTags.NOTE_DURATION_TYPE, typeElement.getNodeName());
+		assertEquals(expectedAppearance, typeElement.getTextContent());
+
+		Optional<Element> timeModificationOpt = elements.stream()
+				.filter(element -> element.getNodeName().equals(MusicXmlTags.TIME_MODIFICATION)).findAny();
+
+		assertTrue(timeModificationOpt.isPresent(), "Missing expected time modification element");
+
+		NodeList timeModificationChildren = timeModificationOpt.get().getChildNodes();
+		assertEquals(2, timeModificationChildren.getLength(),
+				"Time modification should have exactly two children: actual-notes and normal-notes.");
+
+		for (int i = 0; i < timeModificationChildren.getLength(); ++i) {
+			final Node timeModificationNode = timeModificationChildren.item(i);
+
+			if (MusicXmlTags.TIME_MODIFICATION_ACTUAL_NOTES.equals(timeModificationNode.getNodeName())) {
+				assertEquals(timeModificationActual, Integer.parseInt(timeModificationNode.getTextContent()),
+						"Incorrect actual-notes content");
+			} else if (MusicXmlTags.TIME_MODIFICATION_NORMAL_NOTES.equals(timeModificationNode.getNodeName())) {
+				assertEquals(timeModificationNormal, Integer.parseInt(timeModificationNode.getTextContent()),
+						"Incorrect normal-notes content");
+			} else {
+				fail("Found child in time modification element that was not expected: " + timeModificationNode
+						.getTextContent());
+			}
+		}
+
 	}
 }
