@@ -253,4 +253,66 @@ class MusicXmlWriterDomTest {
 		List<Node> dotNodes = DocHelper.findChildren(noteNode, MusicXmlTags.DOT);
 		assertEquals(1, dotNodes.size(), "Incorrect number of dot nodes");
 	}
+
+	@Test
+	void testWritingTupletAppearances() {
+		final Score score = readMusicXmlTestFile("tuplet_writing_test.xml", false);
+
+		MusicXmlWriter writer = new MusicXmlWriterDom(score);
+		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
+		writer.writeToFile(filePath);
+
+		final Document document = readDocument(filePath);
+		final Node partNode = document.getElementsByTagName(MusicXmlTags.PART).item(0);
+		assertNotNull(partNode);
+
+		final Optional<Node> measureNode = DocHelper.findChild(partNode, MusicXmlTags.MEASURE);
+		assertTrue(measureNode.isPresent());
+
+		final List<Node> noteNodes = DocHelper.findChildren(measureNode.get(), MusicXmlTags.NOTE).stream()
+				.filter(node -> DocHelper.findChild(node, MusicXmlTags.NOTE_REST).isEmpty())
+				.collect(Collectors.toList());
+
+		assertEquals(15, noteNodes.size());
+
+		assertTupletAppearanceNodes("eighth", noteNodes.get(0), 3, 2);
+		assertTupletAppearanceNodes("eighth", noteNodes.get(1), 3, 2);
+		assertTupletAppearanceNodes("eighth", noteNodes.get(2), 3, 2);
+
+		assertTupletAppearanceNodes("16th", noteNodes.get(3), 5, 4);
+		assertTupletAppearanceNodes("16th", noteNodes.get(4), 5, 4);
+		assertTupletAppearanceNodes("16th", noteNodes.get(5), 5, 4);
+		assertTupletAppearanceNodes("16th", noteNodes.get(6), 5, 4);
+		assertTupletAppearanceNodes("16th", noteNodes.get(7), 5, 4);
+
+		assertTupletAppearanceNodes("16th", noteNodes.get(8), 7, 4);
+		assertTupletAppearanceNodes("16th", noteNodes.get(9), 7, 4);
+		assertTupletAppearanceNodes("16th", noteNodes.get(10), 7, 4);
+		assertTupletAppearanceNodes("16th", noteNodes.get(11), 7, 4);
+		assertTupletAppearanceNodes("16th", noteNodes.get(12), 7, 4);
+		assertTupletAppearanceNodes("16th", noteNodes.get(13), 7, 4);
+		assertTupletAppearanceNodes("16th", noteNodes.get(14), 7, 4);
+	}
+
+	private void assertTupletAppearanceNodes(String expectedDurationTypeText, Node noteNode,
+			int expectedActualNotesNumber, int expectedNormalNotesNumber) {
+
+		assertNoteNodeDurationTypeElement(expectedDurationTypeText, noteNode);
+		final List<Node> timeModificationNodes = DocHelper.findChildren(noteNode, MusicXmlTags.TIME_MODIFICATION);
+		assertEquals(1, timeModificationNodes.size(), "Found incorrect number of time-modification nodes");
+
+		final Node timeModification = timeModificationNodes.get(0);
+
+		final List<Node> actualNotesNodes = DocHelper
+				.findChildren(timeModification, MusicXmlTags.TIME_MODIFICATION_ACTUAL_NOTES);
+		assertEquals(1, actualNotesNodes.size(), "Found incorrect number of actual-notes nodes");
+		assertEquals(expectedActualNotesNumber, Integer.parseInt(actualNotesNodes.get(0).getTextContent()),
+				"Incorrect value for actual-notes");
+
+		final List<Node> normalNotesNodes = DocHelper
+				.findChildren(timeModification, MusicXmlTags.TIME_MODIFICATION_NORMAL_NOTES);
+		assertEquals(1, normalNotesNodes.size(), "Found incorrect number of normal-notes nodes");
+		assertEquals(expectedNormalNotesNumber, Integer.parseInt(normalNotesNodes.get(0).getTextContent()),
+				"Incorrect value for normal-notes");
+	}
 }
