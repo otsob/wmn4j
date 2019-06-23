@@ -179,6 +179,14 @@ class MusicXmlWriterDomTest {
 	}
 
 	@Test
+	void testWritingScoreAttributes() {
+		Score score = readMusicXmlTestFile("attribute_reading_test.xml", false);
+		Score writtenScore = writeAndReadScore(score);
+
+		MusicXmlFileChecks.assertScoreHasExpectedAttributes(writtenScore);
+	}
+
+	@Test
 	void testWritingBasicNoteAppearances() {
 		final Score score = readMusicXmlTestFile("basic_duration_appearances.xml", false);
 
