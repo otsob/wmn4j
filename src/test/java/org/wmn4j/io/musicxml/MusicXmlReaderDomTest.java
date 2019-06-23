@@ -79,15 +79,15 @@ class MusicXmlReaderDomTest {
 	}
 
 	@Test
-	void testReadScoreWithMultipleStaves() {
-		final Score score = readScore("twoStavesAndMeasures.xml", false);
-		MusicXmlFileChecks.assertScoreWithMultipleStavesReadCorrectly(score);
+	void testReadScoreWithMultipleParts() {
+		final Score score = readScore("twoPartsAndMeasures.xml", false);
+		MusicXmlFileChecks.assertScoreWithMultiplePartsReadCorrectly(score);
 	}
 
 	@Test
-	void testReadScoreBuilderWithMultipleStaves() {
-		final ScoreBuilder scoreBuilder = readScoreBuilder("twoStavesAndMeasures.xml", false);
-		MusicXmlFileChecks.assertScoreWithMultipleStavesReadCorrectly(scoreBuilder.build());
+	void testReadScoreBuilderWithMultipleParts() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("twoPartsAndMeasures.xml", false);
+		MusicXmlFileChecks.assertScoreWithMultiplePartsReadCorrectly(scoreBuilder.build());
 	}
 
 	@Test
