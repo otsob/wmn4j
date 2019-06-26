@@ -78,6 +78,9 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			rootElement.setAttribute(MusicXmlTags.MUSICXML_VERSION, MUSICXML_VERSION_NUMBER);
 			this.doc.appendChild(rootElement);
 
+			// Add the score attribute elements
+			writeScoreAttributes(rootElement);
+
 			// staff elements
 			writePartList(rootElement);
 
@@ -134,6 +137,52 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return lcd / Durations.QUARTER.getDenominator();
 	}
 
+	private void writeScoreAttributes(Element rootElement) {
+		if (!score.getTitle().isEmpty()) {
+			final Element workTitleElement = doc.createElement(MusicXmlTags.SCORE_WORK_TITLE);
+			workTitleElement.setTextContent(score.getTitle());
+
+			final Element workElement = doc.createElement(MusicXmlTags.SCORE_WORK);
+			workElement.appendChild(workTitleElement);
+			rootElement.appendChild(workElement);
+		}
+
+		if (!score.getAttribute(Score.Attribute.MOVEMENT_TITLE).isEmpty()) {
+			final Element movementTitleElement = doc.createElement(MusicXmlTags.SCORE_MOVEMENT_TITLE);
+			movementTitleElement.setTextContent(score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
+			rootElement.appendChild(movementTitleElement);
+		}
+
+		final Element identificationElement = createIdentificationElement();
+		if (identificationElement.hasChildNodes()) {
+			rootElement.appendChild(identificationElement);
+		}
+	}
+
+	private Element createIdentificationElement() {
+		final Element identificationElement = doc.createElement(MusicXmlTags.SCORE_IDENTIFICATION);
+
+		if (!score.getAttribute(Score.Attribute.COMPOSER).isEmpty()) {
+			final Element composerElement = doc.createElement(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR);
+			composerElement.setAttribute(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR_TYPE,
+					MusicXmlTags.SCORE_IDENTIFICATION_COMPOSER);
+
+			composerElement.setTextContent(score.getAttribute(Score.Attribute.COMPOSER));
+			identificationElement.appendChild(composerElement);
+		}
+
+		if (!score.getAttribute(Score.Attribute.ARRANGER).isEmpty()) {
+			final Element arrangerElement = doc.createElement(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR);
+			arrangerElement.setAttribute(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR_TYPE,
+					MusicXmlTags.SCORE_IDENTIFICATION_ARRANGER);
+
+			arrangerElement.setTextContent(score.getAttribute(Score.Attribute.ARRANGER));
+			identificationElement.appendChild(arrangerElement);
+		}
+
+		return identificationElement;
+	}
+
 	private void writePartList(Element scoreRoot) {
 		final Element partList = doc.createElement(MusicXmlTags.PART_LIST);
 
@@ -147,6 +196,12 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			final Element partName = doc.createElement(MusicXmlTags.PART_NAME);
 			partName.setTextContent(part.getName());
 			partElement.appendChild(partName);
+
+			if (!part.getAttribute(Part.Attribute.ABBREVIATED_NAME).isEmpty()) {
+				final Element abbreviatedPartName = doc.createElement(MusicXmlTags.PART_NAME_ABBREVIATION);
+				abbreviatedPartName.setTextContent(part.getAttribute(Part.Attribute.ABBREVIATED_NAME));
+				partElement.appendChild(abbreviatedPartName);
+			}
 
 			partList.appendChild(partElement);
 		}
