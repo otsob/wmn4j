@@ -69,6 +69,28 @@ final class MusicXmlTags {
 	static final String TIE_STOP = "stop";
 	static final String NOTATIONS = "notations";
 	static final String NOTE_ARTICULATIONS = "articulations";
+	static final String NOTE_DURATION_TYPE = "type";
+	static final String DOT = "dot";
+
+	// Note appearances supported in MusicXML
+	static final String NOTE_TYPE_1024TH = "1024th";
+	static final String NOTE_TYPE_512TH = "512th";
+	static final String NOTE_TYPE_256TH = "256th";
+	static final String NOTE_TYPE_128TH = "128th";
+	static final String NOTE_TYPE_64TH = "64th";
+	static final String NOTE_TYPE_32TH = "32th";
+	static final String NOTE_TYPE_16TH = "16th";
+	static final String NOTE_TYPE_EIGHTH = "eighth";
+	static final String NOTE_TYPE_QUARTER = "quarter";
+	static final String NOTE_TYPE_HALF = "half";
+	static final String NOTE_TYPE_WHOLE = "whole";
+	static final String NOTE_TYPE_BREVE = "breve";
+	static final String NOTE_TYPE_LONG = "long";
+	static final String NOTE_TYPE_MAXIMA = "maxima";
+
+	static final String TIME_MODIFICATION = "time-modification";
+	static final String TIME_MODIFICATION_ACTUAL_NOTES = "actual-notes";
+	static final String TIME_MODIFICATION_NORMAL_NOTES = "normal-notes";
 
 	// Articulations
 	static final String STACCATO = "staccato";
