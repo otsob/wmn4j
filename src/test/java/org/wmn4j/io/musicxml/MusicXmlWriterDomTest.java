@@ -187,6 +187,14 @@ class MusicXmlWriterDomTest {
 	}
 
 	@Test
+	void testWritingScoreWithMultiStaffPart() {
+		Score score = readMusicXmlTestFile("multistaff.xml", false);
+		Score writtenScore = writeAndReadScore(score);
+
+		MusicXmlFileChecks.assertMultiStaffPartReadCorrectly(writtenScore);
+	}
+
+	@Test
 	void testWritingBasicNoteAppearances() {
 		final Score score = readMusicXmlTestFile("basic_duration_appearances.xml", false);
 
