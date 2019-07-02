@@ -57,10 +57,6 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	private final SortedMap<String, Part> partIdMap = new TreeMap<>();
 	private final int divisions;
 
-	private KeySignature keySigInEffect;
-	private TimeSignature timeSigInEffect;
-	private Clef clefInEffect;
-
 	MusicXmlWriterDom(Score score) {
 		this.score = score;
 		this.divisions = computeDivisions(this.score);
@@ -226,9 +222,6 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		partElement.setAttribute(MusicXmlTags.PART_ID, partId);
 
 		Measure prevMeasure = null;
-		timeSigInEffect = null;
-		keySigInEffect = null;
-		clefInEffect = null;
 
 		for (Measure measure : part) {
 			partElement.appendChild(createMeasureElement(measure, prevMeasure));
@@ -363,27 +356,28 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	private Optional<Element> createMeasureAttributesElement(Measure measure, Measure prevMeasure) {
 		final Element attrElement = doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
 
-		//Divisions
+		// Add divisions and all attributes
 		if (prevMeasure == null) {
 			attrElement.appendChild(createDivisionsElement());
-		}
-
-		//Key signature
-		if (!measure.getKeySignature().equals(keySigInEffect)) {
 			attrElement.appendChild(createKeySignatureElement(measure.getKeySignature()));
-			this.keySigInEffect = measure.getKeySignature();
-		}
-
-		//Time signature
-		if (!measure.getTimeSignature().equals(timeSigInEffect)) {
 			attrElement.appendChild(createTimeSignatureElement(measure.getTimeSignature()));
-			this.timeSigInEffect = measure.getTimeSignature();
-		}
-
-		//Clef
-		if (!measure.getClef().equals(clefInEffect)) {
 			attrElement.appendChild(createClefElement(measure.getClef()));
-			this.clefInEffect = measure.getClef();
+		} else {
+
+			//Key signature
+			if (!measure.getKeySignature().equals(prevMeasure.getKeySignature())) {
+				attrElement.appendChild(createKeySignatureElement(measure.getKeySignature()));
+			}
+
+			//Time signature
+			if (!measure.getTimeSignature().equals(prevMeasure.getTimeSignature())) {
+				attrElement.appendChild(createTimeSignatureElement(measure.getTimeSignature()));
+			}
+
+			//Clef
+			if (!measure.getClef().equals(prevMeasure.getClef())) {
+				attrElement.appendChild(createClefElement(measure.getClef()));
+			}
 		}
 
 		if (attrElement.hasChildNodes()) {
@@ -479,8 +473,6 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 
 				attributesElement.appendChild(clefElement);
 				measureElement.appendChild(attributesElement);
-
-				clefInEffect = undealtClefChanges.get(offset);
 
 				undealtClefChanges.remove(offset);
 
