@@ -221,11 +221,11 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		final Element partElement = doc.createElement(MusicXmlTags.PART);
 		partElement.setAttribute(MusicXmlTags.PART_ID, partId);
 
-		Measure prevMeasure = null;
+		Measure previousMeasure = null;
 
 		for (Measure measure : part) {
-			partElement.appendChild(createMeasureElement(measure, prevMeasure));
-			prevMeasure = measure;
+			partElement.appendChild(createMeasureElement(measure, previousMeasure));
+			previousMeasure = measure;
 		}
 
 		return partElement;
@@ -235,7 +235,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		final Element partElement = doc.createElement(MusicXmlTags.PART);
 		partElement.setAttribute(MusicXmlTags.PART_ID, partId);
 
-		SortedMap<Integer, Measure> prevMeasures = Collections.emptySortedMap();
+		Map<Integer, Measure> previousMeasures = Collections.emptySortedMap();
 
 		List<Integer> staffNumbers = part.getStaffNumbers();
 		final int firstMeasureNumber = part.getStaff(staffNumbers.get(0)).hasPickupMeasure() ? 0 : 1;
@@ -247,14 +247,14 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 				measures.put(staffNumber, part.getMeasure(staffNumber, measureNumber));
 			}
 
-			partElement.appendChild(createMultiStaffMeasureElement(measures, prevMeasures));
-			prevMeasures = measures;
+			partElement.appendChild(createMultiStaffMeasureElement(measures, previousMeasures));
+			previousMeasures = measures;
 		}
 
 		return partElement;
 	}
 
-	private Element createMeasureElement(Measure measure, Measure prevMeasure) {
+	private Element createMeasureElement(Measure measure, Measure previousMeasure) {
 		final Element measureElement = doc.createElement(MusicXmlTags.MEASURE);
 		measureElement.setAttribute(MusicXmlTags.MEASURE_NUM, Integer.toString(measure.getNumber()));
 
@@ -265,7 +265,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		}
 
 		//Attributes
-		final Optional<Element> attributes = createMeasureAttributesElement(measure, prevMeasure);
+		final Optional<Element> attributes = createMeasureAttributesElement(measure, previousMeasure);
 		attributes.ifPresent(attrElement -> measureElement.appendChild(attrElement));
 
 		//Set up handling possible mid-measure clef changes
@@ -330,9 +330,8 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return measureElement;
 	}
 
-	private Element createMultiStaffMeasureElement(SortedMap<Integer, Measure> measures, SortedMap<Integer,
-			Measure> prevMeasures) {
-
+	private Element createMultiStaffMeasureElement(Map<Integer, Measure> measures, Map<Integer,
+			Measure> previousMeasures) {
 		final Element measureElement = doc.createElement(MusicXmlTags.MEASURE);
 
 		final Measure measureForSharedValues = measures.values().iterator().next();
@@ -349,7 +348,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		}
 
 		//Attributes
-		final Optional<Element> attributes = createMeasureAttributesElement(measures, prevMeasures);
+		final Optional<Element> attributes = createMeasureAttributesElement(measures, previousMeasures);
 		attributes.ifPresent(attrElement -> measureElement.appendChild(attrElement));
 
 		final Integer maxStaffNumber = measures.keySet().stream().max(Integer::compareTo).orElseThrow();
@@ -472,11 +471,11 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return barlineElement;
 	}
 
-	private Optional<Element> createMeasureAttributesElement(Measure measure, Measure prevMeasure) {
+	private Optional<Element> createMeasureAttributesElement(Measure measure, Measure previousMeasure) {
 		final Element attrElement = doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
 
 		// Add divisions and all attributes
-		if (prevMeasure == null) {
+		if (previousMeasure == null) {
 			attrElement.appendChild(createDivisionsElement());
 			attrElement.appendChild(createKeySignatureElement(measure.getKeySignature()));
 			attrElement.appendChild(createTimeSignatureElement(measure.getTimeSignature()));
@@ -484,17 +483,17 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		} else {
 
 			//Key signature
-			if (!measure.getKeySignature().equals(prevMeasure.getKeySignature())) {
+			if (!measure.getKeySignature().equals(previousMeasure.getKeySignature())) {
 				attrElement.appendChild(createKeySignatureElement(measure.getKeySignature()));
 			}
 
 			//Time signature
-			if (!measure.getTimeSignature().equals(prevMeasure.getTimeSignature())) {
+			if (!measure.getTimeSignature().equals(previousMeasure.getTimeSignature())) {
 				attrElement.appendChild(createTimeSignatureElement(measure.getTimeSignature()));
 			}
 
 			//Clef
-			if (!measure.getClef().equals(getLastClefInEffect(prevMeasure))) {
+			if (!measure.getClef().equals(getLastClefInEffect(previousMeasure))) {
 				attrElement.appendChild(createClefElement(measure.getClef(), null));
 			}
 		}
@@ -507,16 +506,16 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Optional<Element> createMeasureAttributesElement(Map<Integer, Measure> measures,
-			Map<Integer, Measure> prevMeasures) {
+			Map<Integer, Measure> previousMeasures) {
 		final Element attrElement = doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
 
-		if (!prevMeasures.isEmpty()) {
+		if (!previousMeasures.isEmpty()) {
 			for (Integer staffNumber : measures.keySet()) {
 				final Measure measure = measures.get(staffNumber);
-				final Measure prevMeasure = prevMeasures.getOrDefault(staffNumber, null);
+				final Measure previousMeasure = previousMeasures.getOrDefault(staffNumber, null);
 
 				// Add divisions and all attributes
-				if (prevMeasure == null) {
+				if (previousMeasure == null) {
 					attrElement.appendChild(createDivisionsElement());
 					attrElement.appendChild(createKeySignatureElement(measure.getKeySignature()));
 					attrElement.appendChild(createTimeSignatureElement(measure.getTimeSignature()));
@@ -524,17 +523,17 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 				} else {
 
 					//Key signature
-					if (!measure.getKeySignature().equals(prevMeasure.getKeySignature())) {
+					if (!measure.getKeySignature().equals(previousMeasure.getKeySignature())) {
 						attrElement.appendChild(createKeySignatureElement(measure.getKeySignature()));
 					}
 
 					//Time signature
-					if (!measure.getTimeSignature().equals(prevMeasure.getTimeSignature())) {
+					if (!measure.getTimeSignature().equals(previousMeasure.getTimeSignature())) {
 						attrElement.appendChild(createTimeSignatureElement(measure.getTimeSignature()));
 					}
 
 					//Clef
-					if (!measure.getClef().equals(getLastClefInEffect(prevMeasure))) {
+					if (!measure.getClef().equals(getLastClefInEffect(previousMeasure))) {
 						attrElement.appendChild(createClefElement(measure.getClef(), staffNumber));
 					}
 				}
