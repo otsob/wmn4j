@@ -226,12 +226,14 @@ public final class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * Returns the clef changes in this measure.
+	 * Returns the clef changes in this measure. The keys in the map are
+	 * the offsets of the clef changes from the beginning of the measure.
+	 * The offsets are sorted from smallest to greatest.
 	 *
 	 * @return a map of clef changes in this measure, where the duration key is the
 	 * offset counted from the beginning of the measure.
 	 */
-	public Map<Duration, Clef> getClefChanges() {
+	public SortedMap<Duration, Clef> getClefChanges() {
 		return this.measureAttr.getClefChanges();
 	}
 
