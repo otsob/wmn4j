@@ -127,9 +127,9 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "twoStavesAndMeasures.xml"
+	 * Expects the contents of the file "twoPartsAndMeasures.xml"
 	 */
-	static void assertScoreWithMultipleStavesReadCorrectly(Score score) {
+	static void assertScoreWithMultiplePartsReadCorrectly(Score score) {
 		assertEquals("Multistaff test file", score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
 		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
 		assertEquals(2, score.getParts().size());

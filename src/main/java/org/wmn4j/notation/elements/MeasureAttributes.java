@@ -4,9 +4,10 @@
 package org.wmn4j.notation.elements;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Represents the attributes of a measure that are often implicit in the
@@ -19,7 +20,7 @@ public final class MeasureAttributes {
 	private final Barline rightBarline;
 	private final Barline leftBarline;
 	private final Clef clef;
-	private final Map<Duration, Clef> clefChanges;
+	private final SortedMap<Duration, Clef> clefChanges;
 
 	/**
 	 * Returns an instance with the given values. The left barline type will be set
@@ -80,9 +81,9 @@ public final class MeasureAttributes {
 		this.clef = Objects.requireNonNull(clef);
 
 		if (clefChanges != null && !clefChanges.isEmpty()) {
-			this.clefChanges = new HashMap<>(clefChanges);
+			this.clefChanges = Collections.unmodifiableSortedMap(new TreeMap<>(clefChanges));
 		} else {
-			this.clefChanges = Collections.<Duration, Clef>emptyMap();
+			this.clefChanges = Collections.<Duration, Clef>emptySortedMap();
 		}
 	}
 
@@ -141,13 +142,14 @@ public final class MeasureAttributes {
 	}
 
 	/**
-	 * Returns the clef chagnes specified in the attributes. The keys in the map are
+	 * Returns the clef changes specified in the attributes. The keys in the map are
 	 * the offsets of the clef changes from the beginning of the measure.
+	 * The offsets are sorted from smallest to greatest.
 	 *
-	 * @return the clef chagnes specified in the attributes
+	 * @return the clef changes specified in the attributes
 	 */
-	public Map<Duration, Clef> getClefChanges() {
-		return Collections.unmodifiableMap(this.clefChanges);
+	public SortedMap<Duration, Clef> getClefChanges() {
+		return clefChanges;
 	}
 
 	@Override
