@@ -161,10 +161,10 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr class="rowColor" id="i3">
-<td class="colFirst"><code>java.util.Map&lt;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>,&#8203;<a href="Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.SortedMap&lt;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>,&#8203;<a href="Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClefChanges()">getClefChanges</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the clef chagnes specified in the attributes.</div>
+<div class="block">Returns the clef changes specified in the attributes.</div>
 </td>
 </tr>
 <tr class="altColor" id="i4">
@@ -428,12 +428,13 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getClefChanges</h4>
-<pre class="methodSignature">public&nbsp;java.util.Map&lt;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>,&#8203;<a href="Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&gt;&nbsp;getClefChanges()</pre>
-<div class="block">Returns the clef chagnes specified in the attributes. The keys in the map are
- the offsets of the clef changes from the beginning of the measure.</div>
+<pre class="methodSignature">public&nbsp;java.util.SortedMap&lt;<a href="Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>,&#8203;<a href="Clef.html" title="class in org.wmn4j.notation.elements">Clef</a>&gt;&nbsp;getClefChanges()</pre>
+<div class="block">Returns the clef changes specified in the attributes. The keys in the map are
+ the offsets of the clef changes from the beginning of the measure.
+ The offsets are sorted from smallest to greatest.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the clef chagnes specified in the attributes</dd>
+<dd>the clef changes specified in the attributes</dd>
 </dl>
 </li>
 </ul>
