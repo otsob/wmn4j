@@ -7,6 +7,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
+import org.wmn4j.notation.elements.Articulation;
 import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Clef;
@@ -39,6 +40,7 @@ import java.io.File;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -719,6 +721,9 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			noteElement.appendChild(createStaffElement(staffNumber));
 		}
 
+		// Notations (musical notations, e.g. articulations, dynamics, fermata, slur)
+		createNotationsElement(note).ifPresent(notationsElement -> noteElement.appendChild(notationsElement));
+
 		return noteElement;
 	}
 
@@ -764,6 +769,52 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		pitchElement.appendChild(octave);
 
 		return pitchElement;
+	}
+
+	private Optional<Element> createNotationsElement(Note note) {
+		final Element notationsElement = this.doc.createElement(MusicXmlTags.NOTATIONS);
+
+		// Articulations & fermata
+		if (note.hasArticulations()) {
+			if (note.hasArticulation(Articulation.FERMATA)) {
+				notationsElement.appendChild(this.doc.createElement(MusicXmlTags.FERMATA));
+			}
+
+			// Don't create articulations element if fermata is the only articulation
+			if (!(note.getArticulations().size() == 1 && note.hasArticulation(Articulation.FERMATA))) {
+				notationsElement.appendChild(createArticulationsElement(note.getArticulations()));
+			}
+		}
+
+		if (notationsElement.hasChildNodes()) {
+			return Optional.of(notationsElement);
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	private Element createArticulationsElement(Collection<Articulation> articulations) {
+		final Element articulationsElement = this.doc.createElement(MusicXmlTags.NOTE_ARTICULATIONS);
+
+		for (Articulation articulation : articulations) {
+			switch (articulation) {
+				case ACCENT:
+					articulationsElement.appendChild(this.doc.createElement(MusicXmlTags.ACCENT));
+					break;
+				case STACCATO:
+					articulationsElement.appendChild(this.doc.createElement(MusicXmlTags.STACCATO));
+					break;
+				case TENUTO:
+					articulationsElement.appendChild(this.doc.createElement(MusicXmlTags.TENUTO));
+					break;
+				case FERMATA:
+					break;
+				default:
+					throw new IllegalStateException("Unexpected articulation: " + articulation);
+			}
+		}
+
+		return articulationsElement;
 	}
 
 	private Element createRestElement(Rest rest, int voice, Integer staffNumber) {
