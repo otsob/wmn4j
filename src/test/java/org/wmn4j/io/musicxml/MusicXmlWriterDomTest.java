@@ -195,6 +195,14 @@ class MusicXmlWriterDomTest {
 	}
 
 	@Test
+	void testWritingArticulations() {
+		Score score = readMusicXmlTestFile("articulations.xml", false);
+		Score writtenScore = writeAndReadScore(score);
+
+		MusicXmlFileChecks.assertScoreWithArticulationsReadCorrectly(writtenScore);
+	}
+
+	@Test
 	void testWritingBasicNoteAppearances() {
 		final Score score = readMusicXmlTestFile("basic_duration_appearances.xml", false);
 
