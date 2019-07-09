@@ -46,9 +46,11 @@ tasks.withType(JavaCompile) {
 
 task createProjectPropertiesFile(dependsOn: processResources) {
     doLast {
+        String versionNumber = project.version.toString()
+        println 'Creating properties file for ' + project.name + " version " + versionNumber
         new File("$buildDir/resources/main/wmn4j.properties").withWriter { writer ->
             Properties properties = new Properties()
-            properties['version'] = project.version.toString()
+            properties['version'] = versionNumber
             properties.store writer, null
         }
     }
