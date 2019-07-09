@@ -27,7 +27,7 @@ dependencies {
 test {
     useJUnitPlatform()
     testLogging {
-      events "skipped", "failed"
+        events "skipped", "failed"
     }
 }
 
@@ -42,4 +42,18 @@ sourceCompatibility = '12'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+task createProjectPropertiesFile(dependsOn: processResources) {
+    doLast {
+        new File("$buildDir/resources/main/wmn4j.properties").withWriter { writer ->
+            Properties properties = new Properties()
+            properties['version'] = project.version.toString()
+            properties.store writer, null
+        }
+    }
+}
+
+classes {
+    dependsOn createProjectPropertiesFile
 }
