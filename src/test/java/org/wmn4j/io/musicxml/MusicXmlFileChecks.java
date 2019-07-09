@@ -442,6 +442,34 @@ class MusicXmlFileChecks {
 	}
 
 	/*
+	 * Expects the content of "articulationsOnMultipleStaves.xml".
+	 */
+	static void assertArticulationsReadCorrectlyFromMultipleStaves(Score score) {
+		MultiStaffPart part = (MultiStaffPart) score.getPart(0);
+		final Staff topStaff = part.getStaff(1);
+		final Staff bottomStaff = part.getStaff(2);
+
+		final Measure topStaffMeasure = topStaff.getMeasure(1);
+
+		assertTrue(((Note) topStaffMeasure.get(1,0)).hasArticulation(Articulation.FERMATA));
+		assertFalse(((Note) topStaffMeasure.get(1,1)).hasArticulations());
+		assertTrue(((Note) topStaffMeasure.get(1,2)).hasArticulation(Articulation.ACCENT));
+		assertTrue(((Note) topStaffMeasure.get(1,2)).hasArticulation(Articulation.TENUTO));
+		assertFalse(((Note) topStaffMeasure.get(1,3)).hasArticulations());
+
+		final Measure bottomStaffMeasure = bottomStaff.getMeasure(1);
+		final int bottomStaffSingleVoiceNumber = bottomStaffMeasure.getVoiceNumbers().get(0);
+
+		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,0)).hasArticulation(Articulation.STACCATO));
+		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,1)).hasArticulation(Articulation.TENUTO));
+		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,2)).hasArticulation(Articulation.ACCENT));
+		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,3)).hasArticulation(Articulation.STACCATO));
+		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,3)).hasArticulation(Articulation.TENUTO));
+		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,3)).hasArticulation(Articulation.ACCENT));
+		assertTrue(((Chord) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,4)).hasArticulation(Articulation.TENUTO));
+	}
+
+	/*
 	 * Expects the contents of "pickup_measure_test.xml".
 	 */
 	static void assertPickupMeasureReadCorrectly(Score score) {

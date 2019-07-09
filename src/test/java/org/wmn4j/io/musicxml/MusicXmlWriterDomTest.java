@@ -203,6 +203,14 @@ class MusicXmlWriterDomTest {
 	}
 
 	@Test
+	void testArticulationsOnMultipleStaves() {
+		Score score = readMusicXmlTestFile("articulationsOnMultipleStaves.xml", false);
+		Score writtenScore = writeAndReadScore(score);
+
+		MusicXmlFileChecks.assertArticulationsReadCorrectlyFromMultipleStaves(writtenScore);
+	}
+
+	@Test
 	void testWritingBasicNoteAppearances() {
 		final Score score = readMusicXmlTestFile("basic_duration_appearances.xml", false);
 
