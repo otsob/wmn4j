@@ -36,7 +36,7 @@ javadoc {
 }
 
 group = 'wmn4j'
-version = '0.0.1-SNAPSHOT'
+version = '0.1-SNAPSHOT'
 description = 'wmn4j'
 sourceCompatibility = '12'
 
