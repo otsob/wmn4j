@@ -64,14 +64,8 @@ final class PolyphonicPattern implements Pattern {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#isMonophonic()
-	 */
 	@Override
 	public boolean isMonophonic() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
