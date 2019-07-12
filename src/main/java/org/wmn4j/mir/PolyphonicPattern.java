@@ -1,5 +1,4 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.mir;
@@ -8,9 +7,6 @@ import org.wmn4j.notation.elements.Durational;
 
 import java.util.List;
 
-/**
- * @author Otso Björklund
- */
 public final class PolyphonicPattern implements Pattern {
 
 	@Override
