@@ -13,9 +13,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PolyphonicPatternTest {
 
@@ -84,6 +87,21 @@ public class PolyphonicPatternTest {
 
 		final Pattern patternWithChord = new PolyphonicPattern(voices);
 		assertFalse(patternWithChord.isMonophonic());
+	}
+
+	@Test
+	void testGetContentsReturnsAllContentsOfPattern() {
+		final Map<Integer, List<? extends Durational>> voiceContents = createReferencePatternVoices();
+
+		final Pattern pattern = new PolyphonicPattern(voiceContents);
+		final List<Durational> contents = pattern.getContents();
+
+		assertEquals(6, contents.size());
+
+		List<? extends Durational> expectedContents = voiceContents.values().stream().flatMap(voice -> voice.stream())
+				.collect(Collectors.toList());
+
+		expectedContents.forEach(notationElement -> assertTrue(contents.contains(notationElement)));
 	}
 
 }
