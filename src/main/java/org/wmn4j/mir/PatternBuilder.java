@@ -74,6 +74,6 @@ public final class PatternBuilder {
 	 * @return a pattern instance with the contents set into this builder
 	 */
 	public Pattern build() {
-		return Pattern.monophonicOf(voices.get(DEFAULT_VOICE_NUMBER));
+		return Pattern.of(voices.get(DEFAULT_VOICE_NUMBER));
 	}
 }

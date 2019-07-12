@@ -3,9 +3,11 @@
  */
 package org.wmn4j.mir;
 
+import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Interface for musical patterns. The patterns can represent motifs, melodies,
@@ -18,14 +20,28 @@ import java.util.List;
 public interface Pattern {
 
 	/**
-	 * Returns a monophonic pattern with the given contents. The contents must be strictly monophonic, i.e., they cannot
-	 * contain any chords.
+	 * Returns a pattern with the given contents.
 	 *
 	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
 	 * @return a pattern with the given contents
 	 */
-	static Pattern monophonicOf(List<Durational> contents) {
+	static Pattern of(List<? extends Durational> contents) {
+		final boolean isPolyphonic = contents.stream().anyMatch(durational -> durational instanceof Chord);
+		if (isPolyphonic) {
+			return new PolyphonicPattern(contents);
+		}
+
 		return new MonophonicPattern(contents);
+	}
+
+	/**
+	 * Returns a polyphonic pattern with the given voices.
+	 *
+	 * @param voices the voices of the pattern
+	 * @return polyphonic pattern with the given voices
+	 */
+	static Pattern of(Map<Integer, List<? extends Durational>> voices) {
+		return new PolyphonicPattern(voices);
 	}
 
 	/**

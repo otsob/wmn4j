@@ -29,7 +29,7 @@ final class MonophonicPattern implements Pattern {
 	 *
 	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
 	 */
-	MonophonicPattern(List<Durational> contents) {
+	MonophonicPattern(List<? extends Durational> contents) {
 		this.contents = Collections.unmodifiableList(new ArrayList<>(contents));
 		if (this.contents == null) {
 			throw new NullPointerException("Cannot create pattern with null contents");
