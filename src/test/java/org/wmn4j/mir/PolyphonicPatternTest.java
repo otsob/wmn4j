@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -135,5 +136,30 @@ public class PolyphonicPatternTest {
 
 		assertEquals(contents.get(1), pattern.getVoice(1));
 		assertEquals(contents.get(2), pattern.getVoice(2));
+	}
+
+	@Test
+	void testEquals() {
+		final Pattern pattern1 = new PolyphonicPattern(createReferencePatternVoices());
+		final Pattern pattern2 = new PolyphonicPattern(createReferencePatternVoices());
+
+		assertEquals(pattern1, pattern1);
+		assertEquals(pattern1, pattern2);
+
+		Map<Integer, List<? extends Durational>> modifiedVoices = createReferencePatternVoices();
+		List<Durational> modifiedVoice = new ArrayList<>(modifiedVoices.get(2));
+		Note note = Note.of(Pitch.of(Pitch.Base.C, 1, 5), Durations.EIGHTH);
+		modifiedVoice.add(note);
+		modifiedVoices.put(2, modifiedVoice);
+
+		final Pattern modifiedPattern = new PolyphonicPattern(modifiedVoices);
+		assertNotEquals(modifiedPattern, pattern1);
+
+		Map<Integer, List<? extends Durational>> contentsWithAddedVoice = createReferencePatternVoices();
+		List<Note> notes = Collections.singletonList(note);
+		contentsWithAddedVoice.put(3, notes);
+		final Pattern withAddedVoice = new PolyphonicPattern(contentsWithAddedVoice);
+
+		assertNotEquals(withAddedVoice, pattern1);
 	}
 }

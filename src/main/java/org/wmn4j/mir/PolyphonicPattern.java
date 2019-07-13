@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -87,12 +89,59 @@ final class PolyphonicPattern implements Pattern {
 		return voices.get(voiceNumber);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (!(o instanceof Pattern)) {
+			return false;
+		}
+
+		return containsEqualVoices((Pattern) o, List::equals);
+	}
+
+	private boolean containsEqualVoices(Pattern other,
+			BiFunction<List<Durational>, List<Durational>, Boolean> voiceEquality) {
+		if (other.getNumberOfVoices() != getNumberOfVoices()) {
+			return false;
+		}
+
+		for (List<Durational> voice : voices.values()) {
+			boolean isVoicePresentInOther = false;
+
+			for (Integer voiceNumber : other.getVoiceNumbers()) {
+				List<Durational> voiceInOther = other.getVoice(voiceNumber);
+				if (voiceEquality.apply(voice, voiceInOther)) {
+					isVoicePresentInOther = true;
+					break;
+				}
+			}
+
+			if (!isVoicePresentInOther) {
+				return false;
+			}
+		}
+
+		for (Integer voiceNumber : other.getVoiceNumbers()) {
+			List<Durational> voiceInOther = other.getVoice(voiceNumber);
+
+			if (voices.values().stream().noneMatch(voice -> voiceEquality.apply(voice, voiceInOther))) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
 	 * @see wmnlibmir.Pattern#equalsInPitch(wmnlibmir.Pattern)
 	 */
 	@Override
+
 	public boolean equalsInPitch(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
@@ -129,5 +178,10 @@ final class PolyphonicPattern implements Pattern {
 	public boolean equalsInDurations(Pattern other) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(voices);
 	}
 }
