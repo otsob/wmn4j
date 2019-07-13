@@ -53,11 +53,11 @@ public interface Pattern {
 	List<Durational> getContents();
 
 	/**
-	 * Returns true if this pattern does not contain any notes occur simultaneously,
-	 * otherwise returns false.
+	 * Returns true if this pattern contains only a single voice and does not contain
+	 * any notes that occur simultaneously, otherwise returns false.
 	 *
-	 * @return true if this pattern does not contain any notes occur simultaneously.
-	 * Otherwise returns false.
+	 * @return true if this pattern contains only a single voice and does not contain
+	 * any notes that occur simultaneously
 	 */
 	boolean isMonophonic();
 
