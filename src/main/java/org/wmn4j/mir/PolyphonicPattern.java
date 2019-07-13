@@ -5,6 +5,7 @@ package org.wmn4j.mir;
 
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.elements.Note;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -135,16 +137,71 @@ final class PolyphonicPattern implements Pattern {
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equalsInPitch(wmnlibmir.Pattern)
-	 */
 	@Override
-
 	public boolean equalsInPitch(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
+		BiFunction<List<Durational>, List<Durational>, Boolean> equalInPitches = (voiceA, voiceB) ->
+				isNoteContentEqualWithTransformation(voiceA, voiceB, Note::getPitch);
+
+		return containsEqualVoices(other, equalInPitches);
+	}
+
+	private static boolean isNoteContentEqualWithTransformation(List<Durational> voiceA, List<Durational> voiceB,
+			Function<Note, Object> noteTransformation) {
+
+		List<Durational> voiceAWithoutRests = withoutRests(voiceA);
+		List<Durational> voiceBWithoutRests = withoutRests(voiceB);
+
+		if (voiceAWithoutRests.size() != voiceBWithoutRests.size()) {
+			return false;
+		}
+
+		for (int i = 0; i < voiceAWithoutRests.size(); ++i) {
+			Durational durationalA = voiceAWithoutRests.get(i);
+			Durational durationalB = voiceBWithoutRests.get(i);
+
+			if (durationalA instanceof Chord && durationalB instanceof Chord) {
+				Chord chordA = (Chord) durationalA;
+				Chord chordB = (Chord) durationalB;
+
+				if (!areChordsEqualWithTransformedNotes(chordA, chordB, noteTransformation)) {
+					return false;
+				}
+			} else if (durationalA instanceof Note && durationalB instanceof Note) {
+				Note noteA = (Note) durationalA;
+				Note noteB = (Note) durationalB;
+
+				if (!noteTransformation.apply(noteA).equals(noteTransformation.apply(noteB))) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private static List<Durational> withoutRests(List<Durational> voice) {
+		return voice.stream().filter(durational -> !durational.isRest()).collect(Collectors.toList());
+	}
+
+	private static boolean areChordsEqualWithTransformedNotes(Chord chordA, Chord chordB,
+			Function<Note, Object> noteTransformation) {
+
+		if (chordA.getNoteCount() != chordB.getNoteCount()) {
+			return false;
+		}
+
+		for (int i = 0; i < chordA.getNoteCount(); ++i) {
+			Object transformedNoteA = noteTransformation.apply(chordA.getNote(i));
+			Object transformedNoteB = noteTransformation.apply(chordB.getNote(i));
+
+			if (!transformedNoteA.equals(transformedNoteB)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/*
