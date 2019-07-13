@@ -62,6 +62,28 @@ public interface Pattern {
 	boolean isMonophonic();
 
 	/**
+	 * Returns the number of voices in this pattern.
+	 *
+	 * @return the number of voices in this pattern
+	 */
+	int getNumberOfVoices();
+
+	/**
+	 * Returns the voice numbers in this pattern from smallest to greatest.
+	 *
+	 * @return the voice numbers in this pattern from smallest to greatest
+	 */
+	List<Integer> getVoiceNumbers();
+
+	/**
+	 * Returns the contents of the voice with the given number.
+	 *
+	 * @param voiceNumber the number of the voice whose contents are returned
+	 * @return the contents of the voice with the given number
+	 */
+	List<Durational> getVoice(int voiceNumber);
+
+	/**
 	 * Returns true if this pattern contains the same pitches in the
 	 * same order as other, otherwise returns false. The pitches must be spelled the
 	 * same way for the patterns to be considered equal in pitch. Rhythm is ignored.

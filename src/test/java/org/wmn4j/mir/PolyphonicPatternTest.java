@@ -104,4 +104,36 @@ public class PolyphonicPatternTest {
 		expectedContents.forEach(notationElement -> assertTrue(contents.contains(notationElement)));
 	}
 
+	@Test
+	void testGetNumberOfVoicesReturnsCorrectNumber() {
+		final Pattern pattern = new PolyphonicPattern(createReferencePatternVoices());
+		assertEquals(2, pattern.getNumberOfVoices());
+	}
+
+	@Test
+	void testGetVoiceNumbersReturnsCorrectNumbers() {
+		final Map<Integer, List<? extends Durational>> contents = createReferencePatternVoices();
+		final Pattern pattern = new PolyphonicPattern(createReferencePatternVoices());
+
+		final List<Integer> voiceNumbers = pattern.getVoiceNumbers();
+		assertEquals(contents.keySet().size(), voiceNumbers.size());
+		for (Integer voiceNumber : voiceNumbers) {
+			assertTrue(contents.containsKey(voiceNumber),
+					"Voice number " + voiceNumber + " not expected to be in voice numbers");
+		}
+
+		for (Integer expectedVoiceNumber : contents.keySet()) {
+			assertTrue(voiceNumbers.contains(expectedVoiceNumber),
+					"Expected voice number " + expectedVoiceNumber + " missing from voice numbers");
+		}
+	}
+
+	@Test
+	void testGetVoiceReturnsCorrectContents() {
+		final Map<Integer, List<? extends Durational>> contents = createReferencePatternVoices();
+		final Pattern pattern = new PolyphonicPattern(createReferencePatternVoices());
+
+		assertEquals(contents.get(1), pattern.getVoice(1));
+		assertEquals(contents.get(2), pattern.getVoice(2));
+	}
 }

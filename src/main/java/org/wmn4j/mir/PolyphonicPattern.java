@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 final class PolyphonicPattern implements Pattern {
 
-	private final Integer DEFAULT_VOICE_NUMBER = 1;
+	private static final Integer DEFAULT_VOICE_NUMBER = 1;
 
 	private final Map<Integer, List<Durational>> voices;
 
@@ -68,6 +68,23 @@ final class PolyphonicPattern implements Pattern {
 	@Override
 	public boolean isMonophonic() {
 		return false;
+	}
+
+	@Override
+	public int getNumberOfVoices() {
+		return voices.size();
+	}
+
+	@Override
+	public List<Integer> getVoiceNumbers() {
+		List<Integer> voiceNumbers = new ArrayList<>(voices.keySet());
+		voiceNumbers.sort(Integer::compareTo);
+		return voiceNumbers;
+	}
+
+	@Override
+	public List<Durational> getVoice(int voiceNumber) {
+		return voices.get(voiceNumber);
 	}
 
 	/*

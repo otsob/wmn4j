@@ -85,6 +85,25 @@ class MonophonicPatternTest {
 	}
 
 	@Test
+	void testGetNumberOfVoicesReturnsOne() {
+		final Pattern pattern = new MonophonicPattern(this.referenceNotes);
+		assertEquals(1, pattern.getNumberOfVoices());
+	}
+
+	@Test
+	void testGetVoiceNumbersReturnsSingleValue() {
+		final Pattern pattern = new MonophonicPattern(this.referenceNotes);
+		assertEquals(1, pattern.getVoiceNumbers().size());
+	}
+
+	@Test
+	void testGetVoiceReturnsContents() {
+		final Pattern pattern = new MonophonicPattern(this.referenceNotes);
+		List<Durational> voiceContents = pattern.getVoice(pattern.getVoiceNumbers().get(0));
+		assertEquals(this.referenceNotes, voiceContents);
+	}
+
+	@Test
 	void testEquals() {
 		final Pattern pattern1 = new MonophonicPattern(this.referenceNotes);
 		final Pattern pattern2 = new MonophonicPattern(this.referenceNotes);
