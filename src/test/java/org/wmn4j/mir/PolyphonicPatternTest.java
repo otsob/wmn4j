@@ -254,4 +254,77 @@ public class PolyphonicPatternTest {
 
 		assertFalse(patternA.equalsInPitch(patternB));
 	}
+
+	@Test
+	void testEqualsEnharmonicallyReturnsTrueForExactEquality() {
+		final Pattern pattern1 = new PolyphonicPattern(createReferencePatternVoices());
+		final Pattern pattern2 = new PolyphonicPattern(createReferencePatternVoices());
+
+		assertTrue(pattern1.equalsEnharmonically(pattern1));
+		assertTrue(pattern1.equalsEnharmonically(pattern2));
+	}
+
+	@Test
+	void testEqualsEnharmonicallyReturnsTrueWhenPatternsHaveEnharmonicallySamePitches() {
+		final Pattern pattern = new PolyphonicPattern(createReferencePatternVoices());
+
+		Map<Integer, List<? extends Durational>> modifiedVoices = createReferencePatternVoices();
+		List<Durational> modifiedVoice = new ArrayList<>(modifiedVoices.get(1));
+		Note note = Note.of(Pitch.of(Pitch.Base.D, -2, 4), Durations.SIXTEENTH);
+		modifiedVoice.set(0, note);
+		modifiedVoices.put(1, modifiedVoice);
+
+		final Pattern modifiedPattern = new PolyphonicPattern(modifiedVoices);
+		assertTrue(modifiedPattern.equalsEnharmonically(pattern));
+
+		final Map<Integer, List<? extends Durational>> voicesWithDifferentRests = new HashMap<>();
+		List<Durational> voice1 = new ArrayList<>();
+		voice1.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		voice1.add(Rest.of(Durations.EIGHTH));
+		voice1.add(Rest.of(Durations.SIXTEENTH));
+		voice1.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+
+		List<Durational> voice2 = new ArrayList<>();
+
+		voice2.add(Note.of(Pitch.of(Pitch.Base.E, 0, 3), Durations.QUARTER));
+		voice2.add(Rest.of(Durations.SIXTEENTH));
+		voice2.add(Note.of(Pitch.of(Pitch.Base.G, -1, 3), Durations.EIGHTH));
+
+		voicesWithDifferentRests.put(1, voice1);
+		voicesWithDifferentRests.put(2, voice2);
+
+		final Pattern patternWithDifferentRests = new PolyphonicPattern(voicesWithDifferentRests);
+		assertTrue(pattern.equalsEnharmonically(patternWithDifferentRests));
+	}
+
+	@Test
+	void testEqualsEnharmonicallyWithChords() {
+		List<Durational> contentsA = new ArrayList<>();
+		List<Note> chordContents = new ArrayList<>();
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.F, 2, 4), Durations.EIGHTH));
+		contentsA.add(Chord.of(chordContents));
+		contentsA.add(Rest.of(Durations.QUARTER));
+		contentsA.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+
+		final Pattern patternA = new PolyphonicPattern(contentsA);
+		final Pattern patternACopy = new PolyphonicPattern(contentsA);
+
+		assertTrue(patternA.equalsEnharmonically(patternA));
+		assertTrue(patternA.equalsEnharmonically(patternACopy));
+
+		List<Durational> contentsB = new ArrayList<>(contentsA);
+
+		List<Note> differentChordContents = new ArrayList<>();
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.G, 1, 4), Durations.EIGHTH));
+		contentsB.set(0, Chord.of(differentChordContents));
+
+		final Pattern patternB = new PolyphonicPattern(contentsB);
+
+		assertFalse(patternA.equalsEnharmonically(patternB));
+	}
+
 }

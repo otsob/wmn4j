@@ -204,15 +204,11 @@ final class PolyphonicPattern implements Pattern {
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equalsEnharmonically(wmnlibmir.Pattern)
-	 */
 	@Override
 	public boolean equalsEnharmonically(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
+		BiFunction<List<Durational>, List<Durational>, Boolean> equalsEnharmonically = (voiceA, voiceB) ->
+				isNoteContentEqualWithTransformation(voiceA, voiceB, note -> note.getPitch().toInt());
+		return containsEqualVoices(other, equalsEnharmonically);
 	}
 
 	/*
