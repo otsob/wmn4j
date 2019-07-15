@@ -12,6 +12,7 @@ import org.wmn4j.notation.elements.Pitched;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,9 @@ import java.util.stream.Collectors;
  */
 final class MonophonicPattern implements Pattern {
 
+	private static final int SINGLE_VOICE_NUMBER = 1;
+	private static final List<Integer> SINGLE_VOICE_NUMBER_LIST = Collections.singletonList(SINGLE_VOICE_NUMBER);
+
 	private final List<Durational> contents;
 
 	/**
@@ -29,7 +33,7 @@ final class MonophonicPattern implements Pattern {
 	 *
 	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
 	 */
-	MonophonicPattern(List<Durational> contents) {
+	MonophonicPattern(List<? extends Durational> contents) {
 		this.contents = Collections.unmodifiableList(new ArrayList<>(contents));
 		if (this.contents == null) {
 			throw new NullPointerException("Cannot create pattern with null contents");
@@ -60,6 +64,25 @@ final class MonophonicPattern implements Pattern {
 	@Override
 	public boolean isMonophonic() {
 		return true;
+	}
+
+	@Override
+	public int getNumberOfVoices() {
+		return 1;
+	}
+
+	@Override
+	public List<Integer> getVoiceNumbers() {
+		return SINGLE_VOICE_NUMBER_LIST;
+	}
+
+	@Override
+	public List<Durational> getVoice(int voiceNumber) {
+		if (voiceNumber != SINGLE_VOICE_NUMBER) {
+			throw new NoSuchElementException("No voice in pattern with number " + voiceNumber);
+		}
+
+		return getContents();
 	}
 
 	@Override
