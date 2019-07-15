@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":1};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":1,"i10":1};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -105,10 +105,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
-<dl>
-<dt>All Known Implementing Classes:</dt>
-<dd><code><a href="PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></code></dd>
-</dl>
 <hr>
 <pre>public interface <span class="typeNameLabel">Pattern</span></pre>
 <div class="block">Interface for musical patterns. The patterns can represent motifs, melodies,
@@ -179,18 +175,46 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr class="rowColor" id="i5">
-<td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isMonophonic()">isMonophonic</a></span>()</code></th>
+<td class="colFirst"><code>int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumberOfVoices()">getNumberOfVoices</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns true if this pattern does not contain any notes occur simultaneously,
- otherwise returns false.</div>
+<div class="block">Returns the number of voices in this pattern.</div>
 </td>
 </tr>
 <tr class="altColor" id="i6">
-<td class="colFirst"><code>static <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#monophonicOf(java.util.List)">monophonicOf</a></span>&#8203;(java.util.List&lt;<a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;contents)</code></th>
+<td class="colFirst"><code>java.util.List&lt;<a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoice(int)">getVoice</a></span>&#8203;(int&nbsp;voiceNumber)</code></th>
 <td class="colLast">
-<div class="block">Returns a monophonic pattern with the given contents.</div>
+<div class="block">Returns the contents of the voice with the given number.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i7">
+<td class="colFirst"><code>java.util.List&lt;java.lang.Integer&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoiceNumbers()">getVoiceNumbers</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns the voice numbers in this pattern from smallest to greatest.</div>
+</td>
+</tr>
+<tr class="altColor" id="i8">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isMonophonic()">isMonophonic</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns true if this pattern contains only a single voice and does not contain
+ any notes that occur simultaneously, otherwise returns false.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i9">
+<td class="colFirst"><code>static <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.util.List)">of</a></span>&#8203;(java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;contents)</code></th>
+<td class="colLast">
+<div class="block">Returns a pattern with the given contents.</div>
+</td>
+</tr>
+<tr class="altColor" id="i10">
+<td class="colFirst"><code>static <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.util.Map)">of</a></span>&#8203;(java.util.Map&lt;java.lang.Integer,&#8203;java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&gt;&nbsp;voices)</code></th>
+<td class="colLast">
+<div class="block">Returns a polyphonic pattern with the given voices.</div>
 </td>
 </tr>
 </tbody>
@@ -213,20 +237,35 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="monophonicOf(java.util.List)">
+<a id="of(java.util.List)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>monophonicOf</h4>
-<pre class="methodSignature">static&nbsp;<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;monophonicOf&#8203;(java.util.List&lt;<a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;contents)</pre>
-<div class="block">Returns a monophonic pattern with the given contents. The contents must be strictly monophonic, i.e., they cannot
- contain any chords.</div>
+<h4>of</h4>
+<pre class="methodSignature">static&nbsp;<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;of&#8203;(java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;contents)</pre>
+<div class="block">Returns a pattern with the given contents.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>contents</code> - non-empty list containing the notation elements of the pattern in temporal order</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a pattern with the given contents</dd>
+</dl>
+</li>
+</ul>
+<a id="of(java.util.Map)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>of</h4>
+<pre class="methodSignature">static&nbsp;<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;of&#8203;(java.util.Map&lt;java.lang.Integer,&#8203;java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&gt;&nbsp;voices)</pre>
+<div class="block">Returns a polyphonic pattern with the given voices.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>voices</code> - the voices of the pattern</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>polyphonic pattern with the given voices</dd>
 </dl>
 </li>
 </ul>
@@ -252,12 +291,56 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>isMonophonic</h4>
 <pre class="methodSignature">boolean&nbsp;isMonophonic()</pre>
-<div class="block">Returns true if this pattern does not contain any notes occur simultaneously,
- otherwise returns false.</div>
+<div class="block">Returns true if this pattern contains only a single voice and does not contain
+ any notes that occur simultaneously, otherwise returns false.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this pattern does not contain any notes occur simultaneously.
- Otherwise returns false.</dd>
+<dd>true if this pattern contains only a single voice and does not contain
+ any notes that occur simultaneously</dd>
+</dl>
+</li>
+</ul>
+<a id="getNumberOfVoices()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getNumberOfVoices</h4>
+<pre class="methodSignature">int&nbsp;getNumberOfVoices()</pre>
+<div class="block">Returns the number of voices in this pattern.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the number of voices in this pattern</dd>
+</dl>
+</li>
+</ul>
+<a id="getVoiceNumbers()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getVoiceNumbers</h4>
+<pre class="methodSignature">java.util.List&lt;java.lang.Integer&gt;&nbsp;getVoiceNumbers()</pre>
+<div class="block">Returns the voice numbers in this pattern from smallest to greatest.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the voice numbers in this pattern from smallest to greatest</dd>
+</dl>
+</li>
+</ul>
+<a id="getVoice(int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getVoice</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;getVoice&#8203;(int&nbsp;voiceNumber)</pre>
+<div class="block">Returns the contents of the voice with the given number.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>voiceNumber</code> - the number of the voice whose contents are returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the contents of the voice with the given number</dd>
 </dl>
 </li>
 </ul>

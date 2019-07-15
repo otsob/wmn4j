@@ -572,8 +572,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Returns true if this pattern contains the enharmonically same
  pitches in the same order as other, otherwise returns false.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equalsEnharmonically(org.wmn4j.mir.Pattern)">equalsEnharmonically(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Pitch.html#equalsEnharmonically(org.wmn4j.notation.elements.Pitch)">equalsEnharmonically(Pitch)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a></dt>
 <dd>
 <div class="block">Returns true if this pitch is
@@ -584,15 +582,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns true if this pattern has the same durations as the other pattern.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equalsInDurations(org.wmn4j.mir.Pattern)">equalsInDurations(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#equalsInPitch(org.wmn4j.mir.Pattern)">equalsInPitch(Pattern)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
 <div class="block">Returns true if this pattern contains the same pitches in the
  same order as other, otherwise returns false.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equalsInPitch(org.wmn4j.mir.Pattern)">equalsInPitch(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Note.html#equalsInPitchAndDuration(org.wmn4j.notation.elements.Note)">equalsInPitchAndDuration(Note)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a></dt>
 <dd>
 <div class="block">Returns true if this note is equal to the given note in pitch and duration.</div>
@@ -602,8 +596,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Returns true if this pattern can be transposed chromatically so that its
  pitches are enharmonically equal to those of other, otherwise returns false.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#equalsTranspositionally(org.wmn4j.mir.Pattern)">equalsTranspositionally(Pattern)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#euclidean(org.wmn4j.analysis.harmony.PCProfile,org.wmn4j.analysis.harmony.PCProfile)">euclidean(PCProfile, PCProfile)</a></span> - Static method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
 <dd>
 <div class="block">Computes the Euclidean distance between profiles.</div>
@@ -785,8 +777,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the contents of this pattern.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#getContents()">getContents()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Duration.html#getDenominator()">getDenominator()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></dt>
 <dd>
 <div class="block">Returns the denominator of this duration.</div>
@@ -1008,6 +998,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the number of sharps in this key signature.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#getNumberOfVoices()">getNumberOfVoices()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns the number of voices in this pattern.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#getNumberOfVoices()">getNumberOfVoices()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
 <div class="block">Returns the number of voices in this builder.</div>
@@ -1189,6 +1183,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the version number of the project.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#getVoice(int)">getVoice(int)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns the contents of the voice with the given number.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Measure.html#getVoice(int)">getVoice(int)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Measure.html" title="class in org.wmn4j.notation.elements">Measure</a></dt>
 <dd>
 <div class="block">Returns the voice with the given measure.</div>
@@ -1200,6 +1198,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#getVoiceNumber()">getVoiceNumber()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
 <dd>
 <div class="block">Returns the number of the voice to which this position points.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#getVoiceNumbers()">getVoiceNumbers()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns the voice numbers in this pattern from smallest to greatest.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#getVoiceNumbers()">getVoiceNumbers()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
@@ -1357,16 +1359,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#isMonophonic()">isMonophonic()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
-<div class="block">Returns true if this pattern does not contain any notes occur simultaneously,
- otherwise returns false.</div>
+<div class="block">Returns true if this pattern contains only a single voice and does not contain
+ any notes that occur simultaneously, otherwise returns false.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#isMonophonic()">isMonophonic()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
 <dd>
 <div class="block">Returns true if this builder only has monophonic contents, that is, there are no simultaneously sounding notes
  set in the contents of this builder.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#isMonophonic()">isMonophonic()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/MultiStaffPart.html#isMultiStaff()">isMultiStaff()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/MultiStaffPart.html" title="class in org.wmn4j.notation.elements">MultiStaffPart</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Part.html#isMultiStaff()">isMultiStaff()</a></span> - Method in interface org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Part.html" title="interface in org.wmn4j.notation.elements">Part</a></dt>
@@ -1513,10 +1513,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Iterator for <a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> objects in a measure.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#monophonicOf(java.util.List)">monophonicOf(List&lt;Durational&gt;)</a></span> - Static method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
-<dd>
-<div class="block">Returns a monophonic pattern with the given contents.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Score.Attribute.html#MOVEMENT_TITLE">MOVEMENT_TITLE</a></span> - org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a></dt>
 <dd>
 <div class="block">The title of the movement.</div>
@@ -1618,6 +1614,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns an instance with the given <a href="org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a>s.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#of(java.util.List)">of(List&lt;? extends Durational&gt;)</a></span> - Static method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns a pattern with the given contents.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Staff.html#of(java.util.List)">of(List&lt;Measure&gt;)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Staff.html" title="class in org.wmn4j.notation.elements">Staff</a></dt>
 <dd>
 <div class="block">Returns a staff with the given measures.</div>
@@ -1625,6 +1625,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/KeySignature.html#of(java.util.List,java.util.List)">of(List&lt;Pitch.Base&gt;, List&lt;Pitch.Base&gt;)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a></dt>
 <dd>
 <div class="block">Returns a key signature with the given sharps and flats.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#of(java.util.Map)">of(Map&lt;Integer, List&lt;? extends Durational&gt;&gt;)</a></span> - Static method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns a polyphonic pattern with the given voices.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/SingleStaffPart.html#of(java.util.Map,java.util.List)">of(Map&lt;Part.Attribute, String&gt;, List&lt;Measure&gt;)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></dt>
 <dd>
@@ -1834,10 +1838,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Interface for notation elements that have pitch.</div>
 </dd>
-<dt><a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir"><span class="typeNameLink">PolyphonicPattern</span></a> - Class in <a href="org/wmn4j/mir/package-summary.html">org.wmn4j.mir</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PolyphonicPattern.html#%3Cinit%3E()">PolyphonicPattern()</a></span> - Constructor for class org.wmn4j.mir.<a href="org/wmn4j/mir/PolyphonicPattern.html" title="class in org.wmn4j.mir">PolyphonicPattern</a></dt>
-<dd>&nbsp;</dd>
 </dl>
 <a id="I:Q">
 <!--   -->
