@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 final class MonophonicPattern implements Pattern {
 
-	private static final int SINGLE_VOICE_NUMBER = 1;
+	static final int SINGLE_VOICE_NUMBER = 1;
 	private static final List<Integer> SINGLE_VOICE_NUMBER_LIST = Collections.singletonList(SINGLE_VOICE_NUMBER);
 
 	private final List<Durational> contents;

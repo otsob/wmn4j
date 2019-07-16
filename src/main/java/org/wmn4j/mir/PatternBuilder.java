@@ -7,6 +7,7 @@ import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public final class PatternBuilder {
 
-	private static final int DEFAULT_VOICE_NUMBER = 0;
+	private static final int DEFAULT_VOICE_NUMBER = MonophonicPattern.SINGLE_VOICE_NUMBER;
 	private final Map<Integer, List<Durational>> voices;
 	private boolean isMonophonic = true;
 
@@ -29,8 +30,8 @@ public final class PatternBuilder {
 
 	/**
 	 * Adds the given durational to the default voice in this builder. This method is intended for constructing
-	 * monophonic patterns, the {@link PatternBuilder#addToVoice addToVoice} method can be used for constructing
-	 * polyphonic patterns.
+	 * patterns with a single voice, the {@link PatternBuilder#addToVoice addToVoice} method can be used for
+	 * constructing polyphonic patterns with multiple voices.
 	 *
 	 * @param durational the durational that is added to the default voice in this builder
 	 */
@@ -59,10 +60,10 @@ public final class PatternBuilder {
 	}
 
 	/**
-	 * Returns true if this builder only has monophonic contents, that is, there are no simultaneously sounding notes
-	 * set in the contents of this builder.
+	 * Returns true if this builder only has monophonic contents, that is, there is only single voice in the pattern
+	 * and there are no simultaneously sounding notes set in the contents of this builder.
 	 *
-	 * @return true if this builder only has monophonic contents
+	 * @return true if this builder has monophonic contents
 	 */
 	public boolean isMonophonic() {
 		return isMonophonic;
@@ -74,6 +75,17 @@ public final class PatternBuilder {
 	 * @return a pattern instance with the contents set into this builder
 	 */
 	public Pattern build() {
-		return Pattern.of(voices.get(DEFAULT_VOICE_NUMBER));
+		if (voices.isEmpty()) {
+			throw new IllegalStateException("Cannot build a pattern without any contents");
+		}
+
+		if (voices.size() == 1) {
+			final Integer voiceNumber = voices.keySet().iterator().next();
+			return Pattern.of(voices.get(voiceNumber));
+		}
+
+		// Due to Java generics, this unmodifiableMap call is needed to the
+		// have the correct type for the method call.
+		return Pattern.of(Collections.unmodifiableMap(voices));
 	}
 }
