@@ -421,4 +421,49 @@ public class PolyphonicPatternTest {
 		assertFalse(patternA.equalsTranspositionally(patternB));
 	}
 
+	@Test
+	void testEqualsInDurations() {
+		final Pattern referencePattern = new PolyphonicPattern(createReferencePatternVoices());
+
+		assertTrue(referencePattern.equalsInDurations(referencePattern));
+
+		final Map<Integer, List<? extends Durational>> voicesThatEqualReferencePatternInDurations = new HashMap<>();
+		List<Durational> equalVoice1 = new ArrayList<>();
+		equalVoice1.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
+		equalVoice1.add(Rest.of(Durations.QUARTER));
+		equalVoice1.add(Note.of(Pitch.of(Pitch.Base.G, -1, 3), Durations.EIGHTH));
+
+		List<Durational> equalVoice2 = new ArrayList<>();
+
+		equalVoice2.add(Note.of(Pitch.of(Pitch.Base.E, 0, 3), Durations.QUARTER));
+		equalVoice2.add(Rest.of(Durations.EIGHTH));
+		equalVoice2.add(Note.of(Pitch.of(Pitch.Base.A, 1, 3), Durations.EIGHTH));
+
+		voicesThatEqualReferencePatternInDurations.put(1, equalVoice1);
+		voicesThatEqualReferencePatternInDurations.put(2, equalVoice2);
+
+		final Pattern patternThatEqualsReferencePatternInDurations = new PolyphonicPattern(
+				voicesThatEqualReferencePatternInDurations);
+
+		assertTrue(patternThatEqualsReferencePatternInDurations.equalsInDurations(referencePattern));
+
+		final Map<Integer, List<? extends Durational>> voicesThatDifferFromReferencePatternInDurations = new HashMap<>();
+		List<Durational> differentVoice1 = new ArrayList<>();
+		differentVoice1.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		differentVoice1.add(Rest.of(Durations.QUARTER));
+		differentVoice1.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.SIXTEENTH));
+
+		List<Durational> differentVoice2 = new ArrayList<>();
+		differentVoice2.add(Note.of(Pitch.of(Pitch.Base.E, 0, 3), Durations.QUARTER));
+		differentVoice2.add(Rest.of(Durations.EIGHTH));
+		differentVoice2.add(Note.of(Pitch.of(Pitch.Base.F, 1, 3), Durations.EIGHTH));
+
+		voicesThatDifferFromReferencePatternInDurations.put(1, differentVoice1);
+		voicesThatDifferFromReferencePatternInDurations.put(2, differentVoice2);
+
+		final Pattern patternThatDiffersFromReferencePatternInDurations = new PolyphonicPattern(
+				voicesThatDifferFromReferencePatternInDurations);
+
+		assertFalse(patternThatDiffersFromReferencePatternInDurations.equalsInDurations(referencePattern));
+	}
 }

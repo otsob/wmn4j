@@ -258,15 +258,9 @@ final class PolyphonicPattern implements Pattern {
 				.anyMatch(transpositionallyEquals -> containsEqualVoices(other, transpositionallyEquals));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equalsInDurations(wmnlibmir.Pattern)
-	 */
 	@Override
 	public boolean equalsInDurations(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
+		return containsEqualVoices(other, MonophonicPattern::areVoicesEqualInDurations);
 	}
 
 	@Override
