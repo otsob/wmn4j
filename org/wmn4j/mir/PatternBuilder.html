@@ -193,8 +193,8 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isMonophonic()">isMonophonic</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns true if this builder only has monophonic contents, that is, there are no simultaneously sounding notes
- set in the contents of this builder.</div>
+<div class="block">Returns true if this builder only has monophonic contents, that is, there is only single voice in the pattern
+ and there are no simultaneously sounding notes set in the contents of this builder.</div>
 </td>
 </tr>
 </tbody>
@@ -252,8 +252,8 @@ extends java.lang.Object</pre>
 <h4>add</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;add&#8203;(<a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&nbsp;durational)</pre>
 <div class="block">Adds the given durational to the default voice in this builder. This method is intended for constructing
- monophonic patterns, the <a href="#addToVoice(org.wmn4j.notation.elements.Durational,int)"><code>addToVoice</code></a> method can be used for constructing
- polyphonic patterns.</div>
+ patterns with a single voice, the <a href="#addToVoice(org.wmn4j.notation.elements.Durational,int)"><code>addToVoice</code></a> method can be used for
+ constructing polyphonic patterns with multiple voices.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>durational</code> - the durational that is added to the default voice in this builder</dd>
@@ -285,11 +285,11 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isMonophonic</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isMonophonic()</pre>
-<div class="block">Returns true if this builder only has monophonic contents, that is, there are no simultaneously sounding notes
- set in the contents of this builder.</div>
+<div class="block">Returns true if this builder only has monophonic contents, that is, there is only single voice in the pattern
+ and there are no simultaneously sounding notes set in the contents of this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if this builder only has monophonic contents</dd>
+<dd>true if this builder has monophonic contents</dd>
 </dl>
 </li>
 </ul>
