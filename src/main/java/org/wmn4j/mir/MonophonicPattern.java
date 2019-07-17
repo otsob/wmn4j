@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 final class MonophonicPattern implements Pattern {
 
-	private static final int SINGLE_VOICE_NUMBER = 1;
+	static final int SINGLE_VOICE_NUMBER = 1;
 	private static final List<Integer> SINGLE_VOICE_NUMBER_LIST = Collections.singletonList(SINGLE_VOICE_NUMBER);
 
 	private final List<Durational> contents;
@@ -159,28 +159,33 @@ final class MonophonicPattern implements Pattern {
 		if (other.isMonophonic()) {
 			final List<Durational> contentsOfThis = getContents();
 			final List<Durational> contentsOfOther = other.getContents();
+			return areVoicesEqualInDurations(contentsOfThis, contentsOfOther);
+		}
 
-			if (contentsOfThis.size() == contentsOfOther.size()) {
-				for (int i = 0; i < contentsOfThis.size(); ++i) {
+		return false;
+	}
 
-					final Durational durationalInThis = contentsOfThis.get(i);
-					final Durational durationalInOther = contentsOfOther.get(i);
+	static boolean areVoicesEqualInDurations(List<Durational> voiceA, List<Durational> voiceB) {
+		if (voiceA.size() == voiceB.size()) {
+			for (int i = 0; i < voiceA.size(); ++i) {
 
-					final boolean bothAreOfSameType =
-							(durationalInThis.isRest() && durationalInOther.isRest()) || (!durationalInThis.isRest()
-									&& !durationalInOther.isRest());
+				final Durational durationalInThis = voiceA.get(i);
+				final Durational durationalInOther = voiceB.get(i);
 
-					if (!bothAreOfSameType) {
-						return false;
-					}
+				final boolean bothAreOfSameType =
+						(durationalInThis.isRest() && durationalInOther.isRest()) || (!durationalInThis.isRest()
+								&& !durationalInOther.isRest());
 
-					if (!contentsOfThis.get(i).getDuration().equals(contentsOfOther.get(i).getDuration())) {
-						return false;
-					}
+				if (!bothAreOfSameType) {
+					return false;
 				}
 
-				return true;
+				if (!voiceA.get(i).getDuration().equals(voiceB.get(i).getDuration())) {
+					return false;
+				}
 			}
+
+			return true;
 		}
 
 		return false;

@@ -327,4 +327,143 @@ public class PolyphonicPatternTest {
 		assertFalse(patternA.equalsEnharmonically(patternB));
 	}
 
+	@Test
+	void testEqualsTranspositionallyReturnsTrueForExactEquality() {
+		final Pattern pattern1 = new PolyphonicPattern(createReferencePatternVoices());
+		final Pattern pattern2 = new PolyphonicPattern(createReferencePatternVoices());
+
+		assertTrue(pattern1.equalsTranspositionally(pattern1));
+		assertTrue(pattern1.equalsTranspositionally(pattern2));
+	}
+
+	@Test
+	void testEqualsTranspositionallyReturnsTrueWhenPatternsAreTranspositionallyEqual() {
+		final Pattern pattern = new PolyphonicPattern(createReferencePatternVoices());
+
+		final Map<Integer, List<? extends Durational>> transposedVoicesWithDifferentRests = new HashMap<>();
+		List<Durational> voice1 = new ArrayList<>();
+		voice1.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+		voice1.add(Rest.of(Durations.EIGHTH));
+		voice1.add(Rest.of(Durations.SIXTEENTH));
+		voice1.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
+
+		List<Durational> voice2 = new ArrayList<>();
+		voice2.add(Note.of(Pitch.of(Pitch.Base.F, 1, 3), Durations.QUARTER));
+		voice2.add(Rest.of(Durations.SIXTEENTH));
+		voice2.add(Note.of(Pitch.of(Pitch.Base.A, -1, 3), Durations.EIGHTH));
+
+		transposedVoicesWithDifferentRests.put(1, voice1);
+		transposedVoicesWithDifferentRests.put(2, voice2);
+
+		final Pattern patternWithDifferentRests = new PolyphonicPattern(transposedVoicesWithDifferentRests);
+		assertTrue(pattern.equalsTranspositionally(patternWithDifferentRests));
+	}
+
+	@Test
+	void testEqualsTranspositionallyReturnsFalseForPatternsThatAreNotTransposiotallyEquals() {
+		final Pattern pattern = new PolyphonicPattern(createReferencePatternVoices());
+		Map<Integer, List<? extends Durational>> modifiedVoices = createReferencePatternVoices();
+		List<Durational> modifiedVoice = new ArrayList<>(modifiedVoices.get(2));
+		Note note = Note.of(Pitch.of(Pitch.Base.C, 1, 5), Durations.EIGHTH);
+		modifiedVoice.set(0, note);
+		modifiedVoices.put(2, modifiedVoice);
+
+		final Pattern modifiedPattern = new PolyphonicPattern(modifiedVoices);
+		assertFalse(modifiedPattern.equalsTranspositionally(pattern));
+
+		Map<Integer, List<? extends Durational>> contentsWithAddedVoice = createReferencePatternVoices();
+		List<Note> notes = Collections.singletonList(note);
+		contentsWithAddedVoice.put(3, notes);
+		final Pattern withAddedVoice = new PolyphonicPattern(contentsWithAddedVoice);
+
+		assertFalse(withAddedVoice.equalsTranspositionally(pattern));
+	}
+
+	@Test
+	void testEqualsTranspositionallyWithChords() {
+		List<Durational> contents = new ArrayList<>();
+		List<Note> chordContents = new ArrayList<>();
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+		contents.add(Chord.of(chordContents));
+		contents.add(Rest.of(Durations.QUARTER));
+		contents.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+
+		final Pattern patternA = new PolyphonicPattern(contents);
+		final Pattern patternACopy = new PolyphonicPattern(contents);
+
+		assertTrue(patternA.equalsTranspositionally(patternA));
+		assertTrue(patternA.equalsTranspositionally(patternACopy));
+
+		List<Durational> transposedContents = new ArrayList<>();
+		List<Note> transposedChordContents = new ArrayList<>();
+		transposedChordContents.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+		transposedChordContents.add(Note.of(Pitch.of(Pitch.Base.F, 1, 4), Durations.EIGHTH));
+		transposedChordContents.add(Note.of(Pitch.of(Pitch.Base.A, 0, 4), Durations.EIGHTH));
+		transposedContents.add(Chord.of(transposedChordContents));
+		transposedContents.add(Rest.of(Durations.QUARTER));
+		transposedContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
+
+		final Pattern transposedPatternA = new PolyphonicPattern(transposedContents);
+		assertTrue(patternA.equalsTranspositionally(transposedPatternA));
+
+		List<Durational> contentsB = new ArrayList<>(contents);
+
+		List<Note> differentChordContents = new ArrayList<>();
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.G, 1, 4), Durations.EIGHTH));
+		contentsB.set(0, Chord.of(differentChordContents));
+
+		final Pattern patternB = new PolyphonicPattern(contentsB);
+
+		assertFalse(patternA.equalsTranspositionally(patternB));
+	}
+
+	@Test
+	void testEqualsInDurations() {
+		final Pattern referencePattern = new PolyphonicPattern(createReferencePatternVoices());
+
+		assertTrue(referencePattern.equalsInDurations(referencePattern));
+
+		final Map<Integer, List<? extends Durational>> voicesThatEqualReferencePatternInDurations = new HashMap<>();
+		List<Durational> equalVoice1 = new ArrayList<>();
+		equalVoice1.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
+		equalVoice1.add(Rest.of(Durations.QUARTER));
+		equalVoice1.add(Note.of(Pitch.of(Pitch.Base.G, -1, 3), Durations.EIGHTH));
+
+		List<Durational> equalVoice2 = new ArrayList<>();
+
+		equalVoice2.add(Note.of(Pitch.of(Pitch.Base.E, 0, 3), Durations.QUARTER));
+		equalVoice2.add(Rest.of(Durations.EIGHTH));
+		equalVoice2.add(Note.of(Pitch.of(Pitch.Base.A, 1, 3), Durations.EIGHTH));
+
+		voicesThatEqualReferencePatternInDurations.put(1, equalVoice1);
+		voicesThatEqualReferencePatternInDurations.put(2, equalVoice2);
+
+		final Pattern patternThatEqualsReferencePatternInDurations = new PolyphonicPattern(
+				voicesThatEqualReferencePatternInDurations);
+
+		assertTrue(patternThatEqualsReferencePatternInDurations.equalsInDurations(referencePattern));
+
+		final Map<Integer, List<? extends Durational>> voicesThatDifferFromReferencePatternInDurations = new HashMap<>();
+		List<Durational> differentVoice1 = new ArrayList<>();
+		differentVoice1.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		differentVoice1.add(Rest.of(Durations.QUARTER));
+		differentVoice1.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.SIXTEENTH));
+
+		List<Durational> differentVoice2 = new ArrayList<>();
+		differentVoice2.add(Note.of(Pitch.of(Pitch.Base.E, 0, 3), Durations.QUARTER));
+		differentVoice2.add(Rest.of(Durations.EIGHTH));
+		differentVoice2.add(Note.of(Pitch.of(Pitch.Base.F, 1, 3), Durations.EIGHTH));
+
+		voicesThatDifferFromReferencePatternInDurations.put(1, differentVoice1);
+		voicesThatDifferFromReferencePatternInDurations.put(2, differentVoice2);
+
+		final Pattern patternThatDiffersFromReferencePatternInDurations = new PolyphonicPattern(
+				voicesThatDifferFromReferencePatternInDurations);
+
+		assertFalse(patternThatDiffersFromReferencePatternInDurations.equalsInDurations(referencePattern));
+	}
 }

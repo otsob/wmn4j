@@ -8,11 +8,13 @@ import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Note;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -145,8 +147,8 @@ final class PolyphonicPattern implements Pattern {
 		return containsEqualVoices(other, equalInPitches);
 	}
 
-	private static boolean isNoteContentEqualWithTransformation(List<Durational> voiceA, List<Durational> voiceB,
-			Function<Note, Object> noteTransformation) {
+	private static boolean isNoteContentEqualWithTransformations(List<Durational> voiceA, List<Durational> voiceB,
+			Function<Note, Object> voiceANoteTransformation, Function<Note, Object> voiceBNoteTransformation) {
 
 		List<Durational> voiceAWithoutRests = withoutRests(voiceA);
 		List<Durational> voiceBWithoutRests = withoutRests(voiceB);
@@ -163,14 +165,15 @@ final class PolyphonicPattern implements Pattern {
 				Chord chordA = (Chord) durationalA;
 				Chord chordB = (Chord) durationalB;
 
-				if (!areChordsEqualWithTransformedNotes(chordA, chordB, noteTransformation)) {
+				if (!areChordsEqualWithTransformedNotes(chordA, chordB, voiceANoteTransformation,
+						voiceBNoteTransformation)) {
 					return false;
 				}
 			} else if (durationalA instanceof Note && durationalB instanceof Note) {
 				Note noteA = (Note) durationalA;
 				Note noteB = (Note) durationalB;
 
-				if (!noteTransformation.apply(noteA).equals(noteTransformation.apply(noteB))) {
+				if (!voiceANoteTransformation.apply(noteA).equals(voiceBNoteTransformation.apply(noteB))) {
 					return false;
 				}
 			} else {
@@ -179,6 +182,12 @@ final class PolyphonicPattern implements Pattern {
 		}
 
 		return true;
+
+	}
+
+	private static boolean isNoteContentEqualWithTransformation(List<Durational> voiceA, List<Durational> voiceB,
+			Function<Note, Object> noteTransformation) {
+		return isNoteContentEqualWithTransformations(voiceA, voiceB, noteTransformation, noteTransformation);
 	}
 
 	private static List<Durational> withoutRests(List<Durational> voice) {
@@ -186,15 +195,15 @@ final class PolyphonicPattern implements Pattern {
 	}
 
 	private static boolean areChordsEqualWithTransformedNotes(Chord chordA, Chord chordB,
-			Function<Note, Object> noteTransformation) {
+			Function<Note, Object> chordANoteTransformation, Function<Note, Object> chordBNoteTransformation) {
 
 		if (chordA.getNoteCount() != chordB.getNoteCount()) {
 			return false;
 		}
 
 		for (int i = 0; i < chordA.getNoteCount(); ++i) {
-			Object transformedNoteA = noteTransformation.apply(chordA.getNote(i));
-			Object transformedNoteB = noteTransformation.apply(chordB.getNote(i));
+			Object transformedNoteA = chordANoteTransformation.apply(chordA.getNote(i));
+			Object transformedNoteB = chordBNoteTransformation.apply(chordB.getNote(i));
 
 			if (!transformedNoteA.equals(transformedNoteB)) {
 				return false;
@@ -211,26 +220,47 @@ final class PolyphonicPattern implements Pattern {
 		return containsEqualVoices(other, equalsEnharmonically);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equalsTranspositionally(wmnlibmir.Pattern)
-	 */
 	@Override
 	public boolean equalsTranspositionally(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
+
+		Function<Durational, Integer> toPitchNumber = durational -> {
+			if (durational instanceof Note) {
+				return ((Note) durational).getPitch().toInt();
+			}
+
+			return ((Chord) durational).getLowestNote().getPitch().toInt();
+		};
+
+		// Get the first pitches available in this patterns voices. For chords get the lowest.
+		Collection<Integer> firstPitchNumbersInThis = voices.values().stream()
+				.map(voice -> voice.stream().filter(durational -> !durational.isRest()).findFirst())
+				.filter(first -> first.isPresent())
+				.map(Optional::get)
+				.map(toPitchNumber).collect(Collectors.toList());
+
+		// Get the first pitch number of one voice from other.
+		Integer pitchNumberInOther = other.getVoice(other.getVoiceNumbers().get(0)).stream()
+				.filter(durational -> !durational.isRest())
+				.findFirst().map(toPitchNumber).orElseThrow();
+
+		// Based on the pitch differences, create all tranpositional equivalence comparisons for the
+		// possible transposition candidates.
+		Collection<BiFunction<List<Durational>, List<Durational>, Boolean>> transpositionalEquivalenceCandidates
+				= new ArrayList<>();
+		for (Integer firstPitchNumberInThis : firstPitchNumbersInThis) {
+			final int transposition = pitchNumberInOther - firstPitchNumberInThis;
+			transpositionalEquivalenceCandidates.add((voiceA, voiceB) ->
+					isNoteContentEqualWithTransformations(voiceA, voiceB,
+							note -> note.getPitch().toInt() + transposition, note -> note.getPitch().toInt()));
+		}
+
+		return transpositionalEquivalenceCandidates.stream()
+				.anyMatch(transpositionallyEquals -> containsEqualVoices(other, transpositionallyEquals));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see wmnlibmir.Pattern#equalsInDurations(wmnlibmir.Pattern)
-	 */
 	@Override
 	public boolean equalsInDurations(Pattern other) {
-		// TODO Auto-generated method stub
-		return false;
+		return containsEqualVoices(other, MonophonicPattern::areVoicesEqualInDurations);
 	}
 
 	@Override
