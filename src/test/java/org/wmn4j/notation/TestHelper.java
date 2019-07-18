@@ -7,6 +7,7 @@ import org.wmn4j.io.musicxml.MusicXmlReader;
 import org.wmn4j.notation.builders.ChordBuilder;
 import org.wmn4j.notation.builders.MeasureBuilder;
 import org.wmn4j.notation.builders.NoteBuilder;
+import org.wmn4j.notation.builders.PartBuilder;
 import org.wmn4j.notation.builders.RestBuilder;
 import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.Measure;
@@ -15,6 +16,8 @@ import org.wmn4j.notation.elements.Score;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestHelper {
 
@@ -59,5 +62,20 @@ public class TestHelper {
 		}
 
 		return score;
+	}
+
+	public static List<PartBuilder> getTestPartBuilders(int partCount, int measureCount) {
+		final List<PartBuilder> partBuilders = new ArrayList<>();
+
+		for (int p = 1; p <= partCount; ++p) {
+			final PartBuilder partBuilder = new PartBuilder("Part" + p);
+			for (int m = 1; m <= measureCount; ++m) {
+				partBuilder.add(TestHelper.getTestMeasureBuilder(m));
+			}
+
+			partBuilders.add(partBuilder);
+		}
+
+		return partBuilders;
 	}
 }

@@ -10,7 +10,6 @@ import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.elements.ScoreTest;
 import org.wmn4j.notation.elements.TimeSignatures;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,26 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ScoreBuilderTest {
 
-	private static List<PartBuilder> getTestPartBuilders(int partCount, int measureCount) {
-		final List<PartBuilder> partBuilders = new ArrayList<>();
-
-		for (int p = 1; p <= partCount; ++p) {
-			final PartBuilder partBuilder = new PartBuilder("Part" + p);
-			for (int m = 1; m <= measureCount; ++m) {
-				partBuilder.add(TestHelper.getTestMeasureBuilder(m));
-			}
-
-			partBuilders.add(partBuilder);
-		}
-
-		return partBuilders;
-	}
-
 	@Test
 	void testBuildingScore() {
 		final ScoreBuilder builder = new ScoreBuilder();
 		final Map<Score.Attribute, String> attributes = ScoreTest.getTestAttributes();
-		final List<PartBuilder> partBuilders = getTestPartBuilders(5, 5);
+		final List<PartBuilder> partBuilders = TestHelper.getTestPartBuilders(5, 5);
 
 		for (Score.Attribute attr : attributes.keySet()) {
 			builder.setAttribute(attr, attributes.get(attr));
@@ -56,7 +40,7 @@ class ScoreBuilderTest {
 
 	@Test
 	void testPartsAreOfEqualLengthWhenBuilt() {
-		final List<PartBuilder> partBuilders = getTestPartBuilders(3, 1);
+		final List<PartBuilder> partBuilders = TestHelper.getTestPartBuilders(3, 1);
 		PartBuilder first = partBuilders.get(0);
 		first.add(new MeasureBuilder(2));
 
