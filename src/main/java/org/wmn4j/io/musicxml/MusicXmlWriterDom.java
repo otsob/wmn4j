@@ -7,6 +7,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
+import org.wmn4j.Wmn4j;
 import org.wmn4j.notation.elements.Articulation;
 import org.wmn4j.notation.elements.Barline;
 import org.wmn4j.notation.elements.Chord;
@@ -39,9 +40,12 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.math.BigInteger;
 import java.nio.file.Path;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -178,7 +182,25 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			identificationElement.appendChild(arrangerElement);
 		}
 
+		identificationElement.appendChild(createEncodingElement());
+
 		return identificationElement;
+	}
+
+	private Element createEncodingElement() {
+
+		final Element encodingElement = doc.createElement(MusicXmlTags.ENCODING);
+		final Element softwareElement = doc.createElement(MusicXmlTags.SOFTWARE);
+		softwareElement.setTextContent(Wmn4j.getNameWithVersion());
+		encodingElement.appendChild(softwareElement);
+
+		final Element encodingDateElement = doc.createElement(MusicXmlTags.ENCODING_DATE);
+		final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		encodingDateElement.setTextContent(dateFormat.format(new Date()));
+
+		encodingElement.appendChild(encodingDateElement);
+
+		return encodingElement;
 	}
 
 	private void writePartList(Element scoreRoot) {
