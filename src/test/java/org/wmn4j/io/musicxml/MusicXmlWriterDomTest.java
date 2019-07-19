@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.wmn4j.Wmn4j;
 import org.wmn4j.io.ParsingFailureException;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.builders.MeasureBuilder;
@@ -25,6 +26,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -346,5 +351,50 @@ class MusicXmlWriterDomTest {
 		assertEquals(1, normalNotesNodes.size(), "Found incorrect number of normal-notes nodes");
 		assertEquals(expectedNormalNotesNumber, Integer.parseInt(normalNotesNodes.get(0).getTextContent()),
 				"Incorrect value for normal-notes");
+	}
+
+	@Test
+	void testWhenMusicXmlIsWrittenThenEncodingInformationIsWrittenToFile() {
+		final List<PartBuilder> partBuilders = TestHelper.getTestPartBuilders(3, 3);
+		ScoreBuilder scoreBuilder = new ScoreBuilder();
+		scoreBuilder.setAttribute(Score.Attribute.TITLE, "test score");
+
+		scoreBuilder.addPart(partBuilders.get(0));
+		scoreBuilder.addPart(partBuilders.get(1));
+		scoreBuilder.addPart(partBuilders.get(2));
+
+		final Score score = scoreBuilder.build();
+
+		// Check that score is valid MusicXML
+		writeAndReadScore(score);
+
+		MusicXmlWriter writer = new MusicXmlWriterDom(score);
+		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
+		writer.writeToFile(filePath);
+
+		final Document document = readDocument(filePath);
+
+		final Node identificationElement = document.getElementsByTagName(MusicXmlTags.SCORE_IDENTIFICATION).item(0);
+		assertNotNull(identificationElement, "Missing identification element entirely");
+
+		final Optional<Node> encodingElement = DocHelper.findChild(identificationElement, MusicXmlTags.ENCODING);
+		assertTrue(encodingElement.isPresent(), "Missing encoding element");
+
+		final Optional<Node> softwareElement = DocHelper.findChild(encodingElement.get(), MusicXmlTags.SOFTWARE);
+		assertTrue(softwareElement.isPresent(), "Missing software element");
+		assertEquals(Wmn4j.getNameWithVersion(), softwareElement.get().getTextContent());
+
+		final Optional<Node> dateElement = DocHelper.findChild(encodingElement.get(), MusicXmlTags.ENCODING_DATE);
+		assertTrue(dateElement.isPresent(), "Missing encoding date");
+
+		final DateFormat musicXmlDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		final String dateStringInFile = dateElement.get().getTextContent();
+		try {
+			Date date = musicXmlDateFormat.parse(dateStringInFile);
+			assertEquals(musicXmlDateFormat.format(new Date()), musicXmlDateFormat.format(date),
+					"Date in file is incorrect");
+		} catch (ParseException exception) {
+			fail("Failed to parse date " + dateStringInFile + " with exception " + exception);
+		}
 	}
 }

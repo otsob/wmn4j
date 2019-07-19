@@ -53,4 +53,22 @@ public final class Wmn4j {
 	public static String getVersion() {
 		return INSTANCE.version;
 	}
+
+	/**
+	 * Returns the name of this project.
+	 *
+	 * @return the name of this project
+	 */
+	public static String getName() {
+		return "Western Music Notation for Java (wmn4j)";
+	}
+
+	/**
+	 * Returns the name of this project along with the version number.
+	 *
+	 * @return the name of this project along with the version number
+	 */
+	public static String getNameWithVersion() {
+		return getName() + " " + getVersion();
+	}
 }

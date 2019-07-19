@@ -132,6 +132,9 @@ final class MusicXmlTags {
 	static final String SCORE_IDENTIFICATION_ARRANGER = "arranger";
 	static final String SCORE_PARTWISE = "score-partwise";
 	static final String MUSICXML_VERSION = "version";
+	static final String ENCODING = "encoding";
+	static final String SOFTWARE = "software";
+	static final String ENCODING_DATE = "encoding-date";
 
 	private MusicXmlTags() {
 	}
