@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":9};
+var data = {"i0":9,"i1":9,"i2":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -142,6 +142,20 @@ extends java.lang.Object</pre>
 <tbody>
 <tr class="altColor" id="i0">
 <td class="colFirst"><code>static java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getName()">getName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns the name of this project.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i1">
+<td class="colFirst"><code>static java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNameWithVersion()">getNameWithVersion</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns the name of this project along with the version number.</div>
+</td>
+</tr>
+<tr class="altColor" id="i2">
+<td class="colFirst"><code>static java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVersion()">getVersion</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the version number of the project.</div>
@@ -177,7 +191,7 @@ extends java.lang.Object</pre>
 <a id="getVersion()">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getVersion</h4>
 <pre class="methodSignature">public static&nbsp;java.lang.String&nbsp;getVersion()</pre>
@@ -185,6 +199,34 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the version number of the project</dd>
+</dl>
+</li>
+</ul>
+<a id="getName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getName</h4>
+<pre class="methodSignature">public static&nbsp;java.lang.String&nbsp;getName()</pre>
+<div class="block">Returns the name of this project.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the name of this project</dd>
+</dl>
+</li>
+</ul>
+<a id="getNameWithVersion()">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getNameWithVersion</h4>
+<pre class="methodSignature">public static&nbsp;java.lang.String&nbsp;getNameWithVersion()</pre>
+<div class="block">Returns the name of this project along with the version number.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the name of this project along with the version number</dd>
 </dl>
 </li>
 </ul>
