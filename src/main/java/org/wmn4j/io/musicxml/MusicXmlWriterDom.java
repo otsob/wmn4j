@@ -295,55 +295,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		//Set up handling possible mid-measure clef changes
 		Map<Duration, Clef> undealtClefChanges = new HashMap<>(measure.getClefChanges());
 
-		final Integer staffNumber = null;
-
-		//Notes
-		final List<Integer> voiceNumbers = measure.getVoiceNumbers();
-		int voicesHandled = 0;
-		for (Integer voiceNumber : voiceNumbers) {
-
-			Duration cumulatedDuration = null;
-			for (Durational dur : measure.getVoice(voiceNumber)) {
-				if (cumulatedDuration == null) {
-					cumulatedDuration = dur.getDuration();
-				} else {
-					cumulatedDuration = cumulatedDuration.add(dur.getDuration());
-				}
-
-				if (dur instanceof Rest) {
-					measureElement.appendChild(createRestElement((Rest) dur, voiceNumber, staffNumber));
-				}
-
-				if (dur instanceof Note) {
-					measureElement.appendChild(createNoteElement((Note) dur, voiceNumber, staffNumber, false));
-				}
-
-				if (dur instanceof Chord) {
-					boolean useChordTag = false;
-					for (Note note : (Chord) dur) {
-						measureElement.appendChild(createNoteElement(note, voiceNumber, staffNumber, useChordTag));
-						useChordTag = true;
-					}
-				}
-
-				// Handle mid-measure clef changes
-				handleMidMeasureClefChanges(measureElement, undealtClefChanges, cumulatedDuration, null);
-
-			}
-
-			// In case of multiple voices, backup to the beginning of the measure
-			// Do not backup if it is the last voice to be handled
-			voicesHandled++;
-			if (voicesHandled < measure.getVoiceCount()) {
-				measureElement.appendChild(createBackupElement(cumulatedDuration));
-			} else {
-				if (!measure.isPickup()
-						&& cumulatedDuration.isShorterThan(measure.getTimeSignature().getTotalDuration())) {
-					Duration duration = measure.getTimeSignature().getTotalDuration().subtract(cumulatedDuration);
-					measureElement.appendChild(createForwardElement(duration));
-				}
-			}
-		}
+		fillMeasureElement(measureElement, null, measure);
 
 		//Right barline
 		if (!measure.getRightBarline().equals(Barline.SINGLE) && !measure.getRightBarline().equals(Barline.NONE)) {
@@ -382,57 +334,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			final Measure measure = measures.get(staffNumber);
 
 			//Set up handling possible mid-measure clef changes
-			Map<Duration, Clef> undealtClefChanges = new HashMap<>(measure.getClefChanges());
-
-			//Notes
-			final List<Integer> voiceNumbers = measure.getVoiceNumbers();
-
-			int voicesHandled = 0;
-			for (Integer voiceNumber : voiceNumbers) {
-
-				Duration cumulatedDuration = null;
-				for (Durational dur : measure.getVoice(voiceNumber)) {
-					if (cumulatedDuration == null) {
-						cumulatedDuration = dur.getDuration();
-					} else {
-						cumulatedDuration = cumulatedDuration.add(dur.getDuration());
-					}
-
-					if (dur instanceof Rest) {
-						measureElement.appendChild(createRestElement((Rest) dur, voiceNumber, staffNumber));
-					}
-
-					if (dur instanceof Note) {
-						measureElement.appendChild(createNoteElement((Note) dur, voiceNumber, staffNumber, false));
-					}
-
-					if (dur instanceof Chord) {
-						boolean useChordTag = false;
-						for (Note note : (Chord) dur) {
-							measureElement
-									.appendChild(createNoteElement(note, voiceNumber, staffNumber, useChordTag));
-							useChordTag = true;
-						}
-					}
-
-					// Handle mid-measure clef changes
-					handleMidMeasureClefChanges(measureElement, undealtClefChanges, cumulatedDuration, staffNumber);
-				}
-
-				// In case of multiple voices, backup to the beginning of the measure
-				// Do not backup if it is the last voice to be handled
-				voicesHandled++;
-				if (voicesHandled < measure.getVoiceCount()) {
-					measureElement.appendChild(createBackupElement(cumulatedDuration));
-				} else {
-					if (!measure.isPickup()
-							&& cumulatedDuration.isShorterThan(measure.getTimeSignature().getTotalDuration())) {
-						Duration duration = measure.getTimeSignature().getTotalDuration()
-								.subtract(cumulatedDuration);
-						measureElement.appendChild(createForwardElement(duration));
-					}
-				}
-			}
+			fillMeasureElement(measureElement, staffNumber, measure);
 
 			// For all except last staff, backup to the beginning by the duration of measure.
 			if (!staffNumber.equals(maxStaffNumber)) {
@@ -449,6 +351,60 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		}
 
 		return measureElement;
+	}
+
+	public void fillMeasureElement(Element measureElement, Integer staffNumber, Measure measure) {
+		Map<Duration, Clef> undealtClefChanges = new HashMap<>(measure.getClefChanges());
+
+		//Notes
+		final List<Integer> voiceNumbers = measure.getVoiceNumbers();
+
+		int voicesHandled = 0;
+		for (Integer voiceNumber : voiceNumbers) {
+
+			Duration cumulatedDuration = null;
+			for (Durational dur : measure.getVoice(voiceNumber)) {
+				if (cumulatedDuration == null) {
+					cumulatedDuration = dur.getDuration();
+				} else {
+					cumulatedDuration = cumulatedDuration.add(dur.getDuration());
+				}
+
+				if (dur instanceof Rest) {
+					measureElement.appendChild(createRestElement((Rest) dur, voiceNumber, staffNumber));
+				}
+
+				if (dur instanceof Note) {
+					measureElement.appendChild(createNoteElement((Note) dur, voiceNumber, staffNumber, false));
+				}
+
+				if (dur instanceof Chord) {
+					boolean useChordTag = false;
+					for (Note note : (Chord) dur) {
+						measureElement
+								.appendChild(createNoteElement(note, voiceNumber, staffNumber, useChordTag));
+						useChordTag = true;
+					}
+				}
+
+				// Handle mid-measure clef changes
+				handleMidMeasureClefChanges(measureElement, undealtClefChanges, cumulatedDuration, staffNumber);
+			}
+
+			// In case of multiple voices, backup to the beginning of the measure
+			// Do not backup if it is the last voice to be handled
+			voicesHandled++;
+			if (voicesHandled < measure.getVoiceCount()) {
+				measureElement.appendChild(createBackupElement(cumulatedDuration));
+			} else {
+				if (!measure.isPickup()
+						&& cumulatedDuration.isShorterThan(measure.getTimeSignature().getTotalDuration())) {
+					Duration duration = measure.getTimeSignature().getTotalDuration()
+							.subtract(cumulatedDuration);
+					measureElement.appendChild(createForwardElement(duration));
+				}
+			}
+		}
 	}
 
 	private Element createBarlineElement(Barline barline, String location) {
