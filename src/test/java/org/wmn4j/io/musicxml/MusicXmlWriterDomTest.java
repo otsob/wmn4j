@@ -397,4 +397,18 @@ class MusicXmlWriterDomTest {
 			fail("Failed to parse date " + dateStringInFile + " with exception " + exception);
 		}
 	}
+
+	@Test
+	void whenScoreHasSingleVoiceWithSlursAndGlissandoThenTheyAreWrittenToFile() {
+		Score score = readMusicXmlTestFile("single_staff_single_voice_marking_test.xml", false);
+		Score writtenScore = writeAndReadScore(score);
+		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromSingleVoiceToScore(writtenScore);
+	}
+
+	@Test
+	void whenScoreHasMultipleVoicesWithSlursAndGlissandoThenTheyAreWrittenToFile() {
+		Score score = readMusicXmlTestFile("multi_staff_multi_voice_marking_test.xml", false);
+		Score writtenScore = writeAndReadScore(score);
+		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(writtenScore);
+	}
 }

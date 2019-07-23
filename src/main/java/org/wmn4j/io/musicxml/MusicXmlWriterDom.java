@@ -16,6 +16,7 @@ import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.KeySignature;
+import org.wmn4j.notation.elements.Marking;
 import org.wmn4j.notation.elements.Measure;
 import org.wmn4j.notation.elements.MultiStaffPart;
 import org.wmn4j.notation.elements.Note;
@@ -61,6 +62,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	private final String MUSICXML_VERSION_NUMBER = "3.1";
 	private final Score score;
 	private final SortedMap<String, Part> partIdMap = new TreeMap<>();
+	private MarkingResolver markingResolver;
 	private final int divisions;
 
 	MusicXmlWriterDom(Score score) {
@@ -76,6 +78,8 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 
 			// root elements
 			this.doc = docBuilder.newDocument();
+			this.markingResolver = new MarkingResolver(this.doc);
+
 			final Element rootElement = this.doc.createElement(MusicXmlTags.SCORE_PARTWISE);
 			rootElement.setAttribute(MusicXmlTags.MUSICXML_VERSION, MUSICXML_VERSION_NUMBER);
 			this.doc.appendChild(rootElement);
@@ -295,55 +299,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		//Set up handling possible mid-measure clef changes
 		Map<Duration, Clef> undealtClefChanges = new HashMap<>(measure.getClefChanges());
 
-		final Integer staffNumber = null;
-
-		//Notes
-		final List<Integer> voiceNumbers = measure.getVoiceNumbers();
-		int voicesHandled = 0;
-		for (Integer voiceNumber : voiceNumbers) {
-
-			Duration cumulatedDuration = null;
-			for (Durational dur : measure.getVoice(voiceNumber)) {
-				if (cumulatedDuration == null) {
-					cumulatedDuration = dur.getDuration();
-				} else {
-					cumulatedDuration = cumulatedDuration.add(dur.getDuration());
-				}
-
-				if (dur instanceof Rest) {
-					measureElement.appendChild(createRestElement((Rest) dur, voiceNumber, staffNumber));
-				}
-
-				if (dur instanceof Note) {
-					measureElement.appendChild(createNoteElement((Note) dur, voiceNumber, staffNumber, false));
-				}
-
-				if (dur instanceof Chord) {
-					boolean useChordTag = false;
-					for (Note note : (Chord) dur) {
-						measureElement.appendChild(createNoteElement(note, voiceNumber, staffNumber, useChordTag));
-						useChordTag = true;
-					}
-				}
-
-				// Handle mid-measure clef changes
-				handleMidMeasureClefChanges(measureElement, undealtClefChanges, cumulatedDuration, null);
-
-			}
-
-			// In case of multiple voices, backup to the beginning of the measure
-			// Do not backup if it is the last voice to be handled
-			voicesHandled++;
-			if (voicesHandled < measure.getVoiceCount()) {
-				measureElement.appendChild(createBackupElement(cumulatedDuration));
-			} else {
-				if (!measure.isPickup()
-						&& cumulatedDuration.isShorterThan(measure.getTimeSignature().getTotalDuration())) {
-					Duration duration = measure.getTimeSignature().getTotalDuration().subtract(cumulatedDuration);
-					measureElement.appendChild(createForwardElement(duration));
-				}
-			}
-		}
+		fillMeasureElement(measureElement, null, measure);
 
 		//Right barline
 		if (!measure.getRightBarline().equals(Barline.SINGLE) && !measure.getRightBarline().equals(Barline.NONE)) {
@@ -382,57 +338,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			final Measure measure = measures.get(staffNumber);
 
 			//Set up handling possible mid-measure clef changes
-			Map<Duration, Clef> undealtClefChanges = new HashMap<>(measure.getClefChanges());
-
-			//Notes
-			final List<Integer> voiceNumbers = measure.getVoiceNumbers();
-
-			int voicesHandled = 0;
-			for (Integer voiceNumber : voiceNumbers) {
-
-				Duration cumulatedDuration = null;
-				for (Durational dur : measure.getVoice(voiceNumber)) {
-					if (cumulatedDuration == null) {
-						cumulatedDuration = dur.getDuration();
-					} else {
-						cumulatedDuration = cumulatedDuration.add(dur.getDuration());
-					}
-
-					if (dur instanceof Rest) {
-						measureElement.appendChild(createRestElement((Rest) dur, voiceNumber, staffNumber));
-					}
-
-					if (dur instanceof Note) {
-						measureElement.appendChild(createNoteElement((Note) dur, voiceNumber, staffNumber, false));
-					}
-
-					if (dur instanceof Chord) {
-						boolean useChordTag = false;
-						for (Note note : (Chord) dur) {
-							measureElement
-									.appendChild(createNoteElement(note, voiceNumber, staffNumber, useChordTag));
-							useChordTag = true;
-						}
-					}
-
-					// Handle mid-measure clef changes
-					handleMidMeasureClefChanges(measureElement, undealtClefChanges, cumulatedDuration, staffNumber);
-				}
-
-				// In case of multiple voices, backup to the beginning of the measure
-				// Do not backup if it is the last voice to be handled
-				voicesHandled++;
-				if (voicesHandled < measure.getVoiceCount()) {
-					measureElement.appendChild(createBackupElement(cumulatedDuration));
-				} else {
-					if (!measure.isPickup()
-							&& cumulatedDuration.isShorterThan(measure.getTimeSignature().getTotalDuration())) {
-						Duration duration = measure.getTimeSignature().getTotalDuration()
-								.subtract(cumulatedDuration);
-						measureElement.appendChild(createForwardElement(duration));
-					}
-				}
-			}
+			fillMeasureElement(measureElement, staffNumber, measure);
 
 			// For all except last staff, backup to the beginning by the duration of measure.
 			if (!staffNumber.equals(maxStaffNumber)) {
@@ -449,6 +355,60 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		}
 
 		return measureElement;
+	}
+
+	public void fillMeasureElement(Element measureElement, Integer staffNumber, Measure measure) {
+		Map<Duration, Clef> undealtClefChanges = new HashMap<>(measure.getClefChanges());
+
+		//Notes
+		final List<Integer> voiceNumbers = measure.getVoiceNumbers();
+
+		int voicesHandled = 0;
+		for (Integer voiceNumber : voiceNumbers) {
+
+			Duration cumulatedDuration = null;
+			for (Durational dur : measure.getVoice(voiceNumber)) {
+				if (cumulatedDuration == null) {
+					cumulatedDuration = dur.getDuration();
+				} else {
+					cumulatedDuration = cumulatedDuration.add(dur.getDuration());
+				}
+
+				if (dur instanceof Rest) {
+					measureElement.appendChild(createRestElement((Rest) dur, voiceNumber, staffNumber));
+				}
+
+				if (dur instanceof Note) {
+					measureElement.appendChild(createNoteElement((Note) dur, voiceNumber, staffNumber, false));
+				}
+
+				if (dur instanceof Chord) {
+					boolean useChordTag = false;
+					for (Note note : (Chord) dur) {
+						measureElement
+								.appendChild(createNoteElement(note, voiceNumber, staffNumber, useChordTag));
+						useChordTag = true;
+					}
+				}
+
+				// Handle mid-measure clef changes
+				handleMidMeasureClefChanges(measureElement, undealtClefChanges, cumulatedDuration, staffNumber);
+			}
+
+			// In case of multiple voices, backup to the beginning of the measure
+			// Do not backup if it is the last voice to be handled
+			voicesHandled++;
+			if (voicesHandled < measure.getVoiceCount()) {
+				measureElement.appendChild(createBackupElement(cumulatedDuration));
+			} else {
+				if (!measure.isPickup()
+						&& cumulatedDuration.isShorterThan(measure.getTimeSignature().getTotalDuration())) {
+					Duration duration = measure.getTimeSignature().getTotalDuration()
+							.subtract(cumulatedDuration);
+					measureElement.appendChild(createForwardElement(duration));
+				}
+			}
+		}
 	}
 
 	private Element createBarlineElement(Barline barline, String location) {
@@ -808,6 +768,19 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			}
 		}
 
+		// Markings
+		if (note.hasMarkings()) {
+			for (Marking marking : note.getMarkings()) {
+				if (note.getMarkingConnection(marking).get().isBeginning()) {
+					notationsElement.appendChild(markingResolver.createStartElement(marking));
+				}
+
+				if (note.getMarkingConnection(marking).get().isEnd()) {
+					notationsElement.appendChild(markingResolver.createStopElement(marking));
+				}
+			}
+		}
+
 		if (notationsElement.hasChildNodes()) {
 			return Optional.of(notationsElement);
 		} else {
@@ -861,5 +834,66 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	private void addDurationAppearanceElementsToNoteElement(Element noteElement, Duration duration) {
 		DurationAppearanceProvider.INSTANCE.getAppearanceElements(duration, this.doc)
 				.forEach(element -> noteElement.appendChild(element));
+	}
+
+	private static class MarkingResolver {
+		private static final int MAX_MARKING_NUMBER = 6;
+		private static final Map<Marking.Type, String> MARKING_TYPES = createMarkingTypes();
+
+		private static Map<Marking.Type, String> createMarkingTypes() {
+			Map<Marking.Type, String> markingTypes = new HashMap<>();
+			markingTypes.put(Marking.Type.SLUR, MusicXmlTags.SLUR);
+			markingTypes.put(Marking.Type.GLISSANDO, MusicXmlTags.GLISSANDO);
+			return Collections.unmodifiableMap(markingTypes);
+		}
+
+		private final Document document;
+		private Integer nextAvailableMarkingNumber = Integer.valueOf(1);
+
+		MarkingResolver(Document document) {
+			this.document = document;
+		}
+
+		private Map<Marking, Integer> unresolvedMarkings = new HashMap<>();
+		private Set<Integer> usedMarkingNumbers = new HashSet<>(MAX_MARKING_NUMBER);
+
+		Element createStartElement(Marking marking) {
+			Element markingElement = document.createElement(MARKING_TYPES.get(marking.getType()));
+
+			final Integer markingNumber = getNextAvailableMarkingNumber();
+			unresolvedMarkings.put(marking, markingNumber);
+
+			markingElement.setAttribute(MusicXmlTags.MARKING_NUMBER, markingNumber.toString());
+
+			markingElement.setAttribute(MusicXmlTags.MARKING_TYPE, MusicXmlTags.MARKING_TYPE_START);
+			return markingElement;
+		}
+
+		Element createStopElement(Marking marking) {
+			Element markingElement = document.createElement(MARKING_TYPES.get(marking.getType()));
+
+			markingElement.setAttribute(MusicXmlTags.MARKING_NUMBER, unresolvedMarkings.get(marking).toString());
+
+			usedMarkingNumbers.remove(unresolvedMarkings.get(marking));
+			unresolvedMarkings.remove(marking);
+
+			markingElement.setAttribute(MusicXmlTags.MARKING_TYPE, MusicXmlTags.MARKING_TYPE_STOP);
+
+			return markingElement;
+		}
+
+		private Integer getNextAvailableMarkingNumber() {
+			Integer availableNumber = nextAvailableMarkingNumber;
+			usedMarkingNumbers.add(availableNumber);
+
+			for (int next = 1; next <= MAX_MARKING_NUMBER; ++next) {
+				if (!usedMarkingNumbers.contains(next)) {
+					nextAvailableMarkingNumber = next;
+					break;
+				}
+			}
+
+			return availableNumber;
+		}
 	}
 }
