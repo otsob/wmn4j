@@ -3,6 +3,8 @@
  */
 package org.wmn4j.io.musicxml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -57,6 +59,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 class MusicXmlWriterDom implements MusicXmlWriter {
+
+	private static final Logger LOG = LoggerFactory.getLogger(MusicXmlWriterDom.class);
 
 	private Document doc;
 	private final String MUSICXML_VERSION_NUMBER = "3.1";
@@ -117,9 +121,9 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			this.doc = null;
 
 		} catch (final ParserConfigurationException pce) {
-			pce.printStackTrace();
+			LOG.error("Configuring parser failed:", pce);
 		} catch (final TransformerException tfe) {
-			tfe.printStackTrace();
+			LOG.error("Configuring transformer failed:", tfe);
 		}
 	}
 
