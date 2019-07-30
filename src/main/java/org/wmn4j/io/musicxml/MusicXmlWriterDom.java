@@ -61,29 +61,39 @@ import java.util.TreeMap;
 class MusicXmlWriterDom implements MusicXmlWriter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MusicXmlWriterDom.class);
+	private static final String MUSICXML_VERSION_NUMBER = "3.1";
 
-	private Document doc;
-	private final String MUSICXML_VERSION_NUMBER = "3.1";
+	private final Document doc;
 	private final Score score;
 	private final SortedMap<String, Part> partIdMap = new TreeMap<>();
-	private MarkingResolver markingResolver;
+	private final MarkingResolver markingResolver;
 	private final int divisions;
 
 	MusicXmlWriterDom(Score score) {
 		this.score = score;
 		this.divisions = computeDivisions(this.score);
+		this.doc = createDocument();
+		this.markingResolver = new MarkingResolver(this.doc);
+	}
+
+	private static Document createDocument() {
+		try {
+			final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			return docBuilder.newDocument();
+		} catch (ParserConfigurationException exception) {
+			LOG.error("Parser configuration failed: ", exception);
+			return null;
+		}
+	}
+
+	protected Document getDocument() {
+		return doc;
 	}
 
 	@Override
 	public void writeToFile(Path path) {
 		try {
-			final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-			// root elements
-			this.doc = docBuilder.newDocument();
-			this.markingResolver = new MarkingResolver(this.doc);
-
 			final Element rootElement = this.doc.createElement(MusicXmlTags.SCORE_PARTWISE);
 			rootElement.setAttribute(MusicXmlTags.MUSICXML_VERSION, MUSICXML_VERSION_NUMBER);
 			this.doc.appendChild(rootElement);
@@ -117,11 +127,6 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			final StreamResult result = new StreamResult(new File(path.toString()));
 
 			transformer.transform(source, result);
-
-			this.doc = null;
-
-		} catch (final ParserConfigurationException pce) {
-			LOG.error("Configuring parser failed:", pce);
 		} catch (final TransformerException tfe) {
 			LOG.error("Configuring transformer failed:", tfe);
 		}
