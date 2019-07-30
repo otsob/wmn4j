@@ -58,7 +58,11 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-class MusicXmlWriterDom implements MusicXmlWriter {
+/**
+ * Abstract super class for classes that write to MusicXML by populating
+ * the Document Object Model first.
+ */
+abstract class MusicXmlWriterDom implements MusicXmlWriter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MusicXmlWriterDom.class);
 	private static final String MUSICXML_VERSION_NUMBER = "3.1";
@@ -89,6 +93,10 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 
 	protected final Document getDocument() {
 		return doc;
+	}
+
+	protected final void addPartWithId(String id, Part part) {
+		partIdMap.put(id, part);
 	}
 
 	@Override
@@ -151,55 +159,25 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return lcd / Durations.QUARTER.getDenominator();
 	}
 
-	private void writeScoreAttributes(Element rootElement) {
-		if (!score.getTitle().isEmpty()) {
-			final Element workTitleElement = getDocument().createElement(MusicXmlTags.SCORE_WORK_TITLE);
-			workTitleElement.setTextContent(score.getTitle());
+	protected abstract void writeScoreAttributes(Element rootElement);
 
-			final Element workElement = getDocument().createElement(MusicXmlTags.SCORE_WORK);
-			workElement.appendChild(workTitleElement);
-			rootElement.appendChild(workElement);
+	protected abstract Element createIdentificationElement();
+
+	protected abstract void writePartList(Element scoreRoot);
+
+	protected void writePart(Part part, Element scoreRoot, String partId) {
+		final Element partElement;
+
+		if (part.isMultiStaff()) {
+			partElement = createMultiStaffPart((MultiStaffPart) part, partId);
+		} else {
+			partElement = createSingleStaffPart((SingleStaffPart) part, partId);
 		}
 
-		if (!score.getAttribute(Score.Attribute.MOVEMENT_TITLE).isEmpty()) {
-			final Element movementTitleElement = getDocument().createElement(MusicXmlTags.SCORE_MOVEMENT_TITLE);
-			movementTitleElement.setTextContent(score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
-			rootElement.appendChild(movementTitleElement);
-		}
-
-		final Element identificationElement = createIdentificationElement();
-		if (identificationElement.hasChildNodes()) {
-			rootElement.appendChild(identificationElement);
-		}
+		scoreRoot.appendChild(partElement);
 	}
 
-	private Element createIdentificationElement() {
-		final Element identificationElement = getDocument().createElement(MusicXmlTags.SCORE_IDENTIFICATION);
-
-		if (!score.getAttribute(Score.Attribute.COMPOSER).isEmpty()) {
-			final Element composerElement = getDocument().createElement(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR);
-			composerElement.setAttribute(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR_TYPE,
-					MusicXmlTags.SCORE_IDENTIFICATION_COMPOSER);
-
-			composerElement.setTextContent(score.getAttribute(Score.Attribute.COMPOSER));
-			identificationElement.appendChild(composerElement);
-		}
-
-		if (!score.getAttribute(Score.Attribute.ARRANGER).isEmpty()) {
-			final Element arrangerElement = getDocument().createElement(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR);
-			arrangerElement.setAttribute(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR_TYPE,
-					MusicXmlTags.SCORE_IDENTIFICATION_ARRANGER);
-
-			arrangerElement.setTextContent(score.getAttribute(Score.Attribute.ARRANGER));
-			identificationElement.appendChild(arrangerElement);
-		}
-
-		identificationElement.appendChild(createEncodingElement());
-
-		return identificationElement;
-	}
-
-	private Element createEncodingElement() {
+	protected final Element createEncodingElement() {
 
 		final Element encodingElement = getDocument().createElement(MusicXmlTags.ENCODING);
 		final Element softwareElement = getDocument().createElement(MusicXmlTags.SOFTWARE);
@@ -215,45 +193,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return encodingElement;
 	}
 
-	private void writePartList(Element scoreRoot) {
-		final Element partList = getDocument().createElement(MusicXmlTags.PART_LIST);
-
-		for (int i = 0; i < this.score.getPartCount(); ++i) {
-			final Element partElement = getDocument().createElement(MusicXmlTags.PLIST_SCORE_PART);
-			final String partId = "P" + (i + 1);
-			final Part part = this.score.getPart(i);
-			this.partIdMap.put(partId, part);
-
-			partElement.setAttribute(MusicXmlTags.PART_ID, partId);
-			final Element partName = getDocument().createElement(MusicXmlTags.PART_NAME);
-			partName.setTextContent(part.getName());
-			partElement.appendChild(partName);
-
-			if (!part.getAttribute(Part.Attribute.ABBREVIATED_NAME).isEmpty()) {
-				final Element abbreviatedPartName = getDocument().createElement(MusicXmlTags.PART_NAME_ABBREVIATION);
-				abbreviatedPartName.setTextContent(part.getAttribute(Part.Attribute.ABBREVIATED_NAME));
-				partElement.appendChild(abbreviatedPartName);
-			}
-
-			partList.appendChild(partElement);
-		}
-
-		scoreRoot.appendChild(partList);
-	}
-
-	private void writePart(Part part, Element scoreRoot, String partId) {
-		final Element partElement;
-
-		if (part.isMultiStaff()) {
-			partElement = createMultiStaffPart((MultiStaffPart) part, partId);
-		} else {
-			partElement = createSingleStaffPart((SingleStaffPart) part, partId);
-		}
-
-		scoreRoot.appendChild(partElement);
-	}
-
-	private Element createSingleStaffPart(SingleStaffPart part, String partId) {
+	protected Element createSingleStaffPart(SingleStaffPart part, String partId) {
 		final Element partElement = getDocument().createElement(MusicXmlTags.PART);
 		partElement.setAttribute(MusicXmlTags.PART_ID, partId);
 
@@ -267,7 +207,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return partElement;
 	}
 
-	private Element createMultiStaffPart(MultiStaffPart part, String partId) {
+	protected Element createMultiStaffPart(MultiStaffPart part, String partId) {
 		final Element partElement = getDocument().createElement(MusicXmlTags.PART);
 		partElement.setAttribute(MusicXmlTags.PART_ID, partId);
 
