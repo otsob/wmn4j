@@ -19,7 +19,7 @@ public interface MusicXmlWriter {
 	 * @return an instance of a writer for the given {@link Score}
 	 */
 	static MusicXmlWriter getWriter(Score score) {
-		return new MusicXmlWriterDom(score);
+		return new MusicXmlScoreWriterDom(score);
 	}
 
 	/**

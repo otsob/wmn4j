@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-class MusicXmlWriterDomTest {
+class MusicXmlScoreWriterDomTest {
 
 	private Document readDocument(Path path) {
 		try {
@@ -79,7 +79,7 @@ class MusicXmlWriterDomTest {
 	}
 
 	private Score writeAndReadScore(Score score) {
-		MusicXmlWriterDom writer = new MusicXmlWriterDom(score);
+		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path file = temporaryDirectory.resolve("file.xml");
 		writer.writeToFile(file);
 
@@ -89,7 +89,7 @@ class MusicXmlWriterDomTest {
 		try {
 			writtenScore = reader.readScore(file);
 		} catch (final IOException | ParsingFailureException e) {
-			fail("Reading score written by MusicXmlWriterDom failed with exception " + e);
+			fail("Reading score written by MusicXmlScoreWriterDom failed with exception " + e);
 		}
 
 		assertNotNull(writtenScore);
@@ -219,7 +219,7 @@ class MusicXmlWriterDomTest {
 	void testWritingBasicNoteAppearances() {
 		final Score score = readMusicXmlTestFile("basic_duration_appearances.xml", false);
 
-		MusicXmlWriter writer = new MusicXmlWriterDom(score);
+		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
 		writer.writeToFile(filePath);
 
@@ -258,7 +258,7 @@ class MusicXmlWriterDomTest {
 	void testWritingBasicDottedNoteAppearances() {
 		final Score score = readMusicXmlTestFile("basic_dotted_duration_appearances.xml", false);
 
-		MusicXmlWriter writer = new MusicXmlWriterDom(score);
+		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
 		writer.writeToFile(filePath);
 
@@ -295,7 +295,7 @@ class MusicXmlWriterDomTest {
 	void testWritingTupletAppearances() {
 		final Score score = readMusicXmlTestFile("tuplet_writing_test.xml", false);
 
-		MusicXmlWriter writer = new MusicXmlWriterDom(score);
+		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
 		writer.writeToFile(filePath);
 
@@ -368,7 +368,7 @@ class MusicXmlWriterDomTest {
 		// Check that score is valid MusicXML
 		writeAndReadScore(score);
 
-		MusicXmlWriter writer = new MusicXmlWriterDom(score);
+		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
 		writer.writeToFile(filePath);
 
