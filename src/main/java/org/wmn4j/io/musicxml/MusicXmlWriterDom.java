@@ -29,7 +29,6 @@ import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.elements.SingleStaffPart;
 import org.wmn4j.notation.elements.TimeSignature;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
-import org.wmn4j.notation.iterators.ScoreIterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -51,6 +50,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -71,7 +71,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 
 	MusicXmlWriterDom(Score score) {
 		this.score = score;
-		this.divisions = computeDivisions(this.score);
+		this.divisions = computeDivisions(new PartWiseScoreIterator(score));
 		this.doc = createDocument();
 		this.markingResolver = new MarkingResolver(this.doc);
 	}
@@ -132,12 +132,11 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		}
 	}
 
-	private int computeDivisions(Score score) {
+	private int computeDivisions(Iterator<Durational> durationalIterator) {
 		Set<Integer> denominators = new HashSet<>();
 
-		final ScoreIterator iter = new PartWiseScoreIterator(score);
-		while (iter.hasNext()) {
-			denominators.add(iter.next().getDuration().getDenominator());
+		while (durationalIterator.hasNext()) {
+			denominators.add(durationalIterator.next().getDuration().getDenominator());
 		}
 
 		//Find lowest common denominator of all the different denominators of Durationals in the Score
