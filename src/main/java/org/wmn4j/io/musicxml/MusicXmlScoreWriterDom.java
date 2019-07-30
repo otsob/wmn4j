@@ -3,14 +3,21 @@ package org.wmn4j.io.musicxml;
 import org.w3c.dom.Element;
 import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Score;
+import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 
 final class MusicXmlScoreWriterDom extends MusicXmlWriterDom {
 
 	private final Score score;
+	private final int divisions;
 
 	MusicXmlScoreWriterDom(Score score) {
-		super(score);
 		this.score = score;
+		this.divisions = computeDivisions(new PartWiseScoreIterator(score));
+	}
+
+	@Override
+	protected int getDivisions() {
+		return divisions;
 	}
 
 	@Override

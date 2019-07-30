@@ -25,10 +25,8 @@ import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Rest;
-import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.elements.SingleStaffPart;
 import org.wmn4j.notation.elements.TimeSignature;
-import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -68,14 +66,10 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 	private static final String MUSICXML_VERSION_NUMBER = "3.1";
 
 	private final Document doc;
-	private final Score score;
 	private final SortedMap<String, Part> partIdMap = new TreeMap<>();
 	private final MarkingResolver markingResolver;
-	private final int divisions;
 
-	MusicXmlWriterDom(Score score) {
-		this.score = score;
-		this.divisions = computeDivisions(new PartWiseScoreIterator(score));
+	MusicXmlWriterDom() {
 		this.doc = createDocument();
 		this.markingResolver = new MarkingResolver(getDocument());
 	}
@@ -98,6 +92,8 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 	protected final void addPartWithId(String id, Part part) {
 		partIdMap.put(id, part);
 	}
+
+	protected abstract int getDivisions();
 
 	@Override
 	public void writeToFile(Path path) {
@@ -140,7 +136,7 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		}
 	}
 
-	private int computeDivisions(Iterator<Durational> durationalIterator) {
+	protected final int computeDivisions(Iterator<Durational> durationalIterator) {
 		Set<Integer> denominators = new HashSet<>();
 
 		while (durationalIterator.hasNext()) {
@@ -506,7 +502,7 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 
 	private Element createDivisionsElement() {
 		Element divisionsElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_DIVS);
-		divisionsElement.setTextContent(Integer.toString(divisions));
+		divisionsElement.setTextContent(Integer.toString(getDivisions()));
 		return divisionsElement;
 	}
 
@@ -679,7 +675,7 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private int divisionCountOf(Duration duration) {
-		return ((this.divisions * Durations.QUARTER.getDenominator())
+		return ((getDivisions() * Durations.QUARTER.getDenominator())
 				/ duration.getDenominator())
 				* duration.getNumerator();
 	}
