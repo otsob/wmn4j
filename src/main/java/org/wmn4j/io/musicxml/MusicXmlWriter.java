@@ -3,9 +3,11 @@
  */
 package org.wmn4j.io.musicxml;
 
+import org.wmn4j.mir.Pattern;
 import org.wmn4j.notation.elements.Score;
 
 import java.nio.file.Path;
+import java.util.Collection;
 
 /**
  * Represents a writer for MusicXML files.
@@ -20,6 +22,29 @@ public interface MusicXmlWriter {
 	 */
 	static MusicXmlWriter getWriter(Score score) {
 		return new MusicXmlScoreWriterDom(score);
+	}
+
+	/**
+	 * Returns an instance of a writer for the given {@link Pattern}.
+	 *
+	 * @param pattern the pattern for which the writer is created
+	 * @return an instance of a writer for the given {@link Pattern}
+	 */
+	static MusicXmlWriter getWriter(Pattern pattern) {
+		return new MusicXmlPatternWriterDom(pattern);
+	}
+
+	/**
+	 * Returns an instance of a writer for the given {@link Pattern} collection.
+	 * <p>
+	 * The patterns are written into MusicXML so that they are separated by
+	 * double bar lines and system breaks from each other.
+	 *
+	 * @param patterns the patterns for which the writer is created
+	 * @return an instance of a writer for the given {@link Pattern} collection
+	 */
+	static MusicXmlWriter getWriter(Collection<Pattern> patterns) {
+		return new MusicXmlPatternWriterDom(patterns);
 	}
 
 	/**
