@@ -230,6 +230,12 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		final Element measureElement = getDocument().createElement(MusicXmlTags.MEASURE);
 		measureElement.setAttribute(MusicXmlTags.MEASURE_NUM, Integer.toString(measure.getNumber()));
 
+		if (startNewSystem(measure)) {
+			Element printElement = getDocument().createElement(MusicXmlTags.PRINT);
+			printElement.setAttribute(MusicXmlTags.NEW_SYSTEM, MusicXmlTags.YES);
+			measureElement.appendChild(printElement);
+		}
+
 		//Left barline
 		if (!measure.getLeftBarline().equals(Barline.SINGLE) && !measure.getLeftBarline().equals(Barline.NONE)) {
 			measureElement.appendChild(
@@ -523,6 +529,10 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 
 	private Element createTimeSignatureElement(TimeSignature timeSignature) {
 		Element timeSigElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_TIME);
+		if (!showTimeSignature()) {
+			timeSigElement.setAttribute(MusicXmlTags.PRINT_OBJECT, MusicXmlTags.NO);
+		}
+
 		Element beatsElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_BEATS);
 		Element beatTypeElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_BEAT_TYPE);
 
@@ -678,6 +688,14 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		return ((getDivisions() * Durations.QUARTER.getDenominator())
 				/ duration.getDenominator())
 				* duration.getNumerator();
+	}
+
+	protected boolean showTimeSignature() {
+		return true;
+	}
+
+	protected boolean startNewSystem(Measure measure) {
+		return false;
 	}
 
 	private Element createPitchElement(Pitch pitch) {

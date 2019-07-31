@@ -136,6 +136,13 @@ final class MusicXmlTags {
 	static final String SOFTWARE = "software";
 	static final String ENCODING_DATE = "encoding-date";
 
+	// Score layout related tags and attributes
+	static final String PRINT = "print";
+	static final String PRINT_OBJECT = "print-object";
+	static final String NEW_SYSTEM = "new-system";
+	static final String YES = "yes";
+	static final String NO = "no";
+
 	private MusicXmlTags() {
 	}
 }
