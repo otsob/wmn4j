@@ -22,8 +22,10 @@ import org.wmn4j.notation.elements.TimeSignature;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
@@ -36,6 +38,7 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 	private final int divisions;
 	private final Part partFromPatterns;
 	private int measureNumber = 1;
+	private final Set<Integer> newSystemBeginningMeasureNumbers;
 
 	MusicXmlPatternWriterDom(Collection<Pattern> patterns) {
 		Collection<Durational> allDurationals = new ArrayList<>();
@@ -44,6 +47,7 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		});
 
 		this.divisions = computeDivisions(allDurationals.iterator());
+		this.newSystemBeginningMeasureNumbers = new HashSet<>();
 		this.partFromPatterns = fromPatterns(patterns);
 	}
 
@@ -77,7 +81,8 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 					? durational.getDuration().add(cumulatedDuration)
 					: durational.getDuration();
 
-			if (cumulatedDuration.isLongerThan(MEASURE_CUTOFF_DURATION)) {
+			if (cumulatedDuration.isLongerThan(MEASURE_CUTOFF_DURATION) || cumulatedDuration
+					.equals(MEASURE_CUTOFF_DURATION)) {
 				measures.add(createMeasureFromVoice(voice, cumulatedDuration, !iterator.hasNext(), measureNumber));
 				measureNumber++;
 				cumulatedDuration = null;
@@ -87,7 +92,10 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
 		if (!voice.isEmpty()) {
 			measures.add(createMeasureFromVoice(voice, cumulatedDuration, true, measureNumber));
+			measureNumber++;
 		}
+
+		newSystemBeginningMeasureNumbers.add(measures.get(0).getNumber());
 
 		return measures;
 	}
@@ -172,5 +180,15 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		}
 
 		return Clefs.F;
+	}
+
+	@Override
+	protected boolean showTimeSignature() {
+		return false;
+	}
+
+	@Override
+	protected boolean startNewSystem(Measure measure) {
+		return newSystemBeginningMeasureNumbers.contains(measure.getNumber());
 	}
 }
