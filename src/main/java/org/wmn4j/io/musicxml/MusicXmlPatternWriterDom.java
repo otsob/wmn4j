@@ -13,10 +13,12 @@ import org.wmn4j.notation.elements.KeySignature;
 import org.wmn4j.notation.elements.KeySignatures;
 import org.wmn4j.notation.elements.Measure;
 import org.wmn4j.notation.elements.MeasureAttributes;
+import org.wmn4j.notation.elements.MultiStaffPart;
 import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.SingleStaffPart;
+import org.wmn4j.notation.elements.Staff;
 import org.wmn4j.notation.elements.TimeSignature;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
@@ -57,12 +60,27 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
 	private Part fromPatterns(Collection<Pattern> patterns) {
 
+		int maxNumberOfVoices = patterns.stream().map(Pattern::getNumberOfVoices).max(Integer::compareTo).orElseThrow();
+
+		if (maxNumberOfVoices == 1) {
+			return SingleStaffPart.of("", singleVoicePatternsStaff(patterns));
+		}
+
+		return MultiStaffPart.of("", createStavesForPolyphonicPatterns(patterns, maxNumberOfVoices));
+	}
+
+	private Staff singleVoicePatternsStaff(Collection<Pattern> patterns) {
 		final List<Measure> allMeasures = new ArrayList<>();
 		for (Pattern pattern : patterns) {
 			allMeasures.addAll(singleVoicePatternToMeasureList(pattern));
 		}
 
-		return SingleStaffPart.of("", allMeasures);
+		return Staff.of(allMeasures);
+	}
+
+	private Map<Integer, Staff> createStavesForPolyphonicPatterns(Collection<Pattern> patterns, int maxNumberOfVoices) {
+
+		return null;
 	}
 
 	private List<Measure> singleVoicePatternToMeasureList(Pattern pattern) {

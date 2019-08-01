@@ -8,7 +8,6 @@ import org.wmn4j.notation.iterators.PartIterator;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -25,37 +24,37 @@ public final class SingleStaffPart implements Part {
 	private final Staff staff;
 
 	/**
-	 * Returns a part with a single staff with the given name and measures.
+	 * Returns a part with a single staff with the given name and staff.
 	 *
-	 * @param name     the name of the part
-	 * @param measures the measures in this part
+	 * @param name  the name of the part
+	 * @param staff the staff of this part
 	 * @return a part with a single staff with the given name and measures
 	 */
-	public static SingleStaffPart of(String name, List<Measure> measures) {
+	public static SingleStaffPart of(String name, Staff staff) {
 		final Map<Part.Attribute, String> attributes = new HashMap<>();
 		attributes.put(Attribute.NAME, name);
-		return new SingleStaffPart(attributes, measures);
+		return new SingleStaffPart(attributes, staff);
 	}
 
 	/**
-	 * Returns a part with a single staff with the given attributes and measures.
+	 * Returns a part with a single staff with the given attributes and staff.
 	 *
 	 * @param partAttributes a map of attributes to be set for this part
-	 * @param measures       the measures in this part
+	 * @param staff          the staff of this part
 	 * @return a part with a single staff with the given attributes and measures
 	 */
-	public static SingleStaffPart of(Map<Part.Attribute, String> partAttributes, List<Measure> measures) {
-		return new SingleStaffPart(partAttributes, measures);
+	public static SingleStaffPart of(Map<Part.Attribute, String> partAttributes, Staff staff) {
+		return new SingleStaffPart(partAttributes, staff);
 	}
 
 	/**
 	 * Constructor.
 	 *
 	 * @param partAttributes a map of attributes to be set for this part
-	 * @param measures       the measures in this part
+	 * @param staff          the staff of this part
 	 */
-	private SingleStaffPart(Map<Part.Attribute, String> partAttributes, List<Measure> measures) {
-		this.staff = Staff.of(measures);
+	private SingleStaffPart(Map<Part.Attribute, String> partAttributes, Staff staff) {
+		this.staff = staff;
 		this.partAttributes = Collections.unmodifiableMap(new HashMap<>(partAttributes));
 	}
 

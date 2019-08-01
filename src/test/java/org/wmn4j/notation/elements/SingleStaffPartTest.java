@@ -54,7 +54,7 @@ class SingleStaffPartTest {
 	@Test
 	void testImmutability() {
 		final List<Measure> measuresCopy = new ArrayList<>(this.measures);
-		final SingleStaffPart part = SingleStaffPart.of("Test part", measuresCopy);
+		final SingleStaffPart part = SingleStaffPart.of("Test part", Staff.of(measuresCopy));
 		measuresCopy.set(0, null);
 		assertTrue(part.getStaff().getMeasures().get(0) != null,
 				"Modifying list used to create part modified part also.");
@@ -62,33 +62,33 @@ class SingleStaffPartTest {
 
 	@Test
 	void testGetName() {
-		final SingleStaffPart part = SingleStaffPart.of("Test part", this.measures);
+		final SingleStaffPart part = SingleStaffPart.of("Test part", Staff.of(this.measures));
 		assertEquals("Test part", part.getName());
 	}
 
 	@Test
 	void testIsMultiStaff() {
-		final SingleStaffPart part = SingleStaffPart.of("Test part", this.measures);
+		final SingleStaffPart part = SingleStaffPart.of("Test part", Staff.of(this.measures));
 		assertFalse(part.isMultiStaff());
 	}
 
 	@Test
 	void testGetStaff() {
-		final SingleStaffPart part = SingleStaffPart.of("Test part", this.measures);
+		final SingleStaffPart part = SingleStaffPart.of("Test part", Staff.of(this.measures));
 		final Staff staff = part.getStaff();
 		assertEquals(5, staff.getMeasures().size());
 	}
 
 	@Test
 	void getMeasure() {
-		final SingleStaffPart part = SingleStaffPart.of("Test part", this.measures);
+		final SingleStaffPart part = SingleStaffPart.of("Test part", Staff.of(this.measures));
 		final Measure m = part.getMeasure(1);
 		assertTrue(m == this.measures.get(0));
 	}
 
 	@Test
 	void testIterator() {
-		final SingleStaffPart part = SingleStaffPart.of("Test part", this.measures);
+		final SingleStaffPart part = SingleStaffPart.of("Test part", Staff.of(this.measures));
 		int measCount = 0;
 		int measureNumber = 1;
 		for (Measure m : part) {
@@ -102,7 +102,7 @@ class SingleStaffPartTest {
 
 	@Test
 	void testIteratorImmutability() {
-		final SingleStaffPart part = SingleStaffPart.of("Test part", this.measures);
+		final SingleStaffPart part = SingleStaffPart.of("Test part", Staff.of(this.measures));
 		final Iterator<Measure> iter = part.iterator();
 		iter.next();
 
