@@ -3,6 +3,8 @@
  */
 package org.wmn4j.io.musicxml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -23,11 +25,8 @@ import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Rest;
-import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.elements.SingleStaffPart;
 import org.wmn4j.notation.elements.TimeSignature;
-import org.wmn4j.notation.iterators.PartWiseScoreIterator;
-import org.wmn4j.notation.iterators.ScoreIterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -49,6 +48,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,33 +56,51 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-class MusicXmlWriterDom implements MusicXmlWriter {
+/**
+ * Abstract super class for classes that write to MusicXML by populating
+ * the Document Object Model first.
+ */
+abstract class MusicXmlWriterDom implements MusicXmlWriter {
 
-	private Document doc;
-	private final String MUSICXML_VERSION_NUMBER = "3.1";
-	private final Score score;
+	private static final Logger LOG = LoggerFactory.getLogger(MusicXmlWriterDom.class);
+	private static final String MUSICXML_VERSION_NUMBER = "3.1";
+
+	private final Document doc;
 	private final SortedMap<String, Part> partIdMap = new TreeMap<>();
-	private MarkingResolver markingResolver;
-	private final int divisions;
+	private final MarkingResolver markingResolver;
 
-	MusicXmlWriterDom(Score score) {
-		this.score = score;
-		this.divisions = computeDivisions(this.score);
+	MusicXmlWriterDom() {
+		this.doc = createDocument();
+		this.markingResolver = new MarkingResolver(getDocument());
 	}
+
+	private static Document createDocument() {
+		try {
+			final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			return docBuilder.newDocument();
+		} catch (ParserConfigurationException exception) {
+			LOG.error("Parser configuration failed: ", exception);
+			return null;
+		}
+	}
+
+	protected final Document getDocument() {
+		return doc;
+	}
+
+	protected final void addPartWithId(String id, Part part) {
+		partIdMap.put(id, part);
+	}
+
+	protected abstract int getDivisions();
 
 	@Override
 	public void writeToFile(Path path) {
 		try {
-			final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-			// root elements
-			this.doc = docBuilder.newDocument();
-			this.markingResolver = new MarkingResolver(this.doc);
-
-			final Element rootElement = this.doc.createElement(MusicXmlTags.SCORE_PARTWISE);
+			final Element rootElement = getDocument().createElement(MusicXmlTags.SCORE_PARTWISE);
 			rootElement.setAttribute(MusicXmlTags.MUSICXML_VERSION, MUSICXML_VERSION_NUMBER);
-			this.doc.appendChild(rootElement);
+			getDocument().appendChild(rootElement);
 
 			// Add the score attribute elements
 			writeScoreAttributes(rootElement);
@@ -102,7 +120,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-			final DOMImplementation domImpl = doc.getImplementation();
+			final DOMImplementation domImpl = getDocument().getImplementation();
 			final DocumentType doctype = domImpl.createDocumentType("doctype",
 					"-//Recordare//DTD MusicXML " + MUSICXML_VERSION_NUMBER + " Partwise//EN",
 					"http://www.musicxml.org/dtds/partwise.dtd");
@@ -113,22 +131,16 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			final StreamResult result = new StreamResult(new File(path.toString()));
 
 			transformer.transform(source, result);
-
-			this.doc = null;
-
-		} catch (final ParserConfigurationException pce) {
-			pce.printStackTrace();
 		} catch (final TransformerException tfe) {
-			tfe.printStackTrace();
+			LOG.error("Configuring transformer failed:", tfe);
 		}
 	}
 
-	private int computeDivisions(Score score) {
+	protected final int computeDivisions(Iterator<Durational> durationalIterator) {
 		Set<Integer> denominators = new HashSet<>();
 
-		final ScoreIterator iter = new PartWiseScoreIterator(score);
-		while (iter.hasNext()) {
-			denominators.add(iter.next().getDuration().getDenominator());
+		while (durationalIterator.hasNext()) {
+			denominators.add(durationalIterator.next().getDuration().getDenominator());
 		}
 
 		//Find lowest common denominator of all the different denominators of Durationals in the Score
@@ -143,97 +155,13 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return lcd / Durations.QUARTER.getDenominator();
 	}
 
-	private void writeScoreAttributes(Element rootElement) {
-		if (!score.getTitle().isEmpty()) {
-			final Element workTitleElement = doc.createElement(MusicXmlTags.SCORE_WORK_TITLE);
-			workTitleElement.setTextContent(score.getTitle());
+	protected abstract void writeScoreAttributes(Element rootElement);
 
-			final Element workElement = doc.createElement(MusicXmlTags.SCORE_WORK);
-			workElement.appendChild(workTitleElement);
-			rootElement.appendChild(workElement);
-		}
+	protected abstract Element createIdentificationElement();
 
-		if (!score.getAttribute(Score.Attribute.MOVEMENT_TITLE).isEmpty()) {
-			final Element movementTitleElement = doc.createElement(MusicXmlTags.SCORE_MOVEMENT_TITLE);
-			movementTitleElement.setTextContent(score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
-			rootElement.appendChild(movementTitleElement);
-		}
+	protected abstract void writePartList(Element scoreRoot);
 
-		final Element identificationElement = createIdentificationElement();
-		if (identificationElement.hasChildNodes()) {
-			rootElement.appendChild(identificationElement);
-		}
-	}
-
-	private Element createIdentificationElement() {
-		final Element identificationElement = doc.createElement(MusicXmlTags.SCORE_IDENTIFICATION);
-
-		if (!score.getAttribute(Score.Attribute.COMPOSER).isEmpty()) {
-			final Element composerElement = doc.createElement(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR);
-			composerElement.setAttribute(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR_TYPE,
-					MusicXmlTags.SCORE_IDENTIFICATION_COMPOSER);
-
-			composerElement.setTextContent(score.getAttribute(Score.Attribute.COMPOSER));
-			identificationElement.appendChild(composerElement);
-		}
-
-		if (!score.getAttribute(Score.Attribute.ARRANGER).isEmpty()) {
-			final Element arrangerElement = doc.createElement(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR);
-			arrangerElement.setAttribute(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR_TYPE,
-					MusicXmlTags.SCORE_IDENTIFICATION_ARRANGER);
-
-			arrangerElement.setTextContent(score.getAttribute(Score.Attribute.ARRANGER));
-			identificationElement.appendChild(arrangerElement);
-		}
-
-		identificationElement.appendChild(createEncodingElement());
-
-		return identificationElement;
-	}
-
-	private Element createEncodingElement() {
-
-		final Element encodingElement = doc.createElement(MusicXmlTags.ENCODING);
-		final Element softwareElement = doc.createElement(MusicXmlTags.SOFTWARE);
-		softwareElement.setTextContent(Wmn4j.getNameWithVersion());
-		encodingElement.appendChild(softwareElement);
-
-		final Element encodingDateElement = doc.createElement(MusicXmlTags.ENCODING_DATE);
-		final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		encodingDateElement.setTextContent(dateFormat.format(new Date()));
-
-		encodingElement.appendChild(encodingDateElement);
-
-		return encodingElement;
-	}
-
-	private void writePartList(Element scoreRoot) {
-		final Element partList = doc.createElement(MusicXmlTags.PART_LIST);
-
-		for (int i = 0; i < this.score.getPartCount(); ++i) {
-			final Element partElement = doc.createElement(MusicXmlTags.PLIST_SCORE_PART);
-			final String partId = "P" + (i + 1);
-			final Part part = this.score.getPart(i);
-			this.partIdMap.put(partId, part);
-
-			partElement.setAttribute(MusicXmlTags.PART_ID, partId);
-			final Element partName = doc.createElement(MusicXmlTags.PART_NAME);
-			partName.setTextContent(part.getName());
-			partElement.appendChild(partName);
-
-			if (!part.getAttribute(Part.Attribute.ABBREVIATED_NAME).isEmpty()) {
-				final Element abbreviatedPartName = doc.createElement(MusicXmlTags.PART_NAME_ABBREVIATION);
-				abbreviatedPartName.setTextContent(part.getAttribute(Part.Attribute.ABBREVIATED_NAME));
-				partElement.appendChild(abbreviatedPartName);
-			}
-
-			partList.appendChild(partElement);
-		}
-
-		scoreRoot.appendChild(partList);
-	}
-
-	private void writePart(Part part, Element scoreRoot, String partId) {
+	protected void writePart(Part part, Element scoreRoot, String partId) {
 		final Element partElement;
 
 		if (part.isMultiStaff()) {
@@ -245,8 +173,24 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		scoreRoot.appendChild(partElement);
 	}
 
-	private Element createSingleStaffPart(SingleStaffPart part, String partId) {
-		final Element partElement = doc.createElement(MusicXmlTags.PART);
+	protected final Element createEncodingElement() {
+
+		final Element encodingElement = getDocument().createElement(MusicXmlTags.ENCODING);
+		final Element softwareElement = getDocument().createElement(MusicXmlTags.SOFTWARE);
+		softwareElement.setTextContent(Wmn4j.getNameWithVersion());
+		encodingElement.appendChild(softwareElement);
+
+		final Element encodingDateElement = getDocument().createElement(MusicXmlTags.ENCODING_DATE);
+		final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		encodingDateElement.setTextContent(dateFormat.format(new Date()));
+
+		encodingElement.appendChild(encodingDateElement);
+
+		return encodingElement;
+	}
+
+	protected Element createSingleStaffPart(SingleStaffPart part, String partId) {
+		final Element partElement = getDocument().createElement(MusicXmlTags.PART);
 		partElement.setAttribute(MusicXmlTags.PART_ID, partId);
 
 		Measure previousMeasure = null;
@@ -259,8 +203,8 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 		return partElement;
 	}
 
-	private Element createMultiStaffPart(MultiStaffPart part, String partId) {
-		final Element partElement = doc.createElement(MusicXmlTags.PART);
+	protected Element createMultiStaffPart(MultiStaffPart part, String partId) {
+		final Element partElement = getDocument().createElement(MusicXmlTags.PART);
 		partElement.setAttribute(MusicXmlTags.PART_ID, partId);
 
 		Map<Integer, Measure> previousMeasures = Collections.emptySortedMap();
@@ -283,8 +227,14 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createMeasureElement(Measure measure, Measure previousMeasure) {
-		final Element measureElement = doc.createElement(MusicXmlTags.MEASURE);
+		final Element measureElement = getDocument().createElement(MusicXmlTags.MEASURE);
 		measureElement.setAttribute(MusicXmlTags.MEASURE_NUM, Integer.toString(measure.getNumber()));
+
+		if (startNewSystem(measure)) {
+			Element printElement = getDocument().createElement(MusicXmlTags.PRINT);
+			printElement.setAttribute(MusicXmlTags.NEW_SYSTEM, MusicXmlTags.YES);
+			measureElement.appendChild(printElement);
+		}
 
 		//Left barline
 		if (!measure.getLeftBarline().equals(Barline.SINGLE) && !measure.getLeftBarline().equals(Barline.NONE)) {
@@ -312,7 +262,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 
 	private Element createMultiStaffMeasureElement(Map<Integer, Measure> measures, Map<Integer,
 			Measure> previousMeasures) {
-		final Element measureElement = doc.createElement(MusicXmlTags.MEASURE);
+		final Element measureElement = getDocument().createElement(MusicXmlTags.MEASURE);
 
 		final Measure measureForSharedValues = measures.values().iterator().next();
 
@@ -412,10 +362,10 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createBarlineElement(Barline barline, String location) {
-		Element barlineElement = doc.createElement(MusicXmlTags.BARLINE);
+		Element barlineElement = getDocument().createElement(MusicXmlTags.BARLINE);
 		barlineElement.setAttribute(MusicXmlTags.BARLINE_LOCATION, location);
 
-		Element barStyleElement = doc.createElement(MusicXmlTags.BARLINE_STYLE);
+		Element barStyleElement = getDocument().createElement(MusicXmlTags.BARLINE_STYLE);
 		Element repeatDir = null;
 		switch (barline) {
 			case DOUBLE:
@@ -423,12 +373,12 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 				break;
 			case REPEAT_LEFT:
 				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_HEAVY_LIGHT);
-				repeatDir = doc.createElement(MusicXmlTags.BARLINE_REPEAT);
+				repeatDir = getDocument().createElement(MusicXmlTags.BARLINE_REPEAT);
 				repeatDir.setAttribute(MusicXmlTags.BARLINE_REPEAT_DIR, MusicXmlTags.BARLINE_REPEAT_DIR_FORWARD);
 				break;
 			case REPEAT_RIGHT:
 				barStyleElement.setTextContent(MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY);
-				repeatDir = doc.createElement(MusicXmlTags.BARLINE_REPEAT);
+				repeatDir = getDocument().createElement(MusicXmlTags.BARLINE_REPEAT);
 				repeatDir.setAttribute(MusicXmlTags.BARLINE_REPEAT_DIR, MusicXmlTags.BARLINE_REPEAT_DIR_BACKWARD);
 				break;
 			case FINAL:
@@ -456,7 +406,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Optional<Element> createMeasureAttributesElement(Measure measure, Measure previousMeasure) {
-		final Element attrElement = doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
+		final Element attrElement = getDocument().createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
 
 		// Add divisions and all attributes
 		if (previousMeasure == null) {
@@ -491,7 +441,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 
 	private Optional<Element> createMeasureAttributesElement(Map<Integer, Measure> measures,
 			Map<Integer, Measure> previousMeasures) {
-		final Element attrElement = doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
+		final Element attrElement = getDocument().createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
 
 		if (!previousMeasures.isEmpty()) {
 			for (Integer staffNumber : measures.keySet()) {
@@ -551,20 +501,20 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createStavesElement(int staffCount) {
-		final Element stavesElement = doc.createElement(MusicXmlTags.MEAS_ATTR_STAVES);
+		final Element stavesElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_STAVES);
 		stavesElement.setTextContent(Integer.toString(staffCount));
 		return stavesElement;
 	}
 
 	private Element createDivisionsElement() {
-		Element divisionsElement = doc.createElement(MusicXmlTags.MEAS_ATTR_DIVS);
-		divisionsElement.setTextContent(Integer.toString(divisions));
+		Element divisionsElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_DIVS);
+		divisionsElement.setTextContent(Integer.toString(getDivisions()));
 		return divisionsElement;
 	}
 
 	private Element createKeySignatureElement(KeySignature keySignature) {
-		Element keySigElement = doc.createElement(MusicXmlTags.MEAS_ATTR_KEY);
-		Element fifthsElement = doc.createElement(MusicXmlTags.MEAS_ATTR_KEY_FIFTHS);
+		Element keySigElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_KEY);
+		Element fifthsElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_KEY_FIFTHS);
 
 		int fifths = keySignature.getNumberOfSharps();
 		if (fifths == 0) {
@@ -578,9 +528,13 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createTimeSignatureElement(TimeSignature timeSignature) {
-		Element timeSigElement = doc.createElement(MusicXmlTags.MEAS_ATTR_TIME);
-		Element beatsElement = doc.createElement(MusicXmlTags.MEAS_ATTR_BEATS);
-		Element beatTypeElement = doc.createElement(MusicXmlTags.MEAS_ATTR_BEAT_TYPE);
+		Element timeSigElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_TIME);
+		if (!showTimeSignature()) {
+			timeSigElement.setAttribute(MusicXmlTags.PRINT_OBJECT, MusicXmlTags.NO);
+		}
+
+		Element beatsElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_BEATS);
+		Element beatTypeElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_BEAT_TYPE);
 
 		beatsElement.setTextContent(Integer.toString(timeSignature.getBeatCount()));
 		beatTypeElement.setTextContent(Integer.toString(timeSignature.getBeatDuration().getDenominator()));
@@ -592,8 +546,8 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createClefElement(Clef clef, Integer staffNumber) {
-		Element clefElement = doc.createElement(MusicXmlTags.CLEF);
-		Element signElement = doc.createElement(MusicXmlTags.CLEF_SIGN);
+		Element clefElement = getDocument().createElement(MusicXmlTags.CLEF);
+		Element signElement = getDocument().createElement(MusicXmlTags.CLEF_SIGN);
 
 		switch (clef.getSymbol()) {
 			case G:
@@ -616,7 +570,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 			clefElement.setAttribute(MusicXmlTags.CLEF_STAFF, staffNumber.toString());
 		}
 
-		Element lineElement = doc.createElement(MusicXmlTags.CLEF_LINE);
+		Element lineElement = getDocument().createElement(MusicXmlTags.CLEF_LINE);
 		lineElement.setTextContent(Integer.toString(clef.getLine()));
 
 		clefElement.appendChild(signElement);
@@ -641,7 +595,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 				}
 
 				// Clef
-				Element attributesElement = doc.createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
+				Element attributesElement = getDocument().createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
 				Element clefElement = createClefElement(undealtClefChanges.get(offset), staffNumber);
 
 				attributesElement.appendChild(clefElement);
@@ -661,28 +615,28 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createBackupElement(Duration duration) {
-		Element backupElement = doc.createElement(MusicXmlTags.MEASURE_BACKUP);
-		Element durationElement = doc.createElement(MusicXmlTags.NOTE_DURATION);
+		Element backupElement = getDocument().createElement(MusicXmlTags.MEASURE_BACKUP);
+		Element durationElement = getDocument().createElement(MusicXmlTags.NOTE_DURATION);
 		durationElement.setTextContent(Integer.toString(divisionCountOf(duration)));
 		backupElement.appendChild(durationElement);
 		return backupElement;
 	}
 
 	private Element createForwardElement(Duration duration) {
-		Element forwardElement = doc.createElement(MusicXmlTags.MEASURE_FORWARD);
-		Element durationElement = doc.createElement(MusicXmlTags.NOTE_DURATION);
+		Element forwardElement = getDocument().createElement(MusicXmlTags.MEASURE_FORWARD);
+		Element durationElement = getDocument().createElement(MusicXmlTags.NOTE_DURATION);
 		durationElement.setTextContent(Integer.toString(divisionCountOf(duration)));
 		forwardElement.appendChild(durationElement);
 		return forwardElement;
 	}
 
 	private Element createNoteElement(Note note, int voiceNumber, Integer staffNumber, boolean chordTag) {
-		final Element noteElement = this.doc.createElement(MusicXmlTags.NOTE);
+		final Element noteElement = getDocument().createElement(MusicXmlTags.NOTE);
 
 		// TODO: Write other attributes.
 		//Chord
 		if (chordTag) {
-			final Element chordElement = this.doc.createElement(MusicXmlTags.NOTE_CHORD);
+			final Element chordElement = getDocument().createElement(MusicXmlTags.NOTE_CHORD);
 			noteElement.appendChild(chordElement);
 		}
 
@@ -710,13 +664,13 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createStaffElement(Integer staffNumber) {
-		final Element staffElement = doc.createElement(MusicXmlTags.NOTE_STAFF);
+		final Element staffElement = getDocument().createElement(MusicXmlTags.NOTE_STAFF);
 		staffElement.setTextContent(staffNumber.toString());
 		return staffElement;
 	}
 
 	private Element createDurationElement(Duration duration) {
-		final Element durationElement = this.doc.createElement(MusicXmlTags.NOTE_DURATION);
+		final Element durationElement = getDocument().createElement(MusicXmlTags.NOTE_DURATION);
 		final int durValue = divisionCountOf(duration);
 
 		durationElement.setTextContent(Integer.toString(durValue));
@@ -725,28 +679,36 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createVoiceElement(int voice) {
-		Element voiceElement = doc.createElement(MusicXmlTags.NOTE_VOICE);
+		Element voiceElement = getDocument().createElement(MusicXmlTags.NOTE_VOICE);
 		voiceElement.setTextContent(Integer.toString(voice));
 		return voiceElement;
 	}
 
 	private int divisionCountOf(Duration duration) {
-		return ((this.divisions * Durations.QUARTER.getDenominator())
+		return ((getDivisions() * Durations.QUARTER.getDenominator())
 				/ duration.getDenominator())
 				* duration.getNumerator();
 	}
 
+	protected boolean showTimeSignature() {
+		return true;
+	}
+
+	protected boolean startNewSystem(Measure measure) {
+		return false;
+	}
+
 	private Element createPitchElement(Pitch pitch) {
-		final Element pitchElement = this.doc.createElement(MusicXmlTags.NOTE_PITCH);
-		final Element step = this.doc.createElement(MusicXmlTags.PITCH_STEP);
+		final Element pitchElement = getDocument().createElement(MusicXmlTags.NOTE_PITCH);
+		final Element step = getDocument().createElement(MusicXmlTags.PITCH_STEP);
 		step.setTextContent(pitch.getBase().toString());
 		pitchElement.appendChild(step);
 
-		final Element alter = this.doc.createElement(MusicXmlTags.PITCH_ALTER);
+		final Element alter = getDocument().createElement(MusicXmlTags.PITCH_ALTER);
 		alter.setTextContent(Integer.toString(pitch.getAlter()));
 		pitchElement.appendChild(alter);
 
-		final Element octave = this.doc.createElement(MusicXmlTags.PITCH_OCT);
+		final Element octave = getDocument().createElement(MusicXmlTags.PITCH_OCT);
 		octave.setTextContent(Integer.toString(pitch.getOctave()));
 		pitchElement.appendChild(octave);
 
@@ -754,12 +716,12 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Optional<Element> createNotationsElement(Note note) {
-		final Element notationsElement = this.doc.createElement(MusicXmlTags.NOTATIONS);
+		final Element notationsElement = getDocument().createElement(MusicXmlTags.NOTATIONS);
 
 		// Articulations & fermata
 		if (note.hasArticulations()) {
 			if (note.hasArticulation(Articulation.FERMATA)) {
-				notationsElement.appendChild(this.doc.createElement(MusicXmlTags.FERMATA));
+				notationsElement.appendChild(getDocument().createElement(MusicXmlTags.FERMATA));
 			}
 
 			// Don't create articulations element if fermata is the only articulation
@@ -789,18 +751,18 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createArticulationsElement(Collection<Articulation> articulations) {
-		final Element articulationsElement = this.doc.createElement(MusicXmlTags.NOTE_ARTICULATIONS);
+		final Element articulationsElement = getDocument().createElement(MusicXmlTags.NOTE_ARTICULATIONS);
 
 		for (Articulation articulation : articulations) {
 			switch (articulation) {
 				case ACCENT:
-					articulationsElement.appendChild(this.doc.createElement(MusicXmlTags.ACCENT));
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.ACCENT));
 					break;
 				case STACCATO:
-					articulationsElement.appendChild(this.doc.createElement(MusicXmlTags.STACCATO));
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.STACCATO));
 					break;
 				case TENUTO:
-					articulationsElement.appendChild(this.doc.createElement(MusicXmlTags.TENUTO));
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.TENUTO));
 					break;
 				case FERMATA:
 					break;
@@ -813,8 +775,8 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private Element createRestElement(Rest rest, int voice, Integer staffNumber) {
-		final Element restElement = this.doc.createElement(MusicXmlTags.NOTE);
-		restElement.appendChild(this.doc.createElement(MusicXmlTags.NOTE_REST));
+		final Element restElement = getDocument().createElement(MusicXmlTags.NOTE);
+		restElement.appendChild(getDocument().createElement(MusicXmlTags.NOTE_REST));
 		restElement.appendChild(createDurationElement(rest.getDuration()));
 
 		// Add voice
@@ -832,7 +794,7 @@ class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	private void addDurationAppearanceElementsToNoteElement(Element noteElement, Duration duration) {
-		DurationAppearanceProvider.INSTANCE.getAppearanceElements(duration, this.doc)
+		DurationAppearanceProvider.INSTANCE.getAppearanceElements(duration, getDocument())
 				.forEach(element -> noteElement.appendChild(element));
 	}
 
