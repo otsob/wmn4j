@@ -8,7 +8,6 @@ import org.wmn4j.notation.elements.Clef;
 import org.wmn4j.notation.elements.Clefs;
 import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.KeySignature;
 import org.wmn4j.notation.elements.KeySignatures;
 import org.wmn4j.notation.elements.Measure;
@@ -36,7 +35,9 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 	private static final Barline PATTERN_ENDING_BARLINE = Barline.DOUBLE;
 	private static final String DEFAULT_SCORE_TITLE = "Patterns";
 	private static final int MIDDLE_C_AS_INT = Pitch.of(Pitch.Base.C, 0, 4).toInt();
-	private static final Duration MEASURE_CUTOFF_DURATION = Durations.WHOLE;
+
+	private static final TimeSignature DEFAULT_TIME_SIGNATURE = TimeSignature.of(2, 1);
+	private static final Duration MEASURE_CUTOFF_DURATION = DEFAULT_TIME_SIGNATURE.getTotalDuration();
 
 	private final int divisions;
 	private final Part partFromPatterns;
@@ -63,13 +64,13 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		int maxNumberOfVoices = patterns.stream().map(Pattern::getNumberOfVoices).max(Integer::compareTo).orElseThrow();
 
 		if (maxNumberOfVoices == 1) {
-			return SingleStaffPart.of("", singleVoicePatternsStaff(patterns));
+			return SingleStaffPart.of("", singleVoicePatternsToStaff(patterns));
 		}
 
 		return MultiStaffPart.of("", createStavesForPolyphonicPatterns(patterns, maxNumberOfVoices));
 	}
 
-	private Staff singleVoicePatternsStaff(Collection<Pattern> patterns) {
+	private Staff singleVoicePatternsToStaff(Collection<Pattern> patterns) {
 		final List<Measure> allMeasures = new ArrayList<>();
 		for (Pattern pattern : patterns) {
 			allMeasures.addAll(singleVoicePatternToMeasureList(pattern));
@@ -101,7 +102,7 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
 			if (cumulatedDuration.isLongerThan(MEASURE_CUTOFF_DURATION) || cumulatedDuration
 					.equals(MEASURE_CUTOFF_DURATION)) {
-				measures.add(createMeasureFromVoice(voice, cumulatedDuration, !iterator.hasNext(), measureNumber));
+				measures.add(createMeasureFromVoice(voice, !iterator.hasNext(), measureNumber));
 				measureNumber++;
 				cumulatedDuration = null;
 				voice = new ArrayList<>();
@@ -109,7 +110,7 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		}
 
 		if (!voice.isEmpty()) {
-			measures.add(createMeasureFromVoice(voice, cumulatedDuration, true, measureNumber));
+			measures.add(createMeasureFromVoice(voice, true, measureNumber));
 			measureNumber++;
 		}
 
@@ -118,13 +119,12 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		return measures;
 	}
 
-	private Measure createMeasureFromVoice(List<Durational> voice, Duration totalDuration, boolean isLast,
+	private Measure createMeasureFromVoice(List<Durational> voice, boolean isLast,
 			int measureNumber) {
-		TimeSignature timeSignature = TimeSignature.of(totalDuration.getNumerator(), totalDuration.getDenominator());
 		Barline rightBarline = isLast ? PATTERN_ENDING_BARLINE : Barline.INVISIBLE;
 
 		MeasureAttributes attributes = MeasureAttributes
-				.of(timeSignature, DEFAULT_KEY_SIGNATURE, rightBarline, findSuitableClef(voice));
+				.of(DEFAULT_TIME_SIGNATURE, DEFAULT_KEY_SIGNATURE, rightBarline, findSuitableClef(voice));
 
 		return Measure.of(measureNumber, Collections.singletonMap(1, voice), attributes);
 	}
