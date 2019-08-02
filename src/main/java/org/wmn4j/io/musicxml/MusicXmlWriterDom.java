@@ -26,6 +26,7 @@ import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Rest;
 import org.wmn4j.notation.elements.SingleStaffPart;
+import org.wmn4j.notation.elements.Staff;
 import org.wmn4j.notation.elements.TimeSignature;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -216,7 +217,10 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 			SortedMap<Integer, Measure> measures = new TreeMap<>();
 
 			for (Integer staffNumber : staffNumbers) {
-				measures.put(staffNumber, part.getMeasure(staffNumber, measureNumber));
+				Staff staff = part.getStaff(staffNumber);
+				if (measureNumber <= staff.getFullMeasureCount()) {
+					measures.put(staffNumber, part.getMeasure(staffNumber, measureNumber));
+				}
 			}
 
 			partElement.appendChild(createMultiStaffMeasureElement(measures, previousMeasures));
