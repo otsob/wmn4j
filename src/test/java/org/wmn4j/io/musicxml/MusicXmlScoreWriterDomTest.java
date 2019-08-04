@@ -46,12 +46,12 @@ class MusicXmlScoreWriterDomTest {
 	private final String MUSICXML_FILE_PATH = "musicxml/";
 
 	private Score readMusicXmlTestFile(String testFileName, boolean validate) {
-		final MusicXmlReader reader = MusicXmlReader.getReader(validate);
-		Score score = null;
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
+		final MusicXmlReader reader = MusicXmlReader.readerFor(path, validate);
+		Score score = null;
 
 		try {
-			score = reader.readScore(path);
+			score = reader.readScore();
 		} catch (final IOException | ParsingFailureException e) {
 			fail("Parsing failed with exception " + e);
 		}
@@ -65,11 +65,11 @@ class MusicXmlScoreWriterDomTest {
 		Path file = temporaryDirectory.resolve("file.xml");
 		writer.write(file);
 
-		final MusicXmlReader reader = MusicXmlReader.getReader(true);
+		final MusicXmlReader reader = MusicXmlReader.readerFor(file, true);
 		Score writtenScore = null;
 
 		try {
-			writtenScore = reader.readScore(file);
+			writtenScore = reader.readScore();
 		} catch (final IOException | ParsingFailureException e) {
 			fail("Reading score written by MusicXmlScoreWriterDom failed with exception " + e);
 		}

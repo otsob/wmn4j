@@ -20,17 +20,17 @@ class MusicXmlReaderDomTest {
 
 	private static final String MUSICXML_FILE_PATH = "musicxml/";
 
-	MusicXmlReader getMusicXmlReader(boolean validate) {
-		return new MusicXmlReaderDom(validate);
+	MusicXmlReader getMusicXmlReader(Path path, boolean validate) {
+		return new MusicXmlReaderDom(path, validate);
 	}
 
 	Score readScore(String testFileName, boolean validate) {
-		final MusicXmlReader reader = getMusicXmlReader(validate);
-		Score score = null;
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
+		final MusicXmlReader reader = getMusicXmlReader(path, validate);
+		Score score = null;
 
 		try {
-			score = reader.readScore(path);
+			score = reader.readScore();
 		} catch (final IOException | ParsingFailureException e) {
 			fail("Parsing failed with exception " + e);
 		}
@@ -40,12 +40,12 @@ class MusicXmlReaderDomTest {
 	}
 
 	ScoreBuilder readScoreBuilder(String testFileName, boolean validate) {
-		final MusicXmlReader reader = getMusicXmlReader(validate);
-		ScoreBuilder scoreBuilder = null;
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
+		final MusicXmlReader reader = getMusicXmlReader(path, validate);
+		ScoreBuilder scoreBuilder = null;
 
 		try {
-			scoreBuilder = reader.readScoreBuilder(path);
+			scoreBuilder = reader.readScoreBuilder();
 		} catch (final IOException | ParsingFailureException e) {
 			fail("Parsing failed with exception " + e);
 		}
@@ -200,9 +200,10 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingIncorrectXmlFileToScore() {
-		final MusicXmlReader reader = getMusicXmlReader(true);
+		final MusicXmlReader reader = getMusicXmlReader(
+				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"), true);
 		try {
-			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"));
+			reader.readScore();
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
 		} catch (IOException ioException) {
 			fail("Reading the score failed due to IOException when a parsing failure was expected");
@@ -213,9 +214,10 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingIncorrectXmlFileToScoreBuilder() {
-		final MusicXmlReader reader = getMusicXmlReader(true);
+		final MusicXmlReader reader = getMusicXmlReader(
+				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"), true);
 		try {
-			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"));
+			reader.readScoreBuilder();
 			fail("No exception was thrown when trying to read incorrectly formatted XML file");
 		} catch (IOException ioException) {
 			fail("Reading the score failed due to IOException when a parsing failure was expected");
@@ -226,9 +228,10 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingIncorrectMusicXmlFileToScore() {
-		final MusicXmlReader reader = getMusicXmlReader(true);
+		final MusicXmlReader reader = getMusicXmlReader(
+				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"), true);
 		try {
-			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"));
+			reader.readScore();
 			fail("No exception was thrown when trying to read XML file that does not comply to MusicXml schema");
 		} catch (IOException ioException) {
 			fail("Reading the score failed due to IOException when a parsing failure was expected");
@@ -239,10 +242,11 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingIncorrectMusicXmlFileToScoreBuilder() {
-		final MusicXmlReader reader = getMusicXmlReader(true);
+		final MusicXmlReader reader = getMusicXmlReader(
+				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"), true);
 		try {
 			reader.readScoreBuilder(
-					Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"));
+			);
 			fail("No exception was thrown when trying to read XML file that does not comply to MusicXml schema");
 		} catch (IOException ioException) {
 			fail("Reading the score failed due to IOException when a parsing failure was expected");
@@ -253,9 +257,10 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testValidatingCorrectXmlFileWhenReadingToScore() {
-		final MusicXmlReader reader = getMusicXmlReader(true);
+		final MusicXmlReader reader = getMusicXmlReader(
+				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"), true);
 		try {
-			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"));
+			reader.readScore();
 		} catch (Exception e) {
 			fail("Exception " + e + " was thrown while validating valid MusicXml file");
 		}
@@ -263,9 +268,10 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testValidatingCorrectXmlFileWhenReadingToScoreBuilder() {
-		final MusicXmlReader reader = getMusicXmlReader(true);
+		final MusicXmlReader reader = getMusicXmlReader(
+				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"), true);
 		try {
-			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"));
+			reader.readScoreBuilder();
 		} catch (Exception e) {
 			fail("Exception " + e + " was thrown while validating valid MusicXml file");
 		}
@@ -273,10 +279,10 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingFileThatDoesNotExistToScore() {
-		final MusicXmlReader reader = getMusicXmlReader(true);
+		final MusicXmlReader reader = getMusicXmlReader(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
+				+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"), true);
 		try {
-			reader.readScore(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
-					+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"));
+			reader.readScore();
 		} catch (ParsingFailureException parsingFailure) {
 			fail("Reading the score failed due to parsing failure when an io expection was expected");
 		} catch (IOException ioException) {
@@ -286,10 +292,10 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingFileThatDoesNotExistToScoreBuilder() {
-		final MusicXmlReader reader = getMusicXmlReader(true);
+		final MusicXmlReader reader = getMusicXmlReader(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
+				+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"), true);
 		try {
-			reader.readScoreBuilder(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
-					+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"));
+			reader.readScoreBuilder();
 		} catch (ParsingFailureException parsingFailure) {
 			fail("Reading the score failed due to parsing failure when an io expection was expected");
 		} catch (IOException ioException) {

@@ -45,11 +45,11 @@ class MusicXmlPatternWriterDomTest {
 		Path file = temporaryDirectory.resolve("file.xml");
 		writer.write(file);
 
-		final MusicXmlReader reader = MusicXmlReader.getReader(true);
+		final MusicXmlReader reader = MusicXmlReader.readerFor(file, true);
 		Score writtenScore = null;
 
 		try {
-			writtenScore = reader.readScore(file);
+			writtenScore = reader.readScore();
 		} catch (final IOException | ParsingFailureException e) {
 			fail("Reading score written by MusicXmlWriterDom failed with exception " + e);
 		}

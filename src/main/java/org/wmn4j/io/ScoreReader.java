@@ -7,7 +7,6 @@ import org.wmn4j.notation.builders.ScoreBuilder;
 import org.wmn4j.notation.elements.Score;
 
 import java.io.IOException;
-import java.nio.file.Path;
 
 /**
  * Represents a reader for music notation files. The only supported file type is MusicXML.
@@ -15,22 +14,20 @@ import java.nio.file.Path;
 public interface ScoreReader {
 
 	/**
-	 * Returns a score with the contents of the music notation file at the given path.
+	 * Returns a score with the contents of the music notation file defined by the path set in this reader.
 	 *
-	 * @param filePath the path of the music notation file from which to read the contents of the score
-	 * @return a score with the contents of the music notation file at the given path
+	 * @return aa score with the contents of the music notation file defined by the path set in this reader
 	 * @throws IOException             if the file is not found or reading the file fails
 	 * @throws ParsingFailureException if the file cannot be parsed
 	 */
-	Score readScore(Path filePath) throws IOException, ParsingFailureException;
+	Score readScore() throws IOException, ParsingFailureException;
 
 	/**
-	 * Returns a score builder with the contents of the music notation file at the given path.
+	 * Returns a score builder with the contents of the music notation file defined by the path set in this reader.
 	 *
-	 * @param filePath the path of the music notation file from which to read the contents of the score builder
-	 * @return a score builder with the contents of the music notation file at the given path
+	 * @return a score builder with the contents of the music notation file defined by the path set in this reader
 	 * @throws IOException             if the file is not found or reading the file fails
 	 * @throws ParsingFailureException if the file cannot be parsed
 	 */
-	ScoreBuilder readScoreBuilder(Path filePath) throws IOException, ParsingFailureException;
+	ScoreBuilder readScoreBuilder() throws IOException, ParsingFailureException;
 }

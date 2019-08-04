@@ -56,12 +56,11 @@ public class TestHelper {
 	public static Score readScore(String pathString) {
 		Score score = null;
 
-		final MusicXmlReader reader = MusicXmlReader.getReader(false);
-
 		final Path path = Paths.get(TESTFILE_PATH, pathString);
+		final MusicXmlReader reader = MusicXmlReader.readerFor(path, false);
 
 		try {
-			score = reader.readScore(path);
+			score = reader.readScore();
 		} catch (final Exception e) {
 			System.out.println("Failed to read score from " + path.toString() + " with exception: " + e);
 		}

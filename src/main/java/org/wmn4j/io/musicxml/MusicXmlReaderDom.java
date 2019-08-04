@@ -64,14 +64,17 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	private static final Logger LOG = LoggerFactory.getLogger(MusicXmlReaderDom.class);
 
 	private final boolean validateInput;
+	private final Path path;
 
 	/**
 	 * Constructor that allows setting validation.
 	 *
-	 * @param validateInput Whether this validates MusicXML files given as input.
+	 * @param validateInput Whether this validates MusicXML files given as input
+	 * @param path          the path of the file that this reader is created for
 	 */
-	MusicXmlReaderDom(boolean validateInput) {
+	MusicXmlReaderDom(Path path, boolean validateInput) {
 		this.validateInput = validateInput;
+		this.path = path;
 	}
 
 	private DocumentBuilder createAndConfigureDocBuilder() throws ParserConfigurationException {
@@ -102,21 +105,21 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	}
 
 	@Override
-	public Score readScore(Path filePath) throws IOException, ParsingFailureException {
-		return readScoreBuilder(filePath).build();
+	public Score readScore() throws IOException, ParsingFailureException {
+		return readScoreBuilder().build();
 	}
 
 	@Override
-	public ScoreBuilder readScoreBuilder(Path filePath) throws IOException, ParsingFailureException {
+	public ScoreBuilder readScoreBuilder() throws IOException, ParsingFailureException {
 		final ScoreBuilder scoreBuilder = new ScoreBuilder();
-		final File musicXmlFile = filePath.toFile();
+		final File musicXmlFile = path.toFile();
 
 		if (!musicXmlFile.exists()) {
-			throw new IOException(filePath.toString() + " does not exist");
+			throw new IOException(path.toString() + " does not exist");
 		}
 
 		if (this.validateInput && !isMusicXmlFileValid(musicXmlFile)) {
-			throw new ParsingFailureException(filePath.toString() + " is not a valid MusicXML file");
+			throw new ParsingFailureException(path.toString() + " is not a valid MusicXML file");
 		}
 
 		try {
@@ -537,10 +540,10 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 	private Marking.Type getMarkingType(Node markingNode) {
 		switch (markingNode.getNodeName()) {
-		case MusicXmlTags.SLUR:
-			return Marking.Type.SLUR;
-		case MusicXmlTags.GLISSANDO:
-			return Marking.Type.GLISSANDO;
+			case MusicXmlTags.SLUR:
+				return Marking.Type.SLUR;
+			case MusicXmlTags.GLISSANDO:
+				return Marking.Type.GLISSANDO;
 		}
 
 		LOG.warn("Tried to parse unsupported marking type: " + markingNode.getNodeName());
@@ -570,12 +573,12 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 	private Articulation getArticulation(String articulationString) {
 		switch (articulationString) {
-		case MusicXmlTags.ACCENT:
-			return Articulation.ACCENT;
-		case MusicXmlTags.STACCATO:
-			return Articulation.STACCATO;
-		case MusicXmlTags.TENUTO:
-			return Articulation.TENUTO;
+			case MusicXmlTags.ACCENT:
+				return Articulation.ACCENT;
+			case MusicXmlTags.STACCATO:
+				return Articulation.STACCATO;
+			case MusicXmlTags.TENUTO:
+				return Articulation.TENUTO;
 		}
 
 		return null;
@@ -668,33 +671,33 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	 */
 	private KeySignature keyFromAlterations(int alterations) {
 		switch (alterations) {
-		case 0:
-			return KeySignatures.CMAJ_AMIN;
-		case 1:
-			return KeySignatures.GMAJ_EMIN;
-		case 2:
-			return KeySignatures.DMAJ_BMIN;
-		case 3:
-			return KeySignatures.AMAJ_FSHARPMIN;
-		case 4:
-			return KeySignatures.EMAJ_CSHARPMIN;
-		case 5:
-			return KeySignatures.BMAJ_GSHARPMIN;
-		case 6:
-			return KeySignatures.FSHARPMAJ_DSHARPMIN;
+			case 0:
+				return KeySignatures.CMAJ_AMIN;
+			case 1:
+				return KeySignatures.GMAJ_EMIN;
+			case 2:
+				return KeySignatures.DMAJ_BMIN;
+			case 3:
+				return KeySignatures.AMAJ_FSHARPMIN;
+			case 4:
+				return KeySignatures.EMAJ_CSHARPMIN;
+			case 5:
+				return KeySignatures.BMAJ_GSHARPMIN;
+			case 6:
+				return KeySignatures.FSHARPMAJ_DSHARPMIN;
 
-		case -1:
-			return KeySignatures.FMAJ_DMIN;
-		case -2:
-			return KeySignatures.BFLATMAJ_GMIN;
-		case -3:
-			return KeySignatures.EFLATMAJ_CMIN;
-		case -4:
-			return KeySignatures.AFLATMAJ_FMIN;
-		case -5:
-			return KeySignatures.DFLATMAJ_BFLATMIN;
-		case -6:
-			return KeySignatures.GFLATMAJ_EFLATMIN;
+			case -1:
+				return KeySignatures.FMAJ_DMIN;
+			case -2:
+				return KeySignatures.BFLATMAJ_GMIN;
+			case -3:
+				return KeySignatures.EFLATMAJ_CMIN;
+			case -4:
+				return KeySignatures.AFLATMAJ_FMIN;
+			case -5:
+				return KeySignatures.DFLATMAJ_BFLATMIN;
+			case -6:
+				return KeySignatures.GFLATMAJ_EFLATMIN;
 		}
 
 		return KeySignatures.CMAJ_AMIN;
@@ -714,18 +717,18 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 		Clef.Symbol type = Clef.Symbol.G;
 		switch (clefName) {
-		case MusicXmlTags.CLEF_G:
-			type = Clef.Symbol.G;
-			break;
-		case MusicXmlTags.CLEF_F:
-			type = Clef.Symbol.F;
-			break;
-		case MusicXmlTags.CLEF_C:
-			type = Clef.Symbol.C;
-			break;
-		case MusicXmlTags.CLEF_PERC:
-			type = Clef.Symbol.PERCUSSION;
-			break;
+			case MusicXmlTags.CLEF_G:
+				type = Clef.Symbol.G;
+				break;
+			case MusicXmlTags.CLEF_F:
+				type = Clef.Symbol.F;
+				break;
+			case MusicXmlTags.CLEF_C:
+				type = Clef.Symbol.C;
+				break;
+			case MusicXmlTags.CLEF_PERC:
+				type = Clef.Symbol.PERCUSSION;
+				break;
 		}
 
 		return Clef.of(type, clefLine);
@@ -740,25 +743,25 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			final Optional<Node> repeatNode = DocHelper.findChild(barlineNode, MusicXmlTags.BARLINE_REPEAT);
 
 			switch (barlineString) {
-			case MusicXmlTags.BARLINE_STYLE_DASHED:
-				return Barline.DASHED;
-			case MusicXmlTags.BARLINE_STYLE_HEAVY:
-				return Barline.THICK;
-			case MusicXmlTags.BARLINE_STYLE_HEAVY_LIGHT:
-				return Barline.REPEAT_LEFT;
-			case MusicXmlTags.BARLINE_STYLE_INVISIBLE:
-				return Barline.INVISIBLE;
-			case MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY: {
-				if (!repeatNode.isPresent()) {
-					return Barline.FINAL;
-				} else {
-					return Barline.REPEAT_RIGHT;
+				case MusicXmlTags.BARLINE_STYLE_DASHED:
+					return Barline.DASHED;
+				case MusicXmlTags.BARLINE_STYLE_HEAVY:
+					return Barline.THICK;
+				case MusicXmlTags.BARLINE_STYLE_HEAVY_LIGHT:
+					return Barline.REPEAT_LEFT;
+				case MusicXmlTags.BARLINE_STYLE_INVISIBLE:
+					return Barline.INVISIBLE;
+				case MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY: {
+					if (!repeatNode.isPresent()) {
+						return Barline.FINAL;
+					} else {
+						return Barline.REPEAT_RIGHT;
+					}
 				}
-			}
-			case MusicXmlTags.BARLINE_STYLE_LIGHT_LIGHT:
-				return Barline.DOUBLE;
-			default:
-				return Barline.SINGLE;
+				case MusicXmlTags.BARLINE_STYLE_LIGHT_LIGHT:
+					return Barline.DOUBLE;
+				default:
+					return Barline.SINGLE;
 			}
 		}
 
@@ -844,20 +847,20 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 		if (pitchString != null) {
 			switch (pitchString) {
-			case "C":
-				return Pitch.Base.C;
-			case "D":
-				return Pitch.Base.D;
-			case "E":
-				return Pitch.Base.E;
-			case "F":
-				return Pitch.Base.F;
-			case "G":
-				return Pitch.Base.G;
-			case "A":
-				return Pitch.Base.A;
-			case "B":
-				return Pitch.Base.B;
+				case "C":
+					return Pitch.Base.C;
+				case "D":
+					return Pitch.Base.D;
+				case "E":
+					return Pitch.Base.E;
+				case "F":
+					return Pitch.Base.F;
+				case "G":
+					return Pitch.Base.G;
+				case "A":
+					return Pitch.Base.A;
+				case "B":
+					return Pitch.Base.B;
 			}
 		}
 
