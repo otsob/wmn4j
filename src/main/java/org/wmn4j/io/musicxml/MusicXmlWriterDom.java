@@ -97,7 +97,7 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 	protected abstract int getDivisions();
 
 	@Override
-	public void writeToFile(Path path) {
+	public void write(Path path) {
 		try {
 			final Element rootElement = getDocument().createElement(MusicXmlTags.SCORE_PARTWISE);
 			rootElement.setAttribute(MusicXmlTags.MUSICXML_VERSION, MUSICXML_VERSION_NUMBER);

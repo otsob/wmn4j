@@ -63,7 +63,7 @@ class MusicXmlScoreWriterDomTest {
 	private Score writeAndReadScore(Score score) {
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path file = temporaryDirectory.resolve("file.xml");
-		writer.writeToFile(file);
+		writer.write(file);
 
 		final MusicXmlReader reader = MusicXmlReader.getReader(true);
 		Score writtenScore = null;
@@ -203,7 +203,7 @@ class MusicXmlScoreWriterDomTest {
 
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
-		writer.writeToFile(filePath);
+		writer.write(filePath);
 
 		final Document document = TestHelper.readDocument(filePath);
 		final Node partNode = document.getElementsByTagName(MusicXmlTags.PART).item(0);
@@ -242,7 +242,7 @@ class MusicXmlScoreWriterDomTest {
 
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
-		writer.writeToFile(filePath);
+		writer.write(filePath);
 
 		final Document document = TestHelper.readDocument(filePath);
 		final Node partNode = document.getElementsByTagName(MusicXmlTags.PART).item(0);
@@ -279,7 +279,7 @@ class MusicXmlScoreWriterDomTest {
 
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
-		writer.writeToFile(filePath);
+		writer.write(filePath);
 
 		final Document document = TestHelper.readDocument(filePath);
 		final Node partNode = document.getElementsByTagName(MusicXmlTags.PART).item(0);
@@ -352,7 +352,7 @@ class MusicXmlScoreWriterDomTest {
 
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
-		writer.writeToFile(filePath);
+		writer.write(filePath);
 
 		final Document document = TestHelper.readDocument(filePath);
 

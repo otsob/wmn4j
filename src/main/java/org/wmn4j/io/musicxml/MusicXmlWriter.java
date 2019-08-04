@@ -20,7 +20,7 @@ public interface MusicXmlWriter {
 	 * @param score the score for which the writer is created
 	 * @return an instance of a writer for the given {@link Score}
 	 */
-	static MusicXmlWriter getWriter(Score score) {
+	static MusicXmlWriter writerFor(Score score) {
 		return new MusicXmlScoreWriterDom(score);
 	}
 
@@ -30,7 +30,7 @@ public interface MusicXmlWriter {
 	 * @param pattern the pattern for which the writer is created
 	 * @return an instance of a writer for the given {@link Pattern}
 	 */
-	static MusicXmlWriter getWriter(Pattern pattern) {
+	static MusicXmlWriter writerFor(Pattern pattern) {
 		return new MusicXmlPatternWriterDom(pattern);
 	}
 
@@ -43,7 +43,7 @@ public interface MusicXmlWriter {
 	 * @param patterns the patterns for which the writer is created
 	 * @return an instance of a writer for the given {@link Pattern} collection
 	 */
-	static MusicXmlWriter getWriter(Collection<Pattern> patterns) {
+	static MusicXmlWriter writerFor(Collection<Pattern> patterns) {
 		return new MusicXmlPatternWriterDom(patterns);
 	}
 
@@ -53,6 +53,5 @@ public interface MusicXmlWriter {
 	 *
 	 * @param path the output path for the MusicXML file
 	 */
-	void writeToFile(Path path);
-
+	void write(Path path);
 }
