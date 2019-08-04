@@ -3,16 +3,16 @@
  */
 package org.wmn4j.io.musicxml;
 
+import org.wmn4j.io.ScoreWriter;
 import org.wmn4j.mir.Pattern;
 import org.wmn4j.notation.elements.Score;
 
-import java.nio.file.Path;
 import java.util.Collection;
 
 /**
  * Represents a writer for MusicXML files.
  */
-public interface MusicXmlWriter {
+public interface MusicXmlWriter extends ScoreWriter {
 
 	/**
 	 * Returns an instance of a writer for the given {@link Score}.
@@ -46,12 +46,4 @@ public interface MusicXmlWriter {
 	static MusicXmlWriter writerFor(Collection<Pattern> patterns) {
 		return new MusicXmlPatternWriterDom(patterns);
 	}
-
-	/**
-	 * Writes the {@link Score} with which this writer was initialized into a
-	 * MusicXML file to the the given output path.
-	 *
-	 * @param path the output path for the MusicXML file
-	 */
-	void write(Path path);
 }
