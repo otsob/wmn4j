@@ -57,7 +57,7 @@ public class TestHelper {
 		Score score = null;
 
 		final Path path = Paths.get(TESTFILE_PATH, pathString);
-		final MusicXmlReader reader = MusicXmlReader.readerFor(path, false);
+		final MusicXmlReader reader = MusicXmlReader.nonValidatingReaderFor(path);
 
 		try {
 			score = reader.readScore();

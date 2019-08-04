@@ -47,7 +47,9 @@ class MusicXmlScoreWriterDomTest {
 
 	private Score readMusicXmlTestFile(String testFileName, boolean validate) {
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
-		final MusicXmlReader reader = MusicXmlReader.readerFor(path, validate);
+		final MusicXmlReader reader = validate ?
+				MusicXmlReader.readerFor(path) :
+				MusicXmlReader.nonValidatingReaderFor(path);
 		Score score = null;
 
 		try {
@@ -65,7 +67,7 @@ class MusicXmlScoreWriterDomTest {
 		Path file = temporaryDirectory.resolve("file.xml");
 		writer.write(file);
 
-		final MusicXmlReader reader = MusicXmlReader.readerFor(file, true);
+		final MusicXmlReader reader = MusicXmlReader.readerFor(file);
 		Score writtenScore = null;
 
 		try {

@@ -45,7 +45,7 @@ class MusicXmlPatternWriterDomTest {
 		Path file = temporaryDirectory.resolve("file.xml");
 		writer.write(file);
 
-		final MusicXmlReader reader = MusicXmlReader.readerFor(file, true);
+		final MusicXmlReader reader = MusicXmlReader.readerFor(file);
 		Score writtenScore = null;
 
 		try {
