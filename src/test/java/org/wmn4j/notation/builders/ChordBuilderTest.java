@@ -32,6 +32,16 @@ class ChordBuilderTest {
 	}
 
 	@Test
+	void testWhenChordBuilderCreatedFromChordThenCorrectValuesAreSet() {
+		final Chord cMajor = Chord.of(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER),
+				Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER),
+				Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER));
+
+		ChordBuilder cMajorBuilder = new ChordBuilder(cMajor);
+		assertEquals(cMajor, cMajorBuilder.build());
+	}
+
+	@Test
 	void testConstructorWithListOfNoteBuilders() {
 		final ChordBuilder builder = new ChordBuilder(getCMajorAsNoteBuilders());
 

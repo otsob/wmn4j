@@ -1,6 +1,9 @@
 package org.wmn4j.mir;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.notation.builders.ChordBuilder;
+import org.wmn4j.notation.builders.NoteBuilder;
+import org.wmn4j.notation.builders.RestBuilder;
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Durations;
@@ -21,22 +24,22 @@ class PatternBuilderTest {
 		final PatternBuilder builder = new PatternBuilder();
 
 		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
-		builder.add(firstElement);
+		builder.add(new NoteBuilder(firstElement));
 
 		final Note secondElement = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH);
-		builder.add(secondElement);
+		builder.add(new NoteBuilder(secondElement));
 
 		final Rest thirdElement = Rest.of(Durations.QUARTER);
-		builder.add(thirdElement);
+		builder.add(new RestBuilder(thirdElement));
 
 		final Note fourthElement = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.SIXTEENTH);
-		builder.add(fourthElement);
+		builder.add(new NoteBuilder(fourthElement));
 
 		final Rest fifthElement = Rest.of(Durations.EIGHTH);
-		builder.add(fifthElement);
+		builder.add(new RestBuilder(fifthElement));
 
 		final Note sixthElement = Note.of(Pitch.of(Pitch.Base.B, -1, 4), Durations.SIXTEENTH);
-		builder.add(sixthElement);
+		builder.add(new NoteBuilder(sixthElement));
 
 		assertTrue(builder.isMonophonic());
 		final Pattern pattern = builder.build();
@@ -58,23 +61,23 @@ class PatternBuilderTest {
 		final PatternBuilder builder = new PatternBuilder();
 
 		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
-		builder.add(firstElement);
+		builder.add(new NoteBuilder(firstElement));
 
 		final Note secondElement = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH);
-		builder.add(secondElement);
+		builder.add(new NoteBuilder(secondElement));
 
 		final Rest thirdElement = Rest.of(Durations.QUARTER);
-		builder.add(thirdElement);
+		builder.add(new RestBuilder(thirdElement));
 
 		final Note fourthElement = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.SIXTEENTH);
-		builder.add(fourthElement);
+		builder.add(new NoteBuilder(fourthElement));
 
 		final Rest fifthElement = Rest.of(Durations.EIGHTH);
-		builder.add(fifthElement);
+		builder.add(new RestBuilder(fifthElement));
 
 		final Chord sixthElement = Chord.of(Note.of(Pitch.of(Pitch.Base.B, -1, 4), Durations.SIXTEENTH),
 				Note.of(Pitch.of(Pitch.Base.E, -1, 4), Durations.SIXTEENTH));
-		builder.add(sixthElement);
+		builder.add(new ChordBuilder(sixthElement));
 
 		assertFalse(builder.isMonophonic());
 		final Pattern pattern = builder.build();
@@ -97,23 +100,23 @@ class PatternBuilderTest {
 
 		final int voice1number = 1;
 		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
-		builder.addToVoice(firstElement, voice1number);
+		builder.addToVoice(new NoteBuilder(firstElement), voice1number);
 
 		final Note secondElement = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH);
-		builder.addToVoice(secondElement, voice1number);
+		builder.addToVoice(new NoteBuilder(secondElement), voice1number);
 
 		final Rest thirdElement = Rest.of(Durations.QUARTER);
-		builder.addToVoice(thirdElement, voice1number);
+		builder.addToVoice(new RestBuilder(thirdElement), voice1number);
 
 		final int voice2number = 2;
 		final Note fourthElement = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.SIXTEENTH);
-		builder.addToVoice(fourthElement, voice2number);
+		builder.addToVoice(new NoteBuilder(fourthElement), voice2number);
 
 		final Rest fifthElement = Rest.of(Durations.EIGHTH);
-		builder.addToVoice(fifthElement, voice2number);
+		builder.addToVoice(new RestBuilder(fifthElement), voice2number);
 
 		final Note sixthElement = Note.of(Pitch.of(Pitch.Base.B, -1, 4), Durations.SIXTEENTH);
-		builder.addToVoice(sixthElement, voice2number);
+		builder.addToVoice(new NoteBuilder(sixthElement), voice2number);
 
 		final Pattern patternWithTwoVoices = builder.build();
 		assertFalse(patternWithTwoVoices.isMonophonic());

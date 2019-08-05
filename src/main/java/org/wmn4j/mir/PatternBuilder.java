@@ -3,14 +3,15 @@
  */
 package org.wmn4j.mir;
 
-import org.wmn4j.notation.elements.Chord;
+import org.wmn4j.notation.builders.ChordBuilder;
+import org.wmn4j.notation.builders.DurationalBuilder;
 import org.wmn4j.notation.elements.Durational;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class for building {@link Pattern} instances.
@@ -18,7 +19,7 @@ import java.util.Map;
 public final class PatternBuilder {
 
 	private static final int DEFAULT_VOICE_NUMBER = MonophonicPattern.SINGLE_VOICE_NUMBER;
-	private final Map<Integer, List<Durational>> voices;
+	private final Map<Integer, List<DurationalBuilder>> voices;
 	private boolean isMonophonic = true;
 
 	/**
@@ -29,34 +30,34 @@ public final class PatternBuilder {
 	}
 
 	/**
-	 * Adds the given durational to the default voice in this builder. This method is intended for constructing
+	 * Adds the given durational builder to the default voice in this builder. This method is intended for constructing
 	 * patterns with a single voice, the {@link PatternBuilder#addToVoice addToVoice} method can be used for
 	 * constructing polyphonic patterns with multiple voices.
 	 *
-	 * @param durational the durational that is added to the default voice in this builder
+	 * @param builder the durational builder that is added to the default voice in this builder
 	 */
-	public void add(Durational durational) {
-		addToVoice(durational, DEFAULT_VOICE_NUMBER);
+	public void add(DurationalBuilder builder) {
+		addToVoice(builder, DEFAULT_VOICE_NUMBER);
 	}
 
 	/**
-	 * Adds the given durational to the voice with the given number. This method is intended for constructing polyphonic
-	 * patterns, the {@link PatternBuilder#add add} method can be used for constructing
+	 * Adds the given durational builder to the voice with the given number. This method is intended for constructing
+	 * polyphonic patterns, the {@link PatternBuilder#add add} method can be used for constructing
 	 * monophonic patterns.
 	 *
-	 * @param durational the durational that is added to the given voice in this builder
-	 * @param voice      the number of the voice to which the durational is added
+	 * @param durationalBuilder the durational builder that is added to the given voice in this builder
+	 * @param voice             the number of the voice to which the durational builder is added
 	 */
-	public void addToVoice(Durational durational, int voice) {
+	public void addToVoice(DurationalBuilder durationalBuilder, int voice) {
 		if (!voices.containsKey(voice)) {
 			voices.put(voice, new ArrayList<>());
 		}
 
-		if (durational instanceof Chord || voices.keySet().size() > 1) {
+		if (durationalBuilder instanceof ChordBuilder || voices.keySet().size() > 1) {
 			isMonophonic = false;
 		}
 
-		voices.get(voice).add(durational);
+		voices.get(voice).add(durationalBuilder);
 	}
 
 	/**
@@ -81,11 +82,18 @@ public final class PatternBuilder {
 
 		if (voices.size() == 1) {
 			final Integer voiceNumber = voices.keySet().iterator().next();
-			return Pattern.of(voices.get(voiceNumber));
+			return Pattern.of(buildVoice(voices.get(voiceNumber)));
 		}
 
-		// Due to Java generics, this unmodifiableMap call is needed to the
-		// have the correct type for the method call.
-		return Pattern.of(Collections.unmodifiableMap(voices));
+		Map<Integer, List<? extends Durational>> builtVoices = new HashMap<>(voices.size());
+		for (Integer voiceNumber : voices.keySet()) {
+			builtVoices.put(voiceNumber, buildVoice(voices.get(voiceNumber)));
+		}
+
+		return Pattern.of(builtVoices);
+	}
+
+	private List<Durational> buildVoice(List<DurationalBuilder> builders) {
+		return builders.stream().map(builder -> builder.build()).collect(Collectors.toList());
 	}
 }
