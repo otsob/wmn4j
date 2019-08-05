@@ -3,19 +3,19 @@
  */
 package org.wmn4j.notation.builders;
 
+import org.wmn4j.notation.elements.Chord;
+import org.wmn4j.notation.elements.Duration;
+import org.wmn4j.notation.elements.Note;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Duration;
-import org.wmn4j.notation.elements.Note;
-
 /**
  * Class for building <code>Chord</code> objects.
  */
-public class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
+public final class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
 
 	private final List<NoteBuilder> noteBuilders;
 	private Duration duration;
@@ -38,9 +38,23 @@ public class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
 	 * @param noteBuilders the note builders that are placed into this builder
 	 */
 	public ChordBuilder(List<NoteBuilder> noteBuilders) {
-		final List<NoteBuilder> noteBuildersCopy = new ArrayList<>();
+		final List<NoteBuilder> noteBuildersCopy = new ArrayList<>(noteBuilders.size());
 		noteBuilders.forEach(builder -> noteBuildersCopy.add(new NoteBuilder(builder)));
 		this.noteBuilders = noteBuildersCopy;
+		this.duration = noteBuilders.get(0).getDuration();
+	}
+
+	/**
+	 * Constructor that creates a new builder with the contents of the given chord.
+	 * Ties and connected markings in the notes of the given chord are not copied.
+	 *
+	 * @param chord the chord from which the contents of notes are copied to this builder
+	 */
+	public ChordBuilder(Chord chord) {
+		this.noteBuilders = new ArrayList<>(chord.getNoteCount());
+		for (Note note : chord) {
+			this.noteBuilders.add(new NoteBuilder(note));
+		}
 		this.duration = noteBuilders.get(0).getDuration();
 	}
 
