@@ -118,7 +118,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code><a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></code></dd>
 </dl>
 <hr>
-<pre>public class <span class="typeNameLabel">NoteBuilder</span>
+<pre>public final class <span class="typeNameLabel">NoteBuilder</span>
 extends java.lang.Object
 implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></pre>
 <div class="block">Class for building <a href="../elements/Note.html" title="class in org.wmn4j.notation.elements"><code>Note</code></a> objects. The built note is cached.</div>
@@ -150,6 +150,12 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 </td>
 </tr>
 <tr class="rowColor">
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.wmn4j.notation.elements.Note)">NoteBuilder</a></span>&#8203;(<a href="../elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</code></th>
+<td class="colLast">
+<div class="block">Constructor that creates a builder with the pitch, duration, and articulations of the given note.</div>
+</td>
+</tr>
+<tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration)">NoteBuilder</a></span>&#8203;(<a href="../elements/Pitch.html" title="class in org.wmn4j.notation.elements">Pitch</a>&nbsp;pitch,
            <a href="../elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a>&nbsp;duration)</code></th>
 <td class="colLast">
@@ -338,7 +344,7 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <a id="&lt;init&gt;(org.wmn4j.notation.builders.NoteBuilder)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>NoteBuilder</h4>
 <pre>public&nbsp;NoteBuilder&#8203;(<a href="NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&nbsp;builder)</pre>
@@ -348,6 +354,21 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>builder</code> - the NoteBuilder to be copied</dd>
+</dl>
+</li>
+</ul>
+<a id="&lt;init&gt;(org.wmn4j.notation.elements.Note)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>NoteBuilder</h4>
+<pre>public&nbsp;NoteBuilder&#8203;(<a href="../elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a>&nbsp;note)</pre>
+<div class="block">Constructor that creates a builder with the pitch, duration, and articulations of the given note.
+ Ties and connected markings are not copied.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>note</code> - the note from which pitch, duration, and articulations are copied to the created builder</dd>
 </dl>
 </li>
 </ul>

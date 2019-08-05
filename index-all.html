@@ -102,6 +102,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Specifies an accent marking.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#add(org.wmn4j.notation.builders.DurationalBuilder)">add(DurationalBuilder)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
+<dd>
+<div class="block">Adds the given durational builder to the default voice in this builder.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/PartBuilder.html#add(org.wmn4j.notation.builders.MeasureBuilder)">add(MeasureBuilder)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/PartBuilder.html" title="class in org.wmn4j.notation.builders">PartBuilder</a></dt>
 <dd>
 <div class="block">Adds a <a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders"><code>MeasureBuilder</code></a> to this builder.</div>
@@ -121,10 +125,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#add(org.wmn4j.notation.elements.Durational)">add(Durational)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
 <dd>
 <div class="block">Add the pitch class/classes of durational to this <code>PCProfile</code>.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#add(org.wmn4j.notation.elements.Durational)">add(Durational)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
-<dd>
-<div class="block">Adds the given durational to the default voice in this builder.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#add(org.wmn4j.notation.elements.Note)">add(Note)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
 <dd>
@@ -163,9 +163,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Append a <a href="org/wmn4j/notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders"><code>DurationalBuilder</code></a> to the voice with the given number.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#addToVoice(org.wmn4j.notation.elements.Durational,int)">addToVoice(Durational, int)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#addToVoice(org.wmn4j.notation.builders.DurationalBuilder,int)">addToVoice(DurationalBuilder, int)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
 <dd>
-<div class="block">Adds the given durational to the voice with the given number.</div>
+<div class="block">Adds the given durational builder to the voice with the given number.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#addVoice()">addVoice()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
@@ -335,6 +335,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/ChordBuilder.html#%3Cinit%3E(org.wmn4j.notation.builders.NoteBuilder)">ChordBuilder(NoteBuilder)</a></span> - Constructor for class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/ChordBuilder.html" title="class in org.wmn4j.notation.builders">ChordBuilder</a></dt>
 <dd>
 <div class="block">Constructor.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/ChordBuilder.html#%3Cinit%3E(org.wmn4j.notation.elements.Chord)">ChordBuilder(Chord)</a></span> - Constructor for class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/ChordBuilder.html" title="class in org.wmn4j.notation.builders">ChordBuilder</a></dt>
+<dd>
+<div class="block">Constructor that creates a new builder with the contents of the given chord.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/NoteBuilder.html#clearCache()">clearCache()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a></dt>
 <dd>
@@ -1584,6 +1588,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Copy constructor for NoteBuilder.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/NoteBuilder.html#%3Cinit%3E(org.wmn4j.notation.elements.Note)">NoteBuilder(Note)</a></span> - Constructor for class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a></dt>
+<dd>
+<div class="block">Constructor that creates a builder with the pitch, duration, and articulations of the given note.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/NoteBuilder.html#%3Cinit%3E(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration)">NoteBuilder(Pitch, Duration)</a></span> - Constructor for class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a></dt>
 <dd>
 <div class="block">Constructor.</div>
@@ -1919,6 +1927,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/RestBuilder.html#%3Cinit%3E(org.wmn4j.notation.elements.Duration)">RestBuilder(Duration)</a></span> - Constructor for class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/RestBuilder.html" title="class in org.wmn4j.notation.builders">RestBuilder</a></dt>
 <dd>
 <div class="block">Constructor that creates a builder with the given duration value.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/RestBuilder.html#%3Cinit%3E(org.wmn4j.notation.elements.Rest)">RestBuilder(Rest)</a></span> - Constructor for class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/RestBuilder.html" title="class in org.wmn4j.notation.builders">RestBuilder</a></dt>
+<dd>
+<div class="block">Constructor that creates a builder with the duration of the given rest.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Measure.html#restMeasureOf(int,org.wmn4j.notation.elements.MeasureAttributes)">restMeasureOf(int, MeasureAttributes)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Measure.html" title="class in org.wmn4j.notation.elements">Measure</a></dt>
 <dd>

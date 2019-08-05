@@ -118,7 +118,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>java.lang.Iterable&lt;<a href="NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&gt;</code>, <code><a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a></code></dd>
 </dl>
 <hr>
-<pre>public class <span class="typeNameLabel">ChordBuilder</span>
+<pre>public final class <span class="typeNameLabel">ChordBuilder</span>
 extends java.lang.Object
 implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>, java.lang.Iterable&lt;<a href="NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&gt;</pre>
 <div class="block">Class for building <code>Chord</code> objects.</div>
@@ -153,6 +153,12 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.wmn4j.notation.builders.NoteBuilder)">ChordBuilder</a></span>&#8203;(<a href="NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&nbsp;noteBuilder)</code></th>
 <td class="colLast">
 <div class="block">Constructor.</div>
+</td>
+</tr>
+<tr class="altColor">
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.wmn4j.notation.elements.Chord)">ChordBuilder</a></span>&#8203;(<a href="../elements/Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;chord)</code></th>
+<td class="colLast">
+<div class="block">Constructor that creates a new builder with the contents of the given chord.</div>
 </td>
 </tr>
 </tbody>
@@ -270,7 +276,7 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <a id="&lt;init&gt;(java.util.List)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>ChordBuilder</h4>
 <pre>public&nbsp;ChordBuilder&#8203;(java.util.List&lt;<a href="NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a>&gt;&nbsp;noteBuilders)</pre>
@@ -278,6 +284,21 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>noteBuilders</code> - the note builders that are placed into this builder</dd>
+</dl>
+</li>
+</ul>
+<a id="&lt;init&gt;(org.wmn4j.notation.elements.Chord)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>ChordBuilder</h4>
+<pre>public&nbsp;ChordBuilder&#8203;(<a href="../elements/Chord.html" title="class in org.wmn4j.notation.elements">Chord</a>&nbsp;chord)</pre>
+<div class="block">Constructor that creates a new builder with the contents of the given chord.
+ Ties and connected markings in the notes of the given chord are not copied.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>chord</code> - the chord from which the contents of notes are copied to this builder</dd>
 </dl>
 </li>
 </ul>
