@@ -3,10 +3,10 @@
  */
 package org.wmn4j.notation.builders;
 
-import java.util.Objects;
-
 import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.Rest;
+
+import java.util.Objects;
 
 /**
  * Class for building {@link Rest} objects.
@@ -22,6 +22,15 @@ public final class RestBuilder implements DurationalBuilder {
 	 */
 	public RestBuilder(Duration duration) {
 		setDuration(duration);
+	}
+
+	/**
+	 * Constructor that creates a builder with the duration of the given rest.
+	 *
+	 * @param rest the rest to whose duration this builder is set
+	 */
+	public RestBuilder(Rest rest) {
+		setDuration(rest.getDuration());
 	}
 
 	/**
