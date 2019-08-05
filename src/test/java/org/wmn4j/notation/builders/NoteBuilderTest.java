@@ -5,6 +5,7 @@ package org.wmn4j.notation.builders;
 
 import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.elements.Articulation;
+import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.Marking;
 import org.wmn4j.notation.elements.Note;
@@ -19,6 +20,26 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class NoteBuilderTest {
+
+	@Test
+	void testWhenCreatingFromNoteThenCorrectValuesAreSet() {
+		final Note noteWithoutArticulations = Note.of(Pitch.Base.A, -1, 2, Duration.of(1, 12));
+		NoteBuilder builderWithoutArticulations = new NoteBuilder(noteWithoutArticulations);
+
+		assertEquals(noteWithoutArticulations.getPitch(), builderWithoutArticulations.getPitch());
+		assertEquals(noteWithoutArticulations.getDuration(), builderWithoutArticulations.getDuration());
+		assertEquals(noteWithoutArticulations.getArticulations(), builderWithoutArticulations.getArticulations());
+		assertEquals(noteWithoutArticulations, builderWithoutArticulations.build());
+
+		final Note noteWithArticulations = Note.of(Pitch.of(Pitch.Base.A, 1, 3), Duration.of(1, 16),
+				EnumSet.of(Articulation.ACCENT, Articulation.STACCATO));
+		NoteBuilder builderWithArticulations = new NoteBuilder(noteWithArticulations);
+
+		assertEquals(noteWithArticulations.getPitch(), builderWithArticulations.getPitch());
+		assertEquals(noteWithArticulations.getDuration(), builderWithArticulations.getDuration());
+		assertEquals(noteWithArticulations.getArticulations(), builderWithArticulations.getArticulations());
+		assertEquals(noteWithArticulations, builderWithArticulations.build());
+	}
 
 	@Test
 	void testBuildingBasicNote() {

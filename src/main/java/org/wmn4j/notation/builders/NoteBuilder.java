@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Class for building {@link Note} objects. The built note is cached.
  */
-public class NoteBuilder implements DurationalBuilder {
+public final class NoteBuilder implements DurationalBuilder {
 
 	private Pitch pitch;
 	private Duration duration;
@@ -63,6 +63,18 @@ public class NoteBuilder implements DurationalBuilder {
 		this.isTiedFromPrevious = builder.isTiedFromPrevious();
 		builder.getFollowingTied()
 				.ifPresent(tied -> this.followingTied = new NoteBuilder(tied));
+	}
+
+	/**
+	 * Constructor that creates a builder with the pitch, duration, and articulations of the given note.
+	 * Ties and connected markings are not copied.
+	 *
+	 * @param note the note from which pitch, duration, and articulations are copied to the created builder
+	 */
+	public NoteBuilder(Note note) {
+		this(note.getPitch(), note.getDuration());
+		note.getArticulations()
+				.forEach(articulation -> this.articulations.add(articulation));
 	}
 
 	/**
