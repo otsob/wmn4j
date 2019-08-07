@@ -5,20 +5,32 @@ package org.wmn4j.io.musicxml;
 
 import org.wmn4j.io.ScoreReader;
 
+import java.nio.file.Path;
+
 /**
  * Represents a reader for MusicXML files.
  */
 public interface MusicXmlReader extends ScoreReader {
 
 	/**
-	 * Returns a reader object with the given configuration.
+	 * Returns a reader for the MusicXML file at the given path.
+	 * The MusicXML file is validated against the schema.
 	 *
-	 * @param validate specifies whether the returned reader should validate input
-	 *                 files for complying to MusicXML schema
-	 * @return a reader with the given configuration
+	 * @param path the path of the file for which this reader is created
+	 * @return a reader for the MusicXML file at the given path
 	 */
-	static MusicXmlReader getReader(boolean validate) {
-		return new MusicXmlReaderDom(validate);
+	static MusicXmlReader readerFor(Path path) {
+		return new MusicXmlReaderDom(path, true);
 	}
 
+	/**
+	 * Returns a reader for the MusicXML file at the given path that does not
+	 * validate the input against MusicXML schema.
+	 *
+	 * @param path the path of the file for which this reader is created
+	 * @return a reader for the MusicXML file at the given path that skips validation
+	 */
+	static MusicXmlReader nonValidatingReaderFor(Path path) {
+		return new MusicXmlReaderDom(path, false);
+	}
 }

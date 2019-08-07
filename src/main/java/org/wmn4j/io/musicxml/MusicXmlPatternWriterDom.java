@@ -8,7 +8,6 @@ import org.wmn4j.notation.elements.Clef;
 import org.wmn4j.notation.elements.Clefs;
 import org.wmn4j.notation.elements.Duration;
 import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Durations;
 import org.wmn4j.notation.elements.KeySignature;
 import org.wmn4j.notation.elements.KeySignatures;
 import org.wmn4j.notation.elements.Measure;
@@ -17,6 +16,7 @@ import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.SingleStaffPart;
+import org.wmn4j.notation.elements.Staff;
 import org.wmn4j.notation.elements.TimeSignature;
 
 import java.util.ArrayList;
@@ -31,13 +31,18 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
 	private static final KeySignature DEFAULT_KEY_SIGNATURE = KeySignatures.CMAJ_AMIN;
 	private static final Barline PATTERN_ENDING_BARLINE = Barline.DOUBLE;
+	private static final Barline PATTERN_SEPARATING_BARLINE = Barline.INVISIBLE;
 	private static final String DEFAULT_SCORE_TITLE = "Patterns";
+	private static final String VOICE_NAME = "Voice";
+	private static final String ABBREVIATED_VOICE_NAME = "V";
 	private static final int MIDDLE_C_AS_INT = Pitch.of(Pitch.Base.C, 0, 4).toInt();
-	private static final Duration MEASURE_CUTOFF_DURATION = Durations.WHOLE;
+
+	private static final TimeSignature DEFAULT_TIME_SIGNATURE = TimeSignature.of(2, 1);
+	private static final Duration MEASURE_CUTOFF_DURATION = DEFAULT_TIME_SIGNATURE.getTotalDuration();
 
 	private final int divisions;
-	private final Part partFromPatterns;
-	private int measureNumber = 1;
+	private final List<Part> partsFromPatterns;
+	private int nextMeasureNumber = 1;
 	private final Set<Integer> newSystemBeginningMeasureNumbers;
 
 	MusicXmlPatternWriterDom(Collection<Pattern> patterns) {
@@ -48,33 +53,123 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
 		this.divisions = computeDivisions(allDurationals.iterator());
 		this.newSystemBeginningMeasureNumbers = new HashSet<>();
-		this.partFromPatterns = fromPatterns(patterns);
+		this.partsFromPatterns = fromPatterns(patterns);
 	}
 
 	MusicXmlPatternWriterDom(Pattern pattern) {
 		this(Collections.singletonList(pattern));
 	}
 
-	private Part fromPatterns(Collection<Pattern> patterns) {
+	private List<Part> fromPatterns(Collection<Pattern> patterns) {
 
-		final List<Measure> allMeasures = new ArrayList<>();
-		for (Pattern pattern : patterns) {
-			allMeasures.addAll(singleVoicePatternToMeasureList(pattern));
+		int maxNumberOfVoices = patterns.stream().map(Pattern::getNumberOfVoices).max(Integer::compareTo).orElseThrow();
+
+		if (maxNumberOfVoices == 1) {
+			return Collections.singletonList(singleVoicePatternsToPart(patterns));
 		}
 
-		return SingleStaffPart.of("", allMeasures);
+		return multiVoicePatternsToParts(patterns, maxNumberOfVoices);
 	}
 
-	private List<Measure> singleVoicePatternToMeasureList(Pattern pattern) {
+	private Part singleVoicePatternsToPart(Collection<Pattern> patterns) {
+		final List<Measure> allMeasures = new ArrayList<>();
+		for (Pattern pattern : patterns) {
+			allMeasures.addAll(voiceToMeasureList(pattern.getContents().iterator(), true));
+		}
+
+		return SingleStaffPart.of("", Staff.of(allMeasures));
+	}
+
+	private List<Part> multiVoicePatternsToParts(Collection<Pattern> patterns, int maxNumberOfVoices) {
+
+		// Create and initialize lists for the contents of staves
+		List<List<Measure>> staveContents = new ArrayList<>(maxNumberOfVoices);
+		for (int i = 0; i < maxNumberOfVoices; ++i) {
+			staveContents.add(new ArrayList<>());
+		}
+
+		for (Pattern pattern : patterns) {
+			final int indexOfLongestVoice = getIndexOfLongestVoiceInPattern(pattern);
+
+			final List<Integer> patternVoiceNumbers = pattern.getVoiceNumbers();
+			for (int voiceIndex = 0; voiceIndex < patternVoiceNumbers.size(); ++voiceIndex) {
+				List<Durational> voice = pattern.getVoice(patternVoiceNumbers.get(voiceIndex));
+
+				final int measureNumberBeforeStaffCreation = nextMeasureNumber;
+
+				final boolean isLongestVoice = voiceIndex == indexOfLongestVoice;
+				staveContents.get(voiceIndex)
+						.addAll(voiceToMeasureList(voice.iterator(), isLongestVoice));
+
+				nextMeasureNumber = measureNumberBeforeStaffCreation;
+			}
+
+			evenOutMeasureListLengthsAndUpdateNextMeasureNumber(staveContents);
+		}
+
+		List<Part> parts = new ArrayList<>();
+
+		for (List<Measure> staffContent : staveContents) {
+			parts.add(SingleStaffPart.of("", Staff.of(staffContent)));
+		}
+
+		return parts;
+	}
+
+	private int getIndexOfLongestVoiceInPattern(Pattern pattern) {
+		List<Integer> patternVoiceNumbers = pattern.getVoiceNumbers();
+		int indexOfLongestVoice = 0;
+		double longestVoiceDuration = 0.0;
+
+		for (int voiceIndex = 0; voiceIndex < patternVoiceNumbers.size(); ++voiceIndex) {
+			List<Durational> voice = pattern.getVoice(patternVoiceNumbers.get(voiceIndex));
+			double totalDuration = voice.stream().map(durational -> durational.getDuration().toDouble())
+					.reduce(0.0, Double::sum);
+
+			if (totalDuration > longestVoiceDuration) {
+				longestVoiceDuration = totalDuration;
+				indexOfLongestVoice = voiceIndex;
+			}
+		}
+
+		return indexOfLongestVoice;
+	}
+
+	private void evenOutMeasureListLengthsAndUpdateNextMeasureNumber(List<List<Measure>> staveContents) {
+		int maxStaffContentLength = staveContents.stream().map(staffContent -> staffContent.size())
+				.max(Integer::compareTo).orElseThrow();
+
+		for (List<Measure> staffContent : staveContents) {
+			if (!staffContent.isEmpty()) {
+				final Clef clefForPaddingMeasures = staffContent.get(staffContent.size() - 1).getClef();
+
+				while (staffContent.size() < maxStaffContentLength) {
+					int measureNumber = staffContent.size() + 1;
+					Barline rightBarline = getBarline(measureNumber == maxStaffContentLength);
+					staffContent.add(createPaddingMeasure(measureNumber, clefForPaddingMeasures, rightBarline));
+				}
+			}
+		}
+
+		nextMeasureNumber = maxStaffContentLength + 1;
+	}
+
+	private Measure createPaddingMeasure(int measureNumber, Clef clef, Barline rightBarline) {
+		MeasureAttributes attributes = MeasureAttributes
+				.of(DEFAULT_TIME_SIGNATURE, DEFAULT_KEY_SIGNATURE, rightBarline, clef);
+
+		return Measure.restMeasureOf(measureNumber, attributes);
+	}
+
+	private List<Measure> voiceToMeasureList(Iterator<Durational> voiceIterator, boolean useEndingBarline) {
 		List<Measure> measures = new ArrayList<>();
 
 		List<Durational> voice = new ArrayList<>();
 
 		Duration cumulatedDuration = null;
 
-		Iterator<Durational> iterator = pattern.getContents().iterator();
-		while (iterator.hasNext()) {
-			Durational durational = iterator.next();
+		while (voiceIterator.hasNext()) {
+			Durational durational = voiceIterator.next();
 			voice.add(durational);
 
 			cumulatedDuration = cumulatedDuration != null
@@ -83,16 +178,17 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
 			if (cumulatedDuration.isLongerThan(MEASURE_CUTOFF_DURATION) || cumulatedDuration
 					.equals(MEASURE_CUTOFF_DURATION)) {
-				measures.add(createMeasureFromVoice(voice, cumulatedDuration, !iterator.hasNext(), measureNumber));
-				measureNumber++;
+				measures.add(
+						createMeasure(voice, !voiceIterator.hasNext() && useEndingBarline, nextMeasureNumber));
+				nextMeasureNumber++;
 				cumulatedDuration = null;
 				voice = new ArrayList<>();
 			}
 		}
 
 		if (!voice.isEmpty()) {
-			measures.add(createMeasureFromVoice(voice, cumulatedDuration, true, measureNumber));
-			measureNumber++;
+			measures.add(createMeasure(voice, useEndingBarline, nextMeasureNumber));
+			nextMeasureNumber++;
 		}
 
 		newSystemBeginningMeasureNumbers.add(measures.get(0).getNumber());
@@ -100,15 +196,18 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		return measures;
 	}
 
-	private Measure createMeasureFromVoice(List<Durational> voice, Duration totalDuration, boolean isLast,
+	private Barline getBarline(boolean isEndingMeasureOfPattern) {
+		return isEndingMeasureOfPattern ? PATTERN_ENDING_BARLINE : PATTERN_SEPARATING_BARLINE;
+	}
+
+	private Measure createMeasure(List<Durational> measureContent, boolean isLastMeasureOfPattern,
 			int measureNumber) {
-		TimeSignature timeSignature = TimeSignature.of(totalDuration.getNumerator(), totalDuration.getDenominator());
-		Barline rightBarline = isLast ? PATTERN_ENDING_BARLINE : Barline.INVISIBLE;
 
 		MeasureAttributes attributes = MeasureAttributes
-				.of(timeSignature, DEFAULT_KEY_SIGNATURE, rightBarline, findSuitableClef(voice));
+				.of(DEFAULT_TIME_SIGNATURE, DEFAULT_KEY_SIGNATURE, getBarline(isLastMeasureOfPattern),
+						findSuitableClef(measureContent));
 
-		return Measure.of(measureNumber, Collections.singletonMap(1, voice), attributes);
+		return Measure.of(measureNumber, Collections.singletonMap(1, measureContent), attributes);
 	}
 
 	@Override
@@ -139,16 +238,24 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 	protected void writePartList(Element scoreRoot) {
 		final Element partList = getDocument().createElement(MusicXmlTags.PART_LIST);
 
-		final Element partElement = getDocument().createElement(MusicXmlTags.PLIST_SCORE_PART);
-		final String partId = "P1";
-		addPartWithId(partId, partFromPatterns);
-		partElement.setAttribute(MusicXmlTags.PART_ID, partId);
+		for (int i = 0; i < partsFromPatterns.size(); ++i) {
+			final String partNumberString = Integer.toString(i + 1);
+			final String partId = "P" + partNumberString;
+			addPartWithId(partId, partsFromPatterns.get(i));
 
-		final Element partName = getDocument().createElement(MusicXmlTags.PART_NAME);
-		// An empty part name element is needed to make the MusicXML valid.
-		partElement.appendChild(partName);
+			final Element partElement = getDocument().createElement(MusicXmlTags.PLIST_SCORE_PART);
+			partElement.setAttribute(MusicXmlTags.PART_ID, partId);
 
-		partList.appendChild(partElement);
+			final Element partName = getDocument().createElement(MusicXmlTags.PART_NAME);
+			partName.setTextContent(VOICE_NAME + " " + partNumberString);
+			partElement.appendChild(partName);
+
+			final Element abbreviatedPartName = getDocument().createElement(MusicXmlTags.PART_NAME_ABBREVIATION);
+			abbreviatedPartName.setTextContent(ABBREVIATED_VOICE_NAME + " " + partNumberString);
+			partElement.appendChild(abbreviatedPartName);
+
+			partList.appendChild(partElement);
+		}
 
 		scoreRoot.appendChild(partList);
 	}

@@ -3,6 +3,7 @@
  */
 package org.wmn4j.notation;
 
+import org.w3c.dom.Document;
 import org.wmn4j.io.musicxml.MusicXmlReader;
 import org.wmn4j.notation.builders.ChordBuilder;
 import org.wmn4j.notation.builders.MeasureBuilder;
@@ -14,10 +15,14 @@ import org.wmn4j.notation.elements.Measure;
 import org.wmn4j.notation.elements.Pitch;
 import org.wmn4j.notation.elements.Score;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestHelper {
 
@@ -51,17 +56,32 @@ public class TestHelper {
 	public static Score readScore(String pathString) {
 		Score score = null;
 
-		final MusicXmlReader reader = MusicXmlReader.getReader(false);
-
 		final Path path = Paths.get(TESTFILE_PATH, pathString);
+		final MusicXmlReader reader = MusicXmlReader.nonValidatingReaderFor(path);
 
 		try {
-			score = reader.readScore(path);
+			score = reader.readScore();
 		} catch (final Exception e) {
 			System.out.println("Failed to read score from " + path.toString() + " with exception: " + e);
 		}
 
 		return score;
+	}
+
+	public static Document readDocument(Path path) {
+		try {
+			final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			dbf.setValidating(false);
+			dbf.setNamespaceAware(true);
+			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			final DocumentBuilder docBuilder = dbf.newDocumentBuilder();
+			return docBuilder.parse(path.toFile());
+		} catch (Exception e) {
+			fail("Failed to open and parse document: " + e);
+		}
+
+		return null;
 	}
 
 	public static List<PartBuilder> getTestPartBuilders(int partCount, int measureCount) {

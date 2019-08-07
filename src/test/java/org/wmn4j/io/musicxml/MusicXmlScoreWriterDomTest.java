@@ -21,8 +21,6 @@ import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 import org.wmn4j.notation.iterators.ScoreIterator;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,34 +40,20 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 class MusicXmlScoreWriterDomTest {
 
-	private Document readDocument(Path path) {
-		try {
-			final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			dbf.setValidating(false);
-			dbf.setNamespaceAware(true);
-			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			final DocumentBuilder docBuilder = dbf.newDocumentBuilder();
-			return docBuilder.parse(path.toFile());
-		} catch (Exception e) {
-			fail("Failed to open and parse document: " + e);
-		}
-
-		return null;
-	}
-
 	@TempDir
 	Path temporaryDirectory;
 
 	private final String MUSICXML_FILE_PATH = "musicxml/";
 
 	private Score readMusicXmlTestFile(String testFileName, boolean validate) {
-		final MusicXmlReader reader = MusicXmlReader.getReader(validate);
-		Score score = null;
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
+		final MusicXmlReader reader = validate ?
+				MusicXmlReader.readerFor(path) :
+				MusicXmlReader.nonValidatingReaderFor(path);
+		Score score = null;
 
 		try {
-			score = reader.readScore(path);
+			score = reader.readScore();
 		} catch (final IOException | ParsingFailureException e) {
 			fail("Parsing failed with exception " + e);
 		}
@@ -81,13 +65,13 @@ class MusicXmlScoreWriterDomTest {
 	private Score writeAndReadScore(Score score) {
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path file = temporaryDirectory.resolve("file.xml");
-		writer.writeToFile(file);
+		writer.write(file);
 
-		final MusicXmlReader reader = MusicXmlReader.getReader(true);
+		final MusicXmlReader reader = MusicXmlReader.readerFor(file);
 		Score writtenScore = null;
 
 		try {
-			writtenScore = reader.readScore(file);
+			writtenScore = reader.readScore();
 		} catch (final IOException | ParsingFailureException e) {
 			fail("Reading score written by MusicXmlScoreWriterDom failed with exception " + e);
 		}
@@ -221,9 +205,9 @@ class MusicXmlScoreWriterDomTest {
 
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
-		writer.writeToFile(filePath);
+		writer.write(filePath);
 
-		final Document document = readDocument(filePath);
+		final Document document = TestHelper.readDocument(filePath);
 		final Node partNode = document.getElementsByTagName(MusicXmlTags.PART).item(0);
 		assertNotNull(partNode);
 
@@ -260,9 +244,9 @@ class MusicXmlScoreWriterDomTest {
 
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
-		writer.writeToFile(filePath);
+		writer.write(filePath);
 
-		final Document document = readDocument(filePath);
+		final Document document = TestHelper.readDocument(filePath);
 		final Node partNode = document.getElementsByTagName(MusicXmlTags.PART).item(0);
 		assertNotNull(partNode);
 
@@ -297,9 +281,9 @@ class MusicXmlScoreWriterDomTest {
 
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
-		writer.writeToFile(filePath);
+		writer.write(filePath);
 
-		final Document document = readDocument(filePath);
+		final Document document = TestHelper.readDocument(filePath);
 		final Node partNode = document.getElementsByTagName(MusicXmlTags.PART).item(0);
 		assertNotNull(partNode);
 
@@ -370,9 +354,9 @@ class MusicXmlScoreWriterDomTest {
 
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
-		writer.writeToFile(filePath);
+		writer.write(filePath);
 
-		final Document document = readDocument(filePath);
+		final Document document = TestHelper.readDocument(filePath);
 
 		final Node identificationElement = document.getElementsByTagName(MusicXmlTags.SCORE_IDENTIFICATION).item(0);
 		assertNotNull(identificationElement, "Missing identification element entirely");
