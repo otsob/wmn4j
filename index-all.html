@@ -1083,10 +1083,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the positions in which the elements of the pattern occur in a score.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/io/musicxml/MusicXmlReader.html#getReader(boolean)">getReader(boolean)</a></span> - Static method in interface org.wmn4j.io.musicxml.<a href="org/wmn4j/io/musicxml/MusicXmlReader.html" title="interface in org.wmn4j.io.musicxml">MusicXmlReader</a></dt>
-<dd>
-<div class="block">Returns a reader object with the given configuration.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#getRightBarline()">getRightBarline()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
 <div class="block">Returns the right barline set in this builder.</div>
@@ -1232,18 +1228,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the number of durational notation elements in the voice with the
  given number.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/io/musicxml/MusicXmlWriter.html#getWriter(java.util.Collection)">getWriter(Collection&lt;Pattern&gt;)</a></span> - Static method in interface org.wmn4j.io.musicxml.<a href="org/wmn4j/io/musicxml/MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a></dt>
-<dd>
-<div class="block">Returns an instance of a writer for the given <a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a> collection.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/io/musicxml/MusicXmlWriter.html#getWriter(org.wmn4j.mir.Pattern)">getWriter(Pattern)</a></span> - Static method in interface org.wmn4j.io.musicxml.<a href="org/wmn4j/io/musicxml/MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a></dt>
-<dd>
-<div class="block">Returns an instance of a writer for the given <a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a>.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/io/musicxml/MusicXmlWriter.html#getWriter(org.wmn4j.notation.elements.Score)">getWriter(Score)</a></span> - Static method in interface org.wmn4j.io.musicxml.<a href="org/wmn4j/io/musicxml/MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a></dt>
-<dd>
-<div class="block">Returns an instance of a writer for the given <a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/KeySignatures.html#GFLATMAJ_EFLATMIN">GFLATMAJ_EFLATMIN</a></span> - Static variable in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/KeySignatures.html" title="class in org.wmn4j.notation.elements">KeySignatures</a></dt>
 <dd>
@@ -1568,6 +1552,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Specifies no barline.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/io/musicxml/MusicXmlReader.html#nonValidatingReaderFor(java.nio.file.Path)">nonValidatingReaderFor(Path)</a></span> - Static method in interface org.wmn4j.io.musicxml.<a href="org/wmn4j/io/musicxml/MusicXmlReader.html" title="interface in org.wmn4j.io.musicxml">MusicXmlReader</a></dt>
+<dd>
+<div class="block">Returns a reader for the MusicXML file at the given path that does not
+ validate the input against MusicXML schema.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Staff.Type.html#NORMAL">NORMAL</a></span> - org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Staff.Type.html" title="enum in org.wmn4j.notation.elements">Staff.Type</a></dt>
 <dd>
 <div class="block">Normal five line staff.</div>
@@ -1626,13 +1615,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns a time signature with the given numerator and beat duration.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/SingleStaffPart.html#of(java.lang.String,java.util.List)">of(String, List&lt;Measure&gt;)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></dt>
-<dd>
-<div class="block">Returns a part with a single staff with the given name and measures.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/MultiStaffPart.html#of(java.lang.String,java.util.Map)">of(String, Map&lt;Integer, Staff&gt;)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/MultiStaffPart.html" title="class in org.wmn4j.notation.elements">MultiStaffPart</a></dt>
 <dd>
 <div class="block">Returns a part with multiple staves with the given values.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/SingleStaffPart.html#of(java.lang.String,org.wmn4j.notation.elements.Staff)">of(String, Staff)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></dt>
+<dd>
+<div class="block">Returns a part with a single staff with the given name and staff.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Chord.html#of(java.util.Collection)">of(Collection&lt;Note&gt;)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></dt>
 <dd>
@@ -1654,13 +1643,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns a polyphonic pattern with the given voices.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/SingleStaffPart.html#of(java.util.Map,java.util.List)">of(Map&lt;Part.Attribute, String&gt;, List&lt;Measure&gt;)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></dt>
-<dd>
-<div class="block">Returns a part with a single staff with the given attributes and measures.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/MultiStaffPart.html#of(java.util.Map,java.util.Map)">of(Map&lt;Part.Attribute, String&gt;, Map&lt;Integer, Staff&gt;)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/MultiStaffPart.html" title="class in org.wmn4j.notation.elements">MultiStaffPart</a></dt>
 <dd>
 <div class="block">Returns a part with multiple staves with the given values.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/SingleStaffPart.html#of(java.util.Map,org.wmn4j.notation.elements.Staff)">of(Map&lt;Part.Attribute, String&gt;, Staff)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></dt>
+<dd>
+<div class="block">Returns a part with a single staff with the given attributes and staff.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Score.html#of(java.util.Map,java.util.List)">of(Map&lt;Score.Attribute, String&gt;, List&lt;Part&gt;)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a></dt>
 <dd>
@@ -1882,13 +1871,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </a>
 <h2 class="title">R</h2>
 <dl>
-<dt><span class="memberNameLink"><a href="org/wmn4j/io/ScoreReader.html#readScore(java.nio.file.Path)">readScore(Path)</a></span> - Method in interface org.wmn4j.io.<a href="org/wmn4j/io/ScoreReader.html" title="interface in org.wmn4j.io">ScoreReader</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/io/musicxml/MusicXmlReader.html#readerFor(java.nio.file.Path)">readerFor(Path)</a></span> - Static method in interface org.wmn4j.io.musicxml.<a href="org/wmn4j/io/musicxml/MusicXmlReader.html" title="interface in org.wmn4j.io.musicxml">MusicXmlReader</a></dt>
 <dd>
-<div class="block">Returns a score with the contents of the music notation file at the given path.</div>
+<div class="block">Returns a reader for the MusicXML file at the given path.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/io/ScoreReader.html#readScoreBuilder(java.nio.file.Path)">readScoreBuilder(Path)</a></span> - Method in interface org.wmn4j.io.<a href="org/wmn4j/io/ScoreReader.html" title="interface in org.wmn4j.io">ScoreReader</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/io/ScoreReader.html#readScore()">readScore()</a></span> - Method in interface org.wmn4j.io.<a href="org/wmn4j/io/ScoreReader.html" title="interface in org.wmn4j.io">ScoreReader</a></dt>
 <dd>
-<div class="block">Returns a score builder with the contents of the music notation file at the given path.</div>
+<div class="block">Returns a score with the contents of the music notation file defined by the path set in this reader.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/io/ScoreReader.html#readScoreBuilder()">readScoreBuilder()</a></span> - Method in interface org.wmn4j.io.<a href="org/wmn4j/io/ScoreReader.html" title="interface in org.wmn4j.io">ScoreReader</a></dt>
+<dd>
+<div class="block">Returns a score builder with the contents of the music notation file defined by the path set in this reader.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/MeasureIterator.html#remove()">remove()</a></span> - Method in interface org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/MeasureIterator.html" title="interface in org.wmn4j.notation.iterators">MeasureIterator</a></dt>
 <dd>&nbsp;</dd>
@@ -1984,6 +1977,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><a href="org/wmn4j/io/ScoreReader.html" title="interface in org.wmn4j.io"><span class="typeNameLink">ScoreReader</span></a> - Interface in <a href="org/wmn4j/io/package-summary.html">org.wmn4j.io</a></dt>
 <dd>
 <div class="block">Represents a reader for music notation files.</div>
+</dd>
+<dt><a href="org/wmn4j/io/ScoreWriter.html" title="interface in org.wmn4j.io"><span class="typeNameLink">ScoreWriter</span></a> - Interface in <a href="org/wmn4j/io/package-summary.html">org.wmn4j.io</a></dt>
+<dd>
+<div class="block">Represents a writer for music notation files.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/NoteBuilder.html#setArticulations(java.util.Set)">setArticulations(Set&lt;Articulation&gt;)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a></dt>
 <dd>
@@ -2333,10 +2330,21 @@ the order they are declared.</div>
 <dd>
 <div class="block">The properties of the project.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/io/musicxml/MusicXmlWriter.html#writeToFile(java.nio.file.Path)">writeToFile(Path)</a></span> - Method in interface org.wmn4j.io.musicxml.<a href="org/wmn4j/io/musicxml/MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/io/ScoreWriter.html#write(java.nio.file.Path)">write(Path)</a></span> - Method in interface org.wmn4j.io.<a href="org/wmn4j/io/ScoreWriter.html" title="interface in org.wmn4j.io">ScoreWriter</a></dt>
 <dd>
-<div class="block">Writes the <a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a> with which this writer was initialized into a
- MusicXML file to the the given output path.</div>
+<div class="block">Writes the contents in this writer into a file specified by the given path.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/io/musicxml/MusicXmlWriter.html#writerFor(java.util.Collection)">writerFor(Collection&lt;Pattern&gt;)</a></span> - Static method in interface org.wmn4j.io.musicxml.<a href="org/wmn4j/io/musicxml/MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a></dt>
+<dd>
+<div class="block">Returns an instance of a writer for the given <a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a> collection.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/io/musicxml/MusicXmlWriter.html#writerFor(org.wmn4j.mir.Pattern)">writerFor(Pattern)</a></span> - Static method in interface org.wmn4j.io.musicxml.<a href="org/wmn4j/io/musicxml/MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a></dt>
+<dd>
+<div class="block">Returns an instance of a writer for the given <a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/io/musicxml/MusicXmlWriter.html#writerFor(org.wmn4j.notation.elements.Score)">writerFor(Score)</a></span> - Static method in interface org.wmn4j.io.musicxml.<a href="org/wmn4j/io/musicxml/MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a></dt>
+<dd>
+<div class="block">Returns an instance of a writer for the given <a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.</div>
 </dd>
 </dl>
 <a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:K">K</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:Q">Q</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:V">V</a>&nbsp;<a href="#I:W">W</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes</a>&nbsp;<a href="allpackages-index.html">All&nbsp;Packages</a></div>

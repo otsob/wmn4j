@@ -266,18 +266,18 @@ implements <a href="Part.html" title="interface in org.wmn4j.notation.elements">
 </tr>
 <tr class="altColor" id="i10">
 <td class="colFirst"><code>static <a href="SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.lang.String,java.util.List)">of</a></span>&#8203;(java.lang.String&nbsp;name,
-  java.util.List&lt;<a href="Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&gt;&nbsp;measures)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.lang.String,org.wmn4j.notation.elements.Staff)">of</a></span>&#8203;(java.lang.String&nbsp;name,
+  <a href="Staff.html" title="class in org.wmn4j.notation.elements">Staff</a>&nbsp;staff)</code></th>
 <td class="colLast">
-<div class="block">Returns a part with a single staff with the given name and measures.</div>
+<div class="block">Returns a part with a single staff with the given name and staff.</div>
 </td>
 </tr>
 <tr class="rowColor" id="i11">
 <td class="colFirst"><code>static <a href="SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.util.Map,java.util.List)">of</a></span>&#8203;(java.util.Map&lt;<a href="Part.Attribute.html" title="enum in org.wmn4j.notation.elements">Part.Attribute</a>,&#8203;java.lang.String&gt;&nbsp;partAttributes,
-  java.util.List&lt;<a href="Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&gt;&nbsp;measures)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.util.Map,org.wmn4j.notation.elements.Staff)">of</a></span>&#8203;(java.util.Map&lt;<a href="Part.Attribute.html" title="enum in org.wmn4j.notation.elements">Part.Attribute</a>,&#8203;java.lang.String&gt;&nbsp;partAttributes,
+  <a href="Staff.html" title="class in org.wmn4j.notation.elements">Staff</a>&nbsp;staff)</code></th>
 <td class="colLast">
-<div class="block">Returns a part with a single staff with the given attributes and measures.</div>
+<div class="block">Returns a part with a single staff with the given attributes and staff.</div>
 </td>
 </tr>
 <tr class="altColor" id="i12">
@@ -350,37 +350,37 @@ implements <a href="Part.html" title="interface in org.wmn4j.notation.elements">
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="of(java.lang.String,java.util.List)">
+<a id="of(java.lang.String,org.wmn4j.notation.elements.Staff)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>of</h4>
 <pre class="methodSignature">public static&nbsp;<a href="SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a>&nbsp;of&#8203;(java.lang.String&nbsp;name,
-                                 java.util.List&lt;<a href="Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&gt;&nbsp;measures)</pre>
-<div class="block">Returns a part with a single staff with the given name and measures.</div>
+                                 <a href="Staff.html" title="class in org.wmn4j.notation.elements">Staff</a>&nbsp;staff)</pre>
+<div class="block">Returns a part with a single staff with the given name and staff.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>name</code> - the name of the part</dd>
-<dd><code>measures</code> - the measures in this part</dd>
+<dd><code>staff</code> - the staff of this part</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a part with a single staff with the given name and measures</dd>
 </dl>
 </li>
 </ul>
-<a id="of(java.util.Map,java.util.List)">
+<a id="of(java.util.Map,org.wmn4j.notation.elements.Staff)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>of</h4>
 <pre class="methodSignature">public static&nbsp;<a href="SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a>&nbsp;of&#8203;(java.util.Map&lt;<a href="Part.Attribute.html" title="enum in org.wmn4j.notation.elements">Part.Attribute</a>,&#8203;java.lang.String&gt;&nbsp;partAttributes,
-                                 java.util.List&lt;<a href="Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&gt;&nbsp;measures)</pre>
-<div class="block">Returns a part with a single staff with the given attributes and measures.</div>
+                                 <a href="Staff.html" title="class in org.wmn4j.notation.elements">Staff</a>&nbsp;staff)</pre>
+<div class="block">Returns a part with a single staff with the given attributes and staff.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>partAttributes</code> - a map of attributes to be set for this part</dd>
-<dd><code>measures</code> - the measures in this part</dd>
+<dd><code>staff</code> - the staff of this part</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a part with a single staff with the given attributes and measures</dd>
 </dl>

@@ -131,9 +131,17 @@ extends <a href="../ScoreReader.html" title="interface in org.wmn4j.io">ScoreRea
 <tbody>
 <tr class="altColor" id="i0">
 <td class="colFirst"><code>static <a href="MusicXmlReader.html" title="interface in org.wmn4j.io.musicxml">MusicXmlReader</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getReader(boolean)">getReader</a></span>&#8203;(boolean&nbsp;validate)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#nonValidatingReaderFor(java.nio.file.Path)">nonValidatingReaderFor</a></span>&#8203;(java.nio.file.Path&nbsp;path)</code></th>
 <td class="colLast">
-<div class="block">Returns a reader object with the given configuration.</div>
+<div class="block">Returns a reader for the MusicXML file at the given path that does not
+ validate the input against MusicXML schema.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i1">
+<td class="colFirst"><code>static <a href="MusicXmlReader.html" title="interface in org.wmn4j.io.musicxml">MusicXmlReader</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#readerFor(java.nio.file.Path)">readerFor</a></span>&#8203;(java.nio.file.Path&nbsp;path)</code></th>
+<td class="colLast">
+<div class="block">Returns a reader for the MusicXML file at the given path.</div>
 </td>
 </tr>
 </tbody>
@@ -144,7 +152,7 @@ extends <a href="../ScoreReader.html" title="interface in org.wmn4j.io">ScoreRea
 <!--   -->
 </a>
 <h3>Methods inherited from interface&nbsp;org.wmn4j.io.<a href="../ScoreReader.html" title="interface in org.wmn4j.io">ScoreReader</a></h3>
-<code><a href="../ScoreReader.html#readScore(java.nio.file.Path)">readScore</a>, <a href="../ScoreReader.html#readScoreBuilder(java.nio.file.Path)">readScoreBuilder</a></code></li>
+<code><a href="../ScoreReader.html#readScore()">readScore</a>, <a href="../ScoreReader.html#readScoreBuilder()">readScoreBuilder</a></code></li>
 </ul>
 </li>
 </ul>
@@ -162,20 +170,37 @@ extends <a href="../ScoreReader.html" title="interface in org.wmn4j.io">ScoreRea
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getReader(boolean)">
+<a id="readerFor(java.nio.file.Path)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>readerFor</h4>
+<pre class="methodSignature">static&nbsp;<a href="MusicXmlReader.html" title="interface in org.wmn4j.io.musicxml">MusicXmlReader</a>&nbsp;readerFor&#8203;(java.nio.file.Path&nbsp;path)</pre>
+<div class="block">Returns a reader for the MusicXML file at the given path.
+ The MusicXML file is validated against the schema.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>path</code> - the path of the file for which this reader is created</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a reader for the MusicXML file at the given path</dd>
+</dl>
+</li>
+</ul>
+<a id="nonValidatingReaderFor(java.nio.file.Path)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>getReader</h4>
-<pre class="methodSignature">static&nbsp;<a href="MusicXmlReader.html" title="interface in org.wmn4j.io.musicxml">MusicXmlReader</a>&nbsp;getReader&#8203;(boolean&nbsp;validate)</pre>
-<div class="block">Returns a reader object with the given configuration.</div>
+<h4>nonValidatingReaderFor</h4>
+<pre class="methodSignature">static&nbsp;<a href="MusicXmlReader.html" title="interface in org.wmn4j.io.musicxml">MusicXmlReader</a>&nbsp;nonValidatingReaderFor&#8203;(java.nio.file.Path&nbsp;path)</pre>
+<div class="block">Returns a reader for the MusicXML file at the given path that does not
+ validate the input against MusicXML schema.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>validate</code> - specifies whether the returned reader should validate input
-                 files for complying to MusicXML schema</dd>
+<dd><code>path</code> - the path of the file for which this reader is created</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a reader with the given configuration</dd>
+<dd>a reader for the MusicXML file at the given path that skips validation</dd>
 </dl>
 </li>
 </ul>

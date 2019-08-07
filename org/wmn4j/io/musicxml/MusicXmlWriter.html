@@ -27,12 +27,6 @@
     catch(err) {
     }
 //-->
-var data = {"i0":1,"i1":1,"i2":1,"i3":6};
-var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
-var altColor = "altColor";
-var rowColor = "rowColor";
-var tableTab = "tableTab";
-var activeTableTab = "activeTableTab";
 var pathtoroot = "../../../../";
 var useModuleDirectories = true;
 loadScripts(document, 'script');</script>
@@ -105,8 +99,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
+<dl>
+<dt>All Superinterfaces:</dt>
+<dd><code><a href="../ScoreWriter.html" title="interface in org.wmn4j.io">ScoreWriter</a></code></dd>
+</dl>
 <hr>
-<pre>public interface <span class="typeNameLabel">MusicXmlWriter</span></pre>
+<pre>public interface <span class="typeNameLabel">MusicXmlWriter</span>
+extends <a href="../ScoreWriter.html" title="interface in org.wmn4j.io">ScoreWriter</a></pre>
 <div class="block">Represents a writer for MusicXML files.</div>
 </li>
 </ul>
@@ -122,9 +121,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </a>
 <h3>Method Summary</h3>
 <div class="memberSummary">
-<div role="tablist" aria-orientation="horizontal"><button role="tab" aria-selected="true" aria-controls="memberSummary_tabpanel" tabindex="0" onkeydown="switchTab(event)" id="t0" class="activeTableTab">All Methods</button><button role="tab" aria-selected="false" aria-controls="memberSummary_tabpanel" tabindex="-1" onkeydown="switchTab(event)" id="t1" class="tableTab" onclick="show(1);">Static Methods</button><button role="tab" aria-selected="false" aria-controls="memberSummary_tabpanel" tabindex="-1" onkeydown="switchTab(event)" id="t2" class="tableTab" onclick="show(2);">Instance Methods</button><button role="tab" aria-selected="false" aria-controls="memberSummary_tabpanel" tabindex="-1" onkeydown="switchTab(event)" id="t3" class="tableTab" onclick="show(4);">Abstract Methods</button></div>
-<div id="memberSummary_tabpanel" role="tabpanel">
-<table aria-labelledby="t0">
+<table>
+<caption><span>Static Methods</span><span class="tabEnd">&nbsp;</span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colSecond" scope="col">Method</th>
@@ -133,37 +131,35 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tbody>
 <tr class="altColor" id="i0">
 <td class="colFirst"><code>static <a href="MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getWriter(java.util.Collection)">getWriter</a></span>&#8203;(java.util.Collection&lt;<a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&gt;&nbsp;patterns)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#writerFor(java.util.Collection)">writerFor</a></span>&#8203;(java.util.Collection&lt;<a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&gt;&nbsp;patterns)</code></th>
 <td class="colLast">
 <div class="block">Returns an instance of a writer for the given <a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a> collection.</div>
 </td>
 </tr>
 <tr class="rowColor" id="i1">
 <td class="colFirst"><code>static <a href="MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getWriter(org.wmn4j.mir.Pattern)">getWriter</a></span>&#8203;(<a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;pattern)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#writerFor(org.wmn4j.mir.Pattern)">writerFor</a></span>&#8203;(<a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;pattern)</code></th>
 <td class="colLast">
 <div class="block">Returns an instance of a writer for the given <a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a>.</div>
 </td>
 </tr>
 <tr class="altColor" id="i2">
 <td class="colFirst"><code>static <a href="MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getWriter(org.wmn4j.notation.elements.Score)">getWriter</a></span>&#8203;(<a href="../../notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a>&nbsp;score)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#writerFor(org.wmn4j.notation.elements.Score)">writerFor</a></span>&#8203;(<a href="../../notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a>&nbsp;score)</code></th>
 <td class="colLast">
 <div class="block">Returns an instance of a writer for the given <a href="../../notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.</div>
-</td>
-</tr>
-<tr class="rowColor" id="i3">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#writeToFile(java.nio.file.Path)">writeToFile</a></span>&#8203;(java.nio.file.Path&nbsp;path)</code></th>
-<td class="colLast">
-<div class="block">Writes the <a href="../../notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a> with which this writer was initialized into a
- MusicXML file to the the given output path.</div>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-</div>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.wmn4j.io.ScoreWriter">
+<!--   -->
+</a>
+<h3>Methods inherited from interface&nbsp;org.wmn4j.io.<a href="../ScoreWriter.html" title="interface in org.wmn4j.io">ScoreWriter</a></h3>
+<code><a href="../ScoreWriter.html#write(java.nio.file.Path)">write</a></code></li>
+</ul>
 </li>
 </ul>
 </section>
@@ -180,13 +176,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getWriter(org.wmn4j.notation.elements.Score)">
+<a id="writerFor(org.wmn4j.notation.elements.Score)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getWriter</h4>
-<pre class="methodSignature">static&nbsp;<a href="MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a>&nbsp;getWriter&#8203;(<a href="../../notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a>&nbsp;score)</pre>
+<h4>writerFor</h4>
+<pre class="methodSignature">static&nbsp;<a href="MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a>&nbsp;writerFor&#8203;(<a href="../../notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a>&nbsp;score)</pre>
 <div class="block">Returns an instance of a writer for the given <a href="../../notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -196,13 +192,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getWriter(org.wmn4j.mir.Pattern)">
+<a id="writerFor(org.wmn4j.mir.Pattern)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getWriter</h4>
-<pre class="methodSignature">static&nbsp;<a href="MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a>&nbsp;getWriter&#8203;(<a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;pattern)</pre>
+<h4>writerFor</h4>
+<pre class="methodSignature">static&nbsp;<a href="MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a>&nbsp;writerFor&#8203;(<a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;pattern)</pre>
 <div class="block">Returns an instance of a writer for the given <a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a>.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -212,13 +208,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getWriter(java.util.Collection)">
+<a id="writerFor(java.util.Collection)">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
-<h4>getWriter</h4>
-<pre class="methodSignature">static&nbsp;<a href="MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a>&nbsp;getWriter&#8203;(java.util.Collection&lt;<a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&gt;&nbsp;patterns)</pre>
+<h4>writerFor</h4>
+<pre class="methodSignature">static&nbsp;<a href="MusicXmlWriter.html" title="interface in org.wmn4j.io.musicxml">MusicXmlWriter</a>&nbsp;writerFor&#8203;(java.util.Collection&lt;<a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&gt;&nbsp;patterns)</pre>
 <div class="block">Returns an instance of a writer for the given <a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a> collection.
  <p>
  The patterns are written into MusicXML so that they are separated by
@@ -228,21 +224,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>patterns</code> - the patterns for which the writer is created</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>an instance of a writer for the given <a href="../../mir/Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a> collection</dd>
-</dl>
-</li>
-</ul>
-<a id="writeToFile(java.nio.file.Path)">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>writeToFile</h4>
-<pre class="methodSignature">void&nbsp;writeToFile&#8203;(java.nio.file.Path&nbsp;path)</pre>
-<div class="block">Writes the <a href="../../notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a> with which this writer was initialized into a
- MusicXML file to the the given output path.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>path</code> - the output path for the MusicXML file</dd>
 </dl>
 </li>
 </ul>
