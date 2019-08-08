@@ -11,8 +11,10 @@ import org.wmn4j.notation.elements.Rest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -477,5 +479,28 @@ public class PolyphonicPatternTest {
 		assertEquals(patternName, patternWithName.getName());
 
 		assertThrows(NullPointerException.class, () -> new PolyphonicPattern(createReferencePatternVoices(), null));
+	}
+
+	@Test
+	void testGetLabels() {
+		final Pattern patternWithoutLabels = new PolyphonicPattern(createReferencePatternVoices());
+		assertTrue(patternWithoutLabels.getLabels().isEmpty());
+
+		final String patternName = "A";
+
+		Set<String> labels = new HashSet<>();
+		final String testLabelA = "Long";
+		final String testLabelB = "Large ambitus";
+		labels.add(testLabelA);
+		labels.add(testLabelB);
+
+		final Pattern patternWithLabels = new PolyphonicPattern(createReferencePatternVoices(), patternName,
+				labels);
+
+		assertEquals(patternName, patternWithLabels.getName());
+		assertEquals(labels, patternWithLabels.getLabels());
+
+		labels.add("Label not in pattern");
+		assertNotEquals(labels, patternWithLabels.getLabels());
 	}
 }

@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -30,8 +33,9 @@ final class PolyphonicPattern implements Pattern {
 
 	private final Map<Integer, List<Durational>> voices;
 	private final String name;
+	private final SortedSet<String> labels;
 
-	PolyphonicPattern(Map<Integer, List<? extends Durational>> voices, String name) {
+	PolyphonicPattern(Map<Integer, List<? extends Durational>> voices, String name, Set<String> labels) {
 		Map<Integer, List<Durational>> voicesCopy = new HashMap<>();
 
 		for (Integer voiceNumber : voices.keySet()) {
@@ -57,13 +61,18 @@ final class PolyphonicPattern implements Pattern {
 		}
 
 		this.name = Objects.requireNonNull(name);
+		this.labels = Collections.unmodifiableSortedSet(new TreeSet<>(labels));
+	}
+
+	PolyphonicPattern(Map<Integer, List<? extends Durational>> voices, String name) {
+		this(voices, name, Collections.emptySet());
 	}
 
 	PolyphonicPattern(Map<Integer, List<? extends Durational>> voices) {
-		this(voices, DEFAULT_NAME);
+		this(voices, DEFAULT_NAME, Collections.emptySet());
 	}
 
-	PolyphonicPattern(List<? extends Durational> voice, String name) {
+	PolyphonicPattern(List<? extends Durational> voice, String name, Set<String> labels) {
 		List<Durational> voiceCopy = Collections.unmodifiableList(new ArrayList<>(voice));
 		if (voiceCopy.isEmpty()) {
 			throw new IllegalArgumentException("Cannot create pattern from empty voice");
@@ -74,10 +83,11 @@ final class PolyphonicPattern implements Pattern {
 		voices = Collections.unmodifiableMap(voicesCopy);
 
 		this.name = Objects.requireNonNull(name);
+		this.labels = Collections.unmodifiableSortedSet(new TreeSet<>(labels));
 	}
 
 	PolyphonicPattern(List<? extends Durational> voice) {
-		this(voice, DEFAULT_NAME);
+		this(voice, DEFAULT_NAME, Collections.emptySet());
 	}
 
 	@Override
@@ -88,6 +98,11 @@ final class PolyphonicPattern implements Pattern {
 	@Override
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public SortedSet<String> getLabels() {
+		return labels;
 	}
 
 	@Override

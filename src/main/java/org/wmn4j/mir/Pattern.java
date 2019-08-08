@@ -6,8 +6,10 @@ package org.wmn4j.mir;
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 
 /**
  * Interface for musical patterns. The patterns can represent motifs, melodies,
@@ -26,12 +28,7 @@ public interface Pattern {
 	 * @return a pattern with the given contents
 	 */
 	static Pattern of(List<? extends Durational> contents) {
-		final boolean isPolyphonic = contents.stream().anyMatch(durational -> durational instanceof Chord);
-		if (isPolyphonic) {
-			return new PolyphonicPattern(contents);
-		}
-
-		return new MonophonicPattern(contents);
+		return of(contents, "");
 	}
 
 	/**
@@ -42,7 +39,7 @@ public interface Pattern {
 	 * @return polyphonic pattern with the given voices
 	 */
 	static Pattern of(Map<Integer, List<? extends Durational>> voices, String name) {
-		return new PolyphonicPattern(voices, name);
+		return new PolyphonicPattern(voices, name, Collections.emptySet());
 	}
 
 	/**
@@ -55,7 +52,7 @@ public interface Pattern {
 	static Pattern of(List<? extends Durational> contents, String name) {
 		final boolean isPolyphonic = contents.stream().anyMatch(durational -> durational instanceof Chord);
 		if (isPolyphonic) {
-			return new PolyphonicPattern(contents, name);
+			return new PolyphonicPattern(contents, name, Collections.emptySet());
 		}
 
 		return new MonophonicPattern(contents, name);
@@ -87,6 +84,13 @@ public interface Pattern {
 	 * @return the name of the pattern
 	 */
 	String getName();
+
+	/**
+	 * Returns the labels associated with this pattern in lexicographical order.
+	 *
+	 * @return the labels associated with this pattern in lexicographical order
+	 */
+	SortedSet<String> getLabels();
 
 	/**
 	 * Returns true if this pattern contains only a single voice and does not contain

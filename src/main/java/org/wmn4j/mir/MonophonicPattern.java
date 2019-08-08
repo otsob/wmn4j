@@ -14,6 +14,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -28,14 +31,9 @@ final class MonophonicPattern implements Pattern {
 
 	private final List<Durational> contents;
 	private final String name;
+	private final SortedSet<String> labels;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
-	 * @param name     the name of the pattern
-	 */
-	MonophonicPattern(List<? extends Durational> contents, String name) {
+	MonophonicPattern(List<? extends Durational> contents, String name, Set<String> labels) {
 		this.contents = Collections.unmodifiableList(new ArrayList<>(contents));
 		if (this.contents == null) {
 			throw new NullPointerException("Cannot create pattern with null contents");
@@ -47,15 +45,15 @@ final class MonophonicPattern implements Pattern {
 			throw new IllegalArgumentException("Contents contain a Chord. Contents must be monophonic");
 		}
 		this.name = Objects.requireNonNull(name);
+		this.labels = Collections.unmodifiableSortedSet(new TreeSet<>(labels));
 	}
 
-	/**
-	 * Constructor.
-	 *
-	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
-	 */
+	MonophonicPattern(List<? extends Durational> contents, String name) {
+		this(contents, name, Collections.emptySet());
+	}
+
 	MonophonicPattern(List<? extends Durational> contents) {
-		this(contents, "");
+		this(contents, "", Collections.emptySet());
 	}
 
 	@Override
@@ -66,6 +64,11 @@ final class MonophonicPattern implements Pattern {
 	@Override
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public SortedSet<String> getLabels() {
+		return labels;
 	}
 
 	@Override
