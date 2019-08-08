@@ -272,6 +272,12 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 
 		measureElement.setAttribute(MusicXmlTags.MEASURE_NUM, Integer.toString(measureForSharedValues.getNumber()));
 
+		if (startNewSystem(measureForSharedValues)) {
+			Element printElement = getDocument().createElement(MusicXmlTags.PRINT);
+			printElement.setAttribute(MusicXmlTags.NEW_SYSTEM, MusicXmlTags.YES);
+			measureElement.appendChild(printElement);
+		}
+
 		//Left barline
 		if (!measureForSharedValues.getLeftBarline().equals(Barline.SINGLE) && !measureForSharedValues
 				.getLeftBarline()
