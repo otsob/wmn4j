@@ -466,4 +466,16 @@ public class PolyphonicPatternTest {
 
 		assertFalse(patternThatDiffersFromReferencePatternInDurations.equalsInDurations(referencePattern));
 	}
+
+	@Test
+	void testGetName() {
+		final Pattern patternWithoutName = new PolyphonicPattern(createReferencePatternVoices());
+		assertTrue(patternWithoutName.getName().isEmpty());
+
+		final String patternName = "A";
+		final Pattern patternWithName = new PolyphonicPattern(createReferencePatternVoices(), patternName);
+		assertEquals(patternName, patternWithName.getName());
+
+		assertThrows(NullPointerException.class, () -> new PolyphonicPattern(createReferencePatternVoices(), null));
+	}
 }

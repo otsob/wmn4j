@@ -18,6 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -292,5 +293,17 @@ class MonophonicPatternTest {
 		withAddedDurationAtEnd.add(Rest.of(Durations.SIXTEENTH));
 
 		assertFalse(pattern.equalsInDurations(new MonophonicPattern(withAddedDurationAtEnd)));
+	}
+
+	@Test
+	void testGetName() {
+		final Pattern patternWithoutName = new MonophonicPattern(referenceNotes);
+		assertTrue(patternWithoutName.getName().isEmpty());
+
+		final String patternName = "A";
+		final Pattern patternWithName = new MonophonicPattern(referenceNotes, patternName);
+		assertEquals(patternName, patternWithName.getName());
+
+		assertThrows(NullPointerException.class, () -> new MonophonicPattern(referenceNotes, null));
 	}
 }

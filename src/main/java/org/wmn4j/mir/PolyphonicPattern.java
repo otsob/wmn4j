@@ -26,10 +26,12 @@ import java.util.stream.Collectors;
 final class PolyphonicPattern implements Pattern {
 
 	private static final Integer DEFAULT_VOICE_NUMBER = 1;
+	private static final String DEFAULT_NAME = "";
 
 	private final Map<Integer, List<Durational>> voices;
+	private final String name;
 
-	PolyphonicPattern(Map<Integer, List<? extends Durational>> voices) {
+	PolyphonicPattern(Map<Integer, List<? extends Durational>> voices, String name) {
 		Map<Integer, List<Durational>> voicesCopy = new HashMap<>();
 
 		for (Integer voiceNumber : voices.keySet()) {
@@ -53,9 +55,15 @@ final class PolyphonicPattern implements Pattern {
 				throw new IllegalArgumentException("Trying to create a polyphonic pattern with monophonic contents");
 			}
 		}
+
+		this.name = Objects.requireNonNull(name);
 	}
 
-	PolyphonicPattern(List<? extends Durational> voice) {
+	PolyphonicPattern(Map<Integer, List<? extends Durational>> voices) {
+		this(voices, DEFAULT_NAME);
+	}
+
+	PolyphonicPattern(List<? extends Durational> voice, String name) {
 		List<Durational> voiceCopy = Collections.unmodifiableList(new ArrayList<>(voice));
 		if (voiceCopy.isEmpty()) {
 			throw new IllegalArgumentException("Cannot create pattern from empty voice");
@@ -64,11 +72,22 @@ final class PolyphonicPattern implements Pattern {
 		Map<Integer, List<Durational>> voicesCopy = new HashMap<>();
 		voicesCopy.put(DEFAULT_VOICE_NUMBER, voiceCopy);
 		voices = Collections.unmodifiableMap(voicesCopy);
+
+		this.name = Objects.requireNonNull(name);
+	}
+
+	PolyphonicPattern(List<? extends Durational> voice) {
+		this(voice, DEFAULT_NAME);
 	}
 
 	@Override
 	public List<Durational> getContents() {
 		return voices.values().stream().flatMap(voice -> voice.stream()).collect(Collectors.toList());
+	}
+
+	@Override
+	public String getName() {
+		return name;
 	}
 
 	@Override

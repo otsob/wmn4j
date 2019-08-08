@@ -38,6 +38,33 @@ public interface Pattern {
 	 * Returns a polyphonic pattern with the given voices.
 	 *
 	 * @param voices the voices of the pattern
+	 * @param name   the name of the pattern
+	 * @return polyphonic pattern with the given voices
+	 */
+	static Pattern of(Map<Integer, List<? extends Durational>> voices, String name) {
+		return new PolyphonicPattern(voices, name);
+	}
+
+	/**
+	 * Returns a pattern with the given contents.
+	 *
+	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
+	 * @param name     the name of the pattern
+	 * @return a pattern with the given contents
+	 */
+	static Pattern of(List<? extends Durational> contents, String name) {
+		final boolean isPolyphonic = contents.stream().anyMatch(durational -> durational instanceof Chord);
+		if (isPolyphonic) {
+			return new PolyphonicPattern(contents, name);
+		}
+
+		return new MonophonicPattern(contents, name);
+	}
+
+	/**
+	 * Returns a polyphonic pattern with the given voices.
+	 *
+	 * @param voices the voices of the pattern
 	 * @return polyphonic pattern with the given voices
 	 */
 	static Pattern of(Map<Integer, List<? extends Durational>> voices) {
@@ -51,6 +78,15 @@ public interface Pattern {
 	 * @return the contents of this pattern
 	 */
 	List<Durational> getContents();
+
+	/**
+	 * Returns the name of the pattern.
+	 * <p>
+	 * If the pattern does not have a name, then returns an empty string.
+	 *
+	 * @return the name of the pattern
+	 */
+	String getName();
 
 	/**
 	 * Returns true if this pattern contains only a single voice and does not contain
