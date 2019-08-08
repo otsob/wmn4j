@@ -136,4 +136,17 @@ class PatternBuilderTest {
 		assertEquals(sixthElement, voice2.get(2));
 	}
 
+	@Test
+	void testSettingName() {
+		final PatternBuilder builder = new PatternBuilder();
+
+		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		builder.add(new NoteBuilder(firstElement));
+
+		final String patternName = "Pattern A";
+		builder.setName(patternName);
+
+		final Pattern pattern = builder.build();
+		assertEquals(patternName, pattern.getName());
+	}
 }

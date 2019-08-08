@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -21,6 +22,7 @@ public final class PatternBuilder {
 	private static final int DEFAULT_VOICE_NUMBER = MonophonicPattern.SINGLE_VOICE_NUMBER;
 	private final Map<Integer, List<DurationalBuilder>> voices;
 	private boolean isMonophonic = true;
+	private String name = "";
 
 	/**
 	 * Constructor that creates an empty builder.
@@ -71,6 +73,15 @@ public final class PatternBuilder {
 	}
 
 	/**
+	 * Sets the name of the pattern to be built.
+	 *
+	 * @param name the non-null name of the pattern to be built
+	 */
+	public void setName(String name) {
+		this.name = Objects.requireNonNull(name);
+	}
+
+	/**
 	 * Returns a pattern instance with the contents set into this builder.
 	 *
 	 * @return a pattern instance with the contents set into this builder
@@ -82,7 +93,7 @@ public final class PatternBuilder {
 
 		if (voices.size() == 1) {
 			final Integer voiceNumber = voices.keySet().iterator().next();
-			return Pattern.of(buildVoice(voices.get(voiceNumber)));
+			return Pattern.of(buildVoice(voices.get(voiceNumber)), name);
 		}
 
 		Map<Integer, List<? extends Durational>> builtVoices = new HashMap<>(voices.size());
@@ -90,7 +101,7 @@ public final class PatternBuilder {
 			builtVoices.put(voiceNumber, buildVoice(voices.get(voiceNumber)));
 		}
 
-		return Pattern.of(builtVoices);
+		return Pattern.of(builtVoices, name);
 	}
 
 	private List<Durational> buildVoice(List<DurationalBuilder> builders) {
