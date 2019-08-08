@@ -9,9 +9,11 @@ import org.wmn4j.notation.elements.Durational;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -23,6 +25,7 @@ public final class PatternBuilder {
 	private final Map<Integer, List<DurationalBuilder>> voices;
 	private boolean isMonophonic = true;
 	private String name = "";
+	private Set<String> labels = new HashSet<>();
 
 	/**
 	 * Constructor that creates an empty builder.
@@ -82,6 +85,15 @@ public final class PatternBuilder {
 	}
 
 	/**
+	 * Adds the given label to this builder.
+	 *
+	 * @param label the label to be added to this builder.
+	 */
+	public void addLabel(String label) {
+		this.labels.add(label);
+	}
+
+	/**
 	 * Returns a pattern instance with the contents set into this builder.
 	 *
 	 * @return a pattern instance with the contents set into this builder
@@ -93,7 +105,7 @@ public final class PatternBuilder {
 
 		if (voices.size() == 1) {
 			final Integer voiceNumber = voices.keySet().iterator().next();
-			return Pattern.of(buildVoice(voices.get(voiceNumber)), name);
+			return Pattern.of(buildVoice(voices.get(voiceNumber)), name, labels);
 		}
 
 		Map<Integer, List<? extends Durational>> builtVoices = new HashMap<>(voices.size());
@@ -101,7 +113,7 @@ public final class PatternBuilder {
 			builtVoices.put(voiceNumber, buildVoice(voices.get(voiceNumber)));
 		}
 
-		return Pattern.of(builtVoices, name);
+		return Pattern.of(builtVoices, name, labels);
 	}
 
 	private List<Durational> buildVoice(List<DurationalBuilder> builders) {

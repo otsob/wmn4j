@@ -149,4 +149,23 @@ class PatternBuilderTest {
 		final Pattern pattern = builder.build();
 		assertEquals(patternName, pattern.getName());
 	}
+
+	@Test
+	void testAddingLabels() {
+		final PatternBuilder builder = new PatternBuilder();
+
+		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		builder.add(new NoteBuilder(firstElement));
+
+		String labelA = "LabelA";
+		String labelB = "LabelB";
+
+		builder.addLabel(labelA);
+		builder.addLabel(labelB);
+
+		final Pattern patternWithLabels = builder.build();
+		assertEquals(2, patternWithLabels.getLabels().size());
+		assertTrue(patternWithLabels.getLabels().contains(labelA));
+		assertTrue(patternWithLabels.getLabels().contains(labelB));
+	}
 }
