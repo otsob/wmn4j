@@ -96,6 +96,10 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 
 	protected abstract int getDivisions();
 
+	protected String getAnnotation(Measure measure) {
+		return "";
+	}
+
 	@Override
 	public void write(Path path) {
 		try {
@@ -234,11 +238,7 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		final Element measureElement = getDocument().createElement(MusicXmlTags.MEASURE);
 		measureElement.setAttribute(MusicXmlTags.MEASURE_NUM, Integer.toString(measure.getNumber()));
 
-		if (startNewSystem(measure)) {
-			Element printElement = getDocument().createElement(MusicXmlTags.PRINT);
-			printElement.setAttribute(MusicXmlTags.NEW_SYSTEM, MusicXmlTags.YES);
-			measureElement.appendChild(printElement);
-		}
+		addNewSystemStartAndAnnotationsIfNeeded(measureElement, measure);
 
 		//Left barline
 		if (!measure.getLeftBarline().equals(Barline.SINGLE) && !measure.getLeftBarline().equals(Barline.NONE)) {
@@ -272,11 +272,7 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 
 		measureElement.setAttribute(MusicXmlTags.MEASURE_NUM, Integer.toString(measureForSharedValues.getNumber()));
 
-		if (startNewSystem(measureForSharedValues)) {
-			Element printElement = getDocument().createElement(MusicXmlTags.PRINT);
-			printElement.setAttribute(MusicXmlTags.NEW_SYSTEM, MusicXmlTags.YES);
-			measureElement.appendChild(printElement);
-		}
+		addNewSystemStartAndAnnotationsIfNeeded(measureElement, measureForSharedValues);
 
 		//Left barline
 		if (!measureForSharedValues.getLeftBarline().equals(Barline.SINGLE) && !measureForSharedValues
@@ -315,6 +311,26 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		}
 
 		return measureElement;
+	}
+
+	private void addNewSystemStartAndAnnotationsIfNeeded(Element measureElement, Measure measure) {
+		if (startNewSystem(measure)) {
+			Element printElement = getDocument().createElement(MusicXmlTags.PRINT);
+			printElement.setAttribute(MusicXmlTags.NEW_SYSTEM, MusicXmlTags.YES);
+			measureElement.appendChild(printElement);
+		}
+
+		final String annotation = getAnnotation(measure);
+		if (!annotation.isEmpty()) {
+			Element directionElement = getDocument().createElement(MusicXmlTags.DIRECTION);
+			directionElement.setAttribute(MusicXmlTags.DIRECTION_PLACEMENT, MusicXmlTags.DIRECTION_ABOVE);
+			Element directionType = getDocument().createElement(MusicXmlTags.DIRECTION_TYPE);
+			Element wordsElement = getDocument().createElement(MusicXmlTags.DIRECTION_WORDS);
+			wordsElement.setTextContent(annotation);
+			directionType.appendChild(wordsElement);
+			directionElement.appendChild(directionType);
+			measureElement.appendChild(directionElement);
+		}
 	}
 
 	public void fillMeasureElement(Element measureElement, Integer staffNumber, Measure measure) {

@@ -25,10 +25,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -278,6 +281,89 @@ class MusicXmlPatternWriterDomTest {
 			assertNotNull(newSystemNode);
 
 			assertEquals(MusicXmlTags.YES, newSystemNode.getTextContent());
+		}
+	}
+
+	@Test
+	void testGivenPatternsWithNamesAndLabelsWhenWrittenToMusicXmlThenNamesAndLabelsCorrectlyOutputted() {
+		List<Durational> singleNoteVoice = Arrays.asList(Note.of(Pitch.Base.C, 0, 4, Durations.QUARTER));
+
+		Set<String> labels = new HashSet<>();
+		labels.add("LabelA1");
+		labels.add("LabelA2");
+
+		final String monophonicPatternName = "Pattern1";
+		final Pattern monophonicPattern = Pattern.of(singleNoteVoice, monophonicPatternName, labels);
+
+		Map<Integer, List<? extends Durational>> polyphonicPatternVoices = new HashMap<>();
+		polyphonicPatternVoices.put(1, singleNoteVoice);
+		polyphonicPatternVoices.put(2, singleNoteVoice);
+		final String polyphonicPatternName = "Pattern2";
+		final Pattern polyphonicPattern = Pattern.of(polyphonicPatternVoices, polyphonicPatternName);
+
+		Collection<Pattern> patterns = Arrays.asList(monophonicPattern, polyphonicPattern);
+		MusicXmlWriter writer = new MusicXmlPatternWriterDom(patterns);
+
+		Path path = temporaryDirectory.resolve("file.xml");
+		writer.write(path);
+
+		final Document musicXmlDocument = TestHelper.readDocument(path);
+
+		final NodeList partNodes = musicXmlDocument.getElementsByTagName(MusicXmlTags.PART);
+		assertEquals(2, partNodes.getLength());
+
+		Node topStaffPartNode = null;
+		Node bottomStaffPartNode = null;
+
+		for (int i = 0; i < partNodes.getLength(); i++) {
+			final Node partNode = partNodes.item(i);
+			final Node partIdNode = partNode.getAttributes().getNamedItem(MusicXmlTags.PART_ID);
+
+			if (partIdNode.getTextContent().equals("P1")) {
+				topStaffPartNode = partNode;
+			}
+
+			if (partIdNode.getTextContent().equals("P2")) {
+				bottomStaffPartNode = partNode;
+			}
+		}
+
+		Collection<String> monophonicPatternStringContent = new ArrayList<>(labels);
+		monophonicPatternStringContent.add(monophonicPatternName);
+
+		List<Node> measureNodesInTopPart = DocHelper.findChildren(topStaffPartNode, MusicXmlTags.MEASURE);
+		assertEquals(2, measureNodesInTopPart.size());
+
+		assertMeasureHasPatternStringContent(measureNodesInTopPart.get(0), monophonicPatternStringContent);
+
+		Collection<String> polyphonicPatternStringContent = Collections.singleton(polyphonicPatternName);
+		assertMeasureHasPatternStringContent(measureNodesInTopPart.get(1), polyphonicPatternStringContent);
+
+		List<Node> measureNodesInBottomPart = DocHelper.findChildren(bottomStaffPartNode, MusicXmlTags.MEASURE);
+		assertEquals(2, measureNodesInBottomPart.size());
+
+		for (Node bottomPartMeasureNode : measureNodesInBottomPart) {
+			Optional<Node> directionNode = DocHelper.findChild(bottomPartMeasureNode, MusicXmlTags.DIRECTION);
+			assertFalse(directionNode.isPresent());
+		}
+	}
+
+	private void assertMeasureHasPatternStringContent(Node measureNode,
+			final Collection<String> expectedStringContent) {
+		assertNotNull(measureNode);
+
+		Optional<Node> directionNode = DocHelper.findChild(measureNode, MusicXmlTags.DIRECTION);
+		assertTrue(directionNode.isPresent());
+
+		Optional<Node> directionTypeNode = DocHelper.findChild(directionNode.get(), MusicXmlTags.DIRECTION_TYPE);
+		assertTrue(directionTypeNode.isPresent());
+
+		Optional<Node> wordsNode = DocHelper.findChild(directionTypeNode.get(), MusicXmlTags.DIRECTION_WORDS);
+		assertTrue(wordsNode.isPresent());
+
+		final String wordsContent = wordsNode.get().getTextContent();
+		for (String expectedContent : expectedStringContent) {
+			assertTrue(wordsContent.contains(expectedContent));
 		}
 	}
 }

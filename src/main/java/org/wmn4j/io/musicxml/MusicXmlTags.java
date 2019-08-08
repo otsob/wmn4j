@@ -108,6 +108,12 @@ final class MusicXmlTags {
 
 	static final Set<String> MARKING_NODE_NAMES = Collections.unmodifiableSet(Set.of(SLUR, GLISSANDO));
 
+	static final String DIRECTION = "direction";
+	static final String DIRECTION_PLACEMENT = "placement";
+	static final String DIRECTION_TYPE = "direction-type";
+	static final String DIRECTION_ABOVE = "above";
+	static final String DIRECTION_WORDS = "words";
+
 	// Part tags
 	static final String PART = "part";
 	static final String PART_ID = "id";
