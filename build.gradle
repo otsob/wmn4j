@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     testImplementation('org.junit.jupiter:junit-jupiter:5.4.2')
-    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
+    implementation group: 'org.slf4j', name: 'slf4j-jdk14', version: '1.7.27'
 }
 
 test {
