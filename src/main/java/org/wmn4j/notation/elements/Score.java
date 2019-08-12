@@ -3,7 +3,7 @@
  */
 package org.wmn4j.notation.elements;
 
-import org.wmn4j.notation.iterators.ScorePosition;
+import org.wmn4j.notation.iterators.Position;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -146,7 +146,7 @@ public final class Score implements Iterable<Part> {
 	 * @return the notation object with duration at the given position
 	 * @throws NoSuchElementException if the position is not found in this score
 	 */
-	public Durational getAtPosition(ScorePosition position) throws NoSuchElementException {
+	public Durational getAtPosition(Position position) throws NoSuchElementException {
 		final Part part = this.parts.get(position.getPartNumber());
 		final Measure measure = part.getMeasure(position.getStaffNumber(), position.getMeasureNumber());
 		Durational dur = measure.get(position.getVoiceNumber(), position.getIndexInVoice());

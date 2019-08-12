@@ -9,7 +9,7 @@ import org.wmn4j.notation.elements.SingleStaffPart;
  * Represents the position of a {@link org.wmn4j.notation.elements.Durational}
  * in a {@link org.wmn4j.notation.elements.Score}. Is immutable.
  */
-public final class ScorePosition {
+public final class Position {
 
 	private static final int NOT_IN_CHORD = -1;
 
@@ -31,7 +31,7 @@ public final class ScorePosition {
 	 * @param voiceNumber   the voice number in the measure
 	 * @param indexInVoice  the index in the voice specified by voiceNumber
 	 */
-	public ScorePosition(int partNumber, int staffNumber, int measureNumber, int voiceNumber, int indexInVoice) {
+	public Position(int partNumber, int staffNumber, int measureNumber, int voiceNumber, int indexInVoice) {
 		this.partNumber = partNumber;
 		this.staffNumber = staffNumber;
 		this.measureNumber = measureNumber;
@@ -53,7 +53,7 @@ public final class ScorePosition {
 	 * @param indexInChord  Starting from the bottom of the chord, the index of the
 	 *                      note
 	 */
-	public ScorePosition(int partNumber, int staffNumber, int measureNumber, int voiceNumber, int indexInVoice,
+	public Position(int partNumber, int staffNumber, int measureNumber, int voiceNumber, int indexInVoice,
 			int indexInChord) {
 		this.partNumber = partNumber;
 		this.staffNumber = staffNumber;
@@ -71,7 +71,7 @@ public final class ScorePosition {
 	 * @param voiceNumber   the voice number in the measure
 	 * @param indexInVoice  the index in the voice specified by voiceNumber
 	 */
-	public ScorePosition(int partNumber, int measureNumber, int voiceNumber, int indexInVoice) {
+	public Position(int partNumber, int measureNumber, int voiceNumber, int indexInVoice) {
 		this.partNumber = partNumber;
 		this.staffNumber = SingleStaffPart.STAFF_NUMBER;
 		this.measureNumber = measureNumber;
@@ -157,11 +157,11 @@ public final class ScorePosition {
 			return true;
 		}
 
-		if (!(o instanceof ScorePosition)) {
+		if (!(o instanceof Position)) {
 			return false;
 		}
 
-		final ScorePosition other = (ScorePosition) o;
+		final Position other = (Position) o;
 
 		if (this.partNumber != other.getPartNumber()) {
 			return false;

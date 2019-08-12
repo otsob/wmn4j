@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.wmn4j.notation.iterators.ScorePosition;
+import org.wmn4j.notation.iterators.Position;
 
 /**
  * Class that represents an occurrence of a pattern in a score.
  */
 public class PatternOccurrence {
 
-	private final List<ScorePosition> positions;
+	private final List<Position> positions;
 
 	/**
 	 * Constructor.
@@ -23,7 +23,7 @@ public class PatternOccurrence {
 	 * @param positions the positions in which the elements of the pattern occur in
 	 *                  a score.
 	 */
-	public PatternOccurrence(List<ScorePosition> positions) {
+	public PatternOccurrence(List<Position> positions) {
 		this.positions = Collections.unmodifiableList(new ArrayList<>(positions));
 	}
 
@@ -32,7 +32,7 @@ public class PatternOccurrence {
 	 *
 	 * @return the positions in which the elements of the pattern occur in a score
 	 */
-	public List<ScorePosition> getPositions() {
+	public List<Position> getPositions() {
 		return this.positions;
 	}
 }

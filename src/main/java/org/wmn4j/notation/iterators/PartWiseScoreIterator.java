@@ -75,12 +75,12 @@ public class PartWiseScoreIterator implements ScoreIterator {
 	}
 
 	@Override
-	public ScorePosition getPositionOfPrevious() {
+	public Position getPositionOfPrevious() {
 		if (this.prevPart == null) {
 			throw new IllegalStateException("no previous position available because next has not been called yet");
 		}
 
-		return new ScorePosition(this.prevPartIndex, this.prevStaffNumber, this.prevMeasureNumber, this.prevVoice,
+		return new Position(this.prevPartIndex, this.prevStaffNumber, this.prevMeasureNumber, this.prevVoice,
 				this.prevIndex);
 	}
 }
