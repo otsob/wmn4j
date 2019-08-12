@@ -9,7 +9,9 @@ import org.wmn4j.notation.elements.SingleStaffPart;
  * Represents the position of a {@link org.wmn4j.notation.elements.Durational}
  * in a {@link org.wmn4j.notation.elements.Score}. Is immutable.
  */
-public class ScorePosition {
+public final class ScorePosition {
+
+	private static final int NOT_IN_CHORD = -1;
 
 	private final int partNumber;
 	private final int staffNumber;
@@ -17,8 +19,6 @@ public class ScorePosition {
 	private final int voiceNumber;
 	private final int indexInVoice;
 	private final int indexInChord;
-
-	private static final int NOT_IN_CHORD = -1;
 
 	/**
 	 * Constructor for positions in parts with multiple staves.
@@ -138,7 +138,7 @@ public class ScorePosition {
 	 * Returns the index of the note in a chord to which this position points.
 	 *
 	 * @return the index, counting from the bottom of the chord, of a note in a
-	 *         chord
+	 * chord
 	 */
 	public int getIndexInChord() {
 		return this.indexInChord;
