@@ -128,7 +128,7 @@ public class ScoreTest {
 		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 
 		try {
-			score.getAtPosition(new Position(0, 1, 1, 5, 0));
+			score.getAt(new Position(0, 1, 1, 5, 0));
 			fail("Did not throw exception");
 		} catch (final Exception e) {
 			assertTrue(e instanceof NoSuchElementException, "Exception: " + e + " is of incorrect type");
@@ -136,11 +136,11 @@ public class ScoreTest {
 
 		// Test first note.
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER),
-				score.getAtPosition(new Position(0, 1, 1, 1, 0)));
+				score.getAt(new Position(0, 1, 1, 1, 0)));
 
 		// Test last note.
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 3), Durations.WHOLE),
-				score.getAtPosition(new Position(1, 2, 3, 2, 0)));
+				score.getAt(new Position(1, 2, 3, 2, 0)));
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public class ScoreTest {
 		while (iterator.hasNext()) {
 			final Durational elem = iterator.next();
 			final Position position = iterator.getPositionOfPrevious();
-			assertEquals(elem, score.getAtPosition(position));
+			assertEquals(elem, score.getAt(position));
 		}
 	}
 
@@ -163,7 +163,7 @@ public class ScoreTest {
 
 		// Get the middle note (E) from the chord in the score.
 		final Position position = new Position(0, 1, 1, 1, 1, 1);
-		final Note noteInChord = (Note) score.getAtPosition(position);
+		final Note noteInChord = (Note) score.getAt(position);
 		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF), noteInChord);
 	}
 }

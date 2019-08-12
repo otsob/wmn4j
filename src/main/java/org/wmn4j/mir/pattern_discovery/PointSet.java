@@ -75,7 +75,7 @@ class PointSet {
 
 			if (isOnset(dur)) {
 				final double totalOffset = offsetToEndOfLastMeasure + offsetWithinMeasure;
-				final Durational atPosition = score.getAtPosition(pos);
+				final Durational atPosition = score.getAt(pos);
 
 				if (atPosition instanceof Note) {
 					final double pitch = ((Note) atPosition).getPitch().toInt();
