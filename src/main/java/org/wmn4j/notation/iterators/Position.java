@@ -183,6 +183,10 @@ public final class Position {
 			return false;
 		}
 
+		if (other.getIndexInChord() != this.indexInChord) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -194,6 +198,7 @@ public final class Position {
 		hash = 53 * hash + this.measureNumber;
 		hash = 53 * hash + this.voiceNumber;
 		hash = 53 * hash + this.indexInVoice;
+		hash = 53 * hash + this.indexInChord;
 		return hash;
 	}
 
@@ -203,6 +208,10 @@ public final class Position {
 		strBuilder.append("Part: ").append(this.partIndex).append(", Staff: ").append(this.staffNumber)
 				.append(", Measure: ").append(this.measureNumber).append(", Voice: ").append(this.voiceNumber)
 				.append(", Index: ").append(this.indexInVoice);
+
+		if (isInChord()) {
+			strBuilder.append(", Index in chord: ").append(this.indexInChord);
+		}
 
 		return strBuilder.toString();
 	}
