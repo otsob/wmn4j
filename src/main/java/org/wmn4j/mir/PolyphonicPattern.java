@@ -128,6 +128,11 @@ final class PolyphonicPattern implements Pattern {
 	}
 
 	@Override
+	public boolean hasLabel(String label) {
+		return labels.contains(label);
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;

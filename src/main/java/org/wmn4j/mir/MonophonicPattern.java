@@ -106,6 +106,11 @@ final class MonophonicPattern implements Pattern {
 	}
 
 	@Override
+	public boolean hasLabel(String label) {
+		return labels.contains(label);
+	}
+
+	@Override
 	public boolean equalsInPitch(Pattern other) {
 		if (other.isMonophonic()) {
 			List<Pitch> pitchesOfOther = toPitchList(other.getContents());

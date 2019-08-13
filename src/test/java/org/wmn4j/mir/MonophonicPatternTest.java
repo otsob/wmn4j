@@ -330,4 +330,23 @@ class MonophonicPatternTest {
 		labels.add("Label not in pattern");
 		assertNotEquals(labels, patternWithLabels.getLabels());
 	}
+
+	@Test
+	void testHasLabel() {
+		final String patternName = "A";
+
+		Set<String> labels = new HashSet<>();
+		final String testLabelA = "LabelA";
+		final String testLabelB = "LabelB";
+		labels.add(testLabelA);
+		labels.add(testLabelB);
+
+		final Pattern patternWithLabels = new PolyphonicPattern(referenceNotes, patternName,
+				labels);
+
+		assertEquals(patternName, patternWithLabels.getName());
+		assertTrue(patternWithLabels.hasLabel(testLabelA));
+		assertTrue(patternWithLabels.hasLabel(testLabelB));
+		assertFalse(patternWithLabels.hasLabel("Label not in pattern"));
+	}
 }

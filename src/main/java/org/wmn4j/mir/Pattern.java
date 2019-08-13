@@ -149,6 +149,14 @@ public interface Pattern {
 	List<Durational> getVoice(int voiceNumber);
 
 	/**
+	 * Returns true if this pattern has the given labels.
+	 *
+	 * @param label the label whose presence is checked
+	 * @return true if this pattern has the given labels
+	 */
+	boolean hasLabel(String label);
+
+	/**
 	 * Returns true if this pattern contains the same pitches in the
 	 * same order as other, otherwise returns false. The pitches must be spelled the
 	 * same way for the patterns to be considered equal in pitch. Rhythm is ignored.
