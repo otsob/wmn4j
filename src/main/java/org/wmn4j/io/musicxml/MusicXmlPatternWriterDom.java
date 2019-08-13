@@ -22,10 +22,13 @@ import org.wmn4j.notation.elements.TimeSignature;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
@@ -44,6 +47,7 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 	private final List<Part> partsFromPatterns;
 	private int nextMeasureNumber = 1;
 	private final Set<Integer> newSystemBeginningMeasureNumbers;
+	private final Map<Integer, String> annotations;
 
 	MusicXmlPatternWriterDom(Collection<Pattern> patterns) {
 		Collection<Durational> allDurationals = new ArrayList<>();
@@ -53,6 +57,7 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
 		this.divisions = computeDivisions(allDurationals.iterator());
 		this.newSystemBeginningMeasureNumbers = new HashSet<>();
+		this.annotations = new HashMap<>();
 		this.partsFromPatterns = fromPatterns(patterns);
 	}
 
@@ -74,7 +79,11 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 	private Part singleVoicePatternsToPart(Collection<Pattern> patterns) {
 		final List<Measure> allMeasures = new ArrayList<>();
 		for (Pattern pattern : patterns) {
-			allMeasures.addAll(voiceToMeasureList(pattern.getContents().iterator(), true));
+			List<Measure> measures = voiceToMeasureList(pattern.getContents().iterator(), true);
+			allMeasures.addAll(measures);
+			final Integer firstMeasureNumber = measures.get(0).getNumber();
+			newSystemBeginningMeasureNumbers.add(firstMeasureNumber);
+			annotations.put(firstMeasureNumber, createPatternAnnotation(pattern));
 		}
 
 		return SingleStaffPart.of("", Staff.of(allMeasures));
@@ -89,22 +98,27 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		}
 
 		for (Pattern pattern : patterns) {
-			final int indexOfLongestVoice = getIndexOfLongestVoiceInPattern(pattern);
+			final Duration longestVoiceDuration = getLongestVoiceDuration(pattern);
 
 			final List<Integer> patternVoiceNumbers = pattern.getVoiceNumbers();
+			final int measureNumberBeforeStaffCreation = nextMeasureNumber;
+
 			for (int voiceIndex = 0; voiceIndex < patternVoiceNumbers.size(); ++voiceIndex) {
 				List<Durational> voice = pattern.getVoice(patternVoiceNumbers.get(voiceIndex));
 
-				final int measureNumberBeforeStaffCreation = nextMeasureNumber;
+				Duration voiceDuration = getVoiceDuration(voice);
 
-				final boolean isLongestVoice = voiceIndex == indexOfLongestVoice;
 				staveContents.get(voiceIndex)
-						.addAll(voiceToMeasureList(voice.iterator(), isLongestVoice));
+						.addAll(voiceToMeasureList(voice.iterator(), voiceDuration.equals(longestVoiceDuration)));
 
 				nextMeasureNumber = measureNumberBeforeStaffCreation;
 			}
 
 			evenOutMeasureListLengthsAndUpdateNextMeasureNumber(staveContents);
+
+			final Integer firstMeasureNumber = measureNumberBeforeStaffCreation;
+			newSystemBeginningMeasureNumbers.add(firstMeasureNumber);
+			annotations.put(firstMeasureNumber, createPatternAnnotation(pattern));
 		}
 
 		List<Part> parts = new ArrayList<>();
@@ -116,23 +130,29 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		return parts;
 	}
 
-	private int getIndexOfLongestVoiceInPattern(Pattern pattern) {
+	private Duration getVoiceDuration(List<Durational> voice) {
+		List<Duration> voiceDurations = voice.stream()
+				.map(Durational::getDuration).collect(
+						Collectors.toList());
+
+		return Duration.sumOf(voiceDurations);
+	}
+
+	private Duration getLongestVoiceDuration(Pattern pattern) {
 		List<Integer> patternVoiceNumbers = pattern.getVoiceNumbers();
-		int indexOfLongestVoice = 0;
-		double longestVoiceDuration = 0.0;
+		Duration longestVoiceDuration = null;
 
 		for (int voiceIndex = 0; voiceIndex < patternVoiceNumbers.size(); ++voiceIndex) {
-			List<Durational> voice = pattern.getVoice(patternVoiceNumbers.get(voiceIndex));
-			double totalDuration = voice.stream().map(durational -> durational.getDuration().toDouble())
-					.reduce(0.0, Double::sum);
+			Duration totalDuration = getVoiceDuration(pattern.getVoice(patternVoiceNumbers.get(voiceIndex)));
 
-			if (totalDuration > longestVoiceDuration) {
+			if (longestVoiceDuration == null) {
 				longestVoiceDuration = totalDuration;
-				indexOfLongestVoice = voiceIndex;
+			} else if (totalDuration.isLongerThan(longestVoiceDuration)) {
+				longestVoiceDuration = totalDuration;
 			}
 		}
 
-		return indexOfLongestVoice;
+		return longestVoiceDuration;
 	}
 
 	private void evenOutMeasureListLengthsAndUpdateNextMeasureNumber(List<List<Measure>> staveContents) {
@@ -140,14 +160,14 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 				.max(Integer::compareTo).orElseThrow();
 
 		for (List<Measure> staffContent : staveContents) {
-			if (!staffContent.isEmpty()) {
-				final Clef clefForPaddingMeasures = staffContent.get(staffContent.size() - 1).getClef();
+			final Clef clefForPaddingMeasures = !staffContent.isEmpty()
+					? staffContent.get(staffContent.size() - 1).getClef()
+					: Clefs.G;
 
-				while (staffContent.size() < maxStaffContentLength) {
-					int measureNumber = staffContent.size() + 1;
-					Barline rightBarline = getBarline(measureNumber == maxStaffContentLength);
-					staffContent.add(createPaddingMeasure(measureNumber, clefForPaddingMeasures, rightBarline));
-				}
+			while (staffContent.size() < maxStaffContentLength) {
+				int measureNumber = staffContent.size() + 1;
+				Barline rightBarline = getBarline(measureNumber == maxStaffContentLength);
+				staffContent.add(createPaddingMeasure(measureNumber, clefForPaddingMeasures, rightBarline));
 			}
 		}
 
@@ -191,9 +211,25 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 			nextMeasureNumber++;
 		}
 
-		newSystemBeginningMeasureNumbers.add(measures.get(0).getNumber());
-
 		return measures;
+	}
+
+	private String createPatternAnnotation(Pattern pattern) {
+		StringBuilder patternAnnotation = new StringBuilder();
+
+		final String patternName = pattern.getName();
+		final Set<String> patternLabels = pattern.getLabels();
+
+		if (!patternName.isEmpty()) {
+			patternAnnotation.append(pattern.getName());
+		}
+
+		if (!patternLabels.isEmpty()) {
+			String separator = !patternName.isEmpty() ? " " : "";
+			patternAnnotation.append(separator).append(pattern.getLabels());
+		}
+
+		return patternAnnotation.toString();
 	}
 
 	private Barline getBarline(boolean isEndingMeasureOfPattern) {
@@ -297,5 +333,17 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 	@Override
 	protected boolean startNewSystem(Measure measure) {
 		return newSystemBeginningMeasureNumbers.contains(measure.getNumber());
+	}
+
+	@Override
+	protected String getAnnotation(Measure measure) {
+		Integer measureNumber = measure.getNumber();
+		if (annotations.containsKey(measureNumber)) {
+			String annotation = annotations.get(measureNumber);
+			annotations.remove(measureNumber);
+			return annotation;
+		}
+
+		return "";
 	}
 }

@@ -13,11 +13,14 @@ import org.wmn4j.notation.elements.Rest;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -292,5 +295,58 @@ class MonophonicPatternTest {
 		withAddedDurationAtEnd.add(Rest.of(Durations.SIXTEENTH));
 
 		assertFalse(pattern.equalsInDurations(new MonophonicPattern(withAddedDurationAtEnd)));
+	}
+
+	@Test
+	void testGetName() {
+		final Pattern patternWithoutName = new MonophonicPattern(referenceNotes);
+		assertTrue(patternWithoutName.getName().isEmpty());
+
+		final String patternName = "A";
+		final Pattern patternWithName = new MonophonicPattern(referenceNotes, patternName);
+		assertEquals(patternName, patternWithName.getName());
+
+		assertThrows(NullPointerException.class, () -> new MonophonicPattern(referenceNotes, null));
+	}
+
+	@Test
+	void testGetLabels() {
+		final Pattern patternWithoutLabels = new MonophonicPattern(referenceNotes);
+		assertTrue(patternWithoutLabels.getLabels().isEmpty());
+
+		final String patternName = "A";
+
+		Set<String> labels = new HashSet<>();
+		final String testLabelA = "Long";
+		final String testLabelB = "Large ambitus";
+		labels.add(testLabelA);
+		labels.add(testLabelB);
+
+		final Pattern patternWithLabels = new MonophonicPattern(referenceNotes, patternName, labels);
+
+		assertEquals(patternName, patternWithLabels.getName());
+		assertEquals(labels, patternWithLabels.getLabels());
+
+		labels.add("Label not in pattern");
+		assertNotEquals(labels, patternWithLabels.getLabels());
+	}
+
+	@Test
+	void testHasLabel() {
+		final String patternName = "A";
+
+		Set<String> labels = new HashSet<>();
+		final String testLabelA = "LabelA";
+		final String testLabelB = "LabelB";
+		labels.add(testLabelA);
+		labels.add(testLabelB);
+
+		final Pattern patternWithLabels = new PolyphonicPattern(referenceNotes, patternName,
+				labels);
+
+		assertEquals(patternName, patternWithLabels.getName());
+		assertTrue(patternWithLabels.hasLabel(testLabelA));
+		assertTrue(patternWithLabels.hasLabel(testLabelB));
+		assertFalse(patternWithLabels.hasLabel("Label not in pattern"));
 	}
 }

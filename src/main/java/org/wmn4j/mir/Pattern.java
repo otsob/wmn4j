@@ -6,8 +6,11 @@ package org.wmn4j.mir;
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * Interface for musical patterns. The patterns can represent motifs, melodies,
@@ -26,12 +29,58 @@ public interface Pattern {
 	 * @return a pattern with the given contents
 	 */
 	static Pattern of(List<? extends Durational> contents) {
+		return of(contents, "");
+	}
+
+	/**
+	 * Returns a polyphonic pattern with the given voices.
+	 *
+	 * @param voices the voices of the pattern
+	 * @param name   the name of the pattern
+	 * @return polyphonic pattern with the given voices
+	 */
+	static Pattern of(Map<Integer, List<? extends Durational>> voices, String name) {
+		return new PolyphonicPattern(voices, name, Collections.emptySet());
+	}
+
+	/**
+	 * Returns a polyphonic pattern with the given voices.
+	 *
+	 * @param voices the voices of the pattern
+	 * @param name   the name of the pattern
+	 * @param labels the labels associated with the pattern
+	 * @return polyphonic pattern with the given voices
+	 */
+	static Pattern of(Map<Integer, List<? extends Durational>> voices, String name, Set<String> labels) {
+		return new PolyphonicPattern(voices, name, labels);
+	}
+
+	/**
+	 * Returns a pattern with the given contents.
+	 *
+	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
+	 * @param name     the name of the pattern
+	 * @return a pattern with the given contents
+	 */
+	static Pattern of(List<? extends Durational> contents, String name) {
+		return of(contents, name, Collections.emptySet());
+	}
+
+	/**
+	 * Returns a pattern with the given contents.
+	 *
+	 * @param contents non-empty list containing the notation elements of the pattern in temporal order
+	 * @param name     the name of the pattern
+	 * @param labels   the labels associated with the pattern
+	 * @return a pattern with the given contents
+	 */
+	static Pattern of(List<? extends Durational> contents, String name, Set<String> labels) {
 		final boolean isPolyphonic = contents.stream().anyMatch(durational -> durational instanceof Chord);
 		if (isPolyphonic) {
-			return new PolyphonicPattern(contents);
+			return new PolyphonicPattern(contents, name, labels);
 		}
 
-		return new MonophonicPattern(contents);
+		return new MonophonicPattern(contents, name, labels);
 	}
 
 	/**
@@ -51,6 +100,22 @@ public interface Pattern {
 	 * @return the contents of this pattern
 	 */
 	List<Durational> getContents();
+
+	/**
+	 * Returns the name of the pattern.
+	 * <p>
+	 * If the pattern does not have a name, then returns an empty string.
+	 *
+	 * @return the name of the pattern
+	 */
+	String getName();
+
+	/**
+	 * Returns the labels associated with this pattern in lexicographical order.
+	 *
+	 * @return the labels associated with this pattern in lexicographical order
+	 */
+	SortedSet<String> getLabels();
 
 	/**
 	 * Returns true if this pattern contains only a single voice and does not contain
@@ -82,6 +147,14 @@ public interface Pattern {
 	 * @return the contents of the voice with the given number
 	 */
 	List<Durational> getVoice(int voiceNumber);
+
+	/**
+	 * Returns true if this pattern has the given labels.
+	 *
+	 * @param label the label whose presence is checked
+	 * @return true if this pattern has the given labels
+	 */
+	boolean hasLabel(String label);
 
 	/**
 	 * Returns true if this pattern contains the same pitches in the
