@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":1,"i10":1};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":1,"i13":1,"i14":1,"i15":1,"i16":1,"i17":1};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -175,27 +175,48 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr class="rowColor" id="i5">
+<td class="colFirst"><code>java.util.SortedSet&lt;java.lang.String&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLabels()">getLabels</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns the labels associated with this pattern in lexicographical order.</div>
+</td>
+</tr>
+<tr class="altColor" id="i6">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getName()">getName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns the name of the pattern.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i7">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumberOfVoices()">getNumberOfVoices</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the number of voices in this pattern.</div>
 </td>
 </tr>
-<tr class="altColor" id="i6">
+<tr class="altColor" id="i8">
 <td class="colFirst"><code>java.util.List&lt;<a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoice(int)">getVoice</a></span>&#8203;(int&nbsp;voiceNumber)</code></th>
 <td class="colLast">
 <div class="block">Returns the contents of the voice with the given number.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i7">
+<tr class="rowColor" id="i9">
 <td class="colFirst"><code>java.util.List&lt;java.lang.Integer&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoiceNumbers()">getVoiceNumbers</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the voice numbers in this pattern from smallest to greatest.</div>
 </td>
 </tr>
-<tr class="altColor" id="i8">
+<tr class="altColor" id="i10">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasLabel(java.lang.String)">hasLabel</a></span>&#8203;(java.lang.String&nbsp;label)</code></th>
+<td class="colLast">
+<div class="block">Returns true if this pattern has the given labels.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i11">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isMonophonic()">isMonophonic</a></span>()</code></th>
 <td class="colLast">
@@ -203,16 +224,50 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  any notes that occur simultaneously, otherwise returns false.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i9">
+<tr class="altColor" id="i12">
 <td class="colFirst"><code>static <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.util.List)">of</a></span>&#8203;(java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;contents)</code></th>
 <td class="colLast">
 <div class="block">Returns a pattern with the given contents.</div>
 </td>
 </tr>
-<tr class="altColor" id="i10">
+<tr class="rowColor" id="i13">
+<td class="colFirst"><code>static <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.util.List,java.lang.String)">of</a></span>&#8203;(java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;contents,
+  java.lang.String&nbsp;name)</code></th>
+<td class="colLast">
+<div class="block">Returns a pattern with the given contents.</div>
+</td>
+</tr>
+<tr class="altColor" id="i14">
+<td class="colFirst"><code>static <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.util.List,java.lang.String,java.util.Set)">of</a></span>&#8203;(java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;contents,
+  java.lang.String&nbsp;name,
+  java.util.Set&lt;java.lang.String&gt;&nbsp;labels)</code></th>
+<td class="colLast">
+<div class="block">Returns a pattern with the given contents.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i15">
 <td class="colFirst"><code>static <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.util.Map)">of</a></span>&#8203;(java.util.Map&lt;java.lang.Integer,&#8203;java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&gt;&nbsp;voices)</code></th>
+<td class="colLast">
+<div class="block">Returns a polyphonic pattern with the given voices.</div>
+</td>
+</tr>
+<tr class="altColor" id="i16">
+<td class="colFirst"><code>static <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.util.Map,java.lang.String)">of</a></span>&#8203;(java.util.Map&lt;java.lang.Integer,&#8203;java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&gt;&nbsp;voices,
+  java.lang.String&nbsp;name)</code></th>
+<td class="colLast">
+<div class="block">Returns a polyphonic pattern with the given voices.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i17">
+<td class="colFirst"><code>static <a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#of(java.util.Map,java.lang.String,java.util.Set)">of</a></span>&#8203;(java.util.Map&lt;java.lang.Integer,&#8203;java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&gt;&nbsp;voices,
+  java.lang.String&nbsp;name,
+  java.util.Set&lt;java.lang.String&gt;&nbsp;labels)</code></th>
 <td class="colLast">
 <div class="block">Returns a polyphonic pattern with the given voices.</div>
 </td>
@@ -253,6 +308,82 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
+<a id="of(java.util.Map,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>of</h4>
+<pre class="methodSignature">static&nbsp;<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;of&#8203;(java.util.Map&lt;java.lang.Integer,&#8203;java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&gt;&nbsp;voices,
+                  java.lang.String&nbsp;name)</pre>
+<div class="block">Returns a polyphonic pattern with the given voices.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>voices</code> - the voices of the pattern</dd>
+<dd><code>name</code> - the name of the pattern</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>polyphonic pattern with the given voices</dd>
+</dl>
+</li>
+</ul>
+<a id="of(java.util.Map,java.lang.String,java.util.Set)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>of</h4>
+<pre class="methodSignature">static&nbsp;<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;of&#8203;(java.util.Map&lt;java.lang.Integer,&#8203;java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&gt;&nbsp;voices,
+                  java.lang.String&nbsp;name,
+                  java.util.Set&lt;java.lang.String&gt;&nbsp;labels)</pre>
+<div class="block">Returns a polyphonic pattern with the given voices.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>voices</code> - the voices of the pattern</dd>
+<dd><code>name</code> - the name of the pattern</dd>
+<dd><code>labels</code> - the labels associated with the pattern</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>polyphonic pattern with the given voices</dd>
+</dl>
+</li>
+</ul>
+<a id="of(java.util.List,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>of</h4>
+<pre class="methodSignature">static&nbsp;<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;of&#8203;(java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;contents,
+                  java.lang.String&nbsp;name)</pre>
+<div class="block">Returns a pattern with the given contents.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>contents</code> - non-empty list containing the notation elements of the pattern in temporal order</dd>
+<dd><code>name</code> - the name of the pattern</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a pattern with the given contents</dd>
+</dl>
+</li>
+</ul>
+<a id="of(java.util.List,java.lang.String,java.util.Set)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>of</h4>
+<pre class="methodSignature">static&nbsp;<a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a>&nbsp;of&#8203;(java.util.List&lt;? extends <a href="../notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>&gt;&nbsp;contents,
+                  java.lang.String&nbsp;name,
+                  java.util.Set&lt;java.lang.String&gt;&nbsp;labels)</pre>
+<div class="block">Returns a pattern with the given contents.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>contents</code> - non-empty list containing the notation elements of the pattern in temporal order</dd>
+<dd><code>name</code> - the name of the pattern</dd>
+<dd><code>labels</code> - the labels associated with the pattern</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a pattern with the given contents</dd>
+</dl>
+</li>
+</ul>
 <a id="of(java.util.Map)">
 <!--   -->
 </a>
@@ -281,6 +412,36 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the contents of this pattern</dd>
+</dl>
+</li>
+</ul>
+<a id="getName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getName</h4>
+<pre class="methodSignature">java.lang.String&nbsp;getName()</pre>
+<div class="block">Returns the name of the pattern.
+ <p>
+ If the pattern does not have a name, then returns an empty string.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the name of the pattern</dd>
+</dl>
+</li>
+</ul>
+<a id="getLabels()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getLabels</h4>
+<pre class="methodSignature">java.util.SortedSet&lt;java.lang.String&gt;&nbsp;getLabels()</pre>
+<div class="block">Returns the labels associated with this pattern in lexicographical order.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the labels associated with this pattern in lexicographical order</dd>
 </dl>
 </li>
 </ul>
@@ -341,6 +502,22 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>voiceNumber</code> - the number of the voice whose contents are returned</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the contents of the voice with the given number</dd>
+</dl>
+</li>
+</ul>
+<a id="hasLabel(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>hasLabel</h4>
+<pre class="methodSignature">boolean&nbsp;hasLabel&#8203;(java.lang.String&nbsp;label)</pre>
+<div class="block">Returns true if this pattern has the given labels.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>label</code> - the label whose presence is checked</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>true if this pattern has the given labels</dd>
 </dl>
 </li>
 </ul>

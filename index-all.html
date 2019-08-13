@@ -147,6 +147,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Returns a duration that is this duration with half of this duration added to
  it.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#addLabel(java.lang.String)">addLabel(String)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
+<dd>
+<div class="block">Adds the given label to this builder.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/ScoreBuilder.html#addPart(org.wmn4j.notation.builders.PartBuilder)">addPart(PartBuilder)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/ScoreBuilder.html" title="class in org.wmn4j.notation.builders">ScoreBuilder</a></dt>
 <dd>
 <div class="block">Add <a href="org/wmn4j/notation/builders/PartBuilder.html" title="class in org.wmn4j.notation.builders"><code>PartBuilder</code></a> to this builder.</div>
@@ -882,6 +886,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the key signature specified in these attributes.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#getLabels()">getLabels()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns the labels associated with this pattern in lexicographical order.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#getLeftBarline()">getLeftBarline()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
 <div class="block">Returns the left barline set in this builder.</div>
@@ -964,6 +972,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the measures in this staff as a list from smallest measure number to
  greatest.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#getName()">getName()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns the name of the pattern.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/PartBuilder.html#getName()">getName()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/PartBuilder.html" title="class in org.wmn4j.notation.builders">PartBuilder</a></dt>
 <dd>
@@ -1300,6 +1312,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#hashCode()">hashCode()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#hasLabel(java.lang.String)">hasLabel(String)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns true if this pattern has the given labels.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Note.html#hasMarking(org.wmn4j.notation.elements.Marking.Type)">hasMarking(Marking.Type)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a></dt>
 <dd>
 <div class="block">Returns true if this note is affected by a marking of the given type.</div>
@@ -1631,6 +1647,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns a pattern with the given contents.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#of(java.util.List,java.lang.String)">of(List&lt;? extends Durational&gt;, String)</a></span> - Static method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns a pattern with the given contents.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#of(java.util.List,java.lang.String,java.util.Set)">of(List&lt;? extends Durational&gt;, String, Set&lt;String&gt;)</a></span> - Static method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns a pattern with the given contents.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Staff.html#of(java.util.List)">of(List&lt;Measure&gt;)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Staff.html" title="class in org.wmn4j.notation.elements">Staff</a></dt>
 <dd>
 <div class="block">Returns a staff with the given measures.</div>
@@ -1640,6 +1664,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Returns a key signature with the given sharps and flats.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#of(java.util.Map)">of(Map&lt;Integer, List&lt;? extends Durational&gt;&gt;)</a></span> - Static method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns a polyphonic pattern with the given voices.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#of(java.util.Map,java.lang.String)">of(Map&lt;Integer, List&lt;? extends Durational&gt;&gt;, String)</a></span> - Static method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns a polyphonic pattern with the given voices.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#of(java.util.Map,java.lang.String,java.util.Set)">of(Map&lt;Integer, List&lt;? extends Durational&gt;&gt;, String, Set&lt;String&gt;)</a></span> - Static method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
 <div class="block">Returns a polyphonic pattern with the given voices.</div>
 </dd>
@@ -2029,6 +2061,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#setLeftBarline(org.wmn4j.notation.elements.Barline)">setLeftBarline(Barline)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
 <div class="block">Sets the left barline in this builder.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#setName(java.lang.String)">setName(String)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
+<dd>
+<div class="block">Sets the name of the pattern to be built.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#setNumber(int)">setNumber(int)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>

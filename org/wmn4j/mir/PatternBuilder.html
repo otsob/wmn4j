@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -176,25 +176,39 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="rowColor" id="i1">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addLabel(java.lang.String)">addLabel</a></span>&#8203;(java.lang.String&nbsp;label)</code></th>
+<td class="colLast">
+<div class="block">Adds the given label to this builder.</div>
+</td>
+</tr>
+<tr class="altColor" id="i2">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addToVoice(org.wmn4j.notation.builders.DurationalBuilder,int)">addToVoice</a></span>&#8203;(<a href="../notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>&nbsp;durationalBuilder,
           int&nbsp;voice)</code></th>
 <td class="colLast">
 <div class="block">Adds the given durational builder to the voice with the given number.</div>
 </td>
 </tr>
-<tr class="altColor" id="i2">
+<tr class="rowColor" id="i3">
 <td class="colFirst"><code><a href="Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#build()">build</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns a pattern instance with the contents set into this builder.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i3">
+<tr class="altColor" id="i4">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isMonophonic()">isMonophonic</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns true if this builder only has monophonic contents, that is, there is only single voice in the pattern
  and there are no simultaneously sounding notes set in the contents of this builder.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i5">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setName(java.lang.String)">setName</a></span>&#8203;(java.lang.String&nbsp;name)</code></th>
+<td class="colLast">
+<div class="block">Sets the name of the pattern to be built.</div>
 </td>
 </tr>
 </tbody>
@@ -290,6 +304,34 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if this builder has monophonic contents</dd>
+</dl>
+</li>
+</ul>
+<a id="setName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setName&#8203;(java.lang.String&nbsp;name)</pre>
+<div class="block">Sets the name of the pattern to be built.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>name</code> - the non-null name of the pattern to be built</dd>
+</dl>
+</li>
+</ul>
+<a id="addLabel(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addLabel</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addLabel&#8203;(java.lang.String&nbsp;label)</pre>
+<div class="block">Adds the given label to this builder.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>label</code> - the label to be added to this builder.</dd>
 </dl>
 </li>
 </ul>
