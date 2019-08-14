@@ -4,13 +4,16 @@
 package org.wmn4j.notation.elements;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.mir.Pattern;
+import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.notation.TestHelper;
 import org.wmn4j.notation.builders.PartBuilder;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
-import org.wmn4j.notation.iterators.ScoreIterator;
 import org.wmn4j.notation.iterators.Position;
+import org.wmn4j.notation.iterators.ScoreIterator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -165,5 +169,189 @@ public class ScoreTest {
 		final Position position = new Position(0, 1, 1, 1, 1, 1);
 		final Note noteInChord = (Note) score.getAt(position);
 		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF), noteInChord);
+	}
+
+	@Test
+	void testGivenSinglePartSingleVoiceContentWhenGettingWithPatternPositionCorrectPatternsAreReturned() {
+		final Score score = TestHelper.readScore("musicxml/basic_pattern_position_test.xml");
+
+		List<Position> simplePositions = new ArrayList<>();
+		simplePositions.add(new Position(0, 1, 1, 0));
+		simplePositions.add(new Position(0, 1, 1, 1));
+
+		Pattern twoFirstNotes = score.getAt(new PatternPosition(simplePositions));
+		assertEquals(2, twoFirstNotes.getContents().size());
+		assertEquals(1, twoFirstNotes.getNumberOfVoices());
+
+		assertEquals(Note.of(Pitch.Base.C, 0, 4, Durations.QUARTER), twoFirstNotes.getContents().get(0));
+		assertEquals(Note.of(Pitch.Base.D, 0, 4, Durations.QUARTER), twoFirstNotes.getContents().get(1));
+
+		List<Position> positionsWithGap = new ArrayList<>();
+		positionsWithGap.add(new Position(0, 1, 1, 0));
+		positionsWithGap.add(new Position(0, 1, 1, 3));
+		positionsWithGap.add(new Position(0, 3, 1, 0));
+
+		Pattern patternWithGaps = score.getAt(new PatternPosition(positionsWithGap));
+		assertEquals(6, patternWithGaps.getContents().size());
+		assertEquals(1, patternWithGaps.getNumberOfVoices());
+
+		assertEquals(Note.of(Pitch.Base.C, 0, 4, Durations.QUARTER), patternWithGaps.getContents().get(0));
+		assertEquals(Rest.of(Durations.QUARTER), patternWithGaps.getContents().get(1));
+		assertEquals(Rest.of(Durations.QUARTER), patternWithGaps.getContents().get(2));
+		assertEquals(Note.of(Pitch.Base.F, 0, 4, Durations.QUARTER), patternWithGaps.getContents().get(3));
+
+		assertEquals(Rest.of(Durations.WHOLE), patternWithGaps.getContents().get(4));
+
+		assertEquals(Note.of(Pitch.Base.C, 0, 4, Durations.WHOLE), patternWithGaps.getContents().get(5));
+	}
+
+	@Test
+	void testGivenSingleVoiceContentWhenGettingWithPatternPositionsWithChordsCorrectPatternsAreReturned() {
+		final Score score = TestHelper.readScore("musicxml/basic_pattern_position_test.xml");
+
+		List<Position> positionsWithChord = new ArrayList<>();
+		positionsWithChord.add(new Position(0, 2, 1, 2));
+		positionsWithChord.add(new Position(0, 2, 1, 3));
+
+		Pattern patternWithChord = score.getAt(new PatternPosition(positionsWithChord));
+		assertEquals(2, patternWithChord.getContents().size());
+
+		assertEquals(Note.of(Pitch.Base.E, 0, 4, Durations.EIGHTH), patternWithChord.getContents().get(0));
+		assertEquals(Chord.of(Note.of(Pitch.Base.D, 0, 4, Durations.EIGHTH),
+				Note.of(Pitch.Base.F, 0, 4, Durations.EIGHTH),
+				Note.of(Pitch.Base.A, 0, 4, Durations.EIGHTH)), patternWithChord.getContents().get(1));
+
+		List<Position> positionsWithinChord = new ArrayList<>();
+		positionsWithinChord.add(new Position(0, 2, 1, 2));
+		positionsWithinChord.add(new Position(0, 1, 2, 1, 3, 0));
+		positionsWithinChord.add(new Position(0, 1, 2, 1, 3, 1));
+
+		Pattern patternWithinChord = score.getAt(new PatternPosition(positionsWithinChord));
+		assertEquals(2, patternWithinChord.getContents().size());
+
+		assertEquals(Note.of(Pitch.Base.E, 0, 4, Durations.EIGHTH), patternWithinChord.getContents().get(0));
+		assertEquals(Chord.of(Note.of(Pitch.Base.D, 0, 4, Durations.EIGHTH),
+				Note.of(Pitch.Base.F, 0, 4, Durations.EIGHTH)), patternWithinChord.getContents().get(1));
+	}
+
+	@Test
+	void testGivenScoreWithMultistaffPartsWithMultipleVoicesThenGetAtPatternReturnsCorrectPatterns() {
+		final Score score = TestHelper.readScore("musicxml/multi_part_pattern_position_test.xml");
+
+		List<Position> positionsAcrossParts = new ArrayList<>();
+		positionsAcrossParts.add(new Position(0, 1, 1, 1, 1));
+		positionsAcrossParts.add(new Position(0, 1, 2, 2, 0));
+
+		positionsAcrossParts.add(new Position(1, 1, 1, 1, 1));
+		positionsAcrossParts.add(new Position(1, 1, 3, 2, 0));
+
+		positionsAcrossParts.add(new Position(1, 2, 4, 1, 0));
+
+		final Pattern patternWithNotesAcrossParts = score.getAt(new PatternPosition(positionsAcrossParts));
+		assertEquals(3, patternWithNotesAcrossParts.getNumberOfVoices());
+
+		final List<Durational> voice1 = patternWithNotesAcrossParts.getVoice(1);
+		assertEquals(3, voice1.size());
+
+		assertEquals(Note.of(Pitch.Base.C, 0, 4, Durations.QUARTER), voice1.get(0));
+		assertEquals(Rest.of(Durations.QUARTER), voice1.get(1));
+		assertEquals(Note.of(Pitch.Base.E, 0, 5, Durations.HALF), voice1.get(2));
+
+		final List<Durational> voice2 = patternWithNotesAcrossParts.getVoice(2);
+		assertEquals(4, voice2.size());
+
+		assertEquals(Note.of(Pitch.Base.A, 0, 4, Durations.QUARTER), voice2.get(0));
+		assertEquals(Rest.of(Durations.QUARTER), voice2.get(1));
+		assertEquals(Rest.of(Durations.QUARTER.multiplyBy(3)), voice2.get(2));
+		assertEquals(Note.of(Pitch.Base.D, 0, 4, Durations.HALF), voice2.get(3));
+
+		final List<Durational> voice3 = patternWithNotesAcrossParts.getVoice(3);
+		assertEquals(4, voice3.size());
+
+		assertEquals(Rest.of(Durations.HALF), voice3.get(0));
+		assertEquals(Rest.of(Durations.HALF.addDot()), voice3.get(1));
+		assertEquals(Rest.of(Durations.HALF.addDot()), voice3.get(2));
+		assertEquals(Note.of(Pitch.Base.D, 0, 3, Durations.HALF), voice3.get(3));
+	}
+
+	@Test
+	void testGivenScoreWithMultistaffPartsAndPositionsFromOverlappingVoicesThenGetAtPatternReturnsCorrectPatterns() {
+		final Score score = TestHelper.readScore("musicxml/multi_part_pattern_position_test.xml");
+
+		List<Position> positionsWithOverlappingVoices = new ArrayList<>();
+		positionsWithOverlappingVoices.add(new Position(0, 1, 2, 1, 0));
+		positionsWithOverlappingVoices.add(new Position(0, 1, 2, 2, 0));
+
+		positionsWithOverlappingVoices.add(new Position(1, 1, 3, 1, 2));
+		positionsWithOverlappingVoices.add(new Position(1, 1, 3, 2, 0));
+
+		positionsWithOverlappingVoices.add(new Position(1, 2, 3, 1, 0));
+
+		final Pattern patternFromOverlappingVoices = score.getAt(new PatternPosition(positionsWithOverlappingVoices));
+
+		assertEquals(5, patternFromOverlappingVoices.getNumberOfVoices());
+
+		final List<Durational> voice1 = patternFromOverlappingVoices.getVoice(1);
+		assertEquals(1, voice1.size());
+		assertEquals(Note.of(Pitch.Base.D, 0, 4, Durations.QUARTER), voice1.get(0));
+
+		final List<Durational> voice2 = patternFromOverlappingVoices.getVoice(2);
+		assertEquals(1, voice2.size());
+		assertEquals(Note.of(Pitch.Base.E, 0, 5, Durations.HALF), voice2.get(0));
+
+		final List<Durational> voice3 = patternFromOverlappingVoices.getVoice(3);
+		assertEquals(4, voice3.size());
+
+		assertEquals(Rest.of(Durations.HALF.addDot()), voice3.get(0));
+		assertEquals(Rest.of(Durations.SIXTEENTH), voice3.get(1));
+		assertEquals(Rest.of(Durations.SIXTEENTH), voice3.get(2));
+		assertEquals(Note.of(Pitch.Base.D, -1, 5, Durations.EIGHTH), voice3.get(3));
+
+		final List<Durational> voice4 = patternFromOverlappingVoices.getVoice(4);
+		assertEquals(2, voice4.size());
+
+		assertEquals(Rest.of(Durations.HALF.addDot()), voice4.get(0));
+		assertEquals(Note.of(Pitch.Base.D, 0, 4, Durations.HALF), voice4.get(1));
+
+		final List<Durational> voice5 = patternFromOverlappingVoices.getVoice(5);
+		assertEquals(2, voice5.size());
+
+		assertEquals(Rest.of(Durations.HALF.addDot()), voice5.get(0));
+		assertEquals(Note.of(Pitch.Base.D, 0, 3, Durations.QUARTER), voice5.get(1));
+	}
+
+	@Test
+	void testGivenPatternPositionsOutsideScoreNoSuchElementExceptionIsThrown() {
+		final Score score = TestHelper.readScore("musicxml/multi_part_pattern_position_test.xml");
+
+		assertThrows(NoSuchElementException.class, () -> score.getAt(new PatternPosition(
+						Arrays.asList(new Position(0, 1, 1, 1, 0),
+								new Position(3, 1, 2, 1, 0)))),
+				"No exception thrown for pattern position with invalid part index");
+
+		assertThrows(NoSuchElementException.class, () -> score.getAt(new PatternPosition(
+						Arrays.asList(new Position(0, 1, 1, 1, 0),
+								new Position(0, 2, 2, 1, 0)))),
+				"No exception thrown for pattern position with invalid staff number");
+
+		assertThrows(NoSuchElementException.class, () -> score.getAt(new PatternPosition(
+						Arrays.asList(new Position(0, 1, 1, 1, 0),
+								new Position(0, 1, 7, 1, 0)))),
+				"No exception thrown for pattern position with invalid measure number");
+
+		assertThrows(NoSuchElementException.class, () -> score.getAt(new PatternPosition(
+						Arrays.asList(new Position(0, 1, 1, 1, 0),
+								new Position(0, 1, 2, 3, 0)))),
+				"No exception thrown for pattern position with invalid voice number");
+
+		assertThrows(NoSuchElementException.class, () -> score.getAt(new PatternPosition(
+						Arrays.asList(new Position(0, 1, 1, 1, 0),
+								new Position(0, 1, 2, 2, 2)))),
+				"No exception thrown for pattern position with invalid index in voice");
+
+		assertThrows(NoSuchElementException.class, () -> score.getAt(new PatternPosition(
+						Arrays.asList(new Position(0, 1, 1, 1, 0),
+								new Position(0, 1, 2, 1, 0, 0)))),
+				"No exception thrown for pattern position with invalid index in chord");
 	}
 }
