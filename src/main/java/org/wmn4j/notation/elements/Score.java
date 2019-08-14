@@ -147,7 +147,7 @@ public final class Score implements Iterable<Part> {
 	 * @throws NoSuchElementException if the position is not found in this score
 	 */
 	public Durational getAtPosition(Position position) throws NoSuchElementException {
-		final Part part = this.parts.get(position.getPartNumber());
+		final Part part = this.parts.get(position.getPartIndex());
 		final Measure measure = part.getMeasure(position.getStaffNumber(), position.getMeasureNumber());
 		Durational dur = measure.get(position.getVoiceNumber(), position.getIndexInVoice());
 

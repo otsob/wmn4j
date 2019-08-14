@@ -13,7 +13,7 @@ public final class Position {
 
 	private static final int NOT_IN_CHORD = -1;
 
-	private final int partNumber;
+	private final int partIndex;
 	private final int staffNumber;
 	private final int measureNumber;
 	private final int voiceNumber;
@@ -23,7 +23,7 @@ public final class Position {
 	/**
 	 * Constructor for positions in parts with multiple staves.
 	 *
-	 * @param partNumber    the number (index) of the part in the the score
+	 * @param partIndex    the number (index) of the part in the the score
 	 * @param staffNumber   the number of the staff in the part. For parts with a
 	 *                      single staff use the constructor without the staffNumber
 	 *                      parameter
@@ -31,8 +31,8 @@ public final class Position {
 	 * @param voiceNumber   the voice number in the measure
 	 * @param indexInVoice  the index in the voice specified by voiceNumber
 	 */
-	public Position(int partNumber, int staffNumber, int measureNumber, int voiceNumber, int indexInVoice) {
-		this.partNumber = partNumber;
+	public Position(int partIndex, int staffNumber, int measureNumber, int voiceNumber, int indexInVoice) {
+		this.partIndex = partIndex;
 		this.staffNumber = staffNumber;
 		this.measureNumber = measureNumber;
 		this.voiceNumber = voiceNumber;
@@ -43,7 +43,7 @@ public final class Position {
 	/**
 	 * Constructor for positions that can be used to access a note in a chord.
 	 *
-	 * @param partNumber    The number (index) of the part in the score
+	 * @param partIndex    The number (index) of the part in the score
 	 * @param staffNumber   The number of the staff in the part. For single staff
 	 *                      parts use the constructor without the staffNumber
 	 *                      parameter
@@ -53,9 +53,9 @@ public final class Position {
 	 * @param indexInChord  Starting from the bottom of the chord, the index of the
 	 *                      note
 	 */
-	public Position(int partNumber, int staffNumber, int measureNumber, int voiceNumber, int indexInVoice,
+	public Position(int partIndex, int staffNumber, int measureNumber, int voiceNumber, int indexInVoice,
 			int indexInChord) {
-		this.partNumber = partNumber;
+		this.partIndex = partIndex;
 		this.staffNumber = staffNumber;
 		this.measureNumber = measureNumber;
 		this.voiceNumber = voiceNumber;
@@ -66,13 +66,13 @@ public final class Position {
 	/**
 	 * Constructor for position in a part with only a single staff.
 	 *
-	 * @param partNumber    the number (index) of the part in the score
+	 * @param partIndex    the number (index) of the part in the score
 	 * @param measureNumber the measure number
 	 * @param voiceNumber   the voice number in the measure
 	 * @param indexInVoice  the index in the voice specified by voiceNumber
 	 */
-	public Position(int partNumber, int measureNumber, int voiceNumber, int indexInVoice) {
-		this.partNumber = partNumber;
+	public Position(int partIndex, int measureNumber, int voiceNumber, int indexInVoice) {
+		this.partIndex = partIndex;
 		this.staffNumber = SingleStaffPart.STAFF_NUMBER;
 		this.measureNumber = measureNumber;
 		this.voiceNumber = voiceNumber;
@@ -85,8 +85,8 @@ public final class Position {
 	 *
 	 * @return The number (index) of the part in the score
 	 */
-	public int getPartNumber() {
-		return this.partNumber;
+	public int getPartIndex() {
+		return this.partIndex;
 	}
 
 	/**
@@ -163,7 +163,7 @@ public final class Position {
 
 		final Position other = (Position) o;
 
-		if (this.partNumber != other.getPartNumber()) {
+		if (this.partIndex != other.getPartIndex()) {
 			return false;
 		}
 
@@ -189,7 +189,7 @@ public final class Position {
 	@Override
 	public int hashCode() {
 		int hash = 7;
-		hash = 53 * hash + this.partNumber;
+		hash = 53 * hash + this.partIndex;
 		hash = 53 * hash + this.staffNumber;
 		hash = 53 * hash + this.measureNumber;
 		hash = 53 * hash + this.voiceNumber;
@@ -200,7 +200,7 @@ public final class Position {
 	@Override
 	public String toString() {
 		final StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("Part: ").append(this.partNumber).append(", Staff: ").append(this.staffNumber)
+		strBuilder.append("Part: ").append(this.partIndex).append(", Staff: ").append(this.staffNumber)
 				.append(", Measure: ").append(this.measureNumber).append(", Voice: ").append(this.voiceNumber)
 				.append(", Index: ").append(this.indexInVoice);
 

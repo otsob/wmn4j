@@ -57,12 +57,12 @@ class PointSet {
 			final Position pos = scoreIterator.getPositionOfPrevious();
 
 			// Part changes
-			if (prevPos != null && prevPos.getPartNumber() != pos.getPartNumber()) {
+			if (prevPos != null && prevPos.getPartIndex() != pos.getPartIndex()) {
 				offsetToEndOfLastMeasure = 0.0;
 				offsetWithinMeasure = 0.0;
 			} else if (prevPos != null && prevPos.getMeasureNumber() != pos.getMeasureNumber()) {
 				// Measure changes.
-				final Measure prevMeasure = score.getPart(prevPos.getPartNumber()).getMeasure(prevPos.getStaffNumber(),
+				final Measure prevMeasure = score.getPart(prevPos.getPartIndex()).getMeasure(prevPos.getStaffNumber(),
 						prevPos.getMeasureNumber());
 				final double prevMeasureDuration = prevMeasure.getTimeSignature().getTotalDuration().toDouble();
 				offsetToEndOfLastMeasure += prevMeasureDuration;
