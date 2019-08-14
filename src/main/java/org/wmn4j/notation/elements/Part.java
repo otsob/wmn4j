@@ -6,6 +6,7 @@ package org.wmn4j.notation.elements;
 import org.wmn4j.notation.iterators.PartIterator;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -40,6 +41,15 @@ public interface Part extends Iterable<Measure> {
 	 * @return number of staves in this part
 	 */
 	int getStaffCount();
+
+	/**
+	 * Returns the numbers of the staves in this part.
+	 * <p>
+	 * The staff numbers are ordered from smallest to greatest.
+	 *
+	 * @return the numbers of the staves in this part
+	 */
+	List<Integer> getStaffNumbers();
 
 	/**
 	 * Returns the given attribute. If the attribute is not present, returns an
