@@ -88,7 +88,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		return dbf.newDocumentBuilder();
 	}
 
-	private boolean isMusicXmlFileValid(File musicXmlFile) {
+	private boolean isMusicXmlFileValid(File musicXmlFile) throws IOException {
 		final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		try {
 			ClassLoader classLoader = getClass().getClassLoader();
@@ -96,7 +96,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			final Schema schema = schemaFactory.newSchema(schemaFile);
 			final Validator validator = schema.newValidator();
 			validator.validate(new StreamSource(musicXmlFile));
-		} catch (IOException | SAXException e) {
+		} catch (SAXException e) {
 			LOG.warn(musicXmlFile.toString() + " is not valid MusicXML:", e);
 			return false;
 		}
@@ -113,10 +113,6 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	public ScoreBuilder readScoreBuilder() throws IOException, ParsingFailureException {
 		final ScoreBuilder scoreBuilder = new ScoreBuilder();
 		final File musicXmlFile = path.toFile();
-
-		if (!musicXmlFile.exists()) {
-			throw new IOException(path.toString() + " does not exist");
-		}
 
 		if (this.validateInput && !isMusicXmlFileValid(musicXmlFile)) {
 			throw new ParsingFailureException(path.toString() + " is not a valid MusicXML file");
