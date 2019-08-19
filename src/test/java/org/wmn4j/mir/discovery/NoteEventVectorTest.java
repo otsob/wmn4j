@@ -2,14 +2,13 @@
  * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.mir.pattern_discovery;
+package org.wmn4j.mir.discovery;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.mir.pattern_discovery.NoteEventVector;
 
 /**
  * @author Otso Björklund
