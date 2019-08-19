@@ -86,7 +86,7 @@ public interface Part extends Iterable<Measure> {
 	 * @param staffNumber   the number of the staff from which the get the measure
 	 * @param measureNumber the number of the measure
 	 * @return the measure with measureNumber from the staff with staffNumber
-	 * @throws NoSuchElementException if there is no staff of measure with the given
+	 * @throws NoSuchElementException if there is no staff or measure with the given
 	 *                                number in this part
 	 */
 	Measure getMeasure(int staffNumber, int measureNumber) throws NoSuchElementException;

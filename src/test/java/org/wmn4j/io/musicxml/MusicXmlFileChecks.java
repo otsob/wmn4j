@@ -415,13 +415,13 @@ class MusicXmlFileChecks {
 	 * Expects the contents of the file "articulations.xml"
 	 */
 	static void assertScoreWithArticulationsReadCorrectly(Score score) {
-		final Measure measureOne = score.getPart(0).getMeasure(0, 1);
+		final Measure measureOne = score.getPart(0).getMeasure(SingleStaffPart.STAFF_NUMBER, 1);
 		assertTrue(((Note) measureOne.get(1, 0)).hasArticulation(Articulation.STACCATO));
 		assertTrue(((Note) measureOne.get(1, 1)).hasArticulation(Articulation.ACCENT));
 		assertTrue(((Note) measureOne.get(1, 2)).hasArticulation(Articulation.TENUTO));
 		assertTrue(((Note) measureOne.get(1, 3)).hasArticulation(Articulation.FERMATA));
 
-		final Measure measureTwo = score.getPart(0).getMeasure(0, 2);
+		final Measure measureTwo = score.getPart(0).getMeasure(SingleStaffPart.STAFF_NUMBER, 2);
 		Note firstNoteInMeasureTwo = (Note) measureTwo.get(1, 0);
 		assertTrue(firstNoteInMeasureTwo.hasArticulation(Articulation.STACCATO));
 		assertTrue(firstNoteInMeasureTwo.hasArticulation(Articulation.ACCENT));

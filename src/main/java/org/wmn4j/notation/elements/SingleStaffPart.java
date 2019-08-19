@@ -92,6 +92,9 @@ public final class SingleStaffPart implements Part {
 
 	@Override
 	public Measure getMeasure(int staffNumber, int measureNumber) {
+		if (staffNumber != STAFF_NUMBER) {
+			throw new NoSuchElementException("No staff with number " + staffNumber + " in a single staff part");
+		}
 		return this.getMeasure(measureNumber);
 	}
 

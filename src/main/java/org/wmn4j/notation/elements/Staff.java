@@ -26,7 +26,7 @@ public final class Staff implements Iterable<Measure> {
 		 * A single line percussion staff.
 		 */
 		SINGLE_LINE
-	};
+	}
 
 	private final List<Measure> measures;
 	private final Type type;
@@ -69,8 +69,8 @@ public final class Staff implements Iterable<Measure> {
 	 * @return the measure with the given number
 	 */
 	public Measure getMeasure(int number) {
-		if (!this.hasPickupMeasure() && number < 1) {
-			throw new NoSuchElementException();
+		if (!this.hasPickupMeasure() && number < 1 || number > getFullMeasureCount()) {
+			throw new NoSuchElementException("No measure with number " + number + " in staff");
 		}
 
 		return this.measures.get(number);

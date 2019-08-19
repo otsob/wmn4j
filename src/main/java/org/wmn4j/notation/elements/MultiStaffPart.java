@@ -112,6 +112,10 @@ public final class MultiStaffPart implements Part {
 
 	@Override
 	public Measure getMeasure(int staffNumber, int measureNumber) {
+		if (!this.staves.containsKey(staffNumber)) {
+			throw new NullPointerException("No staff with number " + staffNumber);
+		}
+
 		return this.staves.get(staffNumber).getMeasure(measureNumber);
 	}
 
