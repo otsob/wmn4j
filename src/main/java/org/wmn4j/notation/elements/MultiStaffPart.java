@@ -96,11 +96,7 @@ public final class MultiStaffPart implements Part {
 		return this.staves.get(number);
 	}
 
-	/**
-	 * Returns the numbers in this part that are used to denote the staves.
-	 *
-	 * @return the staff numbers in this part
-	 */
+	@Override
 	public List<Integer> getStaffNumbers() {
 		return new ArrayList<>(this.staves.keySet());
 	}
@@ -116,6 +112,10 @@ public final class MultiStaffPart implements Part {
 
 	@Override
 	public Measure getMeasure(int staffNumber, int measureNumber) {
+		if (!this.staves.containsKey(staffNumber)) {
+			throw new NullPointerException("No staff with number " + staffNumber);
+		}
+
 		return this.staves.get(staffNumber).getMeasure(measureNumber);
 	}
 

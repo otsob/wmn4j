@@ -4,7 +4,7 @@
  */
 package org.wmn4j.mir.pattern_discovery;
 
-import org.wmn4j.notation.iterators.ScorePosition;
+import org.wmn4j.notation.iterators.Position;
 
 /**
  *
@@ -14,19 +14,19 @@ class NoteEventVector implements Comparable<NoteEventVector> {
 
 	private final double[] components;
 	private final int hash;
-	private final ScorePosition scorePosition;
+	private final Position position;
 
 	NoteEventVector(double[] components) {
 		this.components = new double[components.length];
 		System.arraycopy(components, 0, this.components, 0, components.length);
-		this.scorePosition = null;
+		this.position = null;
 		this.hash = computeHash();
 	}
 
-	NoteEventVector(double[] components, ScorePosition scorePosition) {
+	NoteEventVector(double[] components, Position position) {
 		this.components = new double[components.length];
 		System.arraycopy(components, 0, this.components, 0, components.length);
-		this.scorePosition = scorePosition;
+		this.position = position;
 		this.hash = computeHash();
 	}
 
@@ -39,11 +39,11 @@ class NoteEventVector implements Comparable<NoteEventVector> {
 	}
 
 	boolean hasPosition() {
-		return this.scorePosition != null;
+		return this.position != null;
 	}
 
-	ScorePosition getPosition() {
-		return this.scorePosition;
+	Position getPosition() {
+		return this.position;
 	}
 
 	NoteEventVector add(NoteEventVector other) {
@@ -129,8 +129,8 @@ class NoteEventVector implements Comparable<NoteEventVector> {
 		}
 		strBuilder.append(Double.toString(this.components[this.components.length - 1])).append(")");
 
-		if (this.scorePosition != null) {
-			strBuilder.append(" at ").append(scorePosition);
+		if (this.position != null) {
+			strBuilder.append(" at ").append(position);
 		}
 
 		return strBuilder.toString();

@@ -14,7 +14,7 @@ import org.wmn4j.notation.elements.Measure;
 import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
-import org.wmn4j.notation.iterators.ScorePosition;
+import org.wmn4j.notation.iterators.Position;
 
 /**
  *
@@ -47,22 +47,22 @@ class PointSet {
 	private List<NoteEventVector> pointsFromScore(Score score) {
 
 		final PartWiseScoreIterator scoreIterator = new PartWiseScoreIterator(score);
-		ScorePosition prevPos = null;
+		Position prevPos = null;
 		double offsetToEndOfLastMeasure = 0.0;
 		double offsetWithinMeasure = 0.0;
 		final List<NoteEventVector> noteEvents = new ArrayList<>();
 
 		while (scoreIterator.hasNext()) {
 			final Durational dur = scoreIterator.next();
-			final ScorePosition pos = scoreIterator.getPositionOfPrevious();
+			final Position pos = scoreIterator.getPositionOfPrevious();
 
 			// Part changes
-			if (prevPos != null && prevPos.getPartNumber() != pos.getPartNumber()) {
+			if (prevPos != null && prevPos.getPartIndex() != pos.getPartIndex()) {
 				offsetToEndOfLastMeasure = 0.0;
 				offsetWithinMeasure = 0.0;
 			} else if (prevPos != null && prevPos.getMeasureNumber() != pos.getMeasureNumber()) {
 				// Measure changes.
-				final Measure prevMeasure = score.getPart(prevPos.getPartNumber()).getMeasure(prevPos.getStaffNumber(),
+				final Measure prevMeasure = score.getPart(prevPos.getPartIndex()).getMeasure(prevPos.getStaffNumber(),
 						prevPos.getMeasureNumber());
 				final double prevMeasureDuration = prevMeasure.getTimeSignature().getTotalDuration().toDouble();
 				offsetToEndOfLastMeasure += prevMeasureDuration;
@@ -75,7 +75,7 @@ class PointSet {
 
 			if (isOnset(dur)) {
 				final double totalOffset = offsetToEndOfLastMeasure + offsetWithinMeasure;
-				final Durational atPosition = score.getAtPosition(pos);
+				final Durational atPosition = score.getAt(pos);
 
 				if (atPosition instanceof Note) {
 					final double pitch = ((Note) atPosition).getPitch().toInt();

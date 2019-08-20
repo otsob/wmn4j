@@ -23,7 +23,7 @@ public interface ScoreIterator extends Iterator<Durational> {
 	 * @throws IllegalStateException if {@link #next() next} has not been called on
 	 *                               the iterator
 	 */
-	ScorePosition getPositionOfPrevious() throws IllegalStateException;
+	Position getPositionOfPrevious() throws IllegalStateException;
 
 	@Override
 	default void remove() {
