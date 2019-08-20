@@ -394,6 +394,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns true if this chord contains the given pitch.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternPosition.html#contains(org.wmn4j.notation.iterators.Position)">contains(Position)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir">PatternPosition</a></dt>
+<dd>
+<div class="block">Returns true if this pattern position contains a reference to the notation element located in the given position.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Measure.html#containsClefChanges()">containsClefChanges()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Measure.html" title="class in org.wmn4j.notation.elements">Measure</a></dt>
 <dd>
 <div class="block">Returns true if this measure contains clef changes.</div>
@@ -571,7 +575,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Compare for equality.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
 <dd>
 <div class="block">Returns true if this position is equal to the given object.</div>
 </dd>
@@ -733,7 +737,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns an unmodifiable view of all articulations defined for this note.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Score.html#getAtPosition(org.wmn4j.notation.iterators.ScorePosition)">getAtPosition(ScorePosition)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Score.html#getAt(org.wmn4j.mir.PatternPosition)">getAt(PatternPosition)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a></dt>
+<dd>
+<div class="block">Returns the pattern specified by the given pattern position in this score.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Score.html#getAt(org.wmn4j.notation.iterators.Position)">getAt(Position)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a></dt>
 <dd>
 <div class="block">Returns the durational notation object at the given position.</div>
 </dd>
@@ -857,11 +865,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the highest note in this chord.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#getIndexInChord()">getIndexInChord()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#getIndexInChord()">getIndexInChord()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
 <dd>
 <div class="block">Returns the index of the note in a chord to which this position points.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#getIndexInVoice()">getIndexInVoice()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#getIndexInVoice()">getIndexInVoice()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
 <dd>
 <div class="block">Returns the index in the voice to which this position points.</div>
 </dd>
@@ -959,7 +967,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns a measure iterator for this measure.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#getMeasureNumber()">getMeasureNumber()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#getMeasureNumber()">getMeasureNumber()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
 <dd>
 <div class="block">Returns the number of the measure to which this position points.</div>
 </dd>
@@ -967,6 +975,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the measure number of the measure that was returned on the previous
  call of next.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternPosition.html#getMeasureNumbers()">getMeasureNumbers()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir">PatternPosition</a></dt>
+<dd>
+<div class="block">Returns the numbers of all measures referred to by this pattern position.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternPosition.html#getMeasureNumbers(int)">getMeasureNumbers(int)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir">PatternPosition</a></dt>
+<dd>
+<div class="block">Returns the numbers of measures in the part with the given index referred to by this pattern position.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Staff.html#getMeasures()">getMeasures()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Staff.html" title="class in org.wmn4j.notation.elements">Staff</a></dt>
 <dd>
@@ -1046,6 +1062,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the number of parts in this score.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#getPartIndex()">getPartIndex()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
+<dd>
+<div class="block">Returns the part number of this position.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternPosition.html#getPartIndices()">getPartIndices()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir">PatternPosition</a></dt>
+<dd>
+<div class="block">Returns the indices of the parts referred to by this pattern position.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/MultiStaffPart.html#getPartIterator()">getPartIterator()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/MultiStaffPart.html" title="class in org.wmn4j.notation.elements">MultiStaffPart</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Part.html#getPartIterator()">getPartIterator()</a></span> - Method in interface org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Part.html" title="interface in org.wmn4j.notation.elements">Part</a></dt>
@@ -1055,10 +1079,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/SingleStaffPart.html#getPartIterator()">getPartIterator()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#getPartNumber()">getPartNumber()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
-<dd>
-<div class="block">Returns the part number of this position.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Score.html#getParts()">getParts()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a></dt>
 <dd>
 <div class="block">Returns the parts in this score.</div>
@@ -1091,9 +1111,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Returns the position of the <a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> returned by the last call of
  <code>next</code>.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternOccurrence.html#getPositions()">getPositions()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternOccurrence.html" title="class in org.wmn4j.mir">PatternOccurrence</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternPosition.html#getPositions(int)">getPositions(int)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir">PatternPosition</a></dt>
 <dd>
-<div class="block">Returns the positions in which the elements of the pattern occur in a score.</div>
+<div class="block">Returns the positions in the part with the given index referred to by this pattern position.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#getRightBarline()">getRightBarline()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
@@ -1110,6 +1130,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/KeySignature.html#getSharps()">getSharps()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a></dt>
 <dd>
 <div class="block">Returns the sharps in this key signature.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternPosition.html#getSize()">getSize()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir">PatternPosition</a></dt>
+<dd>
+<div class="block">Returns the number of notation elements the referred pattern contains.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/SingleStaffPart.html#getStaff()">getStaff()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></dt>
 <dd>
@@ -1135,7 +1159,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/SingleStaffPart.html#getStaffCount()">getStaffCount()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#getStaffNumber()">getStaffNumber()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#getStaffNumber()">getStaffNumber()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
 <dd>
 <div class="block">Returns the staff number in the part pointed to by this position.</div>
 </dd>
@@ -1149,8 +1173,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Returns the staff numbers set in this builder.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/MultiStaffPart.html#getStaffNumbers()">getStaffNumbers()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/MultiStaffPart.html" title="class in org.wmn4j.notation.elements">MultiStaffPart</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Part.html#getStaffNumbers()">getStaffNumbers()</a></span> - Method in interface org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Part.html" title="interface in org.wmn4j.notation.elements">Part</a></dt>
 <dd>
-<div class="block">Returns the numbers in this part that are used to denote the staves.</div>
+<div class="block">Returns the numbers of the staves in this part.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/SingleStaffPart.html#getStaffNumbers()">getStaffNumbers()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternPosition.html#getStaffNumbers(int)">getStaffNumbers(int)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir">PatternPosition</a></dt>
+<dd>
+<div class="block">Returns the numbers of staves in the part with the given index referred to by this pattern position.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Clef.html#getSymbol()">getSymbol()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a></dt>
 <dd>
@@ -1215,7 +1247,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the number of voices in this measure.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#getVoiceNumber()">getVoiceNumber()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#getVoiceNumber()">getVoiceNumber()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
 <dd>
 <div class="block">Returns the number of the voice to which this position points.</div>
 </dd>
@@ -1310,7 +1342,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/TimeSignature.html#hashCode()">hashCode()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/TimeSignature.html" title="class in org.wmn4j.notation.elements">TimeSignature</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#hashCode()">hashCode()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#hashCode()">hashCode()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#hasLabel(java.lang.String)">hasLabel(String)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
@@ -1365,7 +1397,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns true if this is higher than the given pitch.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#isInChord()">isInChord()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#isInChord()">isInChord()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
 <dd>
 <div class="block">Returns true if this position points to a note in a chord.</div>
 </dd>
@@ -1830,13 +1862,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Constructor that creates an empty builder.</div>
 </dd>
-<dt><a href="org/wmn4j/mir/PatternOccurrence.html" title="class in org.wmn4j.mir"><span class="typeNameLink">PatternOccurrence</span></a> - Class in <a href="org/wmn4j/mir/package-summary.html">org.wmn4j.mir</a></dt>
+<dt><a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir"><span class="typeNameLink">PatternPosition</span></a> - Class in <a href="org/wmn4j/mir/package-summary.html">org.wmn4j.mir</a></dt>
 <dd>
-<div class="block">Class that represents an occurrence of a pattern in a score.</div>
+<div class="block">Represents the position of a <a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a> in a <a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternOccurrence.html#%3Cinit%3E(java.util.List)">PatternOccurrence(List&lt;ScorePosition&gt;)</a></span> - Constructor for class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternOccurrence.html" title="class in org.wmn4j.mir">PatternOccurrence</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternPosition.html#%3Cinit%3E(java.util.Collection)">PatternPosition(Collection&lt;Position&gt;)</a></span> - Constructor for class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir">PatternPosition</a></dt>
 <dd>
-<div class="block">Constructor.</div>
+<div class="block">Creates a new pattern position with the given positions.</div>
 </dd>
 <dt><a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony"><span class="typeNameLink">PCProfile</span></a> - Class in <a href="org/wmn4j/analysis/harmony/package-summary.html">org.wmn4j.analysis.harmony</a></dt>
 <dd>
@@ -1882,6 +1914,23 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><a href="org/wmn4j/notation/elements/Pitched.html" title="interface in org.wmn4j.notation.elements"><span class="typeNameLink">Pitched</span></a> - Interface in <a href="org/wmn4j/notation/elements/package-summary.html">org.wmn4j.notation.elements</a></dt>
 <dd>
 <div class="block">Interface for notation elements that have pitch.</div>
+</dd>
+<dt><a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators"><span class="typeNameLink">Position</span></a> - Class in <a href="org/wmn4j/notation/iterators/package-summary.html">org.wmn4j.notation.iterators</a></dt>
+<dd>
+<div class="block">Represents the position of a <a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a>
+ in a <a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#%3Cinit%3E(int,int,int,int)">Position(int, int, int, int)</a></span> - Constructor for class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
+<dd>
+<div class="block">Constructor for position in a part with only a single staff.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#%3Cinit%3E(int,int,int,int,int)">Position(int, int, int, int, int)</a></span> - Constructor for class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
+<dd>
+<div class="block">Constructor for positions in parts with multiple staves.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#%3Cinit%3E(int,int,int,int,int,int)">Position(int, int, int, int, int, int)</a></span> - Constructor for class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
+<dd>
+<div class="block">Constructor for positions that can be used to access a note in a chord.</div>
 </dd>
 </dl>
 <a id="I:Q">
@@ -1988,23 +2037,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Interface for iterators that iterate through the
  <a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> objects in a
  <a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.</div>
-</dd>
-<dt><a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators"><span class="typeNameLink">ScorePosition</span></a> - Class in <a href="org/wmn4j/notation/iterators/package-summary.html">org.wmn4j.notation.iterators</a></dt>
-<dd>
-<div class="block">Represents the position of a <a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a>
- in a <a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#%3Cinit%3E(int,int,int,int)">ScorePosition(int, int, int, int)</a></span> - Constructor for class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
-<dd>
-<div class="block">Constructor for position in a part with only a single staff.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#%3Cinit%3E(int,int,int,int,int)">ScorePosition(int, int, int, int, int)</a></span> - Constructor for class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
-<dd>
-<div class="block">Constructor for positions in parts with multiple staves.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#%3Cinit%3E(int,int,int,int,int,int)">ScorePosition(int, int, int, int, int, int)</a></span> - Constructor for class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
-<dd>
-<div class="block">Constructor for positions that can be used to access a note in a chord.</div>
 </dd>
 <dt><a href="org/wmn4j/io/ScoreReader.html" title="interface in org.wmn4j.io"><span class="typeNameLink">ScoreReader</span></a> - Interface in <a href="org/wmn4j/io/package-summary.html">org.wmn4j.io</a></dt>
 <dd>
@@ -2234,7 +2266,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Get String representation of <code>TimeSignature</code>.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/ScorePosition.html#toString()">toString()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScorePosition.html" title="class in org.wmn4j.notation.iterators">ScorePosition</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/iterators/Position.html#toString()">toString()</a></span> - Method in class org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#totalDurationOfVoice(int)">totalDurationOfVoice(int)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>

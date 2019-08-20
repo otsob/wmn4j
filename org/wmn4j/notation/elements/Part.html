@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":18};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":18};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],16:["t5","Default Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -222,13 +222,20 @@ extends java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4j.n
 </td>
 </tr>
 <tr class="rowColor" id="i7">
+<td class="colFirst"><code>java.util.List&lt;java.lang.Integer&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getStaffNumbers()">getStaffNumbers</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns the numbers of the staves in this part.</div>
+</td>
+</tr>
+<tr class="altColor" id="i8">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isMultiStaff()">isMultiStaff</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns true if this part has multiple staves.</div>
 </td>
 </tr>
-<tr class="altColor" id="i8">
+<tr class="rowColor" id="i9">
 <td class="colFirst"><code>default java.util.Iterator&lt;<a href="Measure.html" title="class in org.wmn4j.notation.elements">Measure</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#iterator()">iterator</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
@@ -302,6 +309,22 @@ extends java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4j.n
 </dl>
 </li>
 </ul>
+<a id="getStaffNumbers()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getStaffNumbers</h4>
+<pre class="methodSignature">java.util.List&lt;java.lang.Integer&gt;&nbsp;getStaffNumbers()</pre>
+<div class="block">Returns the numbers of the staves in this part.
+ <p>
+ The staff numbers are ordered from smallest to greatest.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the numbers of the staves in this part</dd>
+</dl>
+</li>
+</ul>
 <a id="getAttribute(org.wmn4j.notation.elements.Part.Attribute)">
 <!--   -->
 </a>
@@ -370,7 +393,7 @@ extends java.lang.Iterable&lt;<a href="Measure.html" title="class in org.wmn4j.n
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the measure with measureNumber from the staff with staffNumber</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.util.NoSuchElementException</code> - if there is no staff of measure with the given
+<dd><code>java.util.NoSuchElementException</code> - if there is no staff or measure with the given
                                 number in this part</dd>
 </dl>
 </li>
