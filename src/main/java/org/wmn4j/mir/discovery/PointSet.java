@@ -4,10 +4,6 @@
  */
 package org.wmn4j.mir.discovery;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Measure;
@@ -16,8 +12,11 @@ import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 import org.wmn4j.notation.iterators.Position;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 /**
- *
  * @author Otso Björklund
  */
 class PointSet {
@@ -78,15 +77,13 @@ class PointSet {
 				final Durational atPosition = score.getAt(pos);
 
 				if (atPosition instanceof Note) {
-					final double pitch = ((Note) atPosition).getPitch().toInt();
-					final double[] components = { totalOffset, pitch };
-					noteEvents.add(new NoteEventVector(components, pos));
+					final int pitch = ((Note) atPosition).getPitch().toInt();
+					noteEvents.add(new NoteEventVector(totalOffset, pitch, pos.getPartIndex()));
 				} else {
 					final Chord chord = (Chord) atPosition;
 					for (Note note : chord) {
-						final double pitch = note.getPitch().toInt();
-						final double[] components = { totalOffset, pitch };
-						noteEvents.add(new NoteEventVector(components, pos));
+						final int pitch = note.getPitch().toInt();
+						noteEvents.add(new NoteEventVector(totalOffset, pitch, pos.getPartIndex()));
 					}
 				}
 			}

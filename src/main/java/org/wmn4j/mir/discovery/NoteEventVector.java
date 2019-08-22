@@ -1,84 +1,93 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.mir.discovery;
 
-import org.wmn4j.notation.iterators.Position;
-
 /**
- *
- * @author Otso Björklund
+ * Vector representation of a note event. NoteEventVectors are
+ * ordered lexicographically.
+ * <p>
+ * This class is immutable.
  */
-class NoteEventVector implements Comparable<NoteEventVector> {
+final class NoteEventVector implements Comparable<NoteEventVector> {
 
-	private final double[] components;
+	private static final long HASH_MULTIPLIER_0 = RandomMultipliers.INSTANCE.getMultiplier(0);
+	private static final long HASH_MULTIPLIER_1 = RandomMultipliers.INSTANCE.getMultiplier(1);
+	private static final long HASH_MULTIPLIER_2 = RandomMultipliers.INSTANCE.getMultiplier(2);
+	private static final long HASH_MULTIPLIER_3 = RandomMultipliers.INSTANCE.getMultiplier(3);
+	private static final long HASH_MULTIPLIER_4 = RandomMultipliers.INSTANCE.getMultiplier(4);
+
+	private static final int OFFSET_PLACES = 8;
+	private static final double ROUNDING_FACTOR = Math.pow(10, OFFSET_PLACES);
+
+	/**
+	 * The raw offset value is only used for computations internally. Comparisons and
+	 * hashes use the rounded offset value.
+	 */
+	private final double rawOffset;
+	private final double roundedOffset;
+	private final int pitch;
+	private final int part;
 	private final int hash;
-	private final Position position;
 
-	NoteEventVector(double[] components) {
-		this.components = new double[components.length];
-		System.arraycopy(components, 0, this.components, 0, components.length);
-		this.position = null;
+	NoteEventVector(double offset, int pitch, int part) {
+		this.rawOffset = offset;
+		/*
+		 * This rounding is necessary to ensure that values close to each other
+		 * are considered equal and produce the same hash.
+		 * This rounding method is slightly flawed and will not work
+		 * if greater precision is needed. Due to the limited types of
+		 * offsets that duration values should produce, this is expected
+		 * to work well enough.
+		 */
+		this.roundedOffset = Math.round(rawOffset * ROUNDING_FACTOR) / ROUNDING_FACTOR;
+		this.pitch = pitch;
+		this.part = part;
 		this.hash = computeHash();
 	}
 
-	NoteEventVector(double[] components, Position position) {
-		this.components = new double[components.length];
-		System.arraycopy(components, 0, this.components, 0, components.length);
-		this.position = position;
-		this.hash = computeHash();
+	double getRoundedOffset() {
+		return roundedOffset;
 	}
 
-	int getDimensionality() {
-		return this.components.length;
+	int getPitch() {
+		return pitch;
 	}
 
-	double getComponent(int index) {
-		return this.components[index];
-	}
-
-	boolean hasPosition() {
-		return this.position != null;
-	}
-
-	Position getPosition() {
-		return this.position;
+	int getPart() {
+		return part;
 	}
 
 	NoteEventVector add(NoteEventVector other) {
-		final double[] sumComponents = new double[this.getDimensionality()];
+		final double offsetSum = rawOffset + other.rawOffset;
+		final int pitchSum = pitch + other.getPitch();
+		final int partSum = part + other.getPart();
 
-		for (int i = 0; i < sumComponents.length; ++i) {
-			sumComponents[i] = this.components[i] + other.getComponent(i);
-		}
-
-		return new NoteEventVector(sumComponents);
+		return new NoteEventVector(offsetSum, pitchSum, partSum);
 	}
 
 	NoteEventVector subtract(NoteEventVector other) {
-		final double[] diffComponents = new double[this.getDimensionality()];
+		final double offsetDifference = rawOffset - other.rawOffset;
+		final int pitchDifference = pitch - other.getPitch();
+		final int partDifference = part - other.getPart();
 
-		for (int i = 0; i < diffComponents.length; ++i) {
-			diffComponents[i] = this.components[i] - other.getComponent(i);
-		}
-
-		return new NoteEventVector(diffComponents);
+		return new NoteEventVector(offsetDifference, pitchDifference, partDifference);
 	}
 
 	@Override
 	public int compareTo(NoteEventVector other) {
-		for (int i = 0; i < this.getDimensionality(); ++i) {
-			// TODO: Consider checking if doubles just really close to each other
-			if (this.getComponent(i) < other.getComponent(i)) {
-				return -1;
-			}
-			if (this.getComponent(i) > other.getComponent(i)) {
-				return 1;
-			}
+
+		final int offsetComparison = Double.compare(roundedOffset, other.roundedOffset);
+		if (offsetComparison != 0) {
+			return offsetComparison;
 		}
 
-		return 0;
+		final int pitchComparison = Integer.compare(pitch, other.getPitch());
+		if (pitchComparison != 0) {
+			return pitchComparison;
+		}
+
+		return Integer.compare(part, other.getPart());
 	}
 
 	@Override
@@ -92,25 +101,25 @@ class NoteEventVector implements Comparable<NoteEventVector> {
 		}
 
 		final NoteEventVector other = (NoteEventVector) o;
-		if (other.getDimensionality() != this.getDimensionality()) {
-			return false;
-		}
-
 		return this.compareTo(other) == 0;
 	}
 
 	private int computeHash() {
-		// TODO: Improbe the hash function
-		int multiplierIndex = 0;
-		long hash = RandomMultiplierProvider.INSTANCE.getMultiplier(multiplierIndex++);
+		/*
+		 * Implements the Multilinear family of hash functions
+		 * (see Lemire, Daniel and Kaser, Owen: Strongly Universal String Hashing is Fast.
+		 * The Computer Journal, 57(11):1624–1638, 2014).
+		 */
+		long hash = HASH_MULTIPLIER_0;
 
-		for (int i = 0; i < this.components.length; ++i) {
-			final long bits = Double.doubleToRawLongBits(this.components[i]);
-			final int first = (int) (bits >> 32);
-			hash += first * RandomMultiplierProvider.INSTANCE.getMultiplier(multiplierIndex++);
-			final int second = (int) bits;
-			hash += second * RandomMultiplierProvider.INSTANCE.getMultiplier(multiplierIndex++);
-		}
+		final long bits = Double.doubleToRawLongBits(roundedOffset);
+		final int firstOffsetPart = (int) (bits >> 32);
+		hash += firstOffsetPart * HASH_MULTIPLIER_1;
+		final int secondOffsetPart = (int) bits;
+		hash += secondOffsetPart * HASH_MULTIPLIER_2;
+
+		hash += pitch * HASH_MULTIPLIER_3;
+		hash += part * HASH_MULTIPLIER_4;
 
 		return (int) hash;
 	}
@@ -123,15 +132,9 @@ class NoteEventVector implements Comparable<NoteEventVector> {
 	@Override
 	public String toString() {
 		final StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("(");
-		for (int i = 0; i < this.components.length - 1; ++i) {
-			strBuilder.append(Double.toString(this.components[i])).append(", ");
-		}
-		strBuilder.append(Double.toString(this.components[this.components.length - 1])).append(")");
-
-		if (this.position != null) {
-			strBuilder.append(" at ").append(position);
-		}
+		final String separator = ", ";
+		strBuilder.append("(").append(roundedOffset).append(separator).append(pitch).append(separator).append(part)
+				.append(")");
 
 		return strBuilder.toString();
 	}

@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
  * @author Otso Björklund
  */
 class PointPattern {
@@ -67,16 +66,17 @@ class PointPattern {
 
 	private int computeHash() {
 		int multiplierIndex = 0;
-		long hash = RandomMultiplierProvider.INSTANCE.getMultiplier(multiplierIndex++);
+		long hash = RandomMultipliers.INSTANCE.getMultiplier(multiplierIndex++);
 
 		for (NoteEventVector point : this.points) {
-			for (int i = 0; i < point.getDimensionality(); ++i) {
-				final long bits = Double.doubleToRawLongBits(point.getComponent(i));
-				final int first = (int) (bits >> 32);
-				hash += first * RandomMultiplierProvider.INSTANCE.getMultiplier(multiplierIndex++);
-				final int second = (int) bits;
-				hash += second * RandomMultiplierProvider.INSTANCE.getMultiplier(multiplierIndex++);
-			}
+			final long bits = Double.doubleToRawLongBits(point.getRoundedOffset());
+			final int firstOffsetPart = (int) (bits >> 32);
+			hash += firstOffsetPart * RandomMultipliers.INSTANCE.getMultiplier(multiplierIndex++);
+			final int secondOffsetPart = (int) bits;
+			hash += secondOffsetPart * RandomMultipliers.INSTANCE.getMultiplier(multiplierIndex++);
+
+			hash += point.getPitch() * RandomMultipliers.INSTANCE.getMultiplier(multiplierIndex++);
+			hash += point.getPart() * RandomMultipliers.INSTANCE.getMultiplier(multiplierIndex++);
 		}
 
 		return (int) hash;
