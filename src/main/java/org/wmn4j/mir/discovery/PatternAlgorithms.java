@@ -40,7 +40,6 @@ final class PatternAlgorithms {
 	// Implements SIATECH
 	static List<TEC> computeTecs(PointSet dataset) {
 
-		dataset.sortLexicographically();
 		final Map<NoteEventVector, List<IndexPair>> mtpMap = new HashMap<>();
 
 		for (int i = 0; i < dataset.size() - 1; ++i) {
