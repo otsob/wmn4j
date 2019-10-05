@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a geometric pattern consisting of points.
@@ -110,4 +111,15 @@ final class PointPattern implements Iterable<NoteEventVector> {
 	public Iterator<NoteEventVector> iterator() {
 		return points.iterator();
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("{");
+		builder.append(String.join(", ", points.stream().map(NoteEventVector::toString).collect(Collectors.toList())));
+		builder.append("}");
+
+		return builder.toString();
+	}
+
 }

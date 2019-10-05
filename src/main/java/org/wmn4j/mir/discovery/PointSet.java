@@ -3,6 +3,7 @@
  */
 package org.wmn4j.mir.discovery;
 
+import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.notation.elements.Chord;
 import org.wmn4j.notation.elements.Durational;
 import org.wmn4j.notation.elements.Measure;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Point set representation of a score.
@@ -37,7 +39,22 @@ final class PointSet {
 	}
 
 	Position getPosition(NoteEventVector vector) {
+		if (!positions.containsKey(vector)) {
+			throw new NoSuchElementException("No position for vector " + vector);
+		}
+
 		return positions.get(vector);
+	}
+
+	PatternPosition getPosition(PointPattern pattern, NoteEventVector translator) {
+		List<Position> positions = new ArrayList<>(pattern.size());
+
+		for (NoteEventVector point : pattern) {
+			final NoteEventVector translated = point.add(translator);
+			positions.add(getPosition(translated));
+		}
+
+		return new PatternPosition(positions);
 	}
 
 	NoteEventVector get(int index) {

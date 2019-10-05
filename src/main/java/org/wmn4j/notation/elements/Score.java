@@ -244,11 +244,30 @@ public final class Score implements Iterable<Part> {
 
 			trimVoiceBeginnings(allPatternVoices);
 
+			final String name = createName();
+
 			if (allPatternVoices.keySet().size() == 1) {
-				return Pattern.of(allPatternVoices.values().iterator().next());
+				return Pattern.of(allPatternVoices.values().iterator().next(), name);
 			}
 
-			return Pattern.of(Collections.unmodifiableMap(allPatternVoices));
+			return Pattern.of(Collections.unmodifiableMap(allPatternVoices), name);
+		}
+
+		private String createName() {
+			StringBuilder builder = new StringBuilder();
+			builder.append("Measures: ").append(firstMeasureNumber).append("-").append(lastMeasureNumber);
+
+			StringBuilder partsListBuilder = new StringBuilder();
+			for (Integer partIndex : patternPosition.getPartIndices()) {
+				partsListBuilder.append(getPart(partIndex).getName()).append(" ");
+			}
+
+			String partsList = partsListBuilder.toString().trim();
+			if (!partsList.isEmpty()) {
+				builder.append("\nParts: ").append(partsList);
+			}
+
+			return builder.toString();
 		}
 
 		/*
