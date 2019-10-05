@@ -38,7 +38,7 @@ final class PatternAlgorithms {
 	}
 
 	// Implements SIATECH
-	static List<TEC> computeTecs(PointSet dataset) {
+	static List<Tec> computeTecs(PointSet dataset) {
 
 		final Map<NoteEventVector, List<IndexPair>> mtpMap = new HashMap<>();
 
@@ -57,7 +57,7 @@ final class PatternAlgorithms {
 			}
 		}
 
-		final List<TEC> tecs = new ArrayList<>();
+		final List<Tec> tecs = new ArrayList<>();
 		final Set<PointPattern> patternVecs = new HashSet<>();
 
 		for (NoteEventVector diff : mtpMap.keySet()) {
@@ -81,7 +81,7 @@ final class PatternAlgorithms {
 					translators = findTranslators(pattern, mtpMap, dataset);
 				}
 
-				tecs.add(new TEC(pattern, translators));
+				tecs.add(new Tec(pattern, translators));
 				patternVecs.add(vec);
 			}
 		}
