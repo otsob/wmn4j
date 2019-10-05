@@ -1,35 +1,56 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.mir.discovery;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
- * @author Otso Björklund
+ * Represents a geometric pattern consisting of points.
+ * <p>
+ * This class is immutable.
  */
-class PointPattern {
+final class PointPattern implements Iterable<NoteEventVector> {
+
+	private static final PointPattern EMPTY = new PointPattern(Collections.emptyList());
 
 	private final List<NoteEventVector> points;
 	private final int hash;
 
+	/**
+	 * Constructor that takes ownership of the points passed to this.
+	 *
+	 * @param points the points that the new pattern contains
+	 */
 	PointPattern(List<NoteEventVector> points) {
 		this.points = points;
 		this.hash = computeHash();
 	}
 
-	int getSize() {
+	int size() {
 		return this.points.size();
 	}
 
-	List<NoteEventVector> getPoints() {
-		return Collections.unmodifiableList(this.points);
+	NoteEventVector get(int index) {
+		return this.points.get(index);
 	}
 
-	PointPattern getVectorizedRepresentation() {
+	/**
+	 * Returns the vectorized representation of this pattern.
+	 * The vectorized representation consists of the difference
+	 * vectors between consecutive points.
+	 *
+	 * @return the vectorized representation of this pattern
+	 */
+	PointPattern vectorized() {
+
+		if (size() < 2) {
+			return EMPTY;
+		}
+
 		final List<NoteEventVector> vecPoints = new ArrayList<>();
 
 		for (int i = 1; i < this.points.size(); ++i) {
@@ -50,21 +71,19 @@ class PointPattern {
 		}
 
 		final PointPattern other = (PointPattern) o;
-		final List<NoteEventVector> otherPoints = other.getPoints();
-		if (this.points.size() != otherPoints.size()) {
+		if (this.size() != other.size()) {
 			return false;
 		}
 
-		for (int i = 0; i < this.points.size(); ++i) {
-			if (!this.points.get(i).equals(otherPoints.get(i))) {
-				return false;
-			}
-		}
-
-		return true;
+		return this.points.equals(other.points);
 	}
 
 	private int computeHash() {
+		/*
+		 * Implements the Multilinear family of hash functions
+		 * (see Lemire, Daniel and Kaser, Owen: Strongly Universal String Hashing is Fast.
+		 * The Computer Journal, 57(11):1624–1638, 2014).
+		 */
 		int multiplierIndex = 0;
 		long hash = RandomMultipliers.INSTANCE.getMultiplier(multiplierIndex++);
 
@@ -85,5 +104,10 @@ class PointPattern {
 	@Override
 	public int hashCode() {
 		return this.hash;
+	}
+
+	@Override
+	public Iterator<NoteEventVector> iterator() {
+		return points.iterator();
 	}
 }

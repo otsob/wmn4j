@@ -69,13 +69,13 @@ final class PatternAlgorithms {
 			}
 
 			final PointPattern pattern = new PointPattern(patternPoints);
-			final PointPattern vec = pattern.getVectorizedRepresentation();
+			final PointPattern vec = pattern.vectorized();
 
 			if (!patternVecs.contains(vec)) {
 				List<NoteEventVector> translators = new ArrayList<>();
-				if (pattern.getPoints().size() == 1) {
+				if (pattern.size() == 1) {
 					for (int i = 0; i < dataset.size(); ++i) {
-						translators.add(pattern.getPoints().get(0).subtract(dataset.get(i)));
+						translators.add(pattern.get(0).subtract(dataset.get(i)));
 					}
 				} else {
 					translators = findTranslators(pattern, mtpMap, dataset);
@@ -92,7 +92,7 @@ final class PatternAlgorithms {
 	static List<NoteEventVector> findTranslators(PointPattern pattern,
 			Map<NoteEventVector, List<IndexPair>> mtpMap, PointSet dataset) {
 		List<Integer> pointIndices = new ArrayList<>();
-		final List<NoteEventVector> vecPatternPoints = pattern.getVectorizedRepresentation().getPoints();
+		final PointPattern vecPatternPoints = pattern.vectorized();
 		NoteEventVector vec = vecPatternPoints.get(0);
 
 		for (IndexPair indexPair : mtpMap.get(vec)) {
@@ -119,7 +119,7 @@ final class PatternAlgorithms {
 		}
 
 		final List<NoteEventVector> translators = new ArrayList<>();
-		final NoteEventVector lastPoint = pattern.getPoints().get(pattern.getPoints().size() - 1);
+		final NoteEventVector lastPoint = pattern.get(pattern.size() - 1);
 
 		for (Integer i : pointIndices) {
 			translators.add(dataset.get(i).subtract(lastPoint));

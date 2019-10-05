@@ -7,7 +7,6 @@ package org.wmn4j.mir.discovery;
 import java.util.List;
 
 /**
- *
  * @author Otso Björklund
  */
 class TEC {
@@ -29,7 +28,7 @@ class TEC {
 		final StringBuilder strBuilder = new StringBuilder();
 
 		strBuilder.append("pattern: {");
-		for (NoteEventVector p : this.pattern.getPoints()) {
+		for (NoteEventVector p : this.pattern) {
 			strBuilder.append(p.toString()).append(", ");
 		}
 		strBuilder.replace(strBuilder.length() - 2, strBuilder.length(), "");
