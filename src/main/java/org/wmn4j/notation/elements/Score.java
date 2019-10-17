@@ -306,7 +306,7 @@ public final class Score implements Iterable<Part> {
 
 		private SortedMap<StaffVoicePair, List<Durational>> createPatternVoicesForPart(int partIndex) {
 			final Part part = getPart(partIndex);
-			final Set<Position> positionsInPart = patternPosition.getPositions(partIndex);
+			final Set<Position> positionsInPart = new HashSet<>(patternPosition.getPositions(partIndex));
 			final Set<Integer> staffNumbers = patternPosition.getStaffNumbers(partIndex);
 
 			final Map<Integer, Map<Integer, Set<Integer>>> voicesInMeasuresPerStaff = createVoicesInMeasuresMappings(
