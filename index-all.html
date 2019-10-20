@@ -709,6 +709,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">The g minor key.</div>
 </dd>
+<dt><a href="org/wmn4j/mir/discovery/GeometricPatternDiscovery.html" title="class in org.wmn4j.mir.discovery"><span class="typeNameLink">GeometricPatternDiscovery</span></a> - Class in <a href="org/wmn4j/mir/discovery/package-summary.html">org.wmn4j.mir.discovery</a></dt>
+<dd>
+<div class="block">Implements repeated pattern discovery using point set representation of
+ music and compression ratio of repeated patterns with the SIATECHF algorithm [1].</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#get(int,int)">get(int, int)</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
 <div class="block">Returns the builder at the given position.</div>
@@ -1083,6 +1088,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the parts in this score.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/discovery/GeometricPatternDiscovery.html#getPatternPositions()">getPatternPositions()</a></span> - Method in class org.wmn4j.mir.discovery.<a href="org/wmn4j/mir/discovery/GeometricPatternDiscovery.html" title="class in org.wmn4j.mir.discovery">GeometricPatternDiscovery</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/discovery/PatternDiscovery.html#getPatternPositions()">getPatternPositions()</a></span> - Method in interface org.wmn4j.mir.discovery.<a href="org/wmn4j/mir/discovery/PatternDiscovery.html" title="interface in org.wmn4j.mir.discovery">PatternDiscovery</a></dt>
+<dd>
+<div class="block">Returns the positions of the repeated patterns found by this pattern discovery.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/discovery/PatternDiscovery.html#getPatterns()">getPatterns()</a></span> - Method in interface org.wmn4j.mir.discovery.<a href="org/wmn4j/mir/discovery/PatternDiscovery.html" title="interface in org.wmn4j.mir.discovery">PatternDiscovery</a></dt>
+<dd>
+<div class="block">Returns the repeated patterns found by this pattern discovery.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/NoteBuilder.html#getPitch()">getPitch()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a></dt>
 <dd>
 <div class="block">Returns the pitch set in this builder.</div>
@@ -1126,6 +1141,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/MeasureAttributes.html#getRightBarline()">getRightBarline()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/MeasureAttributes.html" title="class in org.wmn4j.notation.elements">MeasureAttributes</a></dt>
 <dd>
 <div class="block">Returns the type of the right barline specified in these attributes.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/discovery/GeometricPatternDiscovery.html#getScore()">getScore()</a></span> - Method in class org.wmn4j.mir.discovery.<a href="org/wmn4j/mir/discovery/GeometricPatternDiscovery.html" title="class in org.wmn4j.mir.discovery">GeometricPatternDiscovery</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/discovery/PatternDiscovery.html#getScore()">getScore()</a></span> - Method in interface org.wmn4j.mir.discovery.<a href="org/wmn4j/mir/discovery/PatternDiscovery.html" title="interface in org.wmn4j.mir.discovery">PatternDiscovery</a></dt>
+<dd>
+<div class="block">Returns the score to which this pattern discovery applies.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/KeySignature.html#getSharps()">getSharps()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a></dt>
 <dd>
@@ -1795,6 +1816,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Contains algorithms for music information retrieval (MIR).</div>
 </dd>
+<dt><a href="org/wmn4j/mir/discovery/package-summary.html">org.wmn4j.mir.discovery</a> - package org.wmn4j.mir.discovery</dt>
+<dd>
+<div class="block">Contains algorithms for pattern discovery in music notation.</div>
+</dd>
 <dt><a href="org/wmn4j/notation/builders/package-summary.html">org.wmn4j.notation.builders</a> - package org.wmn4j.notation.builders</dt>
 <dd>
 <div class="block">Contains builders for music notation elements.</div>
@@ -1861,6 +1886,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#%3Cinit%3E()">PatternBuilder()</a></span> - Constructor for class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
 <dd>
 <div class="block">Constructor that creates an empty builder.</div>
+</dd>
+<dt><a href="org/wmn4j/mir/discovery/PatternDiscovery.html" title="interface in org.wmn4j.mir.discovery"><span class="typeNameLink">PatternDiscovery</span></a> - Interface in <a href="org/wmn4j/mir/discovery/package-summary.html">org.wmn4j.mir.discovery</a></dt>
+<dd>
+<div class="block">Represents the result of pattern discovery on score.</div>
 </dd>
 <dt><a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir"><span class="typeNameLink">PatternPosition</span></a> - Class in <a href="org/wmn4j/mir/package-summary.html">org.wmn4j.mir</a></dt>
 <dd>
@@ -2393,6 +2422,10 @@ the order they are declared.</div>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#withAttributesOf(org.wmn4j.notation.builders.MeasureBuilder)">withAttributesOf(MeasureBuilder)</a></span> - Static method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
 <div class="block">Returns a measure builder with the measure number and attributes of the given measure builder.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/discovery/GeometricPatternDiscovery.html#withSiatechf(org.wmn4j.notation.elements.Score,double)">withSiatechf(Score, double)</a></span> - Static method in class org.wmn4j.mir.discovery.<a href="org/wmn4j/mir/discovery/GeometricPatternDiscovery.html" title="class in org.wmn4j.mir.discovery">GeometricPatternDiscovery</a></dt>
+<dd>
+<div class="block">Returns the results of running pattern discovery with SIATECHF algorithm.</div>
 </dd>
 <dt><a href="org/wmn4j/Wmn4j.html" title="class in org.wmn4j"><span class="typeNameLink">Wmn4j</span></a> - Class in <a href="org/wmn4j/package-summary.html">org.wmn4j</a></dt>
 <dd>
