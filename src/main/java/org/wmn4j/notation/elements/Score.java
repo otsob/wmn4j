@@ -244,11 +244,30 @@ public final class Score implements Iterable<Part> {
 
 			trimVoiceBeginnings(allPatternVoices);
 
+			final String name = createName();
+
 			if (allPatternVoices.keySet().size() == 1) {
-				return Pattern.of(allPatternVoices.values().iterator().next());
+				return Pattern.of(allPatternVoices.values().iterator().next(), name);
 			}
 
-			return Pattern.of(Collections.unmodifiableMap(allPatternVoices));
+			return Pattern.of(Collections.unmodifiableMap(allPatternVoices), name);
+		}
+
+		private String createName() {
+			StringBuilder builder = new StringBuilder();
+			builder.append("Measures: ").append(firstMeasureNumber).append("-").append(lastMeasureNumber);
+
+			StringBuilder partsListBuilder = new StringBuilder();
+			for (Integer partIndex : patternPosition.getPartIndices()) {
+				partsListBuilder.append(getPart(partIndex).getName()).append(" ");
+			}
+
+			String partsList = partsListBuilder.toString().trim();
+			if (!partsList.isEmpty()) {
+				builder.append("\nParts: ").append(partsList);
+			}
+
+			return builder.toString();
 		}
 
 		/*
@@ -306,7 +325,7 @@ public final class Score implements Iterable<Part> {
 
 		private SortedMap<StaffVoicePair, List<Durational>> createPatternVoicesForPart(int partIndex) {
 			final Part part = getPart(partIndex);
-			final Set<Position> positionsInPart = patternPosition.getPositions(partIndex);
+			final Set<Position> positionsInPart = new HashSet<>(patternPosition.getPositions(partIndex));
 			final Set<Integer> staffNumbers = patternPosition.getStaffNumbers(partIndex);
 
 			final Map<Integer, Map<Integer, Set<Integer>>> voicesInMeasuresPerStaff = createVoicesInMeasuresMappings(

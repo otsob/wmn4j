@@ -73,7 +73,7 @@ public final class PatternPosition {
 	 * @return the positions in the part with the given index referred to by this pattern position
 	 */
 	public Set<Position> getPositions(int partIndex) {
-		return positionsPerPart.get(partIndex);
+		return Collections.unmodifiableSet(positionsPerPart.get(partIndex));
 	}
 
 	/**

@@ -1,27 +1,43 @@
 /*
- * Copyright 2018 Otso Björklund.
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.mir.pattern_discovery;
+package org.wmn4j.mir.discovery;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
- *
- * @author Otso Björklund
+ * Represents a translational equivalence class [1].
+ * <p>
+ * [1] Meredith, David, Lemström, Kjell, and Wiggins, Geraint A.:
+ * Algorithms for discovering repeated patterns in multidimensional representations of polyphonic music.
+ * Journal of New Music Research, 31(4):321–345, 2002.
+ * <p>
+ * This class is immutable.
  */
-class TEC {
+final class Tec {
 
 	private final PointPattern pattern;
 	private final List<NoteEventVector> translators;
 
-	TEC(PointPattern pattern, List<NoteEventVector> translators) {
+	/**
+	 * Constructor. The new instance takes ownership of the
+	 * passed parameters.
+	 *
+	 * @param pattern     the pattern for this TEC
+	 * @param translators the translators of this TEC
+	 */
+	Tec(PointPattern pattern, List<NoteEventVector> translators) {
 		this.pattern = pattern;
-		this.translators = translators;
+		this.translators = Collections.unmodifiableList(translators);
 	}
 
 	PointPattern getPattern() {
 		return this.pattern;
+	}
+
+	List<NoteEventVector> getTranslators() {
+		return translators;
 	}
 
 	@Override
@@ -29,7 +45,7 @@ class TEC {
 		final StringBuilder strBuilder = new StringBuilder();
 
 		strBuilder.append("pattern: {");
-		for (NoteEventVector p : this.pattern.getPoints()) {
+		for (NoteEventVector p : this.pattern) {
 			strBuilder.append(p.toString()).append(", ");
 		}
 		strBuilder.replace(strBuilder.length() - 2, strBuilder.length(), "");
@@ -43,5 +59,4 @@ class TEC {
 
 		return strBuilder.toString();
 	}
-
 }
