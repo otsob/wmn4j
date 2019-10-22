@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-class PCProfileTest {
+class ChromagramTest {
 
 	// By how much values are allowed fo differ
 	private static final double EPS = 0.0000000001;
@@ -25,7 +25,7 @@ class PCProfileTest {
 
 	@Test
 	void testSetIncorrectValue() {
-		final PCProfile profile = new PCProfile();
+		final Chromagram profile = new Chromagram();
 
 		try {
 			profile.setValue(PitchClass.C, -0.1);
@@ -38,7 +38,7 @@ class PCProfileTest {
 
 	@Test
 	void testAddWithDefaultWeightFunction() {
-		final PCProfile profile = new PCProfile();
+		final Chromagram profile = new Chromagram();
 		profile.add(C4);
 		assertEquals(1.0, profile.getValue(PitchClass.C), EPS, "Incorrect value for C");
 		assertEquals(0.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS, "Incorrect value for Csharp");
@@ -48,7 +48,7 @@ class PCProfileTest {
 
 	@Test
 	void testAddWithDurationWeightFunction() {
-		final PCProfile profile = PCProfile.getDurationWeightedProfile();
+		final Chromagram profile = Chromagram.getDurationWeightedProfile();
 		profile.add(C4);
 		assertEquals(0.25, profile.getValue(PitchClass.C), EPS, "Incorrect value for C");
 		assertEquals(0.0, profile.getValue(PitchClass.CSHARP_DFLAT), EPS, "Incorrect value for Csharp");
@@ -60,7 +60,7 @@ class PCProfileTest {
 
 	@Test
 	void testNormalizeWithDefaultWeightFunction() {
-		PCProfile profile = new PCProfile();
+		Chromagram profile = new Chromagram();
 		final int C4Count = 5;
 		final int G4Count = 3;
 		final int CsharpCount = 2;
@@ -90,8 +90,8 @@ class PCProfileTest {
 				profile.getValue(PitchClass.CSHARP_DFLAT), EPS, "Incorrect value for C sharp before normalization");
 	}
 
-	static PCProfile getTestProfile(double... values) {
-		final PCProfile profile = new PCProfile();
+	static Chromagram getTestProfile(double... values) {
+		final Chromagram profile = new Chromagram();
 		int i = 0;
 
 		for (PitchClass pc : PitchClass.values()) {
@@ -105,35 +105,35 @@ class PCProfileTest {
 	void testCorrelation() {
 
 		// Profile for C-major from Krumhansl and Kessler.
-		final PCProfile cMajorProfile = getTestProfile(6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29,
+		final Chromagram cMajorProfile = getTestProfile(6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29,
 				2.88);
 		// Profile for A minor from Krumhansl and Kessler.
-		final PCProfile aMinorProfile = getTestProfile(5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17, 6.33, 2.68,
+		final Chromagram aMinorProfile = getTestProfile(5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17, 6.33, 2.68,
 				3.52);
 
 		assertEquals(1.0,
-				PCProfile.correlation(cMajorProfile, cMajorProfile), EPS,
+				Chromagram.correlation(cMajorProfile, cMajorProfile), EPS,
 				"Incorrect correlation for c major profile with itself");
 
 		assertEquals(0.6496,
-				PCProfile.correlation(cMajorProfile, aMinorProfile), 0.0001,
+				Chromagram.correlation(cMajorProfile, aMinorProfile), 0.0001,
 				"Incorrect correlation between c major and a minor profiles");
 
-		assertEquals(PCProfile.correlation(cMajorProfile, aMinorProfile),
-				PCProfile.correlation(aMinorProfile, cMajorProfile), EPS, "Correlation should be symmetric but is not");
+		assertEquals(Chromagram.correlation(cMajorProfile, aMinorProfile),
+				Chromagram.correlation(aMinorProfile, cMajorProfile), EPS, "Correlation should be symmetric but is not");
 	}
 
 	@Test
 	void testEuclidean() {
 		// Profile for C-major from Krumhansl and Kessler.
-		final PCProfile a = getTestProfile(1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00);
+		final Chromagram a = getTestProfile(1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00);
 		// Profile for A minor from Krumhansl and Kessler.
-		final PCProfile b = getTestProfile(5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17, 6.33, 2.68, 3.52);
+		final Chromagram b = getTestProfile(5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17, 6.33, 2.68, 3.52);
 
-		assertEquals(0.0, PCProfile.euclidean(b, b), EPS, "Incorrect distance when computing distance with itself");
+		assertEquals(0.0, Chromagram.euclidean(b, b), EPS, "Incorrect distance when computing distance with itself");
 
-		final PCProfile c = getTestProfile(0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
+		final Chromagram c = getTestProfile(0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
 
-		assertEquals(Math.sqrt(12.0), PCProfile.euclidean(a, c), EPS, "Incorrect value");
+		assertEquals(Math.sqrt(12.0), Chromagram.euclidean(a, c), EPS, "Incorrect value");
 	}
 }

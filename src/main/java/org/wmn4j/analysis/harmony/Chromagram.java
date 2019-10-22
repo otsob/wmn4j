@@ -26,7 +26,7 @@ import org.wmn4j.notation.elements.PitchClass;
  *
  * @author Otso Björklund
  */
-public class PCProfile {
+public class Chromagram {
 
 	/**
 	 * Interface for weighing the pitch class of a <code>Note</code>.
@@ -42,13 +42,13 @@ public class PCProfile {
 		double weight(Note note);
 	}
 
-	private final PCProfile.Weighter pw;
+	private final Chromagram.Weighter pw;
 	private final Map<PitchClass, Double> profile;
 
 	/**
 	 * Using this constructor the profile is based on the counts of pitch classes.
 	 */
-	public PCProfile() {
+	public Chromagram() {
 		this.pw = note -> 1.0;
 		this.profile = new TreeMap<>();
 		this.initialize();
@@ -60,8 +60,8 @@ public class PCProfile {
 	 *
 	 * @return a PCProfile where pitch classes are weighted using note durations.
 	 */
-	public static PCProfile getDurationWeightedProfile() {
-		return new PCProfile(note -> note.getDuration().toDouble());
+	public static Chromagram getDurationWeightedProfile() {
+		return new Chromagram(note -> note.getDuration().toDouble());
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class PCProfile {
 	 * @param weighter used for computing the value of a note when the note is added
 	 *                 to this profile.
 	 */
-	public PCProfile(PCProfile.Weighter weighter) {
+	public Chromagram(Chromagram.Weighter weighter) {
 		this.pw = weighter;
 		this.profile = new TreeMap<>();
 		this.initialize();
@@ -147,8 +147,8 @@ public class PCProfile {
 	 *
 	 * @return normalized pitch class profile.
 	 */
-	public PCProfile normalize() {
-		final PCProfile normalized = new PCProfile();
+	public Chromagram normalize() {
+		final Chromagram normalized = new Chromagram();
 		double largest = 0.0;
 
 		for (PitchClass pc : this.profile.keySet()) {
@@ -199,7 +199,7 @@ public class PCProfile {
 	 * @param b Profile for computing correlation.
 	 * @return correlation between profiles a and b.
 	 */
-	public static double correlation(PCProfile a, PCProfile b) {
+	public static double correlation(Chromagram a, Chromagram b) {
 
 		double averageOfA = 0.0;
 		double averageOfB = 0.0;
@@ -240,7 +240,7 @@ public class PCProfile {
 	 * @param b Profile for computing Euclidean distance.
 	 * @return Euclidean distance between a and b.
 	 */
-	public static double euclidean(PCProfile a, PCProfile b) {
+	public static double euclidean(Chromagram a, Chromagram b) {
 		double sumOfSquaredDiffs = 0.0;
 
 		for (PitchClass pc : PitchClass.values()) {

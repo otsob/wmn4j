@@ -24,7 +24,7 @@ import org.wmn4j.notation.elements.PitchClass;
  */
 public class KSKeyAnalyzer implements KeyAnalyzer {
 
-	private final Map<Key, PCProfile> keyProfiles;
+	private final Map<Key, Chromagram> keyProfiles;
 
 	/**
 	 * Constructor.
@@ -41,14 +41,14 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
 	 * @return the most fitting key
 	 */
 	public Key analyzeKey(List<Durational> durationals) {
-		final PCProfile profile = PCProfile.getDurationWeightedProfile();
+		final Chromagram profile = Chromagram.getDurationWeightedProfile();
 		durationals.forEach(durational -> profile.add(durational));
 
 		Key bestKey = Key.C_MAJOR;
 		double maxCorrelation = -2.0;
 
 		for (Key key : this.keyProfiles.keySet()) {
-			final double correlation = PCProfile.correlation(this.keyProfiles.get(key), profile);
+			final double correlation = Chromagram.correlation(this.keyProfiles.get(key), profile);
 
 			if (correlation > maxCorrelation) {
 				maxCorrelation = correlation;
@@ -85,7 +85,7 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
 						values.add(Double.parseDouble(cleanedString));
 					}
 
-					final PCProfile profile = createPCProfile(values);
+					final Chromagram profile = createPCProfile(values);
 					this.keyProfiles.put(key, profile);
 				}
 
@@ -99,8 +99,8 @@ public class KSKeyAnalyzer implements KeyAnalyzer {
 		}
 	}
 
-	private PCProfile createPCProfile(List<Double> values) {
-		final PCProfile profile = new PCProfile();
+	private Chromagram createPCProfile(List<Double> values) {
+		final Chromagram profile = new Chromagram();
 		int i = 0;
 
 		for (PitchClass pc : PitchClass.values()) {
