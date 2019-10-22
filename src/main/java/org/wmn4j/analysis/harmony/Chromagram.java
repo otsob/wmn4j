@@ -1,212 +1,73 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
 package org.wmn4j.analysis.harmony;
 
-import java.text.DecimalFormat;
-import java.util.Map;
-import java.util.TreeMap;
-
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Note;
 import org.wmn4j.notation.elements.PitchClass;
 
+import java.text.DecimalFormat;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Objects;
+
 /**
- * Pitch class profile in twelve-tone equal-temperament (TET). Contains a bin
- * for each pitch class, and each bin contains a non-negative value associated
- * with the pitch class.
- *
- * By default the value of a note is 1.0 meaning that the pitch class profile is
- * based on the counts of pitch classes. When creating the profile a
- * <code>PCProfile.Weighter</code> can be given to calculate the value of a note
- * differently.
- *
- * @author Otso Björklund
+ * Represents a chromagram (i.e. pitch class profile) in twelve-tone equal-temperament (TET). A chromagram is a
+ * 12-dimensional vector that has a non-negative value associated with each pitch class. Chromagrams can be used
+ * for characterising harmony.
+ * <p>
+ * This class is immutable.
  */
-public class Chromagram {
+public final class Chromagram {
 
-	/**
-	 * Interface for weighing the pitch class of a <code>Note</code>.
-	 */
-	public interface Weighter {
-		/**
-		 * Calculates the coefficient for the pitch class of the note. Used for adding
-		 * notes to <code>PCProfile</code> objects.
-		 *
-		 * @param note note for which weight is calculated.
-		 * @return weight of the pitch class of the note.
-		 */
-		double weight(Note note);
-	}
-
-	private final Chromagram.Weighter pw;
 	private final Map<PitchClass, Double> profile;
 
 	/**
-	 * Using this constructor the profile is based on the counts of pitch classes.
-	 */
-	public Chromagram() {
-		this.pw = note -> 1.0;
-		this.profile = new TreeMap<>();
-		this.initialize();
-	}
-
-	/**
-	 * Creates a <code>PCProfile</code> where the weight of a note's pitch class is
-	 * weighted using the duration of the note.
+	 * Returns a chromagram with the given mapping of pitch classes to non-negative values.
+	 * If a pitch class is not present in the mapping, then the value of that
+	 * pitch class defaults to zero.
 	 *
-	 * @return a PCProfile where pitch classes are weighted using note durations.
+	 * @param profile the values for the pitch classes
+	 * @return a chromagram with the given mapping of pitch classes to values
 	 */
-	public static Chromagram getDurationWeightedProfile() {
-		return new Chromagram(note -> note.getDuration().toDouble());
+	public static Chromagram of(Map<PitchClass, Double> profile) {
+		return new Chromagram(Objects.requireNonNull(profile));
 	}
 
-	/**
-	 * Constructor that allows specifying how the value of a note is computed when
-	 * it is added to the profile.
-	 *
-	 * @param weighter used for computing the value of a note when the note is added
-	 *                 to this profile.
-	 */
-	public Chromagram(Chromagram.Weighter weighter) {
-		this.pw = weighter;
-		this.profile = new TreeMap<>();
-		this.initialize();
-	}
-
-	private void initialize() {
-		for (PitchClass pc : PitchClass.values()) {
-			this.setValue(pc, 0.0);
-		}
-	}
-
-	/**
-	 * Set a value for the <code>PitchClass</code>.
-	 *
-	 * @param pc    the pitch class for the bin whose value is set.
-	 * @param value a non-negative value.
-	 */
-	public void setValue(PitchClass pc, double value) {
-		// TODO: Reconsider if this has to be only non-negative
-		if (value < 0.0) {
-			throw new IllegalArgumentException("value must be at least 0.0");
+	private Chromagram(Map<PitchClass, Double> profile) {
+		if (profile.values().stream().anyMatch(value -> value < 0.0)) {
+			throw new IllegalArgumentException("All values in a chromagram must be non-negative.");
 		}
 
-		this.profile.put(pc, value);
+		this.profile = new EnumMap(profile);
 	}
 
 	/**
-	 * Add the pitch class/classes of durational to this <code>PCProfile</code>. If
-	 * durational is a <code>Note</code> add its pitch class bin. If durational is a
-	 * <code>Chord</code> add pitch class bins of its notes. If durational is a
-	 * <code>Rest</code> nothing will be added to the profile.
+	 * Returns the value associated with the given pitch class.
 	 *
-	 * @param durational durational object to be added to this profile.
-	 */
-	public void add(Durational durational) {
-		if (durational instanceof Note) {
-			this.add((Note) durational);
-		}
-		if (durational instanceof Chord) {
-			this.add((Chord) durational);
-		}
-	}
-
-	/**
-	 * Add the notes in in the chord to this <code>PCProfile</code>.
-	 *
-	 * @param chord chord whose pitch classes are added to profile.
-	 */
-	public void add(Chord chord) {
-		for (Note note : chord) {
-			this.add(note);
-		}
-	}
-
-	/**
-	 * Add to the pitch class bin of the pitch class of note. Uses the
-	 * <code>PCProfileWeighter</code> of this <code>PCProfile</code> to calculate
-	 * the value that is added to the pitch class bin.
-	 *
-	 * @param note the value is added to the bin corresponding to the pitch class of
-	 *             this note.
-	 */
-	public void add(Note note) {
-		final PitchClass pc = note.getPitch().getPitchClass();
-		double value = this.getValue(note.getPitch().getPitchClass());
-		value += this.pw.weight(note);
-		this.setValue(pc, value);
-	}
-
-	/**
-	 * Returns a normalized copy of this pitch profile. Normalizes profile so that
-	 * largest value is 1.0
-	 *
-	 * @return normalized pitch class profile.
-	 */
-	public Chromagram normalize() {
-		final Chromagram normalized = new Chromagram();
-		double largest = 0.0;
-
-		for (PitchClass pc : this.profile.keySet()) {
-			final double value = this.profile.get(pc);
-			if (value > largest) {
-				largest = value;
-			}
-		}
-
-		if (!Double.valueOf(0.0).equals(largest)) {
-			for (PitchClass pc : this.profile.keySet()) {
-				final double value = this.profile.get(pc);
-				normalized.setValue(pc, value / largest);
-			}
-		}
-
-		return normalized;
-	}
-
-	/**
-	 * @param pc pitch class for which to get the value.
-	 * @return the value associated with <code>PitchClass</code> pc.
+	 * @param pc pitch class for which the value is returned
+	 * @return the value associated with the given pitch class
 	 */
 	public double getValue(PitchClass pc) {
-		return this.profile.get(pc);
-	}
-
-	@Override
-	public String toString() {
-		final DecimalFormat df = new DecimalFormat("0.000");
-		final StringBuilder strBuilder = new StringBuilder();
-
-		for (PitchClass pc : this.profile.keySet()) {
-			strBuilder.append(pc).append(": ").append(df.format(this.profile.get(pc))).append(", ");
-		}
-
-		strBuilder.replace(strBuilder.length() - 2, strBuilder.length(), "");
-		return strBuilder.toString();
+		return this.profile.getOrDefault(pc, 0.0);
 	}
 
 	/**
-	 * Computes the correlation between the two profiles. Uses
+	 * Returns the correlation between this and the given chromagram. Uses
 	 * <a href="http://en.wikipedia.org/wiki/Pearson_correlation_coefficient">
 	 * Pearson correlation coefficient</a> formula for a sample. Normalizing the
 	 * profiles does not affect correlation.
 	 *
-	 * @param a Profile for computing correlation.
-	 * @param b Profile for computing correlation.
-	 * @return correlation between profiles a and b.
+	 * @param other the chromagram with which the correlation is returned
+	 * @return the correlation between this and the given chromagram
 	 */
-	public static double correlation(Chromagram a, Chromagram b) {
+	public double correlation(Chromagram other) {
 
 		double averageOfA = 0.0;
 		double averageOfB = 0.0;
 
 		for (PitchClass pc : PitchClass.values()) {
-			averageOfA += a.getValue(pc);
-			averageOfB += b.getValue(pc);
+			averageOfA += getValue(pc);
+			averageOfB += other.getValue(pc);
 		}
 
 		averageOfA /= PitchClass.values().length;
@@ -217,8 +78,8 @@ public class Chromagram {
 		double denomB = 0.0;
 
 		for (PitchClass pc : PitchClass.values()) {
-			final double diffA = a.getValue(pc) - averageOfA;
-			final double diffB = b.getValue(pc) - averageOfB;
+			final double diffA = getValue(pc) - averageOfA;
+			final double diffB = other.getValue(pc) - averageOfB;
 
 			numerator += diffA * diffB;
 			denomA += Math.pow(diffA, 2.0);
@@ -229,24 +90,35 @@ public class Chromagram {
 		return numerator / denominator;
 	}
 
-	/**
-	 * Computes the Euclidean distance between profiles. Computes the
-	 * <a href="https://en.wikipedia.org/wiki/Euclidean_distance"> Euclidean
-	 * distance</a> between the profiles which can be considered 12-dimensional
-	 * vectors. The method {@link #normalize() normalize()} can be used for getting
-	 * the profiles to a similar range.
-	 *
-	 * @param a Profile for computing Euclidean distance.
-	 * @param b Profile for computing Euclidean distance.
-	 * @return Euclidean distance between a and b.
-	 */
-	public static double euclidean(Chromagram a, Chromagram b) {
-		double sumOfSquaredDiffs = 0.0;
+	@Override
+	public String toString() {
+		final DecimalFormat df = new DecimalFormat("0.0000");
+		final StringBuilder strBuilder = new StringBuilder();
 
-		for (PitchClass pc : PitchClass.values()) {
-			sumOfSquaredDiffs += Math.pow(a.getValue(pc) - b.getValue(pc), 2.0);
+		for (PitchClass pc : this.profile.keySet()) {
+			strBuilder.append(pc).append(": ").append(df.format(this.profile.get(pc))).append(", ");
 		}
 
-		return Math.sqrt(sumOfSquaredDiffs);
+		strBuilder.replace(strBuilder.length() - 2, strBuilder.length(), "");
+		return strBuilder.toString();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (!(o instanceof Chromagram)) {
+			return false;
+		}
+
+		Chromagram other = (Chromagram) o;
+		return this.profile.equals(other.profile);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(profile);
 	}
 }
