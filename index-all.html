@@ -114,21 +114,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Adds the given NoteBuilder into this builder.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#add(org.wmn4j.notation.elements.Chord)">add(Chord)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html#add(org.wmn4j.notation.elements.Chord)">add(Chord)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html" title="class in org.wmn4j.analysis.harmony">ChromagramBuilder</a></dt>
 <dd>
-<div class="block">Add the notes in in the chord to this <code>PCProfile</code>.</div>
+<div class="block">Increments the values for the the pitch classes of the notes in the given chord.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Duration.html#add(org.wmn4j.notation.elements.Duration)">add(Duration)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements">Duration</a></dt>
 <dd>
 <div class="block">Returns a duration that is the sum of this and other.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#add(org.wmn4j.notation.elements.Durational)">add(Durational)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html#add(org.wmn4j.notation.elements.Note)">add(Note)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html" title="class in org.wmn4j.analysis.harmony">ChromagramBuilder</a></dt>
 <dd>
-<div class="block">Add the pitch class/classes of durational to this <code>PCProfile</code>.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#add(org.wmn4j.notation.elements.Note)">add(Note)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
-<dd>
-<div class="block">Add to the pitch class bin of the pitch class of note.</div>
+<div class="block">Increments the value of the pitch class of the note.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Chord.html#add(org.wmn4j.notation.elements.Note)">add(Note)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></dt>
 <dd>
@@ -199,10 +195,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">The key signature for A major or f# minor.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/KSKeyAnalyzer.html#analyzeKey(java.util.List)">analyzeKey(List&lt;Durational&gt;)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/KSKeyAnalyzer.html" title="class in org.wmn4j.analysis.harmony">KSKeyAnalyzer</a></dt>
-<dd>
-<div class="block">Returns the most fitting key.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Score.Attribute.html#ARRANGER">ARRANGER</a></span> - org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a></dt>
 <dd>
 <div class="block">The arranger.</div>
@@ -265,6 +257,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/KeySignatures.html#BMAJ_GSHARPMIN">BMAJ_GSHARPMIN</a></span> - Static variable in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/KeySignatures.html" title="class in org.wmn4j.notation.elements">KeySignatures</a></dt>
 <dd>
 <div class="block">The key signature for B major or g# minor.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html#build()">build()</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html" title="class in org.wmn4j.analysis.harmony">ChromagramBuilder</a></dt>
+<dd>
+<div class="block">Returns a chromagram with the values set in this builder.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#build()">build()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
 <dd>
@@ -344,6 +340,24 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Constructor that creates a new builder with the contents of the given chord.</div>
 </dd>
+<dt><a href="org/wmn4j/analysis/harmony/Chromagram.html" title="class in org.wmn4j.analysis.harmony"><span class="typeNameLink">Chromagram</span></a> - Class in <a href="org/wmn4j/analysis/harmony/package-summary.html">org.wmn4j.analysis.harmony</a></dt>
+<dd>
+<div class="block">Represents a chromagram (i.e.</div>
+</dd>
+<dt><a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html" title="class in org.wmn4j.analysis.harmony"><span class="typeNameLink">ChromagramBuilder</span></a> - Class in <a href="org/wmn4j/analysis/harmony/package-summary.html">org.wmn4j.analysis.harmony</a></dt>
+<dd>
+<div class="block">Builder for <a href="org/wmn4j/analysis/harmony/Chromagram.html" title="class in org.wmn4j.analysis.harmony"><code>Chromagram</code></a> instances.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html#%3Cinit%3E()">ChromagramBuilder()</a></span> - Constructor for class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html" title="class in org.wmn4j.analysis.harmony">ChromagramBuilder</a></dt>
+<dd>
+<div class="block">Constructor that creates a builder that adds to the pitch class
+ bins based on count of notes or pitch classes.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html#%3Cinit%3E(java.util.function.Function)">ChromagramBuilder(Function&lt;Note, Double&gt;)</a></span> - Constructor for class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html" title="class in org.wmn4j.analysis.harmony">ChromagramBuilder</a></dt>
+<dd>
+<div class="block">Constructor that creates a builder that adds to the pitch class
+ bins using the given weight function.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/NoteBuilder.html#clearCache()">clearCache()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/NoteBuilder.html" title="class in org.wmn4j.notation.builders">NoteBuilder</a></dt>
 <dd>
 <div class="block">Removes the cached note that was built on the previous call of <a href="org/wmn4j/notation/builders/NoteBuilder.html#build()"><code>build</code></a>.</div>
@@ -406,9 +420,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns true if there are clef changes specified in the attributes.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#correlation(org.wmn4j.analysis.harmony.PCProfile,org.wmn4j.analysis.harmony.PCProfile)">correlation(PCProfile, PCProfile)</a></span> - Static method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/Chromagram.html#correlation(org.wmn4j.analysis.harmony.Chromagram)">correlation(Chromagram)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/Chromagram.html" title="class in org.wmn4j.analysis.harmony">Chromagram</a></dt>
 <dd>
-<div class="block">Computes the correlation between the two profiles.</div>
+<div class="block">Returns the correlation between this and the given chromagram.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/PitchClass.html#CSHARP_DFLAT">CSHARP_DFLAT</a></span> - org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/PitchClass.html" title="enum in org.wmn4j.notation.elements">PitchClass</a></dt>
 <dd>
@@ -489,6 +503,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Basic durations.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html#durationWeight(org.wmn4j.notation.elements.Note)">durationWeight(Note)</a></span> - Static method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html" title="class in org.wmn4j.analysis.harmony">ChromagramBuilder</a></dt>
+<dd>
+<div class="block">Returns a weight value for the note that is the double
+ value of its duration.</div>
+</dd>
 </dl>
 <a id="I:E">
 <!--   -->
@@ -540,6 +559,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns true if this note ends a marking of the given type.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/Chromagram.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/Chromagram.html" title="class in org.wmn4j.analysis.harmony">Chromagram</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Chord.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></dt>
 <dd>
 <div class="block">Returns true if the given Object is equal to this.</div>
@@ -607,10 +628,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns true if this pattern can be transposed chromatically so that its
  pitches are enharmonically equal to those of other, otherwise returns false.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#euclidean(org.wmn4j.analysis.harmony.PCProfile,org.wmn4j.analysis.harmony.PCProfile)">euclidean(PCProfile, PCProfile)</a></span> - Static method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
-<dd>
-<div class="block">Computes the Euclidean distance between profiles.</div>
 </dd>
 </dl>
 <a id="I:F">
@@ -827,11 +844,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Rest.html#getDuration()">getDuration()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Rest.html" title="class in org.wmn4j.notation.elements">Rest</a></dt>
 <dd>
 <div class="block">Returns the duration of this rest.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#getDurationWeightedProfile()">getDurationWeightedProfile()</a></span> - Static method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
-<dd>
-<div class="block">Creates a <code>PCProfile</code> where the weight of a note's pitch class is
- weighted using the duration of the note.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/KeySignature.html#getFlats()">getFlats()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/KeySignature.html" title="class in org.wmn4j.notation.elements">KeySignature</a></dt>
 <dd>
@@ -1250,8 +1262,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the type of this staff.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#getValue(org.wmn4j.notation.elements.PitchClass)">getValue(PitchClass)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
-<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/Chromagram.html#getValue(org.wmn4j.notation.elements.PitchClass)">getValue(PitchClass)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/Chromagram.html" title="class in org.wmn4j.analysis.harmony">Chromagram</a></dt>
+<dd>
+<div class="block">Returns the value associated with the given pitch class.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/Wmn4j.html#getVersion()">getVersion()</a></span> - Static method in class org.wmn4j.<a href="org/wmn4j/Wmn4j.html" title="class in org.wmn4j">Wmn4j</a></dt>
 <dd>
 <div class="block">Returns the version number of the project.</div>
@@ -1345,6 +1359,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns true if the given attribute is set in this score.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/Chromagram.html#hashCode()">hashCode()</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/Chromagram.html" title="class in org.wmn4j.analysis.harmony">Chromagram</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Chord.html#hashCode()">hashCode()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Clef.html#hashCode()">hashCode()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Clef.html" title="class in org.wmn4j.notation.elements">Clef</a></dt>
@@ -1518,10 +1534,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Major and minor keys.</div>
 </dd>
-<dt><a href="org/wmn4j/analysis/harmony/KeyAnalyzer.html" title="interface in org.wmn4j.analysis.harmony"><span class="typeNameLink">KeyAnalyzer</span></a> - Interface in <a href="org/wmn4j/analysis/harmony/package-summary.html">org.wmn4j.analysis.harmony</a></dt>
-<dd>
-<div class="block">Common interface for key analyzers.</div>
-</dd>
 <dt><a href="org/wmn4j/notation/elements/KeySignature.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">KeySignature</span></a> - Class in <a href="org/wmn4j/notation/elements/package-summary.html">org.wmn4j.notation.elements</a></dt>
 <dd>
 <div class="block">Represents a key signature.</div>
@@ -1529,14 +1541,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><a href="org/wmn4j/notation/elements/KeySignatures.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">KeySignatures</span></a> - Class in <a href="org/wmn4j/notation/elements/package-summary.html">org.wmn4j.notation.elements</a></dt>
 <dd>
 <div class="block">Collection of typical key signatures associated with major and minor keys.</div>
-</dd>
-<dt><a href="org/wmn4j/analysis/harmony/KSKeyAnalyzer.html" title="class in org.wmn4j.analysis.harmony"><span class="typeNameLink">KSKeyAnalyzer</span></a> - Class in <a href="org/wmn4j/analysis/harmony/package-summary.html">org.wmn4j.analysis.harmony</a></dt>
-<dd>
-<div class="block">Implements Krumhansl-Schmuckler algorithm.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/KSKeyAnalyzer.html#%3Cinit%3E()">KSKeyAnalyzer()</a></span> - Constructor for class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/KSKeyAnalyzer.html" title="class in org.wmn4j.analysis.harmony">KSKeyAnalyzer</a></dt>
-<dd>
-<div class="block">Constructor.</div>
 </dd>
 </dl>
 <a id="I:M">
@@ -1629,10 +1633,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Staff.Type.html#NORMAL">NORMAL</a></span> - org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Staff.Type.html" title="enum in org.wmn4j.notation.elements">Staff.Type</a></dt>
 <dd>
 <div class="block">Normal five line staff.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#normalize()">normalize()</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
-<dd>
-<div class="block">Returns a normalized copy of this pitch profile.</div>
 </dd>
 <dt><a href="org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">Note</span></a> - Class in <a href="org/wmn4j/notation/elements/package-summary.html">org.wmn4j.notation.elements</a></dt>
 <dd>
@@ -1735,6 +1735,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/SingleStaffPart.html#of(java.util.Map,org.wmn4j.notation.elements.Staff)">of(Map&lt;Part.Attribute, String&gt;, Staff)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/SingleStaffPart.html" title="class in org.wmn4j.notation.elements">SingleStaffPart</a></dt>
 <dd>
 <div class="block">Returns a part with a single staff with the given attributes and staff.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/Chromagram.html#of(java.util.Map)">of(Map&lt;PitchClass, Double&gt;)</a></span> - Static method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/Chromagram.html" title="class in org.wmn4j.analysis.harmony">Chromagram</a></dt>
+<dd>
+<div class="block">Returns a chromagram with the given mapping of pitch classes to non-negative values.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Score.html#of(java.util.Map,java.util.List)">of(Map&lt;Score.Attribute, String&gt;, List&lt;Part&gt;)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Score.html" title="class in org.wmn4j.notation.elements">Score</a></dt>
 <dd>
@@ -1898,23 +1902,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternPosition.html#%3Cinit%3E(java.util.Collection)">PatternPosition(Collection&lt;Position&gt;)</a></span> - Constructor for class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir">PatternPosition</a></dt>
 <dd>
 <div class="block">Creates a new pattern position with the given positions.</div>
-</dd>
-<dt><a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony"><span class="typeNameLink">PCProfile</span></a> - Class in <a href="org/wmn4j/analysis/harmony/package-summary.html">org.wmn4j.analysis.harmony</a></dt>
-<dd>
-<div class="block">Pitch class profile in twelve-tone equal-temperament (TET).</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#%3Cinit%3E()">PCProfile()</a></span> - Constructor for class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
-<dd>
-<div class="block">Using this constructor the profile is based on the counts of pitch classes.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#%3Cinit%3E(org.wmn4j.analysis.harmony.PCProfile.Weighter)">PCProfile(PCProfile.Weighter)</a></span> - Constructor for class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
-<dd>
-<div class="block">Constructor that allows specifying how the value of a note is computed when
- it is added to the profile.</div>
-</dd>
-<dt><a href="org/wmn4j/analysis/harmony/PCProfile.Weighter.html" title="interface in org.wmn4j.analysis.harmony"><span class="typeNameLink">PCProfile.Weighter</span></a> - Interface in <a href="org/wmn4j/analysis/harmony/package-summary.html">org.wmn4j.analysis.harmony</a></dt>
-<dd>
-<div class="block">Interface for weighing the pitch class of a <code>Note</code>.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Clef.Symbol.html#PERCUSSION">PERCUSSION</a></span> - org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Clef.Symbol.html" title="enum in org.wmn4j.notation.elements">Clef.Symbol</a></dt>
 <dd>
@@ -2147,9 +2134,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Sets the time signature for this builder.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#setValue(org.wmn4j.notation.elements.PitchClass,double)">setValue(PitchClass, double)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html#setValue(org.wmn4j.notation.elements.PitchClass,double)">setValue(PitchClass, double)</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html" title="class in org.wmn4j.analysis.harmony">ChromagramBuilder</a></dt>
 <dd>
-<div class="block">Set a value for the <code>PitchClass</code>.</div>
+<div class="block">Sets the value for the given pitch class.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Barline.html#SINGLE">SINGLE</a></span> - org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Barline.html" title="enum in org.wmn4j.notation.elements">Barline</a></dt>
 <dd>
@@ -2263,7 +2250,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Returns the <a href="http://en.wikipedia.org/wiki/Pitch_class">pitch class
  number</a> of this pitch class.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.html#toString()">toString()</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony">PCProfile</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/Chromagram.html#toString()">toString()</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/Chromagram.html" title="class in org.wmn4j.analysis.harmony">Chromagram</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Chord.html#toString()">toString()</a></span> - Method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Chord.html" title="class in org.wmn4j.notation.elements">Chord</a></dt>
 <dd>&nbsp;</dd>
@@ -2411,10 +2398,6 @@ the order they are declared.</div>
 </a>
 <h2 class="title">W</h2>
 <dl>
-<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/PCProfile.Weighter.html#weight(org.wmn4j.notation.elements.Note)">weight(Note)</a></span> - Method in interface org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.Weighter.html" title="interface in org.wmn4j.analysis.harmony">PCProfile.Weighter</a></dt>
-<dd>
-<div class="block">Calculates the coefficient for the pitch class of the note.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Durations.html#WHOLE">WHOLE</a></span> - Static variable in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Durations.html" title="class in org.wmn4j.notation.elements">Durations</a></dt>
 <dd>
 <div class="block">Constant value for whole note duration.</div>

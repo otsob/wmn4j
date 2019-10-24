@@ -98,6 +98,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul>
 <li class="circle">org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Chord.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">Chord</span></a> (implements org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>, java.lang.Iterable&lt;T&gt;)</li>
 <li class="circle">org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/ChordBuilder.html" title="class in org.wmn4j.notation.builders"><span class="typeNameLink">ChordBuilder</span></a> (implements org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>, java.lang.Iterable&lt;T&gt;)</li>
+<li class="circle">org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/Chromagram.html" title="class in org.wmn4j.analysis.harmony"><span class="typeNameLink">Chromagram</span></a></li>
+<li class="circle">org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/ChromagramBuilder.html" title="class in org.wmn4j.analysis.harmony"><span class="typeNameLink">ChromagramBuilder</span></a></li>
 <li class="circle">org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Clef.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">Clef</span></a></li>
 <li class="circle">org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Clefs.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">Clefs</span></a></li>
 <li class="circle">org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Duration.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">Duration</span></a> (implements java.lang.Comparable&lt;T&gt;)</li>
@@ -105,7 +107,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">org.wmn4j.mir.discovery.<a href="org/wmn4j/mir/discovery/GeometricPatternDiscovery.html" title="class in org.wmn4j.mir.discovery"><span class="typeNameLink">GeometricPatternDiscovery</span></a> (implements org.wmn4j.mir.discovery.<a href="org/wmn4j/mir/discovery/PatternDiscovery.html" title="interface in org.wmn4j.mir.discovery">PatternDiscovery</a>)</li>
 <li class="circle">org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/KeySignature.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">KeySignature</span></a></li>
 <li class="circle">org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/KeySignatures.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">KeySignatures</span></a></li>
-<li class="circle">org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/KSKeyAnalyzer.html" title="class in org.wmn4j.analysis.harmony"><span class="typeNameLink">KSKeyAnalyzer</span></a> (implements org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/KeyAnalyzer.html" title="interface in org.wmn4j.analysis.harmony">KeyAnalyzer</a>)</li>
 <li class="circle">org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Marking.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">Marking</span></a></li>
 <li class="circle">org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Marking.Connection.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">Marking.Connection</span></a></li>
 <li class="circle">org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Measure.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">Measure</span></a> (implements java.lang.Iterable&lt;T&gt;)</li>
@@ -118,7 +119,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/PartWiseScoreIterator.html" title="class in org.wmn4j.notation.iterators"><span class="typeNameLink">PartWiseScoreIterator</span></a> (implements org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScoreIterator.html" title="interface in org.wmn4j.notation.iterators">ScoreIterator</a>)</li>
 <li class="circle">org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir"><span class="typeNameLink">PatternBuilder</span></a></li>
 <li class="circle">org.wmn4j.mir.<a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir"><span class="typeNameLink">PatternPosition</span></a></li>
-<li class="circle">org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.html" title="class in org.wmn4j.analysis.harmony"><span class="typeNameLink">PCProfile</span></a></li>
 <li class="circle">org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Pitch.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">Pitch</span></a> (implements java.lang.Comparable&lt;T&gt;)</li>
 <li class="circle">org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators"><span class="typeNameLink">Position</span></a></li>
 <li class="circle">org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Rest.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">Rest</span></a> (implements org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements">Durational</a>)</li>
@@ -160,10 +160,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">org.wmn4j.notation.iterators.<a href="org/wmn4j/notation/iterators/ScoreIterator.html" title="interface in org.wmn4j.notation.iterators"><span class="typeNameLink">ScoreIterator</span></a></li>
 </ul>
 </li>
-<li class="circle">org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/KeyAnalyzer.html" title="interface in org.wmn4j.analysis.harmony"><span class="typeNameLink">KeyAnalyzer</span></a></li>
 <li class="circle">org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir"><span class="typeNameLink">Pattern</span></a></li>
 <li class="circle">org.wmn4j.mir.discovery.<a href="org/wmn4j/mir/discovery/PatternDiscovery.html" title="interface in org.wmn4j.mir.discovery"><span class="typeNameLink">PatternDiscovery</span></a></li>
-<li class="circle">org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/PCProfile.Weighter.html" title="interface in org.wmn4j.analysis.harmony"><span class="typeNameLink">PCProfile.Weighter</span></a></li>
 <li class="circle">org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Pitched.html" title="interface in org.wmn4j.notation.elements"><span class="typeNameLink">Pitched</span></a></li>
 <li class="circle">org.wmn4j.io.<a href="org/wmn4j/io/ScoreReader.html" title="interface in org.wmn4j.io"><span class="typeNameLink">ScoreReader</span></a>
 <ul>
