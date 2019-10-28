@@ -895,6 +895,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Returns the index of the <a href="org/wmn4j/notation/elements/Durational.html" title="interface in org.wmn4j.notation.elements"><code>Durational</code></a> that was returned by the last
  call of <code>next</code>.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/KeyAnalysis.html#getKey()">getKey()</a></span> - Method in interface org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/KeyAnalysis.html" title="interface in org.wmn4j.analysis.harmony">KeyAnalysis</a></dt>
+<dd>
+<div class="block">Returns the key of the analysed section of music.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/KSKeyAnalysis.html#getKey()">getKey()</a></span> - Method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/KSKeyAnalysis.html" title="class in org.wmn4j.analysis.harmony">KSKeyAnalysis</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/builders/MeasureBuilder.html#getKeySignature()">getKeySignature()</a></span> - Method in class org.wmn4j.notation.builders.<a href="org/wmn4j/notation/builders/MeasureBuilder.html" title="class in org.wmn4j.notation.builders">MeasureBuilder</a></dt>
 <dd>
 <div class="block">Returns the key signature set in this builder.</div>
@@ -1534,6 +1540,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Major and minor keys.</div>
 </dd>
+<dt><a href="org/wmn4j/analysis/harmony/KeyAnalysis.html" title="interface in org.wmn4j.analysis.harmony"><span class="typeNameLink">KeyAnalysis</span></a> - Interface in <a href="org/wmn4j/analysis/harmony/package-summary.html">org.wmn4j.analysis.harmony</a></dt>
+<dd>
+<div class="block">Represents the results of a key analysis.</div>
+</dd>
 <dt><a href="org/wmn4j/notation/elements/KeySignature.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">KeySignature</span></a> - Class in <a href="org/wmn4j/notation/elements/package-summary.html">org.wmn4j.notation.elements</a></dt>
 <dd>
 <div class="block">Represents a key signature.</div>
@@ -1541,6 +1551,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><a href="org/wmn4j/notation/elements/KeySignatures.html" title="class in org.wmn4j.notation.elements"><span class="typeNameLink">KeySignatures</span></a> - Class in <a href="org/wmn4j/notation/elements/package-summary.html">org.wmn4j.notation.elements</a></dt>
 <dd>
 <div class="block">Collection of typical key signatures associated with major and minor keys.</div>
+</dd>
+<dt><a href="org/wmn4j/analysis/harmony/KSKeyAnalysis.html" title="class in org.wmn4j.analysis.harmony"><span class="typeNameLink">KSKeyAnalysis</span></a> - Class in <a href="org/wmn4j/analysis/harmony/package-summary.html">org.wmn4j.analysis.harmony</a></dt>
+<dd>
+<div class="block">Provides key analysis using the Krumhansl-Schmuckler key finding algorithm.</div>
 </dd>
 </dl>
 <a id="I:M">
@@ -1684,6 +1698,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns a time signature with the given numerator and beat duration.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/KSKeyAnalysis.html#of(java.lang.Iterable)">of(Iterable&lt;Durational&gt;)</a></span> - Static method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/KSKeyAnalysis.html" title="class in org.wmn4j.analysis.harmony">KSKeyAnalysis</a></dt>
+<dd>
+<div class="block">Returns a key analysis of the given selection using the Krumhansl and Schmuckler algorithm.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/MultiStaffPart.html#of(java.lang.String,java.util.Map)">of(String, Map&lt;Integer, Staff&gt;)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/MultiStaffPart.html" title="class in org.wmn4j.notation.elements">MultiStaffPart</a></dt>
 <dd>
 <div class="block">Returns a part with multiple staves with the given values.</div>
@@ -1787,6 +1805,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/Note.html#of(org.wmn4j.notation.elements.Pitch,org.wmn4j.notation.elements.Duration,java.util.Set,java.util.Collection,org.wmn4j.notation.elements.Note,boolean)">of(Pitch, Duration, Set&lt;Articulation&gt;, Collection&lt;Marking.Connection&gt;, Note, boolean)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/Note.html" title="class in org.wmn4j.notation.elements">Note</a></dt>
 <dd>
 <div class="block">Returns an instance with the given parameters.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/analysis/harmony/KSKeyAnalysis.html#of(org.wmn4j.notation.elements.Score)">of(Score)</a></span> - Static method in class org.wmn4j.analysis.harmony.<a href="org/wmn4j/analysis/harmony/KSKeyAnalysis.html" title="class in org.wmn4j.analysis.harmony">KSKeyAnalysis</a></dt>
+<dd>
+<div class="block">Returns a key analysis of the given score using the Krumhansl and Schmuckler algorithm.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/elements/MeasureAttributes.html#of(org.wmn4j.notation.elements.TimeSignature,org.wmn4j.notation.elements.KeySignature,org.wmn4j.notation.elements.Barline,org.wmn4j.notation.elements.Barline,org.wmn4j.notation.elements.Clef)">of(TimeSignature, KeySignature, Barline, Barline, Clef)</a></span> - Static method in class org.wmn4j.notation.elements.<a href="org/wmn4j/notation/elements/MeasureAttributes.html" title="class in org.wmn4j.notation.elements">MeasureAttributes</a></dt>
 <dd>
