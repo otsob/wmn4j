@@ -15,7 +15,9 @@ import java.util.stream.Collectors;
 /**
  * Represents a chord. This class should be used for chords where the notes are
  * all of same length. For polyphonic textures add voices to the
- * {@link Measure}. This class is immutable.
+ * {@link Measure}.
+ * <p>
+ * This class is immutable.
  */
 public final class Chord implements Durational, Iterable<Note> {
 	private final List<Note> notes;

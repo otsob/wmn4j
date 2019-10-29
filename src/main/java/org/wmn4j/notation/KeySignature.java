@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a key signature. This class is immutable.
+ * Represents a key signature.
+ * <p>
+ * This class is immutable.
  */
 public final class KeySignature {
 	private final List<Pitch.Base> sharps;
@@ -20,13 +22,13 @@ public final class KeySignature {
 	 * signatures use the ones defined in {@link KeySignatures}. This is mostly
 	 * intended for creating custom key signatures.
 	 *
-	 * @throws IllegalArgumentException if the same Pitch.Base is in both sharps and
-	 *                                  flats.
 	 * @param sharps the Pitch.Base names that should be raised. For example, for
 	 *               G-major this list consists only of Pitch.Base.F.
 	 * @param flats  the Pitch.Base names that should be flattened. For example, for
 	 *               F-major this list consists only of Pitch.Base.B.
 	 * @return a key signature with the given sharps and flats
+	 * @throws IllegalArgumentException if the same Pitch.Base is in both sharps and
+	 *                                  flats.
 	 */
 	public static KeySignature of(List<Pitch.Base> sharps, List<Pitch.Base> flats) {
 		return new KeySignature(sharps, flats);
@@ -37,12 +39,12 @@ public final class KeySignature {
 	 * in {@link KeySignatures}. This is mostly intended for creating custom key
 	 * signatures.
 	 *
-	 * @throws IllegalArgumentException if the same Pitch.Base is in both sharps and
-	 *                                  flats.
 	 * @param sharps the Pitch.Base names that should be raised. For example, for
 	 *               G-major this list consists only of Pitch.Base.F.
 	 * @param flats  the Pitch.Base names that should be flattened. For example, for
 	 *               F-major this list consists only of Pitch.Base.B.
+	 * @throws IllegalArgumentException if the same Pitch.Base is in both sharps and
+	 *                                  flats.
 	 */
 	private KeySignature(List<Pitch.Base> sharps, List<Pitch.Base> flats) {
 		if (sharps != null && !sharps.isEmpty()) {
@@ -136,7 +138,7 @@ public final class KeySignature {
 	 *
 	 * @param o Object against which this is compared for equality.
 	 * @return true if Object o is of class KeySignature and has the same sharps and
-	 *         flats as this. false otherwise.
+	 * flats as this. false otherwise.
 	 */
 	@Override
 	public boolean equals(Object o) {

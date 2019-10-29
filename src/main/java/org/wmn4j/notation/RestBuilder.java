@@ -7,6 +7,8 @@ import java.util.Objects;
 
 /**
  * Class for building {@link Rest} objects.
+ * <p>
+ * Instances of this class are not thread-safe.
  */
 public final class RestBuilder implements DurationalBuilder {
 

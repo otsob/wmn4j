@@ -5,6 +5,8 @@ package org.wmn4j.notation;
 
 /**
  * Interface for builders that build {@link Durational} objects.
+ * <p>
+ * Implementations of this interface are not guaranteed to be thread-safe.
  */
 public interface DurationalBuilder {
 

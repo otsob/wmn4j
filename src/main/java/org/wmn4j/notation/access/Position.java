@@ -7,7 +7,9 @@ import org.wmn4j.notation.SingleStaffPart;
 
 /**
  * Represents the position of a {@link org.wmn4j.notation.Durational}
- * in a {@link org.wmn4j.notation.Score}. Is immutable.
+ * in a {@link org.wmn4j.notation.Score}.
+ * <p>
+ * This class is immutable.
  */
 public final class Position {
 

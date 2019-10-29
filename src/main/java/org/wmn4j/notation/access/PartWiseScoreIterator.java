@@ -14,6 +14,8 @@ import java.util.NoSuchElementException;
  * Iterates through a {@link Score} in part wise order. Starts by iterating
  * through the part with the smallest number. Iterates through parts starting
  * from smallest measure number. Iterates through measure voice by voice.
+ * <p>
+ * Instances of this class are not thread-safe.
  */
 public class PartWiseScoreIterator implements ScoreIterator {
 

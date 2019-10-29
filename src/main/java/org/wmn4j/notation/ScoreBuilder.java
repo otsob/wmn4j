@@ -12,6 +12,8 @@ import java.util.Optional;
 
 /**
  * Class for building {@link Score} objects.
+ * <p>
+ * Instances of this class are not thread-safe.
  */
 public class ScoreBuilder {
 

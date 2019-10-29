@@ -12,6 +12,8 @@ import java.util.Optional;
 
 /**
  * Represents a part in a score.
+ * <p>
+ * Implementations of this class are expected to be thread-safe.
  */
 public interface Part extends Iterable<Measure> {
 

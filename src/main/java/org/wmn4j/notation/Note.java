@@ -14,10 +14,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Represents a note. This class is immutable. Notes have pitch, duration,
+ * Represents a note. Notes have pitch, duration,
  * articulations, and can be tied. A sequence of tied notes functions like a
  * singly linked list where a previous note keeps track of the following tied
  * note.
+ * <p>
+ * This class is immutable.
  */
 public final class Note implements Durational, Pitched {
 

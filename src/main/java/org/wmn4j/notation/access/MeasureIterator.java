@@ -9,6 +9,8 @@ import java.util.Iterator;
  * through the notes in the Measure voice by voice going from the earliest
  * durational in the voice to the last on each voice. The order of voices is
  * unspecified. The iterator does not support removing.
+ * <p>
+ * Instances of this class are not thread-safe.
  */
 public interface MeasureIterator extends Iterator<Durational> {
 

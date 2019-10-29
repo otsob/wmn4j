@@ -13,7 +13,9 @@ import java.util.Iterator;
  * of a whole note the duration is just like in normal music terminology. For
  * example, the duration of a quarter note is handled as the rational number
  * 1/4. The rational number is always reduced to the lowest possible numerator
- * and denominator. This class is immutable.
+ * and denominator.
+ * <p>
+ * This class is immutable.
  */
 public final class Duration implements Comparable<Duration> {
 
@@ -24,10 +26,10 @@ public final class Duration implements Comparable<Duration> {
 	 * Returns an instance with the given numerator and denominator. The numerator
 	 * and denominator must be at least 1.
 	 *
-	 * @throws IllegalArgumentException if numerator or denominator are less than 1
 	 * @param numerator   the numerator part of the duration
 	 * @param denominator the denominator part of the duration
 	 * @return an instance with the given numerator and denominator
+	 * @throws IllegalArgumentException if numerator or denominator are less than 1
 	 */
 	public static Duration of(int numerator, int denominator) {
 
@@ -86,7 +88,7 @@ public final class Duration implements Comparable<Duration> {
 	 *
 	 * @param o an object against which this Duration is compared for equality
 	 * @return true if the given object is a {@link Duration} with the same
-	 *         numerator and denominator as this, false otherwise
+	 * numerator and denominator as this, false otherwise
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -171,9 +173,9 @@ public final class Duration implements Comparable<Duration> {
 	 * Returns a duration that is this duration multiplied by multiplier. Multiplier
 	 * must be at least 1.
 	 *
-	 * @throws IllegalArgumentException if multiplier is less than 1
 	 * @param multiplier the factor by which this duration should be multiplied
 	 * @return a Duration that is this duration multiplied by multiplier
+	 * @throws IllegalArgumentException if multiplier is less than 1
 	 */
 	public Duration multiplyBy(int multiplier) {
 		if (multiplier < 1) {
@@ -187,9 +189,9 @@ public final class Duration implements Comparable<Duration> {
 	 * Returns a duration that is this duration divided by divider. Divider must be
 	 * at least 1.
 	 *
-	 * @throws IllegalArgumentException if divider is less than 1
 	 * @param divisor the factor by which this duration should be divided
 	 * @return a Duration that is this duration divided by divider
+	 * @throws IllegalArgumentException if divider is less than 1
 	 */
 	public Duration divideBy(int divisor) {
 		if (divisor < 1) {
@@ -224,7 +226,7 @@ public final class Duration implements Comparable<Duration> {
 	 *
 	 * @param other the Duration against which this is compared for length.
 	 * @return negative integer if this is shorter than other, positive integer if
-	 *         this is longer than other, 0 if this is equal to other.
+	 * this is longer than other, 0 if this is equal to other.
 	 */
 	@Override
 	public int compareTo(Duration other) {
@@ -234,9 +236,9 @@ public final class Duration implements Comparable<Duration> {
 	/**
 	 * Returns the total summed duration of the given durations.
 	 *
-	 * @throws IllegalArgumentException if durations is empty
 	 * @param durations the durations whose sum is returned
 	 * @return The sum of the given durations
+	 * @throws IllegalArgumentException if durations is empty
 	 */
 	public static Duration sumOf(Collection<Duration> durations) {
 		if (durations.isEmpty()) {

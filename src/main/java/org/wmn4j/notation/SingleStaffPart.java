@@ -14,7 +14,9 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
- * Represents a part with a single staff in a score. This class is immutable.
+ * Represents a part with a single staff in a score.
+ * <p>
+ * This class is immutable.
  */
 public final class SingleStaffPart implements Part {
 

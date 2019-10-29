@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 
 /**
  * Class for building {@link Note} objects. The built note is cached.
+ * <p>
+ * Instances of this class are not thread-safe.
  */
 public final class NoteBuilder implements DurationalBuilder {
 
@@ -138,7 +140,7 @@ public final class NoteBuilder implements DurationalBuilder {
 
 	/**
 	 * Tie this builder to a following builder. The builder that this is tied to
-	 * should be built before this. When the notes are built the <code>Note</code>
+	 * should be built before this. When the notes are built the {@link Note}
 	 * returned by the call of {@link #build build} on this will be tied to the
 	 * <code>Note</code> built by builder.
 	 *

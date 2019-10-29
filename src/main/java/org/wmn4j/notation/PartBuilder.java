@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 
 /**
  * Builder for building {@link Part} objects.
+ * <p>
+ * Instances of this class are not thread-safe.
  */
 public class PartBuilder {
 

@@ -17,8 +17,7 @@ import java.util.stream.Collectors;
  * the durations add up to the correct amount to fill up the measure according
  * to the specified time signature.
  * <p>
- * Default values: TimeSignature : 4/4 KeySignature : C-major/a-minor Clef: G
- * Barlines (right and left): Single. No clef changes.
+ * Instances of this class are not thread-safe.
  */
 public class MeasureBuilder {
 

@@ -11,7 +11,9 @@ import java.util.Objects;
  * is altered, and octave number which tells the octave of the note. Octave
  * number is based on
  * <a href="http://en.wikipedia.org/wiki/Scientific_pitch_notation">scientific
- * pitch notation</a>. This class is immutable.
+ * pitch notation</a>.
+ * <p>
+ * This class is immutable.
  */
 public final class Pitch implements Comparable<Pitch> {
 
@@ -78,16 +80,16 @@ public final class Pitch implements Comparable<Pitch> {
 	/**
 	 * Returns an instance.
 	 *
-	 * @throws IllegalArgumentException if alter is greater than {@link #ALTER_LIMIT
-	 *                                  ALTER_LIMIT} of smaller than
-	 *                                  {@link #ALTER_LIMIT -1*ALTER_LIMIT}, or if
-	 *                                  octave is negative or larger than
-	 *                                  {@link #MAX_OCTAVE MAX_OCTAVE}.
 	 * @param pitchName the letter on which the name of the pitch is based
 	 * @param alter     by how many half-steps the pitch is altered up (positive
 	 *                  values) or down (negative values)
 	 * @param octave    the octave of the pitch
 	 * @return Pitch object with the specified attributes
+	 * @throws IllegalArgumentException if alter is greater than {@link #ALTER_LIMIT
+	 *                                  ALTER_LIMIT} of smaller than
+	 *                                  {@link #ALTER_LIMIT -1*ALTER_LIMIT}, or if
+	 *                                  octave is negative or larger than
+	 *                                  {@link #MAX_OCTAVE MAX_OCTAVE}.
 	 */
 	public static Pitch of(Base pitchName, int alter, int octave) {
 		if (alter > ALTER_LIMIT || alter < -1 * ALTER_LIMIT) {
@@ -128,7 +130,7 @@ public final class Pitch implements Comparable<Pitch> {
 	 * Returns by how many half-steps this pitch is altered.
 	 *
 	 * @return by how many half-steps the pitch is altered up (positive value) or
-	 *         down (negative value)
+	 * down (negative value)
 	 */
 	public int getAlter() {
 		return this.alter;
@@ -214,7 +216,7 @@ public final class Pitch implements Comparable<Pitch> {
 	 *
 	 * @param o Object against which this is compared for equality.
 	 * @return true if Object o is of class Pitch and has the same, pitch base,
-	 *         alterations, and octave as this.
+	 * alterations, and octave as this.
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -258,8 +260,8 @@ public final class Pitch implements Comparable<Pitch> {
 	 *
 	 * @param other the pitch with which this is compared
 	 * @return negative integer if this is lower than other, positive integer if
-	 *         this is higher than other, 0 if pitches are (enharmonically) of same
-	 *         height
+	 * this is higher than other, 0 if pitches are (enharmonically) of same
+	 * height
 	 */
 	@Override
 	public int compareTo(Pitch other) {

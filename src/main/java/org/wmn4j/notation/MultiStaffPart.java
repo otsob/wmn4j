@@ -17,7 +17,9 @@ import java.util.TreeMap;
 
 /**
  * Represents a score part with multiple staves such as are often used with
- * keyboard instruments. This class is immutable.
+ * keyboard instruments.
+ * <p>
+ * This class is immutable.
  */
 public final class MultiStaffPart implements Part {
 

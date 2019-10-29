@@ -15,7 +15,9 @@ import java.util.Optional;
  * a slur or a glissando. The articulations are represented using connections
  * between adjacent notes. For example, if three notes are affected by the same
  * slur, the first will be connected to the second note and the second note will
- * be connected to the third note. This class is immutable.
+ * be connected to the third note.
+ * <p>
+ * This class is immutable.
  */
 public final class Marking {
 

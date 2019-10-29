@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Represents a staff in a score. This class is immutable.
+ * Represents a staff in a score.
+ * <p>
+ * This class is immutable.
  */
 public final class Staff implements Iterable<Measure> {
 
