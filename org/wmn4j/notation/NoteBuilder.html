@@ -121,7 +121,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public final class <span class="typeNameLabel">NoteBuilder</span>
 extends java.lang.Object
 implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a></pre>
-<div class="block">Class for building <a href="Note.html" title="class in org.wmn4j.notation"><code>Note</code></a> objects. The built note is cached.</div>
+<div class="block">Class for building <a href="Note.html" title="class in org.wmn4j.notation"><code>Note</code></a> objects. The built note is cached.
+ <p>
+ Instances of this class are not thread-safe.</div>
 </li>
 </ul>
 </div>
@@ -492,7 +494,7 @@ implements <a href="DurationalBuilder.html" title="interface in org.wmn4j.notati
 <h4>addTieToFollowing</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addTieToFollowing&#8203;(<a href="NoteBuilder.html" title="class in org.wmn4j.notation">NoteBuilder</a>&nbsp;builder)</pre>
 <div class="block">Tie this builder to a following builder. The builder that this is tied to
- should be built before this. When the notes are built the <code>Note</code>
+ should be built before this. When the notes are built the <a href="Note.html" title="class in org.wmn4j.notation"><code>Note</code></a>
  returned by the call of <a href="#build()"><code>build</code></a> on this will be tied to the
  <code>Note</code> built by builder.</div>
 <dl>

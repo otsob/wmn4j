@@ -118,7 +118,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 extends java.lang.Object</pre>
 <div class="block">Class for time signatures. Time signatures consist of the number of beats and
  the duration of each beat. For example, for the time signature 4/4 the number
- of beats is 4 and the duration of beat is <code>Durations.QUARTER</code>.</div>
+ of beats is 4 and the duration of beat is equal to the duration of a quarter note.
+ <p>
+ This class is immutable.</div>
 </li>
 </ul>
 </div>
@@ -316,7 +318,7 @@ extends java.lang.Object</pre>
 <dd><code>o</code> - Object against which this is compared for equality.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if o is an instance of TimeSignature and o has the same number
-         of beats and same beat duration as this. false otherwise.</dd>
+ of beats and same beat duration as this. false otherwise.</dd>
 </dl>
 </li>
 </ul>

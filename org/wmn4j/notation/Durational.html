@@ -111,7 +111,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public interface <span class="typeNameLabel">Durational</span></pre>
-<div class="block">Interface for all the notation objects that have a duration.</div>
+<div class="block">Interface for all the notation objects that have a duration.
+ This interface is not intended to be implemented by classes other
+ than the basic notation classes <a href="Note.html" title="class in org.wmn4j.notation"><code>Note</code></a>, <a href="Rest.html" title="class in org.wmn4j.notation"><code>Rest</code></a>, and <a href="Chord.html" title="class in org.wmn4j.notation"><code>Chord</code></a>.
+ <p>
+ All implementations of this interface must be thread-safe.</div>
 </li>
 </ul>
 </div>
