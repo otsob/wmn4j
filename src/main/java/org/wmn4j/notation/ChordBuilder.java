@@ -10,6 +10,8 @@ import java.util.function.Predicate;
 
 /**
  * Class for building <code>Chord</code> objects.
+ * <p>
+ * Instances of this class are not thread-safe.
  */
 public final class ChordBuilder implements DurationalBuilder, Iterable<NoteBuilder> {
 

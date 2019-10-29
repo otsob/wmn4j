@@ -20,6 +20,8 @@ import java.util.SortedSet;
  * there are no simultaneously occurring notes or chords. In a polyphonic
  * pattern there can be multiple notes occurring at the same time in chords or
  * in multiple voices.
+ * <p>
+ * Implementations of this interface are required to be thread-safe.
  */
 public interface Pattern {
 

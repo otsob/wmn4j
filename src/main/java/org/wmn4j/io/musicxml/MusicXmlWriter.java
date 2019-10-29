@@ -11,6 +11,8 @@ import java.util.Collection;
 
 /**
  * Represents a writer for MusicXML files.
+ * <p>
+ * Implementations of this interface are not guaranteed to be thread-safe.
  */
 public interface MusicXmlWriter extends ScoreWriter {
 

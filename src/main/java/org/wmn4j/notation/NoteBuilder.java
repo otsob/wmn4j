@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 
 /**
  * Class for building {@link Note} objects. The built note is cached.
+ * <p>
+ * Instances of this class are not thread-safe.
  */
 public final class NoteBuilder implements DurationalBuilder {
 

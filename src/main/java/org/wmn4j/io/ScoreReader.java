@@ -3,13 +3,15 @@
  */
 package org.wmn4j.io;
 
-import org.wmn4j.notation.ScoreBuilder;
 import org.wmn4j.notation.Score;
+import org.wmn4j.notation.ScoreBuilder;
 
 import java.io.IOException;
 
 /**
  * Represents a reader for music notation files. The only supported file type is MusicXML.
+ * <p>
+ * Implementations of this interface are not guaranteed to be thread-safe.
  */
 public interface ScoreReader {
 

@@ -4,8 +4,8 @@
 package org.wmn4j.mir;
 
 import org.wmn4j.notation.ChordBuilder;
-import org.wmn4j.notation.DurationalBuilder;
 import org.wmn4j.notation.Durational;
+import org.wmn4j.notation.DurationalBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 
 /**
  * Class for building {@link Pattern} instances.
+ * <p>
+ * Instances of this class are not thread-safe.
  */
 public final class PatternBuilder {
 

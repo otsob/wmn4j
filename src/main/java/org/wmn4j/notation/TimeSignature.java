@@ -9,6 +9,8 @@ import java.util.Objects;
  * Class for time signatures. Time signatures consist of the number of beats and
  * the duration of each beat. For example, for the time signature 4/4 the number
  * of beats is 4 and the duration of beat is <code>Durations.QUARTER</code>.
+ * <p>
+ * This class is immutable.
  */
 public final class TimeSignature {
 
@@ -29,11 +31,11 @@ public final class TimeSignature {
 	/**
 	 * Returns a time signature with the given numerator and beat duration.
 	 *
-	 * @throws IllegalArgumentException if beats is less than 1
-	 * @throws NullPointerException     if beatDuration is null
 	 * @param beats        number of beats in measure
 	 * @param beatDuration the Duration of the beats
 	 * @return a time signature with the given numerator and beat duration
+	 * @throws IllegalArgumentException if beats is less than 1
+	 * @throws NullPointerException     if beatDuration is null
 	 */
 	public static TimeSignature of(int beats, Duration beatDuration) {
 		if (beats < 1) {
@@ -77,7 +79,7 @@ public final class TimeSignature {
 	 *
 	 * @param o Object against which this is compared for equality.
 	 * @return true if o is an instance of TimeSignature and o has the same number
-	 *         of beats and same beat duration as this. false otherwise.
+	 * of beats and same beat duration as this. false otherwise.
 	 */
 	@Override
 	public boolean equals(Object o) {

@@ -19,6 +19,8 @@ import java.util.TreeMap;
  * Represents a measure. A measure may contain multiple voices that are referred
  * to using voice numbers. This class is immutable. Use the MeasureBuilder class
  * for easier creation of Measures.
+ * <p>
+ * This class is immutable.
  */
 public final class Measure implements Iterable<Durational> {
 

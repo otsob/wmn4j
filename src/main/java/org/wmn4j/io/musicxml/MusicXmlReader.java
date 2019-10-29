@@ -9,6 +9,8 @@ import java.nio.file.Path;
 
 /**
  * Represents a reader for MusicXML files.
+ * <p>
+ * Implementations of this interface are not guaranteed to be thread-safe.
  */
 public interface MusicXmlReader extends ScoreReader {
 

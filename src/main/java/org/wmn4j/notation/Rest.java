@@ -6,7 +6,9 @@ package org.wmn4j.notation;
 import java.util.Objects;
 
 /**
- * Represents a rest. This class is immutable.
+ * Represents a rest.
+ * <p>
+ * This class is immutable.
  */
 public final class Rest implements Durational {
 	private final Duration duration;
@@ -14,9 +16,9 @@ public final class Rest implements Durational {
 	/**
 	 * Returns a rest with the given duration.
 	 *
-	 * @throws NullPointerException if duration is null
 	 * @param duration the duration of the rest
 	 * @return Rest with specified duration
+	 * @throws NullPointerException if duration is null
 	 */
 	public static Rest of(Duration duration) {
 
@@ -61,7 +63,7 @@ public final class Rest implements Durational {
 	 *
 	 * @param o Object against which this is compared for equality.
 	 * @return true if Object o is a Rest and the Duration of o is equal to the
-	 *         Duration of this.
+	 * Duration of this.
 	 */
 	@Override
 	public boolean equals(Object o) {

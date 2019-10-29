@@ -25,7 +25,9 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
- * Represents a score. This class is immutable.
+ * Represents a score.
+ * <p>
+ * This class is immutable.
  */
 public final class Score implements Iterable<Part> {
 

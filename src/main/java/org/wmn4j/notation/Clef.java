@@ -10,6 +10,8 @@ import java.util.Objects;
  * position which is the line on which the center of the clef is situated. For
  * example, the center of a G-symbol clef is the part of the clef that denotes
  * G4.
+ * <p>
+ * This class is immutable.
  */
 public final class Clef {
 
@@ -45,12 +47,12 @@ public final class Clef {
 	/**
 	 * Returns an instance with the given symbol at the given line.
 	 *
-	 * @throws IllegalArgumentException if line is smaller than 1
-	 * @throws NullPointerException     if symbol is null
 	 * @param symbol the symbol of the clef
 	 * @param line   counting from the bottom line, the line on which the clef is
 	 *               centered
 	 * @return a clef with the specified properties.
+	 * @throws IllegalArgumentException if line is smaller than 1
+	 * @throws NullPointerException     if symbol is null
 	 */
 	public static Clef of(Symbol symbol, int line) {
 
@@ -63,6 +65,7 @@ public final class Clef {
 
 	/**
 	 * Returns the symbol of this clef.
+	 *
 	 * @return the symbol of this clef
 	 */
 	public Symbol getSymbol() {
@@ -71,6 +74,7 @@ public final class Clef {
 
 	/**
 	 * Returns the line of the staff (counted from bottom up) on which the clef is.
+	 *
 	 * @return the line of the staff on which the clef is.
 	 */
 	public int getLine() {
@@ -92,7 +96,7 @@ public final class Clef {
 	 *
 	 * @param o the Object against which this is compared for equality
 	 * @return true if o is an instance of Clef and has the same symbol and position
-	 *         as this
+	 * as this
 	 */
 	@Override
 	public boolean equals(Object o) {
