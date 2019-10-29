@@ -9,8 +9,8 @@ import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Score;
-import org.wmn4j.notation.iterators.PartWiseScoreIterator;
-import org.wmn4j.notation.iterators.Position;
+import org.wmn4j.notation.access.PartWiseScoreIterator;
+import org.wmn4j.notation.access.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;

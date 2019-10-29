@@ -3,7 +3,7 @@ package org.wmn4j.io.musicxml;
 import org.w3c.dom.Element;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.Score;
-import org.wmn4j.notation.iterators.PartWiseScoreIterator;
+import org.wmn4j.notation.access.PartWiseScoreIterator;
 
 import java.util.Optional;
 

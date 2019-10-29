@@ -11,7 +11,7 @@ import org.wmn4j.notation.Key;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.PitchClass;
 import org.wmn4j.notation.Score;
-import org.wmn4j.notation.iterators.PartWiseScoreIterator;
+import org.wmn4j.notation.access.PartWiseScoreIterator;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

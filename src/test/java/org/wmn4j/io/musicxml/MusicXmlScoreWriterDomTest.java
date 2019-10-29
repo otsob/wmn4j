@@ -18,8 +18,8 @@ import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Score;
-import org.wmn4j.notation.iterators.PartWiseScoreIterator;
-import org.wmn4j.notation.iterators.ScoreIterator;
+import org.wmn4j.notation.access.PartWiseScoreIterator;
+import org.wmn4j.notation.access.ScoreIterator;
 
 import java.io.IOException;
 import java.nio.file.Path;

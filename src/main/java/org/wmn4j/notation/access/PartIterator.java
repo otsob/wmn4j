@@ -1,4 +1,4 @@
-package org.wmn4j.notation.iterators;
+package org.wmn4j.notation.access;
 
 import org.wmn4j.notation.Measure;
 

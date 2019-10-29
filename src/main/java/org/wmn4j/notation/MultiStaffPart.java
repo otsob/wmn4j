@@ -3,7 +3,7 @@
  */
 package org.wmn4j.notation;
 
-import org.wmn4j.notation.iterators.PartIterator;
+import org.wmn4j.notation.access.PartIterator;
 
 import java.util.ArrayList;
 import java.util.Collections;

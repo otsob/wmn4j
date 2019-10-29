@@ -3,7 +3,7 @@
  */
 package org.wmn4j.mir;
 
-import org.wmn4j.notation.iterators.Position;
+import org.wmn4j.notation.access.Position;
 
 import java.util.Collection;
 import java.util.Collections;

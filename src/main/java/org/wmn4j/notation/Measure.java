@@ -3,7 +3,7 @@
  */
 package org.wmn4j.notation;
 
-import org.wmn4j.notation.iterators.MeasureIterator;
+import org.wmn4j.notation.access.MeasureIterator;
 
 import java.util.ArrayList;
 import java.util.Collections;

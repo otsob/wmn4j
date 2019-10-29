@@ -5,8 +5,8 @@ package org.wmn4j.notation;
 
 import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
-import org.wmn4j.notation.iterators.MeasureIterator;
-import org.wmn4j.notation.iterators.Position;
+import org.wmn4j.notation.access.MeasureIterator;
+import org.wmn4j.notation.access.Position;
 
 import java.util.ArrayList;
 import java.util.Collection;

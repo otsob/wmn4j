@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.TestHelper;
-import org.wmn4j.notation.iterators.PartWiseScoreIterator;
-import org.wmn4j.notation.iterators.Position;
-import org.wmn4j.notation.iterators.ScoreIterator;
+import org.wmn4j.notation.access.PartWiseScoreIterator;
+import org.wmn4j.notation.access.Position;
+import org.wmn4j.notation.access.ScoreIterator;
 
 import java.util.ArrayList;
 import java.util.Arrays;

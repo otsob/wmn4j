@@ -1,14 +1,14 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.notation.iterators;
+package org.wmn4j.notation.access;
 
 import org.wmn4j.notation.Durational;
 
 import java.util.Iterator;
 
 /**
- * Interface for iterators that iterate through the
+ * Interface for access that iterate through the
  * {@link Durational} objects in a
  * {@link org.wmn4j.notation.Score}.
  */

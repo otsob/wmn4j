@@ -6,7 +6,7 @@ import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.TimeSignatures;
-import org.wmn4j.notation.iterators.Position;
+import org.wmn4j.notation.access.Position;
 
 import java.util.ArrayList;
 import java.util.List;
