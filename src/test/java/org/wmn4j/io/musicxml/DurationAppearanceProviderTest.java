@@ -5,8 +5,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wmn4j.notation.elements.Duration;
-import org.wmn4j.notation.elements.Durations;
+import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.Durations;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

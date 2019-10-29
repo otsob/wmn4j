@@ -3,9 +3,9 @@
  */
 package org.wmn4j.analysis.harmony;
 
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.PitchClass;
+import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.Note;
+import org.wmn4j.notation.PitchClass;
 
 import java.util.EnumMap;
 import java.util.Map;

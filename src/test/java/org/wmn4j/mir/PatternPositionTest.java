@@ -4,7 +4,7 @@
 package org.wmn4j.mir;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.iterators.Position;
+import org.wmn4j.notation.access.Position;
 
 import java.util.ArrayList;
 import java.util.List;

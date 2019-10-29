@@ -1,12 +1,12 @@
 package org.wmn4j.mir.discovery;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.TestHelper;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.Score;
-import org.wmn4j.notation.elements.TimeSignatures;
-import org.wmn4j.notation.iterators.Position;
+import org.wmn4j.TestHelper;
+import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.Score;
+import org.wmn4j.notation.TimeSignatures;
+import org.wmn4j.notation.access.Position;
 
 import java.util.ArrayList;
 import java.util.List;

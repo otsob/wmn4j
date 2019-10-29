@@ -2,6 +2,6 @@
  * Contains input and output operations for MusicXML files.
  * The {@link org.wmn4j.io.musicxml.MusicXmlReader} objects can be used for reading MusicXML files and the
  * {@link org.wmn4j.io.musicxml.MusicXmlWriter} objects can be used for writing
- * {@link org.wmn4j.notation.elements.Score} objects into MusicXML files.
+ * {@link org.wmn4j.notation.Score} objects into MusicXML files.
  */
 package org.wmn4j.io.musicxml;

@@ -2,7 +2,7 @@ package org.wmn4j.mir.discovery;
 
 import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
-import org.wmn4j.notation.elements.Score;
+import org.wmn4j.notation.Score;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -2,8 +2,8 @@ package org.wmn4j.io.musicxml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.wmn4j.notation.elements.Duration;
-import org.wmn4j.notation.elements.Durations;
+import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.Durations;
 
 import java.util.ArrayList;
 import java.util.Collection;

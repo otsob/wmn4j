@@ -4,13 +4,13 @@
 package org.wmn4j.mir.discovery;
 
 import org.wmn4j.mir.PatternPosition;
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Measure;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Score;
-import org.wmn4j.notation.iterators.PartWiseScoreIterator;
-import org.wmn4j.notation.iterators.Position;
+import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.Durational;
+import org.wmn4j.notation.Measure;
+import org.wmn4j.notation.Note;
+import org.wmn4j.notation.Score;
+import org.wmn4j.notation.access.PartWiseScoreIterator;
+import org.wmn4j.notation.access.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;

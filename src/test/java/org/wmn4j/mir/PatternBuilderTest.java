@@ -1,15 +1,15 @@
 package org.wmn4j.mir;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.builders.ChordBuilder;
-import org.wmn4j.notation.builders.NoteBuilder;
-import org.wmn4j.notation.builders.RestBuilder;
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.Rest;
+import org.wmn4j.notation.ChordBuilder;
+import org.wmn4j.notation.NoteBuilder;
+import org.wmn4j.notation.RestBuilder;
+import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.Durational;
+import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.Note;
+import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.Rest;
 
 import java.util.List;
 

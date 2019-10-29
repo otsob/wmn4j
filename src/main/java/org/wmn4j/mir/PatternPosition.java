@@ -3,7 +3,7 @@
  */
 package org.wmn4j.mir;
 
-import org.wmn4j.notation.iterators.Position;
+import org.wmn4j.notation.access.Position;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -16,7 +16,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
- * Represents the position of a {@link org.wmn4j.mir.Pattern} in a {@link org.wmn4j.notation.elements.Score}.
+ * Represents the position of a {@link org.wmn4j.mir.Pattern} in a {@link org.wmn4j.notation.Score}.
  * This class is immutable.
  */
 public final class PatternPosition {

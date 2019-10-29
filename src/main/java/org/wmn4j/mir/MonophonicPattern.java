@@ -3,11 +3,11 @@
  */
 package org.wmn4j.mir;
 
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.Pitched;
+import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.Durational;
+import org.wmn4j.notation.Note;
+import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.Pitched;
 
 import java.util.ArrayList;
 import java.util.Collections;

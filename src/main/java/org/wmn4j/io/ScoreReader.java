@@ -3,8 +3,8 @@
  */
 package org.wmn4j.io;
 
-import org.wmn4j.notation.builders.ScoreBuilder;
-import org.wmn4j.notation.elements.Score;
+import org.wmn4j.notation.ScoreBuilder;
+import org.wmn4j.notation.Score;
 
 import java.io.IOException;
 
