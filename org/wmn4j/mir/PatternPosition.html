@@ -116,7 +116,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public final class <span class="typeNameLabel">PatternPosition</span>
 extends java.lang.Object</pre>
-<div class="block">Represents the position of a <a href="Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a> in a <a href="../notation/elements/Score.html" title="class in org.wmn4j.notation.elements"><code>Score</code></a>.
+<div class="block">Represents the position of a <a href="Pattern.html" title="interface in org.wmn4j.mir"><code>Pattern</code></a> in a <a href="../notation/Score.html" title="class in org.wmn4j.notation"><code>Score</code></a>.
  This class is immutable.</div>
 </li>
 </ul>
@@ -140,7 +140,7 @@ extends java.lang.Object</pre>
 </tr>
 <tbody>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.util.Collection)">PatternPosition</a></span>&#8203;(java.util.Collection&lt;<a href="../notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a>&gt;&nbsp;positions)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.util.Collection)">PatternPosition</a></span>&#8203;(java.util.Collection&lt;<a href="../notation/access/Position.html" title="class in org.wmn4j.notation.access">Position</a>&gt;&nbsp;positions)</code></th>
 <td class="colLast">
 <div class="block">Creates a new pattern position with the given positions.</div>
 </td>
@@ -170,7 +170,7 @@ extends java.lang.Object</pre>
 <tbody>
 <tr class="altColor" id="i0">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#contains(org.wmn4j.notation.iterators.Position)">contains</a></span>&#8203;(<a href="../notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a>&nbsp;position)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#contains(org.wmn4j.notation.access.Position)">contains</a></span>&#8203;(<a href="../notation/access/Position.html" title="class in org.wmn4j.notation.access">Position</a>&nbsp;position)</code></th>
 <td class="colLast">
 <div class="block">Returns true if this pattern position contains a reference to the notation element located in the given position.</div>
 </td>
@@ -197,7 +197,7 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr class="altColor" id="i4">
-<td class="colFirst"><code>java.util.Set&lt;<a href="../notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.Set&lt;<a href="../notation/access/Position.html" title="class in org.wmn4j.notation.access">Position</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPositions(int)">getPositions</a></span>&#8203;(int&nbsp;partIndex)</code></th>
 <td class="colLast">
 <div class="block">Returns the positions in the part with the given index referred to by this pattern position.</div>
@@ -250,7 +250,7 @@ extends java.lang.Object</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>PatternPosition</h4>
-<pre>public&nbsp;PatternPosition&#8203;(java.util.Collection&lt;<a href="../notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a>&gt;&nbsp;positions)</pre>
+<pre>public&nbsp;PatternPosition&#8203;(java.util.Collection&lt;<a href="../notation/access/Position.html" title="class in org.wmn4j.notation.access">Position</a>&gt;&nbsp;positions)</pre>
 <div class="block">Creates a new pattern position with the given positions.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -302,7 +302,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getPositions</h4>
-<pre class="methodSignature">public&nbsp;java.util.Set&lt;<a href="../notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a>&gt;&nbsp;getPositions&#8203;(int&nbsp;partIndex)</pre>
+<pre class="methodSignature">public&nbsp;java.util.Set&lt;<a href="../notation/access/Position.html" title="class in org.wmn4j.notation.access">Position</a>&gt;&nbsp;getPositions&#8203;(int&nbsp;partIndex)</pre>
 <div class="block">Returns the positions in the part with the given index referred to by this pattern position.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -358,13 +358,13 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="contains(org.wmn4j.notation.iterators.Position)">
+<a id="contains(org.wmn4j.notation.access.Position)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>contains</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;contains&#8203;(<a href="../notation/iterators/Position.html" title="class in org.wmn4j.notation.iterators">Position</a>&nbsp;position)</pre>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;contains&#8203;(<a href="../notation/access/Position.html" title="class in org.wmn4j.notation.access">Position</a>&nbsp;position)</pre>
 <div class="block">Returns true if this pattern position contains a reference to the notation element located in the given position.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

@@ -169,7 +169,7 @@ extends java.lang.Object</pre>
 <tbody>
 <tr class="altColor" id="i0">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#add(org.wmn4j.notation.builders.DurationalBuilder)">add</a></span>&#8203;(<a href="../notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>&nbsp;builder)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#add(org.wmn4j.notation.DurationalBuilder)">add</a></span>&#8203;(<a href="../notation/DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a>&nbsp;builder)</code></th>
 <td class="colLast">
 <div class="block">Adds the given durational builder to the default voice in this builder.</div>
 </td>
@@ -183,7 +183,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="altColor" id="i2">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addToVoice(org.wmn4j.notation.builders.DurationalBuilder,int)">addToVoice</a></span>&#8203;(<a href="../notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>&nbsp;durationalBuilder,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addToVoice(org.wmn4j.notation.DurationalBuilder,int)">addToVoice</a></span>&#8203;(<a href="../notation/DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a>&nbsp;durationalBuilder,
           int&nbsp;voice)</code></th>
 <td class="colLast">
 <div class="block">Adds the given durational builder to the voice with the given number.</div>
@@ -258,15 +258,15 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="add(org.wmn4j.notation.builders.DurationalBuilder)">
+<a id="add(org.wmn4j.notation.DurationalBuilder)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>add</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;add&#8203;(<a href="../notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>&nbsp;builder)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;add&#8203;(<a href="../notation/DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a>&nbsp;builder)</pre>
 <div class="block">Adds the given durational builder to the default voice in this builder. This method is intended for constructing
- patterns with a single voice, the <a href="#addToVoice(org.wmn4j.notation.builders.DurationalBuilder,int)"><code>addToVoice</code></a> method can be used for
+ patterns with a single voice, the <a href="#addToVoice(org.wmn4j.notation.DurationalBuilder,int)"><code>addToVoice</code></a> method can be used for
  constructing polyphonic patterns with multiple voices.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -274,16 +274,16 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="addToVoice(org.wmn4j.notation.builders.DurationalBuilder,int)">
+<a id="addToVoice(org.wmn4j.notation.DurationalBuilder,int)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>addToVoice</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;addToVoice&#8203;(<a href="../notation/builders/DurationalBuilder.html" title="interface in org.wmn4j.notation.builders">DurationalBuilder</a>&nbsp;durationalBuilder,
+<pre class="methodSignature">public&nbsp;void&nbsp;addToVoice&#8203;(<a href="../notation/DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a>&nbsp;durationalBuilder,
                        int&nbsp;voice)</pre>
 <div class="block">Adds the given durational builder to the voice with the given number. This method is intended for constructing
- polyphonic patterns, the <a href="#add(org.wmn4j.notation.builders.DurationalBuilder)"><code>add</code></a> method can be used for constructing
+ polyphonic patterns, the <a href="#add(org.wmn4j.notation.DurationalBuilder)"><code>add</code></a> method can be used for constructing
  monophonic patterns.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

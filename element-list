@@ -4,6 +4,5 @@ org.wmn4j.io
 org.wmn4j.io.musicxml
 org.wmn4j.mir
 org.wmn4j.mir.discovery
-org.wmn4j.notation.builders
-org.wmn4j.notation.elements
-org.wmn4j.notation.iterators
+org.wmn4j.notation
+org.wmn4j.notation.access
