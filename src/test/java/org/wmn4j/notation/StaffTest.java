@@ -4,17 +4,6 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.Clefs;
-import org.wmn4j.notation.Durational;
-import org.wmn4j.notation.Durations;
-import org.wmn4j.notation.KeySignatures;
-import org.wmn4j.notation.Measure;
-import org.wmn4j.notation.Note;
-import org.wmn4j.notation.Pitch;
-import org.wmn4j.notation.Rest;
-import org.wmn4j.notation.Staff;
-import org.wmn4j.notation.TimeSignature;
-import org.wmn4j.notation.TimeSignatures;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,31 +30,6 @@ class StaffTest {
 		measures.add(Measure.of(1, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
 		measures.add(Measure.of(2, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
 		return measures;
-	}
-
-	@Test
-	void testGetMeasures() {
-		final List<Measure> origMeasures = getTestMeasures();
-		final Staff staff = Staff.of(origMeasures);
-
-		final List<Measure> measures = staff.getMeasures();
-
-		assertEquals(origMeasures.size(), measures.size());
-
-		try {
-			measures.add(origMeasures.get(0));
-			fail("Did not throw UnsupportedOperationException");
-		} catch (final Exception e) {
-			assertTrue(e instanceof UnsupportedOperationException, "Exception was of incorrect type: " + e);
-		}
-
-		final int sizeBeforeAddition = origMeasures.size();
-		final List<Durational> voice = new ArrayList<>();
-		voice.add(Rest.of(Durations.WHOLE));
-		final Map<Integer, List<Durational>> notes = new HashMap<>();
-		notes.put(1, voice);
-		origMeasures.add(Measure.of(3, notes, TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN, Clefs.G));
-		assertEquals(sizeBeforeAddition, staff.getMeasures().size());
 	}
 
 	@Test

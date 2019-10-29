@@ -52,9 +52,9 @@ class MusicXmlFileChecks {
 		final SingleStaffPart spart = (SingleStaffPart) part;
 		final Staff staff = spart.getStaff();
 		assertEquals("Part1", part.getName().get());
-		assertEquals(1, staff.getMeasures().size());
+		assertEquals(1, staff.getMeasureCount());
 
-		final Measure measure = staff.getMeasures().get(0);
+		final Measure measure = staff.getMeasure(1);
 		assertEquals(1, measure.getNumber());
 		assertEquals(1, measure.getVoiceCount());
 		assertEquals(TimeSignatures.FOUR_FOUR, measure.getTimeSignature());
@@ -77,10 +77,10 @@ class MusicXmlFileChecks {
 		final SingleStaffPart spart = (SingleStaffPart) part;
 		final Staff staff = spart.getStaff();
 		assertEquals("Part1", part.getName().get());
-		assertEquals(2, staff.getMeasures().size());
+		assertEquals(2, staff.getMeasureCount());
 
 		// Verify data of measure one
-		final Measure measureOne = staff.getMeasures().get(0);
+		final Measure measureOne = staff.getMeasure(1);
 		assertEquals(1, measureOne.getNumber());
 		assertEquals(1, measureOne.getVoiceCount());
 		assertEquals(TimeSignatures.FOUR_FOUR, measureOne.getTimeSignature());
@@ -103,7 +103,7 @@ class MusicXmlFileChecks {
 		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH_TRIPLET), measureOne.get(1, 7));
 
 		// Verify data of measure two
-		final Measure measureTwo = staff.getMeasures().get(1);
+		final Measure measureTwo = staff.getMeasure(2);
 		assertEquals(2, measureTwo.getNumber());
 		assertEquals(2, measureTwo.getVoiceCount());
 		assertEquals(TimeSignatures.FOUR_FOUR, measureTwo.getTimeSignature());
@@ -133,10 +133,10 @@ class MusicXmlFileChecks {
 		final SingleStaffPart partOne = (SingleStaffPart) score.getParts().get(0);
 		final Staff staffOne = partOne.getStaff();
 		assertEquals("Part1", partOne.getName().get());
-		assertEquals(2, staffOne.getMeasures().size());
+		assertEquals(2, staffOne.getMeasureCount());
 
 		// Verify data of measure one of staff one
-		final Measure staffOneMeasureOne = staffOne.getMeasures().get(0);
+		final Measure staffOneMeasureOne = staffOne.getMeasure(1);
 		assertEquals(1, staffOneMeasureOne.getNumber());
 		assertEquals(1, staffOneMeasureOne.getVoiceCount());
 		assertEquals(TimeSignatures.THREE_FOUR, staffOneMeasureOne.getTimeSignature());
@@ -150,7 +150,7 @@ class MusicXmlFileChecks {
 		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.QUARTER), staffOneMeasureOne.get(1, 1));
 
 		// Verify data of measure two of staff one
-		final Measure staffOneMeasureTwo = staffOne.getMeasures().get(1);
+		final Measure staffOneMeasureTwo = staffOne.getMeasure(2);
 		assertEquals(2, staffOneMeasureTwo.getNumber());
 		assertEquals(1, staffOneMeasureTwo.getVoiceCount());
 		assertEquals(TimeSignatures.THREE_FOUR, staffOneMeasureTwo.getTimeSignature());
@@ -166,10 +166,10 @@ class MusicXmlFileChecks {
 		final SingleStaffPart partTwo = (SingleStaffPart) score.getParts().get(1);
 		final Staff staffTwo = partTwo.getStaff();
 		assertEquals("Part2", partTwo.getName().get());
-		assertEquals(2, staffTwo.getMeasures().size());
+		assertEquals(2, staffTwo.getMeasureCount());
 
 		// Verify data of measure one of staff two
-		final Measure staffTwoMeasureOne = staffTwo.getMeasures().get(0);
+		final Measure staffTwoMeasureOne = staffTwo.getMeasure(1);
 		assertEquals(1, staffTwoMeasureOne.getNumber());
 		assertEquals(1, staffTwoMeasureOne.getVoiceCount());
 		assertEquals(TimeSignatures.THREE_FOUR, staffTwoMeasureOne.getTimeSignature());
@@ -182,7 +182,7 @@ class MusicXmlFileChecks {
 		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), staffTwoMeasureOne.get(1, 0));
 
 		// Verify data of measure two of staff two
-		final Measure staffTwoMeasureTwo = staffTwo.getMeasures().get(1);
+		final Measure staffTwoMeasureTwo = staffTwo.getMeasure(2);
 		assertEquals(2, staffTwoMeasureTwo.getNumber());
 		assertEquals(1, staffTwoMeasureTwo.getVoiceCount());
 		assertEquals(TimeSignatures.THREE_FOUR, staffTwoMeasureTwo.getTimeSignature());

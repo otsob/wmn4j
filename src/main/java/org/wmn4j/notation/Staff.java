@@ -105,20 +105,6 @@ public final class Staff implements Iterable<Measure> {
 	}
 
 	/**
-	 * Returns the measures in this staff as a list from smallest measure number to
-	 * greatest.
-	 *
-	 * @return the measures in this staff
-	 */
-	public List<Measure> getMeasures() {
-		if (!this.hasPickupMeasure()) {
-			return this.measures.subList(1, this.measures.size());
-		}
-
-		return this.measures;
-	}
-
-	/**
 	 * Returns true if this staff contains a pickup measure.
 	 *
 	 * @return true if this staff begins with a pickup measure, false otherwise
