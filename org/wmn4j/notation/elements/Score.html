@@ -189,7 +189,7 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 </td>
 </tr>
 <tr class="altColor" id="i2">
-<td class="colFirst"><code>java.lang.String</code></td>
+<td class="colFirst"><code>java.util.Optional&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAttribute(org.wmn4j.notation.elements.Score.Attribute)">getAttribute</a></span>&#8203;(<a href="Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a>&nbsp;attribute)</code></th>
 <td class="colLast">
 <div class="block">Returns the value of the given attribute.</div>
@@ -217,7 +217,7 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 </td>
 </tr>
 <tr class="altColor" id="i6">
-<td class="colFirst"><code>java.lang.String</code></td>
+<td class="colFirst"><code>java.util.Optional&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTitle()">getTitle</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the main title of this score.</div>
@@ -306,8 +306,9 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 <ul class="blockList">
 <li class="blockList">
 <h4>getTitle</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getTitle()</pre>
-<div class="block">Returns the main title of this score.</div>
+<pre class="methodSignature">public&nbsp;java.util.Optional&lt;java.lang.String&gt;&nbsp;getTitle()</pre>
+<div class="block">Returns the main title of this score.
+ If no title is set, then returns empty.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the main title of this score</dd>
@@ -380,14 +381,14 @@ implements java.lang.Iterable&lt;<a href="Part.html" title="interface in org.wmn
 <ul class="blockList">
 <li class="blockList">
 <h4>getAttribute</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getAttribute&#8203;(<a href="Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a>&nbsp;attribute)</pre>
-<div class="block">Returns the value of the given attribute.</div>
+<pre class="methodSignature">public&nbsp;java.util.Optional&lt;java.lang.String&gt;&nbsp;getAttribute&#8203;(<a href="Score.Attribute.html" title="enum in org.wmn4j.notation.elements">Score.Attribute</a>&nbsp;attribute)</pre>
+<div class="block">Returns the value of the given attribute.
+ If the attribute is not present, then returns empty.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>attribute</code> - the type of the attribute</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the text associated with attribute if the attribute is present. Empty
- string otherwise.</dd>
+<dd>the value of the attribute if the attribute is present</dd>
 </dl>
 </li>
 </ul>

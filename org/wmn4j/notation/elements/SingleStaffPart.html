@@ -192,7 +192,7 @@ implements <a href="Part.html" title="interface in org.wmn4j.notation.elements">
 </tr>
 <tbody>
 <tr class="altColor" id="i0">
-<td class="colFirst"><code>java.lang.String</code></td>
+<td class="colFirst"><code>java.util.Optional&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAttribute(org.wmn4j.notation.elements.Part.Attribute)">getAttribute</a></span>&#8203;(<a href="Part.Attribute.html" title="enum in org.wmn4j.notation.elements">Part.Attribute</a>&nbsp;attribute)</code></th>
 <td class="colLast">
 <div class="block">Returns the given attribute.</div>
@@ -229,10 +229,11 @@ implements <a href="Part.html" title="interface in org.wmn4j.notation.elements">
 </td>
 </tr>
 <tr class="rowColor" id="i5">
-<td class="colFirst"><code>java.lang.String</code></td>
+<td class="colFirst"><code>java.util.Optional&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getName()">getName</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the name of this part.</div>
+<div class="block">Returns the name of this part or empty if the part has
+ no name.</div>
 </td>
 </tr>
 <tr class="altColor" id="i6">
@@ -399,9 +400,10 @@ implements <a href="Part.html" title="interface in org.wmn4j.notation.elements">
 <ul class="blockList">
 <li class="blockList">
 <h4>getName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getName()</pre>
+<pre class="methodSignature">public&nbsp;java.util.Optional&lt;java.lang.String&gt;&nbsp;getName()</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Part.html#getName()">Part</a></code></span></div>
-<div class="block">Returns the name of this part.</div>
+<div class="block">Returns the name of this part or empty if the part has
+ no name.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Part.html#getName()">getName</a></code>&nbsp;in interface&nbsp;<code><a href="Part.html" title="interface in org.wmn4j.notation.elements">Part</a></code></dd>
@@ -540,17 +542,17 @@ implements <a href="Part.html" title="interface in org.wmn4j.notation.elements">
 <ul class="blockList">
 <li class="blockList">
 <h4>getAttribute</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getAttribute&#8203;(<a href="Part.Attribute.html" title="enum in org.wmn4j.notation.elements">Part.Attribute</a>&nbsp;attribute)</pre>
+<pre class="methodSignature">public&nbsp;java.util.Optional&lt;java.lang.String&gt;&nbsp;getAttribute&#8203;(<a href="Part.Attribute.html" title="enum in org.wmn4j.notation.elements">Part.Attribute</a>&nbsp;attribute)</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Part.html#getAttribute(org.wmn4j.notation.elements.Part.Attribute)">Part</a></code></span></div>
-<div class="block">Returns the given attribute. If the attribute is not present, returns an
- empty string.</div>
+<div class="block">Returns the given attribute. If the attribute is not present, returns
+ empty.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Part.html#getAttribute(org.wmn4j.notation.elements.Part.Attribute)">getAttribute</a></code>&nbsp;in interface&nbsp;<code><a href="Part.html" title="interface in org.wmn4j.notation.elements">Part</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>attribute</code> - the attribute to return from this part</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the value of the attribute, or an empty string if the attribute is
+<dd>the value of the attribute, or empty if the attribute is
  not set</dd>
 </dl>
 </li>
