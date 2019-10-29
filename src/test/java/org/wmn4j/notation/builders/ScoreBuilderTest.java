@@ -32,8 +32,8 @@ class ScoreBuilderTest {
 		}
 
 		final Score score = builder.build();
-		assertEquals(ScoreTest.SCORE_NAME, score.getTitle());
-		assertEquals(ScoreTest.COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
+		assertEquals(ScoreTest.SCORE_NAME, score.getTitle().get());
+		assertEquals(ScoreTest.COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER).get());
 
 		assertEquals(5, score.getPartCount());
 	}

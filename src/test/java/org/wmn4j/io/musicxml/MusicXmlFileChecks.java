@@ -44,7 +44,7 @@ class MusicXmlFileChecks {
 	 * Expects the contents of the file "singleC.xml"
 	 */
 	static void assertSingleNoteScoreReadCorrectly(Score score) {
-		assertEquals("Single C", score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
+		assertEquals("Single C", score.getAttribute(Score.Attribute.MOVEMENT_TITLE).get());
 		assertEquals(1, score.getParts().size());
 
 		final Part part = score.getParts().get(0);
@@ -130,8 +130,8 @@ class MusicXmlFileChecks {
 	 * Expects the contents of the file "twoPartsAndMeasures.xml"
 	 */
 	static void assertScoreWithMultiplePartsReadCorrectly(Score score) {
-		assertEquals("Multistaff test file", score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
-		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER));
+		assertEquals("Multistaff test file", score.getAttribute(Score.Attribute.MOVEMENT_TITLE).get());
+		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER).get());
 		assertEquals(2, score.getParts().size());
 
 		final SingleStaffPart partOne = (SingleStaffPart) score.getParts().get(0);
@@ -501,10 +501,10 @@ class MusicXmlFileChecks {
 	 * Expectes the contents of "attribute_reading_test.xml".
 	 */
 	static void assertScoreHasExpectedAttributes(Score score) {
-		assertEquals("Composition title", score.getTitle());
-		assertEquals("Composer name", score.getAttribute(Score.Attribute.COMPOSER));
-		assertEquals("Movement title", score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
-		assertEquals("Arranger name", score.getAttribute(Score.Attribute.ARRANGER));
+		assertEquals("Composition title", score.getTitle().get());
+		assertEquals("Composer name", score.getAttribute(Score.Attribute.COMPOSER).get());
+		assertEquals("Movement title", score.getAttribute(Score.Attribute.MOVEMENT_TITLE).get());
+		assertEquals("Arranger name", score.getAttribute(Score.Attribute.ARRANGER).get());
 
 		List<Part> parts = score.getParts();
 		assertEquals(2, parts.size());
