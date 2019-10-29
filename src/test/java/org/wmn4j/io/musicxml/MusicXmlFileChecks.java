@@ -62,9 +62,8 @@ class MusicXmlFileChecks {
 		assertEquals(Barline.SINGLE, measure.getRightBarline());
 		assertEquals(Clefs.G, measure.getClef());
 
-		final List<Durational> voice = measure.getVoice(1);
-		assertEquals(1, voice.size());
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.WHOLE), voice.get(0));
+		assertEquals(1, measure.getVoiceSize(1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.WHOLE), measure.get(1, 0));
 	}
 
 	/*
@@ -90,19 +89,18 @@ class MusicXmlFileChecks {
 		assertEquals(Clefs.G, measureOne.getClef());
 
 		// Verify notes of measure one
-		List<Durational> voiceOne = measureOne.getVoice(1);
-		assertEquals(8, voiceOne.size());
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), voiceOne.get(0));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), voiceOne.get(1));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), voiceOne.get(2));
-		assertEquals(Rest.of(Durations.EIGHTH), voiceOne.get(3));
+		assertEquals(8, measureOne.getVoiceSize(1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), measureOne.get(1, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), measureOne.get(1, 1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), measureOne.get(1, 2));
+		assertEquals(Rest.of(Durations.EIGHTH), measureOne.get(1, 3));
 		final Chord cMajor = Chord.of(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
 				Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH),
 				Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
-		assertEquals(cMajor, voiceOne.get(4));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH_TRIPLET), voiceOne.get(5));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH_TRIPLET), voiceOne.get(6));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH_TRIPLET), voiceOne.get(7));
+		assertEquals(cMajor, measureOne.get(1, 4));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH_TRIPLET), measureOne.get(1, 5));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH_TRIPLET), measureOne.get(1, 6));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH_TRIPLET), measureOne.get(1, 7));
 
 		// Verify data of measure two
 		final Measure measureTwo = staff.getMeasures().get(1);
@@ -114,16 +112,14 @@ class MusicXmlFileChecks {
 		assertEquals(Clefs.G, measureTwo.getClef());
 
 		// Verify notes of measure two
-		voiceOne = measureTwo.getVoice(1);
-		assertEquals(2, voiceOne.size());
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.HALF), voiceOne.get(0));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.HALF), voiceOne.get(1));
+		assertEquals(2, measureTwo.getVoiceSize(1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.HALF), measureTwo.get(1, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.HALF), measureTwo.get(1, 1));
 
-		final List<Durational> voiceTwo = measureTwo.getVoice(2);
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), voiceTwo.get(0));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), voiceTwo.get(1));
-		assertEquals(Rest.of(Durations.QUARTER), voiceTwo.get(2));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), voiceTwo.get(3));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), measureTwo.get(2, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), measureTwo.get(2, 1));
+		assertEquals(Rest.of(Durations.QUARTER), measureTwo.get(2, 2));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), measureTwo.get(2, 3));
 	}
 
 	/*
@@ -150,9 +146,8 @@ class MusicXmlFileChecks {
 
 		// Verify contents of measure one of staff one
 		assertEquals(1, staffOneMeasureOne.getVoiceCount());
-		final List<Durational> voiceMOne = staffOneMeasureOne.getVoice(1);
-		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF), voiceMOne.get(0));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.QUARTER), voiceMOne.get(1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF), staffOneMeasureOne.get(1, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.QUARTER), staffOneMeasureOne.get(1, 1));
 
 		// Verify data of measure two of staff one
 		final Measure staffOneMeasureTwo = staffOne.getMeasures().get(1);
@@ -165,9 +160,8 @@ class MusicXmlFileChecks {
 
 		// Verify contents of measure one of staff one
 		assertEquals(1, staffOneMeasureTwo.getVoiceCount());
-		final List<Durational> voiceM2 = staffOneMeasureTwo.getVoice(1);
-		assertEquals(Rest.of(Durations.QUARTER), voiceM2.get(0));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF), voiceM2.get(1));
+		assertEquals(Rest.of(Durations.QUARTER), staffOneMeasureTwo.get(1, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF), staffOneMeasureTwo.get(1, 1));
 
 		final SingleStaffPart partTwo = (SingleStaffPart) score.getParts().get(1);
 		final Staff staffTwo = partTwo.getStaff();
@@ -185,8 +179,7 @@ class MusicXmlFileChecks {
 
 		// Verify contents of measure one of staff two
 		assertEquals(1, staffTwoMeasureOne.getVoiceCount());
-		final List<Durational> voiceMOneS2 = staffTwoMeasureOne.getVoice(1);
-		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), voiceMOneS2.get(0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), staffTwoMeasureOne.get(1, 0));
 
 		// Verify data of measure two of staff two
 		final Measure staffTwoMeasureTwo = staffTwo.getMeasures().get(1);
@@ -199,8 +192,7 @@ class MusicXmlFileChecks {
 
 		// Verify contents of measure two of staff two
 		assertEquals(1, staffTwoMeasureTwo.getVoiceCount());
-		final List<Durational> voiceM2S2 = staffTwoMeasureTwo.getVoice(1);
-		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), voiceM2S2.get(0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 3), Durations.HALF.addDot()), staffTwoMeasureTwo.get(1, 0));
 	}
 
 	/*
@@ -338,9 +330,9 @@ class MusicXmlFileChecks {
 
 		for (Measure measure : multiStaff) {
 			assertTrue(measure.isSingleVoice());
-			final List<Durational> voice = measure.getVoice(measure.getVoiceNumbers().get(0));
-			assertEquals(1, voice.size());
-			assertTrue(voice.get(0).equals(expectedNote));
+			final int voiceNumber = measure.getVoiceNumbers().get(0);
+			assertEquals(1, measure.getVoiceSize(voiceNumber));
+			assertTrue(measure.get(voiceNumber, 0).equals(expectedNote));
 			++measureCount;
 		}
 
@@ -364,7 +356,7 @@ class MusicXmlFileChecks {
 	 */
 	static void assertTimeSignatureChangeReadCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
-		final Durational n = part.getMeasure(2).getVoice(1).get(0);
+		final Durational n = part.getMeasure(2).get(1, 0);
 		assertEquals(Durations.EIGHTH, n.getDuration());
 	}
 

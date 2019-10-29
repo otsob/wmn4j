@@ -5,9 +5,9 @@ import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wmn4j.TestHelper;
 import org.wmn4j.io.ParsingFailureException;
 import org.wmn4j.mir.Pattern;
-import org.wmn4j.TestHelper;
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Clefs;
@@ -124,7 +124,10 @@ class MusicXmlPatternWriterDomTest {
 		List<Durational> partContents = new ArrayList<>();
 		for (Measure measure : part) {
 			assertEquals(1, measure.getVoiceCount());
-			partContents.addAll(measure.getVoice(measure.getVoiceNumbers().get(0)));
+			final int voiceNumber = measure.getVoiceNumbers().get(0);
+			for (int i = 0; i < measure.getVoiceSize(voiceNumber); ++i) {
+				partContents.add(measure.get(voiceNumber, i));
+			}
 
 			// Check the clef only if it has been specified
 			if (expectedClef != null) {
@@ -158,7 +161,10 @@ class MusicXmlPatternWriterDomTest {
 			assertEquals(1, measure.getVoiceCount());
 			// Full measure rests are used for padding, so they should be ignored.
 			if (!measure.isFullMeasureRest()) {
-				partContents.addAll(measure.getVoice(measure.getVoiceNumbers().get(0)));
+				final int voiceNumber = measure.getVoiceNumbers().get(0);
+				for (int i = 0; i < measure.getVoiceSize(voiceNumber); ++i) {
+					partContents.add(measure.get(voiceNumber, i));
+				}
 			}
 		}
 

@@ -343,7 +343,8 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		for (Integer voiceNumber : voiceNumbers) {
 
 			Duration cumulatedDuration = null;
-			for (Durational dur : measure.getVoice(voiceNumber)) {
+			for (int indexInVoice = 0; indexInVoice < measure.getVoiceSize(voiceNumber); ++indexInVoice) {
+				Durational dur = measure.get(voiceNumber, indexInVoice);
 				if (cumulatedDuration == null) {
 					cumulatedDuration = dur.getDuration();
 				} else {
