@@ -1,17 +1,10 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.notation.builders;
+package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.MeasureBuilder;
-import org.wmn4j.notation.PartBuilder;
-import org.wmn4j.notation.ScoreBuilder;
-import org.wmn4j.notation.TestHelper;
-import org.wmn4j.notation.Part;
-import org.wmn4j.notation.Score;
-import org.wmn4j.notation.elements.ScoreTest;
-import org.wmn4j.notation.TimeSignatures;
+import org.wmn4j.TestHelper;
 
 import java.util.List;
 import java.util.Map;

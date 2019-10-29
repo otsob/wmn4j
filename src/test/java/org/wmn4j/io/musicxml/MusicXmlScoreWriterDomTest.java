@@ -9,7 +9,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.wmn4j.Wmn4j;
 import org.wmn4j.io.ParsingFailureException;
-import org.wmn4j.notation.TestHelper;
+import org.wmn4j.TestHelper;
 import org.wmn4j.notation.MeasureBuilder;
 import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.PartBuilder;

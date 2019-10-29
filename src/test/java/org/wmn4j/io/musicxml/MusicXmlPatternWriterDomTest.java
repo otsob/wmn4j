@@ -7,7 +7,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wmn4j.io.ParsingFailureException;
 import org.wmn4j.mir.Pattern;
-import org.wmn4j.notation.TestHelper;
+import org.wmn4j.TestHelper;
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Clefs;

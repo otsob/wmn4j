@@ -1,4 +1,4 @@
-package org.wmn4j.notation.builders;
+package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.RestBuilder;

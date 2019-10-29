@@ -1,7 +1,7 @@
 package org.wmn4j.analysis.harmony;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.TestHelper;
+import org.wmn4j.TestHelper;
 import org.wmn4j.notation.Key;
 import org.wmn4j.notation.Score;
 

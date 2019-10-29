@@ -1,7 +1,7 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.notation.builders;
+package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.ChordBuilder;

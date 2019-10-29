@@ -1,13 +1,10 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.notation.elements;
+package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.Measure;
-import org.wmn4j.notation.MultiStaffPart;
-import org.wmn4j.notation.Staff;
-import org.wmn4j.notation.TestHelper;
+import org.wmn4j.TestHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

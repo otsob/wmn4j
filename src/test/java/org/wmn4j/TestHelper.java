@@ -1,10 +1,19 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.notation;
+package org.wmn4j;
 
 import org.w3c.dom.Document;
 import org.wmn4j.io.musicxml.MusicXmlReader;
+import org.wmn4j.notation.ChordBuilder;
+import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.Measure;
+import org.wmn4j.notation.MeasureBuilder;
+import org.wmn4j.notation.NoteBuilder;
+import org.wmn4j.notation.PartBuilder;
+import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.RestBuilder;
+import org.wmn4j.notation.Score;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

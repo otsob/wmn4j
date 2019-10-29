@@ -5,7 +5,7 @@ package org.wmn4j.notation.iterators;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.TestHelper;
+import org.wmn4j.TestHelper;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.Note;

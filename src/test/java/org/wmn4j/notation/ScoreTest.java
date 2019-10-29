@@ -1,21 +1,12 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.notation.elements;
+package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
 import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
-import org.wmn4j.notation.Chord;
-import org.wmn4j.notation.Durational;
-import org.wmn4j.notation.Durations;
-import org.wmn4j.notation.Note;
-import org.wmn4j.notation.Part;
-import org.wmn4j.notation.Pitch;
-import org.wmn4j.notation.Rest;
-import org.wmn4j.notation.Score;
-import org.wmn4j.notation.TestHelper;
-import org.wmn4j.notation.PartBuilder;
+import org.wmn4j.TestHelper;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 import org.wmn4j.notation.iterators.Position;
 import org.wmn4j.notation.iterators.ScoreIterator;

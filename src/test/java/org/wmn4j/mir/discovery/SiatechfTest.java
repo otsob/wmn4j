@@ -4,7 +4,7 @@
 package org.wmn4j.mir.discovery;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.TestHelper;
+import org.wmn4j.TestHelper;
 import org.wmn4j.notation.Score;
 
 import java.util.ArrayList;
