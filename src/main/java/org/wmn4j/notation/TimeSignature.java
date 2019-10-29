@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * Class for time signatures. Time signatures consist of the number of beats and
  * the duration of each beat. For example, for the time signature 4/4 the number
- * of beats is 4 and the duration of beat is <code>Durations.QUARTER</code>.
+ * of beats is 4 and the duration of beat is equal to the duration of a quarter note.
  * <p>
  * This class is immutable.
  */

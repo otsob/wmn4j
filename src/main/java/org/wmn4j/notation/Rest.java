@@ -28,7 +28,7 @@ public final class Rest implements Durational {
 
 	/**
 	 * Private constructor. Use the static method
-	 * {@link #of(wmnlibnotation.Duration) getRest} to get a <code>Rest</code>
+	 * {@link #of(Duration) getRest} to get a {@link Rest}
 	 * object.
 	 *
 	 * @param duration the duration of the rest.

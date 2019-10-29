@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * Class for building <code>Chord</code> objects.
+ * Class for building {@link Chord} objects.
  * <p>
  * Instances of this class are not thread-safe.
  */
