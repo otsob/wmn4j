@@ -5,6 +5,8 @@ import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 
+import java.util.Optional;
+
 final class MusicXmlScoreWriterDom extends MusicXmlWriterDom {
 
 	private final Score score;
@@ -82,13 +84,15 @@ final class MusicXmlScoreWriterDom extends MusicXmlWriterDom {
 
 			partElement.setAttribute(MusicXmlTags.PART_ID, partId);
 			final Element partName = getDocument().createElement(MusicXmlTags.PART_NAME);
-			partName.setTextContent(part.getName());
+			partName.setTextContent(part.getName().orElse(""));
 			partElement.appendChild(partName);
 
-			if (!part.getAttribute(Part.Attribute.ABBREVIATED_NAME).isEmpty()) {
-				final Element abbreviatedPartName = getDocument().createElement(MusicXmlTags.PART_NAME_ABBREVIATION);
-				abbreviatedPartName.setTextContent(part.getAttribute(Part.Attribute.ABBREVIATED_NAME));
-				partElement.appendChild(abbreviatedPartName);
+			Optional<String> abbreviatedPartName = part.getAttribute(Part.Attribute.ABBREVIATED_NAME);
+			if (abbreviatedPartName.isPresent()) {
+				final Element abbreviatedPartNameElemen = getDocument()
+						.createElement(MusicXmlTags.PART_NAME_ABBREVIATION);
+				abbreviatedPartNameElemen.setTextContent(abbreviatedPartName.get());
+				partElement.appendChild(abbreviatedPartNameElemen);
 			}
 
 			partList.appendChild(partElement);

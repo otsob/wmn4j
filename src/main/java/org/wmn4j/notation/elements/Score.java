@@ -259,7 +259,7 @@ public final class Score implements Iterable<Part> {
 
 			StringBuilder partsListBuilder = new StringBuilder();
 			for (Integer partIndex : patternPosition.getPartIndices()) {
-				partsListBuilder.append(getPart(partIndex).getName()).append(" ");
+				partsListBuilder.append(getPart(partIndex).getName().orElse("")).append(" ");
 			}
 
 			String partsList = partsListBuilder.toString().trim();

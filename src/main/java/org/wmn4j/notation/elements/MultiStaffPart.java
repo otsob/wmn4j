@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -62,7 +63,7 @@ public final class MultiStaffPart implements Part {
 	}
 
 	@Override
-	public String getName() {
+	public Optional<String> getName() {
 		return this.getAttribute(Part.Attribute.NAME);
 	}
 
@@ -102,12 +103,8 @@ public final class MultiStaffPart implements Part {
 	}
 
 	@Override
-	public String getAttribute(Attribute attribute) {
-		if (this.partAttributes.containsKey(attribute)) {
-			return this.partAttributes.get(attribute);
-		} else {
-			return "";
-		}
+	public Optional<String> getAttribute(Attribute attribute) {
+		return Optional.ofNullable(partAttributes.getOrDefault(attribute, null));
 	}
 
 	@Override

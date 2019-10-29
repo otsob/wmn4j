@@ -51,7 +51,7 @@ class MusicXmlFileChecks {
 		assertTrue(part instanceof SingleStaffPart);
 		final SingleStaffPart spart = (SingleStaffPart) part;
 		final Staff staff = spart.getStaff();
-		assertEquals("Part1", part.getName());
+		assertEquals("Part1", part.getName().get());
 		assertEquals(1, staff.getMeasures().size());
 
 		final Measure measure = staff.getMeasures().get(0);
@@ -77,7 +77,7 @@ class MusicXmlFileChecks {
 		assertTrue(part instanceof SingleStaffPart);
 		final SingleStaffPart spart = (SingleStaffPart) part;
 		final Staff staff = spart.getStaff();
-		assertEquals("Part1", part.getName());
+		assertEquals("Part1", part.getName().get());
 		assertEquals(2, staff.getMeasures().size());
 
 		// Verify data of measure one
@@ -136,7 +136,7 @@ class MusicXmlFileChecks {
 
 		final SingleStaffPart partOne = (SingleStaffPart) score.getParts().get(0);
 		final Staff staffOne = partOne.getStaff();
-		assertEquals("Part1", partOne.getName());
+		assertEquals("Part1", partOne.getName().get());
 		assertEquals(2, staffOne.getMeasures().size());
 
 		// Verify data of measure one of staff one
@@ -171,7 +171,7 @@ class MusicXmlFileChecks {
 
 		final SingleStaffPart partTwo = (SingleStaffPart) score.getParts().get(1);
 		final Staff staffTwo = partTwo.getStaff();
-		assertEquals("Part2", partTwo.getName());
+		assertEquals("Part2", partTwo.getName().get());
 		assertEquals(2, staffTwo.getMeasures().size());
 
 		// Verify data of measure one of staff two
@@ -317,10 +317,10 @@ class MusicXmlFileChecks {
 		MultiStaffPart multiStaff = null;
 		SingleStaffPart singleStaff = null;
 		for (Part part : score) {
-			if (part.getName().equals("MultiStaff")) {
+			if (part.getName().get().equals("MultiStaff")) {
 				multiStaff = (MultiStaffPart) part;
 			}
-			if (part.getName().equals("SingleStaff")) {
+			if (part.getName().get().equals("SingleStaff")) {
 				singleStaff = (SingleStaffPart) part;
 			}
 		}
@@ -451,22 +451,29 @@ class MusicXmlFileChecks {
 
 		final Measure topStaffMeasure = topStaff.getMeasure(1);
 
-		assertTrue(((Note) topStaffMeasure.get(1,0)).hasArticulation(Articulation.FERMATA));
-		assertFalse(((Note) topStaffMeasure.get(1,1)).hasArticulations());
-		assertTrue(((Note) topStaffMeasure.get(1,2)).hasArticulation(Articulation.ACCENT));
-		assertTrue(((Note) topStaffMeasure.get(1,2)).hasArticulation(Articulation.TENUTO));
-		assertFalse(((Note) topStaffMeasure.get(1,3)).hasArticulations());
+		assertTrue(((Note) topStaffMeasure.get(1, 0)).hasArticulation(Articulation.FERMATA));
+		assertFalse(((Note) topStaffMeasure.get(1, 1)).hasArticulations());
+		assertTrue(((Note) topStaffMeasure.get(1, 2)).hasArticulation(Articulation.ACCENT));
+		assertTrue(((Note) topStaffMeasure.get(1, 2)).hasArticulation(Articulation.TENUTO));
+		assertFalse(((Note) topStaffMeasure.get(1, 3)).hasArticulations());
 
 		final Measure bottomStaffMeasure = bottomStaff.getMeasure(1);
 		final int bottomStaffSingleVoiceNumber = bottomStaffMeasure.getVoiceNumbers().get(0);
 
-		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,0)).hasArticulation(Articulation.STACCATO));
-		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,1)).hasArticulation(Articulation.TENUTO));
-		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,2)).hasArticulation(Articulation.ACCENT));
-		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,3)).hasArticulation(Articulation.STACCATO));
-		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,3)).hasArticulation(Articulation.TENUTO));
-		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,3)).hasArticulation(Articulation.ACCENT));
-		assertTrue(((Chord) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber,4)).hasArticulation(Articulation.TENUTO));
+		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber, 0))
+				.hasArticulation(Articulation.STACCATO));
+		assertTrue(
+				((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber, 1)).hasArticulation(Articulation.TENUTO));
+		assertTrue(
+				((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber, 2)).hasArticulation(Articulation.ACCENT));
+		assertTrue(((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber, 3))
+				.hasArticulation(Articulation.STACCATO));
+		assertTrue(
+				((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber, 3)).hasArticulation(Articulation.TENUTO));
+		assertTrue(
+				((Note) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber, 3)).hasArticulation(Articulation.ACCENT));
+		assertTrue(
+				((Chord) bottomStaffMeasure.get(bottomStaffSingleVoiceNumber, 4)).hasArticulation(Articulation.TENUTO));
 	}
 
 	/*
@@ -502,12 +509,12 @@ class MusicXmlFileChecks {
 		List<Part> parts = score.getParts();
 		assertEquals(2, parts.size());
 		Part part1 = parts.get(0);
-		assertEquals("Part name 1", part1.getName());
-		assertEquals("Short part name 1", part1.getAttribute(Part.Attribute.ABBREVIATED_NAME));
+		assertEquals("Part name 1", part1.getName().get());
+		assertEquals("Short part name 1", part1.getAttribute(Part.Attribute.ABBREVIATED_NAME).get());
 
 		Part part2 = parts.get(1);
-		assertEquals("Part name 2", part2.getName());
-		assertEquals("Short part name 2", part2.getAttribute(Part.Attribute.ABBREVIATED_NAME));
+		assertEquals("Part name 2", part2.getName().get());
+		assertEquals("Short part name 2", part2.getAttribute(Part.Attribute.ABBREVIATED_NAME).get());
 	}
 
 	/*
