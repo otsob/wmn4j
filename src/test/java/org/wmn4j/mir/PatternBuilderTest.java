@@ -147,7 +147,7 @@ class PatternBuilderTest {
 		builder.setName(patternName);
 
 		final Pattern pattern = builder.build();
-		assertEquals(patternName, pattern.getName());
+		assertEquals(patternName, pattern.getName().get());
 	}
 
 	@Test

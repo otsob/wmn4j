@@ -9,6 +9,7 @@ import org.wmn4j.notation.elements.Durational;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -29,7 +30,7 @@ public interface Pattern {
 	 * @return a pattern with the given contents
 	 */
 	static Pattern of(List<? extends Durational> contents) {
-		return of(contents, "");
+		return of(contents, null);
 	}
 
 	/**
@@ -104,11 +105,11 @@ public interface Pattern {
 	/**
 	 * Returns the name of the pattern.
 	 * <p>
-	 * If the pattern does not have a name, then returns an empty string.
+	 * If the pattern does not have a name, then returns empty.
 	 *
 	 * @return the name of the pattern
 	 */
-	String getName();
+	Optional<String> getName();
 
 	/**
 	 * Returns the labels associated with this pattern in lexicographical order.

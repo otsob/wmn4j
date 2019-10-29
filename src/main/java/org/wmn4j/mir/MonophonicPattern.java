@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -44,7 +45,7 @@ final class MonophonicPattern implements Pattern {
 		if (this.contents.stream().anyMatch((dur) -> (dur instanceof Chord))) {
 			throw new IllegalArgumentException("Contents contain a Chord. Contents must be monophonic");
 		}
-		this.name = Objects.requireNonNull(name);
+		this.name = name;
 		this.labels = Collections.unmodifiableSortedSet(new TreeSet<>(labels));
 	}
 
@@ -53,7 +54,7 @@ final class MonophonicPattern implements Pattern {
 	}
 
 	MonophonicPattern(List<? extends Durational> contents) {
-		this(contents, "", Collections.emptySet());
+		this(contents, null, Collections.emptySet());
 	}
 
 	@Override
@@ -62,8 +63,8 @@ final class MonophonicPattern implements Pattern {
 	}
 
 	@Override
-	public String getName() {
-		return name;
+	public Optional<String> getName() {
+		return Optional.ofNullable(name);
 	}
 
 	@Override
