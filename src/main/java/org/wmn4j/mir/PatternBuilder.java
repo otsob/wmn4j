@@ -24,7 +24,7 @@ public final class PatternBuilder {
 	private static final int DEFAULT_VOICE_NUMBER = MonophonicPattern.SINGLE_VOICE_NUMBER;
 	private final Map<Integer, List<DurationalBuilder>> voices;
 	private boolean isMonophonic = true;
-	private String name = "";
+	private String name = null;
 	private Set<String> labels = new HashSet<>();
 
 	/**

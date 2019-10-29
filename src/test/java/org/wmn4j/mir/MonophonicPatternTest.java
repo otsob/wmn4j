@@ -20,7 +20,6 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -304,9 +303,7 @@ class MonophonicPatternTest {
 
 		final String patternName = "A";
 		final Pattern patternWithName = new MonophonicPattern(referenceNotes, patternName);
-		assertEquals(patternName, patternWithName.getName());
-
-		assertThrows(NullPointerException.class, () -> new MonophonicPattern(referenceNotes, null));
+		assertEquals(patternName, patternWithName.getName().get());
 	}
 
 	@Test
@@ -324,7 +321,7 @@ class MonophonicPatternTest {
 
 		final Pattern patternWithLabels = new MonophonicPattern(referenceNotes, patternName, labels);
 
-		assertEquals(patternName, patternWithLabels.getName());
+		assertEquals(patternName, patternWithLabels.getName().get());
 		assertEquals(labels, patternWithLabels.getLabels());
 
 		labels.add("Label not in pattern");
@@ -344,7 +341,7 @@ class MonophonicPatternTest {
 		final Pattern patternWithLabels = new PolyphonicPattern(referenceNotes, patternName,
 				labels);
 
-		assertEquals(patternName, patternWithLabels.getName());
+		assertEquals(patternName, patternWithLabels.getName().get());
 		assertTrue(patternWithLabels.hasLabel(testLabelA));
 		assertTrue(patternWithLabels.hasLabel(testLabelB));
 		assertFalse(patternWithLabels.hasLabel("Label not in pattern"));

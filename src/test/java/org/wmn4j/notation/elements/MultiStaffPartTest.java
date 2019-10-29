@@ -37,7 +37,8 @@ class MultiStaffPartTest {
 
 		final String partName = "Test staff";
 		final MultiStaffPart part = MultiStaffPart.of(partName, testStavesCopy);
-		assertEquals(partName, part.getName());
+		assertTrue(part.getName().isPresent());
+		assertEquals(partName, part.getName().get());
 	}
 
 	@Test

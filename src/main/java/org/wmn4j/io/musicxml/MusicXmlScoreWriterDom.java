@@ -5,6 +5,8 @@ import org.wmn4j.notation.elements.Part;
 import org.wmn4j.notation.elements.Score;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 
+import java.util.Optional;
+
 final class MusicXmlScoreWriterDom extends MusicXmlWriterDom {
 
 	private final Score score;
@@ -24,16 +26,17 @@ final class MusicXmlScoreWriterDom extends MusicXmlWriterDom {
 	protected void writeScoreAttributes(Element rootElement) {
 		if (!score.getTitle().isEmpty()) {
 			final Element workTitleElement = getDocument().createElement(MusicXmlTags.SCORE_WORK_TITLE);
-			workTitleElement.setTextContent(score.getTitle());
+			workTitleElement.setTextContent(score.getTitle().get());
 
 			final Element workElement = getDocument().createElement(MusicXmlTags.SCORE_WORK);
 			workElement.appendChild(workTitleElement);
 			rootElement.appendChild(workElement);
 		}
 
-		if (!score.getAttribute(Score.Attribute.MOVEMENT_TITLE).isEmpty()) {
+		Optional<String> movementTitle = score.getAttribute(Score.Attribute.MOVEMENT_TITLE);
+		if (movementTitle.isPresent()) {
 			final Element movementTitleElement = getDocument().createElement(MusicXmlTags.SCORE_MOVEMENT_TITLE);
-			movementTitleElement.setTextContent(score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
+			movementTitleElement.setTextContent(movementTitle.get());
 			rootElement.appendChild(movementTitleElement);
 		}
 
@@ -47,21 +50,23 @@ final class MusicXmlScoreWriterDom extends MusicXmlWriterDom {
 	protected Element createIdentificationElement() {
 		final Element identificationElement = getDocument().createElement(MusicXmlTags.SCORE_IDENTIFICATION);
 
-		if (!score.getAttribute(Score.Attribute.COMPOSER).isEmpty()) {
+		Optional<String> composerName = score.getAttribute(Score.Attribute.COMPOSER);
+		if (composerName.isPresent()) {
 			final Element composerElement = getDocument().createElement(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR);
 			composerElement.setAttribute(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR_TYPE,
 					MusicXmlTags.SCORE_IDENTIFICATION_COMPOSER);
 
-			composerElement.setTextContent(score.getAttribute(Score.Attribute.COMPOSER));
+			composerElement.setTextContent(composerName.get());
 			identificationElement.appendChild(composerElement);
 		}
 
-		if (!score.getAttribute(Score.Attribute.ARRANGER).isEmpty()) {
+		Optional<String> arrangerName = score.getAttribute(Score.Attribute.ARRANGER);
+		if (arrangerName.isPresent()) {
 			final Element arrangerElement = getDocument().createElement(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR);
 			arrangerElement.setAttribute(MusicXmlTags.SCORE_IDENTIFICATION_CREATOR_TYPE,
 					MusicXmlTags.SCORE_IDENTIFICATION_ARRANGER);
 
-			arrangerElement.setTextContent(score.getAttribute(Score.Attribute.ARRANGER));
+			arrangerElement.setTextContent(arrangerName.get());
 			identificationElement.appendChild(arrangerElement);
 		}
 
@@ -82,13 +87,15 @@ final class MusicXmlScoreWriterDom extends MusicXmlWriterDom {
 
 			partElement.setAttribute(MusicXmlTags.PART_ID, partId);
 			final Element partName = getDocument().createElement(MusicXmlTags.PART_NAME);
-			partName.setTextContent(part.getName());
+			partName.setTextContent(part.getName().orElse(""));
 			partElement.appendChild(partName);
 
-			if (!part.getAttribute(Part.Attribute.ABBREVIATED_NAME).isEmpty()) {
-				final Element abbreviatedPartName = getDocument().createElement(MusicXmlTags.PART_NAME_ABBREVIATION);
-				abbreviatedPartName.setTextContent(part.getAttribute(Part.Attribute.ABBREVIATED_NAME));
-				partElement.appendChild(abbreviatedPartName);
+			Optional<String> abbreviatedPartName = part.getAttribute(Part.Attribute.ABBREVIATED_NAME);
+			if (abbreviatedPartName.isPresent()) {
+				final Element abbreviatedPartNameElemen = getDocument()
+						.createElement(MusicXmlTags.PART_NAME_ABBREVIATION);
+				abbreviatedPartNameElemen.setTextContent(abbreviatedPartName.get());
+				partElement.appendChild(abbreviatedPartNameElemen);
 			}
 
 			partList.appendChild(partElement);

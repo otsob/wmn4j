@@ -63,7 +63,8 @@ class SingleStaffPartTest {
 	@Test
 	void testGetName() {
 		final SingleStaffPart part = SingleStaffPart.of("Test part", Staff.of(this.measures));
-		assertEquals("Test part", part.getName());
+		assertTrue(part.getName().isPresent());
+		assertEquals("Test part", part.getName().get());
 	}
 
 	@Test

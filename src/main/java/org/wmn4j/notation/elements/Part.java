@@ -8,6 +8,7 @@ import org.wmn4j.notation.iterators.PartIterator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 /**
  * Represents a part in a score.
@@ -22,11 +23,12 @@ public interface Part extends Iterable<Measure> {
 	}
 
 	/**
-	 * Returns the name of this part.
+	 * Returns the name of this part or empty if the part has
+	 * no name.
 	 *
 	 * @return name of this part
 	 */
-	String getName();
+	Optional<String> getName();
 
 	/**
 	 * Returns true if this part has multiple staves.
@@ -52,14 +54,14 @@ public interface Part extends Iterable<Measure> {
 	List<Integer> getStaffNumbers();
 
 	/**
-	 * Returns the given attribute. If the attribute is not present, returns an
-	 * empty string.
+	 * Returns the given attribute. If the attribute is not present, returns
+	 * empty.
 	 *
 	 * @param attribute the attribute to return from this part
-	 * @return the value of the attribute, or an empty string if the attribute is
+	 * @return the value of the attribute, or empty if the attribute is
 	 * not set
 	 */
-	String getAttribute(Attribute attribute);
+	Optional<String> getAttribute(Attribute attribute);
 
 	/**
 	 * Returns the number of measures in this part. The count is based on the

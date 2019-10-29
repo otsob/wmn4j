@@ -72,11 +72,11 @@ public class ScoreTest {
 	@Test
 	void testGetAttribute() {
 		final Score score = Score.of(getTestAttributes(), getTestParts(5, 5));
-		assertEquals(SCORE_NAME, score.getAttribute(Score.Attribute.TITLE));
-		assertEquals(SUBTITLE, score.getAttribute(Score.Attribute.SUBTITLE));
-		assertEquals(COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER));
-		assertEquals(ARRANGER, score.getAttribute(Score.Attribute.ARRANGER));
-		assertEquals(MOVEMENT_NAME, score.getAttribute(Score.Attribute.MOVEMENT_TITLE));
+		assertEquals(SCORE_NAME, score.getAttribute(Score.Attribute.TITLE).get());
+		assertEquals(SUBTITLE, score.getAttribute(Score.Attribute.SUBTITLE).get());
+		assertEquals(COMPOSER_NAME, score.getAttribute(Score.Attribute.COMPOSER).get());
+		assertEquals(ARRANGER, score.getAttribute(Score.Attribute.ARRANGER).get());
+		assertEquals(MOVEMENT_NAME, score.getAttribute(Score.Attribute.MOVEMENT_TITLE).get());
 	}
 
 	@Test
@@ -89,9 +89,10 @@ public class ScoreTest {
 		parts.add(parts.get(0));
 		assertEquals(5, score.getPartCount(), "Adding part to the list used for creating score changed score.");
 
-		assertEquals(SCORE_NAME, score.getTitle(), "Score title was incorrect before trying to modify");
+		assertEquals(SCORE_NAME, score.getTitle().get(), "Score title was incorrect before trying to modify");
 		attributes.put(Score.Attribute.TITLE, "ModifiedName");
-		assertEquals(SCORE_NAME, score.getTitle(), "Score title was changed by modifying map used for creating score");
+		assertEquals(SCORE_NAME, score.getTitle().get(),
+				"Score title was changed by modifying map used for creating score");
 
 		final List<Part> scoreParts = score.getParts();
 		try {

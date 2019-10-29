@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -217,11 +218,11 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 	private String createPatternAnnotation(Pattern pattern) {
 		StringBuilder patternAnnotation = new StringBuilder();
 
-		final String patternName = pattern.getName();
+		final Optional<String> patternName = pattern.getName();
 		final Set<String> patternLabels = pattern.getLabels();
 
-		if (!patternName.isEmpty()) {
-			patternAnnotation.append(pattern.getName());
+		if (patternName.isPresent()) {
+			patternAnnotation.append(patternName.get());
 		}
 
 		if (!patternLabels.isEmpty()) {

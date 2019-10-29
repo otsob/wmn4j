@@ -476,9 +476,7 @@ public class PolyphonicPatternTest {
 
 		final String patternName = "A";
 		final Pattern patternWithName = new PolyphonicPattern(createReferencePatternVoices(), patternName);
-		assertEquals(patternName, patternWithName.getName());
-
-		assertThrows(NullPointerException.class, () -> new PolyphonicPattern(createReferencePatternVoices(), null));
+		assertEquals(patternName, patternWithName.getName().get());
 	}
 
 	@Test
@@ -497,7 +495,7 @@ public class PolyphonicPatternTest {
 		final Pattern patternWithLabels = new PolyphonicPattern(createReferencePatternVoices(), patternName,
 				labels);
 
-		assertEquals(patternName, patternWithLabels.getName());
+		assertEquals(patternName, patternWithLabels.getName().get());
 		assertEquals(labels, patternWithLabels.getLabels());
 
 		labels.add("Label not in pattern");
@@ -517,7 +515,7 @@ public class PolyphonicPatternTest {
 		final Pattern patternWithLabels = new PolyphonicPattern(createReferencePatternVoices(), patternName,
 				labels);
 
-		assertEquals(patternName, patternWithLabels.getName());
+		assertEquals(patternName, patternWithLabels.getName().get());
 		assertTrue(patternWithLabels.hasLabel(testLabelA));
 		assertTrue(patternWithLabels.hasLabel(testLabelB));
 		assertFalse(patternWithLabels.hasLabel("Label not in pattern"));

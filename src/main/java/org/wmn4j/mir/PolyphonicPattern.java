@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 final class PolyphonicPattern implements Pattern {
 
 	private static final Integer DEFAULT_VOICE_NUMBER = 1;
-	private static final String DEFAULT_NAME = "";
 
 	private final Map<Integer, List<Durational>> voices;
 	private final String name;
@@ -60,7 +59,7 @@ final class PolyphonicPattern implements Pattern {
 			}
 		}
 
-		this.name = Objects.requireNonNull(name);
+		this.name = name;
 		this.labels = Collections.unmodifiableSortedSet(new TreeSet<>(labels));
 	}
 
@@ -69,7 +68,7 @@ final class PolyphonicPattern implements Pattern {
 	}
 
 	PolyphonicPattern(Map<Integer, List<? extends Durational>> voices) {
-		this(voices, DEFAULT_NAME, Collections.emptySet());
+		this(voices, null, Collections.emptySet());
 	}
 
 	PolyphonicPattern(List<? extends Durational> voice, String name, Set<String> labels) {
@@ -82,12 +81,12 @@ final class PolyphonicPattern implements Pattern {
 		voicesCopy.put(DEFAULT_VOICE_NUMBER, voiceCopy);
 		voices = Collections.unmodifiableMap(voicesCopy);
 
-		this.name = Objects.requireNonNull(name);
+		this.name = name;
 		this.labels = Collections.unmodifiableSortedSet(new TreeSet<>(labels));
 	}
 
 	PolyphonicPattern(List<? extends Durational> voice) {
-		this(voice, DEFAULT_NAME, Collections.emptySet());
+		this(voice, null, Collections.emptySet());
 	}
 
 	@Override
@@ -96,8 +95,8 @@ final class PolyphonicPattern implements Pattern {
 	}
 
 	@Override
-	public String getName() {
-		return name;
+	public Optional<String> getName() {
+		return Optional.ofNullable(name);
 	}
 
 	@Override

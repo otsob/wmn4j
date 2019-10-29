@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 /**
  * Represents a part with a single staff in a score. This class is immutable.
@@ -61,7 +62,7 @@ public final class SingleStaffPart implements Part {
 	}
 
 	@Override
-	public String getName() {
+	public Optional<String> getName() {
 		return this.getAttribute(Attribute.NAME);
 	}
 
@@ -113,12 +114,8 @@ public final class SingleStaffPart implements Part {
 	}
 
 	@Override
-	public String getAttribute(Attribute attribute) {
-		if (this.partAttributes.containsKey(attribute)) {
-			return this.partAttributes.get(attribute);
-		} else {
-			return "";
-		}
+	public Optional<String> getAttribute(Attribute attribute) {
+		return Optional.ofNullable(partAttributes.getOrDefault(attribute, null));
 	}
 
 	@Override

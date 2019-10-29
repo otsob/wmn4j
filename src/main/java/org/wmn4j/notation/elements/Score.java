@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -89,10 +90,11 @@ public final class Score implements Iterable<Part> {
 
 	/**
 	 * Returns the main title of this score.
+	 * If no title is set, then returns empty.
 	 *
 	 * @return the main title of this score
 	 */
-	public String getTitle() {
+	public Optional<String> getTitle() {
 		return this.getAttribute(Attribute.TITLE);
 	}
 
@@ -136,17 +138,13 @@ public final class Score implements Iterable<Part> {
 
 	/**
 	 * Returns the value of the given attribute.
+	 * If the attribute is not present, then returns empty.
 	 *
 	 * @param attribute the type of the attribute
-	 * @return the text associated with attribute if the attribute is present. Empty
-	 * string otherwise.
+	 * @return the value of the attribute if the attribute is present
 	 */
-	public String getAttribute(Attribute attribute) {
-		if (this.scoreAttr.containsKey(attribute)) {
-			return this.scoreAttr.get(attribute);
-		}
-
-		return "";
+	public Optional<String> getAttribute(Attribute attribute) {
+		return Optional.ofNullable(scoreAttr.getOrDefault(attribute, null));
 	}
 
 	/**
@@ -196,7 +194,7 @@ public final class Score implements Iterable<Part> {
 	@Override
 	public String toString() {
 		final StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("Score ").append(getTitle()).append("\n");
+		strBuilder.append("Score ").append(getTitle().get()).append("\n");
 
 		for (int i = 0; i < parts.size(); ++i) {
 			strBuilder.append(parts.get(i).toString());
@@ -259,7 +257,7 @@ public final class Score implements Iterable<Part> {
 
 			StringBuilder partsListBuilder = new StringBuilder();
 			for (Integer partIndex : patternPosition.getPartIndices()) {
-				partsListBuilder.append(getPart(partIndex).getName()).append(" ");
+				partsListBuilder.append(getPart(partIndex).getName().orElse("")).append(" ");
 			}
 
 			String partsList = partsListBuilder.toString().trim();
