@@ -5,6 +5,10 @@ package org.wmn4j.notation;
 
 /**
  * Interface for all the notation objects that have a duration.
+ * This interface is not intended to be implemented by classes other
+ * than the basic notation classes {@link Note}, {@link Rest}, and {@link Chord}.
+ * <p>
+ * All implementations of this interface must be thread-safe.
  */
 public interface Durational {
 
