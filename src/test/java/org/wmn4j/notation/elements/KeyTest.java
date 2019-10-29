@@ -4,6 +4,8 @@
 package org.wmn4j.notation.elements;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.notation.Key;
+import org.wmn4j.notation.KeySignatures;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

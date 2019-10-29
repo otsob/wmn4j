@@ -4,6 +4,7 @@
 package org.wmn4j.notation.elements;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.notation.PitchClass;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -3,7 +3,7 @@
  */
 package org.wmn4j.analysis.harmony;
 
-import org.wmn4j.notation.elements.Key;
+import org.wmn4j.notation.Key;
 
 /**
  * Represents the results of a key analysis.

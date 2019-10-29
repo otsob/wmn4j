@@ -1,6 +1,6 @@
 package org.wmn4j.notation.iterators;
 
-import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.Durational;
 
 import java.util.Iterator;
 

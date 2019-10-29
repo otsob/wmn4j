@@ -4,6 +4,12 @@
 package org.wmn4j.notation.elements;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.notation.Articulation;
+import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.Note;
+import org.wmn4j.notation.Pitch;
 
 import java.util.ArrayList;
 import java.util.Collection;

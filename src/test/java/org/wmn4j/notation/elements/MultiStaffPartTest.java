@@ -4,6 +4,9 @@
 package org.wmn4j.notation.elements;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.notation.Measure;
+import org.wmn4j.notation.MultiStaffPart;
+import org.wmn4j.notation.Staff;
 import org.wmn4j.notation.TestHelper;
 
 import java.util.ArrayList;

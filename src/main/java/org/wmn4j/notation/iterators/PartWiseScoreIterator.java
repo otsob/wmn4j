@@ -3,9 +3,9 @@
  */
 package org.wmn4j.notation.iterators;
 
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Part;
-import org.wmn4j.notation.elements.Score;
+import org.wmn4j.notation.Durational;
+import org.wmn4j.notation.Part;
+import org.wmn4j.notation.Score;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

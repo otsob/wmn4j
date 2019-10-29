@@ -4,6 +4,9 @@
 package org.wmn4j.notation.elements;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.TimeSignature;
+import org.wmn4j.notation.TimeSignatures;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

@@ -3,9 +3,9 @@
  */
 package org.wmn4j.mir;
 
-import org.wmn4j.notation.builders.ChordBuilder;
-import org.wmn4j.notation.builders.DurationalBuilder;
-import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.ChordBuilder;
+import org.wmn4j.notation.DurationalBuilder;
+import org.wmn4j.notation.Durational;
 
 import java.util.ArrayList;
 import java.util.HashMap;

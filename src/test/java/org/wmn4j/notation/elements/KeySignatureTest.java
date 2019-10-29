@@ -4,6 +4,9 @@
 package org.wmn4j.notation.elements;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.notation.KeySignature;
+import org.wmn4j.notation.KeySignatures;
+import org.wmn4j.notation.Pitch;
 
 import java.util.Arrays;
 import java.util.List;

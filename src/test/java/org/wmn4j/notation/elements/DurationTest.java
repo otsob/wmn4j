@@ -4,6 +4,8 @@
 package org.wmn4j.notation.elements;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.Durations;
 
 import java.util.ArrayList;
 import java.util.List;

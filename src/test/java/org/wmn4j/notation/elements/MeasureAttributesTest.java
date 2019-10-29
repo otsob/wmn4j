@@ -4,6 +4,14 @@
 package org.wmn4j.notation.elements;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.notation.Barline;
+import org.wmn4j.notation.Clef;
+import org.wmn4j.notation.Clefs;
+import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.KeySignatures;
+import org.wmn4j.notation.MeasureAttributes;
+import org.wmn4j.notation.TimeSignatures;
 
 import java.util.HashMap;
 import java.util.Map;

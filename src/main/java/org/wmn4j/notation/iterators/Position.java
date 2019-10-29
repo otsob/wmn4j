@@ -3,11 +3,11 @@
  */
 package org.wmn4j.notation.iterators;
 
-import org.wmn4j.notation.elements.SingleStaffPart;
+import org.wmn4j.notation.SingleStaffPart;
 
 /**
- * Represents the position of a {@link org.wmn4j.notation.elements.Durational}
- * in a {@link org.wmn4j.notation.elements.Score}. Is immutable.
+ * Represents the position of a {@link org.wmn4j.notation.Durational}
+ * in a {@link org.wmn4j.notation.Score}. Is immutable.
  */
 public final class Position {
 
@@ -23,7 +23,7 @@ public final class Position {
 	/**
 	 * Constructor for positions in parts with multiple staves.
 	 *
-	 * @param partIndex    the number (index) of the part in the the score
+	 * @param partIndex     the number (index) of the part in the the score
 	 * @param staffNumber   the number of the staff in the part. For parts with a
 	 *                      single staff use the constructor without the staffNumber
 	 *                      parameter
@@ -43,7 +43,7 @@ public final class Position {
 	/**
 	 * Constructor for positions that can be used to access a note in a chord.
 	 *
-	 * @param partIndex    The number (index) of the part in the score
+	 * @param partIndex     The number (index) of the part in the score
 	 * @param staffNumber   The number of the staff in the part. For single staff
 	 *                      parts use the constructor without the staffNumber
 	 *                      parameter
@@ -66,7 +66,7 @@ public final class Position {
 	/**
 	 * Constructor for position in a part with only a single staff.
 	 *
-	 * @param partIndex    the number (index) of the part in the score
+	 * @param partIndex     the number (index) of the part in the score
 	 * @param measureNumber the measure number
 	 * @param voiceNumber   the voice number in the measure
 	 * @param indexInVoice  the index in the voice specified by voiceNumber

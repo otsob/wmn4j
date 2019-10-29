@@ -1,8 +1,9 @@
 package org.wmn4j.notation.builders;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.elements.Duration;
-import org.wmn4j.notation.elements.Rest;
+import org.wmn4j.notation.RestBuilder;
+import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.Rest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

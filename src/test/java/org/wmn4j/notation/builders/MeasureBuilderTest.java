@@ -4,18 +4,21 @@
 package org.wmn4j.notation.builders;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.elements.Barline;
-import org.wmn4j.notation.elements.Clefs;
-import org.wmn4j.notation.elements.Duration;
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.KeySignatures;
-import org.wmn4j.notation.elements.Measure;
-import org.wmn4j.notation.elements.MeasureAttributes;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.Rest;
-import org.wmn4j.notation.elements.TimeSignatures;
+import org.wmn4j.notation.MeasureBuilder;
+import org.wmn4j.notation.NoteBuilder;
+import org.wmn4j.notation.RestBuilder;
+import org.wmn4j.notation.Barline;
+import org.wmn4j.notation.Clefs;
+import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.Durational;
+import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.KeySignatures;
+import org.wmn4j.notation.Measure;
+import org.wmn4j.notation.MeasureAttributes;
+import org.wmn4j.notation.Note;
+import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.Rest;
+import org.wmn4j.notation.TimeSignatures;
 
 import java.util.List;
 

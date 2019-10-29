@@ -3,7 +3,7 @@
  */
 package org.wmn4j.analysis.harmony;
 
-import org.wmn4j.notation.elements.PitchClass;
+import org.wmn4j.notation.PitchClass;
 
 import java.text.DecimalFormat;
 import java.util.EnumMap;

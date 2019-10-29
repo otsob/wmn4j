@@ -1,6 +1,6 @@
 package org.wmn4j.notation.iterators;
 
-import org.wmn4j.notation.elements.Measure;
+import org.wmn4j.notation.Measure;
 
 import java.util.Iterator;
 

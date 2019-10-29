@@ -5,12 +5,12 @@ package org.wmn4j.analysis.harmony;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Durational;
-import org.wmn4j.notation.elements.Key;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.PitchClass;
-import org.wmn4j.notation.elements.Score;
+import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.Durational;
+import org.wmn4j.notation.Key;
+import org.wmn4j.notation.Note;
+import org.wmn4j.notation.PitchClass;
+import org.wmn4j.notation.Score;
 import org.wmn4j.notation.iterators.PartWiseScoreIterator;
 
 import java.io.BufferedReader;

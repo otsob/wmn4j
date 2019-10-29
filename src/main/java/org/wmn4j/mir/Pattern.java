@@ -3,8 +3,8 @@
  */
 package org.wmn4j.mir;
 
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.Durational;
 
 import java.util.Collections;
 import java.util.List;

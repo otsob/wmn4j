@@ -5,7 +5,7 @@ package org.wmn4j.io.musicxml;
 
 import org.wmn4j.io.ScoreWriter;
 import org.wmn4j.mir.Pattern;
-import org.wmn4j.notation.elements.Score;
+import org.wmn4j.notation.Score;
 
 import java.util.Collection;
 

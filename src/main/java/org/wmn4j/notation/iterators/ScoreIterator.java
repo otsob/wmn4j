@@ -3,14 +3,14 @@
  */
 package org.wmn4j.notation.iterators;
 
-import org.wmn4j.notation.elements.Durational;
+import org.wmn4j.notation.Durational;
 
 import java.util.Iterator;
 
 /**
  * Interface for iterators that iterate through the
- * {@link org.wmn4j.notation.elements.Durational} objects in a
- * {@link org.wmn4j.notation.elements.Score}.
+ * {@link Durational} objects in a
+ * {@link org.wmn4j.notation.Score}.
  */
 public interface ScoreIterator extends Iterator<Durational> {
 

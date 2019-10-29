@@ -4,7 +4,7 @@
 package org.wmn4j.analysis.harmony;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.elements.PitchClass;
+import org.wmn4j.notation.PitchClass;
 
 import java.util.Arrays;
 import java.util.EnumMap;

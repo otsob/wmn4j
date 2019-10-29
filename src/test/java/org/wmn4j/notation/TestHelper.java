@@ -5,15 +5,6 @@ package org.wmn4j.notation;
 
 import org.w3c.dom.Document;
 import org.wmn4j.io.musicxml.MusicXmlReader;
-import org.wmn4j.notation.builders.ChordBuilder;
-import org.wmn4j.notation.builders.MeasureBuilder;
-import org.wmn4j.notation.builders.NoteBuilder;
-import org.wmn4j.notation.builders.PartBuilder;
-import org.wmn4j.notation.builders.RestBuilder;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.Measure;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.Score;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

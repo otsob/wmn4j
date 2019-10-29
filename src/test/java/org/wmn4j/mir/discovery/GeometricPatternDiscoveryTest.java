@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.notation.TestHelper;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.Rest;
-import org.wmn4j.notation.elements.Score;
+import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.Note;
+import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.Rest;
+import org.wmn4j.notation.Score;
 
 import java.util.Arrays;
 import java.util.Collection;

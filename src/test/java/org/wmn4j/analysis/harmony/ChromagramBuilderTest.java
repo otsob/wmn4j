@@ -4,11 +4,11 @@
 package org.wmn4j.analysis.harmony;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.elements.Chord;
-import org.wmn4j.notation.elements.Durations;
-import org.wmn4j.notation.elements.Note;
-import org.wmn4j.notation.elements.Pitch;
-import org.wmn4j.notation.elements.PitchClass;
+import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.Note;
+import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.PitchClass;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
