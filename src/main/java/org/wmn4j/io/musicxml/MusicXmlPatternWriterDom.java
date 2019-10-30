@@ -68,7 +68,7 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
 	private List<Part> fromPatterns(Collection<Pattern> patterns) {
 
-		int maxNumberOfVoices = patterns.stream().map(Pattern::getNumberOfVoices).max(Integer::compareTo).orElseThrow();
+		int maxNumberOfVoices = patterns.stream().map(Pattern::getVoiceCount).max(Integer::compareTo).orElseThrow();
 
 		if (maxNumberOfVoices == 1) {
 			return Collections.singletonList(singleVoicePatternsToPart(patterns));

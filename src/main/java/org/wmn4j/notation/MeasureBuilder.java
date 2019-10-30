@@ -248,7 +248,7 @@ public class MeasureBuilder {
 	 *
 	 * @return number or voices in this builder
 	 */
-	public int getNumberOfVoices() {
+	public int getVoiceCount() {
 		return this.voices.size();
 	}
 

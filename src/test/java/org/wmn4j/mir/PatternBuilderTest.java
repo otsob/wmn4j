@@ -121,7 +121,7 @@ class PatternBuilderTest {
 		final Pattern patternWithTwoVoices = builder.build();
 		assertFalse(patternWithTwoVoices.isMonophonic());
 
-		assertEquals(2, patternWithTwoVoices.getNumberOfVoices());
+		assertEquals(2, patternWithTwoVoices.getVoiceCount());
 
 		List<Durational> voice1 = patternWithTwoVoices.getVoice(voice1number);
 		assertEquals(3, voice1.size());

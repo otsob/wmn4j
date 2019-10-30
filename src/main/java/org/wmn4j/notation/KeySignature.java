@@ -77,7 +77,7 @@ public final class KeySignature {
 	 *
 	 * @return the number of sharps in this key signature
 	 */
-	public int getNumberOfSharps() {
+	public int getSharpCount() {
 		return this.sharps.size();
 	}
 
@@ -86,7 +86,7 @@ public final class KeySignature {
 	 *
 	 * @return the number of flats in this key signature
 	 */
-	public int getNumberOfFlats() {
+	public int getFlatCount() {
 		return this.flats.size();
 	}
 

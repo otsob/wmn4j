@@ -110,7 +110,7 @@ public class PolyphonicPatternTest {
 	@Test
 	void testGetNumberOfVoicesReturnsCorrectNumber() {
 		final Pattern pattern = new PolyphonicPattern(createReferencePatternVoices());
-		assertEquals(2, pattern.getNumberOfVoices());
+		assertEquals(2, pattern.getVoiceCount());
 	}
 
 	@Test

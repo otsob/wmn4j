@@ -110,7 +110,7 @@ final class PolyphonicPattern implements Pattern {
 	}
 
 	@Override
-	public int getNumberOfVoices() {
+	public int getVoiceCount() {
 		return voices.size();
 	}
 
@@ -146,7 +146,7 @@ final class PolyphonicPattern implements Pattern {
 
 	private boolean containsEqualVoices(Pattern other,
 			BiFunction<List<Durational>, List<Durational>, Boolean> voiceEquality) {
-		if (other.getNumberOfVoices() != getNumberOfVoices()) {
+		if (other.getVoiceCount() != getVoiceCount()) {
 			return false;
 		}
 

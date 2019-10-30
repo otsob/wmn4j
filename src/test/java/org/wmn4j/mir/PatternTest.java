@@ -46,7 +46,7 @@ public class PatternTest {
 
 		final Pattern polyphonicPatternWithOneVoice = Pattern.of(contentsOfPolyphonicPattern);
 		assertFalse(polyphonicPatternWithOneVoice.isMonophonic());
-		assertEquals(1, polyphonicPatternWithOneVoice.getNumberOfVoices());
+		assertEquals(1, polyphonicPatternWithOneVoice.getVoiceCount());
 		assertEquals(contentsOfPolyphonicPattern,
 				polyphonicPatternWithOneVoice.getVoice(polyphonicPatternWithOneVoice.getVoiceNumbers().get(0)));
 	}
@@ -71,7 +71,7 @@ public class PatternTest {
 		final Pattern patternWithMultipleVoices = Pattern.of(voices);
 		assertFalse(patternWithMultipleVoices.isMonophonic());
 
-		assertEquals(2, patternWithMultipleVoices.getNumberOfVoices());
+		assertEquals(2, patternWithMultipleVoices.getVoiceCount());
 		final List<Integer> voiceNumbers = patternWithMultipleVoices.getVoiceNumbers();
 		assertEquals(voice1, patternWithMultipleVoices.getVoice(voiceNumbers.get(0)));
 		assertEquals(voice2, patternWithMultipleVoices.getVoice(voiceNumbers.get(1)));

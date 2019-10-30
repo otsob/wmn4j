@@ -88,7 +88,7 @@ final class MonophonicPattern implements Pattern {
 	}
 
 	@Override
-	public int getNumberOfVoices() {
+	public int getVoiceCount() {
 		return 1;
 	}
 

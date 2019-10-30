@@ -242,7 +242,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	 */
 	private void readMeasuresIntoPartBuilder(PartBuilder partBuilder, Node partNode) {
 
-		final int staves = getNumberOfStaves(partNode);
+		final int staves = getStaffCount(partNode);
 		final Map<Integer, Context> contexts = new HashMap<>();
 
 		// Create the context containers for the staves.
@@ -269,7 +269,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	/**
 	 * Find the number of staves in the part.
 	 */
-	private int getNumberOfStaves(Node partNode) {
+	private int getStaffCount(Node partNode) {
 
 		// If the number of staves is not defined in the first attributes node,
 		// then use default.

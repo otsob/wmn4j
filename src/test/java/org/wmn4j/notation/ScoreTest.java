@@ -181,7 +181,7 @@ public class ScoreTest {
 
 		Pattern twoFirstNotes = score.getAt(new PatternPosition(simplePositions));
 		assertEquals(2, twoFirstNotes.getContents().size());
-		assertEquals(1, twoFirstNotes.getNumberOfVoices());
+		assertEquals(1, twoFirstNotes.getVoiceCount());
 
 		assertEquals(Note.of(Pitch.Base.C, 0, 4, Durations.QUARTER), twoFirstNotes.getContents().get(0));
 		assertEquals(Note.of(Pitch.Base.D, 0, 4, Durations.QUARTER), twoFirstNotes.getContents().get(1));
@@ -193,7 +193,7 @@ public class ScoreTest {
 
 		Pattern patternWithGaps = score.getAt(new PatternPosition(positionsWithGap));
 		assertEquals(6, patternWithGaps.getContents().size());
-		assertEquals(1, patternWithGaps.getNumberOfVoices());
+		assertEquals(1, patternWithGaps.getVoiceCount());
 
 		assertEquals(Note.of(Pitch.Base.C, 0, 4, Durations.QUARTER), patternWithGaps.getContents().get(0));
 		assertEquals(Rest.of(Durations.QUARTER), patternWithGaps.getContents().get(1));
@@ -248,7 +248,7 @@ public class ScoreTest {
 		positionsAcrossParts.add(new Position(1, 2, 4, 1, 0));
 
 		final Pattern patternWithNotesAcrossParts = score.getAt(new PatternPosition(positionsAcrossParts));
-		assertEquals(3, patternWithNotesAcrossParts.getNumberOfVoices());
+		assertEquals(3, patternWithNotesAcrossParts.getVoiceCount());
 
 		final List<Durational> voice1 = patternWithNotesAcrossParts.getVoice(1);
 		assertEquals(3, voice1.size());
@@ -289,7 +289,7 @@ public class ScoreTest {
 
 		final Pattern patternFromOverlappingVoices = score.getAt(new PatternPosition(positionsWithOverlappingVoices));
 
-		assertEquals(5, patternFromOverlappingVoices.getNumberOfVoices());
+		assertEquals(5, patternFromOverlappingVoices.getVoiceCount());
 
 		final List<Durational> voice1 = patternFromOverlappingVoices.getVoice(1);
 		assertEquals(1, voice1.size());

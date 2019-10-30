@@ -544,9 +544,9 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		Element keySigElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_KEY);
 		Element fifthsElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_KEY_FIFTHS);
 
-		int fifths = keySignature.getNumberOfSharps();
+		int fifths = keySignature.getSharpCount();
 		if (fifths == 0) {
-			fifths = keySignature.getNumberOfFlats() * -1;
+			fifths = keySignature.getFlatCount() * -1;
 		}
 		fifthsElement.setTextContent(Integer.toString(fifths));
 

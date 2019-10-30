@@ -89,7 +89,7 @@ class MonophonicPatternTest {
 	@Test
 	void testGetNumberOfVoicesReturnsOne() {
 		final Pattern pattern = new MonophonicPattern(this.referenceNotes);
-		assertEquals(1, pattern.getNumberOfVoices());
+		assertEquals(1, pattern.getVoiceCount());
 	}
 
 	@Test

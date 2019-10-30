@@ -134,7 +134,7 @@ public interface Pattern {
 	 *
 	 * @return the number of voices in this pattern
 	 */
-	int getNumberOfVoices();
+	int getVoiceCount();
 
 	/**
 	 * Returns the voice numbers in this pattern from smallest to greatest.
