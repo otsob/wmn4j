@@ -18,11 +18,11 @@ class MeasureBuilderTest {
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
 
-		builder.addVoice();
-		assertEquals(1, builder.getVoiceCount());
 		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH))
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH))
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+
+		assertEquals(1, builder.getVoiceCount());
 
 		final Measure measure = builder.build();
 		assertNotNull(measure);
@@ -44,11 +44,11 @@ class MeasureBuilderTest {
 				KeySignatures.DFLATMAJ_BFLATMIN, Barline.DOUBLE, Clefs.F);
 		final MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
 
-		builder.addVoice();
-		assertEquals(1, builder.getVoiceCount());
 		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH))
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH))
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+
+		assertEquals(1, builder.getVoiceCount());
 
 		final Measure measure = builder.build();
 		assertNotNull(measure);
@@ -74,11 +74,11 @@ class MeasureBuilderTest {
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
 
-		builder.addVoice();
-		assertEquals(1, builder.getVoiceCount());
 		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH))
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH))
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+
+		assertEquals(1, builder.getVoiceCount());
 
 		final Measure measure = builder.build();
 		assertNotNull(measure);
