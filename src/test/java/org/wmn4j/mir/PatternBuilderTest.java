@@ -1,15 +1,15 @@
 package org.wmn4j.mir;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.ChordBuilder;
-import org.wmn4j.notation.NoteBuilder;
-import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.ChordBuilder;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.Note;
+import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Rest;
+import org.wmn4j.notation.RestBuilder;
 
 import java.util.List;
 
@@ -100,23 +100,23 @@ class PatternBuilderTest {
 
 		final int voice1number = 1;
 		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
-		builder.addToVoice(new NoteBuilder(firstElement), voice1number);
+		builder.addToVoice(voice1number, new NoteBuilder(firstElement));
 
 		final Note secondElement = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH);
-		builder.addToVoice(new NoteBuilder(secondElement), voice1number);
+		builder.addToVoice(voice1number, new NoteBuilder(secondElement));
 
 		final Rest thirdElement = Rest.of(Durations.QUARTER);
-		builder.addToVoice(new RestBuilder(thirdElement), voice1number);
+		builder.addToVoice(voice1number, new RestBuilder(thirdElement));
 
 		final int voice2number = 2;
 		final Note fourthElement = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.SIXTEENTH);
-		builder.addToVoice(new NoteBuilder(fourthElement), voice2number);
+		builder.addToVoice(voice2number, new NoteBuilder(fourthElement));
 
 		final Rest fifthElement = Rest.of(Durations.EIGHTH);
-		builder.addToVoice(new RestBuilder(fifthElement), voice2number);
+		builder.addToVoice(voice2number, new RestBuilder(fifthElement));
 
 		final Note sixthElement = Note.of(Pitch.of(Pitch.Base.B, -1, 4), Durations.SIXTEENTH);
-		builder.addToVoice(new NoteBuilder(sixthElement), voice2number);
+		builder.addToVoice(voice2number, new NoteBuilder(sixthElement));
 
 		final Pattern patternWithTwoVoices = builder.build();
 		assertFalse(patternWithTwoVoices.isMonophonic());

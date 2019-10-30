@@ -44,7 +44,7 @@ public final class PatternBuilder {
 	 * @param builder the durational builder that is added to the default voice in this builder
 	 */
 	public void add(DurationalBuilder builder) {
-		addToVoice(builder, DEFAULT_VOICE_NUMBER);
+		addToVoice(DEFAULT_VOICE_NUMBER, builder);
 	}
 
 	/**
@@ -52,10 +52,10 @@ public final class PatternBuilder {
 	 * polyphonic patterns, the {@link PatternBuilder#add add} method can be used for constructing
 	 * monophonic patterns.
 	 *
-	 * @param durationalBuilder the durational builder that is added to the given voice in this builder
 	 * @param voice             the number of the voice to which the durational builder is added
+	 * @param durationalBuilder the durational builder that is added to the given voice in this builder
 	 */
-	public void addToVoice(DurationalBuilder durationalBuilder, int voice) {
+	public void addToVoice(int voice, DurationalBuilder durationalBuilder) {
 		if (!voices.containsKey(voice)) {
 			voices.put(voice, new ArrayList<>());
 		}
