@@ -137,9 +137,9 @@ public interface Pattern {
 	int getVoiceCount();
 
 	/**
-	 * Returns the voice numbers in this pattern from smallest to greatest.
+	 * Returns the voice numbers in this pattern in ascending order.
 	 *
-	 * @return the voice numbers in this pattern from smallest to greatest
+	 * @return the voice numbers in this pattern in ascending order
 	 */
 	List<Integer> getVoiceNumbers();
 

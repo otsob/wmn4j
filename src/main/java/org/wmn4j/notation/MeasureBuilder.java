@@ -4,11 +4,9 @@
 package org.wmn4j.notation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -237,8 +235,8 @@ public class MeasureBuilder {
 	 *
 	 * @return the set of voice numbers in this builder
 	 */
-	public Set<Integer> getVoiceNumbers() {
-		return Collections.unmodifiableSet(this.voices.keySet());
+	public List<Integer> getVoiceNumbers() {
+		return new ArrayList<>(this.voices.keySet());
 	}
 
 	/**

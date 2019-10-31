@@ -124,8 +124,8 @@ public final class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * Returns the voice numbers in this measure. Voice numbers are not necessarily
-	 * consecutive and do not begin from 0.
+	 * Returns the voice numbers in this measure in ascending order.
+	 * Voice numbers are not necessarily consecutive and do not need begin from 0.
 	 *
 	 * @return list of the voice numbers used in this measure.
 	 */

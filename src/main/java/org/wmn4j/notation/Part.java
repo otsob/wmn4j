@@ -47,11 +47,9 @@ public interface Part extends Iterable<Measure> {
 	int getStaffCount();
 
 	/**
-	 * Returns the numbers of the staves in this part.
-	 * <p>
-	 * The staff numbers are ordered from smallest to greatest.
+	 * Returns the numbers of the staves in this part in ascending order.
 	 *
-	 * @return the numbers of the staves in this part
+	 * @return the numbers of the staves in this part in ascending order
 	 */
 	List<Integer> getStaffNumbers();
 

@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
  */
 public class PartBuilder {
 
-	private final Map<Integer, List<MeasureBuilder>> staveContents = new HashMap<>();
+	private final SortedMap<Integer, List<MeasureBuilder>> staveContents = new TreeMap<>();
 	private final Map<Part.Attribute, String> partAttributes = new HashMap<>();
 	private static final int SINGLE_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
 
@@ -112,12 +113,12 @@ public class PartBuilder {
 	}
 
 	/**
-	 * Returns the staff numbers set in this builder.
+	 * Returns the staff numbers set in this builder in ascending order.
 	 *
-	 * @return the staff numbers set in this builder
+	 * @return the staff numbers set in this builder in ascending order
 	 */
-	public Set<Integer> getStaffNumbers() {
-		return staveContents.keySet();
+	public List<Integer> getStaffNumbers() {
+		return new ArrayList<>(staveContents.keySet());
 	}
 
 	/**
