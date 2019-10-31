@@ -45,9 +45,9 @@ class MusicXmlFileChecks {
 	 */
 	static void assertSingleNoteScoreReadCorrectly(Score score) {
 		assertEquals("Single C", score.getAttribute(Score.Attribute.MOVEMENT_TITLE).get());
-		assertEquals(1, score.getParts().size());
+		assertEquals(1, score.getPartCount());
 
-		final Part part = score.getParts().get(0);
+		final Part part = score.getPart(0);
 		assertTrue(part instanceof SingleStaffPart);
 		final SingleStaffPart spart = (SingleStaffPart) part;
 		final Staff staff = spart.getStaff();
@@ -70,9 +70,9 @@ class MusicXmlFileChecks {
 	 * Expects the contents of the file "twoMeasures.xml"
 	 */
 	static void assertChordsAndMultipleVoicesReadCorrectly(Score score) {
-		assertEquals(1, score.getParts().size());
+		assertEquals(1, score.getPartCount());
 
-		final Part part = score.getParts().get(0);
+		final Part part = score.getPart(0);
 		assertTrue(part instanceof SingleStaffPart);
 		final SingleStaffPart spart = (SingleStaffPart) part;
 		final Staff staff = spart.getStaff();
@@ -128,9 +128,9 @@ class MusicXmlFileChecks {
 	static void assertScoreWithMultiplePartsReadCorrectly(Score score) {
 		assertEquals("Multistaff test file", score.getAttribute(Score.Attribute.MOVEMENT_TITLE).get());
 		assertEquals("TestFile Composer", score.getAttribute(Score.Attribute.COMPOSER).get());
-		assertEquals(2, score.getParts().size());
+		assertEquals(2, score.getPartCount());
 
-		final SingleStaffPart partOne = (SingleStaffPart) score.getParts().get(0);
+		final SingleStaffPart partOne = (SingleStaffPart) score.getPart(0);
 		final Staff staffOne = partOne.getStaff();
 		assertEquals("Part1", partOne.getName().get());
 		assertEquals(2, staffOne.getMeasureCount());
@@ -163,7 +163,7 @@ class MusicXmlFileChecks {
 		assertEquals(Rest.of(Durations.QUARTER), staffOneMeasureTwo.get(1, 0));
 		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF), staffOneMeasureTwo.get(1, 1));
 
-		final SingleStaffPart partTwo = (SingleStaffPart) score.getParts().get(1);
+		final SingleStaffPart partTwo = (SingleStaffPart) score.getPart(1);
 		final Staff staffTwo = partTwo.getStaff();
 		assertEquals("Part2", partTwo.getName().get());
 		assertEquals(2, staffTwo.getMeasureCount());
@@ -200,8 +200,8 @@ class MusicXmlFileChecks {
 	 */
 	static void assertBarlinesReadCorrectly(Score score) {
 
-		assertEquals(1, score.getParts().size());
-		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+		assertEquals(1, score.getPartCount());
+		final SingleStaffPart part = (SingleStaffPart) score.getPart(0);
 
 		assertEquals(Barline.SINGLE, part.getMeasure(1).getRightBarline());
 		assertEquals(Barline.NONE, part.getMeasure(1).getLeftBarline());
@@ -235,7 +235,7 @@ class MusicXmlFileChecks {
 	 * Expects the contents of the file "clefs.xml"
 	 */
 	static void assertClefsReadCorrectly(Score score) {
-		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+		final SingleStaffPart part = (SingleStaffPart) score.getPart(0);
 
 		assertEquals(Clefs.G, part.getMeasure(1).getClef());
 		assertFalse(part.getMeasure(1).containsClefChanges());
@@ -264,7 +264,7 @@ class MusicXmlFileChecks {
 	 * Expects the contents of the file "multiStaffClefs.xml"
 	 */
 	static void assertMultiStaffClefsReadCorrectlyToScore(Score score) {
-		final MultiStaffPart part = (MultiStaffPart) score.getParts().get(0);
+		final MultiStaffPart part = (MultiStaffPart) score.getPart(0);
 		final Staff upper = part.getStaff(1);
 		final Staff lower = part.getStaff(2);
 
@@ -294,7 +294,7 @@ class MusicXmlFileChecks {
 	 * Expects the contents of the file "keysigs.xml"
 	 */
 	static void assertKeySignaturesReadToScoreCorrectly(Score score) {
-		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+		final SingleStaffPart part = (SingleStaffPart) score.getPart(0);
 
 		assertEquals(KeySignatures.CMAJ_AMIN, part.getMeasure(1).getKeySignature());
 		assertEquals(KeySignatures.GMAJ_EMIN, part.getMeasure(2).getKeySignature());
@@ -344,7 +344,7 @@ class MusicXmlFileChecks {
 	 */
 	static void assertTimeSignaturesReadCorrectly(Score score) {
 		assertEquals(1, score.getPartCount());
-		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+		final SingleStaffPart part = (SingleStaffPart) score.getPart(0);
 		assertEquals(TimeSignature.of(2, 2), part.getMeasure(1).getTimeSignature());
 		assertEquals(TimeSignature.of(3, 4), part.getMeasure(2).getTimeSignature());
 		assertEquals(TimeSignature.of(6, 8), part.getMeasure(3).getTimeSignature());
@@ -355,7 +355,7 @@ class MusicXmlFileChecks {
 	 * Expects the contents of the file "scoreIteratorTesting.xml"
 	 */
 	static void assertTimeSignatureChangeReadCorrectly(Score score) {
-		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+		final SingleStaffPart part = (SingleStaffPart) score.getPart(0);
 		final Durational n = part.getMeasure(2).get(1, 0);
 		assertEquals(Durations.EIGHTH, n.getDuration());
 	}
@@ -364,7 +364,7 @@ class MusicXmlFileChecks {
 	 * Expects the contents of the file "tieTesting.xml"
 	 */
 	static void assertTiedNotesReadCorrectly(Score score) {
-		final SingleStaffPart part = (SingleStaffPart) score.getParts().get(0);
+		final SingleStaffPart part = (SingleStaffPart) score.getPart(0);
 
 		final Measure firstMeasure = part.getMeasure(1);
 		final Note first = (Note) firstMeasure.get(1, 0);
@@ -473,7 +473,7 @@ class MusicXmlFileChecks {
 	 */
 	static void assertPickupMeasureReadCorrectly(Score score) {
 		assertEquals(1, score.getPartCount());
-		Part part = score.getParts().get(0);
+		Part part = score.getPart(0);
 		assertFalse(part.isMultiStaff());
 		assertEquals(4, part.getMeasureCount());
 		assertEquals(3, part.getFullMeasureCount());
@@ -498,13 +498,12 @@ class MusicXmlFileChecks {
 		assertEquals("Movement title", score.getAttribute(Score.Attribute.MOVEMENT_TITLE).get());
 		assertEquals("Arranger name", score.getAttribute(Score.Attribute.ARRANGER).get());
 
-		List<Part> parts = score.getParts();
-		assertEquals(2, parts.size());
-		Part part1 = parts.get(0);
+		assertEquals(2, score.getPartCount());
+		Part part1 = score.getPart(0);
 		assertEquals("Part name 1", part1.getName().get());
 		assertEquals("Short part name 1", part1.getAttribute(Part.Attribute.ABBREVIATED_NAME).get());
 
-		Part part2 = parts.get(1);
+		Part part2 = score.getPart(1);
 		assertEquals("Part name 2", part2.getName().get());
 		assertEquals("Short part name 2", part2.getAttribute(Part.Attribute.ABBREVIATED_NAME).get());
 	}

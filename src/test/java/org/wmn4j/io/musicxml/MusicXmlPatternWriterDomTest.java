@@ -111,7 +111,7 @@ class MusicXmlPatternWriterDomTest {
 			Clef expectedClef) {
 		assertEquals(1, patternsAsScore.getPartCount());
 
-		final Part part = patternsAsScore.getParts().get(0);
+		final Part part = patternsAsScore.getPart(0);
 		assertPartHasCorrectContents(expectedContents, part, expectedClef);
 	}
 
@@ -153,7 +153,7 @@ class MusicXmlPatternWriterDomTest {
 
 		assertEquals(1, patternsAsScore.getPartCount());
 
-		final Part part = patternsAsScore.getParts().get(0);
+		final Part part = patternsAsScore.getPart(0);
 		assertFalse(part.isMultiStaff());
 
 		List<Durational> partContents = new ArrayList<>();

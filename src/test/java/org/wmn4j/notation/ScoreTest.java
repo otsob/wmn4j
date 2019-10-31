@@ -4,9 +4,9 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.TestHelper;
 import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
-import org.wmn4j.TestHelper;
 import org.wmn4j.notation.access.PartWiseScoreIterator;
 import org.wmn4j.notation.access.Position;
 import org.wmn4j.notation.access.ScoreIterator;
@@ -92,14 +92,6 @@ public class ScoreTest {
 		attributes.put(Score.Attribute.TITLE, "ModifiedName");
 		assertEquals(SCORE_NAME, score.getTitle().get(),
 				"Score title was changed by modifying map used for creating score");
-
-		final List<Part> scoreParts = score.getParts();
-		try {
-			scoreParts.add(parts.get(0));
-		} catch (final Exception e) {
-			/* Do nothing */
-		}
-		assertEquals(5, score.getPartCount(), "Number of parts changed in score");
 	}
 
 	@Test

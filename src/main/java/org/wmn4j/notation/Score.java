@@ -110,15 +110,6 @@ public final class Score implements Iterable<Part> {
 	}
 
 	/**
-	 * Returns the parts in this score.
-	 *
-	 * @return the parts in this score
-	 */
-	public List<Part> getParts() {
-		return this.parts;
-	}
-
-	/**
 	 * Returns the part at the index.
 	 *
 	 * @param index the number of the part in this score
