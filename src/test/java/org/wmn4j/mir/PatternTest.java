@@ -35,10 +35,15 @@ public class PatternTest {
 		final Pattern monophonicPattern = Pattern.of(notes);
 		assertTrue(monophonicPattern.isMonophonic());
 
-		final List<Durational> contentsOfMonophonicPattern = monophonicPattern
+		final Iterable<Durational> contentsOfMonophonicPattern = monophonicPattern
 				.getVoice(monophonicPattern.getVoiceNumbers().get(0));
 
-		assertEquals(notes, contentsOfMonophonicPattern);
+		List<Durational> monophonicPatternVoiceContentsAsList = new ArrayList<>();
+		for (Durational durational : contentsOfMonophonicPattern) {
+			monophonicPatternVoiceContentsAsList.add(durational);
+		}
+
+		assertEquals(notes, monophonicPatternVoiceContentsAsList);
 
 		final List<Durational> contentsOfPolyphonicPattern = new ArrayList<>(notes);
 		final Chord chord = Chord.of(notes.subList(0, 2));

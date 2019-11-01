@@ -145,11 +145,32 @@ public interface Pattern {
 
 	/**
 	 * Returns the contents of the voice with the given number.
+	 * The contents of the voice are iterated in their temporal order, i.e.,
+	 * from left to right int notation.
 	 *
 	 * @param voiceNumber the number of the voice whose contents are returned
 	 * @return the contents of the voice with the given number
 	 */
-	List<Durational> getVoice(int voiceNumber);
+	Iterable<Durational> getVoice(int voiceNumber);
+
+	/**
+	 * Returns the notation element at the given index in the voice
+	 * with the given number.
+	 *
+	 * @param voiceNumber the number of the voice from which to retrieve the notation element
+	 * @param index       the index of the notation element in the voice
+	 * @return the notation element at the given index in the voice
+	 * with the given number
+	 */
+	Durational get(int voiceNumber, int index);
+
+	/**
+	 * Returns the number of notation elements in the voice with the given number.
+	 *
+	 * @param voiceNumber the number of the voice for which the size is returned
+	 * @return the number of notation elements in the voice with the given number
+	 */
+	int getVoiceSize(int voiceNumber);
 
 	/**
 	 * Returns true if this pattern has the given labels.

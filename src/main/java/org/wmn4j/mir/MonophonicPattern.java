@@ -11,6 +11,7 @@ import org.wmn4j.notation.Pitched;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -107,6 +108,21 @@ final class MonophonicPattern implements Pattern {
 	}
 
 	@Override
+	public Durational get(int voiceNumber, int index) {
+		if (voiceNumber != SINGLE_VOICE_NUMBER) {
+			throw new NoSuchElementException("No voice with number " + voiceNumber + " in pattern");
+		}
+		return contents.get(index);
+
+	}
+
+	@Override
+	public int getVoiceSize(int voiceNumber) {
+		return contents.size();
+
+	}
+
+	@Override
 	public boolean hasLabel(String label) {
 		return labels.contains(label);
 	}
@@ -191,30 +207,30 @@ final class MonophonicPattern implements Pattern {
 		return false;
 	}
 
-	static boolean areVoicesEqualInDurations(List<Durational> voiceA, List<Durational> voiceB) {
-		if (voiceA.size() == voiceB.size()) {
-			for (int i = 0; i < voiceA.size(); ++i) {
+	static boolean areVoicesEqualInDurations(Iterable<Durational> voiceA, Iterable<Durational> voiceB) {
+		Iterator<Durational> iterA = voiceA.iterator();
+		Iterator<Durational> iterB = voiceB.iterator();
 
-				final Durational durationalInThis = voiceA.get(i);
-				final Durational durationalInOther = voiceB.get(i);
+		while (iterA.hasNext() && iterB.hasNext()) {
 
-				final boolean bothAreOfSameType =
-						(durationalInThis.isRest() && durationalInOther.isRest()) || (!durationalInThis.isRest()
-								&& !durationalInOther.isRest());
+			final Durational durationalInThis = iterA.next();
+			final Durational durationalInOther = iterB.next();
 
-				if (!bothAreOfSameType) {
-					return false;
-				}
+			final boolean bothAreOfSameType =
+					(durationalInThis.isRest() && durationalInOther.isRest()) || (!durationalInThis.isRest()
+							&& !durationalInOther.isRest());
 
-				if (!voiceA.get(i).getDuration().equals(voiceB.get(i).getDuration())) {
-					return false;
-				}
+			if (!bothAreOfSameType) {
+				return false;
 			}
 
-			return true;
+			if (!durationalInThis.getDuration().equals(durationalInOther.getDuration())) {
+				return false;
+			}
 		}
 
-		return false;
+		// Check that both iterators are finished, otherwise the number of elements is not equal.
+		return iterA.hasNext() == iterB.hasNext();
 	}
 
 	@Override

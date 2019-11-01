@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
@@ -105,9 +104,10 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 			final int measureNumberBeforeStaffCreation = nextMeasureNumber;
 
 			for (int voiceIndex = 0; voiceIndex < patternVoiceNumbers.size(); ++voiceIndex) {
-				List<Durational> voice = pattern.getVoice(patternVoiceNumbers.get(voiceIndex));
+				final int voiceNumber = patternVoiceNumbers.get(voiceIndex);
+				Iterable<Durational> voice = pattern.getVoice(voiceNumber);
 
-				Duration voiceDuration = getVoiceDuration(voice);
+				Duration voiceDuration = getVoiceDuration(voice, pattern.getVoiceSize(voiceNumber));
 
 				staveContents.get(voiceIndex)
 						.addAll(voiceToMeasureList(voice.iterator(), voiceDuration.equals(longestVoiceDuration)));
@@ -131,12 +131,14 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		return parts;
 	}
 
-	private Duration getVoiceDuration(List<Durational> voice) {
-		List<Duration> voiceDurations = voice.stream()
-				.map(Durational::getDuration).collect(
-						Collectors.toList());
+	private Duration getVoiceDuration(Iterable<Durational> voice, int voiceSize) {
+		List<Duration> durations = new ArrayList<>(voiceSize);
 
-		return Duration.sumOf(voiceDurations);
+		for (Durational durational : voice) {
+			durations.add(durational.getDuration());
+		}
+
+		return Duration.sumOf(durations);
 	}
 
 	private Duration getLongestVoiceDuration(Pattern pattern) {
@@ -144,7 +146,8 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		Duration longestVoiceDuration = null;
 
 		for (int voiceIndex = 0; voiceIndex < patternVoiceNumbers.size(); ++voiceIndex) {
-			Duration totalDuration = getVoiceDuration(pattern.getVoice(patternVoiceNumbers.get(voiceIndex)));
+			final int voiceNumber = patternVoiceNumbers.get(voiceIndex);
+			Duration totalDuration = getVoiceDuration(pattern.getVoice(voiceNumber), pattern.getVoiceSize(voiceNumber));
 
 			if (longestVoiceDuration == null) {
 				longestVoiceDuration = totalDuration;

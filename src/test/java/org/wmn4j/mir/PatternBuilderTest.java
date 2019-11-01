@@ -123,17 +123,15 @@ class PatternBuilderTest {
 
 		assertEquals(2, patternWithTwoVoices.getVoiceCount());
 
-		List<Durational> voice1 = patternWithTwoVoices.getVoice(voice1number);
-		assertEquals(3, voice1.size());
-		assertEquals(firstElement, voice1.get(0));
-		assertEquals(secondElement, voice1.get(1));
-		assertEquals(thirdElement, voice1.get(2));
+		assertEquals(3, patternWithTwoVoices.getVoiceSize(voice1number));
+		assertEquals(firstElement, patternWithTwoVoices.get(voice1number, 0));
+		assertEquals(secondElement, patternWithTwoVoices.get(voice1number, 1));
+		assertEquals(thirdElement, patternWithTwoVoices.get(voice1number, 2));
 
-		List<Durational> voice2 = patternWithTwoVoices.getVoice(voice2number);
-		assertEquals(3, voice2.size());
-		assertEquals(fourthElement, voice2.get(0));
-		assertEquals(fifthElement, voice2.get(1));
-		assertEquals(sixthElement, voice2.get(2));
+		assertEquals(3, patternWithTwoVoices.getVoiceSize(voice2number));
+		assertEquals(fourthElement, patternWithTwoVoices.get(voice2number, 0));
+		assertEquals(fifthElement, patternWithTwoVoices.get(voice2number, 1));
+		assertEquals(sixthElement, patternWithTwoVoices.get(voice2number, 2));
 	}
 
 	@Test

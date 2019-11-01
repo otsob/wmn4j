@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -141,11 +142,25 @@ final class PolyphonicPattern implements Pattern {
 			return false;
 		}
 
-		return containsEqualVoices((Pattern) o, List::equals);
+		return containsEqualVoices((Pattern) o, PolyphonicPattern::iterablesEquals);
+	}
+
+	private static boolean iterablesEquals(Iterable<Durational> a, Iterable<Durational> b) {
+		Iterator<Durational> iterA = a.iterator();
+		Iterator<Durational> iterB = b.iterator();
+
+		while (iterA.hasNext() && iterB.hasNext()) {
+			if (!iterA.next().equals(iterB.next())) {
+				return false;
+			}
+		}
+
+		// Check that both iterators are at the end: the same number of elements has been iterated.
+		return iterA.hasNext() == iterB.hasNext();
 	}
 
 	private boolean containsEqualVoices(Pattern other,
-			BiFunction<List<Durational>, List<Durational>, Boolean> voiceEquality) {
+			BiFunction<Iterable<Durational>, Iterable<Durational>, Boolean> voiceEquality) {
 		if (other.getVoiceCount() != getVoiceCount()) {
 			return false;
 		}
@@ -154,8 +169,7 @@ final class PolyphonicPattern implements Pattern {
 			boolean isVoicePresentInOther = false;
 
 			for (Integer voiceNumber : other.getVoiceNumbers()) {
-				List<Durational> voiceInOther = other.getVoice(voiceNumber);
-				if (voiceEquality.apply(voice, voiceInOther)) {
+				if (voiceEquality.apply(voice, other.getVoice(voiceNumber))) {
 					isVoicePresentInOther = true;
 					break;
 				}
@@ -167,7 +181,7 @@ final class PolyphonicPattern implements Pattern {
 		}
 
 		for (Integer voiceNumber : other.getVoiceNumbers()) {
-			List<Durational> voiceInOther = other.getVoice(voiceNumber);
+			final Iterable<Durational> voiceInOther = other.getVoice(voiceNumber);
 
 			if (voices.values().stream().noneMatch(voice -> voiceEquality.apply(voice, voiceInOther))) {
 				return false;
@@ -179,13 +193,24 @@ final class PolyphonicPattern implements Pattern {
 
 	@Override
 	public boolean equalsInPitch(Pattern other) {
-		BiFunction<List<Durational>, List<Durational>, Boolean> equalInPitches = (voiceA, voiceB) ->
+		BiFunction<Iterable<Durational>, Iterable<Durational>, Boolean> equalInPitches = (voiceA, voiceB) ->
 				isNoteContentEqualWithTransformation(voiceA, voiceB, Note::getPitch);
 
 		return containsEqualVoices(other, equalInPitches);
 	}
 
-	private static boolean isNoteContentEqualWithTransformations(List<Durational> voiceA, List<Durational> voiceB,
+	@Override
+	public Durational get(int voiceNumber, int index) {
+		return voices.get(voiceNumber).get(index);
+	}
+
+	@Override
+	public int getVoiceSize(int voiceNumber) {
+		return voices.get(voiceNumber).size();
+	}
+
+	private static boolean isNoteContentEqualWithTransformations(Iterable<Durational> voiceA,
+			Iterable<Durational> voiceB,
 			Function<Note, Object> voiceANoteTransformation, Function<Note, Object> voiceBNoteTransformation) {
 
 		List<Durational> voiceAWithoutRests = withoutRests(voiceA);
@@ -223,13 +248,21 @@ final class PolyphonicPattern implements Pattern {
 
 	}
 
-	private static boolean isNoteContentEqualWithTransformation(List<Durational> voiceA, List<Durational> voiceB,
+	private static boolean isNoteContentEqualWithTransformation(Iterable<Durational> voiceA,
+			Iterable<Durational> voiceB,
 			Function<Note, Object> noteTransformation) {
 		return isNoteContentEqualWithTransformations(voiceA, voiceB, noteTransformation, noteTransformation);
 	}
 
-	private static List<Durational> withoutRests(List<Durational> voice) {
-		return voice.stream().filter(durational -> !durational.isRest()).collect(Collectors.toList());
+	private static List<Durational> withoutRests(Iterable<Durational> voice) {
+		List<Durational> withoutRests = new ArrayList<>();
+		for (Durational durational : voice) {
+			if (!durational.isRest()) {
+				withoutRests.add(durational);
+			}
+		}
+
+		return withoutRests;
 	}
 
 	private static boolean areChordsEqualWithTransformedNotes(Chord chordA, Chord chordB,
@@ -253,7 +286,7 @@ final class PolyphonicPattern implements Pattern {
 
 	@Override
 	public boolean equalsEnharmonically(Pattern other) {
-		BiFunction<List<Durational>, List<Durational>, Boolean> equalsEnharmonically = (voiceA, voiceB) ->
+		BiFunction<Iterable<Durational>, Iterable<Durational>, Boolean> equalsEnharmonically = (voiceA, voiceB) ->
 				isNoteContentEqualWithTransformation(voiceA, voiceB, note -> note.getPitch().toInt());
 		return containsEqualVoices(other, equalsEnharmonically);
 	}
@@ -277,13 +310,18 @@ final class PolyphonicPattern implements Pattern {
 				.map(toPitchNumber).collect(Collectors.toList());
 
 		// Get the first pitch number of one voice from other.
-		Integer pitchNumberInOther = other.getVoice(other.getVoiceNumbers().get(0)).stream()
-				.filter(durational -> !durational.isRest())
-				.findFirst().map(toPitchNumber).orElseThrow();
+
+		Integer pitchNumberInOther = null;
+		for (Durational durational : other.getVoice(other.getVoiceNumbers().get(0))) {
+			if (!durational.isRest()) {
+				pitchNumberInOther = toPitchNumber.apply(durational);
+				break;
+			}
+		}
 
 		// Based on the pitch differences, create all tranpositional equivalence comparisons for the
 		// possible transposition candidates.
-		Collection<BiFunction<List<Durational>, List<Durational>, Boolean>> transpositionalEquivalenceCandidates
+		Collection<BiFunction<Iterable<Durational>, Iterable<Durational>, Boolean>> transpositionalEquivalenceCandidates
 				= new ArrayList<>();
 		for (Integer firstPitchNumberInThis : firstPitchNumbersInThis) {
 			final int transposition = pitchNumberInOther - firstPitchNumberInThis;

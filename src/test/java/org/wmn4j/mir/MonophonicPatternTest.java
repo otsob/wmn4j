@@ -101,8 +101,13 @@ class MonophonicPatternTest {
 	@Test
 	void testGetVoiceReturnsContents() {
 		final Pattern pattern = new MonophonicPattern(this.referenceNotes);
-		List<Durational> voiceContents = pattern.getVoice(pattern.getVoiceNumbers().get(0));
-		assertEquals(this.referenceNotes, voiceContents);
+		Iterable<Durational> voiceContents = pattern.getVoice(pattern.getVoiceNumbers().get(0));
+		List<Durational> voiceContentsAsList = new ArrayList<>();
+		for (Durational durational : voiceContents) {
+			voiceContentsAsList.add(durational);
+		}
+
+		assertEquals(this.referenceNotes, voiceContentsAsList);
 	}
 
 	@Test
