@@ -53,7 +53,7 @@ public final class PatternPosition {
 	 *
 	 * @return the number of notation elements the referred pattern contains
 	 */
-	public int getSize() {
+	public int size() {
 		return (int) positionsPerPart.values().stream().flatMap(Set::stream).count();
 	}
 

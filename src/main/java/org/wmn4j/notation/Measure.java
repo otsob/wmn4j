@@ -124,23 +124,13 @@ public final class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * Returns the voice numbers in this measure. Voice numbers are not necessarily
-	 * consecutive and do not begin from 0.
+	 * Returns the voice numbers in this measure in ascending order.
+	 * Voice numbers are not necessarily consecutive and do not need begin from 0.
 	 *
 	 * @return list of the voice numbers used in this measure.
 	 */
 	public List<Integer> getVoiceNumbers() {
 		return new ArrayList<>(this.voices.keySet());
-	}
-
-	/**
-	 * Returns the voice with the given measure.
-	 *
-	 * @param voiceNumber the number of the voice
-	 * @return the voice at the given index voiceNumber
-	 */
-	public List<Durational> getVoice(int voiceNumber) {
-		return this.voices.get(voiceNumber);
 	}
 
 	/**
@@ -356,7 +346,7 @@ public final class Measure implements Iterable<Durational> {
 			}
 
 			final int voiceNumber = this.voiceNumbers.get(this.voiceNumberIndex);
-			return !this.measure.getVoice(voiceNumber).isEmpty();
+			return this.measure.getVoiceSize(voiceNumber) > 0;
 		}
 
 		@Override
@@ -366,12 +356,11 @@ public final class Measure implements Iterable<Durational> {
 			}
 
 			this.prevVoiceNumber = this.voiceNumbers.get(this.voiceNumberIndex);
-			final List<Durational> currentVoice = this.measure.getVoice(this.prevVoiceNumber);
 			this.prevPositionInVoice = this.positionInVoice;
-			final Durational next = currentVoice.get(this.prevPositionInVoice);
+			final Durational next = measure.get(prevVoiceNumber, prevPositionInVoice);
 
 			++this.positionInVoice;
-			if (this.positionInVoice == currentVoice.size()) {
+			if (this.positionInVoice == measure.getVoiceSize(prevVoiceNumber)) {
 				++this.voiceNumberIndex;
 				this.positionInVoice = 0;
 			}

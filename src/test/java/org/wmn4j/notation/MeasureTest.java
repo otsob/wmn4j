@@ -4,19 +4,6 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.Barline;
-import org.wmn4j.notation.Chord;
-import org.wmn4j.notation.Clefs;
-import org.wmn4j.notation.Durational;
-import org.wmn4j.notation.Durations;
-import org.wmn4j.notation.KeySignature;
-import org.wmn4j.notation.KeySignatures;
-import org.wmn4j.notation.Measure;
-import org.wmn4j.notation.MeasureAttributes;
-import org.wmn4j.notation.Note;
-import org.wmn4j.notation.Pitch;
-import org.wmn4j.notation.Rest;
-import org.wmn4j.notation.TimeSignatures;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class MeasureTest {
 
 	private Map<Integer, List<Durational>> singleNoteVoice = new HashMap<>();
-	private Map<Integer, List<Durational>> multipleNoteVoices = new HashMap<>();
+	private Map<Integer, List<Durational>> multipleNoteVoices;
 
 	private KeySignature keySig = KeySignatures.CMAJ_AMIN;
 
@@ -87,22 +74,7 @@ class MeasureTest {
 		// Test that modifying the original voices list does no affect measure created
 		// using it.
 		voices.get(0).add(C4);
-		assertEquals(1, measure.getVoice(0).size(), "Modifying list from which measure is created changes measure");
-	}
-
-	@Test
-	void testGetVoice() {
-		final Measure m = Measure.of(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
-		assertTrue(m.getVoice(1).contains(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF)));
-		assertTrue(m.getVoice(0).contains(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
-
-		final List<Durational> voice = m.getVoice(0);
-		try {
-			voice.add(Rest.of(Durations.QUARTER));
-			fail("Failed to throw exception for disabled adding");
-		} catch (final Exception e) {
-			/* Do nothing */
-		}
+		assertEquals(1, measure.getVoiceSize(0), "Modifying list from which measure is created changes measure");
 	}
 
 	@Test
@@ -114,7 +86,6 @@ class MeasureTest {
 	@Test
 	void testIteratorWithSingleVoiceMeasure() {
 		final Measure singleVoiceMeasure = Measure.of(1, singleNoteVoice, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
-		final int noteCount = 0;
 
 		final List<Durational> expected = singleNoteVoice.get(0);
 		final List<Durational> found = new ArrayList<>();
@@ -133,7 +104,6 @@ class MeasureTest {
 	@Test
 	void testIteratorWithMultiVoiceMeasure() {
 		final Measure multiVoiceMeasure = Measure.of(1, multipleNoteVoices, TimeSignatures.FOUR_FOUR, keySig, Clefs.G);
-		final int noteCount = 0;
 
 		final List<Durational> expected = new ArrayList<>();
 		expected.addAll(multipleNoteVoices.get(0));

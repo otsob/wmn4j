@@ -21,9 +21,14 @@ import java.util.SortedSet;
  * pattern there can be multiple notes occurring at the same time in chords or
  * in multiple voices.
  * <p>
+ * The notation elements in monophonic pattern are iterated in temporal orders.
+ * For polyphonic patterns the elements are iterated first by iterating through the
+ * voice with the smallest number and then moving on the voice with the next greatest
+ * number and so on.
+ * <p>
  * Implementations of this interface are required to be thread-safe.
  */
-public interface Pattern {
+public interface Pattern extends Iterable<Durational> {
 
 	/**
 	 * Returns a pattern with the given contents.
@@ -97,14 +102,6 @@ public interface Pattern {
 	}
 
 	/**
-	 * Returns the contents of this pattern. For monophonic patterns the contents are returned in temporal order. For
-	 * polyphonic patterns the order is not specified.
-	 *
-	 * @return the contents of this pattern
-	 */
-	List<Durational> getContents();
-
-	/**
 	 * Returns the name of the pattern.
 	 * <p>
 	 * If the pattern does not have a name, then returns empty.
@@ -134,22 +131,43 @@ public interface Pattern {
 	 *
 	 * @return the number of voices in this pattern
 	 */
-	int getNumberOfVoices();
+	int getVoiceCount();
 
 	/**
-	 * Returns the voice numbers in this pattern from smallest to greatest.
+	 * Returns the voice numbers in this pattern in ascending order.
 	 *
-	 * @return the voice numbers in this pattern from smallest to greatest
+	 * @return the voice numbers in this pattern in ascending order
 	 */
 	List<Integer> getVoiceNumbers();
 
 	/**
 	 * Returns the contents of the voice with the given number.
+	 * The contents of the voice are iterated in their temporal order, i.e.,
+	 * from left to right int notation.
 	 *
 	 * @param voiceNumber the number of the voice whose contents are returned
 	 * @return the contents of the voice with the given number
 	 */
-	List<Durational> getVoice(int voiceNumber);
+	Iterable<Durational> getVoice(int voiceNumber);
+
+	/**
+	 * Returns the notation element at the given index in the voice
+	 * with the given number.
+	 *
+	 * @param voiceNumber the number of the voice from which to retrieve the notation element
+	 * @param index       the index of the notation element in the voice
+	 * @return the notation element at the given index in the voice
+	 * with the given number
+	 */
+	Durational get(int voiceNumber, int index);
+
+	/**
+	 * Returns the number of notation elements in the voice with the given number.
+	 *
+	 * @param voiceNumber the number of the voice for which the size is returned
+	 * @return the number of notation elements in the voice with the given number
+	 */
+	int getVoiceSize(int voiceNumber);
 
 	/**
 	 * Returns true if this pattern has the given labels.
@@ -208,4 +226,11 @@ public interface Pattern {
 	 * @return true if this pattern has the same durations as the other pattern
 	 */
 	boolean equalsInDurations(Pattern other);
+
+	/**
+	 * Returns the number of durational notation elements in this pattern.
+	 *
+	 * @return the number of durational notation elements in this pattern
+	 */
+	int size();
 }

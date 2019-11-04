@@ -148,22 +148,22 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Returns an unmodifiable view of all articulations defined for this note.
+	 * Returns all articulations defined for this note.
 	 *
 	 * @return the articulations defined for this note
 	 */
-	public Collection<Articulation> getArticulations() {
+	public Set<Articulation> getArticulations() {
 		return this.articulations;
 	}
 
 	/**
-	 * Returns an unmodifiable view of all marking connections that affect this note.
+	 * Returns all markings that affect this note.
 	 *
-	 * @return all marking connections that affect this note
+	 * @return all markings that affect this note
 	 */
-	public Collection<Marking> getMarkings() {
+	public Set<Marking> getMarkings() {
 		return markingConnections.stream().map(connection -> connection.getMarking())
-				.collect(Collectors.toUnmodifiableList());
+				.collect(Collectors.toUnmodifiableSet());
 	}
 
 	/**

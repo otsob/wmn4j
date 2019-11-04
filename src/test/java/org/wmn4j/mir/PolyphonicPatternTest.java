@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -93,24 +92,18 @@ public class PolyphonicPatternTest {
 	}
 
 	@Test
-	void testGetContentsReturnsAllContentsOfPattern() {
+	void testGetSizeReturnsCorrectSize() {
 		final Map<Integer, List<? extends Durational>> voiceContents = createReferencePatternVoices();
 
 		final Pattern pattern = new PolyphonicPattern(voiceContents);
-		final List<Durational> contents = pattern.getContents();
 
-		assertEquals(6, contents.size());
-
-		List<? extends Durational> expectedContents = voiceContents.values().stream().flatMap(voice -> voice.stream())
-				.collect(Collectors.toList());
-
-		expectedContents.forEach(notationElement -> assertTrue(contents.contains(notationElement)));
+		assertEquals(6, pattern.size());
 	}
 
 	@Test
 	void testGetNumberOfVoicesReturnsCorrectNumber() {
 		final Pattern pattern = new PolyphonicPattern(createReferencePatternVoices());
-		assertEquals(2, pattern.getNumberOfVoices());
+		assertEquals(2, pattern.getVoiceCount());
 	}
 
 	@Test

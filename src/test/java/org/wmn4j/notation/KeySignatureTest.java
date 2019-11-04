@@ -4,9 +4,6 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.KeySignature;
-import org.wmn4j.notation.KeySignatures;
-import org.wmn4j.notation.Pitch;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,15 +31,15 @@ class KeySignatureTest {
 
 	@Test
 	void testGetNumSharps() {
-		assertEquals(0, KeySignatures.CMAJ_AMIN.getNumberOfSharps());
-		assertEquals(1, KeySignatures.GMAJ_EMIN.getNumberOfSharps());
-		assertEquals(2, KeySignatures.DMAJ_BMIN.getNumberOfSharps());
+		assertEquals(0, KeySignatures.CMAJ_AMIN.getSharpCount());
+		assertEquals(1, KeySignatures.GMAJ_EMIN.getSharpCount());
+		assertEquals(2, KeySignatures.DMAJ_BMIN.getSharpCount());
 	}
 
 	@Test
 	void testGetNumFlats() {
-		assertEquals(0, KeySignatures.CMAJ_AMIN.getNumberOfFlats());
-		assertEquals(4, KeySignatures.AFLATMAJ_FMIN.getNumberOfFlats());
+		assertEquals(0, KeySignatures.CMAJ_AMIN.getFlatCount());
+		assertEquals(4, KeySignatures.AFLATMAJ_FMIN.getFlatCount());
 	}
 
 	@Test

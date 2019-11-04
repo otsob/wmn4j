@@ -4,19 +4,6 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.Chord;
-import org.wmn4j.notation.Clefs;
-import org.wmn4j.notation.Durational;
-import org.wmn4j.notation.Durations;
-import org.wmn4j.notation.KeySignature;
-import org.wmn4j.notation.KeySignatures;
-import org.wmn4j.notation.Measure;
-import org.wmn4j.notation.Note;
-import org.wmn4j.notation.Pitch;
-import org.wmn4j.notation.Rest;
-import org.wmn4j.notation.SingleStaffPart;
-import org.wmn4j.notation.Staff;
-import org.wmn4j.notation.TimeSignatures;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +14,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -69,7 +57,7 @@ class SingleStaffPartTest {
 		final List<Measure> measuresCopy = new ArrayList<>(this.measures);
 		final SingleStaffPart part = SingleStaffPart.of("Test part", Staff.of(measuresCopy));
 		measuresCopy.set(0, null);
-		assertTrue(part.getStaff().getMeasures().get(0) != null,
+		assertNotNull(part.getStaff().getMeasure(1),
 				"Modifying list used to create part modified part also.");
 	}
 
@@ -90,7 +78,7 @@ class SingleStaffPartTest {
 	void testGetStaff() {
 		final SingleStaffPart part = SingleStaffPart.of("Test part", Staff.of(this.measures));
 		final Staff staff = part.getStaff();
-		assertEquals(5, staff.getMeasures().size());
+		assertEquals(5, staff.getMeasureCount());
 	}
 
 	@Test
@@ -127,7 +115,7 @@ class SingleStaffPartTest {
 			/* Ignore */
 		}
 
-		assertEquals(this.measureCount, part.getStaff().getMeasures().size());
+		assertEquals(this.measureCount, part.getStaff().getMeasureCount());
 	}
 
 }

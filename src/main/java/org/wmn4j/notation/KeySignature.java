@@ -19,8 +19,8 @@ public final class KeySignature {
 
 	/**
 	 * Returns a key signature with the given sharps and flats. For common key
-	 * signatures use the ones defined in {@link KeySignatures}. This is mostly
-	 * intended for creating custom key signatures.
+	 * signatures using the ones defined in {@link KeySignatures} is recommended.
+	 * This is method is intended for creating non-standard key signatures.
 	 *
 	 * @param sharps the Pitch.Base names that should be raised. For example, for
 	 *               G-major this list consists only of Pitch.Base.F.
@@ -77,7 +77,7 @@ public final class KeySignature {
 	 *
 	 * @return the number of sharps in this key signature
 	 */
-	public int getNumberOfSharps() {
+	public int getSharpCount() {
 		return this.sharps.size();
 	}
 
@@ -86,23 +86,23 @@ public final class KeySignature {
 	 *
 	 * @return the number of flats in this key signature
 	 */
-	public int getNumberOfFlats() {
+	public int getFlatCount() {
 		return this.flats.size();
 	}
 
 	/**
-	 * Returns the sharps in this key signature.
+	 * Returns the sharps in this key signature from left to right.
 	 *
-	 * @return the sharps in this key signature.
+	 * @return the sharps in this key signature from left to right
 	 */
 	public List<Pitch.Base> getSharps() {
 		return new ArrayList<>(this.sharps);
 	}
 
 	/**
-	 * Returns the flats in this key signature.
+	 * Returns the flats in this key signature from left to right.
 	 *
-	 * @return the flats in this key signature
+	 * @return the flats in this key signature from left to right
 	 */
 	public List<Pitch.Base> getFlats() {
 		return new ArrayList<>(this.flats);

@@ -4,23 +4,6 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.MeasureBuilder;
-import org.wmn4j.notation.NoteBuilder;
-import org.wmn4j.notation.RestBuilder;
-import org.wmn4j.notation.Barline;
-import org.wmn4j.notation.Clefs;
-import org.wmn4j.notation.Duration;
-import org.wmn4j.notation.Durational;
-import org.wmn4j.notation.Durations;
-import org.wmn4j.notation.KeySignatures;
-import org.wmn4j.notation.Measure;
-import org.wmn4j.notation.MeasureAttributes;
-import org.wmn4j.notation.Note;
-import org.wmn4j.notation.Pitch;
-import org.wmn4j.notation.Rest;
-import org.wmn4j.notation.TimeSignatures;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -35,11 +18,11 @@ class MeasureBuilderTest {
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
 
-		builder.addVoice();
-		assertEquals(1, builder.getNumberOfVoices());
 		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH))
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH))
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+
+		assertEquals(1, builder.getVoiceCount());
 
 		final Measure measure = builder.build();
 		assertNotNull(measure);
@@ -50,10 +33,9 @@ class MeasureBuilderTest {
 		assertEquals(1, measure.getNumber());
 
 		assertEquals(1, measure.getVoiceCount());
-		final List<Durational> voice = measure.getVoice(0);
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), voice.get(0));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH), voice.get(1));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH), voice.get(2));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), measure.get(0, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH), measure.get(0, 1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH), measure.get(0, 2));
 	}
 
 	@Test
@@ -62,11 +44,11 @@ class MeasureBuilderTest {
 				KeySignatures.DFLATMAJ_BFLATMIN, Barline.DOUBLE, Clefs.F);
 		final MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
 
-		builder.addVoice();
-		assertEquals(1, builder.getNumberOfVoices());
 		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH))
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH))
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+
+		assertEquals(1, builder.getVoiceCount());
 
 		final Measure measure = builder.build();
 		assertNotNull(measure);
@@ -77,10 +59,10 @@ class MeasureBuilderTest {
 		assertEquals(1, measure.getNumber());
 
 		assertEquals(1, measure.getVoiceCount());
-		final List<Durational> voice = measure.getVoice(0);
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), voice.get(0));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH), voice.get(1));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH), voice.get(2));
+
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), measure.get(0, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH), measure.get(0, 1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH), measure.get(0, 2));
 	}
 
 	@Test
@@ -92,11 +74,11 @@ class MeasureBuilderTest {
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
 
-		builder.addVoice();
-		assertEquals(1, builder.getNumberOfVoices());
 		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH))
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH))
 				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+
+		assertEquals(1, builder.getVoiceCount());
 
 		final Measure measure = builder.build();
 		assertNotNull(measure);
@@ -107,10 +89,9 @@ class MeasureBuilderTest {
 		assertEquals(1, measure.getNumber());
 
 		assertEquals(1, measure.getVoiceCount());
-		final List<Durational> voice = measure.getVoice(0);
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), voice.get(0));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH), voice.get(1));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH), voice.get(2));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), measure.get(0, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH), measure.get(0, 1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH), measure.get(0, 2));
 	}
 
 	@Test
@@ -122,16 +103,16 @@ class MeasureBuilderTest {
 		final Duration measureFillingDuration = TimeSignatures.SIX_EIGHT.getTotalDuration();
 
 		builder.addToVoice(1, new RestBuilder(measureFillingDuration));
-		assertEquals(1, builder.getNumberOfVoices());
+		assertEquals(1, builder.getVoiceCount());
 		builder.addToVoice(3, new RestBuilder(measureFillingDuration));
-		assertEquals(2, builder.getNumberOfVoices());
+		assertEquals(2, builder.getVoiceCount());
 
 		final Measure measure = builder.build();
 		assertEquals(2, measure.getVoiceCount());
-		assertEquals(1, measure.getVoice(1).size());
-		assertTrue(measure.getVoice(1).contains(Rest.of(measureFillingDuration)));
-		assertEquals(1, measure.getVoice(3).size());
-		assertTrue(measure.getVoice(3).contains(Rest.of(measureFillingDuration)));
+		assertEquals(1, measure.getVoiceSize(1));
+		assertEquals(Rest.of(measureFillingDuration), measure.get(1, 0));
+		assertEquals(1, measure.getVoiceSize(3));
+		assertEquals(Rest.of(measureFillingDuration), measure.get(3, 0));
 	}
 
 	@Test
@@ -316,10 +297,10 @@ class MeasureBuilderTest {
 
 		final Measure incompleteMeasure = builder.build(false, false);
 
-		assertEquals(1, incompleteMeasure.getVoice(0).size());
+		assertEquals(1, incompleteMeasure.getVoiceSize(0));
 		assertEquals(expectedVoice0Note, incompleteMeasure.get(0, 0));
 
-		assertEquals(1, incompleteMeasure.getVoice(1).size());
+		assertEquals(1, incompleteMeasure.getVoiceSize(1));
 		assertEquals(expectedVoice1Note, incompleteMeasure.get(1, 0));
 	}
 

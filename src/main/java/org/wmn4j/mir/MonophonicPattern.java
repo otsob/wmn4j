@@ -5,12 +5,12 @@ package org.wmn4j.mir;
 
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Durational;
-import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Pitched;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -58,11 +58,6 @@ final class MonophonicPattern implements Pattern {
 	}
 
 	@Override
-	public List<Durational> getContents() {
-		return this.contents;
-	}
-
-	@Override
 	public Optional<String> getName() {
 		return Optional.ofNullable(name);
 	}
@@ -88,7 +83,7 @@ final class MonophonicPattern implements Pattern {
 	}
 
 	@Override
-	public int getNumberOfVoices() {
+	public int getVoiceCount() {
 		return 1;
 	}
 
@@ -103,7 +98,22 @@ final class MonophonicPattern implements Pattern {
 			throw new NoSuchElementException("No voice in pattern with number " + voiceNumber);
 		}
 
-		return getContents();
+		return contents;
+	}
+
+	@Override
+	public Durational get(int voiceNumber, int index) {
+		if (voiceNumber != SINGLE_VOICE_NUMBER) {
+			throw new NoSuchElementException("No voice with number " + voiceNumber + " in pattern");
+		}
+		return contents.get(index);
+
+	}
+
+	@Override
+	public int getVoiceSize(int voiceNumber) {
+		return contents.size();
+
 	}
 
 	@Override
@@ -114,8 +124,8 @@ final class MonophonicPattern implements Pattern {
 	@Override
 	public boolean equalsInPitch(Pattern other) {
 		if (other.isMonophonic()) {
-			List<Pitch> pitchesOfOther = toPitchList(other.getContents());
-			List<Pitch> pitchesOfThis = toPitchList(getContents());
+			List<Pitch> pitchesOfOther = toPitchList(other);
+			List<Pitch> pitchesOfThis = toPitchList(contents);
 
 			return pitchesOfThis.equals(pitchesOfOther);
 		}
@@ -123,21 +133,26 @@ final class MonophonicPattern implements Pattern {
 		return false;
 	}
 
-	private static List<Pitch> toPitchList(List<Durational> contents) {
-		return contents.stream()
-				.filter(durational -> durational instanceof Note)
-				.map(durational -> ((Note) durational).getPitch())
-				.collect(Collectors.toList());
+	private static List<Pitch> toPitchList(Iterable<Durational> contents) {
+
+		List<Pitch> pitches = new ArrayList<>();
+		for (Durational dur : contents) {
+			if (dur instanceof Pitched) {
+				pitches.add(((Pitched) dur).getPitch());
+			}
+		}
+
+		return pitches;
 	}
 
 	@Override
 	public boolean equalsEnharmonically(Pattern other) {
 		if (other.isMonophonic()) {
-			List<Integer> pitchNumbersOfOther = toPitchList(other.getContents()).stream()
+			List<Integer> pitchNumbersOfOther = toPitchList(other).stream()
 					.map(pitch -> pitch.toInt()).collect(
 							Collectors.toList());
 
-			List<Integer> pitchNumbersOfThis = toPitchList(getContents()).stream().map(pitch -> pitch.toInt()).collect(
+			List<Integer> pitchNumbersOfThis = toPitchList(contents).stream().map(pitch -> pitch.toInt()).collect(
 					Collectors.toList());
 
 			return pitchNumbersOfOther.equals(pitchNumbersOfThis);
@@ -152,16 +167,21 @@ final class MonophonicPattern implements Pattern {
 			return false;
 		}
 
-		return createIntervalNumberList(getContents()).equals(createIntervalNumberList(other.getContents()));
+		return createIntervalNumberList(contents).equals(createIntervalNumberList(other));
 	}
 
 	/*
 	 * Returns a list of the intervals between consecutive pitches in the contents list. The intervals
 	 * are expressed as integers denoting how many half-steps the interval consists of.
 	 */
-	private static List<Integer> createIntervalNumberList(List<Durational> contents) {
-		List<Pitched> pitchedElements = contents.stream().filter(durational -> durational instanceof Pitched)
-				.map(durational -> (Pitched) durational).collect(Collectors.toList());
+	private static List<Integer> createIntervalNumberList(Iterable<Durational> contents) {
+		List<Pitched> pitchedElements = new ArrayList<>();
+
+		for (Durational dur : contents) {
+			if (dur instanceof Pitched) {
+				pitchedElements.add((Pitched) dur);
+			}
+		}
 
 		// If size is at most 1, then there are no intervals between adjacent notes of the pattern.
 		if (pitchedElements.size() <= 1) {
@@ -183,38 +203,41 @@ final class MonophonicPattern implements Pattern {
 	@Override
 	public boolean equalsInDurations(Pattern other) {
 		if (other.isMonophonic()) {
-			final List<Durational> contentsOfThis = getContents();
-			final List<Durational> contentsOfOther = other.getContents();
-			return areVoicesEqualInDurations(contentsOfThis, contentsOfOther);
+			return areVoicesEqualInDurations(this, other);
 		}
 
 		return false;
 	}
 
-	static boolean areVoicesEqualInDurations(List<Durational> voiceA, List<Durational> voiceB) {
-		if (voiceA.size() == voiceB.size()) {
-			for (int i = 0; i < voiceA.size(); ++i) {
+	@Override
+	public int size() {
+		return contents.size();
+	}
 
-				final Durational durationalInThis = voiceA.get(i);
-				final Durational durationalInOther = voiceB.get(i);
+	static boolean areVoicesEqualInDurations(Iterable<Durational> voiceA, Iterable<Durational> voiceB) {
+		Iterator<Durational> iterA = voiceA.iterator();
+		Iterator<Durational> iterB = voiceB.iterator();
 
-				final boolean bothAreOfSameType =
-						(durationalInThis.isRest() && durationalInOther.isRest()) || (!durationalInThis.isRest()
-								&& !durationalInOther.isRest());
+		while (iterA.hasNext() && iterB.hasNext()) {
 
-				if (!bothAreOfSameType) {
-					return false;
-				}
+			final Durational durationalInThis = iterA.next();
+			final Durational durationalInOther = iterB.next();
 
-				if (!voiceA.get(i).getDuration().equals(voiceB.get(i).getDuration())) {
-					return false;
-				}
+			final boolean bothAreOfSameType =
+					(durationalInThis.isRest() && durationalInOther.isRest()) || (!durationalInThis.isRest()
+							&& !durationalInOther.isRest());
+
+			if (!bothAreOfSameType) {
+				return false;
 			}
 
-			return true;
+			if (!durationalInThis.getDuration().equals(durationalInOther.getDuration())) {
+				return false;
+			}
 		}
 
-		return false;
+		// Check that both iterators are finished, otherwise the number of elements is not equal.
+		return iterA.hasNext() == iterB.hasNext();
 	}
 
 	@Override
@@ -233,11 +256,16 @@ final class MonophonicPattern implements Pattern {
 			return false;
 		}
 
-		return getContents().equals(other.getContents());
+		return PolyphonicPattern.iterablesEquals(this, other);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(contents);
+	}
+
+	@Override
+	public Iterator<Durational> iterator() {
+		return contents.iterator();
 	}
 }

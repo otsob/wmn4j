@@ -25,7 +25,7 @@ class PatternPositionTest {
 		positions.add(new Position(partIndex, 1, 5, 2, 1, 0));
 
 		final PatternPosition position = new PatternPosition(positions);
-		assertEquals(3, position.getSize());
+		assertEquals(3, position.size());
 		assertEquals(3, position.getPositions(partIndex).size());
 
 		assertEquals(1, position.getStaffNumbers(partIndex).size());
@@ -64,7 +64,7 @@ class PatternPositionTest {
 		positions.add(new Position(3, 1, 6, 2, 1, 0));
 
 		final PatternPosition position = new PatternPosition(positions);
-		assertEquals(6, position.getSize());
+		assertEquals(6, position.size());
 
 		assertEquals(1, position.getStaffNumbers(1).size());
 		assertTrue(position.getStaffNumbers(1).contains(1));

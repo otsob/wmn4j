@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
@@ -53,7 +52,9 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 	MusicXmlPatternWriterDom(Collection<Pattern> patterns) {
 		Collection<Durational> allDurationals = new ArrayList<>();
 		patterns.forEach(pattern -> {
-			allDurationals.addAll(pattern.getContents());
+			for (Durational dur : pattern) {
+				allDurationals.add(dur);
+			}
 		});
 
 		this.divisions = computeDivisions(allDurationals.iterator());
@@ -68,7 +69,7 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 
 	private List<Part> fromPatterns(Collection<Pattern> patterns) {
 
-		int maxNumberOfVoices = patterns.stream().map(Pattern::getNumberOfVoices).max(Integer::compareTo).orElseThrow();
+		int maxNumberOfVoices = patterns.stream().map(Pattern::getVoiceCount).max(Integer::compareTo).orElseThrow();
 
 		if (maxNumberOfVoices == 1) {
 			return Collections.singletonList(singleVoicePatternsToPart(patterns));
@@ -80,7 +81,7 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 	private Part singleVoicePatternsToPart(Collection<Pattern> patterns) {
 		final List<Measure> allMeasures = new ArrayList<>();
 		for (Pattern pattern : patterns) {
-			List<Measure> measures = voiceToMeasureList(pattern.getContents().iterator(), true);
+			List<Measure> measures = voiceToMeasureList(pattern.iterator(), true);
 			allMeasures.addAll(measures);
 			final Integer firstMeasureNumber = measures.get(0).getNumber();
 			newSystemBeginningMeasureNumbers.add(firstMeasureNumber);
@@ -105,9 +106,10 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 			final int measureNumberBeforeStaffCreation = nextMeasureNumber;
 
 			for (int voiceIndex = 0; voiceIndex < patternVoiceNumbers.size(); ++voiceIndex) {
-				List<Durational> voice = pattern.getVoice(patternVoiceNumbers.get(voiceIndex));
+				final int voiceNumber = patternVoiceNumbers.get(voiceIndex);
+				Iterable<Durational> voice = pattern.getVoice(voiceNumber);
 
-				Duration voiceDuration = getVoiceDuration(voice);
+				Duration voiceDuration = getVoiceDuration(voice, pattern.getVoiceSize(voiceNumber));
 
 				staveContents.get(voiceIndex)
 						.addAll(voiceToMeasureList(voice.iterator(), voiceDuration.equals(longestVoiceDuration)));
@@ -131,12 +133,14 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		return parts;
 	}
 
-	private Duration getVoiceDuration(List<Durational> voice) {
-		List<Duration> voiceDurations = voice.stream()
-				.map(Durational::getDuration).collect(
-						Collectors.toList());
+	private Duration getVoiceDuration(Iterable<Durational> voice, int voiceSize) {
+		List<Duration> durations = new ArrayList<>(voiceSize);
 
-		return Duration.sumOf(voiceDurations);
+		for (Durational durational : voice) {
+			durations.add(durational.getDuration());
+		}
+
+		return Duration.sumOf(durations);
 	}
 
 	private Duration getLongestVoiceDuration(Pattern pattern) {
@@ -144,7 +148,8 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		Duration longestVoiceDuration = null;
 
 		for (int voiceIndex = 0; voiceIndex < patternVoiceNumbers.size(); ++voiceIndex) {
-			Duration totalDuration = getVoiceDuration(pattern.getVoice(patternVoiceNumbers.get(voiceIndex)));
+			final int voiceNumber = patternVoiceNumbers.get(voiceIndex);
+			Duration totalDuration = getVoiceDuration(pattern.getVoice(voiceNumber), pattern.getVoiceSize(voiceNumber));
 
 			if (longestVoiceDuration == null) {
 				longestVoiceDuration = totalDuration;

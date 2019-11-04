@@ -4,11 +4,9 @@
 package org.wmn4j.notation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -205,27 +203,6 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * Add new empty voice to this builder.
-	 *
-	 * @return reference to this builder.
-	 */
-	public MeasureBuilder addVoice() {
-		this.voices.put(this.voices.keySet().size(), new ArrayList<>());
-		return this;
-	}
-
-	/**
-	 * Add possibly voice to this builder.
-	 *
-	 * @param voice new voice to be added to this
-	 * @return reference to this builder
-	 */
-	public MeasureBuilder addVoice(List<DurationalBuilder> voice) {
-		this.voices.put(this.voices.keySet().size(), voice);
-		return this;
-	}
-
-	/**
 	 * Append a {@link DurationalBuilder} to the voice with the given number. If
 	 * voice does not exist it is created.
 	 *
@@ -248,7 +225,7 @@ public class MeasureBuilder {
 	 *
 	 * @return number or voices in this builder
 	 */
-	public int getNumberOfVoices() {
+	public int getVoiceCount() {
 		return this.voices.size();
 	}
 
@@ -258,8 +235,8 @@ public class MeasureBuilder {
 	 *
 	 * @return the set of voice numbers in this builder
 	 */
-	public Set<Integer> getVoiceNumbers() {
-		return Collections.unmodifiableSet(this.voices.keySet());
+	public List<Integer> getVoiceNumbers() {
+		return new ArrayList<>(this.voices.keySet());
 	}
 
 	/**

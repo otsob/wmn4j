@@ -38,7 +38,7 @@ public final class Chromagram {
 			throw new IllegalArgumentException("All values in a chromagram must be non-negative.");
 		}
 
-		this.profile = new EnumMap(profile);
+		this.profile = new EnumMap<>(profile);
 	}
 
 	/**

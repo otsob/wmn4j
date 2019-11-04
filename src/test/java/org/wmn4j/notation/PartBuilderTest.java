@@ -4,25 +4,6 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.ChordBuilder;
-import org.wmn4j.notation.DurationalBuilder;
-import org.wmn4j.notation.MeasureBuilder;
-import org.wmn4j.notation.NoteBuilder;
-import org.wmn4j.notation.PartBuilder;
-import org.wmn4j.notation.RestBuilder;
-import org.wmn4j.notation.Barline;
-import org.wmn4j.notation.Clefs;
-import org.wmn4j.notation.Durations;
-import org.wmn4j.notation.KeySignatures;
-import org.wmn4j.notation.Measure;
-import org.wmn4j.notation.MeasureAttributes;
-import org.wmn4j.notation.MultiStaffPart;
-import org.wmn4j.notation.Note;
-import org.wmn4j.notation.Part;
-import org.wmn4j.notation.Pitch;
-import org.wmn4j.notation.SingleStaffPart;
-import org.wmn4j.notation.Staff;
-import org.wmn4j.notation.TimeSignatures;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,7 +52,10 @@ class PartBuilderTest {
 	private MeasureBuilder getMeasureBuilder(int number) {
 		final MeasureBuilder builder = new MeasureBuilder(number, this.measureAttr);
 		for (Integer voiceNum : this.measureContents.keySet()) {
-			builder.addVoice(this.measureContents.get(voiceNum));
+			List<DurationalBuilder> voiceContents = this.measureContents.get(voiceNum);
+			for (DurationalBuilder dur : voiceContents) {
+				builder.addToVoice(voiceNum, dur);
+			}
 		}
 
 		return builder;

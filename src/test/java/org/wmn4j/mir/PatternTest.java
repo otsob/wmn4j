@@ -35,10 +35,15 @@ public class PatternTest {
 		final Pattern monophonicPattern = Pattern.of(notes);
 		assertTrue(monophonicPattern.isMonophonic());
 
-		final List<Durational> contentsOfMonophonicPattern = monophonicPattern
+		final Iterable<Durational> contentsOfMonophonicPattern = monophonicPattern
 				.getVoice(monophonicPattern.getVoiceNumbers().get(0));
 
-		assertEquals(notes, contentsOfMonophonicPattern);
+		List<Durational> monophonicPatternVoiceContentsAsList = new ArrayList<>();
+		for (Durational durational : contentsOfMonophonicPattern) {
+			monophonicPatternVoiceContentsAsList.add(durational);
+		}
+
+		assertEquals(notes, monophonicPatternVoiceContentsAsList);
 
 		final List<Durational> contentsOfPolyphonicPattern = new ArrayList<>(notes);
 		final Chord chord = Chord.of(notes.subList(0, 2));
@@ -46,7 +51,7 @@ public class PatternTest {
 
 		final Pattern polyphonicPatternWithOneVoice = Pattern.of(contentsOfPolyphonicPattern);
 		assertFalse(polyphonicPatternWithOneVoice.isMonophonic());
-		assertEquals(1, polyphonicPatternWithOneVoice.getNumberOfVoices());
+		assertEquals(1, polyphonicPatternWithOneVoice.getVoiceCount());
 		assertEquals(contentsOfPolyphonicPattern,
 				polyphonicPatternWithOneVoice.getVoice(polyphonicPatternWithOneVoice.getVoiceNumbers().get(0)));
 	}
@@ -71,7 +76,7 @@ public class PatternTest {
 		final Pattern patternWithMultipleVoices = Pattern.of(voices);
 		assertFalse(patternWithMultipleVoices.isMonophonic());
 
-		assertEquals(2, patternWithMultipleVoices.getNumberOfVoices());
+		assertEquals(2, patternWithMultipleVoices.getVoiceCount());
 		final List<Integer> voiceNumbers = patternWithMultipleVoices.getVoiceNumbers();
 		assertEquals(voice1, patternWithMultipleVoices.getVoice(voiceNumbers.get(0)));
 		assertEquals(voice2, patternWithMultipleVoices.getVoice(voiceNumbers.get(1)));

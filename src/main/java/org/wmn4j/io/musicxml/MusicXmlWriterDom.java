@@ -343,7 +343,8 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		for (Integer voiceNumber : voiceNumbers) {
 
 			Duration cumulatedDuration = null;
-			for (Durational dur : measure.getVoice(voiceNumber)) {
+			for (int indexInVoice = 0; indexInVoice < measure.getVoiceSize(voiceNumber); ++indexInVoice) {
+				Durational dur = measure.get(voiceNumber, indexInVoice);
 				if (cumulatedDuration == null) {
 					cumulatedDuration = dur.getDuration();
 				} else {
@@ -543,9 +544,9 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		Element keySigElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_KEY);
 		Element fifthsElement = getDocument().createElement(MusicXmlTags.MEAS_ATTR_KEY_FIFTHS);
 
-		int fifths = keySignature.getNumberOfSharps();
+		int fifths = keySignature.getSharpCount();
 		if (fifths == 0) {
-			fifths = keySignature.getNumberOfFlats() * -1;
+			fifths = keySignature.getFlatCount() * -1;
 		}
 		fifthsElement.setTextContent(Integer.toString(fifths));
 

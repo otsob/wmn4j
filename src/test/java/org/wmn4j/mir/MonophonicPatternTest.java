@@ -73,23 +73,15 @@ class MonophonicPatternTest {
 		List<Durational> contents = new ArrayList<>(referenceNotes);
 
 		final Pattern pattern = new MonophonicPattern(contents);
-		assertEquals(contents, pattern.getContents());
 
 		contents.add(Rest.of(Durations.QUARTER));
-		assertNotEquals(pattern.getContents().size(), contents.size());
-
-		try {
-			pattern.getContents().add(Rest.of(Durations.QUARTER));
-			fail("Was able to add to contents of pattern");
-		} catch (Exception e) {
-			// Pass, exception is expected.
-		}
+		assertNotEquals(pattern.size(), contents.size());
 	}
 
 	@Test
 	void testGetNumberOfVoicesReturnsOne() {
 		final Pattern pattern = new MonophonicPattern(this.referenceNotes);
-		assertEquals(1, pattern.getNumberOfVoices());
+		assertEquals(1, pattern.getVoiceCount());
 	}
 
 	@Test
@@ -101,8 +93,13 @@ class MonophonicPatternTest {
 	@Test
 	void testGetVoiceReturnsContents() {
 		final Pattern pattern = new MonophonicPattern(this.referenceNotes);
-		List<Durational> voiceContents = pattern.getVoice(pattern.getVoiceNumbers().get(0));
-		assertEquals(this.referenceNotes, voiceContents);
+		Iterable<Durational> voiceContents = pattern.getVoice(pattern.getVoiceNumbers().get(0));
+		List<Durational> voiceContentsAsList = new ArrayList<>();
+		for (Durational durational : voiceContents) {
+			voiceContentsAsList.add(durational);
+		}
+
+		assertEquals(this.referenceNotes, voiceContentsAsList);
 	}
 
 	@Test
