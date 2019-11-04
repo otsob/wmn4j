@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":9};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -195,27 +195,13 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr class="altColor" id="i2">
-<td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addVoice()">addVoice</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Add new empty voice to this builder.</div>
-</td>
-</tr>
-<tr class="rowColor" id="i3">
-<td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addVoice(java.util.List)">addVoice</a></span>&#8203;(java.util.List&lt;<a href="DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a>&gt;&nbsp;voice)</code></th>
-<td class="colLast">
-<div class="block">Add possibly voice to this builder.</div>
-</td>
-</tr>
-<tr class="altColor" id="i4">
 <td class="colFirst"><code><a href="Measure.html" title="class in org.wmn4j.notation">Measure</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#build()">build</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns a <a href="Measure.html" title="class in org.wmn4j.notation"><code>Measure</code></a> with the values set in this builder.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i5">
+<tr class="rowColor" id="i3">
 <td class="colFirst"><code><a href="Measure.html" title="class in org.wmn4j.notation">Measure</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#build(boolean,boolean)">build</a></span>&#8203;(boolean&nbsp;padWithRests,
      boolean&nbsp;trim)</code></th>
@@ -223,7 +209,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns a <a href="Measure.html" title="class in org.wmn4j.notation"><code>Measure</code></a> with the values set in this builder.</div>
 </td>
 </tr>
-<tr class="altColor" id="i6">
+<tr class="altColor" id="i4">
 <td class="colFirst"><code><a href="DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#get(int,int)">get</a></span>&#8203;(int&nbsp;voice,
    int&nbsp;index)</code></th>
@@ -231,91 +217,91 @@ extends java.lang.Object</pre>
 <div class="block">Returns the builder at the given position.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i7">
+<tr class="rowColor" id="i5">
 <td class="colFirst"><code><a href="Clef.html" title="class in org.wmn4j.notation">Clef</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClef()">getClef</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the clef set in this builder.</div>
 </td>
 </tr>
-<tr class="altColor" id="i8">
+<tr class="altColor" id="i6">
 <td class="colFirst"><code>java.util.Map&lt;<a href="Duration.html" title="class in org.wmn4j.notation">Duration</a>,&#8203;<a href="Clef.html" title="class in org.wmn4j.notation">Clef</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClefChanges()">getClefChanges</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the clef changes in this builder.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i9">
+<tr class="rowColor" id="i7">
 <td class="colFirst"><code><a href="KeySignature.html" title="class in org.wmn4j.notation">KeySignature</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getKeySignature()">getKeySignature</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the key signature set in this builder.</div>
 </td>
 </tr>
-<tr class="altColor" id="i10">
+<tr class="altColor" id="i8">
 <td class="colFirst"><code><a href="Barline.html" title="enum in org.wmn4j.notation">Barline</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLeftBarline()">getLeftBarline</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the left barline set in this builder.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i11">
+<tr class="rowColor" id="i9">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumber()">getNumber</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the measure number set in this builder.</div>
 </td>
 </tr>
-<tr class="altColor" id="i12">
-<td class="colFirst"><code>int</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumberOfVoices()">getNumberOfVoices</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns the number of voices in this builder.</div>
-</td>
-</tr>
-<tr class="rowColor" id="i13">
+<tr class="altColor" id="i10">
 <td class="colFirst"><code><a href="Barline.html" title="enum in org.wmn4j.notation">Barline</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRightBarline()">getRightBarline</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the right barline set in this builder.</div>
 </td>
 </tr>
-<tr class="altColor" id="i14">
+<tr class="rowColor" id="i11">
 <td class="colFirst"><code><a href="TimeSignature.html" title="class in org.wmn4j.notation">TimeSignature</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTimeSignature()">getTimeSignature</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the time signature set in this builder.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i15">
-<td class="colFirst"><code>java.util.Set&lt;java.lang.Integer&gt;</code></td>
+<tr class="altColor" id="i12">
+<td class="colFirst"><code>int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoiceCount()">getVoiceCount</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns the number of voices in this builder.</div>
+</td>
+</tr>
+<tr class="rowColor" id="i13">
+<td class="colFirst"><code>java.util.List&lt;java.lang.Integer&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVoiceNumbers()">getVoiceNumbers</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the voice numbers set in this builder.</div>
 </td>
 </tr>
-<tr class="altColor" id="i16">
+<tr class="altColor" id="i14">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isFull()">isFull</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns true if any voice in this builder is full.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i17">
+<tr class="rowColor" id="i15">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isFull(int)">isFull</a></span>&#8203;(int&nbsp;voice)</code></th>
 <td class="colLast">
 <div class="block">Returns true if the voice with the given number is full.</div>
 </td>
 </tr>
-<tr class="altColor" id="i18">
+<tr class="altColor" id="i16">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isOverflowing()">isOverflowing</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns true if any voice in this builder is overflowing.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i19">
+<tr class="rowColor" id="i17">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isOverflowing(int)">isOverflowing</a></span>&#8203;(int&nbsp;voice)</code></th>
 <td class="colLast">
@@ -324,14 +310,14 @@ extends java.lang.Object</pre>
  signature set in this builder.</div>
 </td>
 </tr>
-<tr class="altColor" id="i20">
+<tr class="altColor" id="i18">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setClef(org.wmn4j.notation.Clef)">setClef</a></span>&#8203;(<a href="Clef.html" title="class in org.wmn4j.notation">Clef</a>&nbsp;clef)</code></th>
 <td class="colLast">
 <div class="block">Sets the clef in this builder.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i21">
+<tr class="rowColor" id="i19">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElement(int,int,org.wmn4j.notation.DurationalBuilder)">setElement</a></span>&#8203;(int&nbsp;voice,
           int&nbsp;index,
@@ -340,56 +326,56 @@ extends java.lang.Object</pre>
 <div class="block">Sets the element at specified location to given value.</div>
 </td>
 </tr>
-<tr class="altColor" id="i22">
+<tr class="altColor" id="i20">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setKeySignature(org.wmn4j.notation.KeySignature)">setKeySignature</a></span>&#8203;(<a href="KeySignature.html" title="class in org.wmn4j.notation">KeySignature</a>&nbsp;keySignature)</code></th>
 <td class="colLast">
 <div class="block">Sets the key signature for this builder.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i23">
+<tr class="rowColor" id="i21">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLeftBarline(org.wmn4j.notation.Barline)">setLeftBarline</a></span>&#8203;(<a href="Barline.html" title="enum in org.wmn4j.notation">Barline</a>&nbsp;leftBarline)</code></th>
 <td class="colLast">
 <div class="block">Sets the left barline in this builder.</div>
 </td>
 </tr>
-<tr class="altColor" id="i24">
+<tr class="altColor" id="i22">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setNumber(int)">setNumber</a></span>&#8203;(int&nbsp;number)</code></th>
 <td class="colLast">
 <div class="block">Sets the measure number in this builder.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i25">
+<tr class="rowColor" id="i23">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRightBarline(org.wmn4j.notation.Barline)">setRightBarline</a></span>&#8203;(<a href="Barline.html" title="enum in org.wmn4j.notation">Barline</a>&nbsp;rightBarline)</code></th>
 <td class="colLast">
 <div class="block">Sets the right barline in this builder.</div>
 </td>
 </tr>
-<tr class="altColor" id="i26">
+<tr class="altColor" id="i24">
 <td class="colFirst"><code><a href="MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTimeSignature(org.wmn4j.notation.TimeSignature)">setTimeSignature</a></span>&#8203;(<a href="TimeSignature.html" title="class in org.wmn4j.notation">TimeSignature</a>&nbsp;timeSignature)</code></th>
 <td class="colLast">
 <div class="block">Sets the time signature for this builder.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i27">
+<tr class="rowColor" id="i25">
 <td class="colFirst"><code><a href="Duration.html" title="class in org.wmn4j.notation">Duration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#totalDurationOfVoice(int)">totalDurationOfVoice</a></span>&#8203;(int&nbsp;voice)</code></th>
 <td class="colLast">
 <div class="block">Returns the sum of durations in a voice.</div>
 </td>
 </tr>
-<tr class="altColor" id="i28">
+<tr class="altColor" id="i26">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#trim()">trim</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Trims the excess durations from this builder.</div>
 </td>
 </tr>
-<tr class="rowColor" id="i29">
+<tr class="rowColor" id="i27">
 <td class="colFirst"><code>static <a href="MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withAttributesOf(org.wmn4j.notation.MeasureBuilder)">withAttributesOf</a></span>&#8203;(<a href="MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a>&nbsp;builder)</code></th>
 <td class="colLast">
@@ -693,36 +679,6 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="addVoice()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>addVoice</h4>
-<pre class="methodSignature">public&nbsp;<a href="MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a>&nbsp;addVoice()</pre>
-<div class="block">Add new empty voice to this builder.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this builder.</dd>
-</dl>
-</li>
-</ul>
-<a id="addVoice(java.util.List)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>addVoice</h4>
-<pre class="methodSignature">public&nbsp;<a href="MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a>&nbsp;addVoice&#8203;(java.util.List&lt;<a href="DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a>&gt;&nbsp;voice)</pre>
-<div class="block">Add possibly voice to this builder.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>voice</code> - new voice to be added to this</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>reference to this builder</dd>
-</dl>
-</li>
-</ul>
 <a id="addToVoice(int,org.wmn4j.notation.DurationalBuilder)">
 <!--   -->
 </a>
@@ -742,13 +698,13 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getNumberOfVoices()">
+<a id="getVoiceCount()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getNumberOfVoices</h4>
-<pre class="methodSignature">public&nbsp;int&nbsp;getNumberOfVoices()</pre>
+<h4>getVoiceCount</h4>
+<pre class="methodSignature">public&nbsp;int&nbsp;getVoiceCount()</pre>
 <div class="block">Returns the number of voices in this builder.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -762,7 +718,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getVoiceNumbers</h4>
-<pre class="methodSignature">public&nbsp;java.util.Set&lt;java.lang.Integer&gt;&nbsp;getVoiceNumbers()</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.Integer&gt;&nbsp;getVoiceNumbers()</pre>
 <div class="block">Returns the voice numbers set in this builder. Voice numbers do not have to
  be contiguous.</div>
 <dl>

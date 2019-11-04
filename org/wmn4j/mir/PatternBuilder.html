@@ -185,8 +185,8 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="altColor" id="i2">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addToVoice(org.wmn4j.notation.DurationalBuilder,int)">addToVoice</a></span>&#8203;(<a href="../notation/DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a>&nbsp;durationalBuilder,
-          int&nbsp;voice)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addToVoice(int,org.wmn4j.notation.DurationalBuilder)">addToVoice</a></span>&#8203;(int&nbsp;voice,
+          <a href="../notation/DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a>&nbsp;durationalBuilder)</code></th>
 <td class="colLast">
 <div class="block">Adds the given durational builder to the voice with the given number.</div>
 </td>
@@ -268,7 +268,7 @@ extends java.lang.Object</pre>
 <h4>add</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;add&#8203;(<a href="../notation/DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a>&nbsp;builder)</pre>
 <div class="block">Adds the given durational builder to the default voice in this builder. This method is intended for constructing
- patterns with a single voice, the <a href="#addToVoice(org.wmn4j.notation.DurationalBuilder,int)"><code>addToVoice</code></a> method can be used for
+ patterns with a single voice, the <a href="#addToVoice(int,org.wmn4j.notation.DurationalBuilder)"><code>addToVoice</code></a> method can be used for
  constructing polyphonic patterns with multiple voices.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -276,21 +276,21 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="addToVoice(org.wmn4j.notation.DurationalBuilder,int)">
+<a id="addToVoice(int,org.wmn4j.notation.DurationalBuilder)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>addToVoice</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;addToVoice&#8203;(<a href="../notation/DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a>&nbsp;durationalBuilder,
-                       int&nbsp;voice)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;addToVoice&#8203;(int&nbsp;voice,
+                       <a href="../notation/DurationalBuilder.html" title="interface in org.wmn4j.notation">DurationalBuilder</a>&nbsp;durationalBuilder)</pre>
 <div class="block">Adds the given durational builder to the voice with the given number. This method is intended for constructing
  polyphonic patterns, the <a href="#add(org.wmn4j.notation.DurationalBuilder)"><code>add</code></a> method can be used for constructing
  monophonic patterns.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>durationalBuilder</code> - the durational builder that is added to the given voice in this builder</dd>
 <dd><code>voice</code> - the number of the voice to which the durational builder is added</dd>
+<dd><code>durationalBuilder</code> - the durational builder that is added to the given voice in this builder</dd>
 </dl>
 </li>
 </ul>

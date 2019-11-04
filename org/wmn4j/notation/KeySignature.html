@@ -150,22 +150,22 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr class="rowColor" id="i1">
-<td class="colFirst"><code>java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation">Pitch.Base</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFlats()">getFlats</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns the flats in this key signature.</div>
-</td>
-</tr>
-<tr class="altColor" id="i2">
 <td class="colFirst"><code>int</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumberOfFlats()">getNumberOfFlats</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFlatCount()">getFlatCount</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the number of flats in this key signature.</div>
 </td>
 </tr>
+<tr class="altColor" id="i2">
+<td class="colFirst"><code>java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation">Pitch.Base</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFlats()">getFlats</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Returns the flats in this key signature from left to right.</div>
+</td>
+</tr>
 <tr class="rowColor" id="i3">
 <td class="colFirst"><code>int</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNumberOfSharps()">getNumberOfSharps</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSharpCount()">getSharpCount</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the number of sharps in this key signature.</div>
 </td>
@@ -174,7 +174,7 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code>java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation">Pitch.Base</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSharps()">getSharps</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the sharps in this key signature.</div>
+<div class="block">Returns the sharps in this key signature from left to right.</div>
 </td>
 </tr>
 <tr class="rowColor" id="i5">
@@ -231,8 +231,8 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public static&nbsp;<a href="KeySignature.html" title="class in org.wmn4j.notation">KeySignature</a>&nbsp;of&#8203;(java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation">Pitch.Base</a>&gt;&nbsp;sharps,
                               java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation">Pitch.Base</a>&gt;&nbsp;flats)</pre>
 <div class="block">Returns a key signature with the given sharps and flats. For common key
- signatures use the ones defined in <a href="KeySignatures.html" title="class in org.wmn4j.notation"><code>KeySignatures</code></a>. This is mostly
- intended for creating custom key signatures.</div>
+ signatures using the ones defined in <a href="KeySignatures.html" title="class in org.wmn4j.notation"><code>KeySignatures</code></a> is recommended.
+ This is method is intended for creating non-standard key signatures.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>sharps</code> - the Pitch.Base names that should be raised. For example, for
@@ -247,13 +247,13 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getNumberOfSharps()">
+<a id="getSharpCount()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getNumberOfSharps</h4>
-<pre class="methodSignature">public&nbsp;int&nbsp;getNumberOfSharps()</pre>
+<h4>getSharpCount</h4>
+<pre class="methodSignature">public&nbsp;int&nbsp;getSharpCount()</pre>
 <div class="block">Returns the number of sharps in this key signature.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -261,13 +261,13 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getNumberOfFlats()">
+<a id="getFlatCount()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getNumberOfFlats</h4>
-<pre class="methodSignature">public&nbsp;int&nbsp;getNumberOfFlats()</pre>
+<h4>getFlatCount</h4>
+<pre class="methodSignature">public&nbsp;int&nbsp;getFlatCount()</pre>
 <div class="block">Returns the number of flats in this key signature.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -282,10 +282,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getSharps</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation">Pitch.Base</a>&gt;&nbsp;getSharps()</pre>
-<div class="block">Returns the sharps in this key signature.</div>
+<div class="block">Returns the sharps in this key signature from left to right.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the sharps in this key signature.</dd>
+<dd>the sharps in this key signature from left to right</dd>
 </dl>
 </li>
 </ul>
@@ -296,10 +296,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getFlats</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="Pitch.Base.html" title="enum in org.wmn4j.notation">Pitch.Base</a>&gt;&nbsp;getFlats()</pre>
-<div class="block">Returns the flats in this key signature.</div>
+<div class="block">Returns the flats in this key signature from left to right.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the flats in this key signature</dd>
+<dd>the flats in this key signature from left to right</dd>
 </dl>
 </li>
 </ul>

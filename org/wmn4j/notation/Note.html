@@ -187,10 +187,10 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation">Dur
 </td>
 </tr>
 <tr class="rowColor" id="i5">
-<td class="colFirst"><code>java.util.Collection&lt;<a href="Articulation.html" title="enum in org.wmn4j.notation">Articulation</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.Set&lt;<a href="Articulation.html" title="enum in org.wmn4j.notation">Articulation</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getArticulations()">getArticulations</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns an unmodifiable view of all articulations defined for this note.</div>
+<div class="block">Returns all articulations defined for this note.</div>
 </td>
 </tr>
 <tr class="altColor" id="i6">
@@ -215,10 +215,10 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation">Dur
 </td>
 </tr>
 <tr class="rowColor" id="i9">
-<td class="colFirst"><code>java.util.Collection&lt;<a href="Marking.html" title="class in org.wmn4j.notation">Marking</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.Set&lt;<a href="Marking.html" title="class in org.wmn4j.notation">Marking</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMarkings()">getMarkings</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns an unmodifiable view of all marking connections that affect this note.</div>
+<div class="block">Returns all markings that affect this note.</div>
 </td>
 </tr>
 <tr class="altColor" id="i10">
@@ -543,8 +543,8 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation">Dur
 <ul class="blockList">
 <li class="blockList">
 <h4>getArticulations</h4>
-<pre class="methodSignature">public&nbsp;java.util.Collection&lt;<a href="Articulation.html" title="enum in org.wmn4j.notation">Articulation</a>&gt;&nbsp;getArticulations()</pre>
-<div class="block">Returns an unmodifiable view of all articulations defined for this note.</div>
+<pre class="methodSignature">public&nbsp;java.util.Set&lt;<a href="Articulation.html" title="enum in org.wmn4j.notation">Articulation</a>&gt;&nbsp;getArticulations()</pre>
+<div class="block">Returns all articulations defined for this note.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the articulations defined for this note</dd>
@@ -557,11 +557,11 @@ implements <a href="Durational.html" title="interface in org.wmn4j.notation">Dur
 <ul class="blockList">
 <li class="blockList">
 <h4>getMarkings</h4>
-<pre class="methodSignature">public&nbsp;java.util.Collection&lt;<a href="Marking.html" title="class in org.wmn4j.notation">Marking</a>&gt;&nbsp;getMarkings()</pre>
-<div class="block">Returns an unmodifiable view of all marking connections that affect this note.</div>
+<pre class="methodSignature">public&nbsp;java.util.Set&lt;<a href="Marking.html" title="class in org.wmn4j.notation">Marking</a>&gt;&nbsp;getMarkings()</pre>
+<div class="block">Returns all markings that affect this note.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>all marking connections that affect this note</dd>
+<dd>all markings that affect this note</dd>
 </dl>
 </li>
 </ul>

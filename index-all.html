@@ -159,21 +159,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Adds a <a href="org/wmn4j/notation/MeasureBuilder.html" title="class in org.wmn4j.notation"><code>MeasureBuilder</code></a> to the staff with the given number.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/MeasureBuilder.html#addToVoice(int,org.wmn4j.notation.DurationalBuilder)">addToVoice(int, DurationalBuilder)</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></dt>
-<dd>
-<div class="block">Append a <a href="org/wmn4j/notation/DurationalBuilder.html" title="interface in org.wmn4j.notation"><code>DurationalBuilder</code></a> to the voice with the given number.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#addToVoice(org.wmn4j.notation.DurationalBuilder,int)">addToVoice(DurationalBuilder, int)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternBuilder.html#addToVoice(int,org.wmn4j.notation.DurationalBuilder)">addToVoice(int, DurationalBuilder)</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternBuilder.html" title="class in org.wmn4j.mir">PatternBuilder</a></dt>
 <dd>
 <div class="block">Adds the given durational builder to the voice with the given number.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/MeasureBuilder.html#addVoice()">addVoice()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/MeasureBuilder.html#addToVoice(int,org.wmn4j.notation.DurationalBuilder)">addToVoice(int, DurationalBuilder)</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></dt>
 <dd>
-<div class="block">Add new empty voice to this builder.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/MeasureBuilder.html#addVoice(java.util.List)">addVoice(List&lt;DurationalBuilder&gt;)</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></dt>
-<dd>
-<div class="block">Add possibly voice to this builder.</div>
+<div class="block">Append a <a href="org/wmn4j/notation/DurationalBuilder.html" title="interface in org.wmn4j.notation"><code>DurationalBuilder</code></a> to the voice with the given number.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Key.html#AFLAT_MAJOR">AFLAT_MAJOR</a></span> - org.wmn4j.notation.<a href="org/wmn4j/notation/Key.html" title="enum in org.wmn4j.notation">Key</a></dt>
 <dd>
@@ -731,6 +723,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Implements repeated pattern discovery using point set representation of
  music and compression ratio of repeated patterns with the SIATECHF algorithm [1].</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#get(int,int)">get(int, int)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns the notation element at the given index in the voice
+ with the given number.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Measure.html#get(int,int)">get(int, int)</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/Measure.html" title="class in org.wmn4j.notation">Measure</a></dt>
 <dd>
 <div class="block">Returns the <a href="org/wmn4j/notation/Durational.html" title="interface in org.wmn4j.notation"><code>Durational</code></a> at the given index on the given voice number.</div>
@@ -753,7 +750,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Note.html#getArticulations()">getArticulations()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/Note.html" title="class in org.wmn4j.notation">Note</a></dt>
 <dd>
-<div class="block">Returns an unmodifiable view of all articulations defined for this note.</div>
+<div class="block">Returns all articulations defined for this note.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/NoteBuilder.html#getArticulations()">getArticulations()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/NoteBuilder.html" title="class in org.wmn4j.notation">NoteBuilder</a></dt>
 <dd>
@@ -811,10 +808,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the clef changes in this builder.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#getContents()">getContents()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
-<dd>
-<div class="block">Returns the contents of this pattern.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Duration.html#getDenominator()">getDenominator()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/Duration.html" title="class in org.wmn4j.notation">Duration</a></dt>
 <dd>
 <div class="block">Returns the denominator of this duration.</div>
@@ -845,9 +838,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/RestBuilder.html#getDuration()">getDuration()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/RestBuilder.html" title="class in org.wmn4j.notation">RestBuilder</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/KeySignature.html#getFlatCount()">getFlatCount()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/KeySignature.html" title="class in org.wmn4j.notation">KeySignature</a></dt>
+<dd>
+<div class="block">Returns the number of flats in this key signature.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/KeySignature.html#getFlats()">getFlats()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/KeySignature.html" title="class in org.wmn4j.notation">KeySignature</a></dt>
 <dd>
-<div class="block">Returns the flats in this key signature.</div>
+<div class="block">Returns the flats in this key signature from left to right.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Marking.Connection.html#getFollowingNote()">getFollowingNote()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/Marking.Connection.html" title="class in org.wmn4j.notation">Marking.Connection</a></dt>
 <dd>
@@ -951,7 +948,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Note.html#getMarkings()">getMarkings()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/Note.html" title="class in org.wmn4j.notation">Note</a></dt>
 <dd>
-<div class="block">Returns an unmodifiable view of all marking connections that affect this note.</div>
+<div class="block">Returns all markings that affect this note.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/SingleStaffPart.html#getMeasure(int)">getMeasure(int)</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/SingleStaffPart.html" title="class in org.wmn4j.notation">SingleStaffPart</a></dt>
 <dd>
@@ -1007,11 +1004,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the numbers of measures in the part with the given index referred to by this pattern position.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/Staff.html#getMeasures()">getMeasures()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/Staff.html" title="class in org.wmn4j.notation">Staff</a></dt>
-<dd>
-<div class="block">Returns the measures in this staff as a list from smallest measure number to
- greatest.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#getName()">getName()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
 <div class="block">Returns the name of the pattern.</div>
@@ -1054,22 +1046,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the measure number set in this builder.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/KeySignature.html#getNumberOfFlats()">getNumberOfFlats()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/KeySignature.html" title="class in org.wmn4j.notation">KeySignature</a></dt>
-<dd>
-<div class="block">Returns the number of flats in this key signature.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/KeySignature.html#getNumberOfSharps()">getNumberOfSharps()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/KeySignature.html" title="class in org.wmn4j.notation">KeySignature</a></dt>
-<dd>
-<div class="block">Returns the number of sharps in this key signature.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#getNumberOfVoices()">getNumberOfVoices()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
-<dd>
-<div class="block">Returns the number of voices in this pattern.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/MeasureBuilder.html#getNumberOfVoices()">getNumberOfVoices()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></dt>
-<dd>
-<div class="block">Returns the number of voices in this builder.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Duration.html#getNumerator()">getNumerator()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/Duration.html" title="class in org.wmn4j.notation">Duration</a></dt>
 <dd>
 <div class="block">Returns the numerator of this duration.</div>
@@ -1103,10 +1079,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/SingleStaffPart.html#getPartIterator()">getPartIterator()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/SingleStaffPart.html" title="class in org.wmn4j.notation">SingleStaffPart</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/Score.html#getParts()">getParts()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/Score.html" title="class in org.wmn4j.notation">Score</a></dt>
-<dd>
-<div class="block">Returns the parts in this score.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/discovery/GeometricPatternDiscovery.html#getPatternPositions()">getPatternPositions()</a></span> - Method in class org.wmn4j.mir.discovery.<a href="org/wmn4j/mir/discovery/GeometricPatternDiscovery.html" title="class in org.wmn4j.mir.discovery">GeometricPatternDiscovery</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/discovery/PatternDiscovery.html#getPatternPositions()">getPatternPositions()</a></span> - Method in interface org.wmn4j.mir.discovery.<a href="org/wmn4j/mir/discovery/PatternDiscovery.html" title="interface in org.wmn4j.mir.discovery">PatternDiscovery</a></dt>
@@ -1167,13 +1139,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the score to which this pattern discovery applies.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/KeySignature.html#getSharpCount()">getSharpCount()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/KeySignature.html" title="class in org.wmn4j.notation">KeySignature</a></dt>
+<dd>
+<div class="block">Returns the number of sharps in this key signature.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/KeySignature.html#getSharps()">getSharps()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/KeySignature.html" title="class in org.wmn4j.notation">KeySignature</a></dt>
 <dd>
-<div class="block">Returns the sharps in this key signature.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternPosition.html#getSize()">getSize()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir">PatternPosition</a></dt>
-<dd>
-<div class="block">Returns the number of notation elements the referred pattern contains.</div>
+<div class="block">Returns the sharps in this key signature from left to right.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/SingleStaffPart.html#getStaff()">getStaff()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/SingleStaffPart.html" title="class in org.wmn4j.notation">SingleStaffPart</a></dt>
 <dd>
@@ -1212,11 +1184,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Part.html#getStaffNumbers()">getStaffNumbers()</a></span> - Method in interface org.wmn4j.notation.<a href="org/wmn4j/notation/Part.html" title="interface in org.wmn4j.notation">Part</a></dt>
 <dd>
-<div class="block">Returns the numbers of the staves in this part.</div>
+<div class="block">Returns the numbers of the staves in this part in ascending order.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/PartBuilder.html#getStaffNumbers()">getStaffNumbers()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/PartBuilder.html" title="class in org.wmn4j.notation">PartBuilder</a></dt>
 <dd>
-<div class="block">Returns the staff numbers set in this builder.</div>
+<div class="block">Returns the staff numbers set in this builder in ascending order.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/SingleStaffPart.html#getStaffNumbers()">getStaffNumbers()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/SingleStaffPart.html" title="class in org.wmn4j.notation">SingleStaffPart</a></dt>
 <dd>&nbsp;</dd>
@@ -1281,13 +1253,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the contents of the voice with the given number.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/wmn4j/notation/Measure.html#getVoice(int)">getVoice(int)</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/Measure.html" title="class in org.wmn4j.notation">Measure</a></dt>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#getVoiceCount()">getVoiceCount()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
-<div class="block">Returns the voice with the given measure.</div>
+<div class="block">Returns the number of voices in this pattern.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Measure.html#getVoiceCount()">getVoiceCount()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/Measure.html" title="class in org.wmn4j.notation">Measure</a></dt>
 <dd>
 <div class="block">Returns the number of voices in this measure.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/notation/MeasureBuilder.html#getVoiceCount()">getVoiceCount()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></dt>
+<dd>
+<div class="block">Returns the number of voices in this builder.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/access/Position.html#getVoiceNumber()">getVoiceNumber()</a></span> - Method in class org.wmn4j.notation.access.<a href="org/wmn4j/notation/access/Position.html" title="class in org.wmn4j.notation.access">Position</a></dt>
 <dd>
@@ -1295,11 +1271,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#getVoiceNumbers()">getVoiceNumbers()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
 <dd>
-<div class="block">Returns the voice numbers in this pattern from smallest to greatest.</div>
+<div class="block">Returns the voice numbers in this pattern in ascending order.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Measure.html#getVoiceNumbers()">getVoiceNumbers()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/Measure.html" title="class in org.wmn4j.notation">Measure</a></dt>
 <dd>
-<div class="block">Returns the voice numbers in this measure.</div>
+<div class="block">Returns the voice numbers in this measure in ascending order.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/MeasureBuilder.html#getVoiceNumbers()">getVoiceNumbers()</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/MeasureBuilder.html" title="class in org.wmn4j.notation">MeasureBuilder</a></dt>
 <dd>
@@ -1309,6 +1285,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Returns the voice of the <a href="org/wmn4j/notation/Durational.html" title="interface in org.wmn4j.notation"><code>Durational</code></a> that was returned by the last
  call of <code>next</code>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#getVoiceSize(int)">getVoiceSize(int)</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns the number of notation elements in the voice with the given number.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Measure.html#getVoiceSize(int)">getVoiceSize(int)</a></span> - Method in class org.wmn4j.notation.<a href="org/wmn4j/notation/Measure.html" title="class in org.wmn4j.notation">Measure</a></dt>
 <dd>
@@ -2184,6 +2164,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Durations.html#SIXTYFOURTH">SIXTYFOURTH</a></span> - Static variable in class org.wmn4j.notation.<a href="org/wmn4j/notation/Durations.html" title="class in org.wmn4j.notation">Durations</a></dt>
 <dd>
 <div class="block">Constant value for sixtyfourth note duration.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/Pattern.html#size()">size()</a></span> - Method in interface org.wmn4j.mir.<a href="org/wmn4j/mir/Pattern.html" title="interface in org.wmn4j.mir">Pattern</a></dt>
+<dd>
+<div class="block">Returns the number of durational notation elements in this pattern.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/wmn4j/mir/PatternPosition.html#size()">size()</a></span> - Method in class org.wmn4j.mir.<a href="org/wmn4j/mir/PatternPosition.html" title="class in org.wmn4j.mir">PatternPosition</a></dt>
+<dd>
+<div class="block">Returns the number of notation elements the referred pattern contains.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/wmn4j/notation/Marking.Type.html#SLUR">SLUR</a></span> - org.wmn4j.notation.<a href="org/wmn4j/notation/Marking.Type.html" title="enum in org.wmn4j.notation">Marking.Type</a></dt>
 <dd>
