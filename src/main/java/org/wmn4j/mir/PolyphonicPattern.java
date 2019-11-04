@@ -91,11 +91,6 @@ final class PolyphonicPattern implements Pattern {
 	}
 
 	@Override
-	public List<Durational> getContents() {
-		return voices.values().stream().flatMap(voice -> voice.stream()).collect(Collectors.toList());
-	}
-
-	@Override
 	public Optional<String> getName() {
 		return Optional.ofNullable(name);
 	}
@@ -145,7 +140,7 @@ final class PolyphonicPattern implements Pattern {
 		return containsEqualVoices((Pattern) o, PolyphonicPattern::iterablesEquals);
 	}
 
-	private static boolean iterablesEquals(Iterable<Durational> a, Iterable<Durational> b) {
+	static boolean iterablesEquals(Iterable<Durational> a, Iterable<Durational> b) {
 		Iterator<Durational> iterA = a.iterator();
 		Iterator<Durational> iterB = b.iterator();
 
@@ -340,7 +335,23 @@ final class PolyphonicPattern implements Pattern {
 	}
 
 	@Override
+	public int size() {
+		return voices.values().stream().map(List::size).reduce(0, Integer::sum);
+	}
+
+	@Override
 	public int hashCode() {
 		return Objects.hash(voices);
+	}
+
+	@Override
+	public Iterator<Durational> iterator() {
+		List<Durational> iterable = new ArrayList<>();
+
+		for (Integer voiceNumber : getVoiceNumbers()) {
+			iterable.addAll(voices.get(voiceNumber));
+		}
+
+		return iterable.iterator();
 	}
 }

@@ -21,9 +21,14 @@ import java.util.SortedSet;
  * pattern there can be multiple notes occurring at the same time in chords or
  * in multiple voices.
  * <p>
+ * The notation elements in monophonic pattern are iterated in temporal orders.
+ * For polyphonic patterns the elements are iterated first by iterating through the
+ * voice with the smallest number and then moving on the voice with the next greatest
+ * number and so on.
+ * <p>
  * Implementations of this interface are required to be thread-safe.
  */
-public interface Pattern {
+public interface Pattern extends Iterable<Durational> {
 
 	/**
 	 * Returns a pattern with the given contents.
@@ -95,14 +100,6 @@ public interface Pattern {
 	static Pattern of(Map<Integer, List<? extends Durational>> voices) {
 		return new PolyphonicPattern(voices);
 	}
-
-	/**
-	 * Returns the contents of this pattern. For monophonic patterns the contents are returned in temporal order. For
-	 * polyphonic patterns the order is not specified.
-	 *
-	 * @return the contents of this pattern
-	 */
-	List<Durational> getContents();
 
 	/**
 	 * Returns the name of the pattern.
@@ -229,4 +226,11 @@ public interface Pattern {
 	 * @return true if this pattern has the same durations as the other pattern
 	 */
 	boolean equalsInDurations(Pattern other);
+
+	/**
+	 * Returns the number of durational notation elements in this pattern.
+	 *
+	 * @return the number of durational notation elements in this pattern
+	 */
+	int size();
 }

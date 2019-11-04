@@ -52,7 +52,9 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 	MusicXmlPatternWriterDom(Collection<Pattern> patterns) {
 		Collection<Durational> allDurationals = new ArrayList<>();
 		patterns.forEach(pattern -> {
-			allDurationals.addAll(pattern.getContents());
+			for (Durational dur : pattern) {
+				allDurationals.add(dur);
+			}
 		});
 
 		this.divisions = computeDivisions(allDurationals.iterator());
@@ -79,7 +81,7 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 	private Part singleVoicePatternsToPart(Collection<Pattern> patterns) {
 		final List<Measure> allMeasures = new ArrayList<>();
 		for (Pattern pattern : patterns) {
-			List<Measure> measures = voiceToMeasureList(pattern.getContents().iterator(), true);
+			List<Measure> measures = voiceToMeasureList(pattern.iterator(), true);
 			allMeasures.addAll(measures);
 			final Integer firstMeasureNumber = measures.get(0).getNumber();
 			newSystemBeginningMeasureNumbers.add(firstMeasureNumber);

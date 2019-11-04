@@ -3,15 +3,12 @@ package org.wmn4j.mir;
 import org.junit.jupiter.api.Test;
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.ChordBuilder;
-import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Rest;
 import org.wmn4j.notation.RestBuilder;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -44,14 +41,14 @@ class PatternBuilderTest {
 		assertTrue(builder.isMonophonic());
 		final Pattern pattern = builder.build();
 
-		final List<Durational> patternContents = pattern.getContents();
+		final int voiceNumber = pattern.getVoiceNumbers().get(0);
 
-		assertEquals(firstElement, patternContents.get(0));
-		assertEquals(secondElement, patternContents.get(1));
-		assertEquals(thirdElement, patternContents.get(2));
-		assertEquals(fourthElement, patternContents.get(3));
-		assertEquals(fifthElement, patternContents.get(4));
-		assertEquals(sixthElement, patternContents.get(5));
+		assertEquals(firstElement, pattern.get(voiceNumber, 0));
+		assertEquals(secondElement, pattern.get(voiceNumber, 1));
+		assertEquals(thirdElement, pattern.get(voiceNumber, 2));
+		assertEquals(fourthElement, pattern.get(voiceNumber, 3));
+		assertEquals(fifthElement, pattern.get(voiceNumber, 4));
+		assertEquals(sixthElement, pattern.get(voiceNumber, 5));
 
 		assertTrue(pattern.isMonophonic());
 	}
@@ -82,14 +79,16 @@ class PatternBuilderTest {
 		assertFalse(builder.isMonophonic());
 		final Pattern pattern = builder.build();
 
-		final List<Durational> patternContents = pattern.getContents();
+		assertEquals(1, pattern.getVoiceCount());
 
-		assertEquals(firstElement, patternContents.get(0));
-		assertEquals(secondElement, patternContents.get(1));
-		assertEquals(thirdElement, patternContents.get(2));
-		assertEquals(fourthElement, patternContents.get(3));
-		assertEquals(fifthElement, patternContents.get(4));
-		assertEquals(sixthElement, patternContents.get(5));
+		final int voiceNumber = pattern.getVoiceNumbers().get(0);
+
+		assertEquals(firstElement, pattern.get(voiceNumber, 0));
+		assertEquals(secondElement, pattern.get(voiceNumber, 1));
+		assertEquals(thirdElement, pattern.get(voiceNumber, 2));
+		assertEquals(fourthElement, pattern.get(voiceNumber, 3));
+		assertEquals(fifthElement, pattern.get(voiceNumber, 4));
+		assertEquals(sixthElement, pattern.get(voiceNumber, 5));
 
 		assertFalse(pattern.isMonophonic());
 	}
