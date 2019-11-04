@@ -766,7 +766,10 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 				}
 
 				if (note.getMarkingConnection(marking).get().isEnd()) {
-					notationsElement.appendChild(markingResolver.createStopElement(marking));
+					Element markingStop = markingResolver.createStopElement(marking);
+					if (markingStop != null) {
+						notationsElement.appendChild(markingStop);
+					}
 				}
 			}
 		}
@@ -860,14 +863,18 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		}
 
 		Element createStopElement(Marking marking) {
-			Element markingElement = document.createElement(MARKING_TYPES.get(marking.getType()));
+			Element markingElement = null;
 
-			markingElement.setAttribute(MusicXmlTags.MARKING_NUMBER, unresolvedMarkings.get(marking).toString());
+			if (unresolvedMarkings.containsKey(marking)) {
+				markingElement = document.createElement(MARKING_TYPES.get(marking.getType()));
 
-			usedMarkingNumbers.remove(unresolvedMarkings.get(marking));
-			unresolvedMarkings.remove(marking);
+				markingElement.setAttribute(MusicXmlTags.MARKING_NUMBER, unresolvedMarkings.get(marking).toString());
 
-			markingElement.setAttribute(MusicXmlTags.MARKING_TYPE, MusicXmlTags.MARKING_TYPE_STOP);
+				usedMarkingNumbers.remove(unresolvedMarkings.get(marking));
+				unresolvedMarkings.remove(marking);
+
+				markingElement.setAttribute(MusicXmlTags.MARKING_TYPE, MusicXmlTags.MARKING_TYPE_STOP);
+			}
 
 			return markingElement;
 		}
