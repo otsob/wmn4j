@@ -37,8 +37,20 @@ Contributing to this project is supposed to be enjoyable, so behaving nicely and
 
 ## Versioning
 
-There is currently no released version of wmn4j. The initial beta 0.1 is in the works currently.
-
+Beta version 0.1.0 has been released and is available on Maven central.
+In Maven, add
+```xml
+<dependency>
+    <groupId>org.wmn4j</groupId>
+    <artifactId>wmn4j</artifactId>
+    <version>0.1.0</version>
+</dependency>
+```
+to the dependencies to use. In gradle add
+```xml
+implementation group: 'org.wmn4j', name: 'wmn4j', version: '0.1.0'
+```
+to use.
 
 ## Authors
 
