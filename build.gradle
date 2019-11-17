@@ -18,7 +18,6 @@ java {
 checkstyle {
     configDir file("build-resources/checkstyle/")
     checkstyleTest.enabled = false
-    checkstyleMain.enabled = false
 }
 
 repositories {
