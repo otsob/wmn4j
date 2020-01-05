@@ -187,7 +187,7 @@ public final class Score implements Iterable<Part> {
 	@Override
 	public String toString() {
 		final StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("Score ").append(getTitle().get()).append("\n");
+		strBuilder.append("Score ").append(getTitle().orElse("")).append("\n");
 
 		for (int i = 0; i < parts.size(); ++i) {
 			strBuilder.append(parts.get(i).toString());
