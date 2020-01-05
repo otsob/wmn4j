@@ -49,7 +49,7 @@ publishing {
             pom {
                 name = project.name
                 description = project.description
-                url = 'https://www.wmn4j.org'
+                url = 'http://www.wmn4j.org'
                 licenses {
                     license {
                         name = 'MIT license'
@@ -58,6 +58,9 @@ publishing {
                 developers {
                     developer {
                         name = 'Otso Björklund'
+                    }
+                    developer {
+                        name = 'Matias Wargelin'
                     }
                 }
                 scm {
