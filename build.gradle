@@ -16,7 +16,7 @@ java {
 }
 
 checkstyle {
-    configDir file("build-resources/checkstyle/")
+    getConfigDirectory().set(file("build-resources/checkstyle/"))
     checkstyleTest.enabled = false
 }
 
