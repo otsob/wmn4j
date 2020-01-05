@@ -8,7 +8,8 @@ The main purpose of wmn4j is to enable easy and efficient analysis of scores and
 
 ## The structure of wmn4j
 
-The [API Documentation](https://otsob.github.io/wmn4j) provides a comprehensive overview of all classes and interfaces in wmn4j. There are a few architectural design principles in wmn4j:
+The [API Documentation](https://otsob.github.io/wmn4j) provides the Javadoc for the current state of wmn4j.
+There are a few architectural design principles in wmn4j:
 * All notation classes are immutable
 * Builder classes are used for creating objects
 * Scores can be read using different types of iterators
@@ -37,20 +38,8 @@ Contributing to this project is supposed to be enjoyable, so behaving nicely and
 
 ## Versioning
 
-Beta version 0.1.0 has been released and is available on Maven central.
-In Maven, add
-```xml
-<dependency>
-    <groupId>org.wmn4j</groupId>
-    <artifactId>wmn4j</artifactId>
-    <version>0.1.0</version>
-</dependency>
-```
-to the dependencies to use. In gradle add
-```xml
-implementation group: 'org.wmn4j', name: 'wmn4j', version: '0.1.0'
-```
-to use.
+Wmn4j is still in the beta phase.
+The released beta versions of wmn4j are available on [Maven central](https://search.maven.org/artifact/org.wmn4j/wmn4j).
 
 ## Authors
 
