@@ -10,22 +10,22 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wmn4j.io.ParsingFailureException;
-import org.wmn4j.notation.ChordBuilder;
-import org.wmn4j.notation.MeasureBuilder;
-import org.wmn4j.notation.NoteBuilder;
-import org.wmn4j.notation.PartBuilder;
-import org.wmn4j.notation.RestBuilder;
-import org.wmn4j.notation.ScoreBuilder;
 import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
+import org.wmn4j.notation.ChordBuilder;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.KeySignature;
 import org.wmn4j.notation.KeySignatures;
 import org.wmn4j.notation.Marking;
+import org.wmn4j.notation.MeasureBuilder;
+import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Part;
+import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
+import org.wmn4j.notation.ScoreBuilder;
 import org.wmn4j.notation.SingleStaffPart;
 import org.wmn4j.notation.TimeSignature;
 import org.xml.sax.SAXException;
@@ -92,8 +92,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		try {
 			ClassLoader classLoader = getClass().getClassLoader();
-			File schemaFile = new File(classLoader.getResource(MUSICXML_V3_1_SCHEMA_PATH).getFile());
-			final Schema schema = schemaFactory.newSchema(schemaFile);
+			final Schema schema = schemaFactory.newSchema(classLoader.getResource(MUSICXML_V3_1_SCHEMA_PATH));
 			final Validator validator = schema.newValidator();
 			validator.validate(new StreamSource(musicXmlFile));
 		} catch (SAXException e) {
