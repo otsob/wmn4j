@@ -3,6 +3,8 @@
  */
 package org.wmn4j;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.wmn4j.io.musicxml.MusicXmlReader;
 import org.wmn4j.notation.ChordBuilder;
@@ -25,6 +27,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestHelper {
+
+	private static final Logger LOG = LoggerFactory.getLogger(TestHelper.class);
 
 	public static final String TESTFILE_PATH = "src/test/resources/";
 
@@ -62,7 +66,7 @@ public class TestHelper {
 		try {
 			score = reader.readScore();
 		} catch (final Exception e) {
-			System.out.println("Failed to read score from " + path.toString() + " with exception: " + e);
+			LOG.error("Failed to read score from " + path.toString() + " with exception: " + e);
 		}
 
 		return score;
