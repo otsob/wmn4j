@@ -93,10 +93,22 @@ final class MusicXmlTags {
 	static final String TIME_MODIFICATION_NORMAL_NOTES = "normal-notes";
 
 	// Articulations
-	static final String STACCATO = "staccato";
 	static final String ACCENT = "accent";
-	static final String TENUTO = "tenuto";
+	static final String BREATH_MARK = "breath-mark";
+	static final String CAESURA = "caesura";
 	static final String FERMATA = "fermata";
+	static final String SLIDE_IN_DOWN = "plop";
+	static final String SLIDE_IN_UP = "scoop";
+	static final String SLIDE_OUT_DOWN = "falloff";
+	static final String SLIDE_OUT_UP = "doit";
+	static final String SPICCATO = "spiccato";
+	static final String STACCATISSIMO = "staccatissimo";
+	static final String STACCATO = "staccato";
+	static final String STRESS = "stress";
+	static final String STRONG_ACCENT = "strong-accent";
+	static final String TENUTO = "tenuto";
+	static final String TENUTO_STACCATO = "detached-legato";
+	static final String UNSTRESS = "unstress";
 
 	// Markings
 	static final String SLUR = "slur";
