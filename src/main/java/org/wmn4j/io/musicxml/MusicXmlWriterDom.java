@@ -789,13 +789,50 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 				case ACCENT:
 					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.ACCENT));
 					break;
+				case BREATH_MARK:
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.BREATH_MARK));
+					break;
+				case CAESURA:
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.CAESURA));
+					break;
+				case FERMATA:
+					// Fermata is not treated as an articulation in MusicXml, so fermatas ar handled elsewhere.
+					break;
+				case SLIDE_IN_DOWN:
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.SLIDE_IN_DOWN));
+					break;
+				case SLIDE_IN_UP:
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.SLIDE_IN_UP));
+					break;
+				case SLIDE_OUT_DOWN:
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.SLIDE_OUT_DOWN));
+					break;
+				case SLIDE_OUT_UP:
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.SLIDE_OUT_UP));
+					break;
+				case SPICCATO:
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.SPICCATO));
+					break;
+				case STACCATISSIMO:
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.STACCATISSIMO));
+					break;
 				case STACCATO:
 					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.STACCATO));
+					break;
+				case STRESS:
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.STRESS));
+					break;
+				case STRONG_ACCENT:
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.STRONG_ACCENT));
 					break;
 				case TENUTO:
 					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.TENUTO));
 					break;
-				case FERMATA:
+				case TENUTO_STACCATO:
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.TENUTO_STACCATO));
+					break;
+				case UNSTRESS:
+					articulationsElement.appendChild(getDocument().createElement(MusicXmlTags.UNSTRESS));
 					break;
 				default:
 					throw new IllegalStateException("Unexpected articulation: " + articulation);
