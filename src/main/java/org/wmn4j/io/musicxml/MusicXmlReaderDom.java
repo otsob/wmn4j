@@ -570,10 +570,36 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		switch (articulationString) {
 			case MusicXmlTags.ACCENT:
 				return Articulation.ACCENT;
+			case MusicXmlTags.BREATH_MARK:
+				return Articulation.BREATH_MARK;
+			case MusicXmlTags.CAESURA:
+				return Articulation.CAESURA;
+			case MusicXmlTags.FERMATA:
+				return Articulation.FERMATA;
+			case MusicXmlTags.SLIDE_IN_DOWN:
+				return Articulation.SLIDE_IN_DOWN;
+			case MusicXmlTags.SLIDE_IN_UP:
+				return Articulation.SLIDE_IN_UP;
+			case MusicXmlTags.SLIDE_OUT_DOWN:
+				return Articulation.SLIDE_OUT_DOWN;
+			case MusicXmlTags.SLIDE_OUT_UP:
+				return Articulation.SLIDE_OUT_UP;
+			case MusicXmlTags.SPICCATO:
+				return Articulation.SPICCATO;
+			case MusicXmlTags.STACCATISSIMO:
+				return Articulation.STACCATISSIMO;
 			case MusicXmlTags.STACCATO:
 				return Articulation.STACCATO;
+			case MusicXmlTags.STRESS:
+				return Articulation.STRESS;
+			case MusicXmlTags.STRONG_ACCENT:
+				return Articulation.STRONG_ACCENT;
 			case MusicXmlTags.TENUTO:
 				return Articulation.TENUTO;
+			case MusicXmlTags.TENUTO_STACCATO:
+				return Articulation.TENUTO_STACCATO;
+			case MusicXmlTags.UNSTRESS:
+				return Articulation.UNSTRESS;
 		}
 
 		return null;

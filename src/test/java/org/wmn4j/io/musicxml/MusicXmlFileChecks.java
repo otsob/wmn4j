@@ -431,6 +431,26 @@ class MusicXmlFileChecks {
 		assertFalse((secondChordInMeasureTwo.hasArticulation(Articulation.TENUTO)));
 
 		assertFalse(((Note) measureTwo.get(1, 3)).hasArticulations());
+
+		final Measure measureThree = score.getPart(0).getMeasure(SingleStaffPart.STAFF_NUMBER, 3);
+		assertTrue(((Note) measureThree.get(1, 0)).hasArticulation(Articulation.BREATH_MARK));
+		assertTrue(((Note) measureThree.get(1, 1)).hasArticulation(Articulation.CAESURA));
+		assertTrue(((Note) measureThree.get(1, 2)).hasArticulation(Articulation.TENUTO_STACCATO));
+		assertTrue(((Note) measureThree.get(1, 3)).hasArticulation(Articulation.SLIDE_OUT_UP));
+
+		final Measure measureFour = score.getPart(0).getMeasure(SingleStaffPart.STAFF_NUMBER, 4);
+		assertTrue(((Note) measureFour.get(1, 0)).hasArticulation(Articulation.SLIDE_OUT_DOWN));
+		assertTrue(((Note) measureFour.get(1, 2)).hasArticulation(Articulation.SLIDE_IN_DOWN));
+		assertTrue(((Note) measureFour.get(1, 3)).hasArticulation(Articulation.SLIDE_IN_UP));
+
+		final Measure measureFive = score.getPart(0).getMeasure(SingleStaffPart.STAFF_NUMBER, 5);
+		assertTrue(((Note) measureFive.get(1, 0)).hasArticulation(Articulation.SPICCATO));
+		assertTrue(((Note) measureFive.get(1, 1)).hasArticulation(Articulation.STACCATISSIMO));
+		assertTrue(((Note) measureFive.get(1, 2)).hasArticulation(Articulation.STRESS));
+		assertTrue(((Note) measureFive.get(1, 3)).hasArticulation(Articulation.STRONG_ACCENT));
+
+		final Measure measureSix = score.getPart(0).getMeasure(SingleStaffPart.STAFF_NUMBER, 6);
+		assertTrue(((Note) measureSix.get(1, 0)).hasArticulation(Articulation.UNSTRESS));
 	}
 
 	/*
