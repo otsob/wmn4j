@@ -14,8 +14,29 @@ import java.util.Objects;
  */
 public final class TimeSignature {
 
+	/**
+	 * Represents the symbol used to mark the time signature.
+	 */
+	public enum Symbol {
+		/**
+		 * Denotes a time signature specified as a pair of numbers, for example, 4/4.
+		 */
+		NUMERIC,
+
+		/**
+		 * Denotes a time signature that uses the symbol C.
+		 */
+		COMMON,
+
+		/**
+		 * Denotes cut time, i.e., alla breve.
+		 */
+		CUT_TIME
+	}
+
 	private final int beats;
 	private final Duration beatDuration;
+	private final Symbol symbol;
 
 	/**
 	 * Returns a time signature with the given numerator and denominator.
@@ -25,7 +46,7 @@ public final class TimeSignature {
 	 * @return a time signature with the given numerator and denominator
 	 */
 	public static TimeSignature of(int numerator, int denominator) {
-		return of(numerator, Duration.of(1, denominator));
+		return of(numerator, Duration.of(1, denominator), Symbol.NUMERIC);
 	}
 
 	/**
@@ -38,16 +59,31 @@ public final class TimeSignature {
 	 * @throws NullPointerException     if beatDuration is null
 	 */
 	public static TimeSignature of(int beats, Duration beatDuration) {
+		return of(beats, beatDuration, Symbol.NUMERIC);
+	}
+
+	/**
+	 * Returns a time signature with the given numerator, beat duration, and symbol.
+	 *
+	 * @param beats        number of beats in measure
+	 * @param beatDuration the Duration of the beats
+	 * @param symbol       the symbol of the time signature
+	 * @return a time signature with the given numerator, beat duration, and symbol
+	 * @throws IllegalArgumentException if beats is less than 1
+	 * @throws NullPointerException     if beatDuration is null
+	 */
+	public static TimeSignature of(int beats, Duration beatDuration, Symbol symbol) {
 		if (beats < 1) {
 			throw new IllegalArgumentException("beats must be at least 1.");
 		}
 
-		return new TimeSignature(beats, Objects.requireNonNull(beatDuration));
+		return new TimeSignature(beats, Objects.requireNonNull(beatDuration), symbol);
 	}
 
-	private TimeSignature(int beats, Duration beatDuration) {
+	private TimeSignature(int beats, Duration beatDuration, Symbol symbol) {
 		this.beats = beats;
 		this.beatDuration = beatDuration;
+		this.symbol = symbol;
 	}
 
 	/**
@@ -72,6 +108,15 @@ public final class TimeSignature {
 	 */
 	public Duration getTotalDuration() {
 		return this.beatDuration.multiplyBy(this.beats);
+	}
+
+	/**
+	 * Returns the symbol used for this time signature.
+	 *
+	 * @return the symbol used for this time signature
+	 */
+	public Symbol getSymbol() {
+		return symbol;
 	}
 
 	/**
