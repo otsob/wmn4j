@@ -92,6 +92,8 @@ signing {
 afterReleaseBuild.dependsOn publish
 
 release {
+    pushReleaseVersionBranch = 'master'
+    git.requireBranch = 'development'
     tagTemplate = '$name-$version'
 }
 
