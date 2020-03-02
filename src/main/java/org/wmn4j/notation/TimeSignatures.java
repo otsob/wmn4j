@@ -9,6 +9,16 @@ package org.wmn4j.notation;
 public final class TimeSignatures {
 
 	/**
+	 * The common time signature.
+	 */
+	public static final TimeSignature COMMON = TimeSignature.of(4, Durations.QUARTER, TimeSignature.Symbol.COMMON);
+
+	/**
+	 * The cut time (alla breve) time signature.
+	 */
+	public static final TimeSignature CUT_TIME = TimeSignature.of(2, Durations.HALF, TimeSignature.Symbol.CUT_TIME);
+
+	/**
 	 * The time signature 4/4.
 	 */
 	public static final TimeSignature FOUR_FOUR = TimeSignature.of(4, 4);

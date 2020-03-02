@@ -14,8 +14,46 @@ import java.util.Objects;
  */
 public final class TimeSignature {
 
+	/**
+	 * Represents the symbol used to mark the time signature.
+	 */
+	public enum Symbol {
+		/**
+		 * Denotes a time signature specified as a pair of numbers, for example, 4/4.
+		 */
+		NUMERIC,
+
+		/**
+		 * Denotes a time signature that uses the symbol C.
+		 */
+		COMMON,
+
+		/**
+		 * Denotes cut time, i.e., alla breve.
+		 */
+		CUT_TIME,
+
+		/**
+		 * Denotes a time signature where only the number of beats is shown.
+		 */
+		BEAT_NUMBER_ONLY,
+
+		/**
+		 * Denotes a time signature where the beat duration is shown as a note.
+		 */
+		BEAT_DURATION_AS_NOTE,
+
+		/**
+		 * Denotes a time signature where the beat duration is shown as a note that
+		 * has a duration that is three times the duration of the beat and the numerator
+		 * is one third of the number of beats.
+		 */
+		BEAT_DURATION_AS_DOTTED_NOTE,
+	}
+
 	private final int beats;
 	private final Duration beatDuration;
+	private final Symbol symbol;
 
 	/**
 	 * Returns a time signature with the given numerator and denominator.
@@ -25,7 +63,7 @@ public final class TimeSignature {
 	 * @return a time signature with the given numerator and denominator
 	 */
 	public static TimeSignature of(int numerator, int denominator) {
-		return of(numerator, Duration.of(1, denominator));
+		return of(numerator, Duration.of(1, denominator), Symbol.NUMERIC);
 	}
 
 	/**
@@ -38,16 +76,31 @@ public final class TimeSignature {
 	 * @throws NullPointerException     if beatDuration is null
 	 */
 	public static TimeSignature of(int beats, Duration beatDuration) {
+		return of(beats, beatDuration, Symbol.NUMERIC);
+	}
+
+	/**
+	 * Returns a time signature with the given numerator, beat duration, and symbol.
+	 *
+	 * @param beats        number of beats in measure
+	 * @param beatDuration the Duration of the beats
+	 * @param symbol       the symbol of the time signature
+	 * @return a time signature with the given numerator, beat duration, and symbol
+	 * @throws IllegalArgumentException if beats is less than 1
+	 * @throws NullPointerException     if beatDuration is null
+	 */
+	public static TimeSignature of(int beats, Duration beatDuration, Symbol symbol) {
 		if (beats < 1) {
 			throw new IllegalArgumentException("beats must be at least 1.");
 		}
 
-		return new TimeSignature(beats, Objects.requireNonNull(beatDuration));
+		return new TimeSignature(beats, Objects.requireNonNull(beatDuration), symbol);
 	}
 
-	private TimeSignature(int beats, Duration beatDuration) {
+	private TimeSignature(int beats, Duration beatDuration, Symbol symbol) {
 		this.beats = beats;
 		this.beatDuration = beatDuration;
+		this.symbol = symbol;
 	}
 
 	/**
@@ -75,6 +128,15 @@ public final class TimeSignature {
 	}
 
 	/**
+	 * Returns the symbol used for this time signature.
+	 *
+	 * @return the symbol used for this time signature
+	 */
+	public Symbol getSymbol() {
+		return symbol;
+	}
+
+	/**
 	 * Compare for equality.
 	 *
 	 * @param o Object against which this is compared for equality.
@@ -94,10 +156,7 @@ public final class TimeSignature {
 
 	@Override
 	public int hashCode() {
-		int hash = 7;
-		hash = 29 * hash + this.beats;
-		hash = 29 * hash + Objects.hashCode(this.beatDuration);
-		return hash;
+		return Objects.hash(beats, beatDuration, symbol);
 	}
 
 	/**
@@ -108,6 +167,7 @@ public final class TimeSignature {
 	 */
 	@Override
 	public String toString() {
-		return "Time(" + this.beats + "/" + this.beatDuration.getDenominator() + ")";
+		final String symbolString = symbol.equals(Symbol.NUMERIC) ? "" : "-" + symbol.toString();
+		return "Time(" + this.beats + "/" + this.beatDuration.getDenominator() + ")" + symbolString;
 	}
 }
