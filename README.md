@@ -30,6 +30,7 @@ The coding style of wmn4j is not very strict, but there are some [basic guidelin
 
 Contributing to this project is supposed to be enjoyable, so behaving nicely and respectfully is appreciated. For a general guideline on code-of-conduct we follow the one outlined by [Contributor Covenant](https://www.contributor-covenant.org/version/1/4/code-of-conduct).
 
+For pull requests target the `development` branch. The `master` branch is reserved for releases.
 
 ## Built With
 
