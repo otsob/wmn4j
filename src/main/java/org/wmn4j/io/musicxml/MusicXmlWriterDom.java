@@ -570,6 +570,13 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		timeSigElement.appendChild(beatsElement);
 		timeSigElement.appendChild(beatTypeElement);
 
+		final TimeSignature.Symbol symbol = timeSignature.getSymbol();
+		if (symbol.equals(TimeSignature.Symbol.COMMON)) {
+			timeSigElement.setAttribute(MusicXmlTags.MEAS_ATTR_TIME_SYMBOL, MusicXmlTags.MEAS_ATTR_TIME_COMMON);
+		} else if (symbol.equals(TimeSignature.Symbol.CUT_TIME)) {
+			timeSigElement.setAttribute(MusicXmlTags.MEAS_ATTR_TIME_SYMBOL, MusicXmlTags.MEAS_ATTR_TIME_CUT);
+		}
+
 		return timeSigElement;
 	}
 

@@ -660,31 +660,48 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		final TimeSignature timeSig;
 		final Optional<Node> timeSigNode = DocHelper.findChild(attributesNode, MusicXmlTags.MEAS_ATTR_TIME);
 		if (timeSigNode.isPresent()) {
+			TimeSignature.Symbol symbol = getTimeSigSymbol(timeSigNode.get());
+
 			final int beats = DocHelper.findChild(timeSigNode.get(), MusicXmlTags.MEAS_ATTR_BEATS)
 					.map(beatsNode -> Integer.parseInt(beatsNode.getTextContent()))
 					.orElseThrow();
 
-			final int beatType = DocHelper.findChild(timeSigNode.get(), MusicXmlTags.MEAS_ATTR_BEAT_TYPE)
+			final int beatDenominator = DocHelper.findChild(timeSigNode.get(), MusicXmlTags.MEAS_ATTR_BEAT_TYPE)
 					.map(beatTypeNode -> Integer.parseInt(beatTypeNode.getTextContent()))
 					.orElseThrow();
+
+			final Duration beatType = Duration.of(1, beatDenominator);
 
 			final Node staffNumberNode = timeSigNode.get().getAttributes()
 					.getNamedItem(MusicXmlTags.MEAS_ATTR_STAFF_NUMBER);
 			if (staffNumberNode != null) {
 				final int staffNumberAttr = Integer.parseInt(staffNumberNode.getTextContent());
 				if (staffNumberAttr == staffNumber) {
-					timeSig = TimeSignature.of(beats, beatType);
+					timeSig = TimeSignature.of(beats, beatType, symbol);
 				} else {
 					timeSig = previous.getTimeSig();
 				}
 			} else {
-				timeSig = TimeSignature.of(beats, beatType);
+				timeSig = TimeSignature.of(beats, beatType, symbol);
 			}
 		} else {
 			timeSig = previous.getTimeSig();
 		}
 
 		return timeSig;
+	}
+
+	private TimeSignature.Symbol getTimeSigSymbol(Node timeSigNode) {
+		Optional<String> timeSigSymbol = DocHelper.getAttributeValue(timeSigNode, MusicXmlTags.MEAS_ATTR_TIME_SYMBOL);
+		if (timeSigSymbol.isPresent()) {
+			if (MusicXmlTags.MEAS_ATTR_TIME_COMMON.equals(timeSigSymbol.get())) {
+				return TimeSignature.Symbol.COMMON;
+			} else if (MusicXmlTags.MEAS_ATTR_TIME_CUT.equals(timeSigSymbol.get())) {
+				return TimeSignature.Symbol.CUT_TIME;
+			}
+		}
+
+		return TimeSignature.Symbol.NUMERIC;
 	}
 
 	/**

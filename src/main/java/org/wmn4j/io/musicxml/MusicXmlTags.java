@@ -42,6 +42,9 @@ final class MusicXmlTags {
 	static final String MEASURE_ATTRIBUTES = "attributes";
 	static final String MEAS_ATTR_DIVS = "divisions";
 	static final String MEAS_ATTR_TIME = "time";
+	static final String MEAS_ATTR_TIME_SYMBOL = "symbol";
+	static final String MEAS_ATTR_TIME_COMMON = "common";
+	static final String MEAS_ATTR_TIME_CUT = "cut";
 	static final String MEAS_ATTR_BEAT_TYPE = "beat-type";
 	static final String MEAS_ATTR_BEATS = "beats";
 	static final String MEAS_ATTR_KEY = "key";
