@@ -349,6 +349,14 @@ class MusicXmlFileChecks {
 		assertEquals(TimeSignature.of(3, 4), part.getMeasure(2).getTimeSignature());
 		assertEquals(TimeSignature.of(6, 8), part.getMeasure(3).getTimeSignature());
 		assertEquals(TimeSignature.of(15, 16), part.getMeasure(4).getTimeSignature());
+		assertEquals(TimeSignatures.COMMON, part.getMeasure(5).getTimeSignature());
+		assertEquals(TimeSignatures.CUT_TIME, part.getMeasure(6).getTimeSignature());
+		assertEquals(TimeSignature.of(4, Durations.QUARTER, TimeSignature.Symbol.BEAT_DURATION_AS_DOTTED_NOTE),
+				part.getMeasure(7).getTimeSignature());
+		assertEquals(TimeSignature.of(4, Durations.QUARTER, TimeSignature.Symbol.BEAT_NUMBER_ONLY),
+				part.getMeasure(8).getTimeSignature());
+		assertEquals(TimeSignature.of(4, Durations.QUARTER, TimeSignature.Symbol.BEAT_DURATION_AS_NOTE),
+				part.getMeasure(9).getTimeSignature());
 	}
 
 	/*

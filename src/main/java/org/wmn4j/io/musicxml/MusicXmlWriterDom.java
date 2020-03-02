@@ -570,6 +570,28 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		timeSigElement.appendChild(beatsElement);
 		timeSigElement.appendChild(beatTypeElement);
 
+		switch (timeSignature.getSymbol()) {
+			case COMMON:
+				timeSigElement.setAttribute(MusicXmlTags.MEAS_ATTR_TIME_SYMBOL, MusicXmlTags.MEAS_ATTR_TIME_COMMON);
+				break;
+			case CUT_TIME:
+				timeSigElement.setAttribute(MusicXmlTags.MEAS_ATTR_TIME_SYMBOL, MusicXmlTags.MEAS_ATTR_TIME_CUT);
+				break;
+			case BEAT_NUMBER_ONLY:
+				timeSigElement.setAttribute(MusicXmlTags.MEAS_ATTR_TIME_SYMBOL, MusicXmlTags.MEAS_ATTR_TIME_NUMERATOR);
+				break;
+			case BEAT_DURATION_AS_NOTE:
+				timeSigElement.setAttribute(MusicXmlTags.MEAS_ATTR_TIME_SYMBOL, MusicXmlTags.MEAS_ATTR_TIME_NOTE);
+				break;
+			case BEAT_DURATION_AS_DOTTED_NOTE:
+				timeSigElement
+						.setAttribute(MusicXmlTags.MEAS_ATTR_TIME_SYMBOL, MusicXmlTags.MEAS_ATTR_TIME_DOTTED_NOTE);
+				break;
+			case NUMERIC: // Fall through to default
+			default:
+				// Do not set symbol if NUMERIC
+		}
+
 		return timeSigElement;
 	}
 

@@ -151,7 +151,8 @@ public final class TimeSignature {
 
 		final TimeSignature other = (TimeSignature) o;
 
-		return this.beatDuration.equals(other.beatDuration) && this.beats == other.beats;
+		return this.beatDuration.equals(other.beatDuration) && this.beats == other.beats && this.symbol
+				.equals(other.symbol);
 	}
 
 	@Override
