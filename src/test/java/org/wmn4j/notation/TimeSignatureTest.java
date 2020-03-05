@@ -4,9 +4,6 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.Durations;
-import org.wmn4j.notation.TimeSignature;
-import org.wmn4j.notation.TimeSignatures;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -45,5 +42,12 @@ class TimeSignatureTest {
 	void testToString() {
 		final TimeSignature timeSigA = TimeSignature.of(4, 4);
 		assertEquals("Time(4/4)", timeSigA.toString());
+	}
+
+	@Test
+	void testGetSymbol() {
+		assertEquals(TimeSignature.Symbol.NUMERIC, TimeSignatures.FOUR_FOUR.getSymbol());
+		assertEquals(TimeSignature.Symbol.COMMON, TimeSignatures.COMMON.getSymbol());
+		assertEquals(TimeSignature.Symbol.CUT_TIME, TimeSignatures.CUT_TIME.getSymbol());
 	}
 }
