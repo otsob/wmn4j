@@ -108,7 +108,7 @@ final class NoteEventVector implements Comparable<NoteEventVector> {
 		/*
 		 * Implements the Multilinear family of hash functions
 		 * (see Lemire, Daniel and Kaser, Owen: Strongly Universal String Hashing is Fast.
-		 * The Computer Journal, 57(11):1624–1638, 2014).
+		 * The Computer Journal, 57(11):1624-1638, 2014).
 		 */
 		long hash = HASH_MULTIPLIER_0;
 
