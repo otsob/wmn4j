@@ -9,9 +9,9 @@ import java.util.List;
 /**
  * Represents a translational equivalence class [1].
  * <p>
- * [1] Meredith, David, Lemström, Kjell, and Wiggins, Geraint A.:
+ * [1] Meredith, David, Lemström, Kjell, and Wiggins, Geraint A.:
  * Algorithms for discovering repeated patterns in multidimensional representations of polyphonic music.
- * Journal of New Music Research, 31(4):321–345, 2002.
+ * Journal of New Music Research, 31(4):321-345, 2002.
  * <p>
  * This class is immutable.
  */
