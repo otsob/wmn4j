@@ -4,8 +4,6 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.Duration;
-import org.wmn4j.notation.Durations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,8 +134,28 @@ class DurationTest {
 
 	@Test
 	void testAddDot() {
-		assertEquals(Duration.of(3, 8), Durations.QUARTER.addDot());
-		assertEquals(Duration.of(3, 4), Durations.HALF.addDot());
+		final Duration dottedQuarter = Durations.QUARTER.addDot();
+		assertEquals(Duration.of(3, 8), dottedQuarter);
+		assertEquals(1, dottedQuarter.getDotCount());
+
+		final Duration doubleDottedQuarter = dottedQuarter.addDot();
+		assertEquals(Duration.of(7, 16), doubleDottedQuarter);
+		assertEquals(2, doubleDottedQuarter.getDotCount());
+
+		final Duration tripleDottedHalf = Durations.HALF.addDot().addDot().addDot();
+		assertEquals(Duration.of(15, 16), tripleDottedHalf);
+		assertEquals(3, tripleDottedHalf.getDotCount());
+
+		Duration multiDottedTriplet = Durations.EIGHTH_TRIPLET;
+		Duration expected = Durations.EIGHTH_TRIPLET;
+
+		for (int dots = 1; dots < 5; dots++) {
+			multiDottedTriplet = multiDottedTriplet.addDot();
+			expected = expected.add(Durations.EIGHTH_TRIPLET.divideBy((int) Math.pow(2, dots)));
+
+			assertEquals(dots, multiDottedTriplet.getDotCount());
+			assertEquals(expected, multiDottedTriplet);
+		}
 	}
 
 	@Test

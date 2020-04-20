@@ -15,12 +15,18 @@ import java.util.Iterator;
  * 1/4. The rational number is always reduced to the lowest possible numerator
  * and denominator.
  * <p>
+ * In order to correctly create dotted durations, use the {@link Duration#addDot()} method.
+ * The number of dots a duration has is not used in comparisons, only the actual length of
+ * the duration is considered in comparison. For example 1/4 + 1/8 is considered equal to
+ * a dotted 1/4.
+ * <p>
  * This class is immutable.
  */
 public final class Duration implements Comparable<Duration> {
 
 	private final int numerator;
 	private final int denominator;
+	private final int dotCount;
 
 	/**
 	 * Returns an instance with the given numerator and denominator. The numerator
@@ -50,7 +56,7 @@ public final class Duration implements Comparable<Duration> {
 			reducedDenominator = denominator / gcd;
 		}
 		// TODO: Implement caching instead of creating new.
-		return new Duration(reducedNumerator, reducedDenominator);
+		return new Duration(reducedNumerator, reducedDenominator, 0);
 	}
 
 	/**
@@ -60,9 +66,13 @@ public final class Duration implements Comparable<Duration> {
 	 * @param numerator   the numerator part of the duration
 	 * @param denominator the denominator part of the duration
 	 */
-	private Duration(int numerator, int denominator) {
+	private Duration(int numerator, int denominator, int dotCount) {
 		this.numerator = numerator;
 		this.denominator = denominator;
+		if (dotCount > 5) {
+			throw new IllegalArgumentException("dotCount exceeded allowed limit");
+		}
+		this.dotCount = dotCount;
 	}
 
 	/**
@@ -115,17 +125,45 @@ public final class Duration implements Comparable<Duration> {
 
 	@Override
 	public String toString() {
-		return "(" + this.numerator + "/" + this.denominator + ")";
+		StringBuilder builder = new StringBuilder();
+		builder.append("(").append(this.numerator).append("/").append(this.denominator).append(")")
+				.append(".".repeat(getDotCount()));
+		return builder.toString();
 	}
 
 	/**
-	 * Returns a duration that is this duration with half of this duration added to
-	 * it.
+	 * Returns a duration that is this duration with a dot added to it.
 	 *
-	 * @return duration that is this incremented by half of this
+	 * @return duration that is this duration with a dot added to it
 	 */
 	public Duration addDot() {
-		return this.add(Duration.of(this.numerator, 2 * this.denominator));
+		final int newDotCount = getDotCount() + 1;
+		final Duration dotDuration;
+
+		if (dotCount == 0) {
+			dotDuration = this.divideBy(2);
+		} else {
+			// The duration of previous dot is current duration / (2^newDotCount) - 1.
+			final int prevDotDurationDivisor = (1 << newDotCount) - 1;
+			final Duration prevDotDuration = this.divideBy(prevDotDurationDivisor);
+			// The new dot adds half of previous dot duration.
+			dotDuration = prevDotDuration.divideBy(2);
+		}
+
+		final Duration dottedDuration = this.add(dotDuration);
+
+		return new Duration(dottedDuration.getNumerator(), dottedDuration.getDenominator(), newDotCount);
+	}
+
+	/**
+	 * Returns the number of dots in this duration.
+	 * The dots do not affect the mathematical duration and do not thus
+	 * affect the equality comparisons of durations.
+	 *
+	 * @return the number of dots in this duration
+	 */
+	public int getDotCount() {
+		return dotCount;
 	}
 
 	/**
