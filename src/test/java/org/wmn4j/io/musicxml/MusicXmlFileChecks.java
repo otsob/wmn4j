@@ -814,4 +814,42 @@ class MusicXmlFileChecks {
 		assertTrue(clefChanges.containsKey(Durations.HALF));
 		assertEquals(Clefs.ALTO, clefChanges.get(Durations.HALF));
 	}
+
+	/*
+	 * Expects the content of "dotted_note_test.musicxml".
+	 * Checks only that the durations are correct.
+	 */
+	static void assertDottedNotesReadCorrectly(Score score) {
+		final Measure firstMeasure = score.getPart(0).getMeasure(1, 1);
+
+		final Duration firstNoteDuration = firstMeasure.get(1, 0).getDuration();
+		assertEquals(Durations.QUARTER.addDot(), firstNoteDuration);
+		assertEquals(1, firstNoteDuration.getDotCount());
+
+		final Duration secondNoteDuration = firstMeasure.get(1, 2).getDuration();
+		assertEquals(Durations.EIGHTH, secondNoteDuration);
+		assertEquals(0, secondNoteDuration.getDotCount());
+
+		final Duration secondRestDuration = firstMeasure.get(1, 3).getDuration();
+		assertEquals(Durations.QUARTER.addDot(), secondRestDuration);
+		assertEquals(1, secondRestDuration.getDotCount());
+
+		final Measure secondMeasure = score.getPart(0).getMeasure(1, 2);
+		final Duration thirdNoteDuration = secondMeasure.get(1, 0).getDuration();
+		assertEquals(Durations.HALF.addDot().addDot(), thirdNoteDuration);
+		assertEquals(2, thirdNoteDuration.getDotCount());
+
+		final Measure thirdMeasure = score.getPart(0).getMeasure(1, 3);
+		final Duration fourthNoteDuration = thirdMeasure.get(1, 0).getDuration();
+		assertEquals(Durations.EIGHTH_TRIPLET.addDot(), fourthNoteDuration);
+		assertEquals(1, fourthNoteDuration.getDotCount());
+
+		final Duration fifthNoteDuration = thirdMeasure.get(1, 1).getDuration();
+		assertEquals(Durations.SIXTEENTH_TRIPLET, fifthNoteDuration);
+		assertEquals(0, fifthNoteDuration.getDotCount());
+
+		final Duration sixthNoteDuration = thirdMeasure.get(1, 2).getDuration();
+		assertEquals(Durations.EIGHTH_TRIPLET, sixthNoteDuration);
+		assertEquals(0, sixthNoteDuration.getDotCount());
+	}
 }
