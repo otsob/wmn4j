@@ -245,8 +245,7 @@ class MusicXmlReaderDomTest {
 		final MusicXmlReader reader = getMusicXmlReader(
 				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"), true);
 		try {
-			reader.readScoreBuilder(
-			);
+			reader.readScoreBuilder();
 			fail("No exception was thrown when trying to read XML file that does not comply to MusicXml schema");
 		} catch (IOException ioException) {
 			fail("Reading the score failed due to IOException when a parsing failure was expected");
@@ -364,5 +363,11 @@ class MusicXmlReaderDomTest {
 				"clef_change_where_note_in_another_voice_carries_over.xml", false);
 		MusicXmlFileChecks
 				.assertClefChangeInCorrectPlaceWhenNoteCarriesOverClefChange(scoreBuilderWithClefChange.build());
+	}
+
+	@Test
+	void testDottedDurationsAreReadWithCorrectDotCounts() {
+		Score scoreWithDottedDurations = readScore("dotted_note_test.musicxml", true);
+		MusicXmlFileChecks.assertDottedNotesReadCorrectly(scoreWithDottedDurations);
 	}
 }

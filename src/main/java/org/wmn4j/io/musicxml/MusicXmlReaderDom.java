@@ -924,6 +924,9 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 	private Duration getDuration(Node nodeWithDuration, int divisions) {
 		final Optional<Node> durationNode = DocHelper.findChild(nodeWithDuration, MusicXmlTags.NOTE_DURATION);
+
+		final int dotCount = DocHelper.findChildren(nodeWithDuration, MusicXmlTags.DOT).size();
+
 		if (durationNode.isPresent()) {
 			final int nominator = Integer.parseInt(durationNode.get().getTextContent());
 
@@ -931,7 +934,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			if (nominator != 0) {
 				// In MusicXml divisions is the number of parts into which a quarter note
 				// is divided. Therefore divisions needs to be multiplied by 4.
-				return Duration.of(nominator, divisions * 4);
+				return Duration.of(nominator, divisions * 4, dotCount);
 			}
 		}
 
