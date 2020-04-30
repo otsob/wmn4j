@@ -154,22 +154,18 @@ public final class Duration implements Comparable<Duration> {
 	 * @return duration that is this duration with a dot added to it
 	 */
 	public Duration addDot() {
-		final int newDotCount = getDotCount() + 1;
-		final Duration dotDuration;
-
-		if (dotCount == 0) {
-			dotDuration = this.divideBy(2);
-		} else {
-			// The duration of previous dot is current duration / (2^newDotCount) - 1.
-			final int prevDotDurationDivisor = (1 << newDotCount) - 1;
-			final Duration prevDotDuration = this.divideBy(prevDotDurationDivisor);
-			// The new dot adds half of previous dot duration.
-			dotDuration = prevDotDuration.divideBy(2);
-		}
-
+		/*
+		 * Adding the nth dot adds half of what the (n + 1)th dot added. For example,
+		 * a duration with three dots d_3 is formed by adding dots to a dotless duration d_0:
+		 * d_3 = d_0 + d_0/2 + d_0/4 + d_0/8. This forms a geometric sum. From this it's
+		 * possible to infer that adding a dot to a duration d_n with n dots adds
+		 * d_n / (2^(n + 2) - 2) to the duration.
+		 */
+		final int dotDurationDivisor = (1 << (dotCount + 2)) - 2;
+		final Duration dotDuration = this.divideBy(dotDurationDivisor);
 		final Duration dottedDuration = this.add(dotDuration);
 
-		return of(dottedDuration.getNumerator(), dottedDuration.getDenominator(), newDotCount);
+		return of(dottedDuration.getNumerator(), dottedDuration.getDenominator(), dotCount + 1);
 	}
 
 	/**
