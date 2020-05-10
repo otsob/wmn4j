@@ -104,10 +104,10 @@ class DurationTest {
 	}
 
 	@Test
-	void testMultiplyBy() {
-		assertEquals(Durations.QUARTER, Durations.EIGHTH.multiplyBy(2));
-		assertEquals(Durations.QUARTER, Durations.EIGHTH_TRIPLET.multiplyBy(3));
-		assertEquals(Durations.EIGHTH.addDot(), Durations.SIXTEENTH.multiplyBy(3));
+	void testMultiply() {
+		assertEquals(Durations.QUARTER, Durations.EIGHTH.multiply(2));
+		assertEquals(Durations.QUARTER, Durations.EIGHTH_TRIPLET.multiply(3));
+		assertEquals(Durations.EIGHTH.addDot(), Durations.SIXTEENTH.multiply(3));
 	}
 
 	@Test
@@ -172,7 +172,7 @@ class DurationTest {
 			durations.add(Durations.QUARTER);
 		}
 
-		assertEquals(Durations.QUARTER.multiplyBy(numOfQuarters),
+		assertEquals(Durations.QUARTER.multiply(numOfQuarters),
 				Duration.sumOf(durations), "Four quarters did not add to whole note.");
 
 		durations = new ArrayList<>();

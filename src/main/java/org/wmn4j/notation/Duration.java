@@ -211,7 +211,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @return a Duration that is this duration multiplied by multiplier
 	 * @throws IllegalArgumentException if multiplier is less than 1
 	 */
-	public Duration multiplyBy(int multiplier) {
+	public Duration multiply(int multiplier) {
 		return create(this.fraction.multiply(multiplier), 0);
 	}
 

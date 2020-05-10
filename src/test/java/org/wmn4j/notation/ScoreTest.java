@@ -262,7 +262,7 @@ public class ScoreTest {
 
 		assertEquals(Note.of(Pitch.Base.A, 0, 4, Durations.QUARTER), patternWithNotesAcrossParts.get(2, 0));
 		assertEquals(Rest.of(Durations.QUARTER), patternWithNotesAcrossParts.get(2, 1));
-		assertEquals(Rest.of(Durations.QUARTER.multiplyBy(3)), patternWithNotesAcrossParts.get(2, 2));
+		assertEquals(Rest.of(Durations.QUARTER.multiply(3)), patternWithNotesAcrossParts.get(2, 2));
 		assertEquals(Note.of(Pitch.Base.D, 0, 4, Durations.HALF), patternWithNotesAcrossParts.get(2, 3));
 
 		assertEquals(4, patternWithNotesAcrossParts.getVoiceSize(3));

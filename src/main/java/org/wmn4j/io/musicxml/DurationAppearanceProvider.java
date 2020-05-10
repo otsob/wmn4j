@@ -94,7 +94,7 @@ enum DurationAppearanceProvider {
 		if (showTypeDuration != null && basicDurationAppearances.containsKey(showTypeDuration)) {
 			elements.add(getBasicDurationType(showTypeDuration, document));
 
-			final Duration durationThatIsSplitByTuplet = duration.multiplyBy(tupletNotesThatFitInTheDividedDuration);
+			final Duration durationThatIsSplitByTuplet = duration.multiply(tupletNotesThatFitInTheDividedDuration);
 
 			final int normalNotesThatWouldFitInTheSplitDuration =
 					(durationThatIsSplitByTuplet.getNumerator() * showTypeDuration.getDenominator())

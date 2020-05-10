@@ -283,7 +283,7 @@ class MusicXmlFileChecks {
 		assertTrue(lower.getMeasure(1).containsClefChanges(), "Lower staff measure 1 does not contain a clef change");
 		final Map<Duration, Clef> clefChanges = lower.getMeasure(1).getClefChanges();
 		assertEquals(1, clefChanges.size(), "Incorrect number of clef changes");
-		final Duration offset = Durations.HALF.add(Durations.SIXTEENTH.multiplyBy(3));
+		final Duration offset = Durations.HALF.add(Durations.SIXTEENTH.multiply(3));
 		assertEquals(Clefs.G, clefChanges.get(offset), "Incorrect clef change");
 
 		assertEquals(Clefs.G, lower.getMeasure(2).getClef(), "Incorrect clef measure 2 of lower staff");
@@ -403,7 +403,7 @@ class MusicXmlFileChecks {
 
 		final Note eight = (Note) thirdMeasure.get(1, 3);
 		assertTrue(eight.isTiedToFollowing());
-		assertEquals(Durations.WHOLE.multiplyBy(2).add(Durations.QUARTER), eight.getTiedDuration());
+		assertEquals(Durations.WHOLE.multiply(2).add(Durations.QUARTER), eight.getTiedDuration());
 
 		final Measure fourthMeasure = part.getMeasure(4);
 		final Note ninth = (Note) fourthMeasure.get(1, 0);
