@@ -223,7 +223,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @return a Duration that is this duration divided by divider
 	 * @throws IllegalArgumentException if divider is less than 1
 	 */
-	public Duration divideBy(int divisor) {
+	public Duration divide(int divisor) {
 		return create(this.fraction.divide(divisor), dotCount);
 	}
 

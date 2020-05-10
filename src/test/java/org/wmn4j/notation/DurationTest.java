@@ -111,10 +111,10 @@ class DurationTest {
 	}
 
 	@Test
-	void testDivideBy() {
-		assertEquals(Durations.EIGHTH, Durations.QUARTER.divideBy(2));
-		assertEquals(Durations.QUARTER, Durations.WHOLE.divideBy(4));
-		assertEquals(Duration.of(1, 20), Durations.QUARTER.divideBy(5));
+	void testDivide() {
+		assertEquals(Durations.EIGHTH, Durations.QUARTER.divide(2));
+		assertEquals(Durations.QUARTER, Durations.WHOLE.divide(4));
+		assertEquals(Duration.of(1, 20), Durations.QUARTER.divide(5));
 	}
 
 	@Test
@@ -157,7 +157,7 @@ class DurationTest {
 
 		for (int dots = 1; dots < 5; dots++) {
 			multiDottedTriplet = multiDottedTriplet.addDot();
-			expected = expected.add(Durations.EIGHTH_TRIPLET.divideBy((int) Math.pow(2, dots)));
+			expected = expected.add(Durations.EIGHTH_TRIPLET.divide((int) Math.pow(2, dots)));
 
 			assertEquals(dots, multiDottedTriplet.getDotCount());
 			assertEquals(expected, multiDottedTriplet);
