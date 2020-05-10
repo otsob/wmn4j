@@ -3,7 +3,8 @@
  */
 package org.wmn4j.notation;
 
-import java.math.BigInteger;
+import org.apache.commons.math3.fraction.Fraction;
+
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -24,21 +25,21 @@ import java.util.Iterator;
  */
 public final class Duration implements Comparable<Duration> {
 
-	private final int numerator;
-	private final int denominator;
+	private static final int MAX_DOT_COUNT = 5;
+
+	private final Fraction fraction;
 	private final int dotCount;
 
 	/**
 	 * Returns an instance with the given numerator and denominator. The numerator
 	 * and denominator must be at least 1.
 	 *
-	 * @param numerator   the numerator part of the duration
-	 * @param denominator the denominator part of the duration
+	 * @param numerator   the positive numerator part of the duration
+	 * @param denominator the positive denominator part of the duration
 	 * @return an instance with the given numerator and denominator
-	 * @throws IllegalArgumentException if numerator or denominator are less than 1
 	 */
 	public static Duration of(int numerator, int denominator) {
-		return of(numerator, denominator, 0);
+		return create(new Fraction(numerator, denominator), 0);
 	}
 
 	/**
@@ -47,47 +48,39 @@ public final class Duration implements Comparable<Duration> {
 	 * and at most 5. The given dot count does not affect the length of the duration, in order to create
 	 * dotted durations by extending the length of the duration use the {@link Duration#addDot()} method.
 	 *
-	 * @param numerator   the numerator part of the duration
-	 * @param denominator the denominator part of the duration
+	 * @param numerator   the positive numerator part of the duration
+	 * @param denominator the positive denominator part of the duration
 	 * @param dotCount    the number of dots used to express the duration
 	 * @return an instance with the given numerator and denominator
-	 * @throws IllegalArgumentException if numerator or denominator are less than 1
 	 */
 	public static Duration of(int numerator, int denominator, int dotCount) {
+		return create(new Fraction(numerator, denominator), dotCount);
+	}
 
-		if (numerator < 1) {
+	/**
+	 * Private creator method.
+	 */
+	private static Duration create(Fraction fraction, int dotCount) {
+
+		if (fraction.getNumerator() < 1) {
 			throw new IllegalArgumentException("numerator must be at least 1");
 		}
-		if (denominator < 1) {
+		if (fraction.getDenominator() < 1) {
 			throw new IllegalArgumentException("denominator must be at least 1");
 		}
-		if (dotCount < 0 || dotCount > 5) {
-			throw new IllegalArgumentException("dotCount must be at least zero and at most 5.");
+		if (dotCount < 0 || dotCount > MAX_DOT_COUNT) {
+			throw new IllegalArgumentException("dotCount must be at least zero and at most " + MAX_DOT_COUNT);
 		}
 
-		int reducedNumerator = numerator;
-		int reducedDenominator = denominator;
-
-		// TODO: Come up with a more effective way of finding GCD
-		if (numerator != 1) {
-			final int gcd = BigInteger.valueOf(numerator).gcd(BigInteger.valueOf(denominator)).intValue();
-			reducedNumerator = numerator / gcd;
-			reducedDenominator = denominator / gcd;
-		}
-		// TODO: Implement caching instead of creating new.
-		return new Duration(reducedNumerator, reducedDenominator, dotCount);
+		return new Duration(fraction, dotCount);
 	}
 
 	/**
 	 * Constructor for the class. The constructor is private, to get a Duration
 	 * object use the static method {@link #of(int, int) getDuration}.
-	 *
-	 * @param numerator   the numerator part of the duration
-	 * @param denominator the denominator part of the duration
 	 */
-	private Duration(int numerator, int denominator, int dotCount) {
-		this.numerator = numerator;
-		this.denominator = denominator;
+	private Duration(Fraction fraction, int dotCount) {
+		this.fraction = fraction;
 
 		this.dotCount = dotCount;
 	}
@@ -98,7 +91,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @return the numerator of this duration
 	 */
 	public int getNumerator() {
-		return this.numerator;
+		return fraction.getNumerator();
 	}
 
 	/**
@@ -107,7 +100,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @return the denominator of this duration.
 	 */
 	public int getDenominator() {
-		return this.denominator;
+		return fraction.getDenominator();
 	}
 
 	/**
@@ -129,21 +122,18 @@ public final class Duration implements Comparable<Duration> {
 
 		final Duration other = (Duration) o;
 
-		return (this.numerator == other.numerator) && (this.denominator == other.denominator);
+		return this.fraction.equals(other.fraction);
 	}
 
 	@Override
 	public int hashCode() {
-		int hash = 7;
-		hash = 83 * hash + this.numerator;
-		hash = 83 * hash + this.denominator;
-		return hash;
+		return fraction.hashCode();
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("(").append(this.numerator).append("/").append(this.denominator).append(")")
+		builder.append("(").append(getNumerator()).append("/").append(getDenominator()).append(")")
 				.append(".".repeat(getDotCount()));
 		return builder.toString();
 	}
@@ -162,10 +152,9 @@ public final class Duration implements Comparable<Duration> {
 		 * d_n / (2^(n + 2) - 2) to the duration.
 		 */
 		final int dotDurationDivisor = (1 << (dotCount + 2)) - 2;
-		final Duration dotDuration = this.divideBy(dotDurationDivisor);
-		final Duration dottedDuration = this.add(dotDuration);
 
-		return of(dottedDuration.getNumerator(), dottedDuration.getDenominator(), dotCount + 1);
+		final Fraction durationValue = this.fraction.add(this.fraction.divide(dotDurationDivisor));
+		return create(durationValue, dotCount + 1);
 	}
 
 	/**
@@ -190,7 +179,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @return the fraction numerator/denominator as double.
 	 */
 	public double toDouble() {
-		return (double) this.numerator / this.denominator;
+		return fraction.doubleValue();
 	}
 
 	/**
@@ -200,10 +189,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @return a Duration that is the sum of this and other.
 	 */
 	public Duration add(Duration other) {
-		final int nom = this.numerator * other.denominator + this.denominator * other.numerator;
-		final int denom = this.denominator * other.denominator;
-
-		return of(nom, denom);
+		return create(this.fraction.add(other.fraction), 0);
 	}
 
 	/**
@@ -214,10 +200,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @return a Duration that is this other minus other.
 	 */
 	public Duration subtract(Duration other) {
-		final int nom = this.numerator * other.denominator - this.denominator * other.numerator;
-		final int denom = this.denominator * other.denominator;
-
-		return of(nom, denom);
+		return create(this.fraction.subtract(other.fraction), 0);
 	}
 
 	/**
@@ -229,11 +212,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @throws IllegalArgumentException if multiplier is less than 1
 	 */
 	public Duration multiplyBy(int multiplier) {
-		if (multiplier < 1) {
-			throw new IllegalArgumentException("multiplier must be at least 1. Was " + multiplier);
-		}
-
-		return of(this.numerator * multiplier, this.denominator);
+		return create(this.fraction.multiply(multiplier), 0);
 	}
 
 	/**
@@ -245,11 +224,7 @@ public final class Duration implements Comparable<Duration> {
 	 * @throws IllegalArgumentException if divider is less than 1
 	 */
 	public Duration divideBy(int divisor) {
-		if (divisor < 1) {
-			throw new IllegalArgumentException("divider must be at least 1. Was " + divisor);
-		}
-
-		return of(this.numerator, this.denominator * divisor);
+		return create(this.fraction.divide(divisor), dotCount);
 	}
 
 	/**
@@ -281,7 +256,7 @@ public final class Duration implements Comparable<Duration> {
 	 */
 	@Override
 	public int compareTo(Duration other) {
-		return this.numerator * other.denominator - other.numerator * this.denominator;
+		return this.fraction.compareTo(other.fraction);
 	}
 
 	/**
@@ -297,13 +272,12 @@ public final class Duration implements Comparable<Duration> {
 		}
 
 		Iterator<Duration> iterator = durations.iterator();
-		Duration cumulatedDur = iterator.next();
+		Fraction cumulatedDur = Fraction.ZERO;
 
-		// TODO: Optimize this.
 		while (iterator.hasNext()) {
-			cumulatedDur = cumulatedDur.add(iterator.next());
+			cumulatedDur = cumulatedDur.add(iterator.next().fraction);
 		}
 
-		return cumulatedDur;
+		return create(cumulatedDur, 0);
 	}
 }
