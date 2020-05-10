@@ -400,7 +400,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			}
 		}
 		if (clef != null && !offsets.get(clefStaff).isEmpty()) {
-			Duration cumulatedDur = Duration.sumOf(offsets.get(clefStaff));
+			Duration cumulatedDur = Duration.sum(offsets.get(clefStaff));
 			if (backupDuration != null) {
 				cumulatedDur = cumulatedDur.subtract(backupDuration);
 			}

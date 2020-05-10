@@ -165,7 +165,7 @@ class DurationTest {
 	}
 
 	@Test
-	void testSumOf() {
+	void testSum() {
 		List<Duration> durations = new ArrayList<>();
 		final int numOfQuarters = 4;
 		for (int i = 0; i < numOfQuarters; ++i) {
@@ -173,7 +173,7 @@ class DurationTest {
 		}
 
 		assertEquals(Durations.QUARTER.multiply(numOfQuarters),
-				Duration.sumOf(durations), "Four quarters did not add to whole note.");
+				Duration.sum(durations), "Four quarters did not add to whole note.");
 
 		durations = new ArrayList<>();
 		durations.add(Durations.EIGHTH);
@@ -186,6 +186,6 @@ class DurationTest {
 		durations.add(Durations.EIGHTH_TRIPLET);
 		durations.add(Durations.EIGHTH_TRIPLET);
 		durations.add(Durations.EIGHTH_TRIPLET);
-		assertEquals(Durations.WHOLE, Duration.sumOf(durations), "Mixed durations did not add to whole note.");
+		assertEquals(Durations.WHOLE, Duration.sum(durations), "Mixed durations did not add to whole note.");
 	}
 }

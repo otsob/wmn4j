@@ -291,7 +291,7 @@ public final class Note implements Durational, Pitched {
 			currentNote = currentNote.get().getFollowingTiedNote();
 		}
 
-		return Duration.sumOf(tiedDurations);
+		return Duration.sum(tiedDurations);
 	}
 
 	/**

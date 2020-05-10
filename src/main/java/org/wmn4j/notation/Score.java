@@ -281,7 +281,7 @@ public final class Score implements Iterable<Part> {
 					break;
 				}
 
-				Duration totalDuration = Duration.sumOf(restDurationInBeginning);
+				Duration totalDuration = Duration.sum(restDurationInBeginning);
 				if (durationToTrimFromBeginnings == null || durationToTrimFromBeginnings.isLongerThan(totalDuration)) {
 					durationToTrimFromBeginnings = totalDuration;
 				}

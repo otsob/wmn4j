@@ -140,7 +140,7 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 			durations.add(durational.getDuration());
 		}
 
-		return Duration.sumOf(durations);
+		return Duration.sum(durations);
 	}
 
 	private Duration getLongestVoiceDuration(Pattern pattern) {

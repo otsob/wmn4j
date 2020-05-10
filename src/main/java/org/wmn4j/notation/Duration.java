@@ -5,7 +5,6 @@ package org.wmn4j.notation;
 
 import org.apache.commons.math3.fraction.Fraction;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -261,16 +260,12 @@ public final class Duration implements Comparable<Duration> {
 
 	/**
 	 * Returns the total summed duration of the given durations.
+	 * The given iterable of durations must not be empty.
 	 *
 	 * @param durations the durations whose sum is returned
 	 * @return The sum of the given durations
-	 * @throws IllegalArgumentException if durations is empty
 	 */
-	public static Duration sumOf(Collection<Duration> durations) {
-		if (durations.isEmpty()) {
-			throw new IllegalArgumentException("Cannot compute sum of durations from empty list");
-		}
-
+	public static Duration sum(Iterable<Duration> durations) {
 		Iterator<Duration> iterator = durations.iterator();
 		Fraction cumulatedDur = Fraction.ZERO;
 
