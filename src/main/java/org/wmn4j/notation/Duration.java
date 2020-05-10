@@ -157,6 +157,28 @@ public final class Duration implements Comparable<Duration> {
 	}
 
 	/**
+	 * Returns a duration that is this duration with one dot removed. If this duration has no
+	 * dots specified (i.e. {@link Duration#getDotCount()} returns 0) for its expression then the method returns
+	 * this Duration.
+	 *
+	 * @return a duration that is this duration with one dot removed
+	 */
+	public Duration removeDot() {
+		if (dotCount == 0) {
+			return this;
+		}
+
+		/*
+		 * Using the geometric sum expression of dotted durations is possible to
+		 * compute how much the last added dot contributed to the total duration.
+		 */
+		final int dotDurationDivisor = (1 << (dotCount + 1)) - 1;
+
+		final Fraction lastDotDuration = this.fraction.divide(dotDurationDivisor);
+		return create(this.fraction.subtract(lastDotDuration), dotCount - 1);
+	}
+
+	/**
 	 * Returns the number of dots in this duration.
 	 * The dots do not affect the mathematical duration and do not thus
 	 * affect the equality comparisons of durations.
