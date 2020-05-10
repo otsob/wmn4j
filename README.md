@@ -34,7 +34,9 @@ For pull requests target the `development` branch. The `master` branch is reserv
 
 ## Built With
 
-* [Gradle](https://gradle.org) - Dependency Management
+* [Gradle](https://gradle.org)
+* [Apache Commons Math](https://commons.apache.org/proper/commons-math/)
+* [SLF4J](http://www.slf4j.org)
 
 
 ## Versioning
@@ -44,7 +46,8 @@ The released beta versions of wmn4j are available on [Maven central](https://sea
 
 ## Authors
 
-* **Otso Björklund** - *Initial work* - [otsob](https://github.com/otsob)
+* **Otso Björklund** - [otsob](https://github.com/otsob)
+* **Matias Wargelin**
 
 See also the list of [contributors](https://github.com/otsob/wmn4j/graphs/contributors) who participated in this project.
 
