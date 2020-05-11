@@ -934,7 +934,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			if (nominator != 0) {
 				// In MusicXml divisions is the number of parts into which a quarter note
 				// is divided. Therefore divisions needs to be multiplied by 4.
-				return Duration.of(nominator, divisions * 4, dotCount);
+				return Duration.of(nominator, divisions * 4, dotCount, 1);
 			}
 		}
 

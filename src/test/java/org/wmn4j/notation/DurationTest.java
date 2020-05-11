@@ -10,8 +10,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class DurationTest {
 
@@ -26,23 +26,10 @@ class DurationTest {
 
 	@Test
 	void testCreateDurationWithInvalidParameter() {
-		try {
-			final Duration duration = Duration.of(-1, 2);
-			fail("No exception was thrown. Expected: IllegalArgumentException");
-		} catch (final Exception e) {
-			assertTrue(e instanceof IllegalArgumentException);
-		}
-		try {
-			final Duration duration = Duration.of(1, 0);
-			fail("No exception was thrown.");
-		} catch (final Exception e) {
-		}
-		try {
-			final Duration duration = Duration.of(1, 2, -1);
-			fail("No exception was thrown. Expected: IllegalArgumentException");
-		} catch (final Exception e) {
-			assertTrue(e instanceof IllegalArgumentException);
-		}
+		assertThrows(Exception.class, () -> Duration.of(-1, 2));
+		assertThrows(Exception.class, () -> Duration.of(1, 0));
+		assertThrows(Exception.class, () -> Duration.of(1, 2, -1, 1));
+		assertThrows(Exception.class, () -> Duration.of(1, 2, 0, 0));
 	}
 
 	@Test
@@ -196,6 +183,34 @@ class DurationTest {
 		final Duration quintuplet = Durations.QUARTER.divide(5).addDot().addDot().addDot().removeDots();
 		assertEquals(Durations.QUARTER.divide(5), quintuplet);
 		assertEquals(0, quintuplet.getDotCount());
+	}
+
+	@Test
+	void testCorrectTupletDivisorIsReturnedAfterDivision() {
+		final Duration quarter = Durations.QUARTER;
+		assertEquals(1, quarter.getTupletDivisor());
+		assertEquals(1, quarter.divide(2).getTupletDivisor());
+		assertEquals(3, quarter.divide(3).getTupletDivisor());
+		assertEquals(7, quarter.divide(7).getTupletDivisor());
+		assertEquals(3, quarter.divide(2).divide(3).getTupletDivisor());
+	}
+
+	@Test
+	void testCorrectTupletDivisorIsReturnedAfterAddingDots() {
+		final Duration triplet = Durations.EIGHTH_TRIPLET;
+		assertEquals(3, triplet.getTupletDivisor());
+		assertEquals(3, triplet.addDot().getTupletDivisor());
+		assertEquals(3, triplet.addDot().addDot().getTupletDivisor());
+		assertEquals(3, triplet.addDot().removeDot().getTupletDivisor());
+		assertEquals(3, triplet.addDot().removeDots().getTupletDivisor());
+	}
+
+	@Test
+	void testCorrectDotCountIsReturnedAfterDivision() {
+		final Duration dottedEight = Durations.EIGHTH.addDot();
+		assertEquals(1, dottedEight.getDotCount());
+		assertEquals(1, dottedEight.divide(2).getDotCount());
+		assertEquals(1, dottedEight.divide(3).getDotCount());
 	}
 
 	@Test
