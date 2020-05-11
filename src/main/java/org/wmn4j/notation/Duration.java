@@ -179,6 +179,28 @@ public final class Duration implements Comparable<Duration> {
 	}
 
 	/**
+	 * Returns a duration that is this duration with all dots removed. If this duration has no
+	 * dots specified (i.e. {@link Duration#getDotCount()} returns 0) for its expression then the method returns
+	 * this Duration.
+	 *
+	 * @return a duration that is this duration with all dots removed.
+	 */
+	public Duration removeDots() {
+		if (dotCount == 0) {
+			return this;
+		}
+
+		/*
+		 * If a duration d_n has n dots, then the duration d_0 that is produced by removing all dots is
+		 * d_0 = d_n / (2 - (1/2)^n). This is derived from the geometric sum produced by adding n dots to
+		 * a duration.
+		 */
+		Fraction denominator = new Fraction(2, 1).subtract(new Fraction(1, (1 << dotCount)));
+		Fraction durationWithoutDots = this.fraction.divide(denominator);
+		return create(durationWithoutDots, 0);
+	}
+
+	/**
 	 * Returns the number of dots in this duration.
 	 * The dots do not affect the mathematical duration and do not thus
 	 * affect the equality comparisons of durations.

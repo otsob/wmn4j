@@ -182,6 +182,23 @@ class DurationTest {
 	}
 
 	@Test
+	void testRemoveDots() {
+		assertEquals(Durations.EIGHTH, Durations.EIGHTH.removeDots());
+
+		Duration quarter = Durations.QUARTER.addDot().removeDots();
+		assertEquals(Durations.QUARTER, quarter);
+		assertEquals(0, quarter.getDotCount());
+
+		quarter = Durations.QUARTER.addDot().addDot().removeDots();
+		assertEquals(Durations.QUARTER, quarter);
+		assertEquals(0, quarter.getDotCount());
+
+		final Duration quintuplet = Durations.QUARTER.divide(5).addDot().addDot().addDot().removeDots();
+		assertEquals(Durations.QUARTER.divide(5), quintuplet);
+		assertEquals(0, quintuplet.getDotCount());
+	}
+
+	@Test
 	void testSum() {
 		List<Duration> durations = new ArrayList<>();
 		final int numOfQuarters = 4;
