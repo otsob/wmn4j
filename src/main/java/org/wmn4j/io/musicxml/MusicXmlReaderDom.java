@@ -932,9 +932,21 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 			// Backup elements may have 0 duration, therefore this must be checked.
 			if (nominator != 0) {
+
+				int tupletDivisor = 1;
+				final Optional<Node> timeModificationNode = DocHelper
+						.findChild(nodeWithDuration, MusicXmlTags.TIME_MODIFICATION);
+				if (timeModificationNode.isPresent()) {
+					Optional<Node> actualNotes = DocHelper
+							.findChild(timeModificationNode.get(), MusicXmlTags.TIME_MODIFICATION_ACTUAL_NOTES);
+					if (actualNotes.isPresent()) {
+						tupletDivisor = Integer.parseInt(actualNotes.get().getTextContent());
+					}
+				}
+
 				// In MusicXml divisions is the number of parts into which a quarter note
 				// is divided. Therefore divisions needs to be multiplied by 4.
-				return Duration.of(nominator, divisions * 4, dotCount, 1);
+				return Duration.of(nominator, divisions * 4, dotCount, tupletDivisor);
 			}
 		}
 

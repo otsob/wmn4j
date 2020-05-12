@@ -231,7 +231,8 @@ public final class Duration implements Comparable<Duration> {
 
 	/**
 	 * Returns the tuplet divisor used to express this duration in notation.
-	 * For example, for a triplet duration this method will return 3. Note that whether
+	 * For example, for a triplet duration this method will return 3.
+	 * For non-tuplets returns 1. Note that whether
 	 * the correct tuplet divisor is available depends on how the duration has been created.
 	 * Addition, subtraction, and multiplication are not guaranteed to reserve expression information.
 	 *

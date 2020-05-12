@@ -370,4 +370,10 @@ class MusicXmlReaderDomTest {
 		Score scoreWithDottedDurations = readScore("dotted_note_test.musicxml", true);
 		MusicXmlFileChecks.assertDottedNotesReadCorrectly(scoreWithDottedDurations);
 	}
+
+	@Test
+	void testTupletDurationsAreReadWithCorrectTupletDivisors() {
+		Score scoreWithTupletDurations = readScore("tuplet_test.musicxml", true);
+		MusicXmlFileChecks.assertTupletNotesReadCorrectly(scoreWithTupletDurations);
+	}
 }
