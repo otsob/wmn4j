@@ -6,6 +6,7 @@ package org.wmn4j.notation;
 import org.apache.commons.math3.fraction.Fraction;
 
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Represents the duration of any musical object with a duration such as a note
@@ -20,7 +21,9 @@ import java.util.Iterator;
  * Only the actual length of the duration is considered in comparison. For example 1/4 + 1/8 is considered equal to
  * a dotted 1/4. In order to correctly create dotted durations and tuplet durations, use the {@link Duration#addDot()}
  * and {@link Duration#divide(int)} methods. Addition, subtraction, and multiplication are not guaranteed to retain
- * expression information.
+ * expression information. Whether a duration is expressible as a single notation symbol using its expression
+ * information
+ * can be checked with the {@link Duration#hasExpression()} method.
  * <p>
  * This class is immutable.
  */
@@ -29,6 +32,14 @@ public final class Duration implements Comparable<Duration> {
 	private static final int MAX_DOT_COUNT = 5;
 	private static final int DEFAULT_DOT_COUNT = 0;
 	private static final int DEFAULT_TUPLET_DIVISOR = 1;
+
+	// Maximum value a basic note type denominator can have to be expressible at all
+	// in music notation.
+	private static final int MAX_EXPRESSIBLE_BASIC_DENOMINATOR = 1024;
+
+	// Numerators that are allowed to occur in simplified durations, covers
+	// cases like breve (double whole note) and longa (quadruple whole note).
+	private static final Set<Integer> EXPRESSIBLE_NUMERATORS = Set.of(1, 2, 4);
 
 	private final Fraction fraction;
 	private final int tupletDivisor;
@@ -208,14 +219,18 @@ public final class Duration implements Comparable<Duration> {
 			return this;
 		}
 
+		Fraction durationWithoutDots = removeDots(this.fraction, dotCount);
+		return create(durationWithoutDots, DEFAULT_DOT_COUNT, tupletDivisor);
+	}
+
+	private Fraction removeDots(Fraction withDots, int dotCount) {
 		/*
 		 * If a duration d_n has n dots, then the duration d_0 that is produced by removing all dots is
 		 * d_0 = d_n / (2 - (1/2)^n). This is derived from the geometric sum produced by adding n dots to
 		 * a duration.
 		 */
-		Fraction denominator = new Fraction(2, 1).subtract(new Fraction(1, (1 << dotCount)));
-		Fraction durationWithoutDots = this.fraction.divide(denominator);
-		return create(durationWithoutDots, DEFAULT_DOT_COUNT, tupletDivisor);
+		Fraction divisor = new Fraction(2, 1).subtract(new Fraction(1, (1 << dotCount)));
+		return withDots.divide(divisor);
 	}
 
 	/**
@@ -351,6 +366,43 @@ public final class Duration implements Comparable<Duration> {
 	@Override
 	public int compareTo(Duration other) {
 		return this.fraction.compareTo(other.fraction);
+	}
+
+	/**
+	 * Returns true if this duration is expressible as a single notation symbol with
+	 * the expression information it contains (dot count, tuplet divisor).
+	 *
+	 * @return true if this duration is expressible as a single notation symbol with contianed expression information.
+	 */
+	public boolean hasExpression() {
+		// Try to simpilify the duration to one corresponding to a basic notation symbol, i.e., one that
+		// is expressible as (1 / 2^n).
+		Fraction basicDuration = fraction;
+		if (dotCount > 0) {
+			basicDuration = removeDots(basicDuration, dotCount);
+		}
+
+		int simplifiedDenominator = basicDuration.getDenominator();
+
+		if (tupletDivisor > DEFAULT_TUPLET_DIVISOR) {
+			// Simplify the denominator using the tuplet divisor if it specifies a tuplet duration.
+			simplifiedDenominator /= tupletDivisor;
+
+			// Check that the division was even.
+			if (simplifiedDenominator * tupletDivisor != basicDuration.getDenominator()) {
+				return false;
+			}
+		}
+
+		// After removing dots and dividing away the tuplet information, the
+		// numerator should be 1 (most durations), 2 (some durations like breve or 2/3),
+		// or 4 (longa, the longest note type),
+		// and the denominator should be a power of two if the expression information was correct.
+		boolean isNumeratorExpressible = EXPRESSIBLE_NUMERATORS.contains(basicDuration.getNumerator());
+		boolean isDenominatorExpressible =
+				isPowerOfTwo(simplifiedDenominator) && simplifiedDenominator <= MAX_EXPRESSIBLE_BASIC_DENOMINATOR;
+
+		return isNumeratorExpressible && isDenominatorExpressible;
 	}
 
 	/**

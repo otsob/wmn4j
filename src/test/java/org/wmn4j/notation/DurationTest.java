@@ -214,6 +214,35 @@ class DurationTest {
 	}
 
 	@Test
+	void testHasExpression() {
+		assertTrue(Durations.EIGHTH.hasExpression());
+		assertTrue(Durations.WHOLE.hasExpression());
+
+		assertTrue(Durations.EIGHTH.addDot().hasExpression());
+		assertTrue(Durations.QUARTER_TRIPLET.hasExpression());
+		assertTrue(Durations.QUARTER_TRIPLET.addDot().hasExpression());
+
+		assertTrue(Durations.EIGHTH.add(Durations.EIGHTH).hasExpression());
+
+		// Test breve and longa.
+		assertTrue(Duration.of(2, 1).hasExpression());
+		assertTrue(Duration.of(4, 1).hasExpression());
+
+		assertTrue(Duration.of(2, 3, 0, 3).hasExpression());
+
+		assertTrue(Durations.QUARTER.divide(3).hasExpression());
+		assertTrue(Durations.QUARTER.divide(3).addDot().hasExpression());
+
+		assertFalse(Durations.EIGHTH.multiply(5).hasExpression());
+		assertFalse(Duration.of(1, 8, 2, 6).hasExpression());
+
+		assertFalse(Durations.QUARTER.add(Durations.EIGHTH).hasExpression());
+		assertFalse(Durations.HALF.subtract(Durations.EIGHTH).hasExpression());
+
+		assertFalse(Duration.of(1, 2048).hasExpression());
+	}
+
+	@Test
 	void testSum() {
 		List<Duration> durations = new ArrayList<>();
 		final int numOfQuarters = 4;
