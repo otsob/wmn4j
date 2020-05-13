@@ -243,6 +243,103 @@ class DurationTest {
 	}
 
 	@Test
+	void testDecomposeOnBasicDurations() {
+		List<Duration> simpleQuarterDecomposition = Durations.QUARTER.decompose(Durations.QUARTER);
+		assertEquals(1, simpleQuarterDecomposition.size());
+		Duration decomposed = simpleQuarterDecomposition.get(0);
+		assertEquals(Durations.QUARTER, decomposed);
+		assertEquals(0, decomposed.getDotCount());
+		assertEquals(1, decomposed.getTupletDivisor());
+
+		List<Duration> splitQuarterDecomposition = Durations.QUARTER.decompose(Durations.EIGHTH);
+		assertEquals(2, splitQuarterDecomposition.size());
+		assertEquals(Durations.EIGHTH, splitQuarterDecomposition.get(0));
+		assertEquals(0, splitQuarterDecomposition.get(0).getDotCount());
+		assertEquals(1, splitQuarterDecomposition.get(0).getTupletDivisor());
+		assertEquals(Durations.EIGHTH, splitQuarterDecomposition.get(1));
+		assertEquals(0, splitQuarterDecomposition.get(1).getDotCount());
+		assertEquals(1, splitQuarterDecomposition.get(1).getTupletDivisor());
+
+		List<Duration> multiMeasureDecomposition = Durations.WHOLE.multiply(2).add(Durations.QUARTER)
+				.decompose(Durations.WHOLE);
+
+		assertEquals(3, multiMeasureDecomposition.size());
+		assertEquals(Durations.WHOLE, multiMeasureDecomposition.get(0));
+		assertEquals(0, multiMeasureDecomposition.get(0).getDotCount());
+		assertEquals(1, multiMeasureDecomposition.get(0).getTupletDivisor());
+
+		assertEquals(Durations.WHOLE, multiMeasureDecomposition.get(1));
+		assertEquals(0, multiMeasureDecomposition.get(1).getDotCount());
+		assertEquals(1, multiMeasureDecomposition.get(1).getTupletDivisor());
+
+		assertEquals(Durations.QUARTER, multiMeasureDecomposition.get(2));
+		assertEquals(0, multiMeasureDecomposition.get(2).getDotCount());
+		assertEquals(1, multiMeasureDecomposition.get(2).getTupletDivisor());
+	}
+
+	@Test
+	void testDecomposeOnDurationsWithExpression() {
+		List<Duration> dottedQuarterDecomposition = Durations.QUARTER.addDot().decompose(Durations.WHOLE);
+		assertEquals(1, dottedQuarterDecomposition.size());
+		assertEquals(1, dottedQuarterDecomposition.get(0).getDotCount());
+		assertEquals(1, dottedQuarterDecomposition.get(0).getTupletDivisor());
+
+		Duration dottedQuintuplet = Durations.QUARTER.divide(5).addDot();
+		List<Duration> dottedQuintupletDecomposition = dottedQuintuplet.decompose(Durations.WHOLE);
+		assertEquals(1, dottedQuintupletDecomposition.size());
+		assertEquals(1, dottedQuintupletDecomposition.get(0).getDotCount());
+		assertEquals(5, dottedQuintupletDecomposition.get(0).getTupletDivisor());
+	}
+
+	@Test
+	void testDecomposeOnDottedDurationsWithoutExpression() {
+		List<Duration> dottedQuarterDecomposition = Duration.of(3, 8).decompose(Durations.WHOLE);
+		assertEquals(1, dottedQuarterDecomposition.size());
+		assertEquals(1, dottedQuarterDecomposition.get(0).getDotCount());
+		assertEquals(1, dottedQuarterDecomposition.get(0).getTupletDivisor());
+
+		Duration correctDottedQuintuplet = Durations.QUARTER.divide(5).addDot();
+		Duration dottedQuintuplet = Duration
+				.of(correctDottedQuintuplet.getNumerator(), correctDottedQuintuplet.getDenominator());
+		List<Duration> dottedQuintupletDecomposition = dottedQuintuplet.decompose(Durations.WHOLE);
+		assertEquals(1, dottedQuintupletDecomposition.size());
+		assertEquals(1, dottedQuintupletDecomposition.get(0).getDotCount());
+		assertEquals(5, dottedQuintupletDecomposition.get(0).getTupletDivisor());
+
+		Duration dottedSeptuplet = Duration.of(1, 28).addDot();
+		Duration wholeAndTriplet = Durations.WHOLE.add(dottedSeptuplet);
+		List<Duration> wholeAndTripletDecomposition = wholeAndTriplet.decompose(Durations.WHOLE);
+		assertEquals(2, wholeAndTripletDecomposition.size());
+		assertEquals(Durations.WHOLE, wholeAndTripletDecomposition.get(0));
+		assertEquals(dottedSeptuplet, wholeAndTripletDecomposition.get(1));
+		assertEquals(1, wholeAndTripletDecomposition.get(1).getDotCount());
+		assertEquals(7, wholeAndTripletDecomposition.get(1).getTupletDivisor());
+	}
+
+	@Test
+	void testDecomposeOnDurationsThatRequireMultipleSymbols() {
+		List<Duration> eighthNotesDecomposition = Duration.of(5, 8).decompose(Durations.WHOLE);
+		assertEquals(2, eighthNotesDecomposition.size());
+		assertEquals(Durations.HALF, eighthNotesDecomposition.get(0));
+		assertEquals(0, eighthNotesDecomposition.get(0).getDotCount());
+		assertEquals(1, eighthNotesDecomposition.get(0).getTupletDivisor());
+
+		assertEquals(Durations.EIGHTH, eighthNotesDecomposition.get(1));
+		assertEquals(0, eighthNotesDecomposition.get(1).getDotCount());
+		assertEquals(1, eighthNotesDecomposition.get(1).getTupletDivisor());
+
+		List<Duration> eighthTripletNotesDecomposition = Duration.of(5, 12).decompose(Durations.WHOLE);
+		assertEquals(2, eighthTripletNotesDecomposition.size());
+		assertEquals(Durations.QUARTER, eighthTripletNotesDecomposition.get(0));
+		assertEquals(0, eighthTripletNotesDecomposition.get(0).getDotCount());
+		assertEquals(1, eighthTripletNotesDecomposition.get(0).getTupletDivisor());
+
+		assertEquals(Durations.QUARTER_TRIPLET, eighthTripletNotesDecomposition.get(1));
+		assertEquals(0, eighthTripletNotesDecomposition.get(1).getDotCount());
+		assertEquals(3, eighthTripletNotesDecomposition.get(1).getTupletDivisor());
+	}
+
+	@Test
 	void testSum() {
 		List<Duration> durations = new ArrayList<>();
 		final int numOfQuarters = 4;

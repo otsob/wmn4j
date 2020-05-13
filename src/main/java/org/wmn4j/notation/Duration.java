@@ -5,7 +5,11 @@ package org.wmn4j.notation;
 
 import org.apache.commons.math3.fraction.Fraction;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -40,6 +44,16 @@ public final class Duration implements Comparable<Duration> {
 	// Numerators that are allowed to occur in simplified durations, covers
 	// cases like breve (double whole note) and longa (quadruple whole note).
 	private static final Set<Integer> EXPRESSIBLE_NUMERATORS = Set.of(1, 2, 4);
+
+	// The numerators that would indicate a duration with 1, 2, or 3 dots.
+	// These are used for decomposing durations without expression information into
+	// expressible durations.
+	private static final Set<Integer> DOTTED_DURATION_NUMERATORS = Set.of(3, 7, 15);
+	// More or less common tuplet divisors to test for when decomposing.
+	// Some tuplet divisors are left out (e.g. 6) as they can always be represented also as triplets and it's
+	// hard (impossible?) to infer whether a duration should be a triplet or sextuplet based on just
+	// its mathematical duration.
+	private static final List<Integer> COMMON_TUPLET_DIVISORS = Arrays.asList(3, 5, 7, 11, 13);
 
 	private final Fraction fraction;
 	private final int tupletDivisor;
@@ -375,6 +389,10 @@ public final class Duration implements Comparable<Duration> {
 	 * @return true if this duration is expressible as a single notation symbol with contianed expression information.
 	 */
 	public boolean hasExpression() {
+		return isExpressible(fraction, dotCount, tupletDivisor);
+	}
+
+	private boolean isExpressible(Fraction fraction, int dotCount, int tupletDivisor) {
 		// Try to simpilify the duration to one corresponding to a basic notation symbol, i.e., one that
 		// is expressible as (1 / 2^n).
 		Fraction basicDuration = fraction;
@@ -403,6 +421,120 @@ public final class Duration implements Comparable<Duration> {
 				isPowerOfTwo(simplifiedDenominator) && simplifiedDenominator <= MAX_EXPRESSIBLE_BASIC_DENOMINATOR;
 
 		return isNumeratorExpressible && isDenominatorExpressible;
+	}
+
+	/**
+	 * Returns a decomposition of this duration into a sum of smaller durations with
+	 * the aim of only producing expressible durations. All returned durations are not guaranteed
+	 * to be expressible.
+	 * If this duration has an expression and max duration is greater than or equal to this,
+	 * then returns a list with this as its only element.
+	 * The durations of the decomposition should add up to this duration.
+	 *
+	 * @param maxDuration the maximum duration to use in the sum decomposition
+	 * @return decomposition of this duration into expressible durations that are at most
+	 * the given max duration
+	 */
+	public List<Duration> decompose(Duration maxDuration) {
+		if (!this.isLongerThan(maxDuration) && this.hasExpression()) {
+			return Collections.singletonList(this);
+		}
+
+		List<Duration> maxDurationDecomposition = Collections.singletonList(maxDuration);
+		if (!maxDuration.hasExpression()) {
+			maxDurationDecomposition = decomposeFractionToExpressibleDurations(maxDuration.fraction);
+		}
+
+		int maxDurationRepetitions = fraction.divide(maxDuration.fraction).intValue();
+		List<Duration> decomposition = new ArrayList<>();
+		for (int i = 0; i < maxDurationRepetitions; ++i) {
+			decomposition.addAll(maxDurationDecomposition);
+		}
+
+		Fraction leftOver = fraction.subtract(maxDuration.fraction.multiply(maxDurationRepetitions));
+		decomposition.addAll(decomposeFractionToExpressibleDurations(leftOver));
+
+		return decomposition;
+	}
+
+	private List<Duration> decomposeFractionToExpressibleDurations(Fraction durationFraction) {
+		List<Duration> decomposition = new ArrayList<>();
+		Fraction leftOver = durationFraction;
+
+		// Repeat until there's no leftover duration
+		while (leftOver.compareTo(Fraction.ZERO) > 0) {
+			Duration largestFit = findLargestExpressibleDuration(leftOver);
+			leftOver = leftOver.subtract(largestFit.fraction);
+			decomposition.add(largestFit);
+		}
+
+		return decomposition;
+	}
+
+	/**
+	 * Tries to find and return the largest expressible duration that is at most the given fraction.
+	 */
+	private Duration findLargestExpressibleDuration(Fraction durationFraction) {
+		if (isExpressible(durationFraction, DEFAULT_DOT_COUNT, DEFAULT_TUPLET_DIVISOR)) {
+			return create(durationFraction, DEFAULT_DOT_COUNT, DEFAULT_TUPLET_DIVISOR);
+		}
+
+		final int originalNumerator = durationFraction.getNumerator();
+		final int originalDenominator = durationFraction.getDenominator();
+
+		// Simplify the fraction first by seeing if it can be expressed as a dotted
+		// duration ant what the required dot count is.
+		Fraction dotlessFraction = durationFraction;
+		int dotCount = 0;
+
+		if (DOTTED_DURATION_NUMERATORS.contains(originalNumerator)) {
+			// The number of dots is log_2(numerator + 1) - 1 for the supported dot counts.
+			dotCount = Integer.numberOfTrailingZeros(originalNumerator + 1) - 1;
+			dotlessFraction = removeDots(durationFraction, dotCount);
+		}
+
+		// Use the fraction in the dotless form to find a suitable
+		// tuplet divisor.
+		final int dotlessDenominator = dotlessFraction.getDenominator();
+		int tupletDivisor = 1;
+		if (!isPowerOfTwo(dotlessDenominator)) {
+			for (int divisor : COMMON_TUPLET_DIVISORS) {
+				int divided = dotlessDenominator / divisor;
+				boolean isEvenDivision = divided * divisor == dotlessDenominator;
+				if (isEvenDivision && isPowerOfTwo(divided)) {
+					tupletDivisor = divisor;
+					break;
+				}
+			}
+
+			// If the tuplet divisor is not a common one, use
+			// the denominator directly as tuplet divisor.
+			// This can produce some very unusual tuplets, but they
+			// should be expressible in music notation.
+			if (tupletDivisor == 1) {
+				tupletDivisor = originalDenominator;
+			}
+		}
+
+		// If the duration is expressible with the found dot count and
+		// tuplet divisor, return that.
+		if (isExpressible(durationFraction, dotCount, tupletDivisor)) {
+			return create(durationFraction, dotCount, tupletDivisor);
+		}
+
+		// If the given fraction is not expressible as a duration with the given
+		// dot count and tuplet divisor, find the largest duration that can be fitted
+		// into the fraction with the tuplet information.
+		if (originalNumerator > tupletDivisor) {
+			int coefficient = tupletDivisor != 1 ? tupletDivisor : Math.max(durationFraction.getDenominator() / 2, 1);
+
+			int largestFitNumerator = coefficient * (originalNumerator / coefficient);
+			Fraction largestFit = new Fraction(largestFitNumerator, durationFraction.getDenominator());
+
+			return create(largestFit, DEFAULT_DOT_COUNT, DEFAULT_TUPLET_DIVISOR);
+		}
+
+		return create(new Fraction(1, originalDenominator), 0, tupletDivisor);
 	}
 
 	/**
