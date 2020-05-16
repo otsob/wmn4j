@@ -7,17 +7,23 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.wmn4j.TestHelper;
 import org.wmn4j.Wmn4j;
 import org.wmn4j.io.ParsingFailureException;
-import org.wmn4j.TestHelper;
-import org.wmn4j.notation.MeasureBuilder;
-import org.wmn4j.notation.NoteBuilder;
-import org.wmn4j.notation.PartBuilder;
-import org.wmn4j.notation.ScoreBuilder;
+import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.Measure;
+import org.wmn4j.notation.MeasureBuilder;
 import org.wmn4j.notation.Note;
+import org.wmn4j.notation.NoteBuilder;
+import org.wmn4j.notation.Part;
+import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
+import org.wmn4j.notation.ScoreBuilder;
+import org.wmn4j.notation.SingleStaffPart;
 import org.wmn4j.notation.access.PartWiseScoreIterator;
 import org.wmn4j.notation.access.ScoreIterator;
 
@@ -34,6 +40,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -394,5 +401,29 @@ class MusicXmlScoreWriterDomTest {
 		Score score = readMusicXmlTestFile("multi_staff_multi_voice_marking_test.xml", false);
 		Score writtenScore = writeAndReadScore(score);
 		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(writtenScore);
+	}
+
+	@Test
+	void testWhenGivenInexpressibleDurationsThenDurationsAreCorrectlyDecomposed() {
+		MeasureBuilder measureBuilder = new MeasureBuilder(1);
+		final Duration inexpressibleDuration = Duration.of(5, 8);
+		measureBuilder.addToVoice(1, new RestBuilder(inexpressibleDuration));
+
+		PartBuilder partBuilder = new PartBuilder("Test part");
+		partBuilder.add(measureBuilder);
+
+		ScoreBuilder builder = new ScoreBuilder();
+		builder.addPart(partBuilder);
+		Score score = builder.build();
+
+		final Score writtenScore = writeAndReadScore(score);
+		assertEquals(1, writtenScore.getPartCount());
+		final Part part = writtenScore.getPart(0);
+		assertEquals(1, part.getMeasureCount());
+		final Measure measure = part.getMeasure(SingleStaffPart.STAFF_NUMBER, 1);
+		assertNotEquals(inexpressibleDuration, measure.get(1, 0).getDuration());
+		for (Durational dur : measure) {
+			assertTrue(dur.getDuration().hasExpression());
+		}
 	}
 }
