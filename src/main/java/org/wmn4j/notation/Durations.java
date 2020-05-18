@@ -45,17 +45,17 @@ public final class Durations {
 	/**
 	 * Constant value for quarter note triplet duration.
 	 */
-	public static final Duration QUARTER_TRIPLET = Duration.of(1, 6);
+	public static final Duration QUARTER_TRIPLET = Duration.of(1, 6, 0, 3);
 
 	/**
 	 * Constant value for eight note triplet duration.
 	 */
-	public static final Duration EIGHTH_TRIPLET = Duration.of(1, 12);
+	public static final Duration EIGHTH_TRIPLET = Duration.of(1, 12, 0, 3);
 
 	/**
 	 * Constant value for sixteenth note triplet duration.
 	 */
-	public static final Duration SIXTEENTH_TRIPLET = Duration.of(1, 24);
+	public static final Duration SIXTEENTH_TRIPLET = Duration.of(1, 24, 0, 3);
 
 	private Durations() {
 		// Not meant to be instantiated.

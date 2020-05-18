@@ -18,10 +18,6 @@ enum DurationAppearanceProvider {
 
 	INSTANCE;
 
-	private static final int TRIPLET_DIVISOR = 3;
-	private static final int QUINTUPLET_DIVISOR = 5;
-	private static final int SEPTUPLET_DIVISOR = 7;
-
 	private final Map<Duration, String> basicDurationAppearances;
 
 	DurationAppearanceProvider() {
@@ -51,23 +47,26 @@ enum DurationAppearanceProvider {
 	/**
 	 * Returns the elements that are needed to define the appearance of the duration in music notation.
 	 *
-	 * @param duration the duration for which the appearance elements are returned
+	 * @param duration the expressible duration for which the appearance elements are returned
 	 * @param document the document to which the elements are meant to be added
 	 * @return the elements that are needed to define the appearance of the duration in music notation
 	 */
 	Collection<Element> getAppearanceElements(Duration duration, Document document) {
 
 		final Collection<Element> elements = new ArrayList<>();
-		if (basicDurationAppearances.containsKey(duration)) {
-			elements.add(getBasicDurationType(duration, document));
-		} else if (isBasicDottedDuration(duration)) {
-			final Duration basicDurationType = Duration.of(2 * duration.getNumerator() / 3, duration.getDenominator());
-			if (basicDurationAppearances.containsKey(basicDurationType)) {
-				elements.add(getBasicDurationType(basicDurationType, document));
-				elements.add(createDotElement(document));
-			}
+		final int dotCount = duration.getDotCount();
+		final int tupletDivisor = duration.getTupletDivisor();
+		final Duration basicDurationType = duration.removeDots().multiply(tupletDivisor);
+
+		if (tupletDivisor == 1) {
+			elements.add(getBasicDurationType(basicDurationType, document));
 		} else {
 			addTupletElementsIfNeeded(elements, duration, document);
+		}
+
+		// Add dots
+		for (int i = 0; i < dotCount; ++i) {
+			elements.add(document.createElement(MusicXmlTags.DOT));
 		}
 
 		return elements;
@@ -76,25 +75,13 @@ enum DurationAppearanceProvider {
 	private void addTupletElementsIfNeeded(Collection<Element> elements, Duration duration, Document document) {
 
 		final int denominator = duration.getDenominator();
-		int tupletNotesThatFitInTheDividedDuration = 0;
-		Duration showTypeDuration = null;
+		int tupletNotesThatFitInTheDividedDuration = duration.getTupletDivisor();
+		Duration showTypeDuration = getShowableDurationTypeForTuplet(denominator);
 
-		if (denominator % SEPTUPLET_DIVISOR == 0) {
-			tupletNotesThatFitInTheDividedDuration = SEPTUPLET_DIVISOR;
-			showTypeDuration = getShowableDurationTypeForTuplet(denominator);
-		} else if (denominator % QUINTUPLET_DIVISOR == 0) {
-			tupletNotesThatFitInTheDividedDuration = QUINTUPLET_DIVISOR;
-			showTypeDuration = getShowableDurationTypeForTuplet(denominator);
-		} else if (denominator % TRIPLET_DIVISOR == 0) {
-			tupletNotesThatFitInTheDividedDuration = TRIPLET_DIVISOR;
-			showTypeDuration = getShowableDurationTypeForTuplet(denominator);
-		}
-
-		// If the basic note symbol appearance type cannot be deduced, then do not add any appearance elements.
-		if (showTypeDuration != null && basicDurationAppearances.containsKey(showTypeDuration)) {
+		if (basicDurationAppearances.containsKey(showTypeDuration)) {
 			elements.add(getBasicDurationType(showTypeDuration, document));
 
-			final Duration durationThatIsSplitByTuplet = duration.multiplyBy(tupletNotesThatFitInTheDividedDuration);
+			final Duration durationThatIsSplitByTuplet = duration.multiply(tupletNotesThatFitInTheDividedDuration);
 
 			final int normalNotesThatWouldFitInTheSplitDuration =
 					(durationThatIsSplitByTuplet.getNumerator() * showTypeDuration.getDenominator())
@@ -128,16 +115,6 @@ enum DurationAppearanceProvider {
 		greatestPowerOfTwoUnderDenominator /= 2;
 
 		return Duration.of(1, greatestPowerOfTwoUnderDenominator);
-	}
-
-	private boolean isBasicDottedDuration(Duration duration) {
-		// Basic dotted durations always have a numerator that is divisible by 3 and a denominator that is a power of 2.
-		final int denominator = duration.getDenominator();
-		return duration.getNumerator() % 3 == 0 && ((denominator & (denominator - 1)) == 0);
-	}
-
-	private Element createDotElement(Document document) {
-		return document.createElement(MusicXmlTags.DOT);
 	}
 
 	private Element getBasicDurationType(Duration duration, Document document) {

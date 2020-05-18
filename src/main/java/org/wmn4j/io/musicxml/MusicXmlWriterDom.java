@@ -351,20 +351,27 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 					cumulatedDuration = cumulatedDuration.add(dur.getDuration());
 				}
 
-				if (dur instanceof Rest) {
-					measureElement.appendChild(createRestElement((Rest) dur, voiceNumber, staffNumber));
-				}
+				final List<Duration> expressibleDurations = dur.getDuration()
+						.decompose(measure.getTimeSignature().getTotalDuration());
 
-				if (dur instanceof Note) {
-					measureElement.appendChild(createNoteElement((Note) dur, voiceNumber, staffNumber, false));
-				}
+				for (Duration expressibleDuration : expressibleDurations) {
+					if (dur instanceof Rest) {
+						measureElement.appendChild(createRestElement(expressibleDuration, voiceNumber, staffNumber));
+					}
 
-				if (dur instanceof Chord) {
-					boolean useChordTag = false;
-					for (Note note : (Chord) dur) {
-						measureElement
-								.appendChild(createNoteElement(note, voiceNumber, staffNumber, useChordTag));
-						useChordTag = true;
+					if (dur instanceof Note) {
+						measureElement.appendChild(
+								createNoteElement((Note) dur, expressibleDuration, voiceNumber, staffNumber, false));
+					}
+
+					if (dur instanceof Chord) {
+						boolean useChordTag = false;
+						for (Note note : (Chord) dur) {
+							measureElement
+									.appendChild(createNoteElement(note, expressibleDuration, voiceNumber, staffNumber,
+											useChordTag));
+							useChordTag = true;
+						}
 					}
 				}
 
@@ -680,7 +687,8 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		return forwardElement;
 	}
 
-	private Element createNoteElement(Note note, int voiceNumber, Integer staffNumber, boolean chordTag) {
+	private Element createNoteElement(Note note, Duration expressibleDuration, int voiceNumber, Integer staffNumber,
+			boolean chordTag) {
 		final Element noteElement = getDocument().createElement(MusicXmlTags.NOTE);
 
 		// TODO: Write other attributes.
@@ -694,13 +702,13 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		noteElement.appendChild(createPitchElement(note.getPitch()));
 
 		// Duration
-		noteElement.appendChild(createDurationElement(note.getDuration()));
+		noteElement.appendChild(createDurationElement(expressibleDuration));
 
 		// Voice
 		noteElement.appendChild(createVoiceElement(voiceNumber));
 
 		// Appearance
-		addDurationAppearanceElementsToNoteElement(noteElement, note.getDuration());
+		addDurationAppearanceElementsToNoteElement(noteElement, expressibleDuration);
 
 		// Staff
 		if (staffNumber != null) {
@@ -864,16 +872,16 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		return articulationsElement;
 	}
 
-	private Element createRestElement(Rest rest, int voice, Integer staffNumber) {
+	private Element createRestElement(Duration expressibleRestDuration, int voice, Integer staffNumber) {
 		final Element restElement = getDocument().createElement(MusicXmlTags.NOTE);
 		restElement.appendChild(getDocument().createElement(MusicXmlTags.NOTE_REST));
-		restElement.appendChild(createDurationElement(rest.getDuration()));
+		restElement.appendChild(createDurationElement(expressibleRestDuration));
 
 		// Add voice
 		restElement.appendChild(createVoiceElement(voice));
 
 		// Add duration appearance
-		addDurationAppearanceElementsToNoteElement(restElement, rest.getDuration());
+		addDurationAppearanceElementsToNoteElement(restElement, expressibleRestDuration);
 
 		// Staff
 		if (staffNumber != null) {
@@ -883,8 +891,8 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		return restElement;
 	}
 
-	private void addDurationAppearanceElementsToNoteElement(Element noteElement, Duration duration) {
-		DurationAppearanceProvider.INSTANCE.getAppearanceElements(duration, getDocument())
+	private void addDurationAppearanceElementsToNoteElement(Element noteElement, Duration expressibleDuration) {
+		DurationAppearanceProvider.INSTANCE.getAppearanceElements(expressibleDuration, getDocument())
 				.forEach(element -> noteElement.appendChild(element));
 	}
 

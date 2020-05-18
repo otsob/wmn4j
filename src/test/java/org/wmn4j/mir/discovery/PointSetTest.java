@@ -40,10 +40,10 @@ public class PointSetTest {
 		offset += Durations.SIXTEENTH.toDouble();
 
 		vectors.add(new NoteEventVector(offset, 65, 0));
-		offset += Durations.EIGHTH.divideBy(3).toDouble();
+		offset += Durations.EIGHTH.divide(3).toDouble();
 
 		vectors.add(new NoteEventVector(offset, 65, 0));
-		offset += Durations.EIGHTH.divideBy(3).toDouble();
+		offset += Durations.EIGHTH.divide(3).toDouble();
 
 		vectors.add(new NoteEventVector(offset, 65, 0));
 

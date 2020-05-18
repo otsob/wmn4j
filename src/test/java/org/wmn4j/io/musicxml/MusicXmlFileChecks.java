@@ -283,7 +283,7 @@ class MusicXmlFileChecks {
 		assertTrue(lower.getMeasure(1).containsClefChanges(), "Lower staff measure 1 does not contain a clef change");
 		final Map<Duration, Clef> clefChanges = lower.getMeasure(1).getClefChanges();
 		assertEquals(1, clefChanges.size(), "Incorrect number of clef changes");
-		final Duration offset = Durations.HALF.add(Durations.SIXTEENTH.multiplyBy(3));
+		final Duration offset = Durations.HALF.add(Durations.SIXTEENTH.multiply(3));
 		assertEquals(Clefs.G, clefChanges.get(offset), "Incorrect clef change");
 
 		assertEquals(Clefs.G, lower.getMeasure(2).getClef(), "Incorrect clef measure 2 of lower staff");
@@ -403,7 +403,7 @@ class MusicXmlFileChecks {
 
 		final Note eight = (Note) thirdMeasure.get(1, 3);
 		assertTrue(eight.isTiedToFollowing());
-		assertEquals(Durations.WHOLE.multiplyBy(2).add(Durations.QUARTER), eight.getTiedDuration());
+		assertEquals(Durations.WHOLE.multiply(2).add(Durations.QUARTER), eight.getTiedDuration());
 
 		final Measure fourthMeasure = part.getMeasure(4);
 		final Note ninth = (Note) fourthMeasure.get(1, 0);
@@ -825,31 +825,81 @@ class MusicXmlFileChecks {
 		final Duration firstNoteDuration = firstMeasure.get(1, 0).getDuration();
 		assertEquals(Durations.QUARTER.addDot(), firstNoteDuration);
 		assertEquals(1, firstNoteDuration.getDotCount());
+		assertEquals(1, firstNoteDuration.getTupletDivisor());
 
 		final Duration secondNoteDuration = firstMeasure.get(1, 2).getDuration();
 		assertEquals(Durations.EIGHTH, secondNoteDuration);
 		assertEquals(0, secondNoteDuration.getDotCount());
+		assertEquals(1, secondNoteDuration.getTupletDivisor());
 
 		final Duration secondRestDuration = firstMeasure.get(1, 3).getDuration();
 		assertEquals(Durations.QUARTER.addDot(), secondRestDuration);
 		assertEquals(1, secondRestDuration.getDotCount());
+		assertEquals(1, secondRestDuration.getTupletDivisor());
 
 		final Measure secondMeasure = score.getPart(0).getMeasure(1, 2);
 		final Duration thirdNoteDuration = secondMeasure.get(1, 0).getDuration();
 		assertEquals(Durations.HALF.addDot().addDot(), thirdNoteDuration);
 		assertEquals(2, thirdNoteDuration.getDotCount());
+		assertEquals(1, thirdNoteDuration.getTupletDivisor());
 
 		final Measure thirdMeasure = score.getPart(0).getMeasure(1, 3);
 		final Duration fourthNoteDuration = thirdMeasure.get(1, 0).getDuration();
 		assertEquals(Durations.EIGHTH_TRIPLET.addDot(), fourthNoteDuration);
 		assertEquals(1, fourthNoteDuration.getDotCount());
+		assertEquals(3, fourthNoteDuration.getTupletDivisor());
 
 		final Duration fifthNoteDuration = thirdMeasure.get(1, 1).getDuration();
 		assertEquals(Durations.SIXTEENTH_TRIPLET, fifthNoteDuration);
 		assertEquals(0, fifthNoteDuration.getDotCount());
+		assertEquals(3, fifthNoteDuration.getTupletDivisor());
 
 		final Duration sixthNoteDuration = thirdMeasure.get(1, 2).getDuration();
 		assertEquals(Durations.EIGHTH_TRIPLET, sixthNoteDuration);
 		assertEquals(0, sixthNoteDuration.getDotCount());
+		assertEquals(3, sixthNoteDuration.getTupletDivisor());
+	}
+
+	/*
+	 * Expects the content of "tuplet_test.musicxml".
+	 * Checks only that durations are correct.
+	 */
+	static void assertTupletNotesReadCorrectly(Score score) {
+		final Measure firstMeasure = score.getPart(0).getMeasure(1, 1);
+
+		for (int i = 0; i <= 2; ++i) {
+			final Duration expectedTriplet = firstMeasure.get(1, i).getDuration();
+			assertEquals(Durations.EIGHTH_TRIPLET, expectedTriplet);
+			assertEquals(3, expectedTriplet.getTupletDivisor());
+		}
+
+		for (int i = 3; i <= 7; ++i) {
+			final Duration expectedQuintuplet = firstMeasure.get(1, i).getDuration();
+			assertEquals(Durations.QUARTER.divide(5), expectedQuintuplet);
+			assertEquals(5, expectedQuintuplet.getTupletDivisor());
+		}
+
+		for (int i = 8; i <= 14; ++i) {
+			final Duration expectedSeptuplet = firstMeasure.get(1, i).getDuration();
+			assertEquals(Durations.EIGHTH.divide(7), expectedSeptuplet);
+			assertEquals(7, expectedSeptuplet.getTupletDivisor());
+		}
+
+		// Skip one rest.
+
+		for (int i = 16; i <= 21; ++i) {
+			final Duration expectedSextuplet = firstMeasure.get(1, i).getDuration();
+			assertEquals(Durations.QUARTER.divide(6), expectedSextuplet);
+			assertEquals(6, expectedSextuplet.getTupletDivisor());
+		}
+
+		final Measure secondMeasure = score.getPart(0).getMeasure(1, 2);
+
+		for (int i = 0; i <= 1; ++i) {
+			final Duration expectedDottedTriplet = secondMeasure.get(1, i).getDuration();
+			assertEquals(Durations.EIGHTH_TRIPLET.addDot(), expectedDottedTriplet);
+			assertEquals(3, expectedDottedTriplet.getTupletDivisor());
+			assertEquals(1, expectedDottedTriplet.getDotCount());
+		}
 	}
 }
