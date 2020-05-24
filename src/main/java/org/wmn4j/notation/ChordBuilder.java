@@ -44,7 +44,7 @@ public final class ChordBuilder implements DurationalBuilder, Iterable<NoteBuild
 
 	/**
 	 * Constructor that creates a new builder with the contents of the given chord.
-	 * Ties and connected markings in the notes of the given chord are not copied.
+	 * Ties and connected notations in the notes of the given chord are not copied.
 	 *
 	 * @param chord the chord from which the contents of notes are copied to this builder
 	 */

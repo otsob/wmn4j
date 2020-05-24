@@ -26,7 +26,7 @@ public final class Note implements Durational, Pitched {
 	private final Pitch pitch;
 	private final Duration duration;
 	private final Set<Articulation> articulations;
-	private final Collection<Marking.Connection> markingConnections;
+	private final Collection<Notation.Connection> notationConnections;
 
 	private final Note tiedTo;
 	private final boolean isTiedFrom;
@@ -71,38 +71,38 @@ public final class Note implements Durational, Pitched {
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch              the pitch of the note
-	 * @param duration           the duration of the note
-	 * @param articulations      a set of Articulations associated with the note
-	 * @param markingConnections list of the marking connections for the note
+	 * @param pitch               the pitch of the note
+	 * @param duration            the duration of the note
+	 * @param articulations       a set of Articulations associated with the note
+	 * @param notationConnections list of the notation connections for the note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Marking.Connection> markingConnections) {
-		return new Note(pitch, duration, articulations, markingConnections, null, false);
+			Collection<Notation.Connection> notationConnections) {
+		return new Note(pitch, duration, articulations, notationConnections, null, false);
 	}
 
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch              the pitch of the note
-	 * @param duration           the duration of the note
-	 * @param articulations      a set of Articulations associated with the note
-	 * @param markingConnections list of the marking connections for the note
-	 * @param tiedTo             the following note to which this is tied
-	 * @param isTiedFromPrevious true if this is tied from the previous note
+	 * @param pitch               the pitch of the note
+	 * @param duration            the duration of the note
+	 * @param articulations       a set of Articulations associated with the note
+	 * @param notationConnections list of the notation connections for the note
+	 * @param tiedTo              the following note to which this is tied
+	 * @param isTiedFromPrevious  true if this is tied from the previous note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Marking.Connection> markingConnections, Note tiedTo, boolean isTiedFromPrevious) {
-		return new Note(pitch, duration, articulations, markingConnections, tiedTo, isTiedFromPrevious);
+			Collection<Notation.Connection> notationConnections, Note tiedTo, boolean isTiedFromPrevious) {
+		return new Note(pitch, duration, articulations, notationConnections, tiedTo, isTiedFromPrevious);
 	}
 
 	/**
 	 * Private constructor.
 	 */
 	private Note(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Marking.Connection> markingConnections, Note tiedTo, boolean isTiedFromPrevious) {
+			Collection<Notation.Connection> notationConnections, Note tiedTo, boolean isTiedFromPrevious) {
 
 		this.pitch = Objects.requireNonNull(pitch);
 		this.duration = Objects.requireNonNull(duration);
@@ -112,10 +112,10 @@ public final class Note implements Durational, Pitched {
 			this.articulations = Collections.emptySet();
 		}
 
-		if (markingConnections != null && !markingConnections.isEmpty()) {
-			this.markingConnections = Collections.unmodifiableList(new ArrayList<>(markingConnections));
+		if (notationConnections != null && !notationConnections.isEmpty()) {
+			this.notationConnections = Collections.unmodifiableList(new ArrayList<>(notationConnections));
 		} else {
-			this.markingConnections = Collections.emptyList();
+			this.notationConnections = Collections.emptyList();
 		}
 
 		this.tiedTo = tiedTo;
@@ -157,25 +157,25 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Returns all markings that affect this note.
+	 * Returns all notations that affect this note.
 	 *
-	 * @return all markings that affect this note
+	 * @return all notations that affect this note
 	 */
-	public Set<Marking> getMarkings() {
-		return markingConnections.stream().map(connection -> connection.getMarking())
+	public Set<Notation> getNotations() {
+		return notationConnections.stream().map(connection -> connection.getNotation())
 				.collect(Collectors.toUnmodifiableSet());
 	}
 
 	/**
-	 * Returns the marking connection belonging to the given marking. If no marking connection for the marking is
+	 * Returns the notation connection belonging to the given notation. If no notation connection for the notation is
 	 * present, return empty.
 	 *
-	 * @param marking the marking for which the marking connection is returned
-	 * @return the marking connection belonging to the given marking
+	 * @param notation the notation for which the notation connection is returned
+	 * @return the notation connection belonging to the given notation
 	 */
-	public Optional<Marking.Connection> getMarkingConnection(Marking marking) {
-		return markingConnections.stream()
-				.filter(articulation -> articulation.getMarking().equals(marking))
+	public Optional<Notation.Connection> getConnection(Notation notation) {
+		return notationConnections.stream()
+				.filter(articulation -> articulation.getNotation().equals(notation))
 				.findFirst();
 	}
 
@@ -200,49 +200,49 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Returns true if this note is affected by a marking of the given type.
+	 * Returns true if this note is affected by a notation of the given type.
 	 *
-	 * @param markingType the type of marking whose presence is checked
-	 * @return true if this note has the given marking
+	 * @param notationType the type of notation whose presence is checked
+	 * @return true if this note has the given notation
 	 */
-	public boolean hasMarking(Marking.Type markingType) {
-		return markingConnections.stream()
-				.anyMatch(markingConnection -> markingConnection.getType().equals(markingType));
+	public boolean hasNotation(Notation.Type notationType) {
+		return notationConnections.stream()
+				.anyMatch(notationConnection -> notationConnection.getType().equals(notationType));
 	}
 
 	/**
-	 * Returns true if this note begins a marking of the given type.
+	 * Returns true if this note begins a notation of the given type.
 	 *
-	 * @param markingType the type of the marking for whose beginning this
-	 *                    note is checked
-	 * @return true if this note begins a marking of the given type
+	 * @param notationType the type of the notation for whose beginning this
+	 *                     note is checked
+	 * @return true if this note begins a notation of the given type
 	 */
-	public boolean begins(Marking.Type markingType) {
-		return markingConnections.stream()
-				.anyMatch(markingConnection -> markingConnection.getType().equals(markingType)
-						&& markingConnection.isBeginning());
+	public boolean begins(Notation.Type notationType) {
+		return notationConnections.stream()
+				.anyMatch(notationConnection -> notationConnection.getType().equals(notationType)
+						&& notationConnection.isBeginning());
 	}
 
 	/**
-	 * Returns true if this note ends a marking of the given type.
+	 * Returns true if this note ends a notation of the given type.
 	 *
-	 * @param markingType the type of the marking for whose end this note
-	 *                    is checked
-	 * @return true if this note ends a marking of the given type
+	 * @param notationType the type of the notation for whose end this note
+	 *                     is checked
+	 * @return true if this note ends a notation of the given type
 	 */
-	public boolean ends(Marking.Type markingType) {
-		return markingConnections.stream()
-				.anyMatch(markingConnection -> markingConnection.getType().equals(markingType)
-						&& markingConnection.isEnd());
+	public boolean ends(Notation.Type notationType) {
+		return notationConnections.stream()
+				.anyMatch(notationConnection -> notationConnection.getType().equals(notationType)
+						&& notationConnection.isEnd());
 	}
 
 	/**
-	 * Returns true if this note is affected by any markings.
+	 * Returns true if this note is affected by any notations.
 	 *
-	 * @return true if this note is affected by any markings
+	 * @return true if this note is affected by any notations
 	 */
-	public boolean hasMarkings() {
-		return !this.markingConnections.isEmpty();
+	public boolean hasNotations() {
+		return !this.notationConnections.isEmpty();
 	}
 
 	/**
@@ -384,16 +384,16 @@ public final class Note implements Durational, Pitched {
 			return false;
 		}
 
-		if (!getMarkingConnectionTypes().equals(other.getMarkingConnectionTypes())) {
+		if (!getNotationConnectionTypes().equals(other.getNotationConnectionTypes())) {
 			return false;
 		}
 
 		return true;
 	}
 
-	private Set<Marking.Type> getMarkingConnectionTypes() {
-		return markingConnections.stream()
-				.map(Marking.Connection::getType).collect(Collectors.toSet());
+	private Set<Notation.Type> getNotationConnectionTypes() {
+		return notationConnections.stream()
+				.map(Notation.Connection::getType).collect(Collectors.toSet());
 	}
 
 	@Override
@@ -402,7 +402,7 @@ public final class Note implements Durational, Pitched {
 		hash = 79 * hash + Objects.hashCode(this.pitch);
 		hash = 79 * hash + Objects.hashCode(this.duration);
 		hash = 79 * hash + Objects.hashCode(this.articulations);
-		hash = 79 * hash + Objects.hashCode(getMarkingConnectionTypes());
+		hash = 79 * hash + Objects.hashCode(getNotationConnectionTypes());
 		return hash;
 	}
 

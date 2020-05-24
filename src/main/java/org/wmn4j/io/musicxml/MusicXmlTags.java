@@ -116,15 +116,15 @@ final class MusicXmlTags {
 	static final String TENUTO_STACCATO = "detached-legato";
 	static final String UNSTRESS = "unstress";
 
-	// Markings
+	// Notations
 	static final String SLUR = "slur";
 	static final String GLISSANDO = "glissando";
-	static final String MARKING_NUMBER = "number";
-	static final String MARKING_TYPE = "type";
-	static final String MARKING_TYPE_START = "start";
-	static final String MARKING_TYPE_STOP = "stop";
+	static final String NOTATION_NUMBER = "number";
+	static final String NOTATION_TYPE = "type";
+	static final String NOTATION_TYPE_START = "start";
+	static final String NOTATION_TYPE_STOP = "stop";
 
-	static final Set<String> MARKING_NODE_NAMES = Collections.unmodifiableSet(Set.of(SLUR, GLISSANDO));
+	static final Set<String> CONNECTED_NOTATION_NODE_NAMES = Collections.unmodifiableSet(Set.of(SLUR, GLISSANDO));
 
 	static final String DIRECTION = "direction";
 	static final String DIRECTION_PLACEMENT = "placement";

@@ -18,9 +18,9 @@ import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.KeySignature;
-import org.wmn4j.notation.Marking;
 import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.MultiStaffPart;
+import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.Pitch;
@@ -68,11 +68,11 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 
 	private final Document doc;
 	private final SortedMap<String, Part> partIdMap = new TreeMap<>();
-	private final MarkingResolver markingResolver;
+	private final NotationResolver notationResolver;
 
 	MusicXmlWriterDom() {
 		this.doc = createDocument();
-		this.markingResolver = new MarkingResolver(getDocument());
+		this.notationResolver = new NotationResolver(getDocument());
 	}
 
 	private static Document createDocument() {
@@ -788,17 +788,17 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 			}
 		}
 
-		// Markings
-		if (note.hasMarkings()) {
-			for (Marking marking : note.getMarkings()) {
-				if (note.getMarkingConnection(marking).get().isBeginning()) {
-					notationsElement.appendChild(markingResolver.createStartElement(marking));
+		// Notations
+		if (note.hasNotations()) {
+			for (Notation notation : note.getNotations()) {
+				if (note.getConnection(notation).get().isBeginning()) {
+					notationsElement.appendChild(notationResolver.createStartElement(notation));
 				}
 
-				if (note.getMarkingConnection(marking).get().isEnd()) {
-					Element markingStop = markingResolver.createStopElement(marking);
-					if (markingStop != null) {
-						notationsElement.appendChild(markingStop);
+				if (note.getConnection(notation).get().isEnd()) {
+					Element notationStop = notationResolver.createStopElement(notation);
+					if (notationStop != null) {
+						notationsElement.appendChild(notationStop);
 					}
 				}
 			}
@@ -896,63 +896,64 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 				.forEach(element -> noteElement.appendChild(element));
 	}
 
-	private static class MarkingResolver {
-		private static final int MAX_MARKING_NUMBER = 6;
-		private static final Map<Marking.Type, String> MARKING_TYPES = createMarkingTypes();
+	private static class NotationResolver {
+		private static final int MAX_NOTATION_NUMBER = 6;
+		private static final Map<Notation.Type, String> NOTATION_TYPES = createNotationTypes();
 
-		private static Map<Marking.Type, String> createMarkingTypes() {
-			Map<Marking.Type, String> markingTypes = new HashMap<>();
-			markingTypes.put(Marking.Type.SLUR, MusicXmlTags.SLUR);
-			markingTypes.put(Marking.Type.GLISSANDO, MusicXmlTags.GLISSANDO);
-			return Collections.unmodifiableMap(markingTypes);
+		private static Map<Notation.Type, String> createNotationTypes() {
+			Map<Notation.Type, String> notationTypes = new HashMap<>();
+			notationTypes.put(Notation.Type.SLUR, MusicXmlTags.SLUR);
+			notationTypes.put(Notation.Type.GLISSANDO, MusicXmlTags.GLISSANDO);
+			return Collections.unmodifiableMap(notationTypes);
 		}
 
 		private final Document document;
-		private Integer nextAvailableMarkingNumber = Integer.valueOf(1);
+		private Integer nextAvailableNotationNumber = Integer.valueOf(1);
 
-		MarkingResolver(Document document) {
+		NotationResolver(Document document) {
 			this.document = document;
 		}
 
-		private Map<Marking, Integer> unresolvedMarkings = new HashMap<>();
-		private Set<Integer> usedMarkingNumbers = new HashSet<>(MAX_MARKING_NUMBER);
+		private Map<Notation, Integer> unresolvedNotations = new HashMap<>();
+		private Set<Integer> usedNotationNumbers = new HashSet<>(MAX_NOTATION_NUMBER);
 
-		Element createStartElement(Marking marking) {
-			Element markingElement = document.createElement(MARKING_TYPES.get(marking.getType()));
+		Element createStartElement(Notation notation) {
+			Element notationElement = document.createElement(NOTATION_TYPES.get(notation.getType()));
 
-			final Integer markingNumber = getNextAvailableMarkingNumber();
-			unresolvedMarkings.put(marking, markingNumber);
+			final Integer notationNumber = getNextAvailableNotationNumber();
+			unresolvedNotations.put(notation, notationNumber);
 
-			markingElement.setAttribute(MusicXmlTags.MARKING_NUMBER, markingNumber.toString());
+			notationElement.setAttribute(MusicXmlTags.NOTATION_NUMBER, notationNumber.toString());
 
-			markingElement.setAttribute(MusicXmlTags.MARKING_TYPE, MusicXmlTags.MARKING_TYPE_START);
-			return markingElement;
+			notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NOTATION_TYPE_START);
+			return notationElement;
 		}
 
-		Element createStopElement(Marking marking) {
-			Element markingElement = null;
+		Element createStopElement(Notation notation) {
+			Element notationElement = null;
 
-			if (unresolvedMarkings.containsKey(marking)) {
-				markingElement = document.createElement(MARKING_TYPES.get(marking.getType()));
+			if (unresolvedNotations.containsKey(notation)) {
+				notationElement = document.createElement(NOTATION_TYPES.get(notation.getType()));
 
-				markingElement.setAttribute(MusicXmlTags.MARKING_NUMBER, unresolvedMarkings.get(marking).toString());
+				notationElement
+						.setAttribute(MusicXmlTags.NOTATION_NUMBER, unresolvedNotations.get(notation).toString());
 
-				usedMarkingNumbers.remove(unresolvedMarkings.get(marking));
-				unresolvedMarkings.remove(marking);
+				usedNotationNumbers.remove(unresolvedNotations.get(notation));
+				unresolvedNotations.remove(notation);
 
-				markingElement.setAttribute(MusicXmlTags.MARKING_TYPE, MusicXmlTags.MARKING_TYPE_STOP);
+				notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NOTATION_TYPE_STOP);
 			}
 
-			return markingElement;
+			return notationElement;
 		}
 
-		private Integer getNextAvailableMarkingNumber() {
-			Integer availableNumber = nextAvailableMarkingNumber;
-			usedMarkingNumbers.add(availableNumber);
+		private Integer getNextAvailableNotationNumber() {
+			Integer availableNumber = nextAvailableNotationNumber;
+			usedNotationNumbers.add(availableNumber);
 
-			for (int next = 1; next <= MAX_MARKING_NUMBER; ++next) {
-				if (!usedMarkingNumbers.contains(next)) {
-					nextAvailableMarkingNumber = next;
+			for (int next = 1; next <= MAX_NOTATION_NUMBER; ++next) {
+				if (!usedNotationNumbers.contains(next)) {
+					nextAvailableNotationNumber = next;
 					break;
 				}
 			}

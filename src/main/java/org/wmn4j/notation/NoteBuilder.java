@@ -22,8 +22,8 @@ public final class NoteBuilder implements DurationalBuilder {
 	private Pitch pitch;
 	private Duration duration;
 	private Set<Articulation> articulations;
-	private Map<Marking, NoteBuilder> connectedTo = new HashMap<>();
-	private Set<Marking> connectedFrom = new HashSet<>();
+	private Map<Notation, NoteBuilder> connectedTo = new HashMap<>();
+	private Set<Notation> connectedFrom = new HashSet<>();
 	private Note tiedTo;
 	private boolean isTiedFromPrevious;
 	private NoteBuilder followingTied;
@@ -47,7 +47,7 @@ public final class NoteBuilder implements DurationalBuilder {
 	/**
 	 * Copy constructor for NoteBuilder. Creates a new instance of NoteBuilder that
 	 * is a copy of the NoteBuilder given as an attribute.
-	 * This does not copy connections to other builders through markings.
+	 * This does not copy connections to other builders through notations.
 	 *
 	 * @param builder the NoteBuilder to be copied
 	 */
@@ -63,7 +63,7 @@ public final class NoteBuilder implements DurationalBuilder {
 
 	/**
 	 * Constructor that creates a builder with the pitch, duration, and articulations of the given note.
-	 * Ties and connected markings are not copied.
+	 * Ties and connected notations are not copied.
 	 *
 	 * @param note the note from which pitch, duration, and articulations are copied to the created builder
 	 */
@@ -199,16 +199,16 @@ public final class NoteBuilder implements DurationalBuilder {
 	}
 
 	/**
-	 * Connects this builder to the given builder with the specified marking.
+	 * Connects this builder to the given builder with the specified notation.
 	 * <p>
 	 * The connections set using this method are automatically resolved and built when the note builder is built.
 	 *
-	 * @param marking           the marking with which this is connected to the target
-	 * @param targetNoteBuilder the note builder to which this is connected using the given marking
+	 * @param notation          the notation with which this is connected to the target
+	 * @param targetNoteBuilder the note builder to which this is connected using the given notation
 	 */
-	public void connectWith(Marking marking, NoteBuilder targetNoteBuilder) {
-		connectedTo.put(marking, targetNoteBuilder);
-		targetNoteBuilder.connectedFrom.add(marking);
+	public void connectWith(Notation notation, NoteBuilder targetNoteBuilder) {
+		connectedTo.put(notation, targetNoteBuilder);
+		targetNoteBuilder.connectedFrom.add(notation);
 	}
 
 	/**
@@ -219,23 +219,23 @@ public final class NoteBuilder implements DurationalBuilder {
 		this.cachedNote = null;
 	}
 
-	private Collection<Marking.Connection> getResolvedMarkingConnections() {
-		Set<Marking> markings = new HashSet<>(connectedFrom);
-		markings.addAll(connectedTo.keySet());
-		return markings.stream().map(marking -> resolveConnection(marking)).collect(Collectors.toList());
+	private Collection<Notation.Connection> getResolvedNotationConnections() {
+		Set<Notation> notations = new HashSet<>(connectedFrom);
+		notations.addAll(connectedTo.keySet());
+		return notations.stream().map(notation -> resolveConnection(notation)).collect(Collectors.toList());
 	}
 
-	private Marking.Connection resolveConnection(Marking marking) {
+	private Notation.Connection resolveConnection(Notation notation) {
 
-		if (!connectedTo.containsKey(marking) && connectedFrom.contains(marking)) {
-			return Marking.Connection.endOf(marking);
+		if (!connectedTo.containsKey(notation) && connectedFrom.contains(notation)) {
+			return Notation.Connection.endOf(notation);
 		}
 
-		if (connectedTo.containsKey(marking) && !connectedFrom.contains(marking)) {
-			return Marking.Connection.beginningOf(marking, connectedTo.get(marking).build());
+		if (connectedTo.containsKey(notation) && !connectedFrom.contains(notation)) {
+			return Notation.Connection.beginningOf(notation, connectedTo.get(notation).build());
 		}
 
-		return Marking.Connection.of(marking, connectedTo.get(marking).build());
+		return Notation.Connection.of(notation, connectedTo.get(notation).build());
 	}
 
 	/**
@@ -255,7 +255,7 @@ public final class NoteBuilder implements DurationalBuilder {
 			if (isBuilding) {
 				throw new IllegalStateException("Trying to build a note from a builder that is currently building. "
 						+ "This can be caused by concurrent modification or by a circular dependency between "
-						+ "note builders caused by slurs or markings.");
+						+ "note builders caused by slurs or notations.");
 			}
 
 			isBuilding = true;
@@ -264,7 +264,7 @@ public final class NoteBuilder implements DurationalBuilder {
 				this.tiedTo = this.followingTied.build();
 			}
 
-			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, getResolvedMarkingConnections(),
+			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, getResolvedNotationConnections(),
 					this.tiedTo, this.isTiedFromPrevious);
 
 			isBuilding = false;

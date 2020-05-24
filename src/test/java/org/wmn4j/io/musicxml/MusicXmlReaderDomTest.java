@@ -327,28 +327,28 @@ class MusicXmlReaderDomTest {
 	}
 
 	@Test
-	void testReadingMarkingsIntoScoreFromSingleVoice() {
-		Score scoreWitMarkings = readScore("single_staff_single_voice_marking_test.xml", false);
-		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromSingleVoiceToScore(scoreWitMarkings);
+	void testReadingNotationsIntoScoreFromSingleVoice() {
+		Score scoreWitNotations = readScore("single_staff_single_voice_notation_test.xml", false);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(scoreWitNotations);
 	}
 
 	@Test
-	void testReadingMarkingsIntoScoreBuilderFromSingleVoice() {
-		ScoreBuilder scoreWitMarkings = readScoreBuilder("single_staff_single_voice_marking_test.xml", false);
-		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromSingleVoiceToScore(scoreWitMarkings.build());
+	void testReadingNotationsIntoScoreBuilderFromSingleVoice() {
+		ScoreBuilder scoreWitNotations = readScoreBuilder("single_staff_single_voice_notation_test.xml", false);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(scoreWitNotations.build());
 	}
 
 	@Test
-	void testReadingMarkingsIntoScoreFromMultipleStavesAndVoices() {
-		Score scoreWitMarkings = readScore("multi_staff_multi_voice_marking_test.xml", false);
-		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreWitMarkings);
+	void testReadingNotationsIntoScoreFromMultipleStavesAndVoices() {
+		Score scoreWitNotations = readScore("multi_staff_multi_voice_notation_test.xml", false);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreWitNotations);
 	}
 
 	@Test
-	void testReadingMarkingsIntoScoreBuilderFromMultipleStavesAndVoices() {
-		ScoreBuilder scoreBuilderWitMarkings = readScoreBuilder("multi_staff_multi_voice_marking_test.xml", false);
+	void testReadingNotationsIntoScoreBuilderFromMultipleStavesAndVoices() {
+		ScoreBuilder scoreBuilderWitNotations = readScoreBuilder("multi_staff_multi_voice_notation_test.xml", false);
 		MusicXmlFileChecks
-				.assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreBuilderWitMarkings.build());
+				.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreBuilderWitNotations.build());
 	}
 
 	@Test
