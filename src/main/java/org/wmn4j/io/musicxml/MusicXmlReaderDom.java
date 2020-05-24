@@ -979,7 +979,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	 * Class for handling the reading of chords.
 	 */
 	private class ChordBuffer {
-		private final List<NoteBuilder> chordBuffer = new ArrayList<>();
+		private List<NoteBuilder> chordBuffer = new ArrayList<>();
 		private int voice;
 		private Notation.Type arpeggiation;
 
@@ -1004,28 +1004,24 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 						chordBuffer.sort(comp);
 
-						ChordBuilder arpeggiated = new ChordBuilder(chordBuffer);
 						NoteBuilder prev = null;
 
-						for (NoteBuilder note : arpeggiated) {
+						for (NoteBuilder note : chordBuffer) {
 							if (prev != null) {
 								prev.connectWith(arpeggio, note);
 							}
 
 							prev = note;
 						}
-
-						builder.addToVoice(this.voice, arpeggiated);
-					} else {
-						builder.addToVoice(this.voice, new ChordBuilder(chordBuffer));
 					}
 
+					builder.addToVoice(this.voice, new ChordBuilder(chordBuffer));
 				} else if (this.chordBuffer.size() == 1) {
 					final NoteBuilder noteBuilder = this.chordBuffer.get(0);
 					builder.addToVoice(this.voice, noteBuilder);
 				}
 
-				this.chordBuffer.clear();
+				this.chordBuffer = new ArrayList<>();
 				this.arpeggiation = null;
 			}
 		}
