@@ -537,7 +537,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of "single_staff_single_voice_notation_test.xml".
+	 * Expects the contents of "single_staff_single_voice_notation_test.musicxml".
 	 */
 	static void assertNotationsReadCorrectlyFromSingleVoiceToScore(Score score) {
 		final Part part = score.getPart(0);
@@ -606,7 +606,7 @@ class MusicXmlFileChecks {
 		assertFalse(ninthNote.begins(Notation.Type.SLUR));
 		assertFalse(ninthNote.ends(Notation.Type.SLUR));
 
-		assertTrue(secondMeasure.get(voiceNumber, 2) instanceof Rest);
+		assertTrue(secondMeasure.get(voiceNumber, 2).isRest());
 
 		final Note tenthNote = (Note) secondMeasure.get(voiceNumber, 3);
 		assertEquals(1, tenthNote.getNotations().size());
@@ -628,6 +628,22 @@ class MusicXmlFileChecks {
 		assertEquals(2, twelthNote.getNotations().size());
 		assertTrue(twelthNote.ends(Notation.Type.GLISSANDO));
 		assertTrue(twelthNote.ends(Notation.Type.SLUR));
+
+		final Measure thirdMeasure = part.getMeasure(1, 3);
+		final Chord firstChord = (Chord) thirdMeasure.get(voiceNumber, 0);
+		assertTrue(firstChord.getNote(0).begins(Notation.Type.ARPEGGIATE));
+		assertTrue(firstChord.getNote(1).hasNotation(Notation.Type.ARPEGGIATE));
+		assertTrue(firstChord.getNote(2).ends(Notation.Type.ARPEGGIATE));
+
+		final Chord secondChord = (Chord) thirdMeasure.get(voiceNumber, 1);
+		assertTrue(secondChord.getNote(0).begins(Notation.Type.ARPEGGIATE_UP));
+		assertTrue(secondChord.getNote(1).hasNotation(Notation.Type.ARPEGGIATE_UP));
+		assertTrue(secondChord.getNote(2).ends(Notation.Type.ARPEGGIATE_UP));
+
+		final Chord thirdChord = (Chord) thirdMeasure.get(voiceNumber, 2);
+		assertTrue(thirdChord.getNote(0).ends(Notation.Type.ARPEGGIATE_DOWN));
+		assertTrue(thirdChord.getNote(1).hasNotation(Notation.Type.ARPEGGIATE_DOWN));
+		assertTrue(thirdChord.getNote(2).begins(Notation.Type.ARPEGGIATE_DOWN));
 	}
 
 	/*

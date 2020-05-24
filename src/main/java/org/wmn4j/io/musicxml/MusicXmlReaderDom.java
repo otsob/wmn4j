@@ -44,6 +44,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -452,21 +453,23 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			final Pitch pitch = getPitch(noteNode);
 			final NoteBuilder noteBuilder = new NoteBuilder(pitch, duration);
 
-			resolveTiesAndNotations(voice, noteNode, connectedNotations, staffNumber, noteBuilder);
+			ChordBuffer buffer = chordBuffers.get(staffNumber);
 
 			if (hasChordTag(noteNode)) {
-				chordBuffers.get(staffNumber).addNote(noteBuilder, voice);
+				buffer.addNote(noteBuilder, voice);
 			} else {
-				chordBuffers.get(staffNumber).contentsToBuilder(builder);
-				chordBuffers.get(staffNumber).addNote(noteBuilder, voice);
+				buffer.contentsToBuilder(builder);
+				buffer.addNote(noteBuilder, voice);
 			}
+
+			resolveTiesAndNotations(voice, noteNode, connectedNotations, staffNumber, noteBuilder, buffer);
 		}
 
 		return staffNumber;
 	}
 
 	private void resolveTiesAndNotations(int voiceNumber, Node noteNode, ConnectedNotations connectedNotations,
-			int staffNumber, NoteBuilder noteBuilder) {
+			int staffNumber, NoteBuilder noteBuilder, ChordBuffer buffer) {
 
 		// Handle ties
 		if (endsTie(noteNode)) {
@@ -485,20 +488,19 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		final Optional<Node> notationsNodeOptional = DocHelper.findChild(noteNode, MusicXmlTags.NOTATIONS);
 		notationsNodeOptional.ifPresent(notationsNode -> addArticulations(notationsNode, noteBuilder));
 
-		addNotations(voiceNumber, notationsNodeOptional, noteBuilder, connectedNotations);
+		addNotations(voiceNumber, notationsNodeOptional, noteBuilder, connectedNotations, buffer);
 	}
 
 	private void addNotations(int voiceNumber, Optional<Node> notationsNode, NoteBuilder noteBuilder,
-			ConnectedNotations connectedNotations) {
+			ConnectedNotations connectedNotations, ChordBuffer buffer) {
 
 		final Set<UnresolvedNotation> startedNotations = new HashSet<>();
 
 		// Handle the beginnings and ends of notations if the notations node is present
 		if (notationsNode.isPresent()) {
 			for (Node notationNode : getNotationNodes(notationsNode.get())) {
-				final String notationPositionType = DocHelper
-						.getAttributeValue(notationNode, MusicXmlTags.NOTATION_TYPE)
-						.orElseThrow();
+				final Optional<String> notationPositionType = DocHelper
+						.getAttributeValue(notationNode, MusicXmlTags.NOTATION_TYPE);
 
 				// Notation number can be omitted in MusicXML. In that case should default to 1.
 				final int notationNumber = DocHelper.getAttributeValue(notationNode, MusicXmlTags.NOTATION_NUMBER)
@@ -506,12 +508,18 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 				final Notation.Type notationType = getNotationType(notationNode);
 
-				if (notationPositionType.equals(MusicXmlTags.NOTATION_TYPE_START)) {
-					UnresolvedNotation startedNotation = connectedNotations
-							.createAndAddStartOfNotation(voiceNumber, notationNumber, notationType, noteBuilder);
-					startedNotations.add(startedNotation);
-				} else if (notationPositionType.equals(MusicXmlTags.NOTATION_TYPE_STOP)) {
-					connectedNotations.endNotation(voiceNumber, notationNumber, notationType, noteBuilder);
+				if (notationPositionType.isPresent()) {
+					if (notationPositionType.get().equals(MusicXmlTags.NOTATION_TYPE_START)) {
+						UnresolvedNotation startedNotation = connectedNotations
+								.createAndAddStartOfNotation(voiceNumber, notationNumber, notationType, noteBuilder);
+						startedNotations.add(startedNotation);
+					} else if (notationPositionType.get().equals(MusicXmlTags.NOTATION_TYPE_STOP)) {
+						connectedNotations.endNotation(voiceNumber, notationNumber, notationType, noteBuilder);
+					}
+				} else {
+					// The notations that do not specify start and stop are related to arpeggiation.
+					// The notation objects are added to the ChordBuffer which will handle them.
+					buffer.setArpeggiation(notationType);
 				}
 			}
 		}
@@ -540,6 +548,19 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				return Notation.Type.SLUR;
 			case MusicXmlTags.GLISSANDO:
 				return Notation.Type.GLISSANDO;
+			case MusicXmlTags.ARPEGGIATE:
+				Node directionNode = notationNode.getAttributes().getNamedItem(MusicXmlTags.ARPEGGIO_DIRECTION);
+				if (directionNode == null) {
+					return Notation.Type.ARPEGGIATE;
+				}
+
+				if (MusicXmlTags.ARPEGGIO_DIRECTION_DOWN.equals(directionNode.getTextContent())) {
+					return Notation.Type.ARPEGGIATE_DOWN;
+				}
+
+				if (MusicXmlTags.ARPEGGIO_DIRECTION_UP.equals(directionNode.getTextContent())) {
+					return Notation.Type.ARPEGGIATE_UP;
+				}
 		}
 
 		LOG.warn("Tried to parse unsupported notation type: " + notationNode.getNodeName());
@@ -960,6 +981,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	private class ChordBuffer {
 		private final List<NoteBuilder> chordBuffer = new ArrayList<>();
 		private int voice;
+		private Notation.Type arpeggiation;
 
 		ChordBuffer() {
 		}
@@ -972,19 +994,44 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		void contentsToBuilder(MeasureBuilder builder) {
 			if (!this.chordBuffer.isEmpty()) {
 				if (this.chordBuffer.size() > 1) {
-					final List<NoteBuilder> notes = new ArrayList<>();
-					for (NoteBuilder noteBuilder : this.chordBuffer) {
-						notes.add(noteBuilder);
+					if (arpeggiation != null) {
+						Notation arpeggio = Notation.of(arpeggiation);
+
+						// Sort the note builders based on the suitable order for arpeggiation.
+						Comparator<NoteBuilder> comp = arpeggiation.equals(Notation.Type.ARPEGGIATE_DOWN)
+								? Comparator.comparing(NoteBuilder::getPitch).reversed()
+								: Comparator.comparing(NoteBuilder::getPitch);
+
+						chordBuffer.sort(comp);
+
+						ChordBuilder arpeggiated = new ChordBuilder(chordBuffer);
+						NoteBuilder prev = null;
+
+						for (NoteBuilder note : arpeggiated) {
+							if (prev != null) {
+								prev.connectWith(arpeggio, note);
+							}
+
+							prev = note;
+						}
+
+						builder.addToVoice(this.voice, arpeggiated);
+					} else {
+						builder.addToVoice(this.voice, new ChordBuilder(chordBuffer));
 					}
 
-					builder.addToVoice(this.voice, new ChordBuilder(notes));
 				} else if (this.chordBuffer.size() == 1) {
 					final NoteBuilder noteBuilder = this.chordBuffer.get(0);
 					builder.addToVoice(this.voice, noteBuilder);
 				}
 
 				this.chordBuffer.clear();
+				this.arpeggiation = null;
 			}
+		}
+
+		void setArpeggiation(Notation.Type arpeggiation) {
+			this.arpeggiation = arpeggiation;
 		}
 	}
 

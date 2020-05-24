@@ -391,7 +391,7 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void whenScoreHasSingleVoiceWithSlursAndGlissandoThenTheyAreWrittenToFile() {
-		Score score = readMusicXmlTestFile("single_staff_single_voice_notation_test.xml", false);
+		Score score = readMusicXmlTestFile("single_staff_single_voice_notation_test.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
 		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(writtenScore);
 	}

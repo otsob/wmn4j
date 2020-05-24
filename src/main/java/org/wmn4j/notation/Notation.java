@@ -15,7 +15,9 @@ import java.util.Optional;
  * a slur, glissando, or line. The connected notations are represented using connections
  * between adjacent notes. For example, if three notes are affected by the same
  * slur, the first will be connected to the second note and the second note will
- * be connected to the third note.
+ * be connected to the third note. The connections should follow the order in which the
+ * notes are played as well as possible, e.g., downward arpeggiation should have the
+ * highest note in the chord as the first note in the connected notation.
  * <p>
  * This class is immutable.
  */
@@ -33,7 +35,24 @@ public final class Notation {
 		/**
 		 * Specifies a glissando notation.
 		 */
-		GLISSANDO
+		GLISSANDO,
+
+		/**
+		 * Specifies an arpeggiation notation without specifying direction which is customarily
+		 * arpeggiated from lowest note upwards.
+		 */
+		ARPEGGIATE,
+
+		/**
+		 * Specifies an arpeggiation from lowest note upwards that is explicitly marked with an arrow.
+		 */
+		ARPEGGIATE_UP,
+
+		/**
+		 * Specifies an arpeggiation from highest note downwards that is explicitly marked with an arrow.
+		 */
+		ARPEGGIATE_DOWN,
+
 	}
 
 	private final Type type;

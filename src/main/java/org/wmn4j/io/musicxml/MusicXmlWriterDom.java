@@ -789,8 +789,10 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		}
 
 		// Notations
-		if (note.hasNotations()) {
-			for (Notation notation : note.getNotations()) {
+		for (Notation notation : note.getNotations()) {
+			Notation.Type type = notation.getType();
+
+			if (NotationResolver.NOTATION_TYPES_WITH_START_STOP.containsKey(type)) {
 				if (note.getConnection(notation).get().isBeginning()) {
 					notationsElement.appendChild(notationResolver.createStartElement(notation));
 				}
@@ -801,6 +803,10 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 						notationsElement.appendChild(notationStop);
 					}
 				}
+			}
+
+			if (NotationResolver.ARPEGGIATION_TYPES.containsKey(type)) {
+				notationsElement.appendChild(notationResolver.createArpeggiationElement(notation));
 			}
 		}
 
@@ -898,13 +904,22 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 
 	private static class NotationResolver {
 		private static final int MAX_NOTATION_NUMBER = 6;
-		private static final Map<Notation.Type, String> NOTATION_TYPES = createNotationTypes();
+		private static final Map<Notation.Type, String> NOTATION_TYPES_WITH_START_STOP = createNotationTypes();
+		private static final Map<Notation.Type, String> ARPEGGIATION_TYPES = createArpeggiationTypes();
 
 		private static Map<Notation.Type, String> createNotationTypes() {
 			Map<Notation.Type, String> notationTypes = new HashMap<>();
 			notationTypes.put(Notation.Type.SLUR, MusicXmlTags.SLUR);
 			notationTypes.put(Notation.Type.GLISSANDO, MusicXmlTags.GLISSANDO);
 			return Collections.unmodifiableMap(notationTypes);
+		}
+
+		private static Map<Notation.Type, String> createArpeggiationTypes() {
+			Map<Notation.Type, String> arpeggiationTypes = new HashMap<>();
+			arpeggiationTypes.put(Notation.Type.ARPEGGIATE, MusicXmlTags.ARPEGGIATE);
+			arpeggiationTypes.put(Notation.Type.ARPEGGIATE_DOWN, MusicXmlTags.ARPEGGIATE);
+			arpeggiationTypes.put(Notation.Type.ARPEGGIATE_UP, MusicXmlTags.ARPEGGIATE);
+			return Collections.unmodifiableMap(arpeggiationTypes);
 		}
 
 		private final Document document;
@@ -917,8 +932,28 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		private Map<Notation, Integer> unresolvedNotations = new HashMap<>();
 		private Set<Integer> usedNotationNumbers = new HashSet<>(MAX_NOTATION_NUMBER);
 
+		Element createArpeggiationElement(Notation notation) {
+			Notation.Type type = notation.getType();
+			Element notationElement = document.createElement(ARPEGGIATION_TYPES.get(type));
+
+			final Integer notationNumber = getNextAvailableNotationNumber();
+			unresolvedNotations.put(notation, notationNumber);
+
+			notationElement.setAttribute(MusicXmlTags.NOTATION_NUMBER, notationNumber.toString());
+
+			if (type.equals(Notation.Type.ARPEGGIATE_DOWN)) {
+				notationElement.setAttribute(MusicXmlTags.ARPEGGIO_DIRECTION, MusicXmlTags.ARPEGGIO_DIRECTION_DOWN);
+			}
+
+			if (type.equals(Notation.Type.ARPEGGIATE_UP)) {
+				notationElement.setAttribute(MusicXmlTags.ARPEGGIO_DIRECTION, MusicXmlTags.ARPEGGIO_DIRECTION_UP);
+			}
+
+			return notationElement;
+		}
+
 		Element createStartElement(Notation notation) {
-			Element notationElement = document.createElement(NOTATION_TYPES.get(notation.getType()));
+			Element notationElement = document.createElement(NOTATION_TYPES_WITH_START_STOP.get(notation.getType()));
 
 			final Integer notationNumber = getNextAvailableNotationNumber();
 			unresolvedNotations.put(notation, notationNumber);
@@ -933,7 +968,7 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 			Element notationElement = null;
 
 			if (unresolvedNotations.containsKey(notation)) {
-				notationElement = document.createElement(NOTATION_TYPES.get(notation.getType()));
+				notationElement = document.createElement(NOTATION_TYPES_WITH_START_STOP.get(notation.getType()));
 
 				notationElement
 						.setAttribute(MusicXmlTags.NOTATION_NUMBER, unresolvedNotations.get(notation).toString());

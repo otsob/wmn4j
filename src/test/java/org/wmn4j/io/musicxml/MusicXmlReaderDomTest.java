@@ -328,13 +328,13 @@ class MusicXmlReaderDomTest {
 
 	@Test
 	void testReadingNotationsIntoScoreFromSingleVoice() {
-		Score scoreWitNotations = readScore("single_staff_single_voice_notation_test.xml", false);
+		Score scoreWitNotations = readScore("single_staff_single_voice_notation_test.musicxml", false);
 		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(scoreWitNotations);
 	}
 
 	@Test
 	void testReadingNotationsIntoScoreBuilderFromSingleVoice() {
-		ScoreBuilder scoreWitNotations = readScoreBuilder("single_staff_single_voice_notation_test.xml", false);
+		ScoreBuilder scoreWitNotations = readScoreBuilder("single_staff_single_voice_notation_test.musicxml", false);
 		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(scoreWitNotations.build());
 	}
 

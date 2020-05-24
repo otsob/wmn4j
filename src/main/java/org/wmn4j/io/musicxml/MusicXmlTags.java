@@ -119,12 +119,17 @@ final class MusicXmlTags {
 	// Notations
 	static final String SLUR = "slur";
 	static final String GLISSANDO = "glissando";
+	static final String ARPEGGIATE = "arpeggiate";
+	static final String ARPEGGIO_DIRECTION = "direction";
+	static final String ARPEGGIO_DIRECTION_DOWN = "down";
+	static final String ARPEGGIO_DIRECTION_UP = "up";
 	static final String NOTATION_NUMBER = "number";
 	static final String NOTATION_TYPE = "type";
 	static final String NOTATION_TYPE_START = "start";
 	static final String NOTATION_TYPE_STOP = "stop";
 
-	static final Set<String> CONNECTED_NOTATION_NODE_NAMES = Collections.unmodifiableSet(Set.of(SLUR, GLISSANDO));
+	static final Set<String> CONNECTED_NOTATION_NODE_NAMES = Collections
+			.unmodifiableSet(Set.of(SLUR, GLISSANDO, ARPEGGIATE));
 
 	static final String DIRECTION = "direction";
 	static final String DIRECTION_PLACEMENT = "placement";
