@@ -509,11 +509,15 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				final Notation.Type notationType = getNotationType(notationNode);
 
 				if (notationPositionType.isPresent()) {
-					if (notationPositionType.get().equals(MusicXmlTags.NOTATION_TYPE_START)) {
+					final String type = notationPositionType.get();
+
+					if (type.equals(MusicXmlTags.NOTATION_TYPE_START)
+							|| type.equals(MusicXmlTags.NON_ARPEGGIATE_BOTTOM)) {
 						UnresolvedNotation startedNotation = connectedNotations
 								.createAndAddStartOfNotation(voiceNumber, notationNumber, notationType, noteBuilder);
 						startedNotations.add(startedNotation);
-					} else if (notationPositionType.get().equals(MusicXmlTags.NOTATION_TYPE_STOP)) {
+					} else if (type.equals(MusicXmlTags.NOTATION_TYPE_STOP)
+							|| type.equals(MusicXmlTags.NON_ARPEGGIATE_TOP)) {
 						connectedNotations.endNotation(voiceNumber, notationNumber, notationType, noteBuilder);
 					}
 				} else {
@@ -561,6 +565,8 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				if (MusicXmlTags.ARPEGGIO_DIRECTION_UP.equals(directionNode.getTextContent())) {
 					return Notation.Type.ARPEGGIATE_UP;
 				}
+			case MusicXmlTags.NON_ARPEGGIATE:
+				return Notation.Type.NON_ARPEGGIATE;
 		}
 
 		LOG.warn("Tried to parse unsupported notation type: " + notationNode.getNodeName());

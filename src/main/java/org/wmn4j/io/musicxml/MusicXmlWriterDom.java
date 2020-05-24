@@ -911,6 +911,7 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 			Map<Notation.Type, String> notationTypes = new HashMap<>();
 			notationTypes.put(Notation.Type.SLUR, MusicXmlTags.SLUR);
 			notationTypes.put(Notation.Type.GLISSANDO, MusicXmlTags.GLISSANDO);
+			notationTypes.put(Notation.Type.NON_ARPEGGIATE, MusicXmlTags.NON_ARPEGGIATE);
 			return Collections.unmodifiableMap(notationTypes);
 		}
 
@@ -960,7 +961,11 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 
 			notationElement.setAttribute(MusicXmlTags.NOTATION_NUMBER, notationNumber.toString());
 
-			notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NOTATION_TYPE_START);
+			if (notation.getType().equals(Notation.Type.NON_ARPEGGIATE)) {
+				notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NON_ARPEGGIATE_BOTTOM);
+			} else {
+				notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NOTATION_TYPE_START);
+			}
 			return notationElement;
 		}
 
@@ -976,7 +981,11 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 				usedNotationNumbers.remove(unresolvedNotations.get(notation));
 				unresolvedNotations.remove(notation);
 
-				notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NOTATION_TYPE_STOP);
+				if (notation.getType().equals(Notation.Type.NON_ARPEGGIATE)) {
+					notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NON_ARPEGGIATE_TOP);
+				} else {
+					notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NOTATION_TYPE_STOP);
+				}
 			}
 
 			return notationElement;

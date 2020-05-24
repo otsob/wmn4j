@@ -644,6 +644,11 @@ class MusicXmlFileChecks {
 		assertTrue(thirdChord.getNote(0).endsNotation(Notation.Type.ARPEGGIATE_DOWN));
 		assertTrue(thirdChord.getNote(1).hasNotation(Notation.Type.ARPEGGIATE_DOWN));
 		assertTrue(thirdChord.getNote(2).beginsNotation(Notation.Type.ARPEGGIATE_DOWN));
+
+		final Chord fourthChord = (Chord) thirdMeasure.get(voiceNumber, 3);
+		assertTrue(fourthChord.getNote(0).beginsNotation(Notation.Type.NON_ARPEGGIATE));
+		assertTrue(fourthChord.getNote(1).hasNotation(Notation.Type.NON_ARPEGGIATE));
+		assertTrue(fourthChord.getNote(2).endsNotation(Notation.Type.NON_ARPEGGIATE));
 	}
 
 	/*

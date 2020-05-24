@@ -53,6 +53,11 @@ public final class Notation {
 		 */
 		ARPEGGIATE_DOWN,
 
+		/**
+		 * Specifies a bracket indicating that notes should not be arpeggiated.
+		 */
+		NON_ARPEGGIATE,
+
 	}
 
 	private final Type type;

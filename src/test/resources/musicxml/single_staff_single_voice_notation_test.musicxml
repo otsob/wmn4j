@@ -64,7 +64,7 @@
       </score-part>
     </part-list>
   <part id="P1">
-    <measure number="1" width="349.27">
+    <measure number="1" width="344.84">
       <print>
         <system-layout>
           <system-margins>
@@ -102,7 +102,7 @@
           <slur type="start" placement="above" number="1"/>
           </notations>
         </note>
-      <note default-x="109.20" default-y="-45.00">
+      <note default-x="108.62" default-y="-45.00">
         <pitch>
           <step>D</step>
           <octave>4</octave>
@@ -116,7 +116,7 @@
           <slur type="stop" number="1"/>
           </notations>
         </note>
-      <note default-x="145.33" default-y="-40.00">
+      <note default-x="144.17" default-y="-40.00">
         <pitch>
           <step>E</step>
           <octave>4</octave>
@@ -127,10 +127,10 @@
         <stem>down</stem>
         <beam number="1">continue</beam>
         <notations>
-          <glissando line-type="wavy" number="1" type="start" default-y="-38.74"/>
+          <glissando line-type="wavy" number="1" type="start" default-y="-38.72"/>
           </notations>
         </note>
-      <note default-x="181.47" default-y="-35.00">
+      <note default-x="179.72" default-y="-35.00">
         <pitch>
           <step>F</step>
           <octave>4</octave>
@@ -144,7 +144,7 @@
           <glissando line-type="wavy" number="1" type="stop"/>
           </notations>
         </note>
-      <note default-x="217.60" default-y="-30.00">
+      <note default-x="215.27" default-y="-30.00">
         <pitch>
           <step>G</step>
           <octave>4</octave>
@@ -158,7 +158,7 @@
           <slur type="start" placement="above" number="1"/>
           </notations>
         </note>
-      <note default-x="253.73" default-y="-25.00">
+      <note default-x="250.82" default-y="-25.00">
         <pitch>
           <step>A</step>
           <octave>4</octave>
@@ -169,7 +169,7 @@
         <stem>down</stem>
         <beam number="1">end</beam>
         </note>
-      <note default-x="289.86" default-y="-20.00">
+      <note default-x="286.37" default-y="-20.00">
         <pitch>
           <step>B</step>
           <octave>4</octave>
@@ -183,7 +183,7 @@
           </notations>
         </note>
       </measure>
-    <measure number="2" width="263.09">
+    <measure number="2" width="258.66">
       <note default-x="10.00" default-y="-15.00">
         <pitch>
           <step>C</step>
@@ -198,7 +198,7 @@
           <slur type="start" placement="above" number="1"/>
           </notations>
         </note>
-      <note default-x="44.93" default-y="-10.00">
+      <note default-x="44.31" default-y="-10.00">
         <pitch>
           <step>D</step>
           <octave>5</octave>
@@ -215,7 +215,7 @@
         <voice>1</voice>
         <type>eighth</type>
         </note>
-      <note default-x="114.79" default-y="-5.00">
+      <note default-x="112.94" default-y="-5.00">
         <pitch>
           <step>E</step>
           <octave>5</octave>
@@ -228,7 +228,7 @@
           <slur type="stop" number="1"/>
           </notations>
         </note>
-      <note default-x="149.71" default-y="0.00">
+      <note default-x="147.25" default-y="0.00">
         <pitch>
           <step>F</step>
           <octave>5</octave>
@@ -239,10 +239,10 @@
         <stem>down</stem>
         <notations>
           <slur type="start" placement="above" number="1"/>
-          <glissando line-type="wavy" number="1" type="start" default-y="0.81"/>
+          <glissando line-type="wavy" number="1" type="start" default-y="0.83"/>
           </notations>
         </note>
-      <note default-x="205.60" default-y="5.00">
+      <note default-x="202.16" default-y="5.00">
         <pitch>
           <step>G</step>
           <octave>5</octave>
@@ -257,7 +257,7 @@
           </notations>
         </note>
       </measure>
-    <measure number="3" width="264.22">
+    <measure number="3" width="277.50">
       <note default-x="23.09" default-y="-35.00">
         <pitch>
           <step>F</step>
@@ -299,7 +299,7 @@
           <arpeggiate default-x="-13.09" default-y="-9.49"/>
           </notations>
         </note>
-      <note default-x="82.97" default-y="-35.00">
+      <note default-x="86.29" default-y="-35.00">
         <pitch>
           <step>F</step>
           <octave>4</octave>
@@ -312,7 +312,7 @@
           <arpeggiate direction="up" default-x="-17.81" default-y="-9.49"/>
           </notations>
         </note>
-      <note default-x="82.97" default-y="-25.00">
+      <note default-x="86.29" default-y="-25.00">
         <chord/>
         <pitch>
           <step>A</step>
@@ -326,7 +326,7 @@
           <arpeggiate direction="up" default-x="-17.81" default-y="-9.49"/>
           </notations>
         </note>
-      <note default-x="82.97" default-y="-15.00">
+      <note default-x="86.29" default-y="-15.00">
         <chord/>
         <pitch>
           <step>C</step>
@@ -340,7 +340,7 @@
           <arpeggiate direction="up" default-x="-17.81" default-y="-9.49"/>
           </notations>
         </note>
-      <note default-x="142.85" default-y="-35.00">
+      <note default-x="149.50" default-y="-35.00">
         <pitch>
           <step>F</step>
           <octave>4</octave>
@@ -353,7 +353,7 @@
           <arpeggiate direction="down" default-x="-17.82" default-y="-9.49"/>
           </notations>
         </note>
-      <note default-x="142.85" default-y="-25.00">
+      <note default-x="149.50" default-y="-25.00">
         <chord/>
         <pitch>
           <step>A</step>
@@ -367,7 +367,7 @@
           <arpeggiate direction="down" default-x="-17.82" default-y="-9.49"/>
           </notations>
         </note>
-      <note default-x="142.85" default-y="-15.00">
+      <note default-x="149.50" default-y="-15.00">
         <chord/>
         <pitch>
           <step>C</step>
@@ -381,14 +381,46 @@
           <arpeggiate direction="down" default-x="-17.82" default-y="-9.49"/>
           </notations>
         </note>
-      <note>
-        <rest/>
+      <note default-x="212.70" default-y="-35.00">
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+          </pitch>
         <duration>2</duration>
         <voice>1</voice>
         <type>quarter</type>
+        <stem>up</stem>
+        <notations>
+          <non-arpeggiate type="bottom" default-x="-14.80" default-y="-9.49"/>
+          </notations>
+        </note>
+      <note default-x="212.70" default-y="-25.00">
+        <chord/>
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+          </pitch>
+        <duration>2</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        </note>
+      <note default-x="212.70" default-y="-15.00">
+        <chord/>
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+          </pitch>
+        <duration>2</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        <notations>
+          <non-arpeggiate type="top" default-x="-14.80" default-y="-9.49"/>
+          </notations>
         </note>
       </measure>
-    <measure number="4" width="200.59">
+    <measure number="4" width="196.16">
       <note>
         <rest/>
         <duration>2</duration>
