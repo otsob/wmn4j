@@ -180,11 +180,11 @@ class NoteTest {
 		final Note noteWithNotationConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
 				Collections.emptySet(), notationConnections, null, false);
 
-		assertTrue(noteWithNotationConnections.begins(Notation.Type.SLUR));
-		assertTrue(noteWithNotationConnections.ends(Notation.Type.GLISSANDO));
+		assertTrue(noteWithNotationConnections.beginsNotation(Notation.Type.SLUR));
+		assertTrue(noteWithNotationConnections.endsNotation(Notation.Type.GLISSANDO));
 
-		assertFalse(noteWithNotationConnections.begins(Notation.Type.GLISSANDO));
-		assertFalse(noteWithNotationConnections.ends(Notation.Type.SLUR));
+		assertFalse(noteWithNotationConnections.beginsNotation(Notation.Type.GLISSANDO));
+		assertFalse(noteWithNotationConnections.endsNotation(Notation.Type.SLUR));
 	}
 
 	@Test

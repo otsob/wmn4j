@@ -217,7 +217,7 @@ public final class Note implements Durational, Pitched {
 	 *                     note is checked
 	 * @return true if this note begins a notation of the given type
 	 */
-	public boolean begins(Notation.Type notationType) {
+	public boolean beginsNotation(Notation.Type notationType) {
 		return notationConnections.stream()
 				.anyMatch(notationConnection -> notationConnection.getType().equals(notationType)
 						&& notationConnection.isBeginning());
@@ -230,7 +230,7 @@ public final class Note implements Durational, Pitched {
 	 *                     is checked
 	 * @return true if this note ends a notation of the given type
 	 */
-	public boolean ends(Notation.Type notationType) {
+	public boolean endsNotation(Notation.Type notationType) {
 		return notationConnections.stream()
 				.anyMatch(notationConnection -> notationConnection.getType().equals(notationType)
 						&& notationConnection.isEnd());

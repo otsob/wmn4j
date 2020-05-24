@@ -548,43 +548,43 @@ class MusicXmlFileChecks {
 		final Note secondNote = (Note) firstMeasure.get(voiceNumber, 1);
 
 		assertTrue(firstNote.hasNotation(Notation.Type.SLUR));
-		assertTrue(firstNote.begins(Notation.Type.SLUR));
+		assertTrue(firstNote.beginsNotation(Notation.Type.SLUR));
 		assertEquals(1, firstNote.getNotations().size());
 		Notation slurBetweenSecondAndFirst = firstNote.getNotations().stream().findFirst().orElseThrow();
 		assertEquals(secondNote,
 				firstNote.getConnection(slurBetweenSecondAndFirst).get().getFollowingNote().get());
 
 		assertTrue(secondNote.hasNotations());
-		assertTrue(secondNote.ends(Notation.Type.SLUR));
+		assertTrue(secondNote.endsNotation(Notation.Type.SLUR));
 		assertEquals(1, secondNote.getNotations().size());
 
 		final Note thirdNote = (Note) firstMeasure.get(voiceNumber, 2);
 		final Note fourthNote = (Note) firstMeasure.get(voiceNumber, 3);
 
 		assertTrue(thirdNote.hasNotation(Notation.Type.GLISSANDO));
-		assertTrue(thirdNote.begins(Notation.Type.GLISSANDO));
+		assertTrue(thirdNote.beginsNotation(Notation.Type.GLISSANDO));
 		assertEquals(1, thirdNote.getNotations().size());
 		Notation glissandoBetweenThirdAndFourth = thirdNote.getNotations().stream().findFirst().orElseThrow();
 		assertEquals(fourthNote,
 				thirdNote.getConnection(glissandoBetweenThirdAndFourth).get().getFollowingNote().get());
 
 		assertTrue(fourthNote.hasNotations());
-		assertTrue(fourthNote.ends(Notation.Type.GLISSANDO));
+		assertTrue(fourthNote.endsNotation(Notation.Type.GLISSANDO));
 		assertEquals(1, fourthNote.getNotations().size());
 
 		final Note fifthNote = (Note) firstMeasure.get(voiceNumber, 4);
 		assertEquals(1, fifthNote.getNotations().size());
-		assertTrue(fifthNote.begins(Notation.Type.SLUR));
+		assertTrue(fifthNote.beginsNotation(Notation.Type.SLUR));
 
 		final Note sixthNote = (Note) firstMeasure.get(voiceNumber, 5);
 		assertEquals(1, sixthNote.getNotations().size());
 		assertTrue(sixthNote.hasNotation(Notation.Type.SLUR));
-		assertFalse(sixthNote.begins(Notation.Type.SLUR));
-		assertFalse(sixthNote.ends(Notation.Type.SLUR));
+		assertFalse(sixthNote.beginsNotation(Notation.Type.SLUR));
+		assertFalse(sixthNote.endsNotation(Notation.Type.SLUR));
 
 		final Note seventhNote = (Note) firstMeasure.get(voiceNumber, 6);
 		assertEquals(1, seventhNote.getNotations().size());
-		assertTrue(seventhNote.ends(Notation.Type.SLUR));
+		assertTrue(seventhNote.endsNotation(Notation.Type.SLUR));
 
 		final Notation slurFromFifthToSeventhNote = fifthNote.getNotations().stream().findAny().orElseThrow();
 		final List<Note> notesInSlurFromFifthToSeventhNote = slurFromFifthToSeventhNote
@@ -598,19 +598,19 @@ class MusicXmlFileChecks {
 
 		final Note eightNote = (Note) secondMeasure.get(voiceNumber, 0);
 		assertEquals(1, eightNote.getNotations().size());
-		assertTrue(eightNote.begins(Notation.Type.SLUR));
+		assertTrue(eightNote.beginsNotation(Notation.Type.SLUR));
 
 		final Note ninthNote = (Note) secondMeasure.get(voiceNumber, 1);
 		assertEquals(1, ninthNote.getNotations().size());
 		assertTrue(ninthNote.hasNotation(Notation.Type.SLUR));
-		assertFalse(ninthNote.begins(Notation.Type.SLUR));
-		assertFalse(ninthNote.ends(Notation.Type.SLUR));
+		assertFalse(ninthNote.beginsNotation(Notation.Type.SLUR));
+		assertFalse(ninthNote.endsNotation(Notation.Type.SLUR));
 
 		assertTrue(secondMeasure.get(voiceNumber, 2).isRest());
 
 		final Note tenthNote = (Note) secondMeasure.get(voiceNumber, 3);
 		assertEquals(1, tenthNote.getNotations().size());
-		assertTrue(tenthNote.ends(Notation.Type.SLUR));
+		assertTrue(tenthNote.endsNotation(Notation.Type.SLUR));
 
 		final Notation slurFromEightToTenthNote = eightNote.getNotations().stream().findAny().orElseThrow();
 		final List<Note> notesInSlurFromEightToTenthNote = slurFromEightToTenthNote.getAffectedStartingFrom(eightNote);
@@ -621,29 +621,29 @@ class MusicXmlFileChecks {
 
 		final Note eleventhNote = (Note) secondMeasure.get(voiceNumber, 4);
 		assertEquals(2, eleventhNote.getNotations().size());
-		assertTrue(eleventhNote.begins(Notation.Type.GLISSANDO));
-		assertTrue(eleventhNote.begins(Notation.Type.SLUR));
+		assertTrue(eleventhNote.beginsNotation(Notation.Type.GLISSANDO));
+		assertTrue(eleventhNote.beginsNotation(Notation.Type.SLUR));
 
 		final Note twelthNote = (Note) secondMeasure.get(voiceNumber, 5);
 		assertEquals(2, twelthNote.getNotations().size());
-		assertTrue(twelthNote.ends(Notation.Type.GLISSANDO));
-		assertTrue(twelthNote.ends(Notation.Type.SLUR));
+		assertTrue(twelthNote.endsNotation(Notation.Type.GLISSANDO));
+		assertTrue(twelthNote.endsNotation(Notation.Type.SLUR));
 
 		final Measure thirdMeasure = part.getMeasure(1, 3);
 		final Chord firstChord = (Chord) thirdMeasure.get(voiceNumber, 0);
-		assertTrue(firstChord.getNote(0).begins(Notation.Type.ARPEGGIATE));
+		assertTrue(firstChord.getNote(0).beginsNotation(Notation.Type.ARPEGGIATE));
 		assertTrue(firstChord.getNote(1).hasNotation(Notation.Type.ARPEGGIATE));
-		assertTrue(firstChord.getNote(2).ends(Notation.Type.ARPEGGIATE));
+		assertTrue(firstChord.getNote(2).endsNotation(Notation.Type.ARPEGGIATE));
 
 		final Chord secondChord = (Chord) thirdMeasure.get(voiceNumber, 1);
-		assertTrue(secondChord.getNote(0).begins(Notation.Type.ARPEGGIATE_UP));
+		assertTrue(secondChord.getNote(0).beginsNotation(Notation.Type.ARPEGGIATE_UP));
 		assertTrue(secondChord.getNote(1).hasNotation(Notation.Type.ARPEGGIATE_UP));
-		assertTrue(secondChord.getNote(2).ends(Notation.Type.ARPEGGIATE_UP));
+		assertTrue(secondChord.getNote(2).endsNotation(Notation.Type.ARPEGGIATE_UP));
 
 		final Chord thirdChord = (Chord) thirdMeasure.get(voiceNumber, 2);
-		assertTrue(thirdChord.getNote(0).ends(Notation.Type.ARPEGGIATE_DOWN));
+		assertTrue(thirdChord.getNote(0).endsNotation(Notation.Type.ARPEGGIATE_DOWN));
 		assertTrue(thirdChord.getNote(1).hasNotation(Notation.Type.ARPEGGIATE_DOWN));
-		assertTrue(thirdChord.getNote(2).begins(Notation.Type.ARPEGGIATE_DOWN));
+		assertTrue(thirdChord.getNote(2).beginsNotation(Notation.Type.ARPEGGIATE_DOWN));
 	}
 
 	/*
@@ -664,21 +664,21 @@ class MusicXmlFileChecks {
 		// Check top staff of first measure
 		final Note firstNoteInTopStaff = (Note) topStaffFirstMeasure.get(topStaffSingleVoiceNumber, 0);
 		assertEquals(1, firstNoteInTopStaff.getNotations().size());
-		assertTrue(firstNoteInTopStaff.begins(Notation.Type.SLUR));
+		assertTrue(firstNoteInTopStaff.beginsNotation(Notation.Type.SLUR));
 
 		final Note secondNoteInTopStaff = (Note) topStaffFirstMeasure.get(topStaffSingleVoiceNumber, 1);
 		assertEquals(2, secondNoteInTopStaff.getNotations().size());
-		assertTrue(secondNoteInTopStaff.begins(Notation.Type.SLUR));
-		assertFalse(secondNoteInTopStaff.ends(Notation.Type.SLUR));
+		assertTrue(secondNoteInTopStaff.beginsNotation(Notation.Type.SLUR));
+		assertFalse(secondNoteInTopStaff.endsNotation(Notation.Type.SLUR));
 
 		final Note thirdNoteInTopStaff = (Note) topStaffFirstMeasure.get(topStaffSingleVoiceNumber, 2);
 		assertEquals(2, thirdNoteInTopStaff.getNotations().size());
-		assertTrue(thirdNoteInTopStaff.ends(Notation.Type.SLUR));
-		assertFalse(thirdNoteInTopStaff.begins(Notation.Type.SLUR));
+		assertTrue(thirdNoteInTopStaff.endsNotation(Notation.Type.SLUR));
+		assertFalse(thirdNoteInTopStaff.beginsNotation(Notation.Type.SLUR));
 
 		final Note fourthNoteInTopStaff = (Note) topStaffFirstMeasure.get(topStaffSingleVoiceNumber, 3);
 		assertEquals(1, fourthNoteInTopStaff.getNotations().size());
-		assertTrue(fourthNoteInTopStaff.ends(Notation.Type.SLUR));
+		assertTrue(fourthNoteInTopStaff.endsNotation(Notation.Type.SLUR));
 
 		final Notation slurFromFirstToThirdNote = firstNoteInTopStaff.getNotations().stream().findFirst().orElseThrow();
 		List<Note> notesInSlurFromFirstToThirdNote = slurFromFirstToThirdNote
@@ -708,11 +708,11 @@ class MusicXmlFileChecks {
 
 		final Note firstNoteInBottomStaff = (Note) bottomStaffFirstMeasure.get(bottomStaffSingleVoiceNumber, 1);
 		assertEquals(1, firstNoteInBottomStaff.getNotations().size());
-		assertTrue(firstNoteInBottomStaff.begins(Notation.Type.SLUR));
+		assertTrue(firstNoteInBottomStaff.beginsNotation(Notation.Type.SLUR));
 
 		final Note secondNoteInBottomStaff = (Note) bottomStaffFirstMeasure.get(bottomStaffSingleVoiceNumber, 2);
 		assertEquals(1, secondNoteInBottomStaff.getNotations().size());
-		assertTrue(secondNoteInBottomStaff.ends(Notation.Type.SLUR));
+		assertTrue(secondNoteInBottomStaff.endsNotation(Notation.Type.SLUR));
 
 		final Notation bottomStaffFirstMeasureSlur = firstNoteInBottomStaff.getNotations().stream().findFirst()
 				.orElseThrow();
@@ -734,19 +734,19 @@ class MusicXmlFileChecks {
 		// Check top voice in second measure top staff
 		Note fifthNoteInTopStaffTopVoice = (Note) topStaffSecondMeasure.get(topStaffTopVoice, 0);
 		assertEquals(1, fifthNoteInTopStaffTopVoice.getNotations().size());
-		assertTrue(fifthNoteInTopStaffTopVoice.begins(Notation.Type.SLUR));
+		assertTrue(fifthNoteInTopStaffTopVoice.beginsNotation(Notation.Type.SLUR));
 
 		Note sixthNoteInTopStaffTopVoice = (Note) topStaffSecondMeasure.get(topStaffTopVoice, 1);
 		assertEquals(2, sixthNoteInTopStaffTopVoice.getNotations().size());
 		assertTrue(sixthNoteInTopStaffTopVoice.hasNotation(Notation.Type.SLUR));
-		assertFalse(sixthNoteInTopStaffTopVoice.begins(Notation.Type.SLUR));
-		assertFalse(sixthNoteInTopStaffTopVoice.ends(Notation.Type.SLUR));
-		assertTrue(sixthNoteInTopStaffTopVoice.begins(Notation.Type.GLISSANDO));
+		assertFalse(sixthNoteInTopStaffTopVoice.beginsNotation(Notation.Type.SLUR));
+		assertFalse(sixthNoteInTopStaffTopVoice.endsNotation(Notation.Type.SLUR));
+		assertTrue(sixthNoteInTopStaffTopVoice.beginsNotation(Notation.Type.GLISSANDO));
 
 		Note seventhNoteInTopStaffTopVoice = (Note) topStaffSecondMeasure.get(topStaffTopVoice, 2);
 		assertEquals(2, seventhNoteInTopStaffTopVoice.getNotations().size());
-		assertTrue(seventhNoteInTopStaffTopVoice.ends(Notation.Type.SLUR));
-		assertTrue(seventhNoteInTopStaffTopVoice.ends(Notation.Type.GLISSANDO));
+		assertTrue(seventhNoteInTopStaffTopVoice.endsNotation(Notation.Type.SLUR));
+		assertTrue(seventhNoteInTopStaffTopVoice.endsNotation(Notation.Type.GLISSANDO));
 
 		final Notation slurBetweenTopVoiceNotes = fifthNoteInTopStaffTopVoice.getNotations().stream().findFirst()
 				.orElseThrow();
@@ -771,19 +771,19 @@ class MusicXmlFileChecks {
 		// Check notes in lower voice of top staff measure 2
 		Note fifthNoteInTopStaffBottomVoice = (Note) topStaffSecondMeasure.get(topStaffBottomVoice, 0);
 		assertEquals(2, fifthNoteInTopStaffBottomVoice.getNotations().size());
-		assertTrue(fifthNoteInTopStaffBottomVoice.begins(Notation.Type.SLUR));
-		assertTrue(fifthNoteInTopStaffBottomVoice.begins(Notation.Type.GLISSANDO));
+		assertTrue(fifthNoteInTopStaffBottomVoice.beginsNotation(Notation.Type.SLUR));
+		assertTrue(fifthNoteInTopStaffBottomVoice.beginsNotation(Notation.Type.GLISSANDO));
 
 		Note sixthNoteInTopStaffBottomVoice = (Note) topStaffSecondMeasure.get(topStaffBottomVoice, 1);
 		assertEquals(2, sixthNoteInTopStaffBottomVoice.getNotations().size());
-		assertTrue(sixthNoteInTopStaffBottomVoice.ends(Notation.Type.GLISSANDO));
+		assertTrue(sixthNoteInTopStaffBottomVoice.endsNotation(Notation.Type.GLISSANDO));
 		assertTrue(sixthNoteInTopStaffBottomVoice.hasNotation(Notation.Type.SLUR));
-		assertFalse(sixthNoteInTopStaffBottomVoice.begins(Notation.Type.SLUR));
-		assertFalse(sixthNoteInTopStaffBottomVoice.ends(Notation.Type.SLUR));
+		assertFalse(sixthNoteInTopStaffBottomVoice.beginsNotation(Notation.Type.SLUR));
+		assertFalse(sixthNoteInTopStaffBottomVoice.endsNotation(Notation.Type.SLUR));
 
 		Note seventhNoteInTopStaffBottomVoice = (Note) topStaffSecondMeasure.get(topStaffBottomVoice, 2);
 		assertEquals(1, seventhNoteInTopStaffBottomVoice.getNotations().size());
-		assertTrue(seventhNoteInTopStaffBottomVoice.ends(Notation.Type.SLUR));
+		assertTrue(seventhNoteInTopStaffBottomVoice.endsNotation(Notation.Type.SLUR));
 
 		final Notation slurBetweenBottomVoiceNotes = fifthNoteInTopStaffBottomVoice.getNotations().stream()
 				.filter(notation -> notation.getType().equals(Notation.Type.SLUR))

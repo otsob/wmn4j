@@ -66,7 +66,7 @@ class NoteBuilderTest {
 		assertTrue(note.isTied());
 		assertTrue(note.isTiedToFollowing());
 		assertFalse(note.isTiedFromPrevious());
-		assertTrue(note.begins(Notation.Type.SLUR));
+		assertTrue(note.beginsNotation(Notation.Type.SLUR));
 	}
 
 	@Test
@@ -150,16 +150,16 @@ class NoteBuilderTest {
 		final Note secondNote = second.build();
 		final Note thirdNote = third.build();
 
-		assertTrue(firstNote.begins(Notation.Type.SLUR));
-		assertFalse(firstNote.ends(Notation.Type.SLUR));
+		assertTrue(firstNote.beginsNotation(Notation.Type.SLUR));
+		assertFalse(firstNote.endsNotation(Notation.Type.SLUR));
 		assertEquals(secondNote, firstNote.getConnection(slur).get().getFollowingNote().get());
 
 		assertTrue(secondNote.hasNotation(Notation.Type.SLUR));
-		assertFalse(secondNote.begins(Notation.Type.SLUR));
-		assertFalse(secondNote.ends(Notation.Type.SLUR));
+		assertFalse(secondNote.beginsNotation(Notation.Type.SLUR));
+		assertFalse(secondNote.endsNotation(Notation.Type.SLUR));
 		assertEquals(thirdNote, secondNote.getConnection(slur).get().getFollowingNote().get());
 
-		assertTrue(thirdNote.ends(Notation.Type.SLUR));
+		assertTrue(thirdNote.endsNotation(Notation.Type.SLUR));
 		assertTrue(thirdNote.getConnection(slur).get().getFollowingNote().isEmpty());
 	}
 
@@ -179,8 +179,8 @@ class NoteBuilderTest {
 		final Note secondNote = second.build();
 		final Note thirdNote = third.build();
 
-		assertTrue(firstNote.begins(Notation.Type.SLUR));
-		assertFalse(firstNote.ends(Notation.Type.SLUR));
+		assertTrue(firstNote.beginsNotation(Notation.Type.SLUR));
+		assertFalse(firstNote.endsNotation(Notation.Type.SLUR));
 		assertEquals(1, firstNote.getNotations().size());
 		assertEquals(secondNote, firstNote.getConnection(slur).get().getFollowingNote().get());
 
@@ -189,13 +189,13 @@ class NoteBuilderTest {
 
 		assertTrue(secondNote.hasNotation(Notation.Type.SLUR));
 		assertEquals(1, secondNote.getNotations().size());
-		assertFalse(secondNote.begins(Notation.Type.SLUR));
-		assertFalse(secondNote.ends(Notation.Type.SLUR));
+		assertFalse(secondNote.beginsNotation(Notation.Type.SLUR));
+		assertFalse(secondNote.endsNotation(Notation.Type.SLUR));
 		assertEquals(thirdNote, secondNote.getConnection(slur).get().getFollowingNote().get());
 
 		assertFalse(thirdNote.isTied());
 		assertEquals(1, thirdNote.getNotations().size());
-		assertTrue(thirdNote.ends(Notation.Type.SLUR));
+		assertTrue(thirdNote.endsNotation(Notation.Type.SLUR));
 		assertTrue(thirdNote.getConnection(slur).get().getFollowingNote().isEmpty());
 	}
 
@@ -219,11 +219,11 @@ class NoteBuilderTest {
 		final Note secondNote = second.build();
 		final Note thirdNote = third.build();
 
-		assertTrue(firstNote.begins(Notation.Type.SLUR));
-		assertFalse(firstNote.ends(Notation.Type.SLUR));
+		assertTrue(firstNote.beginsNotation(Notation.Type.SLUR));
+		assertFalse(firstNote.endsNotation(Notation.Type.SLUR));
 
-		assertTrue(firstNote.begins(Notation.Type.GLISSANDO));
-		assertFalse(firstNote.ends(Notation.Type.GLISSANDO));
+		assertTrue(firstNote.beginsNotation(Notation.Type.GLISSANDO));
+		assertFalse(firstNote.endsNotation(Notation.Type.GLISSANDO));
 
 		assertEquals(2, firstNote.getNotations().size());
 		assertEquals(secondNote, firstNote.getConnection(slur).get().getFollowingNote().get());
@@ -234,22 +234,22 @@ class NoteBuilderTest {
 
 		assertEquals(2, secondNote.getNotations().size());
 		assertTrue(secondNote.hasNotation(Notation.Type.SLUR));
-		assertFalse(secondNote.begins(Notation.Type.SLUR));
-		assertFalse(secondNote.ends(Notation.Type.SLUR));
+		assertFalse(secondNote.beginsNotation(Notation.Type.SLUR));
+		assertFalse(secondNote.endsNotation(Notation.Type.SLUR));
 		assertEquals(thirdNote, secondNote.getConnection(slur).get().getFollowingNote().get());
 
 		assertTrue(secondNote.hasNotation(Notation.Type.GLISSANDO));
-		assertFalse(secondNote.begins(Notation.Type.GLISSANDO));
-		assertFalse(secondNote.ends(Notation.Type.GLISSANDO));
+		assertFalse(secondNote.beginsNotation(Notation.Type.GLISSANDO));
+		assertFalse(secondNote.endsNotation(Notation.Type.GLISSANDO));
 		assertEquals(thirdNote, secondNote.getConnection(glissando).get().getFollowingNote().get());
 
 		assertFalse(thirdNote.isTied());
 		assertEquals(2, thirdNote.getNotations().size());
 
-		assertTrue(thirdNote.ends(Notation.Type.SLUR));
+		assertTrue(thirdNote.endsNotation(Notation.Type.SLUR));
 		assertTrue(thirdNote.getConnection(slur).get().getFollowingNote().isEmpty());
 
-		assertTrue(thirdNote.ends(Notation.Type.GLISSANDO));
+		assertTrue(thirdNote.endsNotation(Notation.Type.GLISSANDO));
 		assertTrue(thirdNote.getConnection(glissando).get().getFollowingNote().isEmpty());
 	}
 
