@@ -57,10 +57,36 @@ public final class Notation {
 		 * Specifies a bracket indicating that notes should not be arpeggiated.
 		 */
 		NON_ARPEGGIATE,
+	}
 
+	/**
+	 * The style used in the connected notation.
+	 */
+	public enum Style {
+
+		/**
+		 * Specifies a solid line or curve.
+		 */
+		SOLID,
+
+		/**
+		 * Specifies a wavy line or curve.
+		 */
+		WAVY,
+
+		/**
+		 * Specifies a dashed line or curve.
+		 */
+		DASHED,
+
+		/**
+		 * Specifies a dotted line or curve.
+		 */
+		DOTTED,
 	}
 
 	private final Type type;
+	private final Style style;
 
 	/**
 	 * Returns a connected notation with the given type.
@@ -69,7 +95,18 @@ public final class Notation {
 	 * @return a connected notation with the given type
 	 */
 	public static Notation of(Type type) {
-		return new Notation(type);
+		return new Notation(type, Style.SOLID);
+	}
+
+	/**
+	 * Returns a connected notation with the given type and line type.
+	 *
+	 * @param type  the type of the connected notation
+	 * @param style the type of line to use in
+	 * @return a connected notation with the given type
+	 */
+	public static Notation of(Type type, Style style) {
+		return new Notation(type, style);
 	}
 
 	/**
@@ -94,17 +131,27 @@ public final class Notation {
 		return affectedNotes;
 	}
 
-	private Notation(Type type) {
+	private Notation(Type type, Style style) {
 		this.type = type;
+		this.style = style;
 	}
 
 	/**
-	 * Returns the type of the connected notation.
+	 * Returns the type of this connected notation.
 	 *
-	 * @return the type of the connected notation
+	 * @return the type of this connected notation
 	 */
 	public Type getType() {
 		return type;
+	}
+
+	/**
+	 * Returns the style of this connected notation.
+	 *
+	 * @return the style of this connected notation
+	 */
+	public Style getStyle() {
+		return style;
 	}
 
 	/**
