@@ -117,8 +117,10 @@ final class MusicXmlTags {
 	static final String UNSTRESS = "unstress";
 
 	// Notations
+	static final String TIED = "tied";
 	static final String SLUR = "slur";
 	static final String GLISSANDO = "glissando";
+	static final String SLIDE = "slide";
 	static final String ARPEGGIATE = "arpeggiate";
 	static final String ARPEGGIO_DIRECTION = "direction";
 	static final String ARPEGGIO_DIRECTION_DOWN = "down";
@@ -131,8 +133,14 @@ final class MusicXmlTags {
 	static final String NOTATION_TYPE_START = "start";
 	static final String NOTATION_TYPE_STOP = "stop";
 
+	static final String NOTATION_LINE_TYPE = "line-type";
+	static final String NOTATION_LINE_SOLID = "solid";
+	static final String NOTATION_LINE_DASHED = "dashed";
+	static final String NOTATION_LINE_DOTTED = "dotted";
+	static final String NOTATION_LINE_WAVY = "wavy";
+
 	static final Set<String> CONNECTED_NOTATION_NODE_NAMES = Collections
-			.unmodifiableSet(Set.of(SLUR, GLISSANDO, ARPEGGIATE, NON_ARPEGGIATE));
+			.unmodifiableSet(Set.of(TIED, SLUR, GLISSANDO, SLIDE, ARPEGGIATE, NON_ARPEGGIATE));
 
 	static final String DIRECTION = "direction";
 	static final String DIRECTION_PLACEMENT = "placement";

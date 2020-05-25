@@ -906,10 +906,13 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		private static final int MAX_NOTATION_NUMBER = 6;
 		private static final Map<Notation.Type, String> NOTATION_TYPES_WITH_START_STOP = createNotationTypes();
 		private static final Map<Notation.Type, String> ARPEGGIATION_TYPES = createArpeggiationTypes();
+		private static final Map<Notation.Style, String> NOTATION_STYLES = createNotationStyles();
 
 		private static Map<Notation.Type, String> createNotationTypes() {
 			Map<Notation.Type, String> notationTypes = new HashMap<>();
+			notationTypes.put(Notation.Type.TIE, MusicXmlTags.TIED);
 			notationTypes.put(Notation.Type.SLUR, MusicXmlTags.SLUR);
+			// Slide type is ignored here as it is practically same as glissando
 			notationTypes.put(Notation.Type.GLISSANDO, MusicXmlTags.GLISSANDO);
 			notationTypes.put(Notation.Type.NON_ARPEGGIATE, MusicXmlTags.NON_ARPEGGIATE);
 			return Collections.unmodifiableMap(notationTypes);
@@ -921,6 +924,15 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 			arpeggiationTypes.put(Notation.Type.ARPEGGIATE_DOWN, MusicXmlTags.ARPEGGIATE);
 			arpeggiationTypes.put(Notation.Type.ARPEGGIATE_UP, MusicXmlTags.ARPEGGIATE);
 			return Collections.unmodifiableMap(arpeggiationTypes);
+		}
+
+		private static Map<Notation.Style, String> createNotationStyles() {
+			Map<Notation.Style, String> notationStyles = new HashMap<>();
+			notationStyles.put(Notation.Style.SOLID, MusicXmlTags.NOTATION_LINE_SOLID);
+			notationStyles.put(Notation.Style.DASHED, MusicXmlTags.NOTATION_LINE_DASHED);
+			notationStyles.put(Notation.Style.DOTTED, MusicXmlTags.NOTATION_LINE_DOTTED);
+			notationStyles.put(Notation.Style.WAVY, MusicXmlTags.NOTATION_LINE_WAVY);
+			return Collections.unmodifiableMap(notationStyles);
 		}
 
 		private final Document document;
@@ -965,6 +977,10 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 				notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NON_ARPEGGIATE_BOTTOM);
 			} else {
 				notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NOTATION_TYPE_START);
+				if (NOTATION_STYLES.containsKey(notation.getStyle())) {
+					notationElement.setAttribute(MusicXmlTags.NOTATION_LINE_TYPE,
+							NOTATION_STYLES.get(notation.getStyle()));
+				}
 			}
 			return notationElement;
 		}
@@ -985,6 +1001,10 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 					notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NON_ARPEGGIATE_TOP);
 				} else {
 					notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NOTATION_TYPE_STOP);
+					if (NOTATION_STYLES.containsKey(notation.getStyle())) {
+						notationElement.setAttribute(MusicXmlTags.NOTATION_LINE_TYPE,
+								NOTATION_STYLES.get(notation.getStyle()));
+					}
 				}
 			}
 

@@ -471,18 +471,6 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	private void resolveTiesAndNotations(int voiceNumber, Node noteNode, ConnectedNotations connectedNotations,
 			int staffNumber, NoteBuilder noteBuilder, ChordBuffer buffer) {
 
-		// Handle ties
-		if (endsTie(noteNode)) {
-			final NoteBuilder tieBeginner = connectedNotations.popTieBeginningFromStaff(staffNumber, noteBuilder);
-			if (tieBeginner != null) {
-				tieBeginner.addTieToFollowing(noteBuilder);
-			}
-		}
-
-		if (startsTie(noteNode)) {
-			connectedNotations.addTieBeginningToStaff(staffNumber, noteBuilder);
-		}
-
 		final Optional<Node> notationsNodeOptional = DocHelper.findChild(noteNode, MusicXmlTags.NOTATIONS);
 		notationsNodeOptional.ifPresent(notationsNode -> addArticulations(notationsNode, noteBuilder));
 
@@ -505,6 +493,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 						.map(stringValue -> Integer.parseInt(stringValue)).orElse(1);
 
 				final Notation.Type notationType = getNotationType(notationNode);
+				final Notation.Style notationStyle = getNotationStyle(notationNode);
 
 				if (notationPositionType.isPresent()) {
 					final String type = notationPositionType.get();
@@ -512,7 +501,8 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 					if (type.equals(MusicXmlTags.NOTATION_TYPE_START)
 							|| type.equals(MusicXmlTags.NON_ARPEGGIATE_BOTTOM)) {
 						UnresolvedNotation startedNotation = connectedNotations
-								.createAndAddStartOfNotation(voiceNumber, notationNumber, notationType, noteBuilder);
+								.createAndAddStartOfNotation(voiceNumber, notationNumber, notationType, notationStyle,
+										noteBuilder);
 						startedNotations.add(startedNotation);
 					} else if (type.equals(MusicXmlTags.NOTATION_TYPE_STOP)
 							|| type.equals(MusicXmlTags.NON_ARPEGGIATE_TOP)) {
@@ -546,9 +536,12 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 	private Notation.Type getNotationType(Node notationNode) {
 		switch (notationNode.getNodeName()) {
+			case MusicXmlTags.TIED:
+				return Notation.Type.TIE;
 			case MusicXmlTags.SLUR:
 				return Notation.Type.SLUR;
 			case MusicXmlTags.GLISSANDO:
+			case MusicXmlTags.SLIDE: // Slide is practically always glissando in MusicXML, fall through.
 				return Notation.Type.GLISSANDO;
 			case MusicXmlTags.ARPEGGIATE:
 				Node directionNode = notationNode.getAttributes().getNamedItem(MusicXmlTags.ARPEGGIO_DIRECTION);
@@ -569,6 +562,23 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 		LOG.warn("Tried to parse unsupported notation type: " + notationNode.getNodeName());
 		return null;
+	}
+
+	private Notation.Style getNotationStyle(Node notationNode) {
+		String notationAttribute = DocHelper.getAttributeValue(notationNode, MusicXmlTags.NOTATION_LINE_TYPE)
+				.orElse("");
+
+		switch (notationAttribute) {
+			case MusicXmlTags.NOTATION_LINE_DASHED:
+				return Notation.Style.DASHED;
+			case MusicXmlTags.NOTATION_LINE_DOTTED:
+				return Notation.Style.DOTTED;
+			case MusicXmlTags.NOTATION_LINE_WAVY:
+				return Notation.Style.WAVY;
+			case MusicXmlTags.NOTATION_LINE_SOLID: // Fall through.
+			default:
+				return Notation.Style.SOLID;
+		}
 	}
 
 	private void addArticulations(Node notationsNode, NoteBuilder noteBuilder) {
@@ -1120,12 +1130,12 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 
 		UnresolvedNotation createAndAddStartOfNotation(int voiceNumber, int notationNumber, Notation.Type notationType,
-				NoteBuilder firstBuilder) {
+				Notation.Style notationStyle, NoteBuilder firstBuilder) {
 			if (!unresolvedNotationsPerVoice.containsKey(voiceNumber)) {
 				unresolvedNotationsPerVoice.put(voiceNumber, new ArrayList<>());
 			}
 
-			UnresolvedNotation unresolvedNotation = new UnresolvedNotation(notationNumber, notationType);
+			UnresolvedNotation unresolvedNotation = new UnresolvedNotation(notationNumber, notationType, notationStyle);
 			unresolvedNotation.addNoteBuilder(firstBuilder);
 			unresolvedNotationsPerVoice.get(voiceNumber).add(unresolvedNotation);
 			return unresolvedNotation;
@@ -1168,11 +1178,13 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 		private final int notationNumber;
 		private final Notation.Type notationType;
+		private final Notation.Style notationStyle;
 		private final List<NoteBuilder> connectedNoteBuilders;
 
-		UnresolvedNotation(int notationNumber, Notation.Type notationType) {
+		UnresolvedNotation(int notationNumber, Notation.Type notationType, Notation.Style notationStyle) {
 			this.notationNumber = notationNumber;
 			this.notationType = notationType;
+			this.notationStyle = notationStyle;
 			this.connectedNoteBuilders = new ArrayList<>();
 		}
 
@@ -1189,7 +1201,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 
 		void resolve() {
-			final Notation notation = Notation.of(notationType);
+			final Notation notation = Notation.of(notationType, notationStyle);
 			for (int i = 0; i < connectedNoteBuilders.size() - 1; ++i) {
 				connectedNoteBuilders.get(i).connectWith(notation, connectedNoteBuilders.get(i + 1));
 			}

@@ -562,6 +562,9 @@ class MusicXmlFileChecks {
 		final Note fourthNote = (Note) firstMeasure.get(voiceNumber, 3);
 
 		assertTrue(thirdNote.hasNotation(Notation.Type.GLISSANDO));
+		assertTrue(thirdNote.getNotations().stream()
+				.anyMatch(notation -> notation.getType().equals(Notation.Type.GLISSANDO)
+						&& notation.getStyle().equals(Notation.Style.WAVY)));
 		assertTrue(thirdNote.beginsNotation(Notation.Type.GLISSANDO));
 		assertEquals(1, thirdNote.getNotations().size());
 		Notation glissandoBetweenThirdAndFourth = thirdNote.getNotations().stream().findFirst().orElseThrow();
@@ -570,6 +573,9 @@ class MusicXmlFileChecks {
 
 		assertTrue(fourthNote.hasNotations());
 		assertTrue(fourthNote.endsNotation(Notation.Type.GLISSANDO));
+		assertTrue(fourthNote.getNotations().stream()
+				.anyMatch(notation -> notation.getType().equals(Notation.Type.GLISSANDO)
+						&& notation.getStyle().equals(Notation.Style.WAVY)));
 		assertEquals(1, fourthNote.getNotations().size());
 
 		final Note fifthNote = (Note) firstMeasure.get(voiceNumber, 4);
@@ -649,6 +655,37 @@ class MusicXmlFileChecks {
 		assertTrue(fourthChord.getNote(0).beginsNotation(Notation.Type.NON_ARPEGGIATE));
 		assertTrue(fourthChord.getNote(1).hasNotation(Notation.Type.NON_ARPEGGIATE));
 		assertTrue(fourthChord.getNote(2).endsNotation(Notation.Type.NON_ARPEGGIATE));
+
+		final Measure fourthMeasure = part.getMeasure(1, 4);
+		final Note fourthMeasureFirst = (Note) fourthMeasure.get(voiceNumber, 0);
+		assertEquals(1, fourthMeasureFirst.getNotations().size());
+		assertTrue(fourthMeasureFirst.getNotations().stream().anyMatch(notation -> notation.getType().equals(
+				Notation.Type.SLUR) && notation.getStyle().equals(Notation.Style.DOTTED)));
+
+		final Note fourthMeasureSecond = (Note) fourthMeasure.get(voiceNumber, 1);
+		assertEquals(1, fourthMeasureSecond.getNotations().size());
+		assertTrue(fourthMeasureSecond.getNotations().stream().anyMatch(notation -> notation.getType().equals(
+				Notation.Type.SLUR) && notation.getStyle().equals(Notation.Style.DOTTED)));
+
+		final Note fourthMeasureThird = (Note) fourthMeasure.get(voiceNumber, 2);
+		assertEquals(1, fourthMeasureThird.getNotations().size());
+		assertTrue(fourthMeasureThird.getNotations().stream().anyMatch(notation -> notation.getType().equals(
+				Notation.Type.TIE) && notation.getStyle().equals(Notation.Style.DASHED)));
+
+		final Note fourthMeasureFourth = (Note) fourthMeasure.get(voiceNumber, 3);
+		assertEquals(1, fourthMeasureFourth.getNotations().size());
+		assertTrue(fourthMeasureFourth.getNotations().stream().anyMatch(notation -> notation.getType().equals(
+				Notation.Type.TIE) && notation.getStyle().equals(Notation.Style.DASHED)));
+
+		final Note fourthMeasureFifth = (Note) fourthMeasure.get(voiceNumber, 4);
+		assertEquals(1, fourthMeasureFifth.getNotations().size());
+		assertTrue(fourthMeasureFifth.getNotations().stream().anyMatch(notation -> notation.getType().equals(
+				Notation.Type.GLISSANDO) && notation.getStyle().equals(Notation.Style.SOLID)));
+
+		final Note fourthMeasureSixth = (Note) fourthMeasure.get(voiceNumber, 5);
+		assertEquals(1, fourthMeasureSixth.getNotations().size());
+		assertTrue(fourthMeasureSixth.getNotations().stream().anyMatch(notation -> notation.getType().equals(
+				Notation.Type.GLISSANDO) && notation.getStyle().equals(Notation.Style.SOLID)));
 	}
 
 	/*
