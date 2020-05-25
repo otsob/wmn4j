@@ -23,10 +23,10 @@ class PartBuilderTest {
 	private final MeasureAttributes measureAttr;
 
 	PartBuilderTest() {
-		NoteBuilder C4 = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
-		NoteBuilder E4 = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF);
-		NoteBuilder G4 = new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF);
-		NoteBuilder C4Quarter = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		NoteBuilder C4 = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.HALF);
+		NoteBuilder E4 = new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.HALF);
+		NoteBuilder G4 = new NoteBuilder(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.HALF);
+		NoteBuilder C4Quarter = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
 
 		final Map<Integer, List<DurationalBuilder>> noteVoice = new HashMap<>();
 		noteVoice.put(0, new ArrayList<>());
@@ -175,11 +175,13 @@ class PartBuilderTest {
 	void testBuildPartWithTieBetweenMeasures() {
 
 		final MeasureBuilder firstMeasureBuilder = new MeasureBuilder(1);
-		final NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.WHOLE);
+		final NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.WHOLE);
 		firstMeasureBuilder.addToVoice(1, firstNoteBuilder);
 
 		final MeasureBuilder secondMeasureBuilder = new MeasureBuilder(2);
-		final NoteBuilder secondNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.WHOLE);
+		final NoteBuilder secondNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.WHOLE);
 		firstNoteBuilder.addTieToFollowing(secondNoteBuilder);
 		secondMeasureBuilder.addToVoice(1, secondNoteBuilder);
 
@@ -198,11 +200,13 @@ class PartBuilderTest {
 	@Test
 	void testGivenBuilderWithMultipleStavesWhenBuiltPartsHavePadding() {
 		final MeasureBuilder firstMeasureBuilder = new MeasureBuilder(1);
-		final NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.WHOLE);
+		final NoteBuilder firstNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.WHOLE);
 		firstMeasureBuilder.addToVoice(1, firstNoteBuilder);
 
 		final MeasureBuilder secondMeasureBuilder = new MeasureBuilder(2);
-		final NoteBuilder secondNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.WHOLE);
+		final NoteBuilder secondNoteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.WHOLE);
 		secondMeasureBuilder.addToVoice(1, secondNoteBuilder);
 
 		final PartBuilder partBuilder = new PartBuilder("Part");

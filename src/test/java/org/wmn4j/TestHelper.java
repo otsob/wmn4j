@@ -32,10 +32,14 @@ public class TestHelper {
 
 	public static final String TESTFILE_PATH = "src/test/resources/";
 
-	private static final NoteBuilder C4 = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
-	private static final NoteBuilder E4 = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF);
-	private static final NoteBuilder G4 = new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF);
-	private static final NoteBuilder C4Quarter = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+	private static final NoteBuilder C4 = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+			Durations.HALF);
+	private static final NoteBuilder E4 = new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4),
+			Durations.HALF);
+	private static final NoteBuilder G4 = new NoteBuilder(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4),
+			Durations.HALF);
+	private static final NoteBuilder C4Quarter = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+			Durations.QUARTER);
 
 	public static MeasureBuilder getTestMeasureBuilder(int number) {
 		final MeasureBuilder builder = new MeasureBuilder(number);

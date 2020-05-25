@@ -38,7 +38,7 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 	private static final String DEFAULT_SCORE_TITLE = "Patterns";
 	private static final String VOICE_NAME = "Voice";
 	private static final String ABBREVIATED_VOICE_NAME = "V";
-	private static final int MIDDLE_C_AS_INT = Pitch.of(Pitch.Base.C, 0, 4).toInt();
+	private static final int MIDDLE_C_AS_INT = Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4).toInt();
 
 	private static final TimeSignature DEFAULT_TIME_SIGNATURE = TimeSignature.of(2, 1);
 	private static final Duration MEASURE_CUTOFF_DURATION = DEFAULT_TIME_SIGNATURE.getTotalDuration();

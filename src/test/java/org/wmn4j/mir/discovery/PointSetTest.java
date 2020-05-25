@@ -121,26 +121,26 @@ public class PointSetTest {
 		List<NoteEventVector> vectors = new ArrayList<>();
 		double offset = 0.0;
 
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, 0, 2).toInt(), 3));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, 0, 3).toInt(), 3));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, 0, 4).toInt(), 1));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, 0, 4).toInt(), 2));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, 0, 5).toInt(), 0));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 2).toInt(), 3));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 3).toInt(), 3));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4).toInt(), 1));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4).toInt(), 2));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5).toInt(), 0));
 		offset += Durations.HALF.toDouble();
 
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.A, 0, 3).toInt(), 3));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.D, 0, 4).toInt(), 1));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.A, 0, 4).toInt(), 2));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.D, 0, 5).toInt(), 0));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 3).toInt(), 3));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4).toInt(), 1));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4).toInt(), 2));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 5).toInt(), 0));
 		offset += Durations.QUARTER.toDouble();
 
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.A, 0, 2).toInt(), 3));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 2).toInt(), 3));
 		offset += Durations.QUARTER.toDouble();
 
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, 0, 3).toInt(), 3));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, 0, 4).toInt(), 1));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, 0, 4).toInt(), 2));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, 0, 5).toInt(), 0));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 3).toInt(), 3));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4).toInt(), 1));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4).toInt(), 2));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5).toInt(), 0));
 
 		return vectors;
 	}

@@ -23,10 +23,10 @@ class StaffTest {
 		final TimeSignature timeSig = TimeSignature.of(4, 4);
 		final Map<Integer, List<Durational>> notes = new HashMap<>();
 		notes.put(0, new ArrayList<>());
-		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
+		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		notes.get(0).add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
 		measures.add(Measure.of(1, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
 		measures.add(Measure.of(2, notes, timeSig, KeySignatures.CMAJ_AMIN, Clefs.G));
 		return measures;

@@ -20,22 +20,22 @@ class PatternBuilderTest {
 	void testGivenMonophonicContentsWhenBuiltMonophonicPatternIsCreated() {
 		final PatternBuilder builder = new PatternBuilder();
 
-		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 		builder.add(new NoteBuilder(firstElement));
 
-		final Note secondElement = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH);
+		final Note secondElement = Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 		builder.add(new NoteBuilder(secondElement));
 
 		final Rest thirdElement = Rest.of(Durations.QUARTER);
 		builder.add(new RestBuilder(thirdElement));
 
-		final Note fourthElement = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.SIXTEENTH);
+		final Note fourthElement = Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.SIXTEENTH);
 		builder.add(new NoteBuilder(fourthElement));
 
 		final Rest fifthElement = Rest.of(Durations.EIGHTH);
 		builder.add(new RestBuilder(fifthElement));
 
-		final Note sixthElement = Note.of(Pitch.of(Pitch.Base.B, -1, 4), Durations.SIXTEENTH);
+		final Note sixthElement = Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 4), Durations.SIXTEENTH);
 		builder.add(new NoteBuilder(sixthElement));
 
 		assertTrue(builder.isMonophonic());
@@ -57,23 +57,24 @@ class PatternBuilderTest {
 	void testGivenPolyphonicContentsInSingleVoiceWhenBuiltPolyphonicPatternIsCreated() {
 		final PatternBuilder builder = new PatternBuilder();
 
-		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 		builder.add(new NoteBuilder(firstElement));
 
-		final Note secondElement = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH);
+		final Note secondElement = Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 		builder.add(new NoteBuilder(secondElement));
 
 		final Rest thirdElement = Rest.of(Durations.QUARTER);
 		builder.add(new RestBuilder(thirdElement));
 
-		final Note fourthElement = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.SIXTEENTH);
+		final Note fourthElement = Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.SIXTEENTH);
 		builder.add(new NoteBuilder(fourthElement));
 
 		final Rest fifthElement = Rest.of(Durations.EIGHTH);
 		builder.add(new RestBuilder(fifthElement));
 
-		final Chord sixthElement = Chord.of(Note.of(Pitch.of(Pitch.Base.B, -1, 4), Durations.SIXTEENTH),
-				Note.of(Pitch.of(Pitch.Base.E, -1, 4), Durations.SIXTEENTH));
+		final Chord sixthElement = Chord
+				.of(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 4), Durations.SIXTEENTH),
+						Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.FLAT, 4), Durations.SIXTEENTH));
 		builder.add(new ChordBuilder(sixthElement));
 
 		assertFalse(builder.isMonophonic());
@@ -98,23 +99,23 @@ class PatternBuilderTest {
 		final PatternBuilder builder = new PatternBuilder();
 
 		final int voice1number = 1;
-		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 		builder.addToVoice(voice1number, new NoteBuilder(firstElement));
 
-		final Note secondElement = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH);
+		final Note secondElement = Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 		builder.addToVoice(voice1number, new NoteBuilder(secondElement));
 
 		final Rest thirdElement = Rest.of(Durations.QUARTER);
 		builder.addToVoice(voice1number, new RestBuilder(thirdElement));
 
 		final int voice2number = 2;
-		final Note fourthElement = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.SIXTEENTH);
+		final Note fourthElement = Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.SIXTEENTH);
 		builder.addToVoice(voice2number, new NoteBuilder(fourthElement));
 
 		final Rest fifthElement = Rest.of(Durations.EIGHTH);
 		builder.addToVoice(voice2number, new RestBuilder(fifthElement));
 
-		final Note sixthElement = Note.of(Pitch.of(Pitch.Base.B, -1, 4), Durations.SIXTEENTH);
+		final Note sixthElement = Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 4), Durations.SIXTEENTH);
 		builder.addToVoice(voice2number, new NoteBuilder(sixthElement));
 
 		final Pattern patternWithTwoVoices = builder.build();
@@ -137,7 +138,7 @@ class PatternBuilderTest {
 	void testSettingName() {
 		final PatternBuilder builder = new PatternBuilder();
 
-		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 		builder.add(new NoteBuilder(firstElement));
 
 		final String patternName = "Pattern A";
@@ -151,7 +152,7 @@ class PatternBuilderTest {
 	void testAddingLabels() {
 		final PatternBuilder builder = new PatternBuilder();
 
-		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final Note firstElement = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 		builder.add(new NoteBuilder(firstElement));
 
 		String labelA = "LabelA";

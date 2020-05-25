@@ -462,14 +462,14 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				buffer.addNote(noteBuilder, voice);
 			}
 
-			resolveTiesAndNotations(voice, noteNode, connectedNotations, staffNumber, noteBuilder, buffer);
+			resolveTiesAndNotations(voice, noteNode, connectedNotations, noteBuilder, buffer);
 		}
 
 		return staffNumber;
 	}
 
 	private void resolveTiesAndNotations(int voiceNumber, Node noteNode, ConnectedNotations connectedNotations,
-			int staffNumber, NoteBuilder noteBuilder, ChordBuffer buffer) {
+			NoteBuilder noteBuilder, ChordBuffer buffer) {
 
 		final Optional<Node> notationsNodeOptional = DocHelper.findChild(noteNode, MusicXmlTags.NOTATIONS);
 		notationsNodeOptional.ifPresent(notationsNode -> addArticulations(notationsNode, noteBuilder));
@@ -895,7 +895,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 					.map(alterNode -> Integer.parseInt(alterNode.getTextContent()))
 					.orElse(0);
 
-			pitch = Pitch.of(pitchBase, alter, octave);
+			pitch = Pitch.of(pitchBase, getAccidental(alter), octave);
 		} else {
 			final Optional<Node> unpitchedNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_UNPITCHED);
 			if (unpitchedNode.isPresent()) {
@@ -906,12 +906,30 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				if (stepNode.isPresent() && octaveNode.isPresent()) {
 					final Pitch.Base pitchBase = getPitchBase(stepNode.get());
 					final int octave = Integer.parseInt(octaveNode.get().getTextContent());
-					pitch = Pitch.of(pitchBase, 0, octave);
+					pitch = Pitch.of(pitchBase, Pitch.Accidental.NATURAL, octave);
 				}
 			}
 		}
 
 		return pitch;
+	}
+
+	private Pitch.Accidental getAccidental(int alter) {
+		switch (alter) {
+			case 0:
+				return Pitch.Accidental.NATURAL;
+			case 1:
+				return Pitch.Accidental.SHARP;
+			case 2:
+				return Pitch.Accidental.DOUBLE_SHARP;
+			case -1:
+				return Pitch.Accidental.FLAT;
+			case -2:
+				return Pitch.Accidental.DOUBLE_FLAT;
+		}
+
+		LOG.warn("Unsupported alter value for pitch " + alter);
+		return Pitch.Accidental.NATURAL;
 	}
 
 	private Pitch.Base getPitchBase(Node stepNode) {
