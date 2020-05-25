@@ -4,12 +4,6 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.Articulation;
-import org.wmn4j.notation.Durations;
-import org.wmn4j.notation.Marking;
-import org.wmn4j.notation.Note;
-import org.wmn4j.notation.NoteBuilder;
-import org.wmn4j.notation.Pitch;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -173,114 +167,119 @@ class NoteTest {
 	}
 
 	@Test
-	void testBeginsAndEndsMarking() {
+	void testBeginsAndEndsNotation() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
 
-		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
-		Marking.Connection glissandoEnd = Marking.Connection.endOf(Marking.of(Marking.Type.GLISSANDO));
-		List<Marking.Connection> markingConnections = new ArrayList<>();
-		markingConnections.add(slurBeginning);
-		markingConnections.add(glissandoEnd);
+		Notation.Connection slurBeginning = Notation.Connection
+				.beginningOf(Notation.of(Notation.Type.SLUR), followingNote);
+		Notation.Connection glissandoEnd = Notation.Connection.endOf(Notation.of(Notation.Type.GLISSANDO));
+		List<Notation.Connection> notationConnections = new ArrayList<>();
+		notationConnections.add(slurBeginning);
+		notationConnections.add(glissandoEnd);
 
-		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), markingConnections, null, false);
+		final Note noteWithNotationConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+				Collections.emptySet(), notationConnections);
 
-		assertTrue(noteWithMarkingConnections.begins(Marking.Type.SLUR));
-		assertTrue(noteWithMarkingConnections.ends(Marking.Type.GLISSANDO));
+		assertTrue(noteWithNotationConnections.beginsNotation(Notation.Type.SLUR));
+		assertTrue(noteWithNotationConnections.endsNotation(Notation.Type.GLISSANDO));
 
-		assertFalse(noteWithMarkingConnections.begins(Marking.Type.GLISSANDO));
-		assertFalse(noteWithMarkingConnections.ends(Marking.Type.SLUR));
+		assertFalse(noteWithNotationConnections.beginsNotation(Notation.Type.GLISSANDO));
+		assertFalse(noteWithNotationConnections.endsNotation(Notation.Type.SLUR));
 	}
 
 	@Test
-	void testHasMarkingConnection() {
+	void testHasNotationConnection() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
-		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
-		List<Marking.Connection> markingConnections = new ArrayList<>();
-		markingConnections.add(slurBeginning);
+		Notation.Connection slurBeginning = Notation.Connection
+				.beginningOf(Notation.of(Notation.Type.SLUR), followingNote);
+		List<Notation.Connection> notationConnections = new ArrayList<>();
+		notationConnections.add(slurBeginning);
 
 		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), markingConnections, null, false);
+				Collections.emptySet(), notationConnections);
 
-		assertTrue(noteThatBeginsSlur.hasMarkings());
-		assertFalse(followingNote.hasMarkings());
-		assertTrue(noteThatBeginsSlur.hasMarking(Marking.Type.SLUR));
-		assertFalse(noteThatBeginsSlur.hasMarking(Marking.Type.GLISSANDO));
+		assertTrue(noteThatBeginsSlur.hasNotations());
+		assertFalse(followingNote.hasNotations());
+		assertTrue(noteThatBeginsSlur.hasNotation(Notation.Type.SLUR));
+		assertFalse(noteThatBeginsSlur.hasNotation(Notation.Type.GLISSANDO));
 	}
 
 	@Test
-	void testEqualsAndHashCodeWithMarkings() {
+	void testEqualsAndHashCodeWithNotations() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
 
-		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
-		Marking.Connection glissandoEnd = Marking.Connection.endOf(Marking.of(Marking.Type.GLISSANDO));
-		List<Marking.Connection> markingConnections = new ArrayList<>();
+		Notation.Connection slurBeginning = Notation.Connection
+				.beginningOf(Notation.of(Notation.Type.SLUR), followingNote);
+		Notation.Connection glissandoEnd = Notation.Connection.endOf(Notation.of(Notation.Type.GLISSANDO));
+		List<Notation.Connection> notationConnections = new ArrayList<>();
 
-		markingConnections.add(slurBeginning);
+		notationConnections.add(slurBeginning);
 		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), markingConnections, null, false);
+				Collections.emptySet(), notationConnections);
 
-		Marking.Connection slurEnd = Marking.Connection.endOf(Marking.of(Marking.Type.SLUR));
-		List<Marking.Connection> slurEndList = new ArrayList<>();
+		Notation.Connection slurEnd = Notation.Connection.endOf(Notation.of(Notation.Type.SLUR));
+		List<Notation.Connection> slurEndList = new ArrayList<>();
 		slurEndList.add(slurEnd);
 		final Note noteThatEndsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), slurEndList, null, false);
+				Collections.emptySet(), slurEndList);
 
-		markingConnections.add(glissandoEnd);
-		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), markingConnections, null, false);
+		notationConnections.add(glissandoEnd);
+		final Note noteWithNotationConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+				Collections.emptySet(), notationConnections);
 
 		assertEquals(noteThatBeginsSlur, noteThatEndsSlur);
 		assertEquals(noteThatBeginsSlur.hashCode(), noteThatEndsSlur.hashCode());
 
 		assertFalse(noteThatBeginsSlur.equals(followingNote));
-		assertFalse(noteWithMarkingConnections.equals(followingNote));
-		assertFalse(noteWithMarkingConnections.equals(noteThatBeginsSlur));
+		assertFalse(noteWithNotationConnections.equals(followingNote));
+		assertFalse(noteWithNotationConnections.equals(noteThatBeginsSlur));
 	}
 
 	@Test
-	void testGetMarkingConnections() {
+	void testGetNotationConnections() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
 
-		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
-		Marking.Connection glissandoEnd = Marking.Connection.endOf(Marking.of(Marking.Type.GLISSANDO));
-		List<Marking.Connection> markingConnections = new ArrayList<>();
-		markingConnections.add(slurBeginning);
-		markingConnections.add(glissandoEnd);
+		Notation.Connection slurBeginning = Notation.Connection
+				.beginningOf(Notation.of(Notation.Type.SLUR), followingNote);
+		Notation.Connection glissandoEnd = Notation.Connection.endOf(Notation.of(Notation.Type.GLISSANDO));
+		List<Notation.Connection> notationConnections = new ArrayList<>();
+		notationConnections.add(slurBeginning);
+		notationConnections.add(glissandoEnd);
 
-		final Note noteWithMarkingConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), markingConnections, null, false);
+		final Note noteWithNotationConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+				Collections.emptySet(), notationConnections);
 
-		final Collection<Marking> markingsInNote = noteWithMarkingConnections.getMarkings();
-		assertEquals(2, markingsInNote.size());
-		assertTrue(markingsInNote.contains(slurBeginning.getMarking()));
-		assertTrue(markingsInNote.contains(glissandoEnd.getMarking()));
+		final Collection<Notation> notationsInNote = noteWithNotationConnections.getNotations();
+		assertEquals(2, notationsInNote.size());
+		assertTrue(notationsInNote.contains(slurBeginning.getNotation()));
+		assertTrue(notationsInNote.contains(glissandoEnd.getNotation()));
 
 		try {
-			markingsInNote.add(Marking.of(Marking.Type.GLISSANDO));
-			fail("No exception was thrown when trying to add to markings");
+			notationsInNote.add(Notation.of(Notation.Type.GLISSANDO));
+			fail("No exception was thrown when trying to add to notations");
 		} catch (Exception e) {
 			/* Do nothing */
 		}
 
-		assertEquals(2, noteWithMarkingConnections.getMarkings().size());
+		assertEquals(2, noteWithNotationConnections.getNotations().size());
 	}
 
 	@Test
-	void testGetMarkingConnection() {
+	void testGetNotationConnection() {
 		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
-		Marking.Connection slurBeginning = Marking.Connection.beginningOf(Marking.of(Marking.Type.SLUR), followingNote);
-		List<Marking.Connection> markingConnections = new ArrayList<>();
-		markingConnections.add(slurBeginning);
+		Notation.Connection slurBeginning = Notation.Connection
+				.beginningOf(Notation.of(Notation.Type.SLUR), followingNote);
+		List<Notation.Connection> notationConnections = new ArrayList<>();
+		notationConnections.add(slurBeginning);
 
 		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), markingConnections, null, false);
+				Collections.emptySet(), notationConnections);
 
-		Optional<Marking.Connection> slurBeginningOptional = noteThatBeginsSlur
-				.getMarkingConnection(slurBeginning.getMarking());
+		Optional<Notation.Connection> slurBeginningOptional = noteThatBeginsSlur
+				.getConnection(slurBeginning.getNotation());
 		assertTrue(slurBeginningOptional.isPresent());
 		assertEquals(slurBeginning, slurBeginningOptional.get());
 
-		assertFalse(noteThatBeginsSlur.getMarkingConnection(Marking.of(Marking.Type.GLISSANDO)).isPresent());
+		assertFalse(noteThatBeginsSlur.getConnection(Notation.of(Notation.Type.GLISSANDO)).isPresent());
 	}
 }

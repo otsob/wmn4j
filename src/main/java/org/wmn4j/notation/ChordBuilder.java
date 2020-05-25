@@ -19,7 +19,7 @@ public final class ChordBuilder implements DurationalBuilder, Iterable<NoteBuild
 	private Duration duration;
 
 	/**
-	 * Constructor.
+	 * Constructor. This builder takes ownership of the given NoteBuilder.
 	 *
 	 * @param noteBuilder the note builder that specifies the first note in this
 	 *                    builder
@@ -27,24 +27,22 @@ public final class ChordBuilder implements DurationalBuilder, Iterable<NoteBuild
 	public ChordBuilder(NoteBuilder noteBuilder) {
 		this.duration = noteBuilder.getDuration();
 		this.noteBuilders = new ArrayList<>();
-		this.noteBuilders.add(new NoteBuilder(noteBuilder));
+		this.noteBuilders.add(noteBuilder);
 	}
 
 	/**
-	 * Constructor.
+	 * Constructor. This builder takes ownership of the given NoteBuilders.
 	 *
 	 * @param noteBuilders the note builders that are placed into this builder
 	 */
 	public ChordBuilder(List<NoteBuilder> noteBuilders) {
-		final List<NoteBuilder> noteBuildersCopy = new ArrayList<>(noteBuilders.size());
-		noteBuilders.forEach(builder -> noteBuildersCopy.add(new NoteBuilder(builder)));
-		this.noteBuilders = noteBuildersCopy;
+		this.noteBuilders = noteBuilders;
 		this.duration = noteBuilders.get(0).getDuration();
 	}
 
 	/**
 	 * Constructor that creates a new builder with the contents of the given chord.
-	 * Ties and connected markings in the notes of the given chord are not copied.
+	 * Ties and connected notations in the notes of the given chord are not copied.
 	 *
 	 * @param chord the chord from which the contents of notes are copied to this builder
 	 */
@@ -57,13 +55,13 @@ public final class ChordBuilder implements DurationalBuilder, Iterable<NoteBuild
 	}
 
 	/**
-	 * Adds the given NoteBuilder into this builder.
+	 * Adds the given NoteBuilder into this builder. This builder takes ownership of the given NoteBuilder.
 	 *
 	 * @param noteBuilder the note builder that is added to this builder
 	 * @return reference to this
 	 */
 	public ChordBuilder add(NoteBuilder noteBuilder) {
-		this.noteBuilders.add(new NoteBuilder(noteBuilder));
+		this.noteBuilders.add(noteBuilder);
 		return this;
 	}
 

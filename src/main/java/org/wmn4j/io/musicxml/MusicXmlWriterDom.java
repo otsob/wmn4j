@@ -18,9 +18,9 @@ import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.KeySignature;
-import org.wmn4j.notation.Marking;
 import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.MultiStaffPart;
+import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.Pitch;
@@ -68,11 +68,11 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 
 	private final Document doc;
 	private final SortedMap<String, Part> partIdMap = new TreeMap<>();
-	private final MarkingResolver markingResolver;
+	private final NotationResolver notationResolver;
 
 	MusicXmlWriterDom() {
 		this.doc = createDocument();
-		this.markingResolver = new MarkingResolver(getDocument());
+		this.notationResolver = new NotationResolver(getDocument());
 	}
 
 	private static Document createDocument() {
@@ -788,19 +788,25 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 			}
 		}
 
-		// Markings
-		if (note.hasMarkings()) {
-			for (Marking marking : note.getMarkings()) {
-				if (note.getMarkingConnection(marking).get().isBeginning()) {
-					notationsElement.appendChild(markingResolver.createStartElement(marking));
+		// Notations
+		for (Notation notation : note.getNotations()) {
+			Notation.Type type = notation.getType();
+
+			if (NotationResolver.NOTATION_TYPES_WITH_START_STOP.containsKey(type)) {
+				if (note.getConnection(notation).get().isBeginning()) {
+					notationsElement.appendChild(notationResolver.createStartElement(notation));
 				}
 
-				if (note.getMarkingConnection(marking).get().isEnd()) {
-					Element markingStop = markingResolver.createStopElement(marking);
-					if (markingStop != null) {
-						notationsElement.appendChild(markingStop);
+				if (note.getConnection(notation).get().isEnd()) {
+					Element notationStop = notationResolver.createStopElement(notation);
+					if (notationStop != null) {
+						notationsElement.appendChild(notationStop);
 					}
 				}
+			}
+
+			if (NotationResolver.ARPEGGIATION_TYPES.containsKey(type)) {
+				notationsElement.appendChild(notationResolver.createArpeggiationElement(notation));
 			}
 		}
 
@@ -896,63 +902,122 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 				.forEach(element -> noteElement.appendChild(element));
 	}
 
-	private static class MarkingResolver {
-		private static final int MAX_MARKING_NUMBER = 6;
-		private static final Map<Marking.Type, String> MARKING_TYPES = createMarkingTypes();
+	private static class NotationResolver {
+		private static final int MAX_NOTATION_NUMBER = 6;
+		private static final Map<Notation.Type, String> NOTATION_TYPES_WITH_START_STOP = createNotationTypes();
+		private static final Map<Notation.Type, String> ARPEGGIATION_TYPES = createArpeggiationTypes();
+		private static final Map<Notation.Style, String> NOTATION_STYLES = createNotationStyles();
 
-		private static Map<Marking.Type, String> createMarkingTypes() {
-			Map<Marking.Type, String> markingTypes = new HashMap<>();
-			markingTypes.put(Marking.Type.SLUR, MusicXmlTags.SLUR);
-			markingTypes.put(Marking.Type.GLISSANDO, MusicXmlTags.GLISSANDO);
-			return Collections.unmodifiableMap(markingTypes);
+		private static Map<Notation.Type, String> createNotationTypes() {
+			Map<Notation.Type, String> notationTypes = new HashMap<>();
+			notationTypes.put(Notation.Type.TIE, MusicXmlTags.TIED);
+			notationTypes.put(Notation.Type.SLUR, MusicXmlTags.SLUR);
+			// Slide type is ignored here as it is practically same as glissando
+			notationTypes.put(Notation.Type.GLISSANDO, MusicXmlTags.GLISSANDO);
+			notationTypes.put(Notation.Type.NON_ARPEGGIATE, MusicXmlTags.NON_ARPEGGIATE);
+			return Collections.unmodifiableMap(notationTypes);
+		}
+
+		private static Map<Notation.Type, String> createArpeggiationTypes() {
+			Map<Notation.Type, String> arpeggiationTypes = new HashMap<>();
+			arpeggiationTypes.put(Notation.Type.ARPEGGIATE, MusicXmlTags.ARPEGGIATE);
+			arpeggiationTypes.put(Notation.Type.ARPEGGIATE_DOWN, MusicXmlTags.ARPEGGIATE);
+			arpeggiationTypes.put(Notation.Type.ARPEGGIATE_UP, MusicXmlTags.ARPEGGIATE);
+			return Collections.unmodifiableMap(arpeggiationTypes);
+		}
+
+		private static Map<Notation.Style, String> createNotationStyles() {
+			Map<Notation.Style, String> notationStyles = new HashMap<>();
+			notationStyles.put(Notation.Style.SOLID, MusicXmlTags.NOTATION_LINE_SOLID);
+			notationStyles.put(Notation.Style.DASHED, MusicXmlTags.NOTATION_LINE_DASHED);
+			notationStyles.put(Notation.Style.DOTTED, MusicXmlTags.NOTATION_LINE_DOTTED);
+			notationStyles.put(Notation.Style.WAVY, MusicXmlTags.NOTATION_LINE_WAVY);
+			return Collections.unmodifiableMap(notationStyles);
 		}
 
 		private final Document document;
-		private Integer nextAvailableMarkingNumber = Integer.valueOf(1);
+		private Integer nextAvailableNotationNumber = Integer.valueOf(1);
 
-		MarkingResolver(Document document) {
+		NotationResolver(Document document) {
 			this.document = document;
 		}
 
-		private Map<Marking, Integer> unresolvedMarkings = new HashMap<>();
-		private Set<Integer> usedMarkingNumbers = new HashSet<>(MAX_MARKING_NUMBER);
+		private Map<Notation, Integer> unresolvedNotations = new HashMap<>();
+		private Set<Integer> usedNotationNumbers = new HashSet<>(MAX_NOTATION_NUMBER);
 
-		Element createStartElement(Marking marking) {
-			Element markingElement = document.createElement(MARKING_TYPES.get(marking.getType()));
+		Element createArpeggiationElement(Notation notation) {
+			Notation.Type type = notation.getType();
+			Element notationElement = document.createElement(ARPEGGIATION_TYPES.get(type));
 
-			final Integer markingNumber = getNextAvailableMarkingNumber();
-			unresolvedMarkings.put(marking, markingNumber);
+			final Integer notationNumber = getNextAvailableNotationNumber();
+			unresolvedNotations.put(notation, notationNumber);
 
-			markingElement.setAttribute(MusicXmlTags.MARKING_NUMBER, markingNumber.toString());
+			notationElement.setAttribute(MusicXmlTags.NOTATION_NUMBER, notationNumber.toString());
 
-			markingElement.setAttribute(MusicXmlTags.MARKING_TYPE, MusicXmlTags.MARKING_TYPE_START);
-			return markingElement;
-		}
-
-		Element createStopElement(Marking marking) {
-			Element markingElement = null;
-
-			if (unresolvedMarkings.containsKey(marking)) {
-				markingElement = document.createElement(MARKING_TYPES.get(marking.getType()));
-
-				markingElement.setAttribute(MusicXmlTags.MARKING_NUMBER, unresolvedMarkings.get(marking).toString());
-
-				usedMarkingNumbers.remove(unresolvedMarkings.get(marking));
-				unresolvedMarkings.remove(marking);
-
-				markingElement.setAttribute(MusicXmlTags.MARKING_TYPE, MusicXmlTags.MARKING_TYPE_STOP);
+			if (type.equals(Notation.Type.ARPEGGIATE_DOWN)) {
+				notationElement.setAttribute(MusicXmlTags.ARPEGGIO_DIRECTION, MusicXmlTags.ARPEGGIO_DIRECTION_DOWN);
 			}
 
-			return markingElement;
+			if (type.equals(Notation.Type.ARPEGGIATE_UP)) {
+				notationElement.setAttribute(MusicXmlTags.ARPEGGIO_DIRECTION, MusicXmlTags.ARPEGGIO_DIRECTION_UP);
+			}
+
+			return notationElement;
 		}
 
-		private Integer getNextAvailableMarkingNumber() {
-			Integer availableNumber = nextAvailableMarkingNumber;
-			usedMarkingNumbers.add(availableNumber);
+		Element createStartElement(Notation notation) {
+			Element notationElement = document.createElement(NOTATION_TYPES_WITH_START_STOP.get(notation.getType()));
 
-			for (int next = 1; next <= MAX_MARKING_NUMBER; ++next) {
-				if (!usedMarkingNumbers.contains(next)) {
-					nextAvailableMarkingNumber = next;
+			final Integer notationNumber = getNextAvailableNotationNumber();
+			unresolvedNotations.put(notation, notationNumber);
+
+			notationElement.setAttribute(MusicXmlTags.NOTATION_NUMBER, notationNumber.toString());
+
+			if (notation.getType().equals(Notation.Type.NON_ARPEGGIATE)) {
+				notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NON_ARPEGGIATE_BOTTOM);
+			} else {
+				notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NOTATION_TYPE_START);
+				if (NOTATION_STYLES.containsKey(notation.getStyle())) {
+					notationElement.setAttribute(MusicXmlTags.NOTATION_LINE_TYPE,
+							NOTATION_STYLES.get(notation.getStyle()));
+				}
+			}
+			return notationElement;
+		}
+
+		Element createStopElement(Notation notation) {
+			Element notationElement = null;
+
+			if (unresolvedNotations.containsKey(notation)) {
+				notationElement = document.createElement(NOTATION_TYPES_WITH_START_STOP.get(notation.getType()));
+
+				notationElement
+						.setAttribute(MusicXmlTags.NOTATION_NUMBER, unresolvedNotations.get(notation).toString());
+
+				usedNotationNumbers.remove(unresolvedNotations.get(notation));
+				unresolvedNotations.remove(notation);
+
+				if (notation.getType().equals(Notation.Type.NON_ARPEGGIATE)) {
+					notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NON_ARPEGGIATE_TOP);
+				} else {
+					notationElement.setAttribute(MusicXmlTags.NOTATION_TYPE, MusicXmlTags.NOTATION_TYPE_STOP);
+					if (NOTATION_STYLES.containsKey(notation.getStyle())) {
+						notationElement.setAttribute(MusicXmlTags.NOTATION_LINE_TYPE,
+								NOTATION_STYLES.get(notation.getStyle()));
+					}
+				}
+			}
+
+			return notationElement;
+		}
+
+		private Integer getNextAvailableNotationNumber() {
+			Integer availableNumber = nextAvailableNotationNumber;
+			usedNotationNumbers.add(availableNumber);
+
+			for (int next = 1; next <= MAX_NOTATION_NUMBER; ++next) {
+				if (!usedNotationNumbers.contains(next)) {
+					nextAvailableNotationNumber = next;
 					break;
 				}
 			}

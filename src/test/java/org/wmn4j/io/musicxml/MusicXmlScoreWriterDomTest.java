@@ -391,16 +391,16 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void whenScoreHasSingleVoiceWithSlursAndGlissandoThenTheyAreWrittenToFile() {
-		Score score = readMusicXmlTestFile("single_staff_single_voice_marking_test.xml", false);
+		Score score = readMusicXmlTestFile("single_staff_single_voice_notation_test.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
-		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromSingleVoiceToScore(writtenScore);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(writtenScore);
 	}
 
 	@Test
 	void whenScoreHasMultipleVoicesWithSlursAndGlissandoThenTheyAreWrittenToFile() {
-		Score score = readMusicXmlTestFile("multi_staff_multi_voice_marking_test.xml", false);
+		Score score = readMusicXmlTestFile("multi_staff_multi_voice_notation_test.xml", false);
 		Score writtenScore = writeAndReadScore(score);
-		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(writtenScore);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(writtenScore);
 	}
 
 	@Test

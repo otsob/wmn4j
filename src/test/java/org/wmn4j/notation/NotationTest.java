@@ -4,10 +4,6 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.Durations;
-import org.wmn4j.notation.Marking;
-import org.wmn4j.notation.Note;
-import org.wmn4j.notation.Pitch;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,19 +15,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class MarkingTest {
+class NotationTest {
 
 	private final Note testNote = Note.of(Pitch.of(Pitch.Base.C, 1, 4), Durations.EIGHTH);
 
 	@Test
 	void testBeginningOf() {
-		final Marking marking = Marking.of(Marking.Type.GLISSANDO);
-		Marking.Connection beginningArticulation = Marking.Connection.beginningOf(marking,
+		final Notation notation = Notation.of(Notation.Type.GLISSANDO);
+		Notation.Connection beginningArticulation = Notation.Connection.beginningOf(notation,
 				testNote);
-		assertEquals(marking, beginningArticulation.getMarking());
+		assertEquals(notation, beginningArticulation.getNotation());
 		assertTrue(beginningArticulation.isBeginning());
 		assertFalse(beginningArticulation.isEnd());
-		assertEquals(Marking.Type.GLISSANDO, beginningArticulation.getType());
+		assertEquals(Notation.Type.GLISSANDO, beginningArticulation.getType());
 		Optional<Note> followingNote = beginningArticulation.getFollowingNote();
 		assertTrue(followingNote.isPresent());
 		assertEquals(testNote, followingNote.get());
@@ -39,13 +35,13 @@ class MarkingTest {
 
 	@Test
 	void testOf() {
-		final Marking marking = Marking.of(Marking.Type.GLISSANDO);
-		Marking.Connection middleArticulation = Marking.Connection.of(marking,
+		final Notation notation = Notation.of(Notation.Type.GLISSANDO);
+		Notation.Connection middleArticulation = Notation.Connection.of(notation,
 				testNote);
-		assertEquals(marking, middleArticulation.getMarking());
+		assertEquals(notation, middleArticulation.getNotation());
 		assertFalse(middleArticulation.isBeginning());
 		assertFalse(middleArticulation.isEnd());
-		assertEquals(Marking.Type.GLISSANDO, middleArticulation.getType());
+		assertEquals(Notation.Type.GLISSANDO, middleArticulation.getType());
 		Optional<Note> followingNote = middleArticulation.getFollowingNote();
 		assertTrue(followingNote.isPresent());
 		assertEquals(testNote, followingNote.get());
@@ -53,30 +49,37 @@ class MarkingTest {
 
 	@Test
 	void testEndOf() {
-		final Marking marking = Marking.of(Marking.Type.GLISSANDO);
-		Marking.Connection middleArticulation = Marking.Connection.endOf(marking);
-		assertEquals(marking, middleArticulation.getMarking());
+		final Notation notation = Notation.of(Notation.Type.GLISSANDO);
+		Notation.Connection middleArticulation = Notation.Connection.endOf(notation);
+		assertEquals(notation, middleArticulation.getNotation());
 		assertFalse(middleArticulation.isBeginning());
 		assertTrue(middleArticulation.isEnd());
-		assertEquals(Marking.Type.GLISSANDO, middleArticulation.getType());
+		assertEquals(Notation.Type.GLISSANDO, middleArticulation.getType());
 		Optional<Note> followingNote = middleArticulation.getFollowingNote();
 		assertFalse(followingNote.isPresent());
 	}
 
 	@Test
 	void testGetFollowingNotes() {
-		final Marking slur = Marking.of(Marking.Type.SLUR);
+		final Notation slur = Notation.of(Notation.Type.SLUR);
+		final Notation firstTie = Notation.of(Notation.Type.TIE);
+		final Notation secondTie = Notation.of(Notation.Type.TIE);
 		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), List.of(Marking.Connection.endOf(slur)), null, false);
+				Collections.emptySet(), List.of(Notation.Connection.endOf(slur), Notation.Connection.endOf(secondTie)));
 		final Note second = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), List.of(Marking.Connection.of(slur, third)), null, false);
+				Collections.emptySet(),
+				List.of(Notation.Connection.of(slur, third),
+						Notation.Connection.beginningOf(secondTie, third),
+						Notation.Connection.endOf(firstTie)));
 		final Note first = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), List.of(Marking.Connection.beginningOf(slur, second)), null, false);
+				Collections.emptySet(), List.of(Notation.Connection.beginningOf(slur, second),
+						Notation.Connection.beginningOf(secondTie, third),
+						Notation.Connection.beginningOf(firstTie, second)));
 
-		assertEquals(second, first.getMarkingConnection(slur).get().getFollowingNote().get());
-		assertEquals(third, second.getMarkingConnection(slur).get().getFollowingNote().get());
+		assertEquals(second, first.getConnection(slur).get().getFollowingNote().get());
+		assertEquals(third, second.getConnection(slur).get().getFollowingNote().get());
 
-		Optional<Marking.Connection> slurBeginning = first.getMarkingConnection(slur);
+		Optional<Notation.Connection> slurBeginning = first.getConnection(slur);
 		assertTrue(slurBeginning.isPresent());
 
 		List<Note> followingNotes = new ArrayList<>();
@@ -90,16 +93,16 @@ class MarkingTest {
 
 	@Test
 	void testGetAffectedStartingFrom() {
-		final Marking slur = Marking.of(Marking.Type.SLUR);
+		final Notation slur = Notation.of(Notation.Type.SLUR);
 		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), List.of(Marking.Connection.endOf(slur)), null, false);
+				Collections.emptySet(), List.of(Notation.Connection.endOf(slur)));
 		final Note second = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), List.of(Marking.Connection.of(slur, third)), null, false);
+				Collections.emptySet(), List.of(Notation.Connection.of(slur, third)));
 		final Note first = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), List.of(Marking.Connection.beginningOf(slur, second)), null, false);
+				Collections.emptySet(), List.of(Notation.Connection.beginningOf(slur, second)));
 
 		assertTrue(
-				Marking.of(Marking.Type.SLUR).getAffectedStartingFrom(first).isEmpty(),
+				Notation.of(Notation.Type.SLUR).getAffectedStartingFrom(first).isEmpty(),
 				"Incorrectly returned notes for a different slur");
 
 		assertEquals(3, slur.getAffectedStartingFrom(first).size());

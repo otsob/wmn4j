@@ -17,8 +17,8 @@ import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.KeySignature;
 import org.wmn4j.notation.KeySignatures;
-import org.wmn4j.notation.Marking;
 import org.wmn4j.notation.MeasureBuilder;
+import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
@@ -44,6 +44,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -452,97 +453,132 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			final Pitch pitch = getPitch(noteNode);
 			final NoteBuilder noteBuilder = new NoteBuilder(pitch, duration);
 
-			resolveTiesAndNotations(voice, noteNode, connectedNotations, staffNumber, noteBuilder);
+			ChordBuffer buffer = chordBuffers.get(staffNumber);
 
 			if (hasChordTag(noteNode)) {
-				chordBuffers.get(staffNumber).addNote(noteBuilder, voice);
+				buffer.addNote(noteBuilder, voice);
 			} else {
-				chordBuffers.get(staffNumber).contentsToBuilder(builder);
-				chordBuffers.get(staffNumber).addNote(noteBuilder, voice);
+				buffer.contentsToBuilder(builder);
+				buffer.addNote(noteBuilder, voice);
 			}
+
+			resolveTiesAndNotations(voice, noteNode, connectedNotations, staffNumber, noteBuilder, buffer);
 		}
 
 		return staffNumber;
 	}
 
 	private void resolveTiesAndNotations(int voiceNumber, Node noteNode, ConnectedNotations connectedNotations,
-			int staffNumber, NoteBuilder noteBuilder) {
-
-		// Handle ties
-		if (endsTie(noteNode)) {
-			final NoteBuilder tieBeginner = connectedNotations.popTieBeginningFromStaff(staffNumber, noteBuilder);
-			if (tieBeginner != null) {
-				tieBeginner.addTieToFollowing(noteBuilder);
-			} else {
-				noteBuilder.setIsTiedFromPrevious(true);
-			}
-		}
-
-		if (startsTie(noteNode)) {
-			connectedNotations.addTieBeginningToStaff(staffNumber, noteBuilder);
-		}
+			int staffNumber, NoteBuilder noteBuilder, ChordBuffer buffer) {
 
 		final Optional<Node> notationsNodeOptional = DocHelper.findChild(noteNode, MusicXmlTags.NOTATIONS);
 		notationsNodeOptional.ifPresent(notationsNode -> addArticulations(notationsNode, noteBuilder));
 
-		addMarkings(voiceNumber, notationsNodeOptional, noteBuilder, connectedNotations);
+		addNotations(voiceNumber, notationsNodeOptional, noteBuilder, connectedNotations, buffer);
 	}
 
-	private void addMarkings(int voiceNumber, Optional<Node> notationsNode, NoteBuilder noteBuilder,
-			ConnectedNotations connectedNotations) {
+	private void addNotations(int voiceNumber, Optional<Node> notationsNode, NoteBuilder noteBuilder,
+			ConnectedNotations connectedNotations, ChordBuffer buffer) {
 
-		final Set<UnresolvedMarking> startedMarkings = new HashSet<>();
+		final Set<UnresolvedNotation> startedNotations = new HashSet<>();
 
-		// Handle the beginnings and ends of markings if the notations node is present
+		// Handle the beginnings and ends of notations if the notations node is present
 		if (notationsNode.isPresent()) {
-			for (Node markingNode : getMarkingNodes(notationsNode.get())) {
-				final String markingPositionType = DocHelper.getAttributeValue(markingNode, MusicXmlTags.MARKING_TYPE)
-						.orElseThrow();
+			for (Node notationNode : getNotationNodes(notationsNode.get())) {
+				final Optional<String> notationPositionType = DocHelper
+						.getAttributeValue(notationNode, MusicXmlTags.NOTATION_TYPE);
 
-				// Marking number can be omitted in MusicXML. In that case should default to 1.
-				final int markingNumber = DocHelper.getAttributeValue(markingNode, MusicXmlTags.MARKING_NUMBER)
+				// Notation number can be omitted in MusicXML. In that case should default to 1.
+				final int notationNumber = DocHelper.getAttributeValue(notationNode, MusicXmlTags.NOTATION_NUMBER)
 						.map(stringValue -> Integer.parseInt(stringValue)).orElse(1);
 
-				final Marking.Type markingType = getMarkingType(markingNode);
+				final Notation.Type notationType = getNotationType(notationNode);
+				final Notation.Style notationStyle = getNotationStyle(notationNode);
 
-				if (markingPositionType.equals(MusicXmlTags.MARKING_TYPE_START)) {
-					UnresolvedMarking startedMarking = connectedNotations
-							.createAndAddStartOfMarking(voiceNumber, markingNumber, markingType, noteBuilder);
-					startedMarkings.add(startedMarking);
-				} else if (markingPositionType.equals(MusicXmlTags.MARKING_TYPE_STOP)) {
-					connectedNotations.endMarking(voiceNumber, markingNumber, markingType, noteBuilder);
+				if (notationPositionType.isPresent()) {
+					final String type = notationPositionType.get();
+
+					if (type.equals(MusicXmlTags.NOTATION_TYPE_START)
+							|| type.equals(MusicXmlTags.NON_ARPEGGIATE_BOTTOM)) {
+						UnresolvedNotation startedNotation = connectedNotations
+								.createAndAddStartOfNotation(voiceNumber, notationNumber, notationType, notationStyle,
+										noteBuilder);
+						startedNotations.add(startedNotation);
+					} else if (type.equals(MusicXmlTags.NOTATION_TYPE_STOP)
+							|| type.equals(MusicXmlTags.NON_ARPEGGIATE_TOP)) {
+						connectedNotations.endNotation(voiceNumber, notationNumber, notationType, noteBuilder);
+					}
+				} else {
+					// The notations that do not specify start and stop are related to arpeggiation.
+					// The notation objects are added to the ChordBuffer which will handle them.
+					buffer.setArpeggiation(notationType);
 				}
 			}
 		}
 
-		if (connectedNotations.hasUnresolvedMarkings(voiceNumber)) {
-			connectedNotations.addToUnresolvedMarkings(voiceNumber, noteBuilder, startedMarkings);
+		if (connectedNotations.hasUnresolvedNotations(voiceNumber)) {
+			connectedNotations.addToUnresolvedNotations(voiceNumber, noteBuilder, startedNotations);
 		}
 	}
 
-	private Collection<Node> getMarkingNodes(Node notationsNode) {
-		Collection<Node> markingNodes = new ArrayList<>();
+	private Collection<Node> getNotationNodes(Node notationsNode) {
+		Collection<Node> notationNodes = new ArrayList<>();
 		NodeList notationsChildren = notationsNode.getChildNodes();
 		for (int i = 0; i < notationsChildren.getLength(); ++i) {
 			Node childNode = notationsChildren.item(i);
-			if (MusicXmlTags.MARKING_NODE_NAMES.contains(childNode.getNodeName())) {
-				markingNodes.add(childNode);
+			if (MusicXmlTags.CONNECTED_NOTATION_NODE_NAMES.contains(childNode.getNodeName())) {
+				notationNodes.add(childNode);
 			}
 		}
 
-		return markingNodes;
+		return notationNodes;
 	}
 
-	private Marking.Type getMarkingType(Node markingNode) {
-		switch (markingNode.getNodeName()) {
+	private Notation.Type getNotationType(Node notationNode) {
+		switch (notationNode.getNodeName()) {
+			case MusicXmlTags.TIED:
+				return Notation.Type.TIE;
 			case MusicXmlTags.SLUR:
-				return Marking.Type.SLUR;
+				return Notation.Type.SLUR;
 			case MusicXmlTags.GLISSANDO:
-				return Marking.Type.GLISSANDO;
+			case MusicXmlTags.SLIDE: // Slide is practically always glissando in MusicXML, fall through.
+				return Notation.Type.GLISSANDO;
+			case MusicXmlTags.ARPEGGIATE:
+				Node directionNode = notationNode.getAttributes().getNamedItem(MusicXmlTags.ARPEGGIO_DIRECTION);
+				if (directionNode == null) {
+					return Notation.Type.ARPEGGIATE;
+				}
+
+				if (MusicXmlTags.ARPEGGIO_DIRECTION_DOWN.equals(directionNode.getTextContent())) {
+					return Notation.Type.ARPEGGIATE_DOWN;
+				}
+
+				if (MusicXmlTags.ARPEGGIO_DIRECTION_UP.equals(directionNode.getTextContent())) {
+					return Notation.Type.ARPEGGIATE_UP;
+				}
+			case MusicXmlTags.NON_ARPEGGIATE:
+				return Notation.Type.NON_ARPEGGIATE;
 		}
 
-		LOG.warn("Tried to parse unsupported marking type: " + markingNode.getNodeName());
+		LOG.warn("Tried to parse unsupported notation type: " + notationNode.getNodeName());
 		return null;
+	}
+
+	private Notation.Style getNotationStyle(Node notationNode) {
+		String notationAttribute = DocHelper.getAttributeValue(notationNode, MusicXmlTags.NOTATION_LINE_TYPE)
+				.orElse("");
+
+		switch (notationAttribute) {
+			case MusicXmlTags.NOTATION_LINE_DASHED:
+				return Notation.Style.DASHED;
+			case MusicXmlTags.NOTATION_LINE_DOTTED:
+				return Notation.Style.DOTTED;
+			case MusicXmlTags.NOTATION_LINE_WAVY:
+				return Notation.Style.WAVY;
+			case MusicXmlTags.NOTATION_LINE_SOLID: // Fall through.
+			default:
+				return Notation.Style.SOLID;
+		}
 	}
 
 	private void addArticulations(Node notationsNode, NoteBuilder noteBuilder) {
@@ -831,25 +867,6 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_CHORD).isPresent();
 	}
 
-	private boolean startsTie(Node noteNode) {
-		return hasTieWithType(noteNode, MusicXmlTags.TIE_START);
-	}
-
-	private boolean endsTie(Node noteNode) {
-		return hasTieWithType(noteNode, MusicXmlTags.TIE_STOP);
-	}
-
-	private boolean hasTieWithType(Node noteNode, String tieType) {
-		final List<Node> tieNodes = DocHelper.findChildren(noteNode, MusicXmlTags.TIE);
-		if (tieNodes.isEmpty()) {
-			return false;
-		}
-
-		return tieNodes.stream().anyMatch((tieNode) -> tieNode.getAttributes().getNamedItem(MusicXmlTags.TIE_TYPE)
-				.getTextContent().equals(tieType));
-
-	}
-
 	private boolean isRest(Node noteNode) {
 		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_REST).isPresent();
 	}
@@ -957,8 +974,9 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	 * Class for handling the reading of chords.
 	 */
 	private class ChordBuffer {
-		private final List<NoteBuilder> chordBuffer = new ArrayList<>();
+		private List<NoteBuilder> chordBuffer = new ArrayList<>();
 		private int voice;
+		private Notation.Type arpeggiation;
 
 		ChordBuffer() {
 		}
@@ -971,19 +989,40 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		void contentsToBuilder(MeasureBuilder builder) {
 			if (!this.chordBuffer.isEmpty()) {
 				if (this.chordBuffer.size() > 1) {
-					final List<NoteBuilder> notes = new ArrayList<>();
-					for (NoteBuilder noteBuilder : this.chordBuffer) {
-						notes.add(noteBuilder);
+					if (arpeggiation != null) {
+						Notation arpeggio = Notation.of(arpeggiation);
+
+						// Sort the note builders based on the suitable order for arpeggiation.
+						Comparator<NoteBuilder> comp = arpeggiation.equals(Notation.Type.ARPEGGIATE_DOWN)
+								? Comparator.comparing(NoteBuilder::getPitch).reversed()
+								: Comparator.comparing(NoteBuilder::getPitch);
+
+						chordBuffer.sort(comp);
+
+						NoteBuilder prev = null;
+
+						for (NoteBuilder note : chordBuffer) {
+							if (prev != null) {
+								prev.connectWith(arpeggio, note);
+							}
+
+							prev = note;
+						}
 					}
 
-					builder.addToVoice(this.voice, new ChordBuilder(notes));
+					builder.addToVoice(this.voice, new ChordBuilder(chordBuffer));
 				} else if (this.chordBuffer.size() == 1) {
 					final NoteBuilder noteBuilder = this.chordBuffer.get(0);
 					builder.addToVoice(this.voice, noteBuilder);
 				}
 
-				this.chordBuffer.clear();
+				this.chordBuffer = new ArrayList<>();
+				this.arpeggiation = null;
 			}
+		}
+
+		void setArpeggiation(Notation.Type arpeggiation) {
+			this.arpeggiation = arpeggiation;
 		}
 	}
 
@@ -1040,100 +1079,78 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	private class ConnectedNotations {
 
 		private final Map<Integer, List<NoteBuilder>> tieStarts = new HashMap<>();
-		private final Map<Integer, Collection<UnresolvedMarking>> unresolvedMarkingsPerVoice = new HashMap<>();
+		private final Map<Integer, Collection<UnresolvedNotation>> unresolvedNotationsPerVoice = new HashMap<>();
 
-		void addTieBeginningToStaff(int staffNumber, NoteBuilder tieBeginning) {
-			if (!this.tieStarts.containsKey(staffNumber)) {
-				this.tieStarts.put(staffNumber, new ArrayList<>());
-			}
-
-			this.tieStarts.get(staffNumber).add(tieBeginning);
-		}
-
-		NoteBuilder popTieBeginningFromStaff(int staff, NoteBuilder tieEnd) {
-			NoteBuilder matching = null;
-
-			if (this.tieStarts.keySet().contains(staff)) {
-				for (int i = 0; i < this.tieStarts.get(staff).size(); ++i) {
-					final NoteBuilder tieBeginning = this.tieStarts.get(staff).get(i);
-					if (tieBeginning.getPitch().equals(tieEnd.getPitch())) {
-						matching = this.tieStarts.get(staff).remove(i);
-						break;
-					}
-				}
-			}
-
-			return matching;
-		}
-
-		boolean hasUnresolvedMarkings(int voiceNumber) {
-			return unresolvedMarkingsPerVoice.containsKey(voiceNumber) && !unresolvedMarkingsPerVoice.get(voiceNumber)
+		boolean hasUnresolvedNotations(int voiceNumber) {
+			return unresolvedNotationsPerVoice.containsKey(voiceNumber) && !unresolvedNotationsPerVoice.get(voiceNumber)
 					.isEmpty();
 		}
 
-		UnresolvedMarking createAndAddStartOfMarking(int voiceNumber, int markingNumber, Marking.Type markingType,
-				NoteBuilder firstBuilder) {
-			if (!unresolvedMarkingsPerVoice.containsKey(voiceNumber)) {
-				unresolvedMarkingsPerVoice.put(voiceNumber, new ArrayList<>());
+		UnresolvedNotation createAndAddStartOfNotation(int voiceNumber, int notationNumber, Notation.Type notationType,
+				Notation.Style notationStyle, NoteBuilder firstBuilder) {
+			if (!unresolvedNotationsPerVoice.containsKey(voiceNumber)) {
+				unresolvedNotationsPerVoice.put(voiceNumber, new ArrayList<>());
 			}
 
-			UnresolvedMarking unresolvedMarking = new UnresolvedMarking(markingNumber, markingType);
-			unresolvedMarking.addNoteBuilder(firstBuilder);
-			unresolvedMarkingsPerVoice.get(voiceNumber).add(unresolvedMarking);
-			return unresolvedMarking;
+			UnresolvedNotation unresolvedNotation = new UnresolvedNotation(notationNumber, notationType, notationStyle);
+			unresolvedNotation.addNoteBuilder(firstBuilder);
+			unresolvedNotationsPerVoice.get(voiceNumber).add(unresolvedNotation);
+			return unresolvedNotation;
 		}
 
-		void addToUnresolvedMarkings(int voiceNumber, NoteBuilder builder, Set<UnresolvedMarking> markingsToIgnore) {
-			unresolvedMarkingsPerVoice.getOrDefault(voiceNumber, Collections.emptyList()).stream()
-					.filter(unresolvedMarking -> !markingsToIgnore.contains(unresolvedMarking))
-					.forEach(unresolvedMarking -> unresolvedMarking.addNoteBuilder(builder));
+		void addToUnresolvedNotations(int voiceNumber, NoteBuilder builder, Set<UnresolvedNotation> notationsToIgnore) {
+			unresolvedNotationsPerVoice.getOrDefault(voiceNumber, Collections.emptyList()).stream()
+					.filter(unresolvedNotation -> !notationsToIgnore.contains(unresolvedNotation))
+					.forEach(unresolvedNotation -> unresolvedNotation.addNoteBuilder(builder));
 		}
 
-		void endMarking(int voiceNumber, int markingNumber, Marking.Type markingType, NoteBuilder lastBuilder) {
-			final Collection<UnresolvedMarking> markingsForVoice = unresolvedMarkingsPerVoice
+		void endNotation(int voiceNumber, int notationNumber, Notation.Type notationType, NoteBuilder lastBuilder) {
+			final Collection<UnresolvedNotation> notationsForVoice = unresolvedNotationsPerVoice
 					.getOrDefault(voiceNumber, Collections.emptyList());
 
-			Optional<UnresolvedMarking> unresolvedMarkingToEndOpt = markingsForVoice
+			Optional<UnresolvedNotation> unresolvedNotationToEndOpt = notationsForVoice
 					.stream()
-					.filter(unresolvedMarking -> unresolvedMarking.getMarkingType().equals(markingType)
-							&& unresolvedMarking.getMarkingNumber() == markingNumber)
+					.filter(unresolvedNotation -> unresolvedNotation.getNotationType().equals(notationType)
+							&& unresolvedNotation.getNotationNumber() == notationNumber)
 					.findFirst();
 
-			if (unresolvedMarkingToEndOpt.isPresent()) {
-				UnresolvedMarking unresolvedMarkingToEnd = unresolvedMarkingToEndOpt.get();
-				unresolvedMarkingToEnd.addNoteBuilder(lastBuilder);
-				unresolvedMarkingToEnd.resolve();
-				markingsForVoice.remove(unresolvedMarkingToEnd);
+			if (unresolvedNotationToEndOpt.isPresent()) {
+				UnresolvedNotation unresolvedNotationToEnd = unresolvedNotationToEndOpt.get();
+				unresolvedNotationToEnd.addNoteBuilder(lastBuilder);
+				unresolvedNotationToEnd.resolve();
+				notationsForVoice.remove(unresolvedNotationToEnd);
 
 			} else {
-				LOG.warn("Cannot correctly resolve a marking that was started in a different voice."
-						+ " Trying to resolve marking in voice "
-						+ voiceNumber + " with type " + markingType + " and number " + markingNumber);
+				LOG.warn("Cannot correctly resolve a notation that was started in a different voice."
+						+ " Trying to resolve notation in voice "
+						+ voiceNumber + " with type " + notationType + " and number " + notationNumber);
 			}
 		}
 	}
 
 	/*
-	 * Class for keeping track of unresolved markings.
+	 * Class for keeping track of unresolved notations.
 	 */
-	private class UnresolvedMarking {
+	private class UnresolvedNotation {
 
-		private final int markingNumber;
-		private final Marking.Type markingType;
+		private final int notationNumber;
+		private final Notation.Type notationType;
+		private final Notation.Style notationStyle;
 		private final List<NoteBuilder> connectedNoteBuilders;
 
-		UnresolvedMarking(int markingNumber, Marking.Type markingType) {
-			this.markingNumber = markingNumber;
-			this.markingType = markingType;
+		UnresolvedNotation(int notationNumber, Notation.Type notationType, Notation.Style notationStyle) {
+			this.notationNumber = notationNumber;
+			this.notationType = notationType;
+			this.notationStyle = notationStyle;
 			this.connectedNoteBuilders = new ArrayList<>();
 		}
 
-		int getMarkingNumber() {
-			return markingNumber;
+		int getNotationNumber() {
+			return notationNumber;
 		}
 
-		Marking.Type getMarkingType() {
-			return markingType;
+		Notation.Type getNotationType() {
+			return notationType;
 		}
 
 		void addNoteBuilder(NoteBuilder builder) {
@@ -1141,9 +1158,9 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 
 		void resolve() {
-			final Marking marking = Marking.of(markingType);
+			final Notation notation = Notation.of(notationType, notationStyle);
 			for (int i = 0; i < connectedNoteBuilders.size() - 1; ++i) {
-				connectedNoteBuilders.get(i).connectWith(marking, connectedNoteBuilders.get(i + 1));
+				connectedNoteBuilders.get(i).connectWith(notation, connectedNoteBuilders.get(i + 1));
 			}
 		}
 
@@ -1153,18 +1170,18 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				return true;
 			}
 
-			if (!(o instanceof UnresolvedMarking)) {
+			if (!(o instanceof UnresolvedNotation)) {
 				return false;
 			}
 
-			UnresolvedMarking other = (UnresolvedMarking) o;
-			return markingNumber == other.markingNumber
-					&& markingType.equals(other.markingType);
+			UnresolvedNotation other = (UnresolvedNotation) o;
+			return notationNumber == other.notationNumber
+					&& notationType.equals(other.notationType);
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(markingNumber, markingType);
+			return Objects.hash(notationNumber, notationType);
 		}
 	}
 }
