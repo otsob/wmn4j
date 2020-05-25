@@ -476,8 +476,6 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			final NoteBuilder tieBeginner = connectedNotations.popTieBeginningFromStaff(staffNumber, noteBuilder);
 			if (tieBeginner != null) {
 				tieBeginner.addTieToFollowing(noteBuilder);
-			} else {
-				noteBuilder.setIsTiedFromPrevious(true);
 			}
 		}
 

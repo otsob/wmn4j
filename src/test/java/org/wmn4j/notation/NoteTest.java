@@ -178,7 +178,7 @@ class NoteTest {
 		notationConnections.add(glissandoEnd);
 
 		final Note noteWithNotationConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), notationConnections, null, false);
+				Collections.emptySet(), notationConnections);
 
 		assertTrue(noteWithNotationConnections.beginsNotation(Notation.Type.SLUR));
 		assertTrue(noteWithNotationConnections.endsNotation(Notation.Type.GLISSANDO));
@@ -196,7 +196,7 @@ class NoteTest {
 		notationConnections.add(slurBeginning);
 
 		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), notationConnections, null, false);
+				Collections.emptySet(), notationConnections);
 
 		assertTrue(noteThatBeginsSlur.hasNotations());
 		assertFalse(followingNote.hasNotations());
@@ -215,17 +215,17 @@ class NoteTest {
 
 		notationConnections.add(slurBeginning);
 		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), notationConnections, null, false);
+				Collections.emptySet(), notationConnections);
 
 		Notation.Connection slurEnd = Notation.Connection.endOf(Notation.of(Notation.Type.SLUR));
 		List<Notation.Connection> slurEndList = new ArrayList<>();
 		slurEndList.add(slurEnd);
 		final Note noteThatEndsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), slurEndList, null, false);
+				Collections.emptySet(), slurEndList);
 
 		notationConnections.add(glissandoEnd);
 		final Note noteWithNotationConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), notationConnections, null, false);
+				Collections.emptySet(), notationConnections);
 
 		assertEquals(noteThatBeginsSlur, noteThatEndsSlur);
 		assertEquals(noteThatBeginsSlur.hashCode(), noteThatEndsSlur.hashCode());
@@ -247,7 +247,7 @@ class NoteTest {
 		notationConnections.add(glissandoEnd);
 
 		final Note noteWithNotationConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), notationConnections, null, false);
+				Collections.emptySet(), notationConnections);
 
 		final Collection<Notation> notationsInNote = noteWithNotationConnections.getNotations();
 		assertEquals(2, notationsInNote.size());
@@ -273,7 +273,7 @@ class NoteTest {
 		notationConnections.add(slurBeginning);
 
 		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), notationConnections, null, false);
+				Collections.emptySet(), notationConnections);
 
 		Optional<Notation.Connection> slurBeginningOptional = noteThatBeginsSlur
 				.getConnection(slurBeginning.getNotation());

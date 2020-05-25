@@ -24,9 +24,6 @@ public final class NoteBuilder implements DurationalBuilder {
 	private Set<Articulation> articulations;
 	private Map<Notation, NoteBuilder> connectedTo = new HashMap<>();
 	private Set<Notation> connectedFrom = new HashSet<>();
-	private Note tiedTo;
-	private boolean isTiedFromPrevious;
-	private NoteBuilder followingTied;
 
 	private Note cachedNote;
 	private boolean isBuilding;
@@ -41,7 +38,6 @@ public final class NoteBuilder implements DurationalBuilder {
 		this.pitch = pitch;
 		this.duration = duration;
 		this.articulations = EnumSet.noneOf(Articulation.class);
-		this.isTiedFromPrevious = false;
 	}
 
 	/**
@@ -55,10 +51,6 @@ public final class NoteBuilder implements DurationalBuilder {
 		this(builder.getPitch(), builder.getDuration());
 		builder.getArticulations()
 				.forEach(articulation -> this.articulations.add(articulation));
-		this.tiedTo = builder.getTiedTo();
-		this.isTiedFromPrevious = builder.isTiedFromPrevious();
-		builder.getFollowingTied()
-				.ifPresent(tied -> this.followingTied = new NoteBuilder(tied));
 	}
 
 	/**
@@ -147,26 +139,7 @@ public final class NoteBuilder implements DurationalBuilder {
 	 * @param builder The builder for the following note that this is to be tied to.
 	 */
 	public void addTieToFollowing(NoteBuilder builder) {
-		this.followingTied = builder;
-		builder.setIsTiedFromPrevious(true);
-	}
-
-	/**
-	 * Returns the following note to which this builder is tied.
-	 *
-	 * @return the note to which this is tied
-	 */
-	public Note getTiedTo() {
-		return tiedTo;
-	}
-
-	/**
-	 * Sets this to be tied to the given note.
-	 *
-	 * @param tiedTo the note to which this is set to be tied
-	 */
-	public void setTiedTo(Note tiedTo) {
-		this.tiedTo = tiedTo;
+		connectWith(Notation.of(Notation.Type.TIE), builder);
 	}
 
 	/**
@@ -175,17 +148,7 @@ public final class NoteBuilder implements DurationalBuilder {
 	 * @return true if this is tied from the previous note or notebuilder
 	 */
 	public boolean isTiedFromPrevious() {
-		return isTiedFromPrevious;
-	}
-
-	/**
-	 * Sets this to be tied from the previous.
-	 *
-	 * @param isTiedFromPrevious the value that defines whether this is tied from
-	 *                           the previous note or note builder
-	 */
-	public void setIsTiedFromPrevious(boolean isTiedFromPrevious) {
-		this.isTiedFromPrevious = isTiedFromPrevious;
+		return connectedFrom.stream().anyMatch(connection -> connection.getType().equals(Notation.Type.TIE));
 	}
 
 	/**
@@ -195,7 +158,15 @@ public final class NoteBuilder implements DurationalBuilder {
 	 * there is one, otherwise empty Optional.
 	 */
 	public Optional<NoteBuilder> getFollowingTied() {
-		return Optional.ofNullable(followingTied);
+		Optional<Notation> tieConnection = connectedTo.keySet().stream()
+				.filter(notation -> notation.getType().equals(Notation.Type.TIE))
+				.findAny();
+
+		if (tieConnection.isEmpty()) {
+			return Optional.empty();
+		}
+
+		return Optional.of(connectedTo.get(tieConnection));
 	}
 
 	/**
@@ -260,12 +231,7 @@ public final class NoteBuilder implements DurationalBuilder {
 
 			isBuilding = true;
 
-			if (this.followingTied != null) {
-				this.tiedTo = this.followingTied.build();
-			}
-
-			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, getResolvedNotationConnections(),
-					this.tiedTo, this.isTiedFromPrevious);
+			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, getResolvedNotationConnections());
 
 			isBuilding = false;
 		}

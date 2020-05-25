@@ -55,7 +55,7 @@ class NoteBuilderTest {
 
 		final Note tiedNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 
-		builder.setTiedTo(tiedNote);
+		builder.addTieToFollowing(new NoteBuilder(tiedNote));
 
 		final Note expected = Note
 				.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER, EnumSet.of(Articulation.STACCATO));
@@ -126,17 +126,6 @@ class NoteBuilderTest {
 	}
 
 	@Test
-	void testCopyConstructorsFollowingTiedIsCopiedAsWell() {
-		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		final NoteBuilder following = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
-		builder.addTieToFollowing(following);
-
-		final NoteBuilder copy = new NoteBuilder(builder);
-		assertNotSame(builder.getFollowingTied().get(), copy.getFollowingTied().get());
-		assertEquals(Durations.HALF, copy.getFollowingTied().get().getDuration());
-	}
-
-	@Test
 	void testBuildingWitMultipleNotesInSlur() {
 		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
 		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER);
@@ -181,14 +170,14 @@ class NoteBuilderTest {
 
 		assertTrue(firstNote.beginsNotation(Notation.Type.SLUR));
 		assertFalse(firstNote.endsNotation(Notation.Type.SLUR));
-		assertEquals(1, firstNote.getNotations().size());
+		assertEquals(2, firstNote.getNotations().size());
 		assertEquals(secondNote, firstNote.getConnection(slur).get().getFollowingNote().get());
 
 		assertEquals(secondNote, firstNote.getFollowingTiedNote().get());
 		assertTrue(secondNote.isTiedFromPrevious());
 
 		assertTrue(secondNote.hasNotation(Notation.Type.SLUR));
-		assertEquals(1, secondNote.getNotations().size());
+		assertEquals(2, secondNote.getNotations().size());
 		assertFalse(secondNote.beginsNotation(Notation.Type.SLUR));
 		assertFalse(secondNote.endsNotation(Notation.Type.SLUR));
 		assertEquals(thirdNote, secondNote.getConnection(slur).get().getFollowingNote().get());
@@ -225,14 +214,14 @@ class NoteBuilderTest {
 		assertTrue(firstNote.beginsNotation(Notation.Type.GLISSANDO));
 		assertFalse(firstNote.endsNotation(Notation.Type.GLISSANDO));
 
-		assertEquals(2, firstNote.getNotations().size());
+		assertEquals(3, firstNote.getNotations().size());
 		assertEquals(secondNote, firstNote.getConnection(slur).get().getFollowingNote().get());
 		assertEquals(secondNote, firstNote.getConnection(glissando).get().getFollowingNote().get());
 
 		assertEquals(secondNote, firstNote.getFollowingTiedNote().get());
 		assertTrue(secondNote.isTiedFromPrevious());
 
-		assertEquals(2, secondNote.getNotations().size());
+		assertEquals(3, secondNote.getNotations().size());
 		assertTrue(secondNote.hasNotation(Notation.Type.SLUR));
 		assertFalse(secondNote.beginsNotation(Notation.Type.SLUR));
 		assertFalse(secondNote.endsNotation(Notation.Type.SLUR));

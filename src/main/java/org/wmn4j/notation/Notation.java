@@ -11,8 +11,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Represents a connected notation that spans across multiple notes, such as
- * a slur, glissando, or line. The connected notations are represented using connections
+ * Represents a connected notation that spans across multiple notes, such as ties,
+ * slurs, or arpeggiation. The connected notations are represented using connections
  * between adjacent notes. For example, if three notes are affected by the same
  * slur, the first will be connected to the second note and the second note will
  * be connected to the third note. The connections should follow the order in which the
@@ -27,6 +27,12 @@ public final class Notation {
 	 * The type of the connected notation.
 	 */
 	public enum Type {
+
+		/**
+		 * Specifies a tie between notes.
+		 */
+		TIE,
+
 		/**
 		 * Specifies a slur.
 		 */

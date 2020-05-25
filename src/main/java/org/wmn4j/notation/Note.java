@@ -28,9 +28,6 @@ public final class Note implements Durational, Pitched {
 	private final Set<Articulation> articulations;
 	private final Collection<Notation.Connection> notationConnections;
 
-	private final Note tiedTo;
-	private final boolean isTiedFrom;
-
 	/**
 	 * Returns an instance with the given parameters.
 	 *
@@ -65,7 +62,7 @@ public final class Note implements Durational, Pitched {
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations) {
-		return new Note(pitch, duration, articulations, null, null, false);
+		return new Note(pitch, duration, articulations, null);
 	}
 
 	/**
@@ -74,35 +71,19 @@ public final class Note implements Durational, Pitched {
 	 * @param pitch               the pitch of the note
 	 * @param duration            the duration of the note
 	 * @param articulations       a set of Articulations associated with the note
-	 * @param notationConnections list of the notation connections for the note
+	 * @param notationConnections the notation connections for the note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections) {
-		return new Note(pitch, duration, articulations, notationConnections, null, false);
-	}
-
-	/**
-	 * Returns an instance with the given parameters.
-	 *
-	 * @param pitch               the pitch of the note
-	 * @param duration            the duration of the note
-	 * @param articulations       a set of Articulations associated with the note
-	 * @param notationConnections list of the notation connections for the note
-	 * @param tiedTo              the following note to which this is tied
-	 * @param isTiedFromPrevious  true if this is tied from the previous note
-	 * @return an instance with the given parameters
-	 */
-	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Notation.Connection> notationConnections, Note tiedTo, boolean isTiedFromPrevious) {
-		return new Note(pitch, duration, articulations, notationConnections, tiedTo, isTiedFromPrevious);
+		return new Note(pitch, duration, articulations, notationConnections);
 	}
 
 	/**
 	 * Private constructor.
 	 */
 	private Note(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Notation.Connection> notationConnections, Note tiedTo, boolean isTiedFromPrevious) {
+			Collection<Notation.Connection> notationConnections) {
 
 		this.pitch = Objects.requireNonNull(pitch);
 		this.duration = Objects.requireNonNull(duration);
@@ -117,9 +98,6 @@ public final class Note implements Durational, Pitched {
 		} else {
 			this.notationConnections = Collections.emptyList();
 		}
-
-		this.tiedTo = tiedTo;
-		this.isTiedFrom = isTiedFromPrevious;
 	}
 
 	/**
@@ -251,7 +229,8 @@ public final class Note implements Durational, Pitched {
 	 * @return true if this note is tied to a following note
 	 */
 	public boolean isTiedToFollowing() {
-		return this.tiedTo != null;
+		return notationConnections.stream().anyMatch(notationConnection -> notationConnection.getType().equals(
+				Notation.Type.TIE) && !notationConnection.isEnd());
 	}
 
 	/**
@@ -260,7 +239,8 @@ public final class Note implements Durational, Pitched {
 	 * @return true if this note is tied to a previous note
 	 */
 	public boolean isTiedFromPrevious() {
-		return this.isTiedFrom;
+		return notationConnections.stream().anyMatch(notationConnection -> notationConnection.getType().equals(
+				Notation.Type.TIE) && !notationConnection.isBeginning());
 	}
 
 	/**
@@ -301,7 +281,15 @@ public final class Note implements Durational, Pitched {
 	 * @return the following note to which this note is tied
 	 */
 	public Optional<Note> getFollowingTiedNote() {
-		return Optional.ofNullable(this.tiedTo);
+		Optional<Notation.Connection> tieConnection = notationConnections.stream()
+				.filter(connection -> connection.getType().equals(
+						Notation.Type.TIE) && connection.isBeginning()).findFirst();
+
+		if (tieConnection.isEmpty()) {
+			return Optional.empty();
+		}
+
+		return tieConnection.get().getFollowingNote();
 	}
 
 	/**

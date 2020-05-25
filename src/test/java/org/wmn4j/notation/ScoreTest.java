@@ -311,7 +311,8 @@ public class ScoreTest {
 		assertEquals(2, patternFromOverlappingVoices.getVoiceSize(5));
 
 		assertEquals(Rest.of(Durations.HALF.addDot()), patternFromOverlappingVoices.get(5, 0));
-		assertEquals(Note.of(Pitch.Base.D, 0, 3, Durations.QUARTER), patternFromOverlappingVoices.get(5, 1));
+		assertTrue(Note.of(Pitch.Base.D, 0, 3, Durations.QUARTER)
+				.equalsInPitchAndDuration((Note) patternFromOverlappingVoices.get(5, 1)));
 	}
 
 	@Test

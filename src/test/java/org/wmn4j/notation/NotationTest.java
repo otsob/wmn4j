@@ -62,12 +62,19 @@ class NotationTest {
 	@Test
 	void testGetFollowingNotes() {
 		final Notation slur = Notation.of(Notation.Type.SLUR);
+		final Notation firstTie = Notation.of(Notation.Type.TIE);
+		final Notation secondTie = Notation.of(Notation.Type.TIE);
 		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), List.of(Notation.Connection.endOf(slur)), null, false);
+				Collections.emptySet(), List.of(Notation.Connection.endOf(slur), Notation.Connection.endOf(secondTie)));
 		final Note second = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), List.of(Notation.Connection.of(slur, third)), null, false);
+				Collections.emptySet(),
+				List.of(Notation.Connection.of(slur, third),
+						Notation.Connection.beginningOf(secondTie, third),
+						Notation.Connection.endOf(firstTie)));
 		final Note first = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), List.of(Notation.Connection.beginningOf(slur, second)), null, false);
+				Collections.emptySet(), List.of(Notation.Connection.beginningOf(slur, second),
+						Notation.Connection.beginningOf(secondTie, third),
+						Notation.Connection.beginningOf(firstTie, second)));
 
 		assertEquals(second, first.getConnection(slur).get().getFollowingNote().get());
 		assertEquals(third, second.getConnection(slur).get().getFollowingNote().get());
@@ -88,11 +95,11 @@ class NotationTest {
 	void testGetAffectedStartingFrom() {
 		final Notation slur = Notation.of(Notation.Type.SLUR);
 		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), List.of(Notation.Connection.endOf(slur)), null, false);
+				Collections.emptySet(), List.of(Notation.Connection.endOf(slur)));
 		final Note second = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), List.of(Notation.Connection.of(slur, third)), null, false);
+				Collections.emptySet(), List.of(Notation.Connection.of(slur, third)));
 		final Note first = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), List.of(Notation.Connection.beginningOf(slur, second)), null, false);
+				Collections.emptySet(), List.of(Notation.Connection.beginningOf(slur, second)));
 
 		assertTrue(
 				Notation.of(Notation.Type.SLUR).getAffectedStartingFrom(first).isEmpty(),
