@@ -867,25 +867,6 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_CHORD).isPresent();
 	}
 
-	private boolean startsTie(Node noteNode) {
-		return hasTieWithType(noteNode, MusicXmlTags.TIE_START);
-	}
-
-	private boolean endsTie(Node noteNode) {
-		return hasTieWithType(noteNode, MusicXmlTags.TIE_STOP);
-	}
-
-	private boolean hasTieWithType(Node noteNode, String tieType) {
-		final List<Node> tieNodes = DocHelper.findChildren(noteNode, MusicXmlTags.TIE);
-		if (tieNodes.isEmpty()) {
-			return false;
-		}
-
-		return tieNodes.stream().anyMatch((tieNode) -> tieNode.getAttributes().getNamedItem(MusicXmlTags.TIE_TYPE)
-				.getTextContent().equals(tieType));
-
-	}
-
 	private boolean isRest(Node noteNode) {
 		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_REST).isPresent();
 	}
@@ -1099,30 +1080,6 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 		private final Map<Integer, List<NoteBuilder>> tieStarts = new HashMap<>();
 		private final Map<Integer, Collection<UnresolvedNotation>> unresolvedNotationsPerVoice = new HashMap<>();
-
-		void addTieBeginningToStaff(int staffNumber, NoteBuilder tieBeginning) {
-			if (!this.tieStarts.containsKey(staffNumber)) {
-				this.tieStarts.put(staffNumber, new ArrayList<>());
-			}
-
-			this.tieStarts.get(staffNumber).add(tieBeginning);
-		}
-
-		NoteBuilder popTieBeginningFromStaff(int staff, NoteBuilder tieEnd) {
-			NoteBuilder matching = null;
-
-			if (this.tieStarts.keySet().contains(staff)) {
-				for (int i = 0; i < this.tieStarts.get(staff).size(); ++i) {
-					final NoteBuilder tieBeginning = this.tieStarts.get(staff).get(i);
-					if (tieBeginning.getPitch().equals(tieEnd.getPitch())) {
-						matching = this.tieStarts.get(staff).remove(i);
-						break;
-					}
-				}
-			}
-
-			return matching;
-		}
 
 		boolean hasUnresolvedNotations(int voiceNumber) {
 			return unresolvedNotationsPerVoice.containsKey(voiceNumber) && !unresolvedNotationsPerVoice.get(voiceNumber)
