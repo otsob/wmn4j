@@ -8,7 +8,7 @@ The main purpose of wmn4j is to enable easy and efficient analysis of scores and
 
 ## The structure of wmn4j
 
-The [API Documentation](https://otsob.github.io/wmn4j) provides the Javadoc for the current state of wmn4j.
+The [API Documentation](https://otsob.github.io/wmn4j) provides the Javadoc for the latest release of wmn4j.
 There are a few architectural design principles in wmn4j:
 * All notation classes are immutable
 * Builder classes are used for creating objects
