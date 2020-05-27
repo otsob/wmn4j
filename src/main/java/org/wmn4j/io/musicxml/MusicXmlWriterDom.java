@@ -763,7 +763,7 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		pitchElement.appendChild(step);
 
 		final Element alter = getDocument().createElement(MusicXmlTags.PITCH_ALTER);
-		alter.setTextContent(Integer.toString(pitch.getAlter()));
+		alter.setTextContent(Integer.toString(pitch.getAccidental().getAlterationInt()));
 		pitchElement.appendChild(alter);
 
 		final Element octave = getDocument().createElement(MusicXmlTags.PITCH_OCT);

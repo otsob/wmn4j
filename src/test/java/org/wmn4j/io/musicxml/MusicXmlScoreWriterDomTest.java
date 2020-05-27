@@ -93,9 +93,12 @@ class MusicXmlScoreWriterDomTest {
 		PartBuilder partBuilder = new PartBuilder("Part1");
 		MeasureBuilder measureBuilder = new MeasureBuilder(1);
 
-		measureBuilder.addToVoice(1, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 0), Durations.QUARTER));
-		measureBuilder.addToVoice(1, new NoteBuilder(Pitch.of(Pitch.Base.D, 1, 1), Durations.HALF));
-		measureBuilder.addToVoice(1, new NoteBuilder(Pitch.of(Pitch.Base.E, -2, 2), Durations.QUARTER_TRIPLET));
+		measureBuilder
+				.addToVoice(1, new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 0), Durations.QUARTER));
+		measureBuilder
+				.addToVoice(1, new NoteBuilder(Pitch.of(Pitch.Base.D, Pitch.Accidental.SHARP, 1), Durations.HALF));
+		measureBuilder.addToVoice(1,
+				new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.DOUBLE_FLAT, 2), Durations.QUARTER_TRIPLET));
 
 		partBuilder.add(measureBuilder);
 		scoreBuilder.addPart(partBuilder);
@@ -107,19 +110,19 @@ class MusicXmlScoreWriterDomTest {
 
 		Note note = (Note) iterator.next();
 		assertEquals(Pitch.Base.C, note.getPitch().getBase());
-		assertEquals(0, note.getPitch().getAlter());
+		assertEquals(Pitch.Accidental.NATURAL, note.getPitch().getAccidental());
 		assertEquals(0, note.getPitch().getOctave());
 		assertEquals(Durations.QUARTER, note.getDuration());
 
 		note = (Note) iterator.next();
 		assertEquals(Pitch.Base.D, note.getPitch().getBase());
-		assertEquals(1, note.getPitch().getAlter());
+		assertEquals(Pitch.Accidental.SHARP, note.getPitch().getAccidental());
 		assertEquals(1, note.getPitch().getOctave());
 		assertEquals(Durations.HALF, note.getDuration());
 
 		note = (Note) iterator.next();
 		assertEquals(Pitch.Base.E, note.getPitch().getBase());
-		assertEquals(-2, note.getPitch().getAlter());
+		assertEquals(Pitch.Accidental.DOUBLE_FLAT, note.getPitch().getAccidental());
 		assertEquals(2, note.getPitch().getOctave());
 		assertEquals(Durations.QUARTER_TRIPLET, note.getDuration());
 

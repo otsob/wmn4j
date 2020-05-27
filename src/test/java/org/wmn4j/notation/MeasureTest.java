@@ -24,10 +24,10 @@ class MeasureTest {
 
 	private KeySignature keySig = KeySignatures.CMAJ_AMIN;
 
-	private Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.HALF);
-	private Note E4 = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF);
-	private Note G4 = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.HALF);
-	private Note C4Quarter = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+	private Note C4 = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.HALF);
+	private Note E4 = Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.HALF);
+	private Note G4 = Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.HALF);
+	private Note C4Quarter = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
 
 	MeasureTest() {
 		final List<Durational> voiceContents = new ArrayList<>();

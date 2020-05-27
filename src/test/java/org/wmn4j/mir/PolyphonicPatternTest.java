@@ -27,15 +27,15 @@ public class PolyphonicPatternTest {
 	private Map<Integer, List<? extends Durational>> createReferencePatternVoices() {
 		final Map<Integer, List<? extends Durational>> voices = new HashMap<>();
 		List<Durational> voice1 = new ArrayList<>();
-		voice1.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		voice1.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		voice1.add(Rest.of(Durations.QUARTER));
-		voice1.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+		voice1.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 
 		List<Durational> voice2 = new ArrayList<>();
 
-		voice2.add(Note.of(Pitch.of(Pitch.Base.E, 0, 3), Durations.QUARTER));
+		voice2.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), Durations.QUARTER));
 		voice2.add(Rest.of(Durations.EIGHTH));
-		voice2.add(Note.of(Pitch.of(Pitch.Base.F, 1, 3), Durations.EIGHTH));
+		voice2.add(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 3), Durations.EIGHTH));
 
 		voices.put(1, voice1);
 		voices.put(2, voice2);
@@ -58,8 +58,8 @@ public class PolyphonicPatternTest {
 				"Did not throw IllegalArgumentException when trying to create polyphonic pattern with empty voices");
 
 		List<Note> notes = new ArrayList<>();
-		notes.add(Note.of(Pitch.of(Pitch.Base.B, 0, 3), Durations.QUARTER));
-		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 3), Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.NATURAL, 3), Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 3), Durations.QUARTER));
 
 		Map<Integer, List<? extends Durational>> voices = new HashMap<>();
 		voices.put(1, notes);
@@ -79,12 +79,12 @@ public class PolyphonicPatternTest {
 		final Map<Integer, List<? extends Durational>> voices = new HashMap<>();
 		List<Durational> voice = new ArrayList<>();
 		List<Note> chordContents = new ArrayList<>();
-		chordContents.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		chordContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
-		chordContents.add(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		voice.add(Chord.of(chordContents));
 		voice.add(Rest.of(Durations.QUARTER));
-		voice.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+		voice.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		voices.put(1, voice);
 
 		final Pattern patternWithChord = new PolyphonicPattern(voices);
@@ -143,7 +143,7 @@ public class PolyphonicPatternTest {
 
 		Map<Integer, List<? extends Durational>> modifiedVoices = createReferencePatternVoices();
 		List<Durational> modifiedVoice = new ArrayList<>(modifiedVoices.get(2));
-		Note note = Note.of(Pitch.of(Pitch.Base.C, 1, 5), Durations.EIGHTH);
+		Note note = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.SHARP, 5), Durations.EIGHTH);
 		modifiedVoice.add(note);
 		modifiedVoices.put(2, modifiedVoice);
 
@@ -173,7 +173,7 @@ public class PolyphonicPatternTest {
 
 		Map<Integer, List<? extends Durational>> modifiedVoices = createReferencePatternVoices();
 		List<Durational> modifiedVoice = new ArrayList<>(modifiedVoices.get(1));
-		Note note = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.SIXTEENTH);
+		Note note = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.SIXTEENTH);
 		modifiedVoice.set(0, note);
 		modifiedVoices.put(1, modifiedVoice);
 
@@ -182,16 +182,16 @@ public class PolyphonicPatternTest {
 
 		final Map<Integer, List<? extends Durational>> voicesWithDifferentRests = new HashMap<>();
 		List<Durational> voice1 = new ArrayList<>();
-		voice1.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		voice1.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		voice1.add(Rest.of(Durations.EIGHTH));
 		voice1.add(Rest.of(Durations.SIXTEENTH));
-		voice1.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+		voice1.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 
 		List<Durational> voice2 = new ArrayList<>();
 
-		voice2.add(Note.of(Pitch.of(Pitch.Base.E, 0, 3), Durations.QUARTER));
+		voice2.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), Durations.QUARTER));
 		voice2.add(Rest.of(Durations.SIXTEENTH));
-		voice2.add(Note.of(Pitch.of(Pitch.Base.F, 1, 3), Durations.EIGHTH));
+		voice2.add(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 3), Durations.EIGHTH));
 
 		voicesWithDifferentRests.put(1, voice1);
 		voicesWithDifferentRests.put(2, voice2);
@@ -205,7 +205,7 @@ public class PolyphonicPatternTest {
 		final Pattern pattern = new PolyphonicPattern(createReferencePatternVoices());
 		Map<Integer, List<? extends Durational>> modifiedVoices = createReferencePatternVoices();
 		List<Durational> modifiedVoice = new ArrayList<>(modifiedVoices.get(2));
-		Note note = Note.of(Pitch.of(Pitch.Base.C, 1, 5), Durations.EIGHTH);
+		Note note = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.SHARP, 5), Durations.EIGHTH);
 		modifiedVoice.set(0, note);
 		modifiedVoices.put(2, modifiedVoice);
 
@@ -224,12 +224,12 @@ public class PolyphonicPatternTest {
 	void testEqualsInPitchWithChords() {
 		List<Durational> contentsA = new ArrayList<>();
 		List<Note> chordContents = new ArrayList<>();
-		chordContents.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		chordContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
-		chordContents.add(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		contentsA.add(Chord.of(chordContents));
 		contentsA.add(Rest.of(Durations.QUARTER));
-		contentsA.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+		contentsA.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 
 		final Pattern patternA = new PolyphonicPattern(contentsA);
 		final Pattern patternACopy = new PolyphonicPattern(contentsA);
@@ -240,9 +240,9 @@ public class PolyphonicPatternTest {
 		List<Durational> contentsB = new ArrayList<>(contentsA);
 
 		List<Note> differentChordContents = new ArrayList<>();
-		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
-		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.G, 1, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.SHARP, 4), Durations.EIGHTH));
 		contentsB.set(0, Chord.of(differentChordContents));
 
 		final Pattern patternB = new PolyphonicPattern(contentsB);
@@ -265,7 +265,7 @@ public class PolyphonicPatternTest {
 
 		Map<Integer, List<? extends Durational>> modifiedVoices = createReferencePatternVoices();
 		List<Durational> modifiedVoice = new ArrayList<>(modifiedVoices.get(1));
-		Note note = Note.of(Pitch.of(Pitch.Base.D, -2, 4), Durations.SIXTEENTH);
+		Note note = Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.DOUBLE_FLAT, 4), Durations.SIXTEENTH);
 		modifiedVoice.set(0, note);
 		modifiedVoices.put(1, modifiedVoice);
 
@@ -274,16 +274,16 @@ public class PolyphonicPatternTest {
 
 		final Map<Integer, List<? extends Durational>> voicesWithDifferentRests = new HashMap<>();
 		List<Durational> voice1 = new ArrayList<>();
-		voice1.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		voice1.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		voice1.add(Rest.of(Durations.EIGHTH));
 		voice1.add(Rest.of(Durations.SIXTEENTH));
-		voice1.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+		voice1.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 
 		List<Durational> voice2 = new ArrayList<>();
 
-		voice2.add(Note.of(Pitch.of(Pitch.Base.E, 0, 3), Durations.QUARTER));
+		voice2.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), Durations.QUARTER));
 		voice2.add(Rest.of(Durations.SIXTEENTH));
-		voice2.add(Note.of(Pitch.of(Pitch.Base.G, -1, 3), Durations.EIGHTH));
+		voice2.add(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.FLAT, 3), Durations.EIGHTH));
 
 		voicesWithDifferentRests.put(1, voice1);
 		voicesWithDifferentRests.put(2, voice2);
@@ -296,12 +296,12 @@ public class PolyphonicPatternTest {
 	void testEqualsEnharmonicallyWithChords() {
 		List<Durational> contentsA = new ArrayList<>();
 		List<Note> chordContents = new ArrayList<>();
-		chordContents.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		chordContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
-		chordContents.add(Note.of(Pitch.of(Pitch.Base.F, 2, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.DOUBLE_SHARP, 4), Durations.EIGHTH));
 		contentsA.add(Chord.of(chordContents));
 		contentsA.add(Rest.of(Durations.QUARTER));
-		contentsA.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+		contentsA.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 
 		final Pattern patternA = new PolyphonicPattern(contentsA);
 		final Pattern patternACopy = new PolyphonicPattern(contentsA);
@@ -312,9 +312,9 @@ public class PolyphonicPatternTest {
 		List<Durational> contentsB = new ArrayList<>(contentsA);
 
 		List<Note> differentChordContents = new ArrayList<>();
-		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
-		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.G, 1, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.SHARP, 4), Durations.EIGHTH));
 		contentsB.set(0, Chord.of(differentChordContents));
 
 		final Pattern patternB = new PolyphonicPattern(contentsB);
@@ -337,15 +337,15 @@ public class PolyphonicPatternTest {
 
 		final Map<Integer, List<? extends Durational>> transposedVoicesWithDifferentRests = new HashMap<>();
 		List<Durational> voice1 = new ArrayList<>();
-		voice1.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+		voice1.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		voice1.add(Rest.of(Durations.EIGHTH));
 		voice1.add(Rest.of(Durations.SIXTEENTH));
-		voice1.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
+		voice1.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 
 		List<Durational> voice2 = new ArrayList<>();
-		voice2.add(Note.of(Pitch.of(Pitch.Base.F, 1, 3), Durations.QUARTER));
+		voice2.add(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 3), Durations.QUARTER));
 		voice2.add(Rest.of(Durations.SIXTEENTH));
-		voice2.add(Note.of(Pitch.of(Pitch.Base.A, -1, 3), Durations.EIGHTH));
+		voice2.add(Note.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.FLAT, 3), Durations.EIGHTH));
 
 		transposedVoicesWithDifferentRests.put(1, voice1);
 		transposedVoicesWithDifferentRests.put(2, voice2);
@@ -359,7 +359,7 @@ public class PolyphonicPatternTest {
 		final Pattern pattern = new PolyphonicPattern(createReferencePatternVoices());
 		Map<Integer, List<? extends Durational>> modifiedVoices = createReferencePatternVoices();
 		List<Durational> modifiedVoice = new ArrayList<>(modifiedVoices.get(2));
-		Note note = Note.of(Pitch.of(Pitch.Base.C, 1, 5), Durations.EIGHTH);
+		Note note = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.SHARP, 5), Durations.EIGHTH);
 		modifiedVoice.set(0, note);
 		modifiedVoices.put(2, modifiedVoice);
 
@@ -378,12 +378,12 @@ public class PolyphonicPatternTest {
 	void testEqualsTranspositionallyWithChords() {
 		List<Durational> contents = new ArrayList<>();
 		List<Note> chordContents = new ArrayList<>();
-		chordContents.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		chordContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
-		chordContents.add(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		chordContents.add(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		contents.add(Chord.of(chordContents));
 		contents.add(Rest.of(Durations.QUARTER));
-		contents.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+		contents.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 
 		final Pattern patternA = new PolyphonicPattern(contents);
 		final Pattern patternACopy = new PolyphonicPattern(contents);
@@ -393,12 +393,12 @@ public class PolyphonicPatternTest {
 
 		List<Durational> transposedContents = new ArrayList<>();
 		List<Note> transposedChordContents = new ArrayList<>();
-		transposedChordContents.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
-		transposedChordContents.add(Note.of(Pitch.of(Pitch.Base.F, 1, 4), Durations.EIGHTH));
-		transposedChordContents.add(Note.of(Pitch.of(Pitch.Base.A, 0, 4), Durations.EIGHTH));
+		transposedChordContents.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		transposedChordContents.add(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 4), Durations.EIGHTH));
+		transposedChordContents.add(Note.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		transposedContents.add(Chord.of(transposedChordContents));
 		transposedContents.add(Rest.of(Durations.QUARTER));
-		transposedContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
+		transposedContents.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 
 		final Pattern transposedPatternA = new PolyphonicPattern(transposedContents);
 		assertTrue(patternA.equalsTranspositionally(transposedPatternA));
@@ -406,9 +406,9 @@ public class PolyphonicPatternTest {
 		List<Durational> contentsB = new ArrayList<>(contents);
 
 		List<Note> differentChordContents = new ArrayList<>();
-		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
-		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.G, 1, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		differentChordContents.add(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.SHARP, 4), Durations.EIGHTH));
 		contentsB.set(0, Chord.of(differentChordContents));
 
 		final Pattern patternB = new PolyphonicPattern(contentsB);
@@ -424,15 +424,15 @@ public class PolyphonicPatternTest {
 
 		final Map<Integer, List<? extends Durational>> voicesThatEqualReferencePatternInDurations = new HashMap<>();
 		List<Durational> equalVoice1 = new ArrayList<>();
-		equalVoice1.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH));
+		equalVoice1.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		equalVoice1.add(Rest.of(Durations.QUARTER));
-		equalVoice1.add(Note.of(Pitch.of(Pitch.Base.G, -1, 3), Durations.EIGHTH));
+		equalVoice1.add(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.FLAT, 3), Durations.EIGHTH));
 
 		List<Durational> equalVoice2 = new ArrayList<>();
 
-		equalVoice2.add(Note.of(Pitch.of(Pitch.Base.E, 0, 3), Durations.QUARTER));
+		equalVoice2.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), Durations.QUARTER));
 		equalVoice2.add(Rest.of(Durations.EIGHTH));
-		equalVoice2.add(Note.of(Pitch.of(Pitch.Base.A, 1, 3), Durations.EIGHTH));
+		equalVoice2.add(Note.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.SHARP, 3), Durations.EIGHTH));
 
 		voicesThatEqualReferencePatternInDurations.put(1, equalVoice1);
 		voicesThatEqualReferencePatternInDurations.put(2, equalVoice2);
@@ -444,14 +444,14 @@ public class PolyphonicPatternTest {
 
 		final Map<Integer, List<? extends Durational>> voicesThatDifferFromReferencePatternInDurations = new HashMap<>();
 		List<Durational> differentVoice1 = new ArrayList<>();
-		differentVoice1.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		differentVoice1.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		differentVoice1.add(Rest.of(Durations.QUARTER));
-		differentVoice1.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.SIXTEENTH));
+		differentVoice1.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.SIXTEENTH));
 
 		List<Durational> differentVoice2 = new ArrayList<>();
-		differentVoice2.add(Note.of(Pitch.of(Pitch.Base.E, 0, 3), Durations.QUARTER));
+		differentVoice2.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), Durations.QUARTER));
 		differentVoice2.add(Rest.of(Durations.EIGHTH));
-		differentVoice2.add(Note.of(Pitch.of(Pitch.Base.F, 1, 3), Durations.EIGHTH));
+		differentVoice2.add(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 3), Durations.EIGHTH));
 
 		voicesThatDifferFromReferencePatternInDurations.put(1, differentVoice1);
 		voicesThatDifferFromReferencePatternInDurations.put(2, differentVoice2);

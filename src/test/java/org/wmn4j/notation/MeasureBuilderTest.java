@@ -18,9 +18,9 @@ class MeasureBuilderTest {
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
 
-		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH))
-				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH))
-				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))
+				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))
+				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 
 		assertEquals(1, builder.getVoiceCount());
 
@@ -33,9 +33,9 @@ class MeasureBuilderTest {
 		assertEquals(1, measure.getNumber());
 
 		assertEquals(1, measure.getVoiceCount());
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), measure.get(0, 0));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH), measure.get(0, 1));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH), measure.get(0, 2));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH), measure.get(0, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH), measure.get(0, 1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH), measure.get(0, 2));
 	}
 
 	@Test
@@ -44,9 +44,9 @@ class MeasureBuilderTest {
 				KeySignatures.DFLATMAJ_BFLATMIN, Barline.DOUBLE, Clefs.F);
 		final MeasureBuilder builder = new MeasureBuilder(1, measureAttr);
 
-		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH))
-				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH))
-				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))
+				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))
+				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 
 		assertEquals(1, builder.getVoiceCount());
 
@@ -60,9 +60,9 @@ class MeasureBuilderTest {
 
 		assertEquals(1, measure.getVoiceCount());
 
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), measure.get(0, 0));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH), measure.get(0, 1));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH), measure.get(0, 2));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH), measure.get(0, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH), measure.get(0, 1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH), measure.get(0, 2));
 	}
 
 	@Test
@@ -74,9 +74,9 @@ class MeasureBuilderTest {
 		builder.setTimeSignature(TimeSignatures.SIX_EIGHT).setKeySignature(KeySignatures.DFLATMAJ_BFLATMIN);
 		builder.setRightBarline(Barline.DOUBLE).setClef(Clefs.F);
 
-		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH))
-				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH))
-				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))
+				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))
+				.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 
 		assertEquals(1, builder.getVoiceCount());
 
@@ -89,9 +89,9 @@ class MeasureBuilderTest {
 		assertEquals(1, measure.getNumber());
 
 		assertEquals(1, measure.getVoiceCount());
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH), measure.get(0, 0));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH), measure.get(0, 1));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH), measure.get(0, 2));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH), measure.get(0, 0));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH), measure.get(0, 1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH), measure.get(0, 2));
 	}
 
 	@Test
@@ -120,7 +120,7 @@ class MeasureBuilderTest {
 		MeasureBuilder builder = new MeasureBuilder(1);
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER));
 		assertFalse(builder.isFull(0), "Voice 0 is full for 4/4 measure after adding one quarter rest");
-		final NoteBuilder c = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER);
+		final NoteBuilder c = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.QUARTER);
 		builder.addToVoice(0, c);
 		assertFalse(builder.isFull(0), "Voice 0 is full for 4/4 measure after adding two quarters");
 		builder.addToVoice(0, c);
@@ -146,7 +146,7 @@ class MeasureBuilderTest {
 		MeasureBuilder builder = new MeasureBuilder(1);
 		builder.addToVoice(0, new RestBuilder(Durations.QUARTER));
 		assertFalse(builder.isFull(), "builder for 4/4 is full after adding one quarter rest");
-		final NoteBuilder c = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER);
+		final NoteBuilder c = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.QUARTER);
 		builder.addToVoice(0, c);
 		assertFalse(builder.isFull(), "builder for 4/4 is full only after adding two quarters");
 		builder.addToVoice(0, c);
@@ -169,8 +169,8 @@ class MeasureBuilderTest {
 	@Test
 	void testBuildingMeasureWithTiedNotes() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
-		final NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
-		final NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
+		final NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.HALF);
+		final NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.HALF);
 
 		first.addTieToFollowing(second);
 		builder.addToVoice(1, first).addToVoice(1, second);
@@ -187,8 +187,10 @@ class MeasureBuilderTest {
 	void testAllVoicesArePaddedWithRestsWhenBuilding() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.THREE_FOUR);
-		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
-		NoteBuilder withEightDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.EIGHTH);
+		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2),
+				Durations.HALF);
+		NoteBuilder withEightDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2),
+				Durations.EIGHTH);
 		builder.addToVoice(0, withHalfDuration);
 		builder.addToVoice(1, withHalfDuration);
 		builder.addToVoice(1, withEightDuration);
@@ -209,8 +211,10 @@ class MeasureBuilderTest {
 	void testIsVoiceOverflowing() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
-		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
-		NoteBuilder withDottedHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF.addDot());
+		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2),
+				Durations.HALF);
+		NoteBuilder withDottedHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2),
+				Durations.HALF.addDot());
 		builder.addToVoice(0, withHalfDuration);
 		builder.addToVoice(1, withDottedHalfDuration);
 
@@ -222,8 +226,10 @@ class MeasureBuilderTest {
 	void testIsOverflowing() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
-		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
-		NoteBuilder withDottedHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF.addDot());
+		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2),
+				Durations.HALF);
+		NoteBuilder withDottedHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2),
+				Durations.HALF.addDot());
 		builder.addToVoice(0, withHalfDuration);
 
 		assertFalse(builder.isOverflowing());
@@ -237,9 +243,12 @@ class MeasureBuilderTest {
 	void testTrimWithSingleElementPerVoice() {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
-		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF);
-		NoteBuilder withDottedHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.HALF.addDot());
-		NoteBuilder withEightDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.EIGHTH);
+		NoteBuilder withHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2),
+				Durations.HALF);
+		NoteBuilder withDottedHalfDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2),
+				Durations.HALF.addDot());
+		NoteBuilder withEightDuration = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2),
+				Durations.EIGHTH);
 
 		builder.addToVoice(0, withHalfDuration);
 		builder.addToVoice(1, withDottedHalfDuration);
@@ -260,10 +269,10 @@ class MeasureBuilderTest {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
 
-		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER));
-		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.EIGHTH));
-		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER));
-		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.QUARTER));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.QUARTER));
+		builder.addToVoice(0, new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.QUARTER));
 
 		builder.trim();
 
@@ -283,8 +292,10 @@ class MeasureBuilderTest {
 		final MeasureBuilder builder = new MeasureBuilder(1);
 		builder.setTimeSignature(TimeSignatures.TWO_FOUR);
 
-		NoteBuilder tooLongBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.WHOLE);
-		NoteBuilder tooShortBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER);
+		NoteBuilder tooLongBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2),
+				Durations.WHOLE);
+		NoteBuilder tooShortBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2),
+				Durations.QUARTER);
 
 		builder.addToVoice(0, tooLongBuilder);
 		builder.addToVoice(1, tooShortBuilder);

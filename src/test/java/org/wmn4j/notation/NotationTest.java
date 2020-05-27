@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NotationTest {
 
-	private final Note testNote = Note.of(Pitch.of(Pitch.Base.C, 1, 4), Durations.EIGHTH);
+	private final Note testNote = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.SHARP, 4), Durations.EIGHTH);
 
 	@Test
 	void testBeginningOf() {
@@ -64,14 +64,14 @@ class NotationTest {
 		final Notation slur = Notation.of(Notation.Type.SLUR);
 		final Notation firstTie = Notation.of(Notation.Type.TIE);
 		final Notation secondTie = Notation.of(Notation.Type.TIE);
-		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+		final Note third = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
 				Collections.emptySet(), List.of(Notation.Connection.endOf(slur), Notation.Connection.endOf(secondTie)));
-		final Note second = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+		final Note second = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
 				Collections.emptySet(),
 				List.of(Notation.Connection.of(slur, third),
 						Notation.Connection.beginningOf(secondTie, third),
 						Notation.Connection.endOf(firstTie)));
-		final Note first = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+		final Note first = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
 				Collections.emptySet(), List.of(Notation.Connection.beginningOf(slur, second),
 						Notation.Connection.beginningOf(secondTie, third),
 						Notation.Connection.beginningOf(firstTie, second)));
@@ -94,11 +94,11 @@ class NotationTest {
 	@Test
 	void testGetAffectedStartingFrom() {
 		final Notation slur = Notation.of(Notation.Type.SLUR);
-		final Note third = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+		final Note third = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
 				Collections.emptySet(), List.of(Notation.Connection.endOf(slur)));
-		final Note second = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+		final Note second = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
 				Collections.emptySet(), List.of(Notation.Connection.of(slur, third)));
-		final Note first = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+		final Note first = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
 				Collections.emptySet(), List.of(Notation.Connection.beginningOf(slur, second)));
 
 		assertTrue(

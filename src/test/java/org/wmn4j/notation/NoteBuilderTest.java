@@ -17,7 +17,7 @@ class NoteBuilderTest {
 
 	@Test
 	void testWhenCreatingFromNoteThenCorrectValuesAreSet() {
-		final Note noteWithoutArticulations = Note.of(Pitch.Base.A, -1, 2, Duration.of(1, 12));
+		final Note noteWithoutArticulations = Note.of(Pitch.Base.A, Pitch.Accidental.FLAT, 2, Duration.of(1, 12));
 		NoteBuilder builderWithoutArticulations = new NoteBuilder(noteWithoutArticulations);
 
 		assertEquals(noteWithoutArticulations.getPitch(), builderWithoutArticulations.getPitch());
@@ -25,8 +25,9 @@ class NoteBuilderTest {
 		assertEquals(noteWithoutArticulations.getArticulations(), builderWithoutArticulations.getArticulations());
 		assertEquals(noteWithoutArticulations, builderWithoutArticulations.build());
 
-		final Note noteWithArticulations = Note.of(Pitch.of(Pitch.Base.A, 1, 3), Duration.of(1, 16),
-				EnumSet.of(Articulation.ACCENT, Articulation.STACCATO));
+		final Note noteWithArticulations = Note
+				.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.SHARP, 3), Duration.of(1, 16),
+						EnumSet.of(Articulation.ACCENT, Articulation.STACCATO));
 		NoteBuilder builderWithArticulations = new NoteBuilder(noteWithArticulations);
 
 		assertEquals(noteWithArticulations.getPitch(), builderWithArticulations.getPitch());
@@ -37,28 +38,31 @@ class NoteBuilderTest {
 
 	@Test
 	void testBuildingBasicNote() {
-		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.QUARTER);
 		final Note note = builder.build();
 		assertFalse(note.hasArticulations());
 		assertFalse(note.hasNotations());
 		assertFalse(note.isTied());
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER), note);
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER), note);
 	}
 
 	@Test
 	void testBuildingNoteWithAllAttributes() {
-		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.QUARTER);
 		builder.addArticulation(Articulation.STACCATO);
 
 		builder.connectWith(Notation.of(Notation.Type.SLUR),
-				new NoteBuilder(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
+				new NoteBuilder(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
 
-		final Note tiedNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final Note tiedNote = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
 
 		builder.addTieToFollowing(new NoteBuilder(tiedNote));
 
 		final Note expected = Note
-				.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER, EnumSet.of(Articulation.STACCATO));
+				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER,
+						EnumSet.of(Articulation.STACCATO));
 
 		final Note note = builder.build();
 		assertTrue(expected.equalsInPitchAndDuration(note));
@@ -71,9 +75,12 @@ class NoteBuilderTest {
 
 	@Test
 	void testBuildingTiedNotes() {
-		final NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		final NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER);
-		final NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
+		final NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.QUARTER);
+		final NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4),
+				Durations.QUARTER);
+		final NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4),
+				Durations.QUARTER);
 
 		first.addTieToFollowing(second);
 		second.addTieToFollowing(third);
@@ -82,40 +89,44 @@ class NoteBuilderTest {
 		final Note secondNote = second.build();
 		final Note thirdNote = third.build();
 
-		assertEquals(Pitch.of(Pitch.Base.C, 0, 4), firstNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), firstNote.getPitch());
 		assertTrue(firstNote.isTiedToFollowing());
 		assertFalse(firstNote.isTiedFromPrevious());
-		assertEquals(Pitch.of(Pitch.Base.D, 0, 4), firstNote.getFollowingTiedNote().get().getPitch());
+		assertEquals(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4),
+				firstNote.getFollowingTiedNote().get().getPitch());
 
-		assertEquals(Pitch.of(Pitch.Base.D, 0, 4), secondNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), secondNote.getPitch());
 		assertTrue(secondNote.isTiedToFollowing());
 		assertTrue(secondNote.isTiedFromPrevious());
-		assertEquals(Pitch.of(Pitch.Base.E, 0, 4), secondNote.getFollowingTiedNote().get().getPitch());
+		assertEquals(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4),
+				secondNote.getFollowingTiedNote().get().getPitch());
 
-		assertEquals(Pitch.of(Pitch.Base.E, 0, 4), thirdNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), thirdNote.getPitch());
 		assertFalse(thirdNote.isTiedToFollowing());
 		assertTrue(thirdNote.isTiedFromPrevious());
 	}
 
 	@Test
 	void testCopyConstructor() {
-		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.QUARTER);
 		final NoteBuilder copy = new NoteBuilder(builder);
 		assertNotSame(builder, copy);
 
 		assertEquals(Durations.QUARTER, copy.getDuration());
-		assertEquals(Pitch.of(Pitch.Base.C, 0, 4), copy.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), copy.getPitch());
 
 		builder.setDuration(Durations.HALF);
 		assertEquals(Durations.QUARTER, copy.getDuration());
 
-		builder.setPitch(Pitch.of(Pitch.Base.D, 0, 4));
-		assertEquals(Pitch.of(Pitch.Base.C, 0, 4), copy.getPitch());
+		builder.setPitch(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4));
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), copy.getPitch());
 	}
 
 	@Test
 	void testCopyConstructorArticulations() {
-		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.QUARTER);
 		builder.addArticulation(Articulation.STACCATO);
 
 		final NoteBuilder copy = new NoteBuilder(builder);
@@ -127,9 +138,9 @@ class NoteBuilderTest {
 
 	@Test
 	void testBuildingWitMultipleNotesInSlur() {
-		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER);
-		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
+		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
+		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
+		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
 
 		final Notation slur = Notation.of(Notation.Type.SLUR);
 		first.connectWith(slur, second);
@@ -154,9 +165,9 @@ class NoteBuilderTest {
 
 	@Test
 	void testBuildingWithMultipleNotesWithTiesInSlur() {
-		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
+		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
+		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
+		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
 
 		final Notation slur = Notation.of(Notation.Type.SLUR);
 		first.connectWith(slur, second);
@@ -190,9 +201,9 @@ class NoteBuilderTest {
 
 	@Test
 	void testBuildingWithSlurAndGlissandoAndTie() {
-		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
+		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
+		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
+		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
 
 		final Notation slur = Notation.of(Notation.Type.SLUR);
 		final Notation glissando = Notation.of(Notation.Type.GLISSANDO);
@@ -244,9 +255,9 @@ class NoteBuilderTest {
 
 	@Test
 	void testBuildingWithLoopedSlur() {
-		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
+		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
+		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
+		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
 
 		final Notation slur = Notation.of(Notation.Type.SLUR);
 		first.connectWith(slur, second);
@@ -265,9 +276,9 @@ class NoteBuilderTest {
 
 	@Test
 	void testBuildingWithLoopedTie() {
-		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER);
+		NoteBuilder first = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
+		NoteBuilder second = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
+		NoteBuilder third = new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
 
 		first.addTieToFollowing(second);
 		second.addTieToFollowing(third);

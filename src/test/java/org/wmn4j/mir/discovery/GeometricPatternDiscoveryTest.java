@@ -39,101 +39,101 @@ public class GeometricPatternDiscoveryTest {
 		assertExpectedPatternCollectionFoundInPatterns(
 				Arrays.asList(
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						))
 				), patterns);
 
 		assertExpectedPatternCollectionFoundInPatterns(
 				Arrays.asList(
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						))
 				), patterns);
 
 		assertExpectedPatternCollectionFoundInPatterns(
 				Arrays.asList(
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						))
 				), patterns);
 
 		assertExpectedPatternCollectionFoundInPatterns(
 				Arrays.asList(
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						))
 				), patterns);
 
 		assertExpectedPatternCollectionFoundInPatterns(
 				Arrays.asList(
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						))
 				), patterns);
 	}
@@ -183,39 +183,39 @@ public class GeometricPatternDiscoveryTest {
 		assertExpectedPatternCollectionFoundInPatterns(
 				Arrays.asList(
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						))
 				), patterns);
 
 		assertExpectedPatternCollectionFoundInPatterns(
 				Arrays.asList(
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						)),
 						Pattern.of(Arrays.asList(
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH),
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
 								Rest.of(Durations.EIGHTH),
-								Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH)
+								Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)
 						))
 				), patterns);
 	}

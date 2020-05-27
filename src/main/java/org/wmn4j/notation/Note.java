@@ -31,15 +31,14 @@ public final class Note implements Durational, Pitched {
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitchName the letter part of the pitch name
-	 * @param alter     how many half-steps the pitch is altered up (positive) or
-	 *                  down (negative)
-	 * @param octave    octave number of the pitch
-	 * @param duration  the duration of the note. Must not be null
+	 * @param pitchName  the letter part of the pitch name
+	 * @param accidental the accidental of the pitch
+	 * @param octave     octave number of the pitch
+	 * @param duration   the duration of the note. Must not be null
 	 * @return an instance with the given parameters
 	 */
-	public static Note of(Pitch.Base pitchName, int alter, int octave, Duration duration) {
-		return of(Pitch.of(pitchName, alter, octave), duration, null);
+	public static Note of(Pitch.Base pitchName, Pitch.Accidental accidental, int octave, Duration duration) {
+		return of(Pitch.of(pitchName, accidental, octave), duration, null);
 	}
 
 	/**

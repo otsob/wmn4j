@@ -22,12 +22,12 @@ class NoteTest {
 
 	@Test
 	void testEquals() {
-		final Note A1 = Note.of(Pitch.Base.A, 0, 1, Durations.QUARTER);
-		final Note A1differentDur = Note.of(Pitch.Base.A, 0, 1, Durations.EIGHTH);
-		final Note A1Copy = Note.of(Pitch.Base.A, 0, 1, Durations.QUARTER);
-		final Note B1 = Note.of(Pitch.Base.B, 0, 1, Durations.QUARTER);
-		final Note Asharp1 = Note.of(Pitch.Base.A, 1, 1, Durations.QUARTER);
-		final Note C4 = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final Note A1 = Note.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1, Durations.QUARTER);
+		final Note A1differentDur = Note.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1, Durations.EIGHTH);
+		final Note A1Copy = Note.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1, Durations.QUARTER);
+		final Note B1 = Note.of(Pitch.Base.B, Pitch.Accidental.NATURAL, 1, Durations.QUARTER);
+		final Note Asharp1 = Note.of(Pitch.Base.A, Pitch.Accidental.SHARP, 1, Durations.QUARTER);
+		final Note C4 = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
 
 		assertTrue(A1.equals(A1));
 		assertTrue(A1.equals(A1Copy));
@@ -35,9 +35,9 @@ class NoteTest {
 		assertFalse(A1.equals(A1differentDur));
 		assertFalse(A1.equals(B1));
 		assertFalse(A1.equals(Asharp1));
-		assertTrue(C4.equals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER)));
+		assertTrue(C4.equals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER)));
 
-		final Pitch pitch = Pitch.of(Pitch.Base.C, 0, 1);
+		final Pitch pitch = Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 1);
 		final HashSet<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
 		final Note note1 = Note.of(pitch, Durations.EIGHTH, articulations);
@@ -55,21 +55,14 @@ class NoteTest {
 	void testCreatingInvalidNote() {
 
 		try {
-			Note.of(Pitch.Base.C, 5, 1, Durations.QUARTER);
+			Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 11, Durations.QUARTER);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
 		} catch (final Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 
 		try {
-			Note.of(Pitch.Base.C, 0, 11, Durations.QUARTER);
-			fail("No exception was thrown. Expected: IllegalArgumentException");
-		} catch (final Exception e) {
-			assertTrue(e instanceof IllegalArgumentException);
-		}
-
-		try {
-			Note.of(Pitch.Base.C, 0, 1, null);
+			Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 1, null);
 			fail("No exception was thrown. Expected: IllegalArgumentException");
 		} catch (final Exception e) {
 			assertTrue(e instanceof NullPointerException);
@@ -78,7 +71,7 @@ class NoteTest {
 
 	@Test
 	void testHasArticulation() {
-		final Pitch pitch = Pitch.of(Pitch.Base.C, 0, 1);
+		final Pitch pitch = Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 1);
 		final Set<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
 		assertTrue(Note.of(pitch, Durations.EIGHTH, articulations).hasArticulation(Articulation.STACCATO));
@@ -87,7 +80,7 @@ class NoteTest {
 
 	@Test
 	void testHasArticulations() {
-		final Pitch pitch = Pitch.of(Pitch.Base.C, 0, 1);
+		final Pitch pitch = Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 1);
 		final HashSet<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
 		assertTrue(Note.of(pitch, Durations.EIGHTH, articulations).hasArticulations());
@@ -96,7 +89,7 @@ class NoteTest {
 
 	@Test
 	void testGetArticulations() {
-		final Pitch pitch = Pitch.of(Pitch.Base.C, 0, 1);
+		final Pitch pitch = Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 1);
 		assertTrue(Note.of(pitch, Durations.EIGHTH).getArticulations().isEmpty());
 
 		final Set<Articulation> articulations = new HashSet<>();
@@ -120,8 +113,10 @@ class NoteTest {
 
 	@Test
 	void testTies() {
-		final NoteBuilder firstBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		final NoteBuilder secondBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final NoteBuilder firstBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.QUARTER);
+		final NoteBuilder secondBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.EIGHTH);
 		firstBuilder.addTieToFollowing(secondBuilder);
 
 		final Note secondNote = secondBuilder.build();
@@ -138,11 +133,13 @@ class NoteTest {
 
 	@Test
 	void testTiedDuration() {
-		final Note untied = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
+		final Note untied = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
 		assertEquals(Durations.QUARTER, untied.getTiedDuration());
 
-		final NoteBuilder firstBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER);
-		final NoteBuilder secondBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final NoteBuilder firstBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.QUARTER);
+		final NoteBuilder secondBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.EIGHTH);
 		firstBuilder.addTieToFollowing(secondBuilder);
 
 		Note firstNote = firstBuilder.build();
@@ -154,7 +151,8 @@ class NoteTest {
 		firstBuilder.clearCache();
 		secondBuilder.clearCache();
 
-		final NoteBuilder thirdBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final NoteBuilder thirdBuilder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.EIGHTH);
 		secondBuilder.addTieToFollowing(thirdBuilder);
 
 		firstNote = firstBuilder.build();
@@ -168,7 +166,7 @@ class NoteTest {
 
 	@Test
 	void testBeginsAndEndsNotation() {
-		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 
 		Notation.Connection slurBeginning = Notation.Connection
 				.beginningOf(Notation.of(Notation.Type.SLUR), followingNote);
@@ -177,8 +175,9 @@ class NoteTest {
 		notationConnections.add(slurBeginning);
 		notationConnections.add(glissandoEnd);
 
-		final Note noteWithNotationConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), notationConnections);
+		final Note noteWithNotationConnections = Note
+				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
+						Collections.emptySet(), notationConnections);
 
 		assertTrue(noteWithNotationConnections.beginsNotation(Notation.Type.SLUR));
 		assertTrue(noteWithNotationConnections.endsNotation(Notation.Type.GLISSANDO));
@@ -189,13 +188,13 @@ class NoteTest {
 
 	@Test
 	void testHasNotationConnection() {
-		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 		Notation.Connection slurBeginning = Notation.Connection
 				.beginningOf(Notation.of(Notation.Type.SLUR), followingNote);
 		List<Notation.Connection> notationConnections = new ArrayList<>();
 		notationConnections.add(slurBeginning);
 
-		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
 				Collections.emptySet(), notationConnections);
 
 		assertTrue(noteThatBeginsSlur.hasNotations());
@@ -206,7 +205,7 @@ class NoteTest {
 
 	@Test
 	void testEqualsAndHashCodeWithNotations() {
-		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 
 		Notation.Connection slurBeginning = Notation.Connection
 				.beginningOf(Notation.of(Notation.Type.SLUR), followingNote);
@@ -214,18 +213,19 @@ class NoteTest {
 		List<Notation.Connection> notationConnections = new ArrayList<>();
 
 		notationConnections.add(slurBeginning);
-		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
 				Collections.emptySet(), notationConnections);
 
 		Notation.Connection slurEnd = Notation.Connection.endOf(Notation.of(Notation.Type.SLUR));
 		List<Notation.Connection> slurEndList = new ArrayList<>();
 		slurEndList.add(slurEnd);
-		final Note noteThatEndsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+		final Note noteThatEndsSlur = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
 				Collections.emptySet(), slurEndList);
 
 		notationConnections.add(glissandoEnd);
-		final Note noteWithNotationConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), notationConnections);
+		final Note noteWithNotationConnections = Note
+				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
+						Collections.emptySet(), notationConnections);
 
 		assertEquals(noteThatBeginsSlur, noteThatEndsSlur);
 		assertEquals(noteThatBeginsSlur.hashCode(), noteThatEndsSlur.hashCode());
@@ -237,7 +237,7 @@ class NoteTest {
 
 	@Test
 	void testGetNotationConnections() {
-		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 
 		Notation.Connection slurBeginning = Notation.Connection
 				.beginningOf(Notation.of(Notation.Type.SLUR), followingNote);
@@ -246,8 +246,9 @@ class NoteTest {
 		notationConnections.add(slurBeginning);
 		notationConnections.add(glissandoEnd);
 
-		final Note noteWithNotationConnections = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
-				Collections.emptySet(), notationConnections);
+		final Note noteWithNotationConnections = Note
+				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
+						Collections.emptySet(), notationConnections);
 
 		final Collection<Notation> notationsInNote = noteWithNotationConnections.getNotations();
 		assertEquals(2, notationsInNote.size());
@@ -266,13 +267,13 @@ class NoteTest {
 
 	@Test
 	void testGetNotationConnection() {
-		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
+		final Note followingNote = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
 		Notation.Connection slurBeginning = Notation.Connection
 				.beginningOf(Notation.of(Notation.Type.SLUR), followingNote);
 		List<Notation.Connection> notationConnections = new ArrayList<>();
 		notationConnections.add(slurBeginning);
 
-		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH,
+		final Note noteThatBeginsSlur = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
 				Collections.emptySet(), notationConnections);
 
 		Optional<Notation.Connection> slurBeginningOptional = noteThatBeginsSlur
