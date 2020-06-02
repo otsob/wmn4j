@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,6 +28,7 @@ public final class Note implements Durational, Pitched {
 	private final Duration duration;
 	private final Set<Articulation> articulations;
 	private final Collection<Notation.Connection> notationConnections;
+	private final Collection<Ornament> ornaments;
 
 	/**
 	 * Returns an instance with the given parameters.
@@ -61,7 +63,7 @@ public final class Note implements Durational, Pitched {
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations) {
-		return new Note(pitch, duration, articulations, null);
+		return new Note(pitch, duration, articulations, null, null);
 	}
 
 	/**
@@ -75,14 +77,29 @@ public final class Note implements Durational, Pitched {
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections) {
-		return new Note(pitch, duration, articulations, notationConnections);
+		return new Note(pitch, duration, articulations, notationConnections, null);
+	}
+
+	/**
+	 * Returns an instance with the given parameters.
+	 *
+	 * @param pitch               the pitch of the note
+	 * @param duration            the duration of the note
+	 * @param articulations       a set of Articulations associated with the note
+	 * @param notationConnections the notation connections for the note
+	 * @param ornaments           ornaments for the note
+	 * @return an instance with the given parameters
+	 */
+	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
+			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments) {
+		return new Note(pitch, duration, articulations, notationConnections, ornaments);
 	}
 
 	/**
 	 * Private constructor.
 	 */
 	private Note(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Notation.Connection> notationConnections) {
+			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments) {
 
 		this.pitch = Objects.requireNonNull(pitch);
 		this.duration = Objects.requireNonNull(duration);
@@ -96,6 +113,12 @@ public final class Note implements Durational, Pitched {
 			this.notationConnections = Collections.unmodifiableList(new ArrayList<>(notationConnections));
 		} else {
 			this.notationConnections = Collections.emptyList();
+		}
+
+		if (ornaments != null && !ornaments.isEmpty()) {
+			this.ornaments = Collections.unmodifiableSet(new HashSet<>(ornaments));
+		} else {
+			this.ornaments = Collections.emptySet();
 		}
 	}
 
@@ -220,6 +243,34 @@ public final class Note implements Durational, Pitched {
 	 */
 	public boolean hasNotations() {
 		return !this.notationConnections.isEmpty();
+	}
+
+	/**
+	 * Returns true if this note has ornaments, false otherwise.
+	 *
+	 * @return true if this note has ornaments, false otherwise
+	 */
+	public boolean hasOrnaments() {
+		return !ornaments.isEmpty();
+	}
+
+	/**
+	 * Returns true if this note has an ornament of the given type, false otherwise.
+	 *
+	 * @param type the type of the ornament whose presence is checked
+	 * @return true if this note has an ornament of the given type, false otherwise
+	 */
+	public boolean hasOrnament(Ornament.Type type) {
+		return ornaments.stream().anyMatch(ornament -> ornament.getType().equals(type));
+	}
+
+	/**
+	 * Returns an unmodifiable view of the ornaments of this note.
+	 *
+	 * @return an unmodifiable view of the ornaments of this note
+	 */
+	public Collection<Ornament> getOrnaments() {
+		return ornaments;
 	}
 
 	/**
