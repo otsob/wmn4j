@@ -22,6 +22,7 @@ public final class NoteBuilder implements DurationalBuilder {
 	private Pitch pitch;
 	private Duration duration;
 	private Set<Articulation> articulations;
+	private Set<Ornament> ornaments;
 	private Map<Notation, NoteBuilder> connectedTo = new HashMap<>();
 	private Set<Notation> connectedFrom = new HashSet<>();
 
@@ -38,6 +39,7 @@ public final class NoteBuilder implements DurationalBuilder {
 		this.pitch = pitch;
 		this.duration = duration;
 		this.articulations = EnumSet.noneOf(Articulation.class);
+		this.ornaments = new HashSet<>();
 	}
 
 	/**
@@ -128,6 +130,15 @@ public final class NoteBuilder implements DurationalBuilder {
 	 */
 	public void addArticulation(Articulation articulation) {
 		this.articulations.add(articulation);
+	}
+
+	/**
+	 * Adds the given ornament to this builder.
+	 *
+	 * @param ornament the ornament to add to this builder
+	 */
+	public void addOrnaments(Ornament ornament) {
+		ornaments.add(ornament);
 	}
 
 	/**
@@ -231,7 +242,8 @@ public final class NoteBuilder implements DurationalBuilder {
 
 			isBuilding = true;
 
-			this.cachedNote = Note.of(this.pitch, this.duration, this.articulations, getResolvedNotationConnections());
+			this.cachedNote = Note
+					.of(this.pitch, this.duration, this.articulations, getResolvedNotationConnections(), ornaments);
 
 			isBuilding = false;
 		}
