@@ -16,6 +16,7 @@ import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.MultiStaffPart;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
+import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Rest;
@@ -982,5 +983,39 @@ class MusicXmlFileChecks {
 			assertEquals(3, expectedDottedTriplet.getTupletDivisor());
 			assertEquals(1, expectedDottedTriplet.getDotCount());
 		}
+	}
+
+	/*
+	 * Expects the contents of "ornament_test.musicxml".
+	 */
+	static void assertOrnamentsAreCorrect(Score score) {
+		final Measure firstMeasure = score.getPart(0).getMeasure(1, 1);
+		final Note firstNote = (Note) firstMeasure.get(1, 0);
+		assertEquals(1, firstNote.getOrnaments().size());
+		assertTrue(firstNote.hasOrnament(Ornament.Type.INVERTED_TURN));
+
+		final Note secondNote = (Note) firstMeasure.get(1, 1);
+		assertEquals(1, secondNote.getOrnaments().size());
+		assertTrue(secondNote.hasOrnament(Ornament.Type.TURN));
+
+		final Note thirdNote = (Note) firstMeasure.get(1, 2);
+		assertEquals(1, thirdNote.getOrnaments().size());
+		assertTrue(thirdNote.hasOrnament(Ornament.Type.TRILL));
+
+		final Note fourthNote = (Note) firstMeasure.get(1, 3);
+		assertEquals(1, fourthNote.getOrnaments().size());
+		assertTrue(fourthNote.hasOrnament(Ornament.Type.MORDENT));
+
+		final Note fifthNote = (Note) firstMeasure.get(1, 4);
+		assertEquals(1, fifthNote.getOrnaments().size());
+		assertTrue(fifthNote.hasOrnament(Ornament.Type.INVERTED_MORDENT));
+
+		final Note sixthNote = (Note) firstMeasure.get(1, 5);
+		assertEquals(1, sixthNote.getOrnaments().size());
+		assertTrue(sixthNote.hasOrnament(Ornament.Type.DOUBLE_TREMOLO));
+
+		final Note seventhNote = (Note) firstMeasure.get(1, 6);
+		assertEquals(1, seventhNote.getOrnaments().size());
+		assertTrue(seventhNote.hasOrnament(Ornament.Type.TRIPLE_TREMOLO));
 	}
 }

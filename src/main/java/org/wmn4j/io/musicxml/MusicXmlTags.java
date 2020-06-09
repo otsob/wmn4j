@@ -142,6 +142,17 @@ final class MusicXmlTags {
 	static final Set<String> CONNECTED_NOTATION_NODE_NAMES = Collections
 			.unmodifiableSet(Set.of(TIED, SLUR, GLISSANDO, SLIDE, ARPEGGIATE, NON_ARPEGGIATE));
 
+	// Ornaments
+	static final String ORNAMENTS = "ornaments";
+	static final String DELAYED_INVERTED_TURN = "delayed-inverted-turn";
+	static final String DELAYED_TURN = "delayed-turn";
+	static final String INVERTED_MORDENT = "inverted-mordent";
+	static final String INVERTED_TURN = "inverted-turn";
+	static final String MORDENT = "mordent";
+	static final String TREMOLO = "tremolo";
+	static final String TRILL_MARK = "trill-mark";
+	static final String TURN = "turn";
+
 	static final String DIRECTION = "direction";
 	static final String DIRECTION_PLACEMENT = "placement";
 	static final String DIRECTION_TYPE = "direction-type";

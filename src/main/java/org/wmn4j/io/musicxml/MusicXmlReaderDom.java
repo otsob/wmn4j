@@ -20,6 +20,7 @@ import org.wmn4j.notation.KeySignatures;
 import org.wmn4j.notation.MeasureBuilder;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.NoteBuilder;
+import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.Pitch;
@@ -472,7 +473,12 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			NoteBuilder noteBuilder, ChordBuffer buffer) {
 
 		final Optional<Node> notationsNodeOptional = DocHelper.findChild(noteNode, MusicXmlTags.NOTATIONS);
-		notationsNodeOptional.ifPresent(notationsNode -> addArticulations(notationsNode, noteBuilder));
+
+		if (notationsNodeOptional.isPresent()) {
+			final Node notationsNode = notationsNodeOptional.get();
+			addArticulations(notationsNode, noteBuilder);
+			addOrnaments(notationsNode, noteBuilder);
+		}
 
 		addNotations(voiceNumber, notationsNodeOptional, noteBuilder, connectedNotations, buffer);
 	}
@@ -519,6 +525,62 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		if (connectedNotations.hasUnresolvedNotations(voiceNumber)) {
 			connectedNotations.addToUnresolvedNotations(voiceNumber, noteBuilder, startedNotations);
 		}
+	}
+
+	private void addOrnaments(Node notationsNode, NoteBuilder noteBuilder) {
+		Optional<Node> ornamentsNodeOpt = DocHelper.findChild(notationsNode, MusicXmlTags.ORNAMENTS);
+		if (ornamentsNodeOpt.isEmpty()) {
+			return;
+		}
+
+		final Node ornamentsNode = ornamentsNodeOpt.get();
+		for (int i = 0; i < ornamentsNode.getChildNodes().getLength(); i++) {
+			Node ornamentNode = ornamentsNode.getChildNodes().item(i);
+			Ornament ornament = nodeToOrnament(ornamentNode);
+			if (ornament != null) {
+				noteBuilder.addOrnaments(ornament);
+			}
+		}
+	}
+
+	private Ornament nodeToOrnament(Node ornamentNode) {
+		final String text = ornamentNode.getNodeName();
+
+		switch (text) {
+			case MusicXmlTags.DELAYED_INVERTED_TURN:
+				return Ornament.of(Ornament.Type.DELAYED_INVERTED_TURN);
+			case MusicXmlTags.DELAYED_TURN:
+				return Ornament.of(Ornament.Type.DELAYED_TURN);
+			case MusicXmlTags.INVERTED_MORDENT:
+				return Ornament.of(Ornament.Type.INVERTED_MORDENT);
+			case MusicXmlTags.INVERTED_TURN:
+				return Ornament.of(Ornament.Type.INVERTED_TURN);
+			case MusicXmlTags.MORDENT:
+				return Ornament.of(Ornament.Type.MORDENT);
+			case MusicXmlTags.TREMOLO:
+				return createTremolo(ornamentNode);
+			case MusicXmlTags.TRILL_MARK:
+				return Ornament.of(Ornament.Type.TRILL);
+			case MusicXmlTags.TURN:
+				return Ornament.of(Ornament.Type.TURN);
+		}
+
+		return null;
+	}
+
+	private Ornament createTremolo(Node tremoloNode) {
+		int tremoloLines = Integer.parseInt(tremoloNode.getTextContent());
+
+		switch (tremoloLines) {
+			case 1:
+				return Ornament.of(Ornament.Type.SINGLE_TREMOLO);
+			case 2:
+				return Ornament.of(Ornament.Type.DOUBLE_TREMOLO);
+			case 3:
+				return Ornament.of(Ornament.Type.TRIPLE_TREMOLO);
+		}
+
+		return null;
 	}
 
 	private Collection<Node> getNotationNodes(Node notationsNode) {

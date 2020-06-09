@@ -6,6 +6,7 @@ package org.wmn4j.notation;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -282,5 +283,24 @@ class NoteTest {
 		assertEquals(slurBeginning, slurBeginningOptional.get());
 
 		assertFalse(noteThatBeginsSlur.getConnection(Notation.of(Notation.Type.GLISSANDO)).isPresent());
+	}
+
+	@Test
+	void testGetOrnaments() {
+		final Note note = Note
+				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH);
+
+		assertFalse(note.hasOrnaments());
+		assertFalse(note.hasOrnament(Ornament.Type.TRILL));
+		assertTrue(note.getOrnaments().isEmpty());
+
+		final Note ornamentedNote = Note
+				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH, Collections.emptySet(),
+						Collections.emptyList(), Arrays.asList(Ornament.of(Ornament.Type.MORDENT)));
+
+		assertTrue(ornamentedNote.hasOrnaments());
+		assertTrue(ornamentedNote.hasOrnament(Ornament.Type.MORDENT));
+		assertFalse(ornamentedNote.hasOrnament(Ornament.Type.TRILL));
+		assertEquals(1, ornamentedNote.getOrnaments().size());
 	}
 }

@@ -22,6 +22,7 @@ import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.MultiStaffPart;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
+import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Rest;
@@ -810,11 +811,75 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 			}
 		}
 
+		if (note.hasOrnaments()) {
+
+			Element ornamentsElement = getDocument().createElement(MusicXmlTags.ORNAMENTS);
+
+			for (Ornament ornament : note.getOrnaments()) {
+				Ornament.Type type = ornament.getType();
+				ornamentsElement.appendChild(createOrnamentElement(type));
+			}
+
+			if (ornamentsElement.hasChildNodes()) {
+				notationsElement.appendChild(ornamentsElement);
+			}
+		}
+
 		if (notationsElement.hasChildNodes()) {
 			return Optional.of(notationsElement);
 		} else {
 			return Optional.empty();
 		}
+	}
+
+	private Element createOrnamentElement(Ornament.Type ornamentType) {
+
+		String elementName = null;
+		int tremoloLines = 0;
+
+		switch (ornamentType) {
+			case DELAYED_INVERTED_TURN:
+				elementName = MusicXmlTags.DELAYED_INVERTED_TURN;
+				break;
+			case DELAYED_TURN:
+				elementName = MusicXmlTags.DELAYED_TURN;
+				break;
+			case INVERTED_MORDENT:
+				elementName = MusicXmlTags.INVERTED_MORDENT;
+				break;
+			case INVERTED_TURN:
+				elementName = MusicXmlTags.INVERTED_TURN;
+				break;
+			case MORDENT:
+				elementName = MusicXmlTags.MORDENT;
+				break;
+			case SINGLE_TREMOLO:
+				elementName = MusicXmlTags.TREMOLO;
+				tremoloLines = 1;
+				break;
+			case DOUBLE_TREMOLO:
+				elementName = MusicXmlTags.TREMOLO;
+				tremoloLines = 2;
+				break;
+			case TRIPLE_TREMOLO:
+				elementName = MusicXmlTags.TREMOLO;
+				tremoloLines = 3;
+				break;
+			case TRILL:
+				elementName = MusicXmlTags.TRILL_MARK;
+				break;
+			case TURN:
+				elementName = MusicXmlTags.TURN;
+				break;
+		}
+
+		Element element = getDocument().createElement(elementName);
+
+		if (tremoloLines > 0) {
+			element.setTextContent(Integer.toString(tremoloLines));
+		}
+
+		return element;
 	}
 
 	private Element createArticulationsElement(Collection<Articulation> articulations) {
