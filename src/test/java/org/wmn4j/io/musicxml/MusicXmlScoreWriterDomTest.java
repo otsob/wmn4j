@@ -210,6 +210,14 @@ class MusicXmlScoreWriterDomTest {
 	}
 
 	@Test
+	void testWritingOrnaments() {
+		Score score = readMusicXmlTestFile("ornament_test.musicxml", false);
+		Score writtenScore = writeAndReadScore(score);
+
+		MusicXmlFileChecks.assertOrnamentsAreCorrect(writtenScore);
+	}
+
+	@Test
 	void testWritingBasicNoteAppearances() {
 		final Score score = readMusicXmlTestFile("basic_duration_appearances.xml", false);
 
