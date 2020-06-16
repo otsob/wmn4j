@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public final class GraceNote implements Pitched, Ornamental {
 
 	private final Note note;
+	private final Ornamental.Type type;
 
 	/**
 	 * Returns an instance with the given parameters.
@@ -26,18 +27,19 @@ public final class GraceNote implements Pitched, Ornamental {
 	 * @param articulations       a set of Articulations associated with the grace note
 	 * @param notations           the notations for the grace note
 	 * @param ornaments           ornaments for the grace note
+	 * @param type                the type of this grace note
 	 * @return an instance with the given parameters
 	 */
 	public static GraceNote of(Pitch pitch, Duration displayableDuration, Set<Articulation> articulations,
-			Collection<Notation.Type> notations, Collection<Ornament> ornaments) {
-		return new GraceNote(pitch, displayableDuration, articulations, notations, ornaments);
+			Collection<Notation.Type> notations, Collection<Ornament> ornaments, Ornamental.Type type) {
+		return new GraceNote(pitch, displayableDuration, articulations, notations, ornaments, type);
 	}
 
 	/**
 	 * Private constructor.
 	 */
 	private GraceNote(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Notation.Type> notations, Collection<Ornament> ornaments) {
+			Collection<Notation.Type> notations, Collection<Ornament> ornaments, Ornamental.Type type) {
 
 		// Use dummy connections in the internal note
 		List<Notation.Connection> dummyConnections = notations.stream()
@@ -45,6 +47,7 @@ public final class GraceNote implements Pitched, Ornamental {
 				.collect(Collectors.toList());
 
 		this.note = Note.of(pitch, duration, articulations, dummyConnections, ornaments);
+		this.type = Objects.requireNonNull(type);
 	}
 
 	/**
@@ -165,18 +168,26 @@ public final class GraceNote implements Pitched, Ornamental {
 			return false;
 		}
 
-		return this.note.equals(((GraceNote) o).note);
+		GraceNote other = (GraceNote) o;
+
+		return this.note.equals(other.note) && this.type.equals(other.type);
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = 3;
 		hash = 79 * hash + Objects.hashCode(this.note);
+		hash = 79 * hash + Objects.hashCode(this.type);
 		return hash;
 	}
 
 	@Override
 	public Duration getDisplayableDuration() {
 		return note.getDuration();
+	}
+
+	@Override
+	public Type getType() {
+		return type;
 	}
 }
