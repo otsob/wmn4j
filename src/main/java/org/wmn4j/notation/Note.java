@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * <p>
  * This class is immutable.
  */
-public final class Note implements Durational, Pitched {
+public final class Note implements Durational, Pitched, Notation.Connectable {
 
 	private final Pitch pitch;
 	private final Duration duration;
@@ -166,13 +166,7 @@ public final class Note implements Durational, Pitched {
 				.collect(Collectors.toUnmodifiableSet());
 	}
 
-	/**
-	 * Returns the notation connection belonging to the given notation. If no notation connection for the notation is
-	 * present, return empty.
-	 *
-	 * @param notation the notation for which the notation connection is returned
-	 * @return the notation connection belonging to the given notation
-	 */
+	@Override
 	public Optional<Notation.Connection> getConnection(Notation notation) {
 		return notationConnections.stream()
 				.filter(articulation -> articulation.getNotation().equals(notation))
@@ -210,26 +204,14 @@ public final class Note implements Durational, Pitched {
 				.anyMatch(notationConnection -> notationConnection.getType().equals(notationType));
 	}
 
-	/**
-	 * Returns true if this note begins a notation of the given type.
-	 *
-	 * @param notationType the type of the notation for whose beginning this
-	 *                     note is checked
-	 * @return true if this note begins a notation of the given type
-	 */
+	@Override
 	public boolean beginsNotation(Notation.Type notationType) {
 		return notationConnections.stream()
 				.anyMatch(notationConnection -> notationConnection.getType().equals(notationType)
 						&& notationConnection.isBeginning());
 	}
 
-	/**
-	 * Returns true if this note ends a notation of the given type.
-	 *
-	 * @param notationType the type of the notation for whose end this note
-	 *                     is checked
-	 * @return true if this note ends a notation of the given type
-	 */
+	@Override
 	public boolean endsNotation(Notation.Type notationType) {
 		return notationConnections.stream()
 				.anyMatch(notationConnection -> notationConnection.getType().equals(notationType)

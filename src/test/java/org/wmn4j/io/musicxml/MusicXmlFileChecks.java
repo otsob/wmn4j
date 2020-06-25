@@ -612,7 +612,7 @@ class MusicXmlFileChecks {
 
 		final Notation slurFromFifthToSeventhNote = fifthNote.getNotations().stream().findAny().orElseThrow();
 		final List<Note> notesInSlurFromFifthToSeventhNote = slurFromFifthToSeventhNote
-				.getAffectedStartingFrom(fifthNote);
+				.getNotesStartingFrom(fifthNote);
 		assertEquals(3, notesInSlurFromFifthToSeventhNote.size());
 		assertEquals(fifthNote, notesInSlurFromFifthToSeventhNote.get(0));
 		assertEquals(sixthNote, notesInSlurFromFifthToSeventhNote.get(1));
@@ -637,7 +637,7 @@ class MusicXmlFileChecks {
 		assertTrue(tenthNote.endsNotation(Notation.Type.SLUR));
 
 		final Notation slurFromEightToTenthNote = eightNote.getNotations().stream().findAny().orElseThrow();
-		final List<Note> notesInSlurFromEightToTenthNote = slurFromEightToTenthNote.getAffectedStartingFrom(eightNote);
+		final List<Note> notesInSlurFromEightToTenthNote = slurFromEightToTenthNote.getNotesStartingFrom(eightNote);
 		assertEquals(3, notesInSlurFromEightToTenthNote.size());
 		assertEquals(eightNote, notesInSlurFromEightToTenthNote.get(0));
 		assertEquals(ninthNote, notesInSlurFromEightToTenthNote.get(1));
@@ -742,7 +742,7 @@ class MusicXmlFileChecks {
 
 		final Notation slurFromFirstToThirdNote = firstNoteInTopStaff.getNotations().stream().findFirst().orElseThrow();
 		List<Note> notesInSlurFromFirstToThirdNote = slurFromFirstToThirdNote
-				.getAffectedStartingFrom(firstNoteInTopStaff);
+				.getNotesStartingFrom(firstNoteInTopStaff);
 		assertEquals(3, notesInSlurFromFirstToThirdNote.size());
 		assertEquals(firstNoteInTopStaff, notesInSlurFromFirstToThirdNote.get(0));
 		assertEquals(secondNoteInTopStaff, notesInSlurFromFirstToThirdNote.get(1));
@@ -754,7 +754,7 @@ class MusicXmlFileChecks {
 				.orElseThrow();
 
 		List<Note> notesInSlurFromSecondToFourthNote = slurFromSecondToFourthNote
-				.getAffectedStartingFrom(secondNoteInTopStaff);
+				.getNotesStartingFrom(secondNoteInTopStaff);
 		assertEquals(3, notesInSlurFromSecondToFourthNote.size());
 		assertEquals(secondNoteInTopStaff, notesInSlurFromSecondToFourthNote.get(0));
 		assertEquals(thirdNoteInTopStaff, notesInSlurFromSecondToFourthNote.get(1));
@@ -777,7 +777,7 @@ class MusicXmlFileChecks {
 		final Notation bottomStaffFirstMeasureSlur = firstNoteInBottomStaff.getNotations().stream().findFirst()
 				.orElseThrow();
 		final List<Note> bottomStaffFirstMeasureSlurNotes = bottomStaffFirstMeasureSlur
-				.getAffectedStartingFrom(firstNoteInBottomStaff);
+				.getNotesStartingFrom(firstNoteInBottomStaff);
 		assertEquals(2, bottomStaffFirstMeasureSlurNotes.size());
 		assertEquals(firstNoteInBottomStaff, bottomStaffFirstMeasureSlurNotes.get(0));
 		assertEquals(secondNoteInBottomStaff, bottomStaffFirstMeasureSlurNotes.get(1));
@@ -811,7 +811,7 @@ class MusicXmlFileChecks {
 		final Notation slurBetweenTopVoiceNotes = fifthNoteInTopStaffTopVoice.getNotations().stream().findFirst()
 				.orElseThrow();
 		final List<Note> notesInSlurBetweenTopVoiceNotes = slurBetweenTopVoiceNotes
-				.getAffectedStartingFrom(fifthNoteInTopStaffTopVoice);
+				.getNotesStartingFrom(fifthNoteInTopStaffTopVoice);
 		assertEquals(3, notesInSlurBetweenTopVoiceNotes.size());
 		assertEquals(fifthNoteInTopStaffTopVoice, notesInSlurBetweenTopVoiceNotes.get(0));
 		assertEquals(sixthNoteInTopStaffTopVoice, notesInSlurBetweenTopVoiceNotes.get(1));
@@ -823,7 +823,7 @@ class MusicXmlFileChecks {
 				.orElseThrow();
 
 		final List<Note> notesInTopVoiceGlissando = glissandoInTopVoice
-				.getAffectedStartingFrom(sixthNoteInTopStaffTopVoice);
+				.getNotesStartingFrom(sixthNoteInTopStaffTopVoice);
 		assertEquals(2, notesInTopVoiceGlissando.size());
 		assertEquals(sixthNoteInTopStaffTopVoice, notesInTopVoiceGlissando.get(0));
 		assertEquals(seventhNoteInTopStaffTopVoice, notesInTopVoiceGlissando.get(1));
@@ -851,7 +851,7 @@ class MusicXmlFileChecks {
 				.orElseThrow();
 
 		final List<Note> notesInSlurBetweenBottomVoiceNotes = slurBetweenBottomVoiceNotes
-				.getAffectedStartingFrom(fifthNoteInTopStaffBottomVoice);
+				.getNotesStartingFrom(fifthNoteInTopStaffBottomVoice);
 		assertEquals(3, notesInSlurBetweenBottomVoiceNotes.size());
 		assertEquals(fifthNoteInTopStaffBottomVoice, notesInSlurBetweenBottomVoiceNotes.get(0));
 		assertEquals(sixthNoteInTopStaffBottomVoice, notesInSlurBetweenBottomVoiceNotes.get(1));
@@ -863,7 +863,7 @@ class MusicXmlFileChecks {
 				.orElseThrow();
 
 		final List<Note> notesInBottomVoiceGlissando = glissandoInBottomVoice
-				.getAffectedStartingFrom(fifthNoteInTopStaffBottomVoice);
+				.getNotesStartingFrom(fifthNoteInTopStaffBottomVoice);
 		assertEquals(2, notesInTopVoiceGlissando.size());
 		assertEquals(fifthNoteInTopStaffBottomVoice, notesInBottomVoiceGlissando.get(0));
 		assertEquals(sixthNoteInTopStaffBottomVoice, notesInBottomVoiceGlissando.get(1));

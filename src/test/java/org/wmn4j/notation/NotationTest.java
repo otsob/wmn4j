@@ -102,14 +102,14 @@ class NotationTest {
 				Collections.emptySet(), List.of(Notation.Connection.beginningOf(slur, second)));
 
 		assertTrue(
-				Notation.of(Notation.Type.SLUR).getAffectedStartingFrom(first).isEmpty(),
+				Notation.of(Notation.Type.SLUR).getNotesStartingFrom(first).isEmpty(),
 				"Incorrectly returned notes for a different slur");
 
-		assertEquals(3, slur.getAffectedStartingFrom(first).size());
-		assertEquals(2, slur.getAffectedStartingFrom(second).size());
-		assertEquals(1, slur.getAffectedStartingFrom(third).size());
+		assertEquals(3, slur.getNotesStartingFrom(first).size());
+		assertEquals(2, slur.getNotesStartingFrom(second).size());
+		assertEquals(1, slur.getNotesStartingFrom(third).size());
 
-		Collection<Note> allNotesInSlur = slur.getAffectedStartingFrom(first);
+		Collection<Note> allNotesInSlur = slur.getNotesStartingFrom(first);
 		assertTrue(allNotesInSlur.contains(first));
 		assertTrue(allNotesInSlur.contains(first));
 		assertTrue(allNotesInSlur.contains(first));

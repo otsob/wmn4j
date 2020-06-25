@@ -24,6 +24,40 @@ import java.util.Optional;
 public final class Notation {
 
 	/**
+	 * Represents notation elements that can be connected to each other
+	 * through notations, like notes and grace notes.
+	 */
+	public interface Connectable {
+		/**
+		 * Returns the notation connection belonging to the given notation. If no notation connection for the notation
+		 * is
+		 * present, return empty.
+		 *
+		 * @param notation the notation for which the notation connection is returned
+		 * @return the notation connection belonging to the given notation
+		 */
+		Optional<Notation.Connection> getConnection(Notation notation);
+
+		/**
+		 * Returns true if this note begins a notation of the given type.
+		 *
+		 * @param notationType the type of the notation for whose beginning this
+		 *                     note is checked
+		 * @return true if this note begins a notation of the given type
+		 */
+		boolean beginsNotation(Notation.Type notationType);
+
+		/**
+		 * Returns true if this note ends a notation of the given type.
+		 *
+		 * @param notationType the type of the notation for whose end this note
+		 *                     is checked
+		 * @return true if this note ends a notation of the given type
+		 */
+		boolean endsNotation(Notation.Type notationType);
+	}
+
+	/**
 	 * The type of the connected notation.
 	 */
 	public enum Type {
@@ -116,20 +150,23 @@ public final class Notation {
 	}
 
 	/**
-	 * Returns all notes affected by this connected notation starting from the given note.
+	 * Returns all notes affected by this connected notation starting from the given connectable notation element.
 	 *
-	 * @param note the starting note
-	 * @return all notes affected by this connected notation starting from the given note
+	 * @param connectable the starting connectable
+	 * @return all notes affected by this connected notation starting from the given connectable
 	 */
-	public List<Note> getAffectedStartingFrom(Note note) {
+	public List<Note> getNotesStartingFrom(Notation.Connectable connectable) {
 
 		final List<Note> affectedNotes = new ArrayList<>();
-		Optional<Connection> notationConnectionOpt = note.getConnection(this);
+		Optional<Connection> notationConnectionOpt = connectable.getConnection(this);
 		if (notationConnectionOpt.isEmpty()) {
 			return affectedNotes;
 		}
 
-		affectedNotes.add(note);
+		if (connectable instanceof Note) {
+			affectedNotes.add((Note) connectable);
+		}
+
 		for (Note followingNote : notationConnectionOpt.get().getFollowingNotes()) {
 			affectedNotes.add(followingNote);
 		}
