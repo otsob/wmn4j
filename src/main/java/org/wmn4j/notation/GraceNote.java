@@ -4,17 +4,16 @@
 package org.wmn4j.notation;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Represents a grace note.
  * <p>
  * This class is immutable.
  */
-public final class GraceNote implements Pitched, Ornamental {
+public final class GraceNote implements Pitched, Ornamental, Notation.Connectable {
 
 	private final Note note;
 	private final Ornamental.Type type;
@@ -25,28 +24,25 @@ public final class GraceNote implements Pitched, Ornamental {
 	 * @param pitch               the pitch of the grace note
 	 * @param displayableDuration the displayable duration of the grace note
 	 * @param articulations       a set of Articulations associated with the grace note
-	 * @param notations           the notations for the grace note
+	 * @param notationConnections connections to other elements through notations
 	 * @param ornaments           ornaments for the grace note
 	 * @param type                the type of this grace note
 	 * @return an instance with the given parameters
 	 */
 	public static GraceNote of(Pitch pitch, Duration displayableDuration, Set<Articulation> articulations,
-			Collection<Notation.Type> notations, Collection<Ornament> ornaments, Ornamental.Type type) {
-		return new GraceNote(pitch, displayableDuration, articulations, notations, ornaments, type);
+			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments, Ornamental.Type type) {
+		return new GraceNote(pitch, displayableDuration, articulations, notationConnections, ornaments,
+				type);
 	}
 
 	/**
 	 * Private constructor.
 	 */
 	private GraceNote(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Notation.Type> notations, Collection<Ornament> ornaments, Ornamental.Type type) {
+			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments,
+			Ornamental.Type type) {
 
-		// Use dummy connections in the internal note
-		List<Notation.Connection> dummyConnections = notations.stream()
-				.map(notationType -> Notation.Connection.endOf(Notation.of(notationType)))
-				.collect(Collectors.toList());
-
-		this.note = Note.of(pitch, duration, articulations, dummyConnections, ornaments);
+		this.note = Note.of(pitch, duration, articulations, notationConnections, ornaments);
 		this.type = Objects.requireNonNull(type);
 	}
 
@@ -189,5 +185,20 @@ public final class GraceNote implements Pitched, Ornamental {
 	@Override
 	public Type getType() {
 		return type;
+	}
+
+	@Override
+	public Optional<Notation.Connection> getConnection(Notation notation) {
+		return note.getConnection(notation);
+	}
+
+	@Override
+	public boolean beginsNotation(Notation.Type notationType) {
+		return note.beginsNotation(notationType);
+	}
+
+	@Override
+	public boolean endsNotation(Notation.Type notationType) {
+		return note.endsNotation(notationType);
 	}
 }

@@ -202,9 +202,33 @@ public final class Notation {
 	 */
 	public static final class Connection {
 		private final Notation notation;
-		private final Note followingNote;
+		private final Connectable followingNote;
 		private final boolean isBeginning;
 		private final boolean isEnd;
+
+		/**
+		 * Returns a connection with the given connected notation from the first note
+		 * affected by the notation.
+		 *
+		 * @param notation      the notation to which this connection belongs
+		 * @param followingNote the grace note to which this connects
+		 * @return a notation connection with the given notation from the first note
+		 * affected by the notation
+		 */
+		public static Connection beginningOf(Notation notation, GraceNote followingNote) {
+			return new Connection(notation, Objects.requireNonNull(followingNote), true, false);
+		}
+
+		/**
+		 * Returns a notation connection with the given notation to the given note.
+		 *
+		 * @param notation      the notation to which this connection belongs
+		 * @param followingNote the grace note to which this connects
+		 * @return a notation connection with the given notation to the given note
+		 */
+		public static Connection of(Notation notation, GraceNote followingNote) {
+			return new Connection(notation, Objects.requireNonNull(followingNote), false, false);
+		}
 
 		/**
 		 * Returns a connection with the given connected notation from the first note
@@ -252,7 +276,7 @@ public final class Notation {
 		 * @param isEnd         true if this is to be attached to the last note affected
 		 *                      by this notation
 		 */
-		private Connection(Notation notation, Note followingNote, boolean isBeginning,
+		private Connection(Notation notation, Notation.Connectable followingNote, boolean isBeginning,
 				boolean isEnd) {
 			this.notation = Objects.requireNonNull(notation);
 			this.followingNote = followingNote;
@@ -271,13 +295,38 @@ public final class Notation {
 
 		/**
 		 * Returns the following note, i.e., the note to which this
-		 * connects. If this connection denotes the last note affected by the notation,
+		 * connects. If this connection does not connect to a note or
+		 * denotes the last note affected by the notation,
 		 * then returns empty.
 		 *
 		 * @return the following note
 		 */
 		public Optional<Note> getFollowingNote() {
-			return Optional.ofNullable(followingNote);
+			return getFollowing(Note.class);
+		}
+
+		/**
+		 * Returns the following grace note, i.e., the grace note to which this
+		 * connects. If this connection does not connect to a grace note or
+		 * denotes the last note affected by the notation,
+		 * then returns empty.
+		 *
+		 * @return the following grace note
+		 */
+		public Optional<GraceNote> getFollowingGraceNote() {
+			return getFollowing(GraceNote.class);
+		}
+
+		<T extends Connectable> Optional<T> getFollowing(Class<T> type) {
+			if (followingNote == null) {
+				return Optional.empty();
+			}
+
+			if (type.isAssignableFrom(followingNote.getClass())) {
+				return Optional.of(type.cast(followingNote));
+			}
+
+			return Optional.empty();
 		}
 
 		/**

@@ -129,4 +129,52 @@ class GraceNoteTest {
 
 		assertEquals(Durations.EIGHTH, graceNote.getDisplayableDuration());
 	}
+
+	@Test
+	void testConnectedGraceNotes() {
+		final Notation slur = Notation.of(Notation.Type.SLUR);
+
+		Notation.Connection end = Notation.Connection.endOf(slur);
+		final Note lastNote = Note
+				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH,
+						Collections.emptySet(), Arrays.asList(end));
+
+		Notation.Connection secondLast = Notation.Connection.of(slur, lastNote);
+		final GraceNote lastGraceNote = GraceNote
+				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(secondLast), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
+
+		Notation.Connection middleConnection = Notation.Connection.of(slur, lastGraceNote);
+		final GraceNote middleGraceNote = GraceNote
+				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(middleConnection), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
+
+		Notation.Connection beginning = Notation.Connection.beginningOf(slur, middleGraceNote);
+		final GraceNote firstGraceNote = GraceNote
+				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 1), Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(beginning), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
+
+		assertTrue(firstGraceNote.beginsNotation(Notation.Type.SLUR));
+		assertTrue(firstGraceNote.getConnection(slur).isPresent());
+		Notation.Connection slurBeginning = firstGraceNote.getConnection(slur).get();
+		assertTrue(slurBeginning.isBeginning());
+		assertTrue(slurBeginning.getFollowingNote().isEmpty());
+		assertEquals(middleGraceNote, slurBeginning.getFollowingGraceNote().get());
+
+		assertTrue(middleGraceNote.getConnection(slur).isPresent());
+		Notation.Connection slurMiddle = middleGraceNote.getConnection(slur).get();
+		assertFalse(slurMiddle.isBeginning());
+		assertTrue(slurMiddle.getFollowingNote().isEmpty());
+		assertEquals(lastGraceNote, slurMiddle.getFollowingGraceNote().get());
+
+		assertTrue(lastGraceNote.getConnection(slur).isPresent());
+		Notation.Connection secondLastConnection = lastGraceNote.getConnection(slur).get();
+		assertFalse(secondLastConnection.isBeginning());
+		assertFalse(secondLastConnection.isEnd());
+		assertTrue(secondLastConnection.getFollowingGraceNote().isEmpty());
+		assertEquals(lastNote, secondLastConnection.getFollowingNote().get());
+
+		assertTrue(lastNote.getConnection(slur).isPresent());
+		assertTrue(lastNote.getConnection(slur).get().isEnd());
+	}
 }
