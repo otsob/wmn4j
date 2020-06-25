@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -176,5 +177,11 @@ class GraceNoteTest {
 
 		assertTrue(lastNote.getConnection(slur).isPresent());
 		assertTrue(lastNote.getConnection(slur).get().isEnd());
+
+		List<GraceNote> connectedGraceNotes = slur.getGraceNotesStartingFrom(firstGraceNote);
+		assertEquals(3, connectedGraceNotes.size());
+		assertEquals(firstGraceNote, connectedGraceNotes.get(0));
+		assertEquals(middleGraceNote, connectedGraceNotes.get(1));
+		assertEquals(lastGraceNote, connectedGraceNotes.get(2));
 	}
 }
