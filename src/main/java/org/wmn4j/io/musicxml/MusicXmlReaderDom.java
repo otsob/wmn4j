@@ -538,7 +538,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			Node ornamentNode = ornamentsNode.getChildNodes().item(i);
 			Ornament ornament = nodeToOrnament(ornamentNode);
 			if (ornament != null) {
-				noteBuilder.addOrnaments(ornament);
+				noteBuilder.addOrnament(ornament);
 			}
 		}
 	}

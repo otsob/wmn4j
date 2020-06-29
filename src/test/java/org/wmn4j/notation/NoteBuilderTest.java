@@ -298,7 +298,7 @@ class NoteBuilderTest {
 	void testBuildingWithOrnaments() {
 		NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
 		final Ornament ornament = Ornament.of(Ornament.Type.MORDENT);
-		builder.addOrnaments(ornament);
+		builder.addOrnament(ornament);
 		final Note note = builder.build();
 		assertTrue(note.hasOrnaments());
 		assertEquals(1, note.getOrnaments().size());

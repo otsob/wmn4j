@@ -137,8 +137,17 @@ public final class NoteBuilder implements DurationalBuilder {
 	 *
 	 * @param ornament the ornament to add to this builder
 	 */
-	public void addOrnaments(Ornament ornament) {
+	public void addOrnament(Ornament ornament) {
 		ornaments.add(ornament);
+	}
+
+	/**
+	 * Returns the ornaments set in this builder.
+	 *
+	 * @return the ornaments set in this builder
+	 */
+	public Collection<Ornament> getOrnaments() {
+		return ornaments;
 	}
 
 	/**
