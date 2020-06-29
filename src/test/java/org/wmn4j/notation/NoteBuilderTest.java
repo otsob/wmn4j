@@ -304,4 +304,21 @@ class NoteBuilderTest {
 		assertEquals(1, note.getOrnaments().size());
 		assertTrue(note.hasOrnament(ornament.getType()));
 	}
+
+	@Test
+	void testBuildingWithSlurToGraceNote() {
+		NoteBuilder builder = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
+		GraceNoteBuilder graceNoteBuilder = new GraceNoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				Durations.QUARTER);
+
+		final Notation slur = Notation.of(Notation.Type.SLUR);
+		builder.connectWith(slur, graceNoteBuilder);
+
+		final Note note = builder.build();
+		final GraceNote graceNote = graceNoteBuilder.build();
+		assertTrue(note.beginsNotation(Notation.Type.SLUR));
+		assertTrue(graceNote.endsNotation(Notation.Type.SLUR));
+		assertTrue(note.getConnection(slur).isPresent());
+		assertTrue(graceNote.getConnection(slur).isPresent());
+	}
 }

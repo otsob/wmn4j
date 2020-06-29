@@ -23,7 +23,8 @@ public final class NoteBuilder implements DurationalBuilder {
 	private Duration duration;
 	private Set<Articulation> articulations;
 	private Set<Ornament> ornaments;
-	private Map<Notation, NoteBuilder> connectedTo = new HashMap<>();
+	private Map<Notation, NoteBuilder> noteConnections = new HashMap<>();
+	private Map<Notation, GraceNoteBuilder> graceNoteConnections = new HashMap<>();
 	private Set<Notation> connectedFrom = new HashSet<>();
 
 	private Note cachedNote;
@@ -178,7 +179,7 @@ public final class NoteBuilder implements DurationalBuilder {
 	 * there is one, otherwise empty Optional.
 	 */
 	public Optional<NoteBuilder> getFollowingTied() {
-		Optional<Notation> tieConnection = connectedTo.keySet().stream()
+		Optional<Notation> tieConnection = noteConnections.keySet().stream()
 				.filter(notation -> notation.getType().equals(Notation.Type.TIE))
 				.findAny();
 
@@ -186,7 +187,11 @@ public final class NoteBuilder implements DurationalBuilder {
 			return Optional.empty();
 		}
 
-		return Optional.of(connectedTo.get(tieConnection));
+		return Optional.of(noteConnections.get(tieConnection));
+	}
+
+	void addToConnectedFrom(Notation notation) {
+		connectedFrom.add(notation);
 	}
 
 	/**
@@ -198,8 +203,21 @@ public final class NoteBuilder implements DurationalBuilder {
 	 * @param targetNoteBuilder the note builder to which this is connected using the given notation
 	 */
 	public void connectWith(Notation notation, NoteBuilder targetNoteBuilder) {
-		connectedTo.put(notation, targetNoteBuilder);
-		targetNoteBuilder.connectedFrom.add(notation);
+		noteConnections.put(notation, targetNoteBuilder);
+		targetNoteBuilder.addToConnectedFrom(notation);
+	}
+
+	/**
+	 * Connects this builder to the given grace note builder with the specified notation.
+	 * <p>
+	 * The connections set using this method are automatically resolved and built when the note builder is built.
+	 *
+	 * @param notation          the notation with which this is connected to the target
+	 * @param targetNoteBuilder the grace note builder to which this is connected using the given notation
+	 */
+	public void connectWith(Notation notation, GraceNoteBuilder targetNoteBuilder) {
+		graceNoteConnections.put(notation, targetNoteBuilder);
+		targetNoteBuilder.addToConnectedFrom(notation);
 	}
 
 	/**
@@ -210,29 +228,42 @@ public final class NoteBuilder implements DurationalBuilder {
 		this.cachedNote = null;
 	}
 
-	private Collection<Notation.Connection> getResolvedNotationConnections() {
+	Collection<Notation.Connection> getResolvedNotationConnections() {
 		Set<Notation> notations = new HashSet<>(connectedFrom);
-		notations.addAll(connectedTo.keySet());
+		notations.addAll(noteConnections.keySet());
+		notations.addAll(graceNoteConnections.keySet());
 		return notations.stream().map(notation -> resolveConnection(notation)).collect(Collectors.toList());
 	}
 
 	private Notation.Connection resolveConnection(Notation notation) {
 
-		if (!connectedTo.containsKey(notation) && connectedFrom.contains(notation)) {
-			return Notation.Connection.endOf(notation);
+		Notation.Connection connection;
+		final boolean isConnectedToNote = noteConnections.containsKey(notation);
+		final boolean isConnectedToGraceNote = graceNoteConnections.containsKey(notation);
+
+		if (connectedFrom.contains(notation)) {
+			if (!isConnectedToNote && !isConnectedToGraceNote) {
+				connection = Notation.Connection.endOf(notation);
+			} else if (isConnectedToNote) {
+				connection = Notation.Connection.of(notation, noteConnections.get(notation).build());
+			} else {
+				connection = Notation.Connection.of(notation, graceNoteConnections.get(notation).build());
+			}
+		} else {
+			if (isConnectedToNote) {
+				connection = Notation.Connection.beginningOf(notation, noteConnections.get(notation).build());
+			} else {
+				connection = Notation.Connection.beginningOf(notation, graceNoteConnections.get(notation).build());
+			}
 		}
 
-		if (connectedTo.containsKey(notation) && !connectedFrom.contains(notation)) {
-			return Notation.Connection.beginningOf(notation, connectedTo.get(notation).build());
-		}
-
-		return Notation.Connection.of(notation, connectedTo.get(notation).build());
+		return connection;
 	}
 
 	/**
 	 * Creates a note with the values set in this builder. This method has side
 	 * effects. The method calls {@link #build build} recursively on the following
-	 * {@link NoteBuilder} objects to which this is tied. Calling this method to
+	 * {@link NoteBuilder} and {@link GraceNoteBuilder}  objects to which this is tied. Calling this method to
 	 * create the first note in a sequence of tied notes builds all the tied notes.
 	 * The {@link Note} objects are cached in the builders. In case of tied notes,
 	 * the temporally first one should be built first.
