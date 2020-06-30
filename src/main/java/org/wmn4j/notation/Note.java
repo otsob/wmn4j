@@ -116,10 +116,101 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 		}
 
 		if (ornaments != null && !ornaments.isEmpty()) {
-			this.ornaments = Collections.unmodifiableSet(new HashSet<>(ornaments));
+			this.ornaments = copyOrnaments(ornaments);
 		} else {
 			this.ornaments = Collections.emptySet();
 		}
+	}
+
+	private Collection<Ornament> copyOrnaments(Collection<Ornament> ornaments) {
+		Set<Ornament> copiedOrnaments = new HashSet<>(ornaments.size());
+
+		for (Ornament ornament : ornaments) {
+			// Copying preceding grace notes requires special handling.
+			if (ornament.getType().equals(Ornament.Type.GRACE_NOTES)) {
+				copiedOrnaments.add(copyGraceNotesWithConnections(ornament));
+			} else {
+				copiedOrnaments.add(ornament);
+			}
+		}
+
+		return Collections.unmodifiableSet(copiedOrnaments);
+	}
+
+	private Ornament copyGraceNotesWithConnections(Ornament graceNotes) {
+		Collection<Notation.Connection> primaryNoteConnections = graceNotes.getPrimaryNoteConnections();
+		if (primaryNoteConnections.isEmpty()) {
+			return graceNotes;
+		}
+
+		final List<Ornamental> originalOrnamentals = graceNotes.getOrnamentalNotes();
+		List<Ornamental> copiedOrnamentals = new ArrayList<>(originalOrnamentals);
+
+		Notation.Connectable target = this;
+
+		final int indexOfLast = copiedOrnamentals.size() - 1;
+
+		for (int i = indexOfLast; i >= 0; --i) {
+			Ornamental original = copiedOrnamentals.get(i);
+			if (original instanceof GraceNote) {
+				GraceNote originalGraceNote = (GraceNote) original;
+				Collection<Notation.Connection> connections = (i == indexOfLast)
+						? primaryNoteConnections
+						: originalGraceNote.getConnections();
+				GraceNote linkedCopy = copyGraceNoteWithConnections(target, originalGraceNote, connections);
+				copiedOrnamentals.set(i, linkedCopy);
+				target = linkedCopy;
+			}
+		}
+
+		return Ornament.graceNotes(copiedOrnamentals, Collections.emptyList());
+	}
+
+	private GraceNote copyGraceNoteWithConnections(Notation.Connectable target, GraceNote original,
+			Collection<Notation.Connection> connections) {
+		return GraceNote.of(original.getPitch(), original.getDisplayableDuration(),
+				original.getArticulations(), copyConnections(target, connections),
+				original.getOrnaments(), original.getType());
+	}
+
+	private Collection<Notation.Connection> copyConnections(Notation.Connectable target,
+			Collection<Notation.Connection> connections) {
+		Collection<Notation.Connection> newNotationConnections = new ArrayList<>();
+		for (Notation.Connection connection : connections) {
+			if (!connection.isEnd()) {
+				Notation.Connection newConnection = connection;
+				if (target instanceof Note) {
+					newConnection = createConnectionToNote(connection, (Note) target);
+				} else if (target instanceof GraceNote) {
+					newConnection = createConnectionToGraceNote(connection, (GraceNote) target);
+				}
+
+				newNotationConnections.add(newConnection);
+			} else {
+				newNotationConnections.add(connection);
+			}
+		}
+		return newNotationConnections;
+	}
+
+	private Notation.Connection createConnectionToNote(Notation.Connection connection, Note target) {
+		if (connection.isBeginning()) {
+			return Notation.Connection.beginningOf(connection.getNotation(), target);
+		}
+
+		return Notation.Connection.of(connection.getNotation(), target);
+	}
+
+	private Notation.Connection createConnectionToGraceNote(Notation.Connection connection, GraceNote target) {
+		if (connection.isBeginning()) {
+			return Notation.Connection.beginningOf(connection.getNotation(), target);
+		}
+
+		return Notation.Connection.of(connection.getNotation(), target);
+	}
+
+	Collection<Notation.Connection> getConnections() {
+		return notationConnections;
 	}
 
 	/**

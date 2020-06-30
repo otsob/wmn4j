@@ -303,4 +303,61 @@ class NoteTest {
 		assertFalse(ornamentedNote.hasOrnament(Ornament.Type.TRILL));
 		assertEquals(1, ornamentedNote.getOrnaments().size());
 	}
+
+	@Test
+	void testGivenNoteConnectedToGraceNotesThenConnectionsAreCorrectInNote() {
+		final Notation slur = Notation.of(Notation.Type.SLUR);
+
+		Notation.Connection endOfSlur = Notation.Connection.endOf(slur);
+
+		final GraceNote graceNoteAfter = GraceNote
+				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(endOfSlur), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
+
+		final Ornament succeedingGraceNotes = Ornament
+				.succeedingGraceNotes(Arrays.asList(graceNoteAfter));
+
+		Notation.Connection slurBetweenGraceNotes = Notation.Connection.of(slur, graceNoteAfter);
+		final GraceNote middleGraceNote = GraceNote
+				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), Durations.EIGHTH, Collections.emptySet(),
+						Collections.emptyList(), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
+
+		Notation.Connection beginning = Notation.Connection.beginningOf(slur, middleGraceNote);
+		final GraceNote firstGraceNote = GraceNote
+				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 1), Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(beginning), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
+
+		final Ornament graceNotes = Ornament
+				.graceNotes(Arrays.asList(firstGraceNote, middleGraceNote),
+						Arrays.asList(Notation.Connection.of(slur, Note.of(
+								Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))));
+
+		final Note note = Note
+				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(Notation.Connection.of(slur, graceNoteAfter)),
+						Arrays.asList(succeedingGraceNotes, graceNotes));
+
+		assertEquals(2, note.getOrnaments().size());
+		final Ornament graceNotesBefore = note.getOrnaments().stream()
+				.filter(ornament -> ornament.getType().equals(Ornament.Type.GRACE_NOTES)).findFirst().get();
+
+		assertEquals(2, graceNotesBefore.getOrnamentalNotes().size());
+		final GraceNote first = (GraceNote) graceNotesBefore.getOrnamentalNotes().get(0);
+		assertEquals(firstGraceNote, first);
+		final GraceNote secondInSlur = first.getConnection(slur).get().getFollowingGraceNote().get();
+		assertEquals(middleGraceNote.getPitch(), secondInSlur.getPitch());
+
+		final GraceNote second = (GraceNote) graceNotesBefore.getOrnamentalNotes().get(1);
+		assertEquals(middleGraceNote.getPitch(), second.getPitch());
+		assertEquals(note, second.getConnection(slur).get().getFollowingNote().get());
+
+		assertEquals(graceNoteAfter, note.getConnection(slur).get().getFollowingGraceNote().get());
+
+		final Ornament graceNotesAfter = note.getOrnaments().stream()
+				.filter(ornament -> ornament.getType().equals(Ornament.Type.SUCCEEDING_GRACE_NOTES)).findFirst().get();
+
+		assertEquals(1, graceNotesAfter.getOrnamentalNotes().size());
+		assertEquals(graceNoteAfter, graceNotesAfter.getOrnamentalNotes().get(0));
+		assertTrue(graceNoteAfter.endsNotation(Notation.Type.SLUR));
+	}
 }
