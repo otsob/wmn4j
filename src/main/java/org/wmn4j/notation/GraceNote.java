@@ -201,4 +201,8 @@ public final class GraceNote implements Pitched, Ornamental, Notation.Connectabl
 	public boolean endsNotation(Notation.Type notationType) {
 		return note.endsNotation(notationType);
 	}
+
+	Collection<Notation.Connection> getConnections() {
+		return note.getConnections();
+	}
 }

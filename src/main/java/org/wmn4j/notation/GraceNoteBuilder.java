@@ -1,5 +1,7 @@
 package org.wmn4j.notation;
 
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -10,6 +12,7 @@ import java.util.Set;
 public final class GraceNoteBuilder {
 
 	private final NoteBuilder noteBuilder;
+	private NoteBuilder principalNoteBuilder;
 
 	private GraceNote.Type graceNoteType;
 	private GraceNote cachedNote;
@@ -76,6 +79,14 @@ public final class GraceNoteBuilder {
 		noteBuilder.addToConnectedFrom(notation);
 	}
 
+	Map<Notation, NoteBuilder> getNoteConnections() {
+		return noteBuilder.getNoteConnections();
+	}
+
+	Set<Notation> getConnectedFrom() {
+		return noteBuilder.getConnectedFrom();
+	}
+
 	/**
 	 * Sets the displayable duration in this builder.
 	 *
@@ -92,6 +103,18 @@ public final class GraceNoteBuilder {
 	 */
 	public Set<Articulation> getArticulations() {
 		return noteBuilder.getArticulations();
+	}
+
+	void setPrincipalNote(NoteBuilder noteBuilder) {
+		principalNoteBuilder = noteBuilder;
+	}
+
+	void setCachedNote(GraceNote cachedNote) {
+		this.cachedNote = cachedNote;
+	}
+
+	Optional<NoteBuilder> getPrincipalNote() {
+		return Optional.ofNullable(principalNoteBuilder);
 	}
 
 	/**

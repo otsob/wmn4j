@@ -138,7 +138,7 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 	}
 
 	private Ornament copyGraceNotesWithConnections(Ornament graceNotes) {
-		Collection<Notation.Connection> primaryNoteConnections = graceNotes.getPrimaryNoteConnections();
+		Collection<Notation.Connection> primaryNoteConnections = graceNotes.getPrincipalNoteConnections();
 		if (primaryNoteConnections.isEmpty()) {
 			return graceNotes;
 		}
@@ -154,9 +154,16 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 			Ornamental original = copiedOrnamentals.get(i);
 			if (original instanceof GraceNote) {
 				GraceNote originalGraceNote = (GraceNote) original;
-				Collection<Notation.Connection> connections = (i == indexOfLast)
-						? primaryNoteConnections
-						: originalGraceNote.getConnections();
+				Collection<Notation.Connection> connections;
+
+				if (i == indexOfLast) {
+					List<Notation.Connection> originalAndPrimaryNoteConnections = new ArrayList<>(
+							originalGraceNote.getConnections());
+					originalAndPrimaryNoteConnections.addAll(primaryNoteConnections);
+					connections = originalAndPrimaryNoteConnections;
+				} else {
+					connections = originalGraceNote.getConnections();
+				}
 				GraceNote linkedCopy = copyGraceNoteWithConnections(target, originalGraceNote, connections);
 				copiedOrnamentals.set(i, linkedCopy);
 				target = linkedCopy;
