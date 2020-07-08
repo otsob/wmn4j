@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * <p>
  * Instances of this class are not thread-safe.
  */
-public final class NoteBuilder implements DurationalBuilder {
+public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder {
 
 	private static final Note DUMMY_NOTE = Note
 			.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
@@ -228,27 +228,13 @@ public final class NoteBuilder implements DurationalBuilder {
 		connectedFrom.add(notation);
 	}
 
-	/**
-	 * Connects this builder to the given builder with the specified notation.
-	 * <p>
-	 * The connections set using this method are automatically resolved and built when the note builder is built.
-	 *
-	 * @param notation          the notation with which this is connected to the target
-	 * @param targetNoteBuilder the note builder to which this is connected using the given notation
-	 */
+	@Override
 	public void connectWith(Notation notation, NoteBuilder targetNoteBuilder) {
 		noteConnections.put(notation, targetNoteBuilder);
 		targetNoteBuilder.addToConnectedFrom(notation);
 	}
 
-	/**
-	 * Connects this builder to the given grace note builder with the specified notation.
-	 * <p>
-	 * The connections set using this method are automatically resolved and built when the note builder is built.
-	 *
-	 * @param notation          the notation with which this is connected to the target
-	 * @param targetNoteBuilder the grace note builder to which this is connected using the given notation
-	 */
+	@Override
 	public void connectWith(Notation notation, GraceNoteBuilder targetNoteBuilder) {
 		graceNoteConnections.put(notation, targetNoteBuilder);
 		targetNoteBuilder.addToConnectedFrom(notation);

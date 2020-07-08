@@ -65,6 +65,7 @@ final class MusicXmlTags {
 	static final String NOTE_VOICE = "voice";
 	static final String NOTE_CHORD = "chord";
 	static final String NOTE_GRACE_NOTE = "grace";
+	static final String NOTE_GRACE_SLASH = "slash";
 	static final String NOTE_STAFF = "staff";
 	static final String NOTE_UNPITCHED = "unpitched";
 	static final String UNPITCHED_STEP = "display-step";
@@ -84,7 +85,7 @@ final class MusicXmlTags {
 	static final String NOTE_TYPE_256TH = "256th";
 	static final String NOTE_TYPE_128TH = "128th";
 	static final String NOTE_TYPE_64TH = "64th";
-	static final String NOTE_TYPE_32TH = "32th";
+	static final String NOTE_TYPE_32TH = "32nd";
 	static final String NOTE_TYPE_16TH = "16th";
 	static final String NOTE_TYPE_EIGHTH = "eighth";
 	static final String NOTE_TYPE_QUARTER = "quarter";
