@@ -422,19 +422,6 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 		return tieConnection.get().getFollowingNote();
 	}
 
-	/**
-	 * Returns an integer that specifies if this note is higher than, lower than, or
-	 * equal in pitch to the given note.
-	 *
-	 * @param other the note to which this is compared for pitch
-	 * @return negative integer if this note is lower than other, positive integer
-	 * if this is higher than other, 0 if notes are (enharmonically) of same
-	 * height.
-	 */
-	public int compareByPitch(Note other) {
-		return this.pitch.compareTo(other.getPitch());
-	}
-
 	@Override
 	public String toString() {
 		final StringBuilder strBuilder = new StringBuilder();
