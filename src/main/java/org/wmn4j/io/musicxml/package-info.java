@@ -1,3 +1,7 @@
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
+
 /**
  * Contains input and output operations for MusicXML files.
  * The {@link org.wmn4j.io.musicxml.MusicXmlReader} objects can be used for reading MusicXML files and the
