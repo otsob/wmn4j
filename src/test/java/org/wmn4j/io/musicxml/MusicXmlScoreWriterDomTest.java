@@ -437,4 +437,11 @@ class MusicXmlScoreWriterDomTest {
 			assertTrue(dur.getDuration().hasExpression());
 		}
 	}
+
+	@Test
+	void testGivenScoreWithGraceNotesThenGraceNotesAreCorrectlyWritten() {
+		Score score = readMusicXmlTestFile("grace_note_test.musicxml", false);
+		Score writtenScore = writeAndReadScore(score);
+		MusicXmlFileChecks.assertGraceNotesAreCorrect(writtenScore);
+	}
 }

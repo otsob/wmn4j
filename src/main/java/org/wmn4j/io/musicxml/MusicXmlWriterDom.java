@@ -17,12 +17,14 @@ import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.GraceNote;
 import org.wmn4j.notation.KeySignature;
 import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.MultiStaffPart;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Ornament;
+import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Rest;
@@ -361,16 +363,15 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 					}
 
 					if (dur instanceof Note) {
-						measureElement.appendChild(
-								createNoteElement((Note) dur, expressibleDuration, voiceNumber, staffNumber, false));
+						addNoteElementsToMeasure((Note) dur, measureElement, expressibleDuration, voiceNumber,
+								staffNumber, false);
 					}
 
 					if (dur instanceof Chord) {
 						boolean useChordTag = false;
 						for (Note note : (Chord) dur) {
-							measureElement
-									.appendChild(createNoteElement(note, expressibleDuration, voiceNumber, staffNumber,
-											useChordTag));
+							addNoteElementsToMeasure(note, measureElement, expressibleDuration, voiceNumber,
+									staffNumber, useChordTag);
 							useChordTag = true;
 						}
 					}
@@ -688,11 +689,13 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		return forwardElement;
 	}
 
-	private Element createNoteElement(Note note, Duration expressibleDuration, int voiceNumber, Integer staffNumber,
-			boolean chordTag) {
+	private void addNoteElementsToMeasure(Note note, Element measureNode, Duration expressibleDuration,
+			int voiceNumber, Integer staffNumber, boolean chordTag) {
 		final Element noteElement = getDocument().createElement(MusicXmlTags.NOTE);
 
-		// TODO: Write other attributes.
+		// Add any preceding grace notes to measure.
+		addOrnamentalNoteElementsToMeasure(note, Ornament.Type.GRACE_NOTES, measureNode, voiceNumber, staffNumber);
+
 		//Chord
 		if (chordTag) {
 			final Element chordElement = getDocument().createElement(MusicXmlTags.NOTE_CHORD);
@@ -717,9 +720,61 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		}
 
 		// Notations (musical notations, e.g. articulations, dynamics, fermata, slur)
-		createNotationsElement(note).ifPresent(notationsElement -> noteElement.appendChild(notationsElement));
+		createNotationsElement(note, note.getArticulations(), note.getNotations(), note.getOrnaments())
+				.ifPresent(notationsElement -> noteElement.appendChild(notationsElement));
 
-		return noteElement;
+		measureNode.appendChild(noteElement);
+
+		// Add any succeeding grace notes to measure.
+		addOrnamentalNoteElementsToMeasure(note, Ornament.Type.SUCCEEDING_GRACE_NOTES, measureNode, voiceNumber,
+				staffNumber);
+	}
+
+	private void addOrnamentalNoteElementsToMeasure(Note note, Ornament.Type graceNoteType, Element measureNode,
+			int voiceNumber, Integer staffNumber) {
+
+		Optional<Ornament> graceNoteOrnament = note.getOrnaments().stream()
+				.filter(ornament -> ornament.getType().equals(graceNoteType)).findAny();
+
+		List<Ornamental> ornamentals = Collections.emptyList();
+
+		if (graceNoteOrnament.isPresent()) {
+			ornamentals = graceNoteOrnament.get().getOrnamentalNotes();
+		}
+
+		for (Ornamental ornamental : ornamentals) {
+			GraceNote graceNote;
+
+			if (ornamental instanceof GraceNote) {
+				graceNote = (GraceNote) ornamental;
+			} else {
+				continue;
+			}
+
+			final Element graceNoteElement = getDocument().createElement(MusicXmlTags.NOTE);
+
+			final Element graceElement = getDocument().createElement(MusicXmlTags.NOTE_GRACE_NOTE);
+			if (graceNote.getType().equals(Ornamental.Type.ACCIACCATURA)) {
+				graceElement.setAttribute(MusicXmlTags.NOTE_GRACE_SLASH, MusicXmlTags.YES);
+			}
+
+			graceNoteElement.appendChild(graceElement);
+			graceNoteElement.appendChild(createPitchElement(graceNote.getPitch()));
+			graceNoteElement.appendChild(createVoiceElement(voiceNumber));
+			addDurationAppearanceElementsToNoteElement(graceNoteElement, graceNote.getDisplayableDuration());
+
+			// Staff
+			if (staffNumber != null) {
+				graceNoteElement.appendChild(createStaffElement(staffNumber));
+			}
+
+			// Notations (musical notations, e.g. articulations, dynamics, fermata, slur)
+			createNotationsElement(graceNote, graceNote.getArticulations(), graceNote.getNotations(),
+					graceNote.getOrnaments())
+					.ifPresent(notationsElement -> graceNoteElement.appendChild(notationsElement));
+
+			measureNode.appendChild(graceNoteElement);
+		}
 	}
 
 	private Element createStaffElement(Integer staffNumber) {
@@ -774,31 +829,33 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		return pitchElement;
 	}
 
-	private Optional<Element> createNotationsElement(Note note) {
+	private Optional<Element> createNotationsElement(Notation.Connectable connectable,
+			Collection<Articulation> articulations,
+			Collection<Notation> notations, Collection<Ornament> ornaments) {
 		final Element notationsElement = getDocument().createElement(MusicXmlTags.NOTATIONS);
 
 		// Articulations & fermata
-		if (note.hasArticulations()) {
-			if (note.hasArticulation(Articulation.FERMATA)) {
+		if (!articulations.isEmpty()) {
+			if (articulations.contains(Articulation.FERMATA)) {
 				notationsElement.appendChild(getDocument().createElement(MusicXmlTags.FERMATA));
 			}
 
 			// Don't create articulations element if fermata is the only articulation
-			if (!(note.getArticulations().size() == 1 && note.hasArticulation(Articulation.FERMATA))) {
-				notationsElement.appendChild(createArticulationsElement(note.getArticulations()));
+			if (!(articulations.size() == 1 && articulations.contains(Articulation.FERMATA))) {
+				notationsElement.appendChild(createArticulationsElement(articulations));
 			}
 		}
 
 		// Notations
-		for (Notation notation : note.getNotations()) {
+		for (Notation notation : notations) {
 			Notation.Type type = notation.getType();
 
 			if (NotationResolver.NOTATION_TYPES_WITH_START_STOP.containsKey(type)) {
-				if (note.getConnection(notation).get().isBeginning()) {
+				if (connectable.getConnection(notation).get().isBeginning()) {
 					notationsElement.appendChild(notationResolver.createStartElement(notation));
 				}
 
-				if (note.getConnection(notation).get().isEnd()) {
+				if (connectable.getConnection(notation).get().isEnd()) {
 					Element notationStop = notationResolver.createStopElement(notation);
 					if (notationStop != null) {
 						notationsElement.appendChild(notationStop);
@@ -811,13 +868,15 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 			}
 		}
 
-		if (note.hasOrnaments()) {
+		if (!ornaments.isEmpty()) {
 
 			Element ornamentsElement = getDocument().createElement(MusicXmlTags.ORNAMENTS);
 
-			for (Ornament ornament : note.getOrnaments()) {
+			for (Ornament ornament : ornaments) {
 				Ornament.Type type = ornament.getType();
-				ornamentsElement.appendChild(createOrnamentElement(type));
+				if (!type.equals(Ornament.Type.GRACE_NOTES) && !type.equals(Ornament.Type.SUCCEEDING_GRACE_NOTES)) {
+					ornamentsElement.appendChild(createOrnamentElement(type));
+				}
 			}
 
 			if (ornamentsElement.hasChildNodes()) {
