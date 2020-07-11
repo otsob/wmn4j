@@ -382,4 +382,10 @@ class MusicXmlReaderDomTest {
 		Score scoreWithOrnaments = readScore("ornament_test.musicxml", true);
 		MusicXmlFileChecks.assertOrnamentsAreCorrect(scoreWithOrnaments);
 	}
+
+	@Test
+	void testGivenFileWithGraceNotesThenAllGraceNotesAreReadCorrectly() {
+		Score scoreWithGraceNotes = readScore("grace_note_test.musicxml", true);
+		MusicXmlFileChecks.assertGraceNotesAreCorrect(scoreWithGraceNotes);
+	}
 }

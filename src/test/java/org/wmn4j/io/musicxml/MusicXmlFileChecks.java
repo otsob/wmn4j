@@ -11,6 +11,7 @@ import org.wmn4j.notation.Clefs;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.GraceNote;
 import org.wmn4j.notation.KeySignatures;
 import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.MultiStaffPart;
@@ -28,6 +29,8 @@ import org.wmn4j.notation.TimeSignatures;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -612,7 +615,7 @@ class MusicXmlFileChecks {
 
 		final Notation slurFromFifthToSeventhNote = fifthNote.getNotations().stream().findAny().orElseThrow();
 		final List<Note> notesInSlurFromFifthToSeventhNote = slurFromFifthToSeventhNote
-				.getAffectedStartingFrom(fifthNote);
+				.getNotesStartingFrom(fifthNote);
 		assertEquals(3, notesInSlurFromFifthToSeventhNote.size());
 		assertEquals(fifthNote, notesInSlurFromFifthToSeventhNote.get(0));
 		assertEquals(sixthNote, notesInSlurFromFifthToSeventhNote.get(1));
@@ -637,7 +640,7 @@ class MusicXmlFileChecks {
 		assertTrue(tenthNote.endsNotation(Notation.Type.SLUR));
 
 		final Notation slurFromEightToTenthNote = eightNote.getNotations().stream().findAny().orElseThrow();
-		final List<Note> notesInSlurFromEightToTenthNote = slurFromEightToTenthNote.getAffectedStartingFrom(eightNote);
+		final List<Note> notesInSlurFromEightToTenthNote = slurFromEightToTenthNote.getNotesStartingFrom(eightNote);
 		assertEquals(3, notesInSlurFromEightToTenthNote.size());
 		assertEquals(eightNote, notesInSlurFromEightToTenthNote.get(0));
 		assertEquals(ninthNote, notesInSlurFromEightToTenthNote.get(1));
@@ -742,7 +745,7 @@ class MusicXmlFileChecks {
 
 		final Notation slurFromFirstToThirdNote = firstNoteInTopStaff.getNotations().stream().findFirst().orElseThrow();
 		List<Note> notesInSlurFromFirstToThirdNote = slurFromFirstToThirdNote
-				.getAffectedStartingFrom(firstNoteInTopStaff);
+				.getNotesStartingFrom(firstNoteInTopStaff);
 		assertEquals(3, notesInSlurFromFirstToThirdNote.size());
 		assertEquals(firstNoteInTopStaff, notesInSlurFromFirstToThirdNote.get(0));
 		assertEquals(secondNoteInTopStaff, notesInSlurFromFirstToThirdNote.get(1));
@@ -754,7 +757,7 @@ class MusicXmlFileChecks {
 				.orElseThrow();
 
 		List<Note> notesInSlurFromSecondToFourthNote = slurFromSecondToFourthNote
-				.getAffectedStartingFrom(secondNoteInTopStaff);
+				.getNotesStartingFrom(secondNoteInTopStaff);
 		assertEquals(3, notesInSlurFromSecondToFourthNote.size());
 		assertEquals(secondNoteInTopStaff, notesInSlurFromSecondToFourthNote.get(0));
 		assertEquals(thirdNoteInTopStaff, notesInSlurFromSecondToFourthNote.get(1));
@@ -777,7 +780,7 @@ class MusicXmlFileChecks {
 		final Notation bottomStaffFirstMeasureSlur = firstNoteInBottomStaff.getNotations().stream().findFirst()
 				.orElseThrow();
 		final List<Note> bottomStaffFirstMeasureSlurNotes = bottomStaffFirstMeasureSlur
-				.getAffectedStartingFrom(firstNoteInBottomStaff);
+				.getNotesStartingFrom(firstNoteInBottomStaff);
 		assertEquals(2, bottomStaffFirstMeasureSlurNotes.size());
 		assertEquals(firstNoteInBottomStaff, bottomStaffFirstMeasureSlurNotes.get(0));
 		assertEquals(secondNoteInBottomStaff, bottomStaffFirstMeasureSlurNotes.get(1));
@@ -811,7 +814,7 @@ class MusicXmlFileChecks {
 		final Notation slurBetweenTopVoiceNotes = fifthNoteInTopStaffTopVoice.getNotations().stream().findFirst()
 				.orElseThrow();
 		final List<Note> notesInSlurBetweenTopVoiceNotes = slurBetweenTopVoiceNotes
-				.getAffectedStartingFrom(fifthNoteInTopStaffTopVoice);
+				.getNotesStartingFrom(fifthNoteInTopStaffTopVoice);
 		assertEquals(3, notesInSlurBetweenTopVoiceNotes.size());
 		assertEquals(fifthNoteInTopStaffTopVoice, notesInSlurBetweenTopVoiceNotes.get(0));
 		assertEquals(sixthNoteInTopStaffTopVoice, notesInSlurBetweenTopVoiceNotes.get(1));
@@ -823,7 +826,7 @@ class MusicXmlFileChecks {
 				.orElseThrow();
 
 		final List<Note> notesInTopVoiceGlissando = glissandoInTopVoice
-				.getAffectedStartingFrom(sixthNoteInTopStaffTopVoice);
+				.getNotesStartingFrom(sixthNoteInTopStaffTopVoice);
 		assertEquals(2, notesInTopVoiceGlissando.size());
 		assertEquals(sixthNoteInTopStaffTopVoice, notesInTopVoiceGlissando.get(0));
 		assertEquals(seventhNoteInTopStaffTopVoice, notesInTopVoiceGlissando.get(1));
@@ -851,7 +854,7 @@ class MusicXmlFileChecks {
 				.orElseThrow();
 
 		final List<Note> notesInSlurBetweenBottomVoiceNotes = slurBetweenBottomVoiceNotes
-				.getAffectedStartingFrom(fifthNoteInTopStaffBottomVoice);
+				.getNotesStartingFrom(fifthNoteInTopStaffBottomVoice);
 		assertEquals(3, notesInSlurBetweenBottomVoiceNotes.size());
 		assertEquals(fifthNoteInTopStaffBottomVoice, notesInSlurBetweenBottomVoiceNotes.get(0));
 		assertEquals(sixthNoteInTopStaffBottomVoice, notesInSlurBetweenBottomVoiceNotes.get(1));
@@ -863,7 +866,7 @@ class MusicXmlFileChecks {
 				.orElseThrow();
 
 		final List<Note> notesInBottomVoiceGlissando = glissandoInBottomVoice
-				.getAffectedStartingFrom(fifthNoteInTopStaffBottomVoice);
+				.getNotesStartingFrom(fifthNoteInTopStaffBottomVoice);
 		assertEquals(2, notesInTopVoiceGlissando.size());
 		assertEquals(fifthNoteInTopStaffBottomVoice, notesInBottomVoiceGlissando.get(0));
 		assertEquals(sixthNoteInTopStaffBottomVoice, notesInBottomVoiceGlissando.get(1));
@@ -1017,5 +1020,110 @@ class MusicXmlFileChecks {
 		final Note seventhNote = (Note) firstMeasure.get(1, 6);
 		assertEquals(1, seventhNote.getOrnaments().size());
 		assertTrue(seventhNote.hasOrnament(Ornament.Type.TRIPLE_TREMOLO));
+	}
+
+	/*
+	 * Expects the contents of "grace_note_test.musicxml".
+	 */
+	static void assertGraceNotesAreCorrect(Score score) {
+		final Measure firstMeasure = score.getPart(0).getMeasure(1, 1);
+
+		final Note firstNote = (Note) firstMeasure.get(1, 0);
+		assertEquals(1, firstNote.getOrnaments().size());
+		List<GraceNote> firstNoteGraceNotes = getGraceNotes(firstNote, Ornament.Type.GRACE_NOTES);
+		assertEquals(1, firstNoteGraceNotes.size());
+		final GraceNote firstGraceNote = firstNoteGraceNotes.get(0);
+		assertEquals(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), firstGraceNote.getPitch());
+		assertEquals(Durations.EIGHTH, firstGraceNote.getDisplayableDuration());
+		assertEquals(GraceNote.Type.ACCIACCATURA, firstGraceNote.getType());
+		assertTrue(firstGraceNote.hasArticulation(Articulation.STACCATO));
+
+		final Note secondNote = (Note) firstMeasure.get(1, 1);
+		assertEquals(1, secondNote.getOrnaments().size());
+		List<GraceNote> secondNoteGraceNotes = getGraceNotes(secondNote, Ornament.Type.GRACE_NOTES);
+		assertEquals(1, secondNoteGraceNotes.size());
+		final GraceNote secondGraceNote = secondNoteGraceNotes.get(0);
+		assertEquals(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4), secondGraceNote.getPitch());
+		assertEquals(Durations.EIGHTH, secondGraceNote.getDisplayableDuration());
+		assertEquals(GraceNote.Type.APPOGGIATURA, secondGraceNote.getType());
+		assertTrue(secondGraceNote.hasArticulation(Articulation.TENUTO));
+
+		final Note thirdNote = (Note) firstMeasure.get(1, 2);
+		assertEquals(1, thirdNote.getOrnaments().size());
+		List<GraceNote> thirdNoteGraceNotes = getGraceNotes(thirdNote, Ornament.Type.SUCCEEDING_GRACE_NOTES);
+		assertEquals(1, thirdNoteGraceNotes.size());
+		final GraceNote thirdGraceNote = thirdNoteGraceNotes.get(0);
+		assertEquals(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), thirdGraceNote.getPitch());
+		assertEquals(GraceNote.Type.GRACE_NOTE, thirdGraceNote.getType());
+		assertEquals(Durations.EIGHTH, thirdGraceNote.getDisplayableDuration());
+		assertTrue(thirdGraceNote.hasOrnament(Ornament.Type.TRILL));
+
+		final Measure secondMeasure = score.getPart(0).getMeasure(1, 2);
+
+		final Note fourthNote = (Note) secondMeasure.get(1, 0);
+		assertTrue(fourthNote.endsNotation(Notation.Type.GLISSANDO));
+		assertTrue(fourthNote.endsNotation(Notation.Type.SLUR));
+		assertTrue(fourthNote.beginsNotation(Notation.Type.SLUR));
+
+		List<GraceNote> fourthNotePrecedingGraceNotes = getGraceNotes(fourthNote, Ornament.Type.GRACE_NOTES);
+		assertEquals(2, fourthNotePrecedingGraceNotes.size());
+		final GraceNote fourthGraceNote = fourthNotePrecedingGraceNotes.get(0);
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), fourthGraceNote.getPitch());
+		assertEquals(GraceNote.Type.GRACE_NOTE, fourthGraceNote.getType());
+		assertEquals(Durations.SIXTEENTH, fourthGraceNote.getDisplayableDuration());
+		assertTrue(fourthGraceNote.beginsNotation(Notation.Type.SLUR));
+
+		final GraceNote fifthGraceNote = fourthNotePrecedingGraceNotes.get(1);
+		assertEquals(Pitch.of(Pitch.Base.B, Pitch.Accidental.NATURAL, 4), fifthGraceNote.getPitch());
+		assertEquals(GraceNote.Type.GRACE_NOTE, fifthGraceNote.getType());
+		assertEquals(Durations.SIXTEENTH, fifthGraceNote.getDisplayableDuration());
+		assertTrue(fifthGraceNote.hasNotation(Notation.Type.SLUR));
+		assertTrue(fifthGraceNote.beginsNotation(Notation.Type.GLISSANDO));
+
+		List<GraceNote> fourthNoteSucceedingGraceNotes = getGraceNotes(fourthNote,
+				Ornament.Type.SUCCEEDING_GRACE_NOTES);
+
+		assertEquals(2, fourthNoteSucceedingGraceNotes.size());
+		final GraceNote sixthGraceNote = fourthNoteSucceedingGraceNotes.get(0);
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), sixthGraceNote.getPitch());
+		assertEquals(GraceNote.Type.GRACE_NOTE, sixthGraceNote.getType());
+		assertEquals(Durations.SIXTEENTH, sixthGraceNote.getDisplayableDuration());
+		assertTrue(sixthGraceNote.hasNotation(Notation.Type.SLUR));
+
+		final GraceNote seventhGraceNote = fourthNoteSucceedingGraceNotes.get(1);
+		assertEquals(Pitch.of(Pitch.Base.B, Pitch.Accidental.NATURAL, 4), seventhGraceNote.getPitch());
+		assertEquals(GraceNote.Type.GRACE_NOTE, seventhGraceNote.getType());
+		assertEquals(Durations.SIXTEENTH, seventhGraceNote.getDisplayableDuration());
+		assertTrue(seventhGraceNote.endsNotation(Notation.Type.SLUR));
+		assertTrue(seventhGraceNote.beginsNotation(Notation.Type.GLISSANDO));
+
+		final Note fifthNote = (Note) secondMeasure.get(1, 1);
+		assertTrue(fifthNote.endsNotation(Notation.Type.SLUR));
+
+		List<GraceNote> fifthNoteGraceNotes = getGraceNotes(fifthNote, Ornament.Type.GRACE_NOTES);
+		assertEquals(2, fifthNoteGraceNotes.size());
+
+		final GraceNote eightGraceNote = fifthNoteGraceNotes.get(0);
+		assertEquals(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4), eightGraceNote.getPitch());
+		assertEquals(Durations.QUARTER, eightGraceNote.getDisplayableDuration());
+		assertTrue(eightGraceNote.beginsNotation(Notation.Type.SLUR));
+		assertTrue(eightGraceNote.endsNotation(Notation.Type.GLISSANDO));
+
+		final GraceNote ninthGraceNote = fifthNoteGraceNotes.get(1);
+		assertEquals(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), ninthGraceNote.getPitch());
+		assertEquals(Durations.QUARTER, ninthGraceNote.getDisplayableDuration());
+		assertTrue(ninthGraceNote.hasNotation(Notation.Type.SLUR));
+	}
+
+	private static List<GraceNote> getGraceNotes(Note note, Ornament.Type graceNotesType) {
+		Optional<Ornament> precedingGraceNotes = note.getOrnaments().stream()
+				.filter(ornament -> ornament.getType().equals(
+						graceNotesType)).findFirst();
+		assertTrue(precedingGraceNotes.isPresent());
+
+		return precedingGraceNotes.get().getOrnamentalNotes().stream()
+				.filter(ornamental -> (ornamental instanceof GraceNote))
+				.map(ornamental -> (GraceNote) ornamental)
+				.collect(Collectors.toList());
 	}
 }

@@ -24,6 +24,40 @@ import java.util.Optional;
 public final class Notation {
 
 	/**
+	 * Represents notation elements that can be connected to each other
+	 * through notations, like notes and grace notes.
+	 */
+	public interface Connectable {
+		/**
+		 * Returns the notation connection belonging to the given notation. If no notation connection for the notation
+		 * is
+		 * present, return empty.
+		 *
+		 * @param notation the notation for which the notation connection is returned
+		 * @return the notation connection belonging to the given notation
+		 */
+		Optional<Notation.Connection> getConnection(Notation notation);
+
+		/**
+		 * Returns true if this note begins a notation of the given type.
+		 *
+		 * @param notationType the type of the notation for whose beginning this
+		 *                     note is checked
+		 * @return true if this note begins a notation of the given type
+		 */
+		boolean beginsNotation(Notation.Type notationType);
+
+		/**
+		 * Returns true if this note ends a notation of the given type.
+		 *
+		 * @param notationType the type of the notation for whose end this note
+		 *                     is checked
+		 * @return true if this note ends a notation of the given type
+		 */
+		boolean endsNotation(Notation.Type notationType);
+	}
+
+	/**
 	 * The type of the connected notation.
 	 */
 	public enum Type {
@@ -116,21 +150,38 @@ public final class Notation {
 	}
 
 	/**
-	 * Returns all notes affected by this connected notation starting from the given note.
+	 * Returns all notes affected by this connected notation starting from the given connectable notation element.
 	 *
-	 * @param note the starting note
-	 * @return all notes affected by this connected notation starting from the given note
+	 * @param connectable the starting connectable
+	 * @return all notes affected by this connected notation starting from the given connectable
 	 */
-	public List<Note> getAffectedStartingFrom(Note note) {
+	public List<Note> getNotesStartingFrom(Notation.Connectable connectable) {
+		return getStartingFrom(connectable, Note.class);
+	}
 
-		final List<Note> affectedNotes = new ArrayList<>();
-		Optional<Connection> notationConnectionOpt = note.getConnection(this);
+	/**
+	 * Returns all grace notes affected by this connected notation starting from the given connectable notation element.
+	 *
+	 * @param connectable the starting connectable
+	 * @return all grace notes affected by this connected notation starting from the given connectable
+	 */
+	public List<GraceNote> getGraceNotesStartingFrom(Notation.Connectable connectable) {
+		return getStartingFrom(connectable, GraceNote.class);
+	}
+
+	<T extends Connectable> List<T> getStartingFrom(Notation.Connectable connectable, Class<T> type) {
+
+		final List<T> affectedNotes = new ArrayList<>();
+		Optional<Connection> notationConnectionOpt = connectable.getConnection(this);
 		if (notationConnectionOpt.isEmpty()) {
 			return affectedNotes;
 		}
 
-		affectedNotes.add(note);
-		for (Note followingNote : notationConnectionOpt.get().getFollowingNotes()) {
+		if (type.isAssignableFrom(connectable.getClass())) {
+			affectedNotes.add(type.cast(connectable));
+		}
+
+		for (T followingNote : notationConnectionOpt.get().getFollowingIterable(type)) {
 			affectedNotes.add(followingNote);
 		}
 
@@ -165,9 +216,33 @@ public final class Notation {
 	 */
 	public static final class Connection {
 		private final Notation notation;
-		private final Note followingNote;
+		private final Connectable followingNote;
 		private final boolean isBeginning;
 		private final boolean isEnd;
+
+		/**
+		 * Returns a connection with the given connected notation from the first note
+		 * affected by the notation.
+		 *
+		 * @param notation      the notation to which this connection belongs
+		 * @param followingNote the grace note to which this connects
+		 * @return a notation connection with the given notation from the first note
+		 * affected by the notation
+		 */
+		public static Connection beginningOf(Notation notation, GraceNote followingNote) {
+			return new Connection(notation, Objects.requireNonNull(followingNote), true, false);
+		}
+
+		/**
+		 * Returns a notation connection with the given notation to the given note.
+		 *
+		 * @param notation      the notation to which this connection belongs
+		 * @param followingNote the grace note to which this connects
+		 * @return a notation connection with the given notation to the given note
+		 */
+		public static Connection of(Notation notation, GraceNote followingNote) {
+			return new Connection(notation, Objects.requireNonNull(followingNote), false, false);
+		}
 
 		/**
 		 * Returns a connection with the given connected notation from the first note
@@ -215,7 +290,7 @@ public final class Notation {
 		 * @param isEnd         true if this is to be attached to the last note affected
 		 *                      by this notation
 		 */
-		private Connection(Notation notation, Note followingNote, boolean isBeginning,
+		private Connection(Notation notation, Notation.Connectable followingNote, boolean isBeginning,
 				boolean isEnd) {
 			this.notation = Objects.requireNonNull(notation);
 			this.followingNote = followingNote;
@@ -234,13 +309,38 @@ public final class Notation {
 
 		/**
 		 * Returns the following note, i.e., the note to which this
-		 * connects. If this connection denotes the last note affected by the notation,
+		 * connects. If this connection does not connect to a note or
+		 * denotes the last note affected by the notation,
 		 * then returns empty.
 		 *
 		 * @return the following note
 		 */
 		public Optional<Note> getFollowingNote() {
-			return Optional.ofNullable(followingNote);
+			return getFollowing(Note.class);
+		}
+
+		/**
+		 * Returns the following grace note, i.e., the grace note to which this
+		 * connects. If this connection does not connect to a grace note or
+		 * denotes the last note affected by the notation,
+		 * then returns empty.
+		 *
+		 * @return the following grace note
+		 */
+		public Optional<GraceNote> getFollowingGraceNote() {
+			return getFollowing(GraceNote.class);
+		}
+
+		private <T extends Connectable> Optional<T> getFollowing(Class<T> type) {
+			if (followingNote == null) {
+				return Optional.empty();
+			}
+
+			if (type.isAssignableFrom(followingNote.getClass())) {
+				return Optional.of(type.cast(followingNote));
+			}
+
+			return Optional.empty();
 		}
 
 		/**
@@ -249,7 +349,22 @@ public final class Notation {
 		 * @return all following notes that are affected by the same notation to which this notation connection belongs
 		 */
 		public Iterable<Note> getFollowingNotes() {
-			return new ConnectedNotationIterable(this);
+			return getFollowingIterable(Note.class);
+		}
+
+		/**
+		 * Returns all following grace notes that are affected by the same notation to which this notation connection
+		 * belongs.
+		 *
+		 * @return all following grace notes that are affected by the same
+		 * notation to which this notation connection belongs
+		 */
+		public Iterable<GraceNote> getFollowingGraceNotes() {
+			return getFollowingIterable(GraceNote.class);
+		}
+
+		private <T extends Connectable> Iterable<T> getFollowingIterable(Class<T> type) {
+			return new ConnectedNotationIterable<>(this, type);
 		}
 
 		/**
@@ -283,41 +398,45 @@ public final class Notation {
 
 	}
 
-	private static final class ConnectedNotationIterable implements Iterable<Note> {
+	private static final class ConnectedNotationIterable<T extends Connectable> implements Iterable<T> {
 
 		private final Connection first;
+		private final Class<T> type;
 
-		ConnectedNotationIterable(Connection first) {
+		ConnectedNotationIterable(Connection first, Class<T> type) {
 			this.first = first;
+			this.type = type;
 		}
 
 		@Override
-		public Iterator<Note> iterator() {
-			return new ConnectedNotationIterator(first);
+		public Iterator<T> iterator() {
+			return new ConnectedNotationIterator<>(first, type);
 		}
 
-		private static final class ConnectedNotationIterator implements Iterator<Note> {
+		private static final class ConnectedNotationIterator<T extends Connectable> implements Iterator<T> {
 
 			private Optional<Connection> current;
 			private final Notation notation;
+			private final Class<T> type;
 
-			private ConnectedNotationIterator(Connection first) {
+			private ConnectedNotationIterator(Connection first, Class<T> type) {
 				current = Optional.of(first);
 				notation = current.get().getNotation();
+				this.type = type;
 			}
 
 			@Override
 			public boolean hasNext() {
-				return current.isPresent() && current.get().getFollowingNote().isPresent();
+				return current.isPresent() && current.get().getFollowing(type).isPresent();
 			}
 
 			@Override
-			public Note next() {
+			public T next() {
 				if (!hasNext()) {
 					throw new NoSuchElementException();
 				}
 
-				Note nextNote = current.get().getFollowingNote().get();
+				T nextNote = current.get().getFollowing(type).get();
 				current = nextNote.getConnection(notation);
 
 				return nextNote;

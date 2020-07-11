@@ -14,13 +14,17 @@ import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.ChordBuilder;
 import org.wmn4j.notation.Clef;
+import org.wmn4j.notation.ConnectableBuilder;
 import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.GraceNoteBuilder;
 import org.wmn4j.notation.KeySignature;
 import org.wmn4j.notation.KeySignatures;
 import org.wmn4j.notation.MeasureBuilder;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Ornament;
+import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.Pitch;
@@ -53,6 +57,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * A parser for MusicXML files.
@@ -345,10 +350,12 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			// Handle backup element
 			if (node.getNodeName().equals(MusicXmlTags.MEASURE_BACKUP)) {
 				backupDuration = getBackupDuration(node, contexts.get(staffNumberOfPreviousNote));
+				Context context = contexts.get(staffNumberOfPreviousNote);
+				context.setGraceNotesToNoteBuilder(context.getPreviousBuilder(), false);
 			}
 
 			// Handle note element
-			if (node.getNodeName().equals(MusicXmlTags.NOTE) && !isGraceNote(node)) {
+			if (node.getNodeName().equals(MusicXmlTags.NOTE)) {
 				staffNumberOfPreviousNote = readNoteElementIntoMeasureBuilder(node, measureBuilders, chordBuffers,
 						offsets, contexts,
 						connectedNotations);
@@ -359,6 +366,11 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				addBarline(node, measureBuilders);
 			}
 		}
+
+		// If there are any grace notes at the end of the measure they are attached to
+		// the last note builder as succeeding grace notes.
+		Context lastContext = contexts.get(staffNumberOfPreviousNote);
+		lastContext.setGraceNotesToNoteBuilder(lastContext.getPreviousBuilder(), false);
 
 		// Set the rest of the measure attributes and add to partBuilder
 		for (int staffNumber = MIN_STAFF_NUMBER; staffNumber < staves + MIN_STAFF_NUMBER; ++staffNumber) {
@@ -444,47 +456,99 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		final MeasureBuilder builder = measureBuilders.get(staffNumber);
 
 		final int voice = getVoice(noteNode);
-		final Duration duration = getDuration(noteNode, context.getDivisions());
-		offsets.get(staffNumber).add(duration);
+		final Optional<Node> graceNode = DocHelper.findChild(noteNode, MusicXmlTags.NOTE_GRACE_NOTE);
+		final boolean isGraceNote = graceNode.isPresent();
+		final Duration duration;
+
+		if (!isGraceNote) {
+			duration = getDuration(noteNode, context.getDivisions());
+			offsets.get(staffNumber).add(duration);
+		} else {
+			duration = getGraceNoteDisplayableDuration(noteNode);
+		}
 
 		if (isRest(noteNode)) {
 			chordBuffers.get(staffNumber).contentsToBuilder(builder);
 			builder.addToVoice(voice, new RestBuilder(duration));
 		} else {
 			final Pitch pitch = getPitch(noteNode);
-			final NoteBuilder noteBuilder = new NoteBuilder(pitch, duration);
-
 			ChordBuffer buffer = chordBuffers.get(staffNumber);
 
-			if (hasChordTag(noteNode)) {
-				buffer.addNote(noteBuilder, voice);
-			} else {
-				buffer.contentsToBuilder(builder);
-				buffer.addNote(noteBuilder, voice);
-			}
+			if (isGraceNote) {
+				final GraceNoteBuilder graceNoteBuilder = new GraceNoteBuilder(pitch, duration);
 
-			resolveTiesAndNotations(voice, noteNode, connectedNotations, noteBuilder, buffer);
+				Optional<String> slashType = DocHelper
+						.getAttributeValue(graceNode.get(), MusicXmlTags.NOTE_GRACE_SLASH);
+
+				if (slashType.isPresent() && slashType.get().equals(MusicXmlTags.YES)) {
+					graceNoteBuilder.setGraceNoteType(Ornamental.Type.ACCIACCATURA);
+				}
+
+				context.addGraceNoteToBuffer(graceNoteBuilder);
+
+				resolveTiesAndNotations(voice, noteNode, connectedNotations, graceNoteBuilder, buffer, context);
+			} else {
+				final NoteBuilder noteBuilder = new NoteBuilder(pitch, duration);
+
+				context.setGraceNotesToNoteBuilder(noteBuilder, true);
+
+				if (hasChordTag(noteNode)) {
+					buffer.addNote(noteBuilder, voice);
+				} else {
+					buffer.contentsToBuilder(builder);
+					buffer.addNote(noteBuilder, voice);
+				}
+
+				resolveTiesAndNotations(voice, noteNode, connectedNotations, noteBuilder, buffer, context);
+				context.setPreviousBuilder(noteBuilder);
+			}
 		}
 
 		return staffNumber;
 	}
 
-	private void resolveTiesAndNotations(int voiceNumber, Node noteNode, ConnectedNotations connectedNotations,
-			NoteBuilder noteBuilder, ChordBuffer buffer) {
+	private Duration getGraceNoteDisplayableDuration(Node graceNoteNode) {
+		Optional<Node> typeNode = DocHelper.findChild(graceNoteNode, MusicXmlTags.NOTE_DURATION_TYPE);
+		if (typeNode.isEmpty()) {
+			LOG.error("Grace note in MusicXML without note type defined. Defaulting to eighth note.");
+			return Durations.EIGHTH;
+		}
 
+		return TypeToDurationConverter.INSTANCE.getDuration(typeNode.get().getTextContent());
+	}
+
+	private void resolveTiesAndNotations(int voiceNumber, Node noteNode, ConnectedNotations connectedNotations,
+			GraceNoteBuilder graceNoteBuilder, ChordBuffer buffer, Context context) {
+
+		resolveTiesAndNotations(voiceNumber, noteNode, graceNoteBuilder,
+				connectedNotations, buffer, articulation -> graceNoteBuilder.addArticulation(articulation),
+				ornament -> graceNoteBuilder.addOrnament(ornament), context);
+	}
+
+	private void resolveTiesAndNotations(int voiceNumber, Node noteNode, ConnectedNotations connectedNotations,
+			NoteBuilder noteBuilder, ChordBuffer buffer, Context context) {
+
+		resolveTiesAndNotations(voiceNumber, noteNode, noteBuilder,
+				connectedNotations, buffer, articulation -> noteBuilder.addArticulation(articulation),
+				ornament -> noteBuilder.addOrnament(ornament), context);
+	}
+
+	private void resolveTiesAndNotations(int voiceNumber, Node noteNode, ConnectableBuilder builder,
+			ConnectedNotations connectedNotations, ChordBuffer buffer, Consumer<Articulation> articulationAdder,
+			Consumer<Ornament> ornamentAdder, Context context) {
 		final Optional<Node> notationsNodeOptional = DocHelper.findChild(noteNode, MusicXmlTags.NOTATIONS);
 
 		if (notationsNodeOptional.isPresent()) {
 			final Node notationsNode = notationsNodeOptional.get();
-			addArticulations(notationsNode, noteBuilder);
-			addOrnaments(notationsNode, noteBuilder);
+			addArticulations(notationsNode, articulationAdder);
+			addOrnaments(notationsNode, ornamentAdder);
 		}
 
-		addNotations(voiceNumber, notationsNodeOptional, noteBuilder, connectedNotations, buffer);
+		addNotations(voiceNumber, notationsNodeOptional, builder, connectedNotations, buffer, context);
 	}
 
-	private void addNotations(int voiceNumber, Optional<Node> notationsNode, NoteBuilder noteBuilder,
-			ConnectedNotations connectedNotations, ChordBuffer buffer) {
+	private void addNotations(int voiceNumber, Optional<Node> notationsNode, ConnectableBuilder noteBuilder,
+			ConnectedNotations connectedNotations, ChordBuffer buffer, Context context) {
 
 		final Set<UnresolvedNotation> startedNotations = new HashSet<>();
 
@@ -512,7 +576,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 						startedNotations.add(startedNotation);
 					} else if (type.equals(MusicXmlTags.NOTATION_TYPE_STOP)
 							|| type.equals(MusicXmlTags.NON_ARPEGGIATE_TOP)) {
-						connectedNotations.endNotation(voiceNumber, notationNumber, notationType, noteBuilder);
+						connectedNotations.endNotation(voiceNumber, notationNumber, notationType, noteBuilder, context);
 					}
 				} else {
 					// The notations that do not specify start and stop are related to arpeggiation.
@@ -527,7 +591,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 	}
 
-	private void addOrnaments(Node notationsNode, NoteBuilder noteBuilder) {
+	private void addOrnaments(Node notationsNode, Consumer<Ornament> ornamentAdder) {
 		Optional<Node> ornamentsNodeOpt = DocHelper.findChild(notationsNode, MusicXmlTags.ORNAMENTS);
 		if (ornamentsNodeOpt.isEmpty()) {
 			return;
@@ -538,7 +602,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			Node ornamentNode = ornamentsNode.getChildNodes().item(i);
 			Ornament ornament = nodeToOrnament(ornamentNode);
 			if (ornament != null) {
-				noteBuilder.addOrnaments(ornament);
+				ornamentAdder.accept(ornament);
 			}
 		}
 	}
@@ -643,7 +707,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 	}
 
-	private void addArticulations(Node notationsNode, NoteBuilder noteBuilder) {
+	private void addArticulations(Node notationsNode, Consumer<Articulation> articulationAdder) {
 		final Optional<Node> articulationsNode = DocHelper.findChild(notationsNode, MusicXmlTags.NOTE_ARTICULATIONS);
 
 		if (articulationsNode.isPresent()) {
@@ -652,7 +716,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				if (articulationNode.getNodeType() == Node.ELEMENT_NODE) {
 					final Articulation articulation = getArticulation(articulationNode.getNodeName());
 					if (articulation != null) {
-						noteBuilder.addArticulation(articulation);
+						articulationAdder.accept(articulation);
 					} else {
 						LOG.warn("Articulation of type " + articulationNode.getNodeName() + " not supported");
 					}
@@ -661,7 +725,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 
 		DocHelper.findChild(notationsNode, MusicXmlTags.FERMATA)
-				.ifPresent(fermataNode -> noteBuilder.addArticulation(Articulation.FERMATA));
+				.ifPresent(fermataNode -> articulationAdder.accept(Articulation.FERMATA));
 	}
 
 	private Articulation getArticulation(String articulationString) {
@@ -921,10 +985,6 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		return Barline.NONE;
 	}
 
-	private boolean isGraceNote(Node noteNode) {
-		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_GRACE_NOTE).isPresent();
-	}
-
 	private boolean hasChordTag(Node noteNode) {
 		return DocHelper.findChild(noteNode, MusicXmlTags.NOTE_CHORD).isPresent();
 	}
@@ -1116,6 +1176,8 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		private KeySignature keySig = KeySignatures.CMAJ_AMIN;
 		private TimeSignature timeSig;
 		private Clef clef;
+		private List<GraceNoteBuilder> unconnectedGraceNotes = new ArrayList<>();
+		private NoteBuilder previousBuilder;
 
 		Context() {
 		}
@@ -1151,6 +1213,52 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		void setClef(Clef clef) {
 			this.clef = clef;
 		}
+
+		void addGraceNoteToBuffer(GraceNoteBuilder graceNoteBuilder) {
+			unconnectedGraceNotes.add(graceNoteBuilder);
+		}
+
+		void setAppoggiaturaTypes(NoteBuilder builder) {
+			if (unconnectedGraceNotes.size() != 1) {
+				return;
+			}
+
+			final GraceNoteBuilder graceNoteBuilder = unconnectedGraceNotes.get(0);
+			final int interval = builder.getPitch().toInt() - graceNoteBuilder.getPitch().toInt();
+			// Consider as an appoggiatura grace notes that are at most one whole step away
+			// and have a duration type that is half of the principal notes's duration. Also if
+			// the acciaccatura type has already been set, then the grace note cannot be an appoggiatura.
+			if (Math.abs(interval) > 2
+					|| !builder.getDuration().divide(2).equals(graceNoteBuilder.getDisplayableDuration())
+					|| graceNoteBuilder.getGraceNoteType().equals(Ornamental.Type.ACCIACCATURA)) {
+				return;
+			}
+
+			graceNoteBuilder.setGraceNoteType(Ornamental.Type.APPOGGIATURA);
+		}
+
+		void setGraceNotesToNoteBuilder(NoteBuilder builder, boolean isPreceding) {
+			if (unconnectedGraceNotes.isEmpty()) {
+				return;
+			}
+
+			if (isPreceding) {
+				setAppoggiaturaTypes(builder);
+				builder.setPrecedingGraceNotes(unconnectedGraceNotes);
+			} else {
+				builder.setSucceedingGraceNotes(unconnectedGraceNotes);
+			}
+
+			unconnectedGraceNotes = new ArrayList<>();
+		}
+
+		NoteBuilder getPreviousBuilder() {
+			return previousBuilder;
+		}
+
+		void setPreviousBuilder(NoteBuilder previousBuilder) {
+			this.previousBuilder = previousBuilder;
+		}
 	}
 
 	/**
@@ -1158,7 +1266,6 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	 */
 	private class ConnectedNotations {
 
-		private final Map<Integer, List<NoteBuilder>> tieStarts = new HashMap<>();
 		private final Map<Integer, Collection<UnresolvedNotation>> unresolvedNotationsPerVoice = new HashMap<>();
 
 		boolean hasUnresolvedNotations(int voiceNumber) {
@@ -1167,7 +1274,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 
 		UnresolvedNotation createAndAddStartOfNotation(int voiceNumber, int notationNumber, Notation.Type notationType,
-				Notation.Style notationStyle, NoteBuilder firstBuilder) {
+				Notation.Style notationStyle, ConnectableBuilder firstBuilder) {
 			if (!unresolvedNotationsPerVoice.containsKey(voiceNumber)) {
 				unresolvedNotationsPerVoice.put(voiceNumber, new ArrayList<>());
 			}
@@ -1178,13 +1285,15 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			return unresolvedNotation;
 		}
 
-		void addToUnresolvedNotations(int voiceNumber, NoteBuilder builder, Set<UnresolvedNotation> notationsToIgnore) {
+		void addToUnresolvedNotations(int voiceNumber, ConnectableBuilder builder,
+				Set<UnresolvedNotation> notationsToIgnore) {
 			unresolvedNotationsPerVoice.getOrDefault(voiceNumber, Collections.emptyList()).stream()
 					.filter(unresolvedNotation -> !notationsToIgnore.contains(unresolvedNotation))
 					.forEach(unresolvedNotation -> unresolvedNotation.addNoteBuilder(builder));
 		}
 
-		void endNotation(int voiceNumber, int notationNumber, Notation.Type notationType, NoteBuilder lastBuilder) {
+		void endNotation(int voiceNumber, int notationNumber, Notation.Type notationType,
+				ConnectableBuilder lastBuilder, Context context) {
 			final Collection<UnresolvedNotation> notationsForVoice = unresolvedNotationsPerVoice
 					.getOrDefault(voiceNumber, Collections.emptyList());
 
@@ -1197,7 +1306,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			if (unresolvedNotationToEndOpt.isPresent()) {
 				UnresolvedNotation unresolvedNotationToEnd = unresolvedNotationToEndOpt.get();
 				unresolvedNotationToEnd.addNoteBuilder(lastBuilder);
-				unresolvedNotationToEnd.resolve();
+				unresolvedNotationToEnd.resolve(context);
 				notationsForVoice.remove(unresolvedNotationToEnd);
 
 			} else {
@@ -1216,7 +1325,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		private final int notationNumber;
 		private final Notation.Type notationType;
 		private final Notation.Style notationStyle;
-		private final List<NoteBuilder> connectedNoteBuilders;
+		private final List<ConnectableBuilder> connectedNoteBuilders;
 
 		UnresolvedNotation(int notationNumber, Notation.Type notationType, Notation.Style notationStyle) {
 			this.notationNumber = notationNumber;
@@ -1233,14 +1342,32 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			return notationType;
 		}
 
-		void addNoteBuilder(NoteBuilder builder) {
+		void addNoteBuilder(ConnectableBuilder builder) {
 			connectedNoteBuilders.add(builder);
 		}
 
-		void resolve() {
+		void resolve(Context context) {
 			final Notation notation = Notation.of(notationType, notationStyle);
-			for (int i = 0; i < connectedNoteBuilders.size() - 1; ++i) {
-				connectedNoteBuilders.get(i).connectWith(notation, connectedNoteBuilders.get(i + 1));
+			final int indexOfLast = connectedNoteBuilders.size() - 1;
+			for (int i = 0; i < indexOfLast; ++i) {
+				ConnectableBuilder nextBuilder = connectedNoteBuilders.get(i + 1);
+				if (nextBuilder instanceof NoteBuilder) {
+					connectedNoteBuilders.get(i).connectWith(notation, (NoteBuilder) nextBuilder);
+				} else if (nextBuilder instanceof GraceNoteBuilder) {
+					connectedNoteBuilders.get(i).connectWith(notation, (GraceNoteBuilder) nextBuilder);
+				}
+			}
+
+			// If the notation ends on a grace note, check if the grace notes should be
+			// added as succeeding grace notes to a NoteBuilder.
+			if (connectedNoteBuilders.get(indexOfLast) instanceof GraceNoteBuilder) {
+				for (int i = indexOfLast; i >= 0; --i) {
+					ConnectableBuilder builder = connectedNoteBuilders.get(i);
+					if (builder instanceof NoteBuilder) {
+						context.setGraceNotesToNoteBuilder((NoteBuilder) builder, false);
+						break;
+					}
+				}
 			}
 		}
 

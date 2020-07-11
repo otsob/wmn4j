@@ -238,7 +238,7 @@ class MusicXmlScoreWriterDomTest {
 
 		assertEquals(8, noteNodes.size(), "Wrong number of note notes found in written test document");
 
-		assertNoteNodeDurationTypeElement("32th", noteNodes.get(0));
+		assertNoteNodeDurationTypeElement("32nd", noteNodes.get(0));
 		assertNoteNodeDurationTypeElement("16th", noteNodes.get(1));
 		assertNoteNodeDurationTypeElement("eighth", noteNodes.get(2));
 		assertNoteNodeDurationTypeElement("quarter", noteNodes.get(3));
@@ -277,7 +277,7 @@ class MusicXmlScoreWriterDomTest {
 
 		assertEquals(8, noteNodes.size(), "Wrong number of note notes found in written test document");
 
-		assertBasicDottedNoteAppearance("32th", noteNodes.get(0));
+		assertBasicDottedNoteAppearance("32nd", noteNodes.get(0));
 		assertBasicDottedNoteAppearance("16th", noteNodes.get(1));
 		assertBasicDottedNoteAppearance("eighth", noteNodes.get(2));
 		assertBasicDottedNoteAppearance("quarter", noteNodes.get(3));
@@ -436,5 +436,12 @@ class MusicXmlScoreWriterDomTest {
 		for (Durational dur : measure) {
 			assertTrue(dur.getDuration().hasExpression());
 		}
+	}
+
+	@Test
+	void testGivenScoreWithGraceNotesThenGraceNotesAreCorrectlyWritten() {
+		Score score = readMusicXmlTestFile("grace_note_test.musicxml", false);
+		Score writtenScore = writeAndReadScore(score);
+		MusicXmlFileChecks.assertGraceNotesAreCorrect(writtenScore);
 	}
 }

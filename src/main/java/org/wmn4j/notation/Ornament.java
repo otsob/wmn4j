@@ -1,5 +1,10 @@
 package org.wmn4j.notation;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Represents an ornament, such as a trill or mordent. This class represents ornaments that are linked to
  * a single note, connected notations are represented using the class {@link Notation}.
@@ -60,7 +65,17 @@ public final class Ornament {
 		/**
 		 * Specifies a turn (gruppetto).
 		 */
-		TURN
+		TURN,
+
+		/**
+		 * Specifies one or more grace notes before the actual note.
+		 */
+		GRACE_NOTES,
+
+		/**
+		 * Specifies one or more grace notes to be played after the actual note.
+		 */
+		SUCCEEDING_GRACE_NOTES,
 	}
 
 	/**
@@ -73,10 +88,45 @@ public final class Ornament {
 		return new Ornament(type);
 	}
 
+	/**
+	 * Returns a grace notes ornament.
+	 * The primaryNoteConnections given as parameter can contain any dummy note in them as the target. They
+	 * will be connected to the primary note when the grace note ornamental is given to a Note creation method.
+	 *
+	 * @param ornamentalNotes        the ornamental notes in the preceding list of grace notes
+	 * @param primaryNoteConnections the notations between the last grace note and their primary note
+	 * @return a grace notes ornament
+	 */
+	public static Ornament graceNotes(List<? extends Ornamental> ornamentalNotes,
+			Collection<Notation.Connection> primaryNoteConnections) {
+		return new Ornament(Type.GRACE_NOTES, ornamentalNotes, primaryNoteConnections);
+	}
+
+	/**
+	 * Returns a succeeding grace notes ornament.
+	 *
+	 * @param ornamentalNotes the ornamental notes in the succeeding list of grace notes
+	 * @return a succeeding grace notes ornament
+	 */
+	public static Ornament succeedingGraceNotes(List<? extends Ornamental> ornamentalNotes) {
+		return new Ornament(Type.SUCCEEDING_GRACE_NOTES, ornamentalNotes, Collections.emptyList());
+	}
+
 	private final Type type;
+	private final List<Ornamental> ornamentalNotes;
+	private final Collection<Notation.Connection> principalNoteConnections;
 
 	private Ornament(Type type) {
 		this.type = type;
+		this.ornamentalNotes = Collections.emptyList();
+		this.principalNoteConnections = Collections.emptyList();
+	}
+
+	private Ornament(Type type, List<? extends Ornamental> ornamentalNotes,
+			Collection<Notation.Connection> principalNoteConnections) {
+		this.type = type;
+		this.ornamentalNotes = Collections.unmodifiableList(new ArrayList<>(ornamentalNotes));
+		this.principalNoteConnections = Collections.unmodifiableList(new ArrayList<>(principalNoteConnections));
 	}
 
 	/**
@@ -86,5 +136,20 @@ public final class Ornament {
 	 */
 	public Type getType() {
 		return type;
+	}
+
+	/**
+	 * Returns the ornamental notes associated with this ornament.
+	 * Returns empty if there are no ornamental notes, e.g., grace notes
+	 * associated with this ornamental.
+	 *
+	 * @return the ornamental notes associated with this ornament
+	 */
+	public List<Ornamental> getOrnamentalNotes() {
+		return ornamentalNotes;
+	}
+
+	Collection<Notation.Connection> getPrincipalNoteConnections() {
+		return principalNoteConnections;
 	}
 }
