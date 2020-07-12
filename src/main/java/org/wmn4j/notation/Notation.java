@@ -15,9 +15,10 @@ import java.util.Optional;
  * slurs, or arpeggiation. The connected notations are represented using connections
  * between adjacent notes. For example, if three notes are affected by the same
  * slur, the first will be connected to the second note and the second note will
- * be connected to the third note. The connections should follow the order in which the
- * notes are played as well as possible, e.g., downward arpeggiation should have the
- * highest note in the chord as the first note in the connected notation.
+ * be connected to the third note. The connections should follow the left to right
+ * order in the score (i.e. connections go from left to right). For chords the connections
+ * should got from lowest note to highest (e.g., beginning of arpeggiation is the lowest
+ * note of the chord).
  * <p>
  * This class is immutable.
  */

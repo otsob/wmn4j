@@ -317,7 +317,6 @@ class NoteTest {
 		final Ornament succeedingGraceNotes = Ornament
 				.succeedingGraceNotes(Arrays.asList(graceNoteAfter));
 
-		Notation.Connection slurBetweenGraceNotes = Notation.Connection.of(slur, graceNoteAfter);
 		final GraceNote middleGraceNote = GraceNote
 				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), Durations.EIGHTH, Collections.emptySet(),
 						Collections.emptyList(), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
@@ -330,7 +329,7 @@ class NoteTest {
 		final Ornament graceNotes = Ornament
 				.graceNotes(Arrays.asList(firstGraceNote, middleGraceNote),
 						Arrays.asList(Notation.Connection.of(slur, Note.of(
-								Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))));
+								Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))));
 
 		final Note note = Note
 				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH, Collections.emptySet(),
@@ -359,5 +358,62 @@ class NoteTest {
 		assertEquals(1, graceNotesAfter.getOrnamentalNotes().size());
 		assertEquals(graceNoteAfter, graceNotesAfter.getOrnamentalNotes().get(0));
 		assertTrue(graceNoteAfter.endsNotation(Notation.Type.SLUR));
+	}
+
+	@Test
+	void testGivenGraceNoteChordsWhenNoteIsCreatedThenNotationsAreCorrect() {
+
+		final Notation arpeggiate = Notation.of(Notation.Type.ARPEGGIATE);
+
+		final Notation.Connection arpeggiationEnd = Notation.Connection.endOf(arpeggiate);
+		final Notation slur = Notation.of(Notation.Type.SLUR);
+		final Notation.Connection slurBegin = Notation.Connection.beginningOf(slur, Note.of(
+				Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		final GraceNote fifth = GraceNote
+				.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(arpeggiationEnd, slurBegin), Collections.emptyList(),
+						Ornamental.Type.ACCIACCATURA);
+
+		final Notation.Connection arpeggiationMiddle = Notation.Connection.of(arpeggiate, fifth);
+		final GraceNote third = GraceNote
+				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(arpeggiationMiddle), Collections.emptyList(), Ornamental.Type.ACCIACCATURA);
+
+		final Notation.Connection arpeggiationBegin = Notation.Connection.beginningOf(arpeggiate, third);
+		final GraceNote root = GraceNote
+				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(arpeggiationBegin), Collections.emptyList(), Ornamental.Type.ACCIACCATURA);
+
+		final GraceNoteChord graceNoteChord = GraceNoteChord.of(Arrays.asList(root, third, fifth));
+		final Ornament graceNotes = Ornament.graceNotes(Arrays.asList(graceNoteChord), Arrays.asList(slurBegin));
+		final Note note = Note
+				.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), Durations.QUARTER, Collections.emptySet(),
+						Arrays.asList(Notation.Connection.endOf(slur)),
+						Arrays.asList(graceNotes));
+
+		assertEquals(1, note.getOrnaments().size());
+		assertTrue(note.hasOrnament(Ornament.Type.GRACE_NOTES));
+
+		Optional<Ornament> graceNotesFromNote = note.getOrnaments().stream()
+				.filter(ornament -> ornament.getType().equals(
+						Ornament.Type.GRACE_NOTES)).findAny();
+
+		assertTrue(graceNotesFromNote.isPresent());
+		List<Ornamental> ornamentalNotes = graceNotesFromNote.get().getOrnamentalNotes();
+		assertEquals(1, ornamentalNotes.size());
+		assertTrue(ornamentalNotes.get(0) instanceof GraceNoteChord);
+		final GraceNoteChord graceNoteChordFromNote = (GraceNoteChord) ornamentalNotes.get(0);
+		assertEquals(3, graceNoteChordFromNote.getNoteCount());
+
+		final GraceNote highest = graceNoteChordFromNote.getHighestNote();
+		assertEquals(fifth, highest);
+		Optional<Notation.Connection> slurToPrincipal = highest.getConnection(slur);
+		assertTrue(slurToPrincipal.isPresent());
+		final Note connectedTo = slurToPrincipal.get().getFollowingNote().get();
+		assertEquals(note, connectedTo);
+
+		assertTrue(graceNoteChordFromNote.getLowestNote().beginsNotation(Notation.Type.ARPEGGIATE));
+		assertTrue(graceNoteChordFromNote.getNote(1).hasNotation(Notation.Type.ARPEGGIATE));
+		assertTrue(graceNoteChordFromNote.getHighestNote().endsNotation(Notation.Type.ARPEGGIATE));
 	}
 }

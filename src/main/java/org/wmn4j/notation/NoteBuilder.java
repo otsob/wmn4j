@@ -21,9 +21,6 @@ import java.util.stream.Collectors;
  */
 public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder {
 
-	private static final Note DUMMY_NOTE = Note
-			.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER);
-
 	private Pitch pitch;
 	private Duration duration;
 	private Set<Articulation> articulations;
@@ -324,9 +321,10 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 			for (Notation notation : noteConnectionsFromGraceNote.keySet()) {
 				if (noteConnectionsFromGraceNote.get(notation) == this) {
 					if (lastGraceNoteConnectedFrom.contains(notation)) {
-						primaryNoteConnections.add(Notation.Connection.of(notation, DUMMY_NOTE));
+						primaryNoteConnections.add(Notation.Connection.of(notation, createWithPitchAndDuration()));
 					} else {
-						primaryNoteConnections.add(Notation.Connection.beginningOf(notation, DUMMY_NOTE));
+						primaryNoteConnections
+								.add(Notation.Connection.beginningOf(notation, createWithPitchAndDuration()));
 					}
 					notationsToRemove.add(notation);
 				}
@@ -344,6 +342,10 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 		}
 
 		return graceNotes;
+	}
+
+	private Note createWithPitchAndDuration() {
+		return Note.of(pitch, duration);
 	}
 
 	Collection<Ornament> buildOrnaments() {

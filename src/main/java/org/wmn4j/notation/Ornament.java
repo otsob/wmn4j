@@ -93,16 +93,19 @@ public final class Ornament {
 
 	/**
 	 * Returns a grace notes ornament.
-	 * The primaryNoteConnections given as parameter can contain any dummy note in them as the target. They
-	 * will be connected to the primary note when the grace note ornamental is given to a Note creation method.
+	 * The principalNoteConnections given as parameter should be connected to a note that is similar to the
+	 * principal note to which the grace notes are connected. They
+	 * will be connected to the principal note when the grace note ornamental is given to a Note creation method.
+	 * For connecting multiple ornamental notes it is best to use the {@link NoteBuilder} and {@link GraceNoteBuilder}
+	 * classes.
 	 *
-	 * @param ornamentalNotes        the ornamental notes in the preceding list of grace notes
-	 * @param primaryNoteConnections the notations between the last grace note and their primary note
+	 * @param ornamentalNotes          the ornamental notes in the preceding list of grace notes
+	 * @param principalNoteConnections the notations between the last grace note and their principal note
 	 * @return a grace notes ornament
 	 */
 	public static Ornament graceNotes(List<? extends Ornamental> ornamentalNotes,
-			Collection<Notation.Connection> primaryNoteConnections) {
-		return new Ornament(Type.GRACE_NOTES, ornamentalNotes, primaryNoteConnections);
+			Collection<Notation.Connection> principalNoteConnections) {
+		return new Ornament(Type.GRACE_NOTES, ornamentalNotes, principalNoteConnections);
 	}
 
 	/**
