@@ -12,7 +12,7 @@ import java.util.Set;
  * <p>
  * Instances of this class are not thread-safe.
  */
-public final class GraceNoteBuilder implements ConnectableBuilder {
+public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBuilder {
 
 	private final NoteBuilder noteBuilder;
 	private NoteBuilder principalNoteBuilder;
@@ -176,6 +176,7 @@ public final class GraceNoteBuilder implements ConnectableBuilder {
 	 *
 	 * @return a note instance with the values set in this builder.
 	 */
+	@Override
 	public GraceNote build() {
 
 		if (this.cachedNote == null) {
