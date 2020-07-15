@@ -4,6 +4,7 @@
 package org.wmn4j.notation;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,9 +13,10 @@ import java.util.stream.Collectors;
  * <p>
  * Instances of this class are not thread-safe.
  */
-public final class GraceNoteChordBuilder implements OrnamentalBuilder {
+public final class GraceNoteChordBuilder implements OrnamentalBuilder, Iterable<GraceNoteBuilder> {
 
 	private final List<GraceNoteBuilder> noteBuilders;
+	private GraceNoteChord cachedChord;
 
 	/**
 	 * Constructor that creates an empty builder.
@@ -32,8 +34,26 @@ public final class GraceNoteChordBuilder implements OrnamentalBuilder {
 		noteBuilders.add(graceNoteBuilder);
 	}
 
+	void setPrincipalNote(NoteBuilder principalNote) {
+		noteBuilders.forEach(noteBuilder -> noteBuilder.setPrincipalNote(principalNote));
+	}
+
+	void setCachedChord(GraceNoteChord chord) {
+		cachedChord = chord;
+	}
+
 	@Override
 	public GraceNoteChord build() {
-		return GraceNoteChord.of(noteBuilders.stream().map(GraceNoteBuilder::build).collect(Collectors.toList()));
+		if (cachedChord == null) {
+			cachedChord = GraceNoteChord
+					.of(noteBuilders.stream().map(GraceNoteBuilder::build).collect(Collectors.toList()));
+		}
+
+		return cachedChord;
+	}
+
+	@Override
+	public Iterator<GraceNoteBuilder> iterator() {
+		return noteBuilders.iterator();
 	}
 }

@@ -3,6 +3,8 @@
  */
 package org.wmn4j.notation;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -16,6 +18,7 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 
 	private final NoteBuilder noteBuilder;
 	private NoteBuilder principalNoteBuilder;
+	private Collection<Notation.Connection> principalNoteConnections;
 
 	private GraceNote.Type graceNoteType;
 	private GraceNote cachedNote;
@@ -31,6 +34,7 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 		noteBuilder = new NoteBuilder(pitch, displayableDuration);
 		graceNoteType = GraceNote.Type.GRACE_NOTE;
 		isBuilding = false;
+		principalNoteConnections = Collections.emptyList();
 	}
 
 	/**
@@ -147,6 +151,10 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 		noteBuilder.addOrnament(ornament);
 	}
 
+	void setPrincipalNoteConnections(Collection<Notation.Connection> connections) {
+		principalNoteConnections = connections;
+	}
+
 	@Override
 	public void connectWith(Notation notation, NoteBuilder targetNoteBuilder) {
 		noteBuilder.connectWith(notation, targetNoteBuilder);
@@ -191,7 +199,8 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 
 			this.cachedNote = GraceNote
 					.of(noteBuilder.getPitch(), noteBuilder.getDuration(), noteBuilder.getArticulations(),
-							noteBuilder.getResolvedNotationConnections(), noteBuilder.getOrnaments(), graceNoteType);
+							noteBuilder.getResolvedNotationConnections(), noteBuilder.getOrnaments(), graceNoteType,
+							principalNoteConnections);
 
 			isBuilding = false;
 		}

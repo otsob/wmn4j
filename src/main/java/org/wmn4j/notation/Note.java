@@ -137,9 +137,23 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 		return Collections.unmodifiableSet(copiedOrnaments);
 	}
 
+	private boolean isGraceNoteCopyingNeeded(Ornament graceNotes) {
+		List<Ornamental> ornamentals = graceNotes.getOrnamentalNotes();
+
+		if (!ornamentals.isEmpty()) {
+			Ornamental last = ornamentals.get(ornamentals.size() - 1);
+			if (last instanceof GraceNote) {
+				return !((GraceNote) last).getPrincipalNoteConnections().isEmpty();
+			} else if (last instanceof GraceNoteChord) {
+				return ((GraceNoteChord) last).isConnectedToPrincipalNote();
+			}
+		}
+
+		return false;
+	}
+
 	private Ornament copyGraceNotesWithConnections(Ornament graceNotes) {
-		Collection<Notation.Connection> principalNoteConnections = graceNotes.getPrincipalNoteConnections();
-		if (principalNoteConnections.isEmpty()) {
+		if (!isGraceNoteCopyingNeeded(graceNotes)) {
 			return graceNotes;
 		}
 
@@ -153,7 +167,8 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 			Ornamental original = copiedOrnamentals.get(i);
 			if (original instanceof GraceNote) {
 				GraceNote originalGraceNote = (GraceNote) original;
-				GraceNote linkedCopy = createGraceNoteWithCorrectConnections(principalNoteConnections, target,
+				GraceNote linkedCopy = createGraceNoteWithCorrectConnections(
+						originalGraceNote.getPrincipalNoteConnections(), target,
 						indexOfLast, i, originalGraceNote);
 				copiedOrnamentals.set(i, linkedCopy);
 				target = linkedCopy;
@@ -163,7 +178,8 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 
 				for (int chordIndex = originalGraceNoteChord.getNoteCount() - 1; chordIndex >= 0; --chordIndex) {
 					GraceNote originalGraceNote = originalGraceNoteChord.getNote(chordIndex);
-					GraceNote linkedCopy = createGraceNoteWithCorrectConnections(principalNoteConnections, target,
+					GraceNote linkedCopy = createGraceNoteWithCorrectConnections(
+							originalGraceNote.getPrincipalNoteConnections(), target,
 							indexOfLast, i,
 							originalGraceNote);
 					copiedChordNotes.add(linkedCopy);
@@ -174,7 +190,7 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 			}
 		}
 
-		return Ornament.graceNotes(copiedOrnamentals, Collections.emptyList());
+		return Ornament.graceNotes(copiedOrnamentals);
 	}
 
 	private GraceNote createGraceNoteWithCorrectConnections(Collection<Notation.Connection> principalNoteConnections,

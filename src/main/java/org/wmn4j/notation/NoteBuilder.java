@@ -4,7 +4,9 @@
 package org.wmn4j.notation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,8 +30,8 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	private Map<Notation, NoteBuilder> noteConnections = new HashMap<>();
 	private Map<Notation, GraceNoteBuilder> graceNoteConnections = new HashMap<>();
 	private Set<Notation> connectedFrom = new HashSet<>();
-	private List<GraceNoteBuilder> precedingGraceNotes = new ArrayList<>();
-	private List<GraceNoteBuilder> succeedingGraceNotes = new ArrayList<>();
+	private List<? extends OrnamentalBuilder> precedingGraceNotes = new ArrayList<>();
+	private List<? extends OrnamentalBuilder> succeedingGraceNotes = new ArrayList<>();
 
 	private Note cachedNote;
 	private boolean isBuilding;
@@ -156,9 +158,9 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 *
 	 * @param graceNoteBuilders the builders for the grace notes that this builder will add to the built note
 	 */
-	public void setPrecedingGraceNotes(List<GraceNoteBuilder> graceNoteBuilders) {
+	public void setPrecedingGraceNotes(List<? extends OrnamentalBuilder> graceNoteBuilders) {
 		precedingGraceNotes = graceNoteBuilders;
-		precedingGraceNotes.forEach(graceNoteBuilder -> graceNoteBuilder.setPrincipalNote(this));
+		setPrincipalNoteForAll(precedingGraceNotes);
 	}
 
 	/**
@@ -168,9 +170,19 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 *
 	 * @param graceNoteBuilders the builders for the grace notes that this builder will add to the built note
 	 */
-	public void setSucceedingGraceNotes(List<GraceNoteBuilder> graceNoteBuilders) {
+	public void setSucceedingGraceNotes(List<? extends OrnamentalBuilder> graceNoteBuilders) {
 		succeedingGraceNotes = graceNoteBuilders;
-		succeedingGraceNotes.forEach(graceNoteBuilder -> graceNoteBuilder.setPrincipalNote(this));
+		setPrincipalNoteForAll(succeedingGraceNotes);
+	}
+
+	private void setPrincipalNoteForAll(List<? extends OrnamentalBuilder> ornamentalBuilders) {
+		for (OrnamentalBuilder builder : ornamentalBuilders) {
+			if (builder instanceof GraceNoteBuilder) {
+				((GraceNoteBuilder) builder).setPrincipalNote(this);
+			} else if (builder instanceof GraceNoteChordBuilder) {
+				((GraceNoteChordBuilder) builder).setPrincipalNote(this);
+			}
+		}
 	}
 
 	/**
@@ -304,44 +316,59 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 		List<Ornament> graceNotes = new ArrayList<>(2);
 
 		if (!succeedingGraceNotes.isEmpty()) {
-			List<GraceNote> builtGraceNotes = succeedingGraceNotes.stream().map(GraceNoteBuilder::build)
+			List<Ornamental> builtGraceNotes = succeedingGraceNotes.stream().map(OrnamentalBuilder::build)
 					.collect(Collectors.toList());
 
 			graceNotes.add(Ornament.succeedingGraceNotes(builtGraceNotes));
 		}
 
 		if (!precedingGraceNotes.isEmpty()) {
-			GraceNoteBuilder lastGraceNoteBuilder = precedingGraceNotes.get(precedingGraceNotes.size() - 1);
-			Map<Notation, NoteBuilder> noteConnectionsFromGraceNote = lastGraceNoteBuilder.getNoteConnections();
-			Set<Notation> lastGraceNoteConnectedFrom = lastGraceNoteBuilder.getConnectedFrom();
+			for (GraceNoteBuilder lastGraceNoteBuilder : getPrecedingGraceNoteBuilders()) {
+				List<Notation.Connection> principalNoteConnections = new ArrayList<>();
+				Map<Notation, NoteBuilder> noteConnectionsFromGraceNote = lastGraceNoteBuilder.getNoteConnections();
+				Set<Notation> lastGraceNoteConnectedFrom = lastGraceNoteBuilder.getConnectedFrom();
 
-			List<Notation.Connection> primaryNoteConnections = new ArrayList<>();
-			List<Notation> notationsToRemove = new ArrayList<>();
+				List<Notation> notationsToRemove = new ArrayList<>();
 
-			for (Notation notation : noteConnectionsFromGraceNote.keySet()) {
-				if (noteConnectionsFromGraceNote.get(notation) == this) {
-					if (lastGraceNoteConnectedFrom.contains(notation)) {
-						primaryNoteConnections.add(Notation.Connection.of(notation, createWithPitchAndDuration()));
-					} else {
-						primaryNoteConnections
-								.add(Notation.Connection.beginningOf(notation, createWithPitchAndDuration()));
+				for (Notation notation : noteConnectionsFromGraceNote.keySet()) {
+					if (noteConnectionsFromGraceNote.get(notation) == this) {
+						if (lastGraceNoteConnectedFrom.contains(notation)) {
+							principalNoteConnections
+									.add(Notation.Connection.of(notation, createWithPitchAndDuration()));
+						} else {
+							principalNoteConnections
+									.add(Notation.Connection.beginningOf(notation, createWithPitchAndDuration()));
+						}
+						notationsToRemove.add(notation);
 					}
-					notationsToRemove.add(notation);
 				}
+
+				for (Notation notation : notationsToRemove) {
+					noteConnectionsFromGraceNote.remove(notation);
+					lastGraceNoteConnectedFrom.remove(notation);
+				}
+
+				lastGraceNoteBuilder.setPrincipalNoteConnections(principalNoteConnections);
 			}
 
-			for (Notation notation : notationsToRemove) {
-				noteConnectionsFromGraceNote.remove(notation);
-				lastGraceNoteConnectedFrom.remove(notation);
-			}
-
-			List<GraceNote> builtGraceNotes = precedingGraceNotes.stream().map(GraceNoteBuilder::build)
+			List<Ornamental> builtGraceNotes = precedingGraceNotes.stream().map(OrnamentalBuilder::build)
 					.collect(Collectors.toList());
 
-			graceNotes.add(Ornament.graceNotes(builtGraceNotes, primaryNoteConnections));
+			graceNotes.add(Ornament.graceNotes(builtGraceNotes));
 		}
 
 		return graceNotes;
+	}
+
+	private Iterable<GraceNoteBuilder> getPrecedingGraceNoteBuilders() {
+		OrnamentalBuilder last = precedingGraceNotes.get(precedingGraceNotes.size() - 1);
+		if (last instanceof GraceNoteBuilder) {
+			return Arrays.asList((GraceNoteBuilder) last);
+		} else if (last instanceof GraceNoteChordBuilder) {
+			return (GraceNoteChordBuilder) last;
+		}
+
+		return Collections.emptyList();
 	}
 
 	private Note createWithPitchAndDuration() {
@@ -407,12 +434,17 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 		updateGraceNotes(succeedingGraceNotes, succeedingGraceNotesOpt);
 	}
 
-	private void updateGraceNotes(List<GraceNoteBuilder> builders, Optional<Ornament> builtGraceNotes) {
+	private void updateGraceNotes(List<? extends OrnamentalBuilder> builders, Optional<Ornament> builtGraceNotes) {
 		if (builtGraceNotes.isPresent()) {
 			List<Ornamental> ornamenalNotes = builtGraceNotes.get().getOrnamentalNotes();
 
 			for (int i = 0; i < ornamenalNotes.size(); ++i) {
-				builders.get(i).setCachedNote((GraceNote) ornamenalNotes.get(i));
+				OrnamentalBuilder builder = builders.get(i);
+				if (builder instanceof GraceNoteBuilder) {
+					((GraceNoteBuilder) builder).setCachedNote((GraceNote) ornamenalNotes.get(i));
+				} else if (builder instanceof GraceNoteChordBuilder) {
+					((GraceNoteChordBuilder) builder).setCachedChord((GraceNoteChord) ornamenalNotes.get(i));
+				}
 			}
 		}
 	}

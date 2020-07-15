@@ -24,7 +24,7 @@ class OrnamentTest {
 				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER, Collections.emptySet(),
 						Collections.emptyList(), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
 
-		Ornament graceNote = Ornament.graceNotes(Arrays.asList(graceNoteC), Collections.emptyList());
+		Ornament graceNote = Ornament.graceNotes(Arrays.asList(graceNoteC));
 		assertEquals(Ornament.Type.GRACE_NOTES, graceNote.getType());
 		assertEquals(1, graceNote.getOrnamentalNotes().size());
 		assertTrue(graceNote.getOrnamentalNotes().contains(graceNoteC));

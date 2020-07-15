@@ -179,6 +179,10 @@ public final class GraceNoteChord implements Ornamental, Iterable<GraceNote> {
 				.collect(Collectors.toUnmodifiableSet());
 	}
 
+	boolean isConnectedToPrincipalNote() {
+		return internalChord.stream().anyMatch(graceNote -> !graceNote.getPrincipalNoteConnections().isEmpty());
+	}
+
 	/**
 	 * Returns true if the given Object is equal to this.
 	 *

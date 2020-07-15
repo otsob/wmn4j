@@ -319,7 +319,9 @@ class NoteTest {
 
 		final GraceNote middleGraceNote = GraceNote
 				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), Durations.EIGHTH, Collections.emptySet(),
-						Collections.emptyList(), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
+						Collections.emptyList(), Collections.emptyList(), Ornamental.Type.GRACE_NOTE,
+						Arrays.asList(Notation.Connection.of(slur, Note.of(
+								Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))));
 
 		Notation.Connection beginning = Notation.Connection.beginningOf(slur, middleGraceNote);
 		final GraceNote firstGraceNote = GraceNote
@@ -327,9 +329,7 @@ class NoteTest {
 						Arrays.asList(beginning), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
 
 		final Ornament graceNotes = Ornament
-				.graceNotes(Arrays.asList(firstGraceNote, middleGraceNote),
-						Arrays.asList(Notation.Connection.of(slur, Note.of(
-								Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))));
+				.graceNotes(Arrays.asList(firstGraceNote, middleGraceNote));
 
 		final Note note = Note
 				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH, Collections.emptySet(),
@@ -372,7 +372,7 @@ class NoteTest {
 		final GraceNote fifth = GraceNote
 				.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
 						Arrays.asList(arpeggiationEnd, slurBegin), Collections.emptyList(),
-						Ornamental.Type.ACCIACCATURA);
+						Ornamental.Type.ACCIACCATURA, Arrays.asList(slurBegin));
 
 		final Notation.Connection arpeggiationMiddle = Notation.Connection.of(arpeggiate, fifth);
 		final GraceNote third = GraceNote
@@ -385,7 +385,7 @@ class NoteTest {
 						Arrays.asList(arpeggiationBegin), Collections.emptyList(), Ornamental.Type.ACCIACCATURA);
 
 		final GraceNoteChord graceNoteChord = GraceNoteChord.of(Arrays.asList(root, third, fifth));
-		final Ornament graceNotes = Ornament.graceNotes(Arrays.asList(graceNoteChord), Arrays.asList(slurBegin));
+		final Ornament graceNotes = Ornament.graceNotes(Arrays.asList(graceNoteChord));
 		final Note note = Note
 				.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), Durations.QUARTER, Collections.emptySet(),
 						Arrays.asList(Notation.Connection.endOf(slur)),

@@ -5,6 +5,7 @@ package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
@@ -473,5 +474,48 @@ class NoteBuilderTest {
 		Optional<Notation.Connection> slurToLastNote = graceNote.getConnection(slur);
 		assertTrue(slurToLastNote.isPresent());
 		assertEquals(lastNote, slurToLastNote.get().getFollowingNote().get());
+	}
+
+	@Test
+	void testGivenGraceNoteChordsWhenBuiltThenNotationsAreCorrectlyConnected() {
+		NoteBuilder noteBuilder = new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), Durations.HALF);
+		GraceNoteChordBuilder graceNoteChordBuilder = new GraceNoteChordBuilder();
+		GraceNoteBuilder rootGraceNoteBuilder = new GraceNoteBuilder(
+				Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
+		GraceNoteBuilder thirdGraceNoteBuilder = new GraceNoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.FLAT, 4),
+				Durations.EIGHTH);
+		graceNoteChordBuilder.add(rootGraceNoteBuilder);
+		graceNoteChordBuilder.add(thirdGraceNoteBuilder);
+
+		GraceNoteBuilder graceNoteBuilder = new GraceNoteBuilder(
+				Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
+
+		final Notation glissando = Notation.of(Notation.Type.GLISSANDO);
+		final Notation slur = Notation.of(Notation.Type.SLUR);
+
+		graceNoteBuilder.connectWith(glissando, rootGraceNoteBuilder);
+		thirdGraceNoteBuilder.connectWith(slur, noteBuilder);
+
+		List<OrnamentalBuilder> ornamentalBuilders = new ArrayList<>();
+		ornamentalBuilders.add(graceNoteBuilder);
+		ornamentalBuilders.add(graceNoteChordBuilder);
+		noteBuilder.setPrecedingGraceNotes(ornamentalBuilders);
+
+		final Note note = noteBuilder.build();
+		assertTrue(note.endsNotation(Notation.Type.SLUR));
+		assertTrue(note.getConnection(slur).isPresent());
+
+		final GraceNote graceNote = graceNoteBuilder.build();
+		final GraceNoteChord graceNoteChord = graceNoteChordBuilder.build();
+
+		Optional<Notation.Connection> glissandoToRoot = graceNote.getConnection(glissando);
+		assertTrue(glissandoToRoot.isPresent());
+		assertEquals(graceNoteChord.getLowestNote(), glissandoToRoot.get().getFollowingGraceNote().get());
+
+		final GraceNote graceNoteChordThird = graceNoteChord.getHighestNote();
+		Optional<Notation.Connection> slurToNote = graceNoteChordThird.getConnection(slur);
+		assertTrue(slurToNote.isPresent());
+
+		assertEquals(note, slurToNote.get().getFollowingNote().get());
 	}
 }
