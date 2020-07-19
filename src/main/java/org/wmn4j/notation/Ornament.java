@@ -6,6 +6,7 @@ package org.wmn4j.notation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents an ornament, such as a trill or mordent. This class represents ornaments that are linked to
@@ -144,5 +145,23 @@ public final class Ornament {
 	 */
 	public List<Ornamental> getOrnamentalNotes() {
 		return ornamentalNotes;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Ornament)) {
+			return false;
+		}
+		final Ornament other = (Ornament) o;
+		return type.equals(other.type)
+				&& Objects.equals(ornamentalNotes, other.ornamentalNotes);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(type, ornamentalNotes);
 	}
 }

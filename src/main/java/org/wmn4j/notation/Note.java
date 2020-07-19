@@ -553,7 +553,11 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 			return false;
 		}
 
-		return true;
+		return equalsInOrnaments(other);
+	}
+
+	private boolean equalsInOrnaments(Note other) {
+		return ornaments.equals(other.ornaments);
 	}
 
 	private Set<Notation.Type> getNotationConnectionTypes() {
