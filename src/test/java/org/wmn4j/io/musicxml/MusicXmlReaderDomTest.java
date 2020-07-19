@@ -388,4 +388,10 @@ class MusicXmlReaderDomTest {
 		Score scoreWithGraceNotes = readScore("grace_note_test.musicxml", true);
 		MusicXmlFileChecks.assertGraceNotesAreCorrect(scoreWithGraceNotes);
 	}
+
+	@Test
+	void testGivenFileWithGraceNoteChordsThenAllGraceNotesAreReadCorrectly() {
+		Score scoreWithGraceNotes = readScore("grace_note_chord_test.musicxml", true);
+		MusicXmlFileChecks.assertGraceNoteChordsAreCorrect(scoreWithGraceNotes);
+	}
 }
