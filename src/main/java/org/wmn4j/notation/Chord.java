@@ -3,12 +3,9 @@
  */
 package org.wmn4j.notation;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -20,7 +17,7 @@ import java.util.stream.Collectors;
  * This class is immutable.
  */
 public final class Chord implements Durational, Iterable<Note> {
-	private final List<Note> notes;
+	private final GenericChord<Note> internalChord;
 
 	/**
 	 * Returns an instance of with the given {@link Note} objects.
@@ -48,28 +45,16 @@ public final class Chord implements Durational, Iterable<Note> {
 		return new Chord(notes);
 	}
 
-	/**
-	 * Private constructor. Use static getters for getting an instance.
-	 *
-	 * @param notes the notes that are put in this Chord
-	 * @throws NullPointerException     if notes is null
-	 * @throws IllegalArgumentException if notes is empty or all Note objects in
-	 *                                  notes are not of same duration
-	 */
-	private Chord(Collection<Note> notes) {
+	private Chord(Collection<Note> internalChord) {
+		this(new GenericChord<>(internalChord));
+	}
 
-		final List<Note> notesCopy = new ArrayList<>(Objects.requireNonNull(notes));
+	private Chord(GenericChord<Note> internalChord) {
+		this.internalChord = internalChord;
 
-		if (notesCopy.isEmpty()) {
-			throw new IllegalArgumentException("Chord cannot be constructed with an empty List of notes");
-		}
+		final Duration d = this.internalChord.getNote(0).getDuration();
 
-		notesCopy.sort(Note::compareByPitch);
-		this.notes = Collections.unmodifiableList(notesCopy);
-
-		final Duration d = this.notes.get(0).getDuration();
-
-		for (Note n : this.notes) {
+		for (Note n : this.internalChord) {
 			if (!d.equals(n.getDuration())) {
 				throw new IllegalArgumentException("All notes in chord must be of same duration");
 			}
@@ -78,7 +63,7 @@ public final class Chord implements Durational, Iterable<Note> {
 
 	@Override
 	public Duration getDuration() {
-		return this.notes.get(0).getDuration();
+		return this.internalChord.getNote(0).getDuration();
 	}
 
 	/**
@@ -91,12 +76,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 *                                  the number of notes in this Chord
 	 */
 	public Note getNote(int fromLowest) {
-		if (fromLowest < 0 || fromLowest >= this.notes.size()) {
-			throw new IllegalArgumentException(
-					"Tried to get note with invalid index: " + fromLowest + "from chord: " + this);
-		}
-
-		return this.notes.get(fromLowest);
+		return this.internalChord.getNote(fromLowest);
 	}
 
 	/**
@@ -105,7 +85,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return the note with the lowest pitch in this Chord.
 	 */
 	public Note getLowestNote() {
-		return this.getNote(0);
+		return internalChord.getLowestNote();
 	}
 
 	/**
@@ -114,7 +94,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return the note with the highest pitch in this Chord.
 	 */
 	public Note getHighestNote() {
-		return this.getNote(this.notes.size() - 1);
+		return internalChord.getHighestNote();
 	}
 
 	/**
@@ -123,7 +103,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return number of notes in this chord.
 	 */
 	public int getNoteCount() {
-		return this.notes.size();
+		return internalChord.getNoteCount();
 	}
 
 	/**
@@ -133,9 +113,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return a chord with the notes of this and the added note
 	 */
 	public Chord add(Note note) {
-		final ArrayList<Note> noteList = new ArrayList<>(this.notes);
-		noteList.add(note);
-		return Chord.of(noteList);
+		return new Chord(internalChord.add(note));
 	}
 
 	/**
@@ -145,9 +123,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return a chord without the given note
 	 */
 	public Chord remove(Note note) {
-		final ArrayList<Note> noteList = new ArrayList<>(this.notes);
-		noteList.remove(note);
-		return Chord.of(noteList);
+		return new Chord(internalChord.remove(note));
 	}
 
 	/**
@@ -157,13 +133,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return true if this contains the given pitch, false otherwise
 	 */
 	public boolean contains(Pitch pitch) {
-		for (Note note : this.notes) {
-			if (note.getPitch().equals(pitch)) {
-				return true;
-			}
-		}
-
-		return false;
+		return internalChord.contains(pitch);
 	}
 
 	/**
@@ -173,7 +143,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return true if this contains the given note, false otherwise
 	 */
 	public boolean contains(Note note) {
-		return this.notes.contains(note);
+		return this.internalChord.contains(note);
 	}
 
 	/**
@@ -183,13 +153,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return a chord without a note with the given pitch
 	 */
 	public Chord remove(Pitch pitch) {
-		if (this.contains(pitch)) {
-			final List<Note> newNotes = new ArrayList<>(this.notes);
-			newNotes.remove(Note.of(pitch, this.getDuration()));
-			return Chord.of(newNotes);
-		}
-
-		return this;
+		return new Chord(internalChord.remove(pitch));
 	}
 
 	/**
@@ -198,7 +162,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return true if this chord has articulations
 	 */
 	public boolean hasArticulations() {
-		return this.notes.stream().anyMatch(note -> note.hasArticulations());
+		return this.internalChord.stream().anyMatch(note -> note.hasArticulations());
 	}
 
 	/**
@@ -208,7 +172,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return true if this chord has the given articulation
 	 */
 	public boolean hasArticulation(Articulation articulation) {
-		return this.notes.stream().anyMatch(note -> note.hasArticulation(articulation));
+		return this.internalChord.stream().anyMatch(note -> note.hasArticulation(articulation));
 	}
 
 	/**
@@ -217,7 +181,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	 * @return the articulations defined for this chord
 	 */
 	public Collection<Articulation> getArticulations() {
-		return this.notes.stream().flatMap(note -> note.getArticulations().stream())
+		return this.internalChord.stream().flatMap(note -> note.getArticulations().stream())
 				.collect(Collectors.toUnmodifiableSet());
 	}
 
@@ -240,11 +204,7 @@ public final class Chord implements Durational, Iterable<Note> {
 			return false;
 		}
 
-		if (this.getNoteCount() != other.getNoteCount()) {
-			return false;
-		}
-
-		if (!this.notes.equals(other.notes)) {
+		if (!this.internalChord.equals(other.internalChord)) {
 			return false;
 		}
 
@@ -254,24 +214,13 @@ public final class Chord implements Durational, Iterable<Note> {
 	@Override
 	public int hashCode() {
 		int hash = 7;
-		hash = 61 * hash + Objects.hashCode(this.notes);
+		hash = 61 * hash + Objects.hashCode(this.internalChord);
 		return hash;
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("[");
-
-		for (int i = 0; i < this.notes.size(); ++i) {
-			strBuilder.append(this.notes.get(i).toString());
-
-			if (i != this.notes.size() - 1) {
-				strBuilder.append(",");
-			}
-		}
-		strBuilder.append("]");
-		return strBuilder.toString();
+		return internalChord.toString();
 	}
 
 	@Override
@@ -281,6 +230,6 @@ public final class Chord implements Durational, Iterable<Note> {
 
 	@Override
 	public Iterator<Note> iterator() {
-		return this.notes.iterator();
+		return this.internalChord.iterator();
 	}
 }

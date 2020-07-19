@@ -65,6 +65,7 @@ final class MusicXmlTags {
 	static final String NOTE_VOICE = "voice";
 	static final String NOTE_CHORD = "chord";
 	static final String NOTE_GRACE_NOTE = "grace";
+	static final String NOTE_GRACE_SLASH = "slash";
 	static final String NOTE_STAFF = "staff";
 	static final String NOTE_UNPITCHED = "unpitched";
 	static final String UNPITCHED_STEP = "display-step";
@@ -84,7 +85,7 @@ final class MusicXmlTags {
 	static final String NOTE_TYPE_256TH = "256th";
 	static final String NOTE_TYPE_128TH = "128th";
 	static final String NOTE_TYPE_64TH = "64th";
-	static final String NOTE_TYPE_32TH = "32th";
+	static final String NOTE_TYPE_32TH = "32nd";
 	static final String NOTE_TYPE_16TH = "16th";
 	static final String NOTE_TYPE_EIGHTH = "eighth";
 	static final String NOTE_TYPE_QUARTER = "quarter";
@@ -116,15 +117,42 @@ final class MusicXmlTags {
 	static final String TENUTO_STACCATO = "detached-legato";
 	static final String UNSTRESS = "unstress";
 
-	// Markings
+	// Notations
+	static final String TIED = "tied";
 	static final String SLUR = "slur";
 	static final String GLISSANDO = "glissando";
-	static final String MARKING_NUMBER = "number";
-	static final String MARKING_TYPE = "type";
-	static final String MARKING_TYPE_START = "start";
-	static final String MARKING_TYPE_STOP = "stop";
+	static final String SLIDE = "slide";
+	static final String ARPEGGIATE = "arpeggiate";
+	static final String ARPEGGIO_DIRECTION = "direction";
+	static final String ARPEGGIO_DIRECTION_DOWN = "down";
+	static final String ARPEGGIO_DIRECTION_UP = "up";
+	static final String NON_ARPEGGIATE = "non-arpeggiate";
+	static final String NON_ARPEGGIATE_BOTTOM = "bottom";
+	static final String NON_ARPEGGIATE_TOP = "top";
+	static final String NOTATION_NUMBER = "number";
+	static final String NOTATION_TYPE = "type";
+	static final String NOTATION_TYPE_START = "start";
+	static final String NOTATION_TYPE_STOP = "stop";
 
-	static final Set<String> MARKING_NODE_NAMES = Collections.unmodifiableSet(Set.of(SLUR, GLISSANDO));
+	static final String NOTATION_LINE_TYPE = "line-type";
+	static final String NOTATION_LINE_SOLID = "solid";
+	static final String NOTATION_LINE_DASHED = "dashed";
+	static final String NOTATION_LINE_DOTTED = "dotted";
+	static final String NOTATION_LINE_WAVY = "wavy";
+
+	static final Set<String> CONNECTED_NOTATION_NODE_NAMES = Collections
+			.unmodifiableSet(Set.of(TIED, SLUR, GLISSANDO, SLIDE, ARPEGGIATE, NON_ARPEGGIATE));
+
+	// Ornaments
+	static final String ORNAMENTS = "ornaments";
+	static final String DELAYED_INVERTED_TURN = "delayed-inverted-turn";
+	static final String DELAYED_TURN = "delayed-turn";
+	static final String INVERTED_MORDENT = "inverted-mordent";
+	static final String INVERTED_TURN = "inverted-turn";
+	static final String MORDENT = "mordent";
+	static final String TREMOLO = "tremolo";
+	static final String TRILL_MARK = "trill-mark";
+	static final String TURN = "turn";
 
 	static final String DIRECTION = "direction";
 	static final String DIRECTION_PLACEMENT = "placement";

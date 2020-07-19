@@ -7,17 +7,23 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.wmn4j.TestHelper;
 import org.wmn4j.Wmn4j;
 import org.wmn4j.io.ParsingFailureException;
-import org.wmn4j.TestHelper;
-import org.wmn4j.notation.MeasureBuilder;
-import org.wmn4j.notation.NoteBuilder;
-import org.wmn4j.notation.PartBuilder;
-import org.wmn4j.notation.ScoreBuilder;
+import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.Measure;
+import org.wmn4j.notation.MeasureBuilder;
 import org.wmn4j.notation.Note;
+import org.wmn4j.notation.NoteBuilder;
+import org.wmn4j.notation.Part;
+import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
+import org.wmn4j.notation.ScoreBuilder;
+import org.wmn4j.notation.SingleStaffPart;
 import org.wmn4j.notation.access.PartWiseScoreIterator;
 import org.wmn4j.notation.access.ScoreIterator;
 
@@ -34,6 +40,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -86,9 +93,12 @@ class MusicXmlScoreWriterDomTest {
 		PartBuilder partBuilder = new PartBuilder("Part1");
 		MeasureBuilder measureBuilder = new MeasureBuilder(1);
 
-		measureBuilder.addToVoice(1, new NoteBuilder(Pitch.of(Pitch.Base.C, 0, 0), Durations.QUARTER));
-		measureBuilder.addToVoice(1, new NoteBuilder(Pitch.of(Pitch.Base.D, 1, 1), Durations.HALF));
-		measureBuilder.addToVoice(1, new NoteBuilder(Pitch.of(Pitch.Base.E, -2, 2), Durations.QUARTER_TRIPLET));
+		measureBuilder
+				.addToVoice(1, new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 0), Durations.QUARTER));
+		measureBuilder
+				.addToVoice(1, new NoteBuilder(Pitch.of(Pitch.Base.D, Pitch.Accidental.SHARP, 1), Durations.HALF));
+		measureBuilder.addToVoice(1,
+				new NoteBuilder(Pitch.of(Pitch.Base.E, Pitch.Accidental.DOUBLE_FLAT, 2), Durations.QUARTER_TRIPLET));
 
 		partBuilder.add(measureBuilder);
 		scoreBuilder.addPart(partBuilder);
@@ -100,19 +110,19 @@ class MusicXmlScoreWriterDomTest {
 
 		Note note = (Note) iterator.next();
 		assertEquals(Pitch.Base.C, note.getPitch().getBase());
-		assertEquals(0, note.getPitch().getAlter());
+		assertEquals(Pitch.Accidental.NATURAL, note.getPitch().getAccidental());
 		assertEquals(0, note.getPitch().getOctave());
 		assertEquals(Durations.QUARTER, note.getDuration());
 
 		note = (Note) iterator.next();
 		assertEquals(Pitch.Base.D, note.getPitch().getBase());
-		assertEquals(1, note.getPitch().getAlter());
+		assertEquals(Pitch.Accidental.SHARP, note.getPitch().getAccidental());
 		assertEquals(1, note.getPitch().getOctave());
 		assertEquals(Durations.HALF, note.getDuration());
 
 		note = (Note) iterator.next();
 		assertEquals(Pitch.Base.E, note.getPitch().getBase());
-		assertEquals(-2, note.getPitch().getAlter());
+		assertEquals(Pitch.Accidental.DOUBLE_FLAT, note.getPitch().getAccidental());
 		assertEquals(2, note.getPitch().getOctave());
 		assertEquals(Durations.QUARTER_TRIPLET, note.getDuration());
 
@@ -200,6 +210,14 @@ class MusicXmlScoreWriterDomTest {
 	}
 
 	@Test
+	void testWritingOrnaments() {
+		Score score = readMusicXmlTestFile("ornament_test.musicxml", false);
+		Score writtenScore = writeAndReadScore(score);
+
+		MusicXmlFileChecks.assertOrnamentsAreCorrect(writtenScore);
+	}
+
+	@Test
 	void testWritingBasicNoteAppearances() {
 		final Score score = readMusicXmlTestFile("basic_duration_appearances.xml", false);
 
@@ -220,7 +238,7 @@ class MusicXmlScoreWriterDomTest {
 
 		assertEquals(8, noteNodes.size(), "Wrong number of note notes found in written test document");
 
-		assertNoteNodeDurationTypeElement("32th", noteNodes.get(0));
+		assertNoteNodeDurationTypeElement("32nd", noteNodes.get(0));
 		assertNoteNodeDurationTypeElement("16th", noteNodes.get(1));
 		assertNoteNodeDurationTypeElement("eighth", noteNodes.get(2));
 		assertNoteNodeDurationTypeElement("quarter", noteNodes.get(3));
@@ -259,7 +277,7 @@ class MusicXmlScoreWriterDomTest {
 
 		assertEquals(8, noteNodes.size(), "Wrong number of note notes found in written test document");
 
-		assertBasicDottedNoteAppearance("32th", noteNodes.get(0));
+		assertBasicDottedNoteAppearance("32nd", noteNodes.get(0));
 		assertBasicDottedNoteAppearance("16th", noteNodes.get(1));
 		assertBasicDottedNoteAppearance("eighth", noteNodes.get(2));
 		assertBasicDottedNoteAppearance("quarter", noteNodes.get(3));
@@ -384,15 +402,53 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void whenScoreHasSingleVoiceWithSlursAndGlissandoThenTheyAreWrittenToFile() {
-		Score score = readMusicXmlTestFile("single_staff_single_voice_marking_test.xml", false);
+		Score score = readMusicXmlTestFile("single_staff_single_voice_notation_test.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
-		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromSingleVoiceToScore(writtenScore);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(writtenScore);
 	}
 
 	@Test
 	void whenScoreHasMultipleVoicesWithSlursAndGlissandoThenTheyAreWrittenToFile() {
-		Score score = readMusicXmlTestFile("multi_staff_multi_voice_marking_test.xml", false);
+		Score score = readMusicXmlTestFile("multi_staff_multi_voice_notation_test.xml", false);
 		Score writtenScore = writeAndReadScore(score);
-		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(writtenScore);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(writtenScore);
+	}
+
+	@Test
+	void testWhenGivenInexpressibleDurationsThenDurationsAreCorrectlyDecomposed() {
+		MeasureBuilder measureBuilder = new MeasureBuilder(1);
+		final Duration inexpressibleDuration = Duration.of(5, 8);
+		measureBuilder.addToVoice(1, new RestBuilder(inexpressibleDuration));
+
+		PartBuilder partBuilder = new PartBuilder("Test part");
+		partBuilder.add(measureBuilder);
+
+		ScoreBuilder builder = new ScoreBuilder();
+		builder.addPart(partBuilder);
+		Score score = builder.build();
+
+		final Score writtenScore = writeAndReadScore(score);
+		assertEquals(1, writtenScore.getPartCount());
+		final Part part = writtenScore.getPart(0);
+		assertEquals(1, part.getMeasureCount());
+		final Measure measure = part.getMeasure(SingleStaffPart.STAFF_NUMBER, 1);
+		assertNotEquals(inexpressibleDuration, measure.get(1, 0).getDuration());
+		for (Durational dur : measure) {
+			assertTrue(dur.getDuration().hasExpression());
+		}
+	}
+
+	@Test
+	void testGivenScoreWithGraceNotesThenGraceNotesAreCorrectlyWritten() {
+		Score score = readMusicXmlTestFile("grace_note_test.musicxml", false);
+		Score writtenScore = writeAndReadScore(score);
+		MusicXmlFileChecks.assertGraceNotesAreCorrect(writtenScore);
+	}
+
+	@Test
+	void testGivenScoreWithGraceNoteChordsThenGraceNoteChordsAreCorrectlyWritten() {
+		Score score = readMusicXmlTestFile("grace_note_chord_test.musicxml", false);
+		Score writtenScore = writeAndReadScore(score);
+		MusicXmlFileChecks.assertGraceNoteChordsAreCorrect(writtenScore);
 	}
 }

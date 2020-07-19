@@ -1,3 +1,6 @@
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
 package org.wmn4j.io.musicxml;
 
 import org.junit.jupiter.api.Test;
@@ -63,27 +66,27 @@ class MusicXmlPatternWriterDomTest {
 
 	private final List<Durational> getPatternVoiceOnGClef() {
 		List<Durational> voice = new ArrayList<>();
-		voice.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
+		voice.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
 		voice.add(Rest.of(Durations.QUARTER));
-		voice.add(Note.of(Pitch.of(Pitch.Base.A, -1, 4), Durations.EIGHTH));
-		voice.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH));
-		voice.add(Chord.of(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER),
-				Note.of(Pitch.of(Pitch.Base.F, 1, 4), Durations.QUARTER),
-				Note.of(Pitch.of(Pitch.Base.A, 0, 4), Durations.QUARTER)));
-		voice.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
-		voice.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.HALF));
+		voice.add(Note.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.FLAT, 4), Durations.EIGHTH));
+		voice.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH));
+		voice.add(Chord.of(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.QUARTER),
+				Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 4), Durations.QUARTER),
+				Note.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), Durations.QUARTER)));
+		voice.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.SIXTEENTH));
+		voice.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.HALF));
 		return voice;
 	}
 
 	private final List<Durational> getPatternVoiceOnFClef() {
 		List<Durational> voice = new ArrayList<>();
-		voice.add(Note.of(Pitch.of(Pitch.Base.C, 0, 2), Durations.QUARTER));
+		voice.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.QUARTER));
 		voice.add(Rest.of(Durations.QUARTER));
-		voice.add(Note.of(Pitch.of(Pitch.Base.A, -1, 2), Durations.EIGHTH));
-		voice.add(Note.of(Pitch.of(Pitch.Base.C, 0, 3), Durations.EIGHTH));
-		voice.add(Chord.of(Note.of(Pitch.of(Pitch.Base.D, 0, 2), Durations.QUARTER),
-				Note.of(Pitch.of(Pitch.Base.F, 1, 2), Durations.QUARTER),
-				Note.of(Pitch.of(Pitch.Base.A, 0, 2), Durations.QUARTER)));
+		voice.add(Note.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.FLAT, 2), Durations.EIGHTH));
+		voice.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 3), Durations.EIGHTH));
+		voice.add(Chord.of(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 2), Durations.QUARTER),
+				Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 2), Durations.QUARTER),
+				Note.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 2), Durations.QUARTER)));
 		return voice;
 	}
 
@@ -234,7 +237,7 @@ class MusicXmlPatternWriterDomTest {
 
 	@Test
 	void givenTwoMultivoicePatternsWhenPatternsAreWrittenThenOutputHasCorrectLayout() {
-		List<Durational> singleNoteVoice = Arrays.asList(Note.of(Pitch.Base.C, 0, 4, Durations.QUARTER));
+		List<Durational> singleNoteVoice = Arrays.asList(Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4, Durations.QUARTER));
 
 		Map<Integer, List<? extends Durational>> pattern1voices = new HashMap<>();
 		pattern1voices.put(1, singleNoteVoice);
@@ -292,7 +295,7 @@ class MusicXmlPatternWriterDomTest {
 
 	@Test
 	void testGivenPatternsWithNamesAndLabelsWhenWrittenToMusicXmlThenNamesAndLabelsCorrectlyOutputted() {
-		List<Durational> singleNoteVoice = Arrays.asList(Note.of(Pitch.Base.C, 0, 4, Durations.QUARTER));
+		List<Durational> singleNoteVoice = Arrays.asList(Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4, Durations.QUARTER));
 
 		Set<String> labels = new HashSet<>();
 		labels.add("LabelA1");

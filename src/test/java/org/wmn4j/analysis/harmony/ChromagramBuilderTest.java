@@ -17,11 +17,13 @@ class ChromagramBuilderTest {
 	// By how much values are allowed fo differ
 	private static final double TOLERANCE = 0.0000000001;
 
-	private static final Note C_EIGHTH = Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH);
-	private static final Note E_EIGHTH = Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH);
-	private static final Note G_EIGHTH = Note.of(Pitch.of(Pitch.Base.G, 0, 4), Durations.EIGHTH);
-	private static final Note C_SHARP_SIXTEENTH = Note.of(Pitch.of(Pitch.Base.C, 1, 4), Durations.SIXTEENTH);
-	private static final Note A_FLAT_TRIPLET = Note.of(Pitch.of(Pitch.Base.A, -1, 2), Durations.EIGHTH_TRIPLET);
+	private static final Note C_EIGHTH = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
+	private static final Note E_EIGHTH = Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
+	private static final Note G_EIGHTH = Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH);
+	private static final Note C_SHARP_SIXTEENTH = Note
+			.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.SHARP, 4), Durations.SIXTEENTH);
+	private static final Note A_FLAT_TRIPLET = Note
+			.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.FLAT, 2), Durations.EIGHTH_TRIPLET);
 	private static final Chord C_TRIAD_EIGHTH = Chord.of(C_EIGHTH, E_EIGHTH, G_EIGHTH);
 
 	@Test

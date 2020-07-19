@@ -131,11 +131,11 @@ public class ScoreTest {
 		}
 
 		// Test first note.
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER),
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER),
 				score.getAt(new Position(0, 1, 1, 1, 0)));
 
 		// Test last note.
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, 0, 3), Durations.WHOLE),
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 3), Durations.WHOLE),
 				score.getAt(new Position(1, 2, 3, 2, 0)));
 	}
 
@@ -160,7 +160,7 @@ public class ScoreTest {
 		// Get the middle note (E) from the chord in the score.
 		final Position position = new Position(0, 1, 1, 1, 1, 1);
 		final Note noteInChord = (Note) score.getAt(position);
-		assertEquals(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.HALF), noteInChord);
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.HALF), noteInChord);
 	}
 
 	@Test
@@ -177,8 +177,10 @@ public class ScoreTest {
 
 		final int twoFirstVoiceNumber = twoFirstNotes.getVoiceNumbers().get(0);
 
-		assertEquals(Note.of(Pitch.Base.C, 0, 4, Durations.QUARTER), twoFirstNotes.get(twoFirstVoiceNumber, 0));
-		assertEquals(Note.of(Pitch.Base.D, 0, 4, Durations.QUARTER), twoFirstNotes.get(twoFirstVoiceNumber, 1));
+		assertEquals(Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4, Durations.QUARTER),
+				twoFirstNotes.get(twoFirstVoiceNumber, 0));
+		assertEquals(Note.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4, Durations.QUARTER),
+				twoFirstNotes.get(twoFirstVoiceNumber, 1));
 
 		List<Position> positionsWithGap = new ArrayList<>();
 		positionsWithGap.add(new Position(0, 1, 1, 0));
@@ -191,14 +193,17 @@ public class ScoreTest {
 
 		final int withGapsVoiceNumber = patternWithGaps.getVoiceNumbers().get(0);
 
-		assertEquals(Note.of(Pitch.Base.C, 0, 4, Durations.QUARTER), patternWithGaps.get(withGapsVoiceNumber, 0));
+		assertEquals(Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4, Durations.QUARTER),
+				patternWithGaps.get(withGapsVoiceNumber, 0));
 		assertEquals(Rest.of(Durations.QUARTER), patternWithGaps.get(withGapsVoiceNumber, 1));
 		assertEquals(Rest.of(Durations.QUARTER), patternWithGaps.get(withGapsVoiceNumber, 2));
-		assertEquals(Note.of(Pitch.Base.F, 0, 4, Durations.QUARTER), patternWithGaps.get(withGapsVoiceNumber, 3));
+		assertEquals(Note.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4, Durations.QUARTER),
+				patternWithGaps.get(withGapsVoiceNumber, 3));
 
 		assertEquals(Rest.of(Durations.WHOLE), patternWithGaps.get(withGapsVoiceNumber, 4));
 
-		assertEquals(Note.of(Pitch.Base.C, 0, 4, Durations.WHOLE), patternWithGaps.get(withGapsVoiceNumber, 5));
+		assertEquals(Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4, Durations.WHOLE),
+				patternWithGaps.get(withGapsVoiceNumber, 5));
 	}
 
 	@Test
@@ -214,10 +219,12 @@ public class ScoreTest {
 
 		final int withChordVoiceNumber = patternWithChord.getVoiceNumbers().get(0);
 
-		assertEquals(Note.of(Pitch.Base.E, 0, 4, Durations.EIGHTH), patternWithChord.get(withChordVoiceNumber, 0));
-		assertEquals(Chord.of(Note.of(Pitch.Base.D, 0, 4, Durations.EIGHTH),
-				Note.of(Pitch.Base.F, 0, 4, Durations.EIGHTH),
-				Note.of(Pitch.Base.A, 0, 4, Durations.EIGHTH)), patternWithChord.get(withChordVoiceNumber, 1));
+		assertEquals(Note.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4, Durations.EIGHTH),
+				patternWithChord.get(withChordVoiceNumber, 0));
+		assertEquals(Chord.of(Note.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4, Durations.EIGHTH),
+				Note.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4, Durations.EIGHTH),
+				Note.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4, Durations.EIGHTH)),
+				patternWithChord.get(withChordVoiceNumber, 1));
 
 		List<Position> positionsWithinChord = new ArrayList<>();
 		positionsWithinChord.add(new Position(0, 2, 1, 2));
@@ -229,10 +236,10 @@ public class ScoreTest {
 
 		final int withinChordVoiceNumber = patternWithinChord.getVoiceNumbers().get(0);
 
-		assertEquals(Note.of(Pitch.Base.E, 0, 4, Durations.EIGHTH),
+		assertEquals(Note.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4, Durations.EIGHTH),
 				patternWithinChord.get(withinChordVoiceNumber, 0));
-		assertEquals(Chord.of(Note.of(Pitch.Base.D, 0, 4, Durations.EIGHTH),
-				Note.of(Pitch.Base.F, 0, 4, Durations.EIGHTH)),
+		assertEquals(Chord.of(Note.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4, Durations.EIGHTH),
+				Note.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4, Durations.EIGHTH)),
 				patternWithinChord.get(withinChordVoiceNumber, 1));
 	}
 
@@ -254,23 +261,28 @@ public class ScoreTest {
 
 		assertEquals(3, patternWithNotesAcrossParts.getVoiceSize(1));
 
-		assertEquals(Note.of(Pitch.Base.C, 0, 4, Durations.QUARTER), patternWithNotesAcrossParts.get(1, 0));
+		assertEquals(Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4, Durations.QUARTER),
+				patternWithNotesAcrossParts.get(1, 0));
 		assertEquals(Rest.of(Durations.QUARTER), patternWithNotesAcrossParts.get(1, 1));
-		assertEquals(Note.of(Pitch.Base.E, 0, 5, Durations.HALF), patternWithNotesAcrossParts.get(1, 2));
+		assertEquals(Note.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 5, Durations.HALF),
+				patternWithNotesAcrossParts.get(1, 2));
 
 		assertEquals(4, patternWithNotesAcrossParts.getVoiceSize(2));
 
-		assertEquals(Note.of(Pitch.Base.A, 0, 4, Durations.QUARTER), patternWithNotesAcrossParts.get(2, 0));
+		assertEquals(Note.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4, Durations.QUARTER),
+				patternWithNotesAcrossParts.get(2, 0));
 		assertEquals(Rest.of(Durations.QUARTER), patternWithNotesAcrossParts.get(2, 1));
-		assertEquals(Rest.of(Durations.QUARTER.multiplyBy(3)), patternWithNotesAcrossParts.get(2, 2));
-		assertEquals(Note.of(Pitch.Base.D, 0, 4, Durations.HALF), patternWithNotesAcrossParts.get(2, 3));
+		assertEquals(Rest.of(Durations.QUARTER.multiply(3)), patternWithNotesAcrossParts.get(2, 2));
+		assertEquals(Note.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4, Durations.HALF),
+				patternWithNotesAcrossParts.get(2, 3));
 
 		assertEquals(4, patternWithNotesAcrossParts.getVoiceSize(3));
 
 		assertEquals(Rest.of(Durations.HALF), patternWithNotesAcrossParts.get(3, 0));
 		assertEquals(Rest.of(Durations.HALF.addDot()), patternWithNotesAcrossParts.get(3, 1));
 		assertEquals(Rest.of(Durations.HALF.addDot()), patternWithNotesAcrossParts.get(3, 2));
-		assertEquals(Note.of(Pitch.Base.D, 0, 3, Durations.HALF), patternWithNotesAcrossParts.get(3, 3));
+		assertEquals(Note.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 3, Durations.HALF),
+				patternWithNotesAcrossParts.get(3, 3));
 	}
 
 	@Test
@@ -291,27 +303,29 @@ public class ScoreTest {
 		assertEquals(5, patternFromOverlappingVoices.getVoiceCount());
 
 		assertEquals(1, patternFromOverlappingVoices.getVoiceSize(1));
-		assertEquals(Note.of(Pitch.Base.D, 0, 4, Durations.QUARTER), patternFromOverlappingVoices.get(1, 0));
+		assertEquals(Note.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4, Durations.QUARTER), patternFromOverlappingVoices.get(1, 0));
 
 		assertEquals(1, patternFromOverlappingVoices.getVoiceSize(2));
-		assertEquals(Note.of(Pitch.Base.E, 0, 5, Durations.HALF), patternFromOverlappingVoices.get(2, 0));
+		assertEquals(Note.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 5, Durations.HALF), patternFromOverlappingVoices.get(2, 0));
 
 		assertEquals(4, patternFromOverlappingVoices.getVoiceSize(3));
 
 		assertEquals(Rest.of(Durations.HALF.addDot()), patternFromOverlappingVoices.get(3, 0));
 		assertEquals(Rest.of(Durations.SIXTEENTH), patternFromOverlappingVoices.get(3, 1));
 		assertEquals(Rest.of(Durations.SIXTEENTH), patternFromOverlappingVoices.get(3, 2));
-		assertEquals(Note.of(Pitch.Base.D, -1, 5, Durations.EIGHTH), patternFromOverlappingVoices.get(3, 3));
+		assertTrue(Note.of(Pitch.Base.D, Pitch.Accidental.FLAT, 5, Durations.EIGHTH)
+				.equalsInPitchAndDuration((Note) patternFromOverlappingVoices.get(3, 3)));
 
 		assertEquals(2, patternFromOverlappingVoices.getVoiceSize(4));
 
 		assertEquals(Rest.of(Durations.HALF.addDot()), patternFromOverlappingVoices.get(4, 0));
-		assertEquals(Note.of(Pitch.Base.D, 0, 4, Durations.HALF), patternFromOverlappingVoices.get(4, 1));
+		assertEquals(Note.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4, Durations.HALF), patternFromOverlappingVoices.get(4, 1));
 
 		assertEquals(2, patternFromOverlappingVoices.getVoiceSize(5));
 
 		assertEquals(Rest.of(Durations.HALF.addDot()), patternFromOverlappingVoices.get(5, 0));
-		assertEquals(Note.of(Pitch.Base.D, 0, 3, Durations.QUARTER), patternFromOverlappingVoices.get(5, 1));
+		assertTrue(Note.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 3, Durations.QUARTER)
+				.equalsInPitchAndDuration((Note) patternFromOverlappingVoices.get(5, 1)));
 	}
 
 	@Test

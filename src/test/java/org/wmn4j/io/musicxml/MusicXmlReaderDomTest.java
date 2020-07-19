@@ -245,8 +245,7 @@ class MusicXmlReaderDomTest {
 		final MusicXmlReader reader = getMusicXmlReader(
 				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"), true);
 		try {
-			reader.readScoreBuilder(
-			);
+			reader.readScoreBuilder();
 			fail("No exception was thrown when trying to read XML file that does not comply to MusicXml schema");
 		} catch (IOException ioException) {
 			fail("Reading the score failed due to IOException when a parsing failure was expected");
@@ -328,28 +327,28 @@ class MusicXmlReaderDomTest {
 	}
 
 	@Test
-	void testReadingMarkingsIntoScoreFromSingleVoice() {
-		Score scoreWitMarkings = readScore("single_staff_single_voice_marking_test.xml", false);
-		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromSingleVoiceToScore(scoreWitMarkings);
+	void testReadingNotationsIntoScoreFromSingleVoice() {
+		Score scoreWitNotations = readScore("single_staff_single_voice_notation_test.musicxml", false);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(scoreWitNotations);
 	}
 
 	@Test
-	void testReadingMarkingsIntoScoreBuilderFromSingleVoice() {
-		ScoreBuilder scoreWitMarkings = readScoreBuilder("single_staff_single_voice_marking_test.xml", false);
-		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromSingleVoiceToScore(scoreWitMarkings.build());
+	void testReadingNotationsIntoScoreBuilderFromSingleVoice() {
+		ScoreBuilder scoreWitNotations = readScoreBuilder("single_staff_single_voice_notation_test.musicxml", false);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(scoreWitNotations.build());
 	}
 
 	@Test
-	void testReadingMarkingsIntoScoreFromMultipleStavesAndVoices() {
-		Score scoreWitMarkings = readScore("multi_staff_multi_voice_marking_test.xml", false);
-		MusicXmlFileChecks.assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreWitMarkings);
+	void testReadingNotationsIntoScoreFromMultipleStavesAndVoices() {
+		Score scoreWitNotations = readScore("multi_staff_multi_voice_notation_test.xml", false);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreWitNotations);
 	}
 
 	@Test
-	void testReadingMarkingsIntoScoreBuilderFromMultipleStavesAndVoices() {
-		ScoreBuilder scoreBuilderWitMarkings = readScoreBuilder("multi_staff_multi_voice_marking_test.xml", false);
+	void testReadingNotationsIntoScoreBuilderFromMultipleStavesAndVoices() {
+		ScoreBuilder scoreBuilderWitNotations = readScoreBuilder("multi_staff_multi_voice_notation_test.xml", false);
 		MusicXmlFileChecks
-				.assertMarkingsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreBuilderWitMarkings.build());
+				.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreBuilderWitNotations.build());
 	}
 
 	@Test
@@ -364,5 +363,35 @@ class MusicXmlReaderDomTest {
 				"clef_change_where_note_in_another_voice_carries_over.xml", false);
 		MusicXmlFileChecks
 				.assertClefChangeInCorrectPlaceWhenNoteCarriesOverClefChange(scoreBuilderWithClefChange.build());
+	}
+
+	@Test
+	void testDottedDurationsAreReadWithCorrectDotCounts() {
+		Score scoreWithDottedDurations = readScore("dotted_note_test.musicxml", true);
+		MusicXmlFileChecks.assertDottedNotesReadCorrectly(scoreWithDottedDurations);
+	}
+
+	@Test
+	void testTupletDurationsAreReadWithCorrectTupletDivisors() {
+		Score scoreWithTupletDurations = readScore("tuplet_test.musicxml", true);
+		MusicXmlFileChecks.assertTupletNotesReadCorrectly(scoreWithTupletDurations);
+	}
+
+	@Test
+	void testOrnamentsAreReadCorrectly() {
+		Score scoreWithOrnaments = readScore("ornament_test.musicxml", true);
+		MusicXmlFileChecks.assertOrnamentsAreCorrect(scoreWithOrnaments);
+	}
+
+	@Test
+	void testGivenFileWithGraceNotesThenAllGraceNotesAreReadCorrectly() {
+		Score scoreWithGraceNotes = readScore("grace_note_test.musicxml", true);
+		MusicXmlFileChecks.assertGraceNotesAreCorrect(scoreWithGraceNotes);
+	}
+
+	@Test
+	void testGivenFileWithGraceNoteChordsThenAllGraceNotesAreReadCorrectly() {
+		Score scoreWithGraceNotes = readScore("grace_note_chord_test.musicxml", true);
+		MusicXmlFileChecks.assertGraceNoteChordsAreCorrect(scoreWithGraceNotes);
 	}
 }

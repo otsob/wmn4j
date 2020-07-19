@@ -273,7 +273,7 @@ public class MeasureBuilder {
 			durations.add(d.getDuration());
 		}
 
-		return Duration.sumOf(durations);
+		return Duration.sum(durations);
 	}
 
 	/**

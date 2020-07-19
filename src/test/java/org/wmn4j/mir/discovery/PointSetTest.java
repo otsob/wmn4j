@@ -1,3 +1,6 @@
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
 package org.wmn4j.mir.discovery;
 
 import org.junit.jupiter.api.Test;
@@ -40,10 +43,10 @@ public class PointSetTest {
 		offset += Durations.SIXTEENTH.toDouble();
 
 		vectors.add(new NoteEventVector(offset, 65, 0));
-		offset += Durations.EIGHTH.divideBy(3).toDouble();
+		offset += Durations.EIGHTH.divide(3).toDouble();
 
 		vectors.add(new NoteEventVector(offset, 65, 0));
-		offset += Durations.EIGHTH.divideBy(3).toDouble();
+		offset += Durations.EIGHTH.divide(3).toDouble();
 
 		vectors.add(new NoteEventVector(offset, 65, 0));
 
@@ -121,26 +124,26 @@ public class PointSetTest {
 		List<NoteEventVector> vectors = new ArrayList<>();
 		double offset = 0.0;
 
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, 0, 2).toInt(), 3));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, 0, 3).toInt(), 3));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, 0, 4).toInt(), 1));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, 0, 4).toInt(), 2));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, 0, 5).toInt(), 0));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 2).toInt(), 3));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 3).toInt(), 3));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4).toInt(), 1));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4).toInt(), 2));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5).toInt(), 0));
 		offset += Durations.HALF.toDouble();
 
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.A, 0, 3).toInt(), 3));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.D, 0, 4).toInt(), 1));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.A, 0, 4).toInt(), 2));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.D, 0, 5).toInt(), 0));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 3).toInt(), 3));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4).toInt(), 1));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4).toInt(), 2));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 5).toInt(), 0));
 		offset += Durations.QUARTER.toDouble();
 
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.A, 0, 2).toInt(), 3));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 2).toInt(), 3));
 		offset += Durations.QUARTER.toDouble();
 
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, 0, 3).toInt(), 3));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, 0, 4).toInt(), 1));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, 0, 4).toInt(), 2));
-		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, 0, 5).toInt(), 0));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 3).toInt(), 3));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4).toInt(), 1));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4).toInt(), 2));
+		vectors.add(new NoteEventVector(offset, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5).toInt(), 0));
 
 		return vectors;
 	}

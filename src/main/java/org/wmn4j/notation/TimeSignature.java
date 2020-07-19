@@ -124,7 +124,7 @@ public final class TimeSignature {
 	 * @return sum of beat durations in a measure.
 	 */
 	public Duration getTotalDuration() {
-		return this.beatDuration.multiplyBy(this.beats);
+		return this.beatDuration.multiply(this.beats);
 	}
 
 	/**

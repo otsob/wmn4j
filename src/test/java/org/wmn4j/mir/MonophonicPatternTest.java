@@ -29,11 +29,11 @@ class MonophonicPatternTest {
 
 	MonophonicPatternTest() {
 		final List<Durational> notes = new ArrayList<>();
-		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH));
+		notes.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		notes.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH));
 		notes.add(Rest.of(Durations.QUARTER));
-		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
-		notes.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 3), Durations.QUARTER));
 
 		this.referenceNotes = Collections.unmodifiableList(notes);
 	}
@@ -57,8 +57,8 @@ class MonophonicPatternTest {
 		}
 
 		final List<Durational> chordList = new ArrayList<>();
-		chordList.add(Chord.of(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH),
-				Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.EIGHTH)));
+		chordList.add(Chord.of(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH),
+				Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH)));
 
 		try {
 			new MonophonicPattern(chordList);
@@ -129,10 +129,10 @@ class MonophonicPatternTest {
 		final Pattern pattern = new MonophonicPattern(this.referenceNotes);
 
 		final List<Durational> notes = new ArrayList<>();
-		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		notes.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
-		notes.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
-		notes.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.WHOLE));
+		notes.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.SIXTEENTH));
+		notes.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		notes.add(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 3), Durations.WHOLE));
 
 		assertTrue(pattern.equalsInPitch(new MonophonicPattern(notes)));
 
@@ -141,11 +141,11 @@ class MonophonicPatternTest {
 		assertTrue(pattern.equalsInPitch(new MonophonicPattern(notes)),
 				"Adding rest to end of pattern should not make pattern inequal in pitches");
 
-		notes.set(1, Note.of(Pitch.of(Pitch.Base.E, -1, 3), Durations.WHOLE));
+		notes.set(1, Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.FLAT, 3), Durations.WHOLE));
 		assertFalse(pattern.equalsInPitch(new MonophonicPattern(notes)));
 
 		List<Durational> referenceNotesWithAddition = new ArrayList<>(referenceNotes);
-		referenceNotesWithAddition.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+		referenceNotesWithAddition.add(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 3), Durations.QUARTER));
 		assertFalse(pattern.equalsInPitch(new MonophonicPattern(referenceNotesWithAddition)));
 	}
 
@@ -156,21 +156,29 @@ class MonophonicPatternTest {
 		assertTrue(pattern.equalsEnharmonically(new MonophonicPattern(referenceNotes)));
 
 		final List<Durational> samePitchesWithDifferentDurations = new ArrayList<>();
-		samePitchesWithDifferentDurations.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
-		samePitchesWithDifferentDurations.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
+		samePitchesWithDifferentDurations
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		samePitchesWithDifferentDurations
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.SIXTEENTH));
 		samePitchesWithDifferentDurations.add(Rest.of(Durations.QUARTER));
-		samePitchesWithDifferentDurations.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
-		samePitchesWithDifferentDurations.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.WHOLE));
+		samePitchesWithDifferentDurations
+				.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		samePitchesWithDifferentDurations
+				.add(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 3), Durations.WHOLE));
 
 		assertTrue(pattern.equalsEnharmonically(new MonophonicPattern(samePitchesWithDifferentDurations)),
 				"Difference in durations affected enharmonic equality when it shouldn't have affected it.");
 
 		final List<Durational> samePitchesWithDifferentSpellings = new ArrayList<>();
-		samePitchesWithDifferentSpellings.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		samePitchesWithDifferentSpellings.add(Note.of(Pitch.of(Pitch.Base.D, -2, 5), Durations.EIGHTH));
+		samePitchesWithDifferentSpellings
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		samePitchesWithDifferentSpellings
+				.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.DOUBLE_FLAT, 5), Durations.EIGHTH));
 		samePitchesWithDifferentSpellings.add(Rest.of(Durations.QUARTER));
-		samePitchesWithDifferentSpellings.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
-		samePitchesWithDifferentSpellings.add(Note.of(Pitch.of(Pitch.Base.A, 1, 3), Durations.QUARTER));
+		samePitchesWithDifferentSpellings
+				.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		samePitchesWithDifferentSpellings
+				.add(Note.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.SHARP, 3), Durations.QUARTER));
 
 		assertTrue(pattern.equalsEnharmonically(new MonophonicPattern(samePitchesWithDifferentSpellings)),
 				"Difference in note spellings affected enharmonic equality when it shouldn't have affected it.");
@@ -182,11 +190,14 @@ class MonophonicPatternTest {
 				"Adding rest to end of pattern should not make patterns unequal enharmonically.");
 
 		final List<Durational> enharmonicallyUnequalPitches = new ArrayList<>();
-		enharmonicallyUnequalPitches.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		enharmonicallyUnequalPitches.add(Note.of(Pitch.of(Pitch.Base.D, 0, 5), Durations.EIGHTH));
+		enharmonicallyUnequalPitches
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		enharmonicallyUnequalPitches
+				.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH));
 		enharmonicallyUnequalPitches.add(Rest.of(Durations.QUARTER));
-		enharmonicallyUnequalPitches.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
-		enharmonicallyUnequalPitches.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+		enharmonicallyUnequalPitches
+				.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		enharmonicallyUnequalPitches.add(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 3), Durations.QUARTER));
 
 		assertFalse(pattern.equalsEnharmonically(new MonophonicPattern(enharmonicallyUnequalPitches)));
 	}
@@ -197,45 +208,47 @@ class MonophonicPatternTest {
 		assertTrue(pattern.equalsTranspositionally(new MonophonicPattern(referenceNotes)));
 
 		final List<Durational> transposedUpByMajorSecond = new ArrayList<>();
-		transposedUpByMajorSecond.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
-		transposedUpByMajorSecond.add(Note.of(Pitch.of(Pitch.Base.D, 0, 5), Durations.EIGHTH));
+		transposedUpByMajorSecond.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		transposedUpByMajorSecond.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH));
 		transposedUpByMajorSecond.add(Rest.of(Durations.QUARTER));
-		transposedUpByMajorSecond.add(Note.of(Pitch.of(Pitch.Base.E, 0, 4), Durations.QUARTER));
-		transposedUpByMajorSecond.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
+		transposedUpByMajorSecond.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		transposedUpByMajorSecond.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
 
 		assertTrue(pattern.equalsTranspositionally(new MonophonicPattern(transposedUpByMajorSecond)));
 
 		final List<Durational> transposedDownByOctave = new ArrayList<>();
-		transposedDownByOctave.add(Note.of(Pitch.of(Pitch.Base.C, 0, 3), Durations.EIGHTH));
-		transposedDownByOctave.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		transposedDownByOctave.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 3), Durations.EIGHTH));
+		transposedDownByOctave.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		transposedDownByOctave.add(Rest.of(Durations.QUARTER));
-		transposedDownByOctave.add(Note.of(Pitch.of(Pitch.Base.D, 0, 3), Durations.QUARTER));
-		transposedDownByOctave.add(Note.of(Pitch.of(Pitch.Base.B, -1, 2), Durations.QUARTER));
+		transposedDownByOctave.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 3), Durations.QUARTER));
+		transposedDownByOctave.add(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 2), Durations.QUARTER));
 
 		assertTrue(pattern.equalsTranspositionally(new MonophonicPattern(transposedDownByOctave)));
 
 		final List<Durational> withOneNoteInDifferentOctaveThanInReferencePattern = new ArrayList<>();
-		withOneNoteInDifferentOctaveThanInReferencePattern.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		withOneNoteInDifferentOctaveThanInReferencePattern.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		withOneNoteInDifferentOctaveThanInReferencePattern
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		withOneNoteInDifferentOctaveThanInReferencePattern
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		withOneNoteInDifferentOctaveThanInReferencePattern.add(Rest.of(Durations.QUARTER));
 		withOneNoteInDifferentOctaveThanInReferencePattern
-				.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
+				.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
 		withOneNoteInDifferentOctaveThanInReferencePattern
-				.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+				.add(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 3), Durations.QUARTER));
 
 		assertFalse(pattern.equalsTranspositionally(
 				new MonophonicPattern(withOneNoteInDifferentOctaveThanInReferencePattern)));
 
 		final List<Durational> transposedUpByMajorSecondWithOneNoteTransposedByMinorSecond = new ArrayList<>();
 		transposedUpByMajorSecondWithOneNoteTransposedByMinorSecond
-				.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+				.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		transposedUpByMajorSecondWithOneNoteTransposedByMinorSecond
-				.add(Note.of(Pitch.of(Pitch.Base.D, 0, 5), Durations.EIGHTH));
+				.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH));
 		transposedUpByMajorSecondWithOneNoteTransposedByMinorSecond.add(Rest.of(Durations.QUARTER));
 		transposedUpByMajorSecondWithOneNoteTransposedByMinorSecond
-				.add(Note.of(Pitch.of(Pitch.Base.D, 1, 4), Durations.QUARTER));
+				.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.SHARP, 4), Durations.QUARTER));
 		transposedUpByMajorSecondWithOneNoteTransposedByMinorSecond
-				.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.QUARTER));
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
 
 		assertFalse(pattern.equalsTranspositionally(
 				new MonophonicPattern(transposedUpByMajorSecondWithOneNoteTransposedByMinorSecond)));
@@ -252,38 +265,47 @@ class MonophonicPatternTest {
 		assertTrue(pattern.equalsInDurations(new MonophonicPattern(referenceNotes)));
 
 		List<Durational> withSameDurationsButDifferentPitches = new ArrayList<>();
-		withSameDurationsButDifferentPitches.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
-		withSameDurationsButDifferentPitches.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH));
+		withSameDurationsButDifferentPitches
+				.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		withSameDurationsButDifferentPitches
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH));
 		withSameDurationsButDifferentPitches.add(Rest.of(Durations.QUARTER));
-		withSameDurationsButDifferentPitches.add(Note.of(Pitch.of(Pitch.Base.D, -1, 4), Durations.QUARTER));
-		withSameDurationsButDifferentPitches.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+		withSameDurationsButDifferentPitches
+				.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.FLAT, 4), Durations.QUARTER));
+		withSameDurationsButDifferentPitches
+				.add(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 3), Durations.QUARTER));
 
 		assertTrue(pattern.equalsInDurations(new MonophonicPattern(withSameDurationsButDifferentPitches)));
 
 		List<Durational> withDifferentNoteDurations = new ArrayList<>();
-		withDifferentNoteDurations.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		withDifferentNoteDurations.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.SIXTEENTH));
+		withDifferentNoteDurations.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		withDifferentNoteDurations
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.SIXTEENTH));
 		withDifferentNoteDurations.add(Rest.of(Durations.QUARTER));
-		withDifferentNoteDurations.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
-		withDifferentNoteDurations.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+		withDifferentNoteDurations.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		withDifferentNoteDurations.add(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 3), Durations.QUARTER));
 
 		assertFalse(pattern.equalsInDurations(new MonophonicPattern(withDifferentNoteDurations)));
 
 		List<Durational> withDifferentRestDurations = new ArrayList<>();
-		withDifferentRestDurations.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		withDifferentRestDurations.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH));
+		withDifferentRestDurations.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		withDifferentRestDurations.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH));
 		withDifferentRestDurations.add(Rest.of(Durations.EIGHTH));
-		withDifferentRestDurations.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
-		withDifferentRestDurations.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+		withDifferentRestDurations.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		withDifferentRestDurations.add(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 3), Durations.QUARTER));
 
 		assertFalse(pattern.equalsInDurations(new MonophonicPattern(withDifferentRestDurations)));
 
 		final List<Durational> withRestInAPlaceWhereReferenceHasANote = new ArrayList<>();
-		withRestInAPlaceWhereReferenceHasANote.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
-		withRestInAPlaceWhereReferenceHasANote.add(Note.of(Pitch.of(Pitch.Base.C, 0, 5), Durations.EIGHTH));
-		withRestInAPlaceWhereReferenceHasANote.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.QUARTER));
+		withRestInAPlaceWhereReferenceHasANote
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
+		withRestInAPlaceWhereReferenceHasANote
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH));
+		withRestInAPlaceWhereReferenceHasANote
+				.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
 		withRestInAPlaceWhereReferenceHasANote.add(Rest.of(Durations.QUARTER));
-		withRestInAPlaceWhereReferenceHasANote.add(Note.of(Pitch.of(Pitch.Base.B, -1, 3), Durations.QUARTER));
+		withRestInAPlaceWhereReferenceHasANote
+				.add(Note.of(Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 3), Durations.QUARTER));
 
 		assertFalse(pattern.equalsInDurations(new MonophonicPattern(withRestInAPlaceWhereReferenceHasANote)));
 

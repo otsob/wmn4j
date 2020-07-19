@@ -1,3 +1,6 @@
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
 package org.wmn4j.mir;
 
 import org.junit.jupiter.api.Test;
@@ -21,10 +24,10 @@ public class PatternTest {
 
 	@Test
 	public void testCreatingPatternFromList() {
-		final Note noteC = Note.of(Pitch.Base.C, 0, 4, Durations.HALF);
-		final Note noteD = Note.of(Pitch.Base.D, 0, 4, Durations.HALF);
-		final Note noteE = Note.of(Pitch.Base.E, 0, 4, Durations.QUARTER);
-		final Note noteF = Note.of(Pitch.Base.F, 0, 4, Durations.QUARTER);
+		final Note noteC = Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4, Durations.HALF);
+		final Note noteD = Note.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4, Durations.HALF);
+		final Note noteE = Note.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4, Durations.QUARTER);
+		final Note noteF = Note.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4, Durations.QUARTER);
 
 		List<Note> notes = new ArrayList<>();
 		notes.add(noteC);
@@ -60,15 +63,15 @@ public class PatternTest {
 	public void testCreatingPatternFromMap() {
 		final Map<Integer, List<? extends Durational>> voices = new HashMap<>();
 		List<Durational> voice1 = new ArrayList<>();
-		voice1.add(Note.of(Pitch.of(Pitch.Base.C, 0, 4), Durations.EIGHTH));
+		voice1.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 		voice1.add(Rest.of(Durations.QUARTER));
-		voice1.add(Note.of(Pitch.of(Pitch.Base.D, 0, 4), Durations.EIGHTH));
+		voice1.add(Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
 
 		List<Durational> voice2 = new ArrayList<>();
 
-		voice2.add(Note.of(Pitch.of(Pitch.Base.E, 0, 3), Durations.QUARTER));
+		voice2.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), Durations.QUARTER));
 		voice2.add(Rest.of(Durations.EIGHTH));
-		voice2.add(Note.of(Pitch.of(Pitch.Base.F, 1, 3), Durations.EIGHTH));
+		voice2.add(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 3), Durations.EIGHTH));
 
 		voices.put(1, voice1);
 		voices.put(2, voice2);

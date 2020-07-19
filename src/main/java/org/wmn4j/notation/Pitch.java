@@ -64,9 +64,49 @@ public final class Pitch implements Comparable<Pitch> {
 	}
 
 	/**
-	 * The limit for altering notes in half-steps (=3).
+	 * Represents an accidental mark.
 	 */
-	public static final int ALTER_LIMIT = 3;
+	public enum Accidental {
+		/**
+		 * Represents the natural accidental (i.e., no alteration).
+		 */
+		NATURAL(0),
+
+		/**
+		 * Represents a normal sharp.
+		 */
+		SHARP(1),
+
+		/**
+		 * Represents a double sharp.
+		 */
+		DOUBLE_SHARP(2),
+
+		/**
+		 * Represents a normal flat.
+		 */
+		FLAT(-1),
+
+		/**
+		 * Represents a double flat.
+		 */
+		DOUBLE_FLAT(-2);
+
+		private final int alter;
+
+		Accidental(int alter) {
+			this.alter = alter;
+		}
+
+		/**
+		 * Returns the integer alteration to pitch number caused by this accidental.
+		 *
+		 * @return the integer alteration to pitch number caused by this accidental
+		 */
+		public int getAlterationInt() {
+			return alter;
+		}
+	}
 
 	/**
 	 * Highest allowed octave number (=10).
@@ -74,47 +114,34 @@ public final class Pitch implements Comparable<Pitch> {
 	public static final int MAX_OCTAVE = 10;
 
 	private final Base pitchBase;
-	private final int alter;
+	private final Accidental accidental;
 	private final int octave;
 
 	/**
 	 * Returns an instance.
 	 *
-	 * @param pitchName the letter on which the name of the pitch is based
-	 * @param alter     by how many half-steps the pitch is altered up (positive
-	 *                  values) or down (negative values)
-	 * @param octave    the octave of the pitch
+	 * @param pitchName  the letter on which the name of the pitch is based
+	 * @param accidental the accidental to use or natural if this pitch is not sharp or flat
+	 * @param octave     the octave of the pitch
 	 * @return Pitch object with the specified attributes
-	 * @throws IllegalArgumentException if alter is greater than {@link #ALTER_LIMIT
-	 *                                  ALTER_LIMIT} of smaller than
-	 *                                  {@link #ALTER_LIMIT -1*ALTER_LIMIT}, or if
-	 *                                  octave is negative or larger than
+	 * @throws IllegalArgumentException if octave is negative or larger than
 	 *                                  {@link #MAX_OCTAVE MAX_OCTAVE}.
 	 */
-	public static Pitch of(Base pitchName, int alter, int octave) {
-		if (alter > ALTER_LIMIT || alter < -1 * ALTER_LIMIT) {
-			throw new IllegalArgumentException(
-					"alter was " + alter + ". alter must be between -" + ALTER_LIMIT + " and " + ALTER_LIMIT);
-		}
-
+	public static Pitch of(Base pitchName, Accidental accidental, int octave) {
 		if (octave < 0 || octave > MAX_OCTAVE) {
 			throw new IllegalArgumentException("octave was " + octave + ". octave must be between 0 and " + MAX_OCTAVE);
 		}
 
-		return new Pitch(Objects.requireNonNull(pitchName), alter, octave);
+		return new Pitch(Objects.requireNonNull(pitchName), Objects.requireNonNull(accidental), octave);
 	}
 
 	/**
 	 * Private constructor.
-	 *
-	 * @param pitchName the letter on which the name of the pitch is based.
-	 * @param alter     by how many half-steps the pitch is altered up or down.
-	 * @param octave    the octave of the pitch.
 	 */
-	private Pitch(Base pitchName, int alter, int octave) {
+	private Pitch(Base pitchName, Accidental accidental, int octave) {
 		this.pitchBase = pitchName;
-		this.alter = alter;
 		this.octave = octave;
+		this.accidental = accidental;
 	}
 
 	/**
@@ -127,13 +154,12 @@ public final class Pitch implements Comparable<Pitch> {
 	}
 
 	/**
-	 * Returns by how many half-steps this pitch is altered.
+	 * Returns the accidental (i.e., alteration) of this pitch.
 	 *
-	 * @return by how many half-steps the pitch is altered up (positive value) or
-	 * down (negative value)
+	 * @return the accidental (i.e., alteration) of this pitch.
 	 */
-	public int getAlter() {
-		return this.alter;
+	public Accidental getAccidental() {
+		return accidental;
 	}
 
 	/**
@@ -157,7 +183,7 @@ public final class Pitch implements Comparable<Pitch> {
 	 * @return this Pitch as an integer.
 	 */
 	public int toInt() {
-		return this.pitchBase.pitchAsInt + this.alter + (this.octave + 1) * 12;
+		return this.pitchBase.pitchAsInt + accidental.getAlterationInt() + (this.octave + 1) * 12;
 	}
 
 	/**
@@ -195,6 +221,7 @@ public final class Pitch implements Comparable<Pitch> {
 	public String toString() {
 		String pitchName = this.pitchBase.toString();
 
+		final int alter = accidental.getAlterationInt();
 		if (alter >= 0) {
 			for (int i = 0; i < alter; ++i) {
 				pitchName += "#";
@@ -238,7 +265,7 @@ public final class Pitch implements Comparable<Pitch> {
 			return false;
 		}
 
-		if (other.alter != this.alter) {
+		if (other.accidental != this.accidental) {
 			return false;
 		}
 
@@ -249,7 +276,7 @@ public final class Pitch implements Comparable<Pitch> {
 	public int hashCode() {
 		int hash = 5;
 		hash = 89 * hash + Objects.hashCode(this.pitchBase);
-		hash = 89 * hash + this.alter;
+		hash = 89 * hash + Objects.hashCode(this.accidental);
 		hash = 89 * hash + this.octave;
 		return hash;
 	}

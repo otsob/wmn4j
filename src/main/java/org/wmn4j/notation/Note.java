@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,28 +22,25 @@ import java.util.stream.Collectors;
  * <p>
  * This class is immutable.
  */
-public final class Note implements Durational, Pitched {
+public final class Note implements Durational, Pitched, Notation.Connectable {
 
 	private final Pitch pitch;
 	private final Duration duration;
 	private final Set<Articulation> articulations;
-	private final Collection<Marking.Connection> markingConnections;
-
-	private final Note tiedTo;
-	private final boolean isTiedFrom;
+	private final Collection<Notation.Connection> notationConnections;
+	private final Collection<Ornament> ornaments;
 
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitchName the letter part of the pitch name
-	 * @param alter     how many half-steps the pitch is altered up (positive) or
-	 *                  down (negative)
-	 * @param octave    octave number of the pitch
-	 * @param duration  the duration of the note. Must not be null
+	 * @param pitchName  the letter part of the pitch name
+	 * @param accidental the accidental of the pitch
+	 * @param octave     octave number of the pitch
+	 * @param duration   the duration of the note. Must not be null
 	 * @return an instance with the given parameters
 	 */
-	public static Note of(Pitch.Base pitchName, int alter, int octave, Duration duration) {
-		return of(Pitch.of(pitchName, alter, octave), duration, null);
+	public static Note of(Pitch.Base pitchName, Pitch.Accidental accidental, int octave, Duration duration) {
+		return of(Pitch.of(pitchName, accidental, octave), duration, null);
 	}
 
 	/**
@@ -65,44 +63,43 @@ public final class Note implements Durational, Pitched {
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations) {
-		return new Note(pitch, duration, articulations, null, null, false);
+		return new Note(pitch, duration, articulations, null, null);
 	}
 
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch              the pitch of the note
-	 * @param duration           the duration of the note
-	 * @param articulations      a set of Articulations associated with the note
-	 * @param markingConnections list of the marking connections for the note
+	 * @param pitch               the pitch of the note
+	 * @param duration            the duration of the note
+	 * @param articulations       a set of Articulations associated with the note
+	 * @param notationConnections the notation connections for the note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Marking.Connection> markingConnections) {
-		return new Note(pitch, duration, articulations, markingConnections, null, false);
+			Collection<Notation.Connection> notationConnections) {
+		return new Note(pitch, duration, articulations, notationConnections, null);
 	}
 
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch              the pitch of the note
-	 * @param duration           the duration of the note
-	 * @param articulations      a set of Articulations associated with the note
-	 * @param markingConnections list of the marking connections for the note
-	 * @param tiedTo             the following note to which this is tied
-	 * @param isTiedFromPrevious true if this is tied from the previous note
+	 * @param pitch               the pitch of the note
+	 * @param duration            the duration of the note
+	 * @param articulations       a set of Articulations associated with the note
+	 * @param notationConnections the notation connections for the note
+	 * @param ornaments           ornaments for the note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Marking.Connection> markingConnections, Note tiedTo, boolean isTiedFromPrevious) {
-		return new Note(pitch, duration, articulations, markingConnections, tiedTo, isTiedFromPrevious);
+			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments) {
+		return new Note(pitch, duration, articulations, notationConnections, ornaments);
 	}
 
 	/**
 	 * Private constructor.
 	 */
 	private Note(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Marking.Connection> markingConnections, Note tiedTo, boolean isTiedFromPrevious) {
+			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments) {
 
 		this.pitch = Objects.requireNonNull(pitch);
 		this.duration = Objects.requireNonNull(duration);
@@ -112,14 +109,175 @@ public final class Note implements Durational, Pitched {
 			this.articulations = Collections.emptySet();
 		}
 
-		if (markingConnections != null && !markingConnections.isEmpty()) {
-			this.markingConnections = Collections.unmodifiableList(new ArrayList<>(markingConnections));
+		if (notationConnections != null && !notationConnections.isEmpty()) {
+			this.notationConnections = Collections.unmodifiableList(new ArrayList<>(notationConnections));
 		} else {
-			this.markingConnections = Collections.emptyList();
+			this.notationConnections = Collections.emptyList();
 		}
 
-		this.tiedTo = tiedTo;
-		this.isTiedFrom = isTiedFromPrevious;
+		if (ornaments != null && !ornaments.isEmpty()) {
+			this.ornaments = copyOrnaments(ornaments);
+		} else {
+			this.ornaments = Collections.emptySet();
+		}
+	}
+
+	private Collection<Ornament> copyOrnaments(Collection<Ornament> ornaments) {
+		Set<Ornament> copiedOrnaments = new HashSet<>(ornaments.size());
+
+		for (Ornament ornament : ornaments) {
+			// Copying preceding grace notes requires special handling.
+			if (ornament.getType().equals(Ornament.Type.GRACE_NOTES)) {
+				copiedOrnaments.add(copyGraceNotesWithConnections(ornament));
+			} else {
+				copiedOrnaments.add(ornament);
+			}
+		}
+
+		return Collections.unmodifiableSet(copiedOrnaments);
+	}
+
+	private boolean isGraceNoteCopyingNeeded(Ornament graceNotes) {
+		List<Ornamental> ornamentals = graceNotes.getOrnamentalNotes();
+
+		if (!ornamentals.isEmpty()) {
+			Ornamental last = ornamentals.get(ornamentals.size() - 1);
+			if (last instanceof GraceNote) {
+				return !((GraceNote) last).getPrincipalNoteConnections().isEmpty();
+			} else if (last instanceof GraceNoteChord) {
+				return ((GraceNoteChord) last).isConnectedToPrincipalNote();
+			}
+		}
+
+		return false;
+	}
+
+	private Ornament copyGraceNotesWithConnections(Ornament graceNotes) {
+		if (!isGraceNoteCopyingNeeded(graceNotes)) {
+			return graceNotes;
+		}
+
+		List<Ornamental> copiedOrnamentals = new ArrayList<>(graceNotes.getOrnamentalNotes());
+
+		Notation.Connectable target = this;
+
+		final int indexOfLast = copiedOrnamentals.size() - 1;
+
+		for (int i = indexOfLast; i >= 0; --i) {
+			Ornamental original = copiedOrnamentals.get(i);
+			if (original instanceof GraceNote) {
+				GraceNote originalGraceNote = (GraceNote) original;
+				GraceNote linkedCopy = createGraceNoteWithCorrectConnections(
+						originalGraceNote.getPrincipalNoteConnections(), target,
+						indexOfLast, i, originalGraceNote);
+				copiedOrnamentals.set(i, linkedCopy);
+				target = linkedCopy;
+			} else if (original instanceof GraceNoteChord) {
+				final GraceNoteChord originalGraceNoteChord = (GraceNoteChord) original;
+				List<GraceNote> copiedChordNotes = new ArrayList<>(originalGraceNoteChord.getNoteCount());
+
+				for (int chordIndex = originalGraceNoteChord.getNoteCount() - 1; chordIndex >= 0; --chordIndex) {
+					GraceNote originalGraceNote = originalGraceNoteChord.getNote(chordIndex);
+					GraceNote linkedCopy = createGraceNoteWithCorrectConnections(
+							originalGraceNote.getPrincipalNoteConnections(), target,
+							indexOfLast, i,
+							originalGraceNote);
+					copiedChordNotes.add(linkedCopy);
+					target = linkedCopy;
+				}
+
+				copiedOrnamentals.set(i, GraceNoteChord.of(copiedChordNotes));
+			}
+		}
+
+		return Ornament.graceNotes(copiedOrnamentals);
+	}
+
+	private GraceNote createGraceNoteWithCorrectConnections(Collection<Notation.Connection> principalNoteConnections,
+			Notation.Connectable target, int indexOfLast, int i, GraceNote originalGraceNote) {
+		Collection<Notation.Connection> connections;
+
+		if (i == indexOfLast) {
+			List<Notation.Connection> originalAndPrincipalNoteConnections = new ArrayList<>(
+					originalGraceNote.getConnections());
+			originalAndPrincipalNoteConnections.addAll(principalNoteConnections);
+			connections = originalAndPrincipalNoteConnections;
+		} else {
+			connections = originalGraceNote.getConnections();
+		}
+		return copyGraceNoteWithConnections(target, originalGraceNote, connections);
+	}
+
+	private GraceNote copyGraceNoteWithConnections(Notation.Connectable target, GraceNote original,
+			Collection<Notation.Connection> connections) {
+		return GraceNote.of(original.getPitch(), original.getDisplayableDuration(),
+				original.getArticulations(), copyConnections(target, connections),
+				original.getOrnaments(), original.getType());
+	}
+
+	private Collection<Notation.Connection> copyConnections(Notation.Connectable target,
+			Collection<Notation.Connection> connections) {
+		Collection<Notation.Connection> newNotationConnections = new ArrayList<>();
+		for (Notation.Connection connection : connections) {
+			if (!connection.isEnd()) {
+				Notation.Connection newConnection = connection;
+				if (target instanceof Note) {
+					Note targetNote = (Note) target;
+					if (isConnectedToSimilarTarget(targetNote, connection, Note.class)) {
+						newConnection = createConnectionToNote(connection, targetNote);
+					}
+				} else if (target instanceof GraceNote) {
+					GraceNote targetNote = (GraceNote) target;
+					if (isConnectedToSimilarTarget(targetNote, connection, GraceNote.class)) {
+						newConnection = createConnectionToGraceNote(connection, targetNote);
+					}
+				}
+
+				newNotationConnections.add(newConnection);
+			} else {
+				newNotationConnections.add(connection);
+			}
+		}
+		return newNotationConnections;
+	}
+
+	private <T extends Notation.Connectable> boolean isConnectedToSimilarTarget(T target,
+			Notation.Connection connection,
+			Class<T> targetType) {
+
+		if (targetType.isAssignableFrom(Note.class)) {
+			Optional<Note> connectedNote = connection.getFollowingNote();
+			if (connectedNote.isPresent()) {
+				return connectedNote.get().equalsInPitchAndDuration((Note) target);
+			}
+		} else if (targetType.isAssignableFrom(GraceNote.class)) {
+			Optional<GraceNote> connectedNote = connection.getFollowingGraceNote();
+			if (connectedNote.isPresent()) {
+				return connectedNote.get().getPitch().equals(((GraceNote) target).getPitch());
+			}
+		}
+
+		return false;
+	}
+
+	private Notation.Connection createConnectionToNote(Notation.Connection connection, Note target) {
+		if (connection.isBeginning()) {
+			return Notation.Connection.beginningOf(connection.getNotation(), target);
+		}
+
+		return Notation.Connection.of(connection.getNotation(), target);
+	}
+
+	private Notation.Connection createConnectionToGraceNote(Notation.Connection connection, GraceNote target) {
+		if (connection.isBeginning()) {
+			return Notation.Connection.beginningOf(connection.getNotation(), target);
+		}
+
+		return Notation.Connection.of(connection.getNotation(), target);
+	}
+
+	Collection<Notation.Connection> getConnections() {
+		return notationConnections;
 	}
 
 	/**
@@ -157,25 +315,19 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Returns all markings that affect this note.
+	 * Returns all notations that affect this note.
 	 *
-	 * @return all markings that affect this note
+	 * @return all notations that affect this note
 	 */
-	public Set<Marking> getMarkings() {
-		return markingConnections.stream().map(connection -> connection.getMarking())
+	public Set<Notation> getNotations() {
+		return notationConnections.stream().map(connection -> connection.getNotation())
 				.collect(Collectors.toUnmodifiableSet());
 	}
 
-	/**
-	 * Returns the marking connection belonging to the given marking. If no marking connection for the marking is
-	 * present, return empty.
-	 *
-	 * @param marking the marking for which the marking connection is returned
-	 * @return the marking connection belonging to the given marking
-	 */
-	public Optional<Marking.Connection> getMarkingConnection(Marking marking) {
-		return markingConnections.stream()
-				.filter(articulation -> articulation.getMarking().equals(marking))
+	@Override
+	public Optional<Notation.Connection> getConnection(Notation notation) {
+		return notationConnections.stream()
+				.filter(articulation -> articulation.getNotation().equals(notation))
 				.findFirst();
 	}
 
@@ -200,49 +352,65 @@ public final class Note implements Durational, Pitched {
 	}
 
 	/**
-	 * Returns true if this note is affected by a marking of the given type.
+	 * Returns true if this note is affected by a notation of the given type.
 	 *
-	 * @param markingType the type of marking whose presence is checked
-	 * @return true if this note has the given marking
+	 * @param notationType the type of notation whose presence is checked
+	 * @return true if this note has the given notation
 	 */
-	public boolean hasMarking(Marking.Type markingType) {
-		return markingConnections.stream()
-				.anyMatch(markingConnection -> markingConnection.getType().equals(markingType));
+	public boolean hasNotation(Notation.Type notationType) {
+		return notationConnections.stream()
+				.anyMatch(notationConnection -> notationConnection.getType().equals(notationType));
+	}
+
+	@Override
+	public boolean beginsNotation(Notation.Type notationType) {
+		return notationConnections.stream()
+				.anyMatch(notationConnection -> notationConnection.getType().equals(notationType)
+						&& notationConnection.isBeginning());
+	}
+
+	@Override
+	public boolean endsNotation(Notation.Type notationType) {
+		return notationConnections.stream()
+				.anyMatch(notationConnection -> notationConnection.getType().equals(notationType)
+						&& notationConnection.isEnd());
 	}
 
 	/**
-	 * Returns true if this note begins a marking of the given type.
+	 * Returns true if this note is affected by any notations.
 	 *
-	 * @param markingType the type of the marking for whose beginning this
-	 *                    note is checked
-	 * @return true if this note begins a marking of the given type
+	 * @return true if this note is affected by any notations
 	 */
-	public boolean begins(Marking.Type markingType) {
-		return markingConnections.stream()
-				.anyMatch(markingConnection -> markingConnection.getType().equals(markingType)
-						&& markingConnection.isBeginning());
+	public boolean hasNotations() {
+		return !this.notationConnections.isEmpty();
 	}
 
 	/**
-	 * Returns true if this note ends a marking of the given type.
+	 * Returns true if this note has ornaments, false otherwise.
 	 *
-	 * @param markingType the type of the marking for whose end this note
-	 *                    is checked
-	 * @return true if this note ends a marking of the given type
+	 * @return true if this note has ornaments, false otherwise
 	 */
-	public boolean ends(Marking.Type markingType) {
-		return markingConnections.stream()
-				.anyMatch(markingConnection -> markingConnection.getType().equals(markingType)
-						&& markingConnection.isEnd());
+	public boolean hasOrnaments() {
+		return !ornaments.isEmpty();
 	}
 
 	/**
-	 * Returns true if this note is affected by any markings.
+	 * Returns true if this note has an ornament of the given type, false otherwise.
 	 *
-	 * @return true if this note is affected by any markings
+	 * @param type the type of the ornament whose presence is checked
+	 * @return true if this note has an ornament of the given type, false otherwise
 	 */
-	public boolean hasMarkings() {
-		return !this.markingConnections.isEmpty();
+	public boolean hasOrnament(Ornament.Type type) {
+		return ornaments.stream().anyMatch(ornament -> ornament.getType().equals(type));
+	}
+
+	/**
+	 * Returns an unmodifiable view of the ornaments of this note.
+	 *
+	 * @return an unmodifiable view of the ornaments of this note
+	 */
+	public Collection<Ornament> getOrnaments() {
+		return ornaments;
 	}
 
 	/**
@@ -251,7 +419,8 @@ public final class Note implements Durational, Pitched {
 	 * @return true if this note is tied to a following note
 	 */
 	public boolean isTiedToFollowing() {
-		return this.tiedTo != null;
+		return notationConnections.stream().anyMatch(notationConnection -> notationConnection.getType().equals(
+				Notation.Type.TIE) && !notationConnection.isEnd());
 	}
 
 	/**
@@ -260,7 +429,8 @@ public final class Note implements Durational, Pitched {
 	 * @return true if this note is tied to a previous note
 	 */
 	public boolean isTiedFromPrevious() {
-		return this.isTiedFrom;
+		return notationConnections.stream().anyMatch(notationConnection -> notationConnection.getType().equals(
+				Notation.Type.TIE) && !notationConnection.isBeginning());
 	}
 
 	/**
@@ -291,7 +461,7 @@ public final class Note implements Durational, Pitched {
 			currentNote = currentNote.get().getFollowingTiedNote();
 		}
 
-		return Duration.sumOf(tiedDurations);
+		return Duration.sum(tiedDurations);
 	}
 
 	/**
@@ -301,20 +471,15 @@ public final class Note implements Durational, Pitched {
 	 * @return the following note to which this note is tied
 	 */
 	public Optional<Note> getFollowingTiedNote() {
-		return Optional.ofNullable(this.tiedTo);
-	}
+		Optional<Notation.Connection> tieConnection = notationConnections.stream()
+				.filter(connection -> connection.getType().equals(
+						Notation.Type.TIE) && connection.isBeginning()).findFirst();
 
-	/**
-	 * Returns an integer that specifies if this note is higher than, lower than, or
-	 * equal in pitch to the given note.
-	 *
-	 * @param other the note to which this is compared for pitch
-	 * @return negative integer if this note is lower than other, positive integer
-	 * if this is higher than other, 0 if notes are (enharmonically) of same
-	 * height.
-	 */
-	public int compareByPitch(Note other) {
-		return this.pitch.compareTo(other.getPitch());
+		if (tieConnection.isEmpty()) {
+			return Optional.empty();
+		}
+
+		return tieConnection.get().getFollowingNote();
 	}
 
 	@Override
@@ -384,16 +549,20 @@ public final class Note implements Durational, Pitched {
 			return false;
 		}
 
-		if (!getMarkingConnectionTypes().equals(other.getMarkingConnectionTypes())) {
+		if (!getNotationConnectionTypes().equals(other.getNotationConnectionTypes())) {
 			return false;
 		}
 
-		return true;
+		return equalsInOrnaments(other);
 	}
 
-	private Set<Marking.Type> getMarkingConnectionTypes() {
-		return markingConnections.stream()
-				.map(Marking.Connection::getType).collect(Collectors.toSet());
+	private boolean equalsInOrnaments(Note other) {
+		return ornaments.equals(other.ornaments);
+	}
+
+	private Set<Notation.Type> getNotationConnectionTypes() {
+		return notationConnections.stream()
+				.map(Notation.Connection::getType).collect(Collectors.toSet());
 	}
 
 	@Override
@@ -402,7 +571,7 @@ public final class Note implements Durational, Pitched {
 		hash = 79 * hash + Objects.hashCode(this.pitch);
 		hash = 79 * hash + Objects.hashCode(this.duration);
 		hash = 79 * hash + Objects.hashCode(this.articulations);
-		hash = 79 * hash + Objects.hashCode(getMarkingConnectionTypes());
+		hash = 79 * hash + Objects.hashCode(getNotationConnectionTypes());
 		return hash;
 	}
 

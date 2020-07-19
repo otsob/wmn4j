@@ -1,3 +1,6 @@
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
 package org.wmn4j.io.musicxml;
 
 import org.junit.jupiter.api.Test;
@@ -159,17 +162,17 @@ class DurationAppearanceProviderTest {
 		final Collection<Element> eighthTripletAppearance = provider.getAppearanceElements(eighthTriplet, document);
 		assertTupletAppearanceElements(eighthTripletAppearance, MusicXmlTags.NOTE_TYPE_EIGHTH, 3, 2);
 
-		final Duration sixteenthQuintuplet = Duration.of(1, 20);
+		final Duration sixteenthQuintuplet = Durations.QUARTER.divide(5);
 		final Collection<Element> sixteenthQuintupletAppearance = provider
 				.getAppearanceElements(sixteenthQuintuplet, document);
 		assertTupletAppearanceElements(sixteenthQuintupletAppearance, MusicXmlTags.NOTE_TYPE_16TH, 5, 4);
 
-		final Duration sixteenthSeptuplet = Duration.of(1, 28);
+		final Duration sixteenthSeptuplet = Durations.QUARTER.divide(7);
 		final Collection<Element> sixteenthSeptupletAppearance = provider
 				.getAppearanceElements(sixteenthSeptuplet, document);
 		assertTupletAppearanceElements(sixteenthSeptupletAppearance, MusicXmlTags.NOTE_TYPE_16TH, 7, 4);
 
-		final Duration halfTriplet = Duration.of(1, 3);
+		final Duration halfTriplet = Durations.WHOLE.divide(3);
 		final Collection<Element> halfTripletAppearance = provider.getAppearanceElements(halfTriplet, document);
 		assertTupletAppearanceElements(halfTripletAppearance, MusicXmlTags.NOTE_TYPE_HALF, 3, 2);
 	}
