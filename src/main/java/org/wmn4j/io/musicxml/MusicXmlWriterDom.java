@@ -18,6 +18,7 @@ import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.GraceNote;
+import org.wmn4j.notation.GraceNoteChord;
 import org.wmn4j.notation.KeySignature;
 import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.MultiStaffPart;
@@ -743,38 +744,49 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		}
 
 		for (Ornamental ornamental : ornamentals) {
-			GraceNote graceNote;
-
 			if (ornamental instanceof GraceNote) {
-				graceNote = (GraceNote) ornamental;
-			} else {
-				continue;
+				writeGraceNoteToMeasure(measureNode, voiceNumber, staffNumber, (GraceNote) ornamental, false);
+			} else if (ornamental instanceof GraceNoteChord) {
+				boolean useChordElement = false;
+				for (GraceNote graceNote : (GraceNoteChord) ornamental) {
+					writeGraceNoteToMeasure(measureNode, voiceNumber, staffNumber, graceNote, useChordElement);
+					useChordElement = true;
+				}
 			}
-
-			final Element graceNoteElement = getDocument().createElement(MusicXmlTags.NOTE);
-
-			final Element graceElement = getDocument().createElement(MusicXmlTags.NOTE_GRACE_NOTE);
-			if (graceNote.getType().equals(Ornamental.Type.ACCIACCATURA)) {
-				graceElement.setAttribute(MusicXmlTags.NOTE_GRACE_SLASH, MusicXmlTags.YES);
-			}
-
-			graceNoteElement.appendChild(graceElement);
-			graceNoteElement.appendChild(createPitchElement(graceNote.getPitch()));
-			graceNoteElement.appendChild(createVoiceElement(voiceNumber));
-			addDurationAppearanceElementsToNoteElement(graceNoteElement, graceNote.getDisplayableDuration());
-
-			// Staff
-			if (staffNumber != null) {
-				graceNoteElement.appendChild(createStaffElement(staffNumber));
-			}
-
-			// Notations (musical notations, e.g. articulations, dynamics, fermata, slur)
-			createNotationsElement(graceNote, graceNote.getArticulations(), graceNote.getNotations(),
-					graceNote.getOrnaments())
-					.ifPresent(notationsElement -> graceNoteElement.appendChild(notationsElement));
-
-			measureNode.appendChild(graceNoteElement);
 		}
+	}
+
+	private void writeGraceNoteToMeasure(Element measureNode, int voiceNumber, Integer staffNumber,
+			GraceNote graceNote, boolean useChordElement) {
+		final Element graceNoteElement = getDocument().createElement(MusicXmlTags.NOTE);
+
+		final Element graceElement = getDocument().createElement(MusicXmlTags.NOTE_GRACE_NOTE);
+		if (graceNote.getType().equals(Ornamental.Type.ACCIACCATURA)) {
+			graceElement.setAttribute(MusicXmlTags.NOTE_GRACE_SLASH, MusicXmlTags.YES);
+		}
+
+		graceNoteElement.appendChild(graceElement);
+
+		if (useChordElement) {
+			final Element chordElement = getDocument().createElement(MusicXmlTags.NOTE_CHORD);
+			graceNoteElement.appendChild(chordElement);
+		}
+
+		graceNoteElement.appendChild(createPitchElement(graceNote.getPitch()));
+		graceNoteElement.appendChild(createVoiceElement(voiceNumber));
+		addDurationAppearanceElementsToNoteElement(graceNoteElement, graceNote.getDisplayableDuration());
+
+		// Staff
+		if (staffNumber != null) {
+			graceNoteElement.appendChild(createStaffElement(staffNumber));
+		}
+
+		// Notations (musical notations, e.g. articulations, dynamics, fermata, slur)
+		createNotationsElement(graceNote, graceNote.getArticulations(), graceNote.getNotations(),
+				graceNote.getOrnaments())
+				.ifPresent(notationsElement -> graceNoteElement.appendChild(notationsElement));
+
+		measureNode.appendChild(graceNoteElement);
 	}
 
 	private Element createStaffElement(Integer staffNumber) {

@@ -444,4 +444,11 @@ class MusicXmlScoreWriterDomTest {
 		Score writtenScore = writeAndReadScore(score);
 		MusicXmlFileChecks.assertGraceNotesAreCorrect(writtenScore);
 	}
+
+	@Test
+	void testGivenScoreWithGraceNoteChordsThenGraceNoteChordsAreCorrectlyWritten() {
+		Score score = readMusicXmlTestFile("grace_note_chord_test.musicxml", false);
+		Score writtenScore = writeAndReadScore(score);
+		MusicXmlFileChecks.assertGraceNoteChordsAreCorrect(writtenScore);
+	}
 }

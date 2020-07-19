@@ -16,13 +16,14 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class NoteTest {
 
 	@Test
-	void testEquals() {
+	void testEqualWithoutOrnaments() {
 		final Note A1 = Note.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1, Durations.QUARTER);
 		final Note A1differentDur = Note.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1, Durations.EIGHTH);
 		final Note A1Copy = Note.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1, Durations.QUARTER);
@@ -50,6 +51,101 @@ class NoteTest {
 		assertFalse(note1.equals(note2));
 		assertTrue(note2.equals(note2));
 		assertTrue(note2.equals(note3));
+	}
+
+	@Test
+	void testEqualsWithNotationsArticulationsAndOrnaments() {
+		NoteBuilder builderA = new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER);
+		NoteBuilder builderB = new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER);
+		NoteBuilder builderC = new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER);
+		NoteBuilder builderD = new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER);
+
+		builderA.addArticulation(Articulation.STACCATISSIMO);
+		builderA.connectWith(Notation.of(Notation.Type.SLUR),
+				new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER));
+		builderA.addOrnament(Ornament.of(Ornament.Type.MORDENT));
+
+		builderB.addArticulation(Articulation.STACCATISSIMO);
+		builderB.connectWith(Notation.of(Notation.Type.SLUR),
+				new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER));
+		builderB.addOrnament(Ornament.of(Ornament.Type.MORDENT));
+
+		builderC.addArticulation(Articulation.STACCATISSIMO);
+		builderC.connectWith(Notation.of(Notation.Type.GLISSANDO),
+				new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER));
+		builderC.addOrnament(Ornament.of(Ornament.Type.MORDENT));
+
+		builderD.addArticulation(Articulation.STACCATISSIMO);
+		builderD.connectWith(Notation.of(Notation.Type.SLUR),
+				new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER));
+		builderD.addOrnament(Ornament.of(Ornament.Type.TRILL));
+
+		final Note noteA = builderA.build();
+		final Note noteB = builderB.build();
+		final Note noteC = builderC.build();
+		final Note noteD = builderD.build();
+
+		assertEquals(noteA, noteB);
+		assertNotEquals(noteA, noteC);
+		assertNotEquals(noteA, noteD);
+	}
+
+	@Test
+	void testEqualsWithGraceNotes() {
+		NoteBuilder builderA = new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER);
+		NoteBuilder builderB = new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER);
+		NoteBuilder builderC = new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER);
+		NoteBuilder builderWithoutGraceNotes = new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1),
+				Durations.QUARTER);
+
+		GraceNoteBuilder graceNoteBuilderA = new GraceNoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1),
+				Durations.QUARTER);
+		GraceNoteBuilder graceNoteBuilderB = new GraceNoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1),
+				Durations.QUARTER);
+		GraceNoteBuilder graceNoteBuilderC = new GraceNoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 1),
+				Durations.QUARTER);
+
+		builderA.setPrecedingGraceNotes(Arrays.asList(graceNoteBuilderA));
+		builderB.setPrecedingGraceNotes(Arrays.asList(graceNoteBuilderB));
+		builderC.setPrecedingGraceNotes(Arrays.asList(graceNoteBuilderC));
+
+		final Note noteA = builderA.build();
+		final Note noteB = builderB.build();
+		final Note noteC = builderC.build();
+		final Note noteWithoutGraceNotes = builderWithoutGraceNotes.build();
+
+		assertEquals(noteA, noteB);
+		assertNotEquals(noteA, noteC);
+		assertNotEquals(noteA, noteWithoutGraceNotes);
+	}
+
+	@Test
+	void testEqualsWithAllArticulationsAndOrnaments() {
+		NoteBuilder builderA = new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER);
+		NoteBuilder builderB = new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER);
+		NoteBuilder builderC = new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER);
+
+		builderA.addArticulation(Articulation.STACCATISSIMO);
+		builderA.connectWith(Notation.of(Notation.Type.SLUR),
+				new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER));
+		builderA.addOrnament(Ornament.of(Ornament.Type.MORDENT));
+
+		builderB.addArticulation(Articulation.STACCATISSIMO);
+		builderB.connectWith(Notation.of(Notation.Type.SLUR),
+				new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER));
+		builderB.addOrnament(Ornament.of(Ornament.Type.MORDENT));
+
+		builderC.addArticulation(Articulation.STACCATISSIMO);
+		builderC.connectWith(Notation.of(Notation.Type.GLISSANDO),
+				new NoteBuilder(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 1), Durations.QUARTER));
+		builderC.addOrnament(Ornament.of(Ornament.Type.MORDENT));
+
+		final Note noteA = builderA.build();
+		final Note noteB = builderB.build();
+		final Note noteC = builderC.build();
+
+		assertEquals(noteA, noteB);
+		assertNotEquals(noteA, noteC);
 	}
 
 	@Test
@@ -317,10 +413,11 @@ class NoteTest {
 		final Ornament succeedingGraceNotes = Ornament
 				.succeedingGraceNotes(Arrays.asList(graceNoteAfter));
 
-		Notation.Connection slurBetweenGraceNotes = Notation.Connection.of(slur, graceNoteAfter);
 		final GraceNote middleGraceNote = GraceNote
 				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), Durations.EIGHTH, Collections.emptySet(),
-						Collections.emptyList(), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
+						Collections.emptyList(), Collections.emptyList(), Ornamental.Type.GRACE_NOTE,
+						Arrays.asList(Notation.Connection.of(slur, Note.of(
+								Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))));
 
 		Notation.Connection beginning = Notation.Connection.beginningOf(slur, middleGraceNote);
 		final GraceNote firstGraceNote = GraceNote
@@ -328,9 +425,7 @@ class NoteTest {
 						Arrays.asList(beginning), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
 
 		final Ornament graceNotes = Ornament
-				.graceNotes(Arrays.asList(firstGraceNote, middleGraceNote),
-						Arrays.asList(Notation.Connection.of(slur, Note.of(
-								Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))));
+				.graceNotes(Arrays.asList(firstGraceNote, middleGraceNote));
 
 		final Note note = Note
 				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH, Collections.emptySet(),
@@ -359,5 +454,62 @@ class NoteTest {
 		assertEquals(1, graceNotesAfter.getOrnamentalNotes().size());
 		assertEquals(graceNoteAfter, graceNotesAfter.getOrnamentalNotes().get(0));
 		assertTrue(graceNoteAfter.endsNotation(Notation.Type.SLUR));
+	}
+
+	@Test
+	void testGivenGraceNoteChordsWhenNoteIsCreatedThenNotationsAreCorrect() {
+
+		final Notation arpeggiate = Notation.of(Notation.Type.ARPEGGIATE);
+
+		final Notation.Connection arpeggiationEnd = Notation.Connection.endOf(arpeggiate);
+		final Notation slur = Notation.of(Notation.Type.SLUR);
+		final Notation.Connection slurBegin = Notation.Connection.beginningOf(slur, Note.of(
+				Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+		final GraceNote fifth = GraceNote
+				.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(arpeggiationEnd, slurBegin), Collections.emptyList(),
+						Ornamental.Type.ACCIACCATURA, Arrays.asList(slurBegin));
+
+		final Notation.Connection arpeggiationMiddle = Notation.Connection.of(arpeggiate, fifth);
+		final GraceNote third = GraceNote
+				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(arpeggiationMiddle), Collections.emptyList(), Ornamental.Type.ACCIACCATURA);
+
+		final Notation.Connection arpeggiationBegin = Notation.Connection.beginningOf(arpeggiate, third);
+		final GraceNote root = GraceNote
+				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(arpeggiationBegin), Collections.emptyList(), Ornamental.Type.ACCIACCATURA);
+
+		final GraceNoteChord graceNoteChord = GraceNoteChord.of(Arrays.asList(root, third, fifth));
+		final Ornament graceNotes = Ornament.graceNotes(Arrays.asList(graceNoteChord));
+		final Note note = Note
+				.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), Durations.QUARTER, Collections.emptySet(),
+						Arrays.asList(Notation.Connection.endOf(slur)),
+						Arrays.asList(graceNotes));
+
+		assertEquals(1, note.getOrnaments().size());
+		assertTrue(note.hasOrnament(Ornament.Type.GRACE_NOTES));
+
+		Optional<Ornament> graceNotesFromNote = note.getOrnaments().stream()
+				.filter(ornament -> ornament.getType().equals(
+						Ornament.Type.GRACE_NOTES)).findAny();
+
+		assertTrue(graceNotesFromNote.isPresent());
+		List<Ornamental> ornamentalNotes = graceNotesFromNote.get().getOrnamentalNotes();
+		assertEquals(1, ornamentalNotes.size());
+		assertTrue(ornamentalNotes.get(0) instanceof GraceNoteChord);
+		final GraceNoteChord graceNoteChordFromNote = (GraceNoteChord) ornamentalNotes.get(0);
+		assertEquals(3, graceNoteChordFromNote.getNoteCount());
+
+		final GraceNote highest = graceNoteChordFromNote.getHighestNote();
+		assertEquals(fifth, highest);
+		Optional<Notation.Connection> slurToPrincipal = highest.getConnection(slur);
+		assertTrue(slurToPrincipal.isPresent());
+		final Note connectedTo = slurToPrincipal.get().getFollowingNote().get();
+		assertEquals(note, connectedTo);
+
+		assertTrue(graceNoteChordFromNote.getLowestNote().beginsNotation(Notation.Type.ARPEGGIATE));
+		assertTrue(graceNoteChordFromNote.getNote(1).hasNotation(Notation.Type.ARPEGGIATE));
+		assertTrue(graceNoteChordFromNote.getHighestNote().endsNotation(Notation.Type.ARPEGGIATE));
 	}
 }

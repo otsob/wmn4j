@@ -4,9 +4,9 @@
 package org.wmn4j.notation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents an ornament, such as a trill or mordent. This class represents ornaments that are linked to
@@ -93,16 +93,15 @@ public final class Ornament {
 
 	/**
 	 * Returns a grace notes ornament.
-	 * The primaryNoteConnections given as parameter can contain any dummy note in them as the target. They
-	 * will be connected to the primary note when the grace note ornamental is given to a Note creation method.
+	 * For connecting grace notes to the principle note it is best to use the {@link NoteBuilder} and {@link
+	 * GraceNoteBuilder}
+	 * classes when creating notes with grace notes.
 	 *
-	 * @param ornamentalNotes        the ornamental notes in the preceding list of grace notes
-	 * @param primaryNoteConnections the notations between the last grace note and their primary note
+	 * @param ornamentalNotes the ornamental notes in the preceding list of grace notes
 	 * @return a grace notes ornament
 	 */
-	public static Ornament graceNotes(List<? extends Ornamental> ornamentalNotes,
-			Collection<Notation.Connection> primaryNoteConnections) {
-		return new Ornament(Type.GRACE_NOTES, ornamentalNotes, primaryNoteConnections);
+	public static Ornament graceNotes(List<? extends Ornamental> ornamentalNotes) {
+		return new Ornament(Type.GRACE_NOTES, ornamentalNotes);
 	}
 
 	/**
@@ -112,24 +111,20 @@ public final class Ornament {
 	 * @return a succeeding grace notes ornament
 	 */
 	public static Ornament succeedingGraceNotes(List<? extends Ornamental> ornamentalNotes) {
-		return new Ornament(Type.SUCCEEDING_GRACE_NOTES, ornamentalNotes, Collections.emptyList());
+		return new Ornament(Type.SUCCEEDING_GRACE_NOTES, ornamentalNotes);
 	}
 
 	private final Type type;
 	private final List<Ornamental> ornamentalNotes;
-	private final Collection<Notation.Connection> principalNoteConnections;
 
 	private Ornament(Type type) {
 		this.type = type;
 		this.ornamentalNotes = Collections.emptyList();
-		this.principalNoteConnections = Collections.emptyList();
 	}
 
-	private Ornament(Type type, List<? extends Ornamental> ornamentalNotes,
-			Collection<Notation.Connection> principalNoteConnections) {
+	private Ornament(Type type, List<? extends Ornamental> ornamentalNotes) {
 		this.type = type;
 		this.ornamentalNotes = Collections.unmodifiableList(new ArrayList<>(ornamentalNotes));
-		this.principalNoteConnections = Collections.unmodifiableList(new ArrayList<>(principalNoteConnections));
 	}
 
 	/**
@@ -152,7 +147,21 @@ public final class Ornament {
 		return ornamentalNotes;
 	}
 
-	Collection<Notation.Connection> getPrincipalNoteConnections() {
-		return principalNoteConnections;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Ornament)) {
+			return false;
+		}
+		final Ornament other = (Ornament) o;
+		return type.equals(other.type)
+				&& Objects.equals(ornamentalNotes, other.ornamentalNotes);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(type, ornamentalNotes);
 	}
 }

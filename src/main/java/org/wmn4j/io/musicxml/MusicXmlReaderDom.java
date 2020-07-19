@@ -18,6 +18,7 @@ import org.wmn4j.notation.ConnectableBuilder;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.GraceNoteBuilder;
+import org.wmn4j.notation.GraceNoteChordBuilder;
 import org.wmn4j.notation.KeySignature;
 import org.wmn4j.notation.KeySignatures;
 import org.wmn4j.notation.MeasureBuilder;
@@ -25,6 +26,7 @@ import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Ornamental;
+import org.wmn4j.notation.OrnamentalBuilder;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.Pitch;
@@ -484,7 +486,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 					graceNoteBuilder.setGraceNoteType(Ornamental.Type.ACCIACCATURA);
 				}
 
-				context.addGraceNoteToBuffer(graceNoteBuilder);
+				context.addGraceNoteToBuffer(graceNoteBuilder, hasChordTag(noteNode));
 
 				resolveTiesAndNotations(voice, noteNode, connectedNotations, graceNoteBuilder, buffer, context);
 			} else {
@@ -582,6 +584,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 					// The notations that do not specify start and stop are related to arpeggiation.
 					// The notation objects are added to the ChordBuffer which will handle them.
 					buffer.setArpeggiation(notationType);
+					context.graceChordBuffer.setArpeggiation(notationType);
 				}
 			}
 		}
@@ -1131,13 +1134,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				if (this.chordBuffer.size() > 1) {
 					if (arpeggiation != null) {
 						Notation arpeggio = Notation.of(arpeggiation);
-
-						// Sort the note builders based on the suitable order for arpeggiation.
-						Comparator<NoteBuilder> comp = arpeggiation.equals(Notation.Type.ARPEGGIATE_DOWN)
-								? Comparator.comparing(NoteBuilder::getPitch).reversed()
-								: Comparator.comparing(NoteBuilder::getPitch);
-
-						chordBuffer.sort(comp);
+						chordBuffer.sort(Comparator.comparing(NoteBuilder::getPitch));
 
 						NoteBuilder prev = null;
 
@@ -1167,6 +1164,63 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 	}
 
 	/**
+	 * Class for handling the reading of chords.
+	 */
+	private class GraceNoteChordBuffer {
+		private List<GraceNoteBuilder> chordBuffer = new ArrayList<>();
+		private Notation.Type arpeggiation;
+
+		GraceNoteChordBuffer() {
+		}
+
+		void addNote(GraceNoteBuilder noteBuilder) {
+			this.chordBuffer.add(noteBuilder);
+		}
+
+		GraceNoteChordBuilder getGraceNoteChordBuilder() {
+			if (arpeggiation != null) {
+				Notation arpeggio = Notation.of(arpeggiation);
+				chordBuffer.sort(Comparator.comparing(GraceNoteBuilder::getPitch));
+
+				GraceNoteBuilder prev = null;
+
+				for (GraceNoteBuilder note : chordBuffer) {
+					if (prev != null) {
+						prev.connectWith(arpeggio, note);
+					}
+
+					prev = note;
+				}
+			}
+
+			GraceNoteChordBuilder graceNoteChord = new GraceNoteChordBuilder();
+			for (GraceNoteBuilder graceNote : chordBuffer) {
+				graceNoteChord.add(graceNote);
+			}
+
+			this.chordBuffer = new ArrayList<>();
+			this.arpeggiation = null;
+
+			return graceNoteChord;
+		}
+
+		GraceNoteBuilder getGraceNote() {
+			GraceNoteBuilder builder = chordBuffer.get(0);
+			chordBuffer = new ArrayList<>();
+			arpeggiation = null;
+			return builder;
+		}
+
+		int getSize() {
+			return chordBuffer.size();
+		}
+
+		void setArpeggiation(Notation.Type arpeggiation) {
+			this.arpeggiation = arpeggiation;
+		}
+	}
+
+	/**
 	 * Class for keeping track of all the context dependent information that
 	 * continue from measure to measure.
 	 */
@@ -1176,7 +1230,8 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		private KeySignature keySig = KeySignatures.CMAJ_AMIN;
 		private TimeSignature timeSig;
 		private Clef clef;
-		private List<GraceNoteBuilder> unconnectedGraceNotes = new ArrayList<>();
+		private GraceNoteChordBuffer graceChordBuffer = new GraceNoteChordBuffer();
+		private List<OrnamentalBuilder> unconnectedGraceNotes = new ArrayList<>();
 		private NoteBuilder previousBuilder;
 
 		Context() {
@@ -1214,8 +1269,25 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 			this.clef = clef;
 		}
 
-		void addGraceNoteToBuffer(GraceNoteBuilder graceNoteBuilder) {
-			unconnectedGraceNotes.add(graceNoteBuilder);
+		void addGraceNoteToBuffer(GraceNoteBuilder graceNoteBuilder, boolean isWithinChord) {
+			if (graceChordBuffer.getSize() == 0) {
+				// Ensure that arpeggiation is set to null when starting to add to empty buffer.
+				graceChordBuffer.setArpeggiation(null);
+			}
+
+			if (graceChordBuffer.getSize() > 0 && !isWithinChord) {
+				flushChordBuffer();
+			}
+
+			graceChordBuffer.addNote(graceNoteBuilder);
+		}
+
+		private void flushChordBuffer() {
+			if (graceChordBuffer.getSize() == 1) {
+				unconnectedGraceNotes.add(graceChordBuffer.getGraceNote());
+			} else if (graceChordBuffer.getSize() > 1) {
+				unconnectedGraceNotes.add(graceChordBuffer.getGraceNoteChordBuilder());
+			}
 		}
 
 		void setAppoggiaturaTypes(NoteBuilder builder) {
@@ -1223,7 +1295,12 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				return;
 			}
 
-			final GraceNoteBuilder graceNoteBuilder = unconnectedGraceNotes.get(0);
+			OrnamentalBuilder ornamentalBuilder = unconnectedGraceNotes.get(0);
+			if (!(ornamentalBuilder instanceof GraceNoteBuilder)) {
+				return;
+			}
+
+			final GraceNoteBuilder graceNoteBuilder = (GraceNoteBuilder) ornamentalBuilder;
 			final int interval = builder.getPitch().toInt() - graceNoteBuilder.getPitch().toInt();
 			// Consider as an appoggiatura grace notes that are at most one whole step away
 			// and have a duration type that is half of the principal notes's duration. Also if
@@ -1238,6 +1315,8 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 
 		void setGraceNotesToNoteBuilder(NoteBuilder builder, boolean isPreceding) {
+			flushChordBuffer();
+
 			if (unconnectedGraceNotes.isEmpty()) {
 				return;
 			}

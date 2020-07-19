@@ -3,7 +3,9 @@
  */
 package org.wmn4j.notation;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -17,6 +19,7 @@ public final class GraceNote implements Pitched, Ornamental, Notation.Connectabl
 
 	private final Note note;
 	private final Ornamental.Type type;
+	private final Collection<Notation.Connection> principalNoteConnections;
 
 	/**
 	 * Returns an instance with the given parameters.
@@ -32,7 +35,26 @@ public final class GraceNote implements Pitched, Ornamental, Notation.Connectabl
 	public static GraceNote of(Pitch pitch, Duration displayableDuration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments, Ornamental.Type type) {
 		return new GraceNote(pitch, displayableDuration, articulations, notationConnections, ornaments,
-				type);
+				type, Collections.emptyList());
+	}
+
+	/**
+	 * Returns an instance with the given parameters.
+	 *
+	 * @param pitch                    the pitch of the grace note
+	 * @param displayableDuration      the displayable duration of the grace note
+	 * @param articulations            a set of Articulations associated with the grace note
+	 * @param notationConnections      connections to other elements through notations
+	 * @param ornaments                ornaments for the grace note
+	 * @param type                     the type of this grace note
+	 * @param principalNoteConnections connections to principal note
+	 * @return an instance with the given parameters
+	 */
+	static GraceNote of(Pitch pitch, Duration displayableDuration, Set<Articulation> articulations,
+			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments, Ornamental.Type type,
+			Collection<Notation.Connection> principalNoteConnections) {
+		return new GraceNote(pitch, displayableDuration, articulations, notationConnections, ornaments,
+				type, principalNoteConnections);
 	}
 
 	/**
@@ -40,10 +62,15 @@ public final class GraceNote implements Pitched, Ornamental, Notation.Connectabl
 	 */
 	private GraceNote(Pitch pitch, Duration duration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments,
-			Ornamental.Type type) {
+			Ornamental.Type type, Collection<Notation.Connection> principalNoteConnections) {
 
 		this.note = Note.of(pitch, duration, articulations, notationConnections, ornaments);
 		this.type = Objects.requireNonNull(type);
+		this.principalNoteConnections = Collections.unmodifiableList(new ArrayList<>(principalNoteConnections));
+	}
+
+	Collection<Notation.Connection> getPrincipalNoteConnections() {
+		return principalNoteConnections;
 	}
 
 	/**
