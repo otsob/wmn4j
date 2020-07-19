@@ -1131,13 +1131,7 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 				if (this.chordBuffer.size() > 1) {
 					if (arpeggiation != null) {
 						Notation arpeggio = Notation.of(arpeggiation);
-
-						// Sort the note builders based on the suitable order for arpeggiation.
-						Comparator<NoteBuilder> comp = arpeggiation.equals(Notation.Type.ARPEGGIATE_DOWN)
-								? Comparator.comparing(NoteBuilder::getPitch).reversed()
-								: Comparator.comparing(NoteBuilder::getPitch);
-
-						chordBuffer.sort(comp);
+						chordBuffer.sort(Comparator.comparing(NoteBuilder::getPitch));
 
 						NoteBuilder prev = null;
 
