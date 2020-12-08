@@ -16,6 +16,7 @@ There are a few architectural design principles in wmn4j:
 
 ### Building wmn4j
 
+wmn4j is built with OpenJDK 11, and only Java 11 is supported.
 wmn4j uses Gradle and can be built by running Gradle build. With the current configuration the build consists of compilation, unit tests, and static analysis.
 It is recommended to delegate the building of the project to Gradle using the provided Gradle wrapper in the IDE to ensure all dependencies etc. are handled correctly.
 

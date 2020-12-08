@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - openjdk12
+  - openjdk11
 sudo: false
 script: ./gradlew build --stacktrace
 after_success: ./gradlew javadoc
