@@ -7,6 +7,7 @@ import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.notation.access.MeasureIterator;
 import org.wmn4j.notation.access.Position;
+import org.wmn4j.notation.access.ScoreIterator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -240,6 +241,21 @@ public final class Score implements Iterable<Part> {
 	@Override
 	public Iterator<Part> iterator() {
 		return this.parts.iterator();
+	}
+
+	/**
+	 * Returns an iterator that iterates the durational notation objects in
+	 * partwise order.
+	 * <p>
+	 * Starts by iterating
+	 * through the part with the smallest number. Iterates through parts starting
+	 * from smallest measure number. Iterates through measure voice by voice.
+	 *
+	 * @return an iterator that iterates the durational notation objects in
+	 * partwise order
+	 */
+	public ScoreIterator partwiseIterator() {
+		return new PartWiseScoreIterator(this);
 	}
 
 	/**

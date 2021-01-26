@@ -9,8 +9,8 @@ import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Score;
-import org.wmn4j.notation.access.PartWiseScoreIterator;
 import org.wmn4j.notation.access.Position;
+import org.wmn4j.notation.access.ScoreIterator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +63,7 @@ final class PointSet {
 
 	private List<NoteEventVector> pointsFromScore(Score score) {
 
-		final PartWiseScoreIterator scoreIterator = new PartWiseScoreIterator(score);
+		final ScoreIterator scoreIterator = score.partwiseIterator();
 		Position prevPos = null;
 		double fullMeasuresOffset = 0.0;
 		double offsetWithinMeasure = 0.0;

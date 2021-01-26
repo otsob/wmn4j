@@ -1,11 +1,16 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.notation.access;
 
-import org.wmn4j.notation.Durational;
-import org.wmn4j.notation.Part;
-import org.wmn4j.notation.Score;
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
+package org.wmn4j.notation;
+
+import org.wmn4j.notation.access.MeasureIterator;
+import org.wmn4j.notation.access.PartIterator;
+import org.wmn4j.notation.access.Position;
+import org.wmn4j.notation.access.ScoreIterator;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -17,7 +22,7 @@ import java.util.NoSuchElementException;
  * <p>
  * Instances of this class are not thread-safe.
  */
-public class PartWiseScoreIterator implements ScoreIterator {
+final class PartWiseScoreIterator implements ScoreIterator {
 
 	private final Iterator<Part> scoreIterator;
 
@@ -35,7 +40,7 @@ public class PartWiseScoreIterator implements ScoreIterator {
 	 *
 	 * @param score the score that this iterates through.
 	 */
-	public PartWiseScoreIterator(Score score) {
+	PartWiseScoreIterator(Score score) {
 		this.scoreIterator = score.iterator();
 		// TODO: Consider a better way to handle iterating Parts and part index
 		// handling.

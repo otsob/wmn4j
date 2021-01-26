@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.wmn4j.TestHelper;
 import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
-import org.wmn4j.notation.access.PartWiseScoreIterator;
 import org.wmn4j.notation.access.Position;
 import org.wmn4j.notation.access.ScoreIterator;
 
@@ -152,7 +151,7 @@ public class ScoreTest {
 		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 		assertTrue(score != null);
 
-		final ScoreIterator iterator = new PartWiseScoreIterator(score);
+		final ScoreIterator iterator = score.partwiseIterator();
 		while (iterator.hasNext()) {
 			final Durational elem = iterator.next();
 			final Position position = iterator.getPositionOfPrevious();
