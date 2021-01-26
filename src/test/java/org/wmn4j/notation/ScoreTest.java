@@ -79,6 +79,14 @@ public class ScoreTest {
 	}
 
 	@Test
+	void testGetMeasureCountAndPickupMeasure() {
+		final Score score = Score.of(getTestAttributes(), getTestParts(5, 5));
+		assertEquals(5, score.getFullMeasureCount());
+		assertEquals(5, score.getFullMeasureCount());
+		assertFalse(score.hasPickupMeasure());
+	}
+
+	@Test
 	void testImmutability() {
 		final Map<Score.Attribute, String> attributes = getTestAttributes();
 		final List<Part> parts = getTestParts(5, 5);

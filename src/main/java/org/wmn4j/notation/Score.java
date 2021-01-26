@@ -64,6 +64,9 @@ public final class Score implements Iterable<Part> {
 	private final Map<Attribute, String> scoreAttr;
 	private final List<Part> parts;
 
+	private final int fullMeasureCount;
+	private final int measureCount;
+
 	/**
 	 * Returns a score with the given attributes and parts.
 	 *
@@ -88,6 +91,43 @@ public final class Score implements Iterable<Part> {
 		if (this.parts.isEmpty()) {
 			throw new IllegalArgumentException("Cannot create score: parts is empty");
 		}
+
+		this.measureCount = this.parts.stream().mapToInt(part -> part.getMeasureCount()).max().getAsInt();
+		this.fullMeasureCount = this.parts.stream().mapToInt(part -> part.getFullMeasureCount()).max().getAsInt();
+	}
+
+	/**
+	 * Returns the number of full measures in this score.
+	 * <p>
+	 * Pickup measures are not counted, that is, the number of measures
+	 * is the same as the largest measure number in the score.
+	 *
+	 * @return the number of full measures in this score
+	 */
+	public int getFullMeasureCount() {
+		return fullMeasureCount;
+	}
+
+	/**
+	 * Returns the number of measures in this score.
+	 * <p>
+	 * Pickup measures are included in the counte, that is, the number of measures
+	 * is the same as the largest measure number in the score plus a possible pickup
+	 * measure.
+	 *
+	 * @return the number of full measures in this score
+	 */
+	public int getMeasureCount() {
+		return measureCount;
+	}
+
+	/**
+	 * Returns true if this score has a pickup measure.
+	 *
+	 * @return true if this score has a pickup measure, false otherwise
+	 */
+	public boolean hasPickupMeasure() {
+		return fullMeasureCount < measureCount;
 	}
 
 	/**

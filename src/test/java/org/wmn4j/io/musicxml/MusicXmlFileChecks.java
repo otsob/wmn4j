@@ -528,6 +528,11 @@ class MusicXmlFileChecks {
 	 */
 	static void assertPickupMeasureReadCorrectly(Score score) {
 		assertEquals(1, score.getPartCount());
+
+		assertEquals(4, score.getMeasureCount());
+		assertEquals(3, score.getFullMeasureCount());
+		assertTrue(score.hasPickupMeasure());
+
 		Part part = score.getPart(0);
 		assertFalse(part.isMultiStaff());
 		assertTrue(part.hasPickupMeasure());
