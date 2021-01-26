@@ -343,7 +343,10 @@ class MusicXmlFileChecks {
 		assertTrue(multiStaff != null);
 		assertTrue(singleStaff != null);
 
+		assertFalse(singleStaff.hasPickupMeasure());
 		assertEquals(3, singleStaff.getMeasureCount());
+
+		assertFalse(multiStaff.hasPickupMeasure());
 		assertEquals(3, multiStaff.getMeasureCount());
 
 		assertEquals(2, multiStaff.getStaffCount());
@@ -527,6 +530,7 @@ class MusicXmlFileChecks {
 		assertEquals(1, score.getPartCount());
 		Part part = score.getPart(0);
 		assertFalse(part.isMultiStaff());
+		assertTrue(part.hasPickupMeasure());
 		assertEquals(4, part.getMeasureCount());
 		assertEquals(3, part.getFullMeasureCount());
 
