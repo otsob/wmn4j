@@ -269,6 +269,17 @@ public final class Score implements Iterable<Part> {
 	}
 
 	/**
+	 * Returns a range of measures of all parts in this score.
+	 *
+	 * @param firstMeasure the number of the first measure included in the range
+	 * @param lastMeasure the number of the last measure included in the range
+	 * @return a range of measures of all parts in this score
+	 */
+	public Selection selectRange(int firstMeasure, int lastMeasure) {
+		return new SelectionImpl(this, firstMeasure, lastMeasure);
+	}
+
+	/**
 	 * Class for extracting a pattern from a score based on a given pattern position.
 	 */
 	private final class PatternExtractor {
