@@ -38,4 +38,13 @@ public interface Selection extends Iterable<Durational> {
 	 * @return an iterator that also provides access to the positions
 	 */
 	PositionalIterator positionalIterator();
+
+	/**
+	 * Returns a selection of measures from this selection.
+	 *
+	 * @param firstMeasure the measure number of the first measure included in the selection
+	 * @param lastMeasure  the measure number of the last measure included in the selection
+	 * @return a subrange of measures from this selection
+	 */
+	Selection subSelection(int firstMeasure, int lastMeasure);
 }

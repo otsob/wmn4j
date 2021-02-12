@@ -164,7 +164,6 @@ public class ScoreTest {
 		assertTrue(iteratedMeasures.contains(3));
 	}
 
-
 	@Test
 	void testIterator() {
 		final int partCount = 10;

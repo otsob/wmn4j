@@ -59,6 +59,11 @@ final class SelectionImpl implements Selection {
 	}
 
 	@Override
+	public Selection subSelection(int firstMeasure, int lastMeasure) {
+		return new SelectionImpl(this.score, firstMeasure, lastMeasure);
+	}
+
+	@Override
 	public Iterator<Durational> iterator() {
 		return new PartwisePositionalIterator(this.score, this.first, this.last);
 	}

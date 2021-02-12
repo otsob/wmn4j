@@ -102,4 +102,29 @@ class SelectionImplTest {
 
 		assertEquals(12 + 6 + 3, count);
 	}
+
+	@Test
+	void givenSelectionOfFullScoreSubRangeHasCorrectContent() {
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getMeasureCount());
+
+		final Selection subSelection = fullSelection.subSelection(2, 3);
+
+		assertEquals(2, subSelection.getFirst());
+		assertEquals(3, subSelection.getLast());
+
+		final PositionalIterator iterator = subSelection.positionalIterator();
+		final Set<Integer> measureNumbers = new HashSet<>();
+		int count = 0;
+		while (iterator.hasNext()) {
+			iterator.next();
+			measureNumbers.add(iterator.getPositionOfPrevious().getMeasureNumber());
+			++count;
+		}
+
+		assertEquals(2, measureNumbers.size());
+		assertTrue(measureNumbers.contains(2));
+		assertTrue(measureNumbers.contains(3));
+
+		assertEquals(6 + 12, count);
+	}
 }
