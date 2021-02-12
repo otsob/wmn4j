@@ -7,7 +7,7 @@ import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.notation.access.MeasureIterator;
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.ScoreIterator;
+import org.wmn4j.notation.access.PositionalIterator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -254,7 +254,7 @@ public final class Score implements Iterable<Part> {
 	 * @return an iterator that iterates the durational notation objects in
 	 * partwise order
 	 */
-	public ScoreIterator partwiseIterator() {
+	public PositionalIterator partwiseIterator() {
 		return new PartWiseScoreIterator(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
 	}
 

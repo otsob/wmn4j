@@ -24,7 +24,7 @@ import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
 import org.wmn4j.notation.SingleStaffPart;
-import org.wmn4j.notation.access.ScoreIterator;
+import org.wmn4j.notation.access.PositionalIterator;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -105,7 +105,7 @@ class MusicXmlScoreWriterDomTest {
 
 		Score writtenScore = writeAndReadScore(score);
 
-		ScoreIterator iterator = writtenScore.partwiseIterator();
+		PositionalIterator iterator = writtenScore.partwiseIterator();
 
 		Note note = (Note) iterator.next();
 		assertEquals(Pitch.Base.C, note.getPitch().getBase());

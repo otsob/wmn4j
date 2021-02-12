@@ -8,7 +8,7 @@ import org.wmn4j.TestHelper;
 import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.ScoreIterator;
+import org.wmn4j.notation.access.PositionalIterator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -151,7 +151,7 @@ public class ScoreTest {
 		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 		assertTrue(score != null);
 
-		final ScoreIterator iterator = score.partwiseIterator();
+		final PositionalIterator iterator = score.partwiseIterator();
 		while (iterator.hasNext()) {
 			final Durational elem = iterator.next();
 			final Position position = iterator.getPositionOfPrevious();

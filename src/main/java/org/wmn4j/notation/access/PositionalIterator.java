@@ -8,13 +8,12 @@ import org.wmn4j.notation.Durational;
 import java.util.Iterator;
 
 /**
- * Interface for access that iterate through the
- * {@link Durational} objects in a
- * {@link org.wmn4j.notation.Score}.
+ * Interface for iterating {@link Durational} objects and retrieving their
+ * positions in a {@link org.wmn4j.notation.Score}.
  * <p>
  * Implementations of this interface are not guaranteed to be thread-safe.
  */
-public interface ScoreIterator extends Iterator<Durational> {
+public interface PositionalIterator extends Iterator<Durational> {
 
 	/**
 	 * Returns the position of the {@link Durational} returned by the last call of

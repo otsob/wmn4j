@@ -10,7 +10,7 @@ package org.wmn4j.notation;
 import org.wmn4j.notation.access.MeasureIterator;
 import org.wmn4j.notation.access.PartIterator;
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.ScoreIterator;
+import org.wmn4j.notation.access.PositionalIterator;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
  * <p>
  * Instances of this class are not thread-safe.
  */
-final class PartWiseScoreIterator implements ScoreIterator {
+final class PartWiseScoreIterator implements PositionalIterator {
 
 	private final Iterator<Part> scoreIterator;
 
