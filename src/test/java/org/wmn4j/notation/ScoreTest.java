@@ -9,14 +9,17 @@ import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.notation.access.Position;
 import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -99,6 +102,37 @@ public class ScoreTest {
 		attributes.put(Score.Attribute.TITLE, "ModifiedName");
 		assertEquals(SCORE_NAME, score.getTitle().get(),
 				"Score title was changed by modifying map used for creating score");
+	}
+
+	@Test
+	void testToSelection() {
+		final int partCount = 3;
+		final int measureCount = 4;
+		final Score score = Score.of(getTestAttributes(), getTestParts(partCount, measureCount));
+		final Selection selection = score.toSelection();
+
+		assertEquals(1, selection.getFirst());
+		assertEquals(measureCount, selection.getLast());
+
+		Set<Integer> iteratedParts = new HashSet<>();
+		Set<Integer> iteratedMeasures = new HashSet<>();
+
+		PositionalIterator iterator = selection.positionalIterator();
+		while (iterator.hasNext()) {
+			iterator.next();
+			final Position position = iterator.getPositionOfPrevious();
+			iteratedParts.add(position.getPartIndex());
+			iteratedMeasures.add(position.getMeasureNumber());
+		}
+
+		assertTrue(iteratedParts.contains(0));
+		assertTrue(iteratedParts.contains(1));
+		assertTrue(iteratedParts.contains(2));
+
+		assertTrue(iteratedMeasures.contains(1));
+		assertTrue(iteratedMeasures.contains(2));
+		assertTrue(iteratedMeasures.contains(3));
+		assertTrue(iteratedMeasures.contains(4));
 	}
 
 	@Test

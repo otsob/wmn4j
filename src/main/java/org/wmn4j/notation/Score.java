@@ -8,6 +8,7 @@ import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.notation.access.MeasureIterator;
 import org.wmn4j.notation.access.Position;
 import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -256,6 +257,15 @@ public final class Score implements Iterable<Part> {
 	 */
 	public PositionalIterator partwiseIterator() {
 		return new PartwisePositionalIterator(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
+	}
+
+	/**
+	 * Returns this score as a {@link Selection}.
+	 *
+	 * @return this score as a {@link Selection}
+	 */
+	public Selection toSelection() {
+		return new SelectionImpl(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
 	}
 
 	/**
