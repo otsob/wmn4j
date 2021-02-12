@@ -35,18 +35,23 @@ final class PartWiseScoreIterator implements ScoreIterator {
 	private int prevVoice;
 	private int prevIndex;
 
+	private final int firstMeasure;
+	private final int lastMeasure;
+
 	/**
 	 * Constructor.
 	 *
-	 * @param score the score that this iterates through.
+	 * @param score        the score that this iterates through
+	 * @param firstMeasure the number of the first measure to be included in iteration
+	 * @param lastMeasure  the number of the last measure to be included in iteration
 	 */
-	PartWiseScoreIterator(Score score) {
+	PartWiseScoreIterator(Score score, int firstMeasure, int lastMeasure) {
 		this.scoreIterator = score.iterator();
-		// TODO: Consider a better way to handle iterating Parts and part index
-		// handling.
 		this.prevPart = this.scoreIterator.next();
 		this.prevPartIndex = 0;
-		this.currentPartIterator = this.prevPart.getPartIterator();
+		this.firstMeasure = firstMeasure;
+		this.lastMeasure = lastMeasure;
+		this.currentPartIterator = this.prevPart.getPartIterator(this.firstMeasure, this.lastMeasure);
 		this.currentMeasureIterator = this.currentPartIterator.next().getMeasureIterator();
 	}
 
@@ -66,7 +71,7 @@ final class PartWiseScoreIterator implements ScoreIterator {
 			if (!this.currentPartIterator.hasNext()) {
 				this.prevPart = this.scoreIterator.next();
 				++this.prevPartIndex;
-				this.currentPartIterator = this.prevPart.getPartIterator();
+				this.currentPartIterator = this.prevPart.getPartIterator(this.firstMeasure, this.lastMeasure);
 			}
 
 			this.currentMeasureIterator = this.currentPartIterator.next().getMeasureIterator();

@@ -29,7 +29,8 @@ class PartWiseScoreIteratorTest {
 	@BeforeEach
 	void setUp() {
 		assertNotNull(score);
-		this.iter = new PartWiseScoreIterator(this.score);
+		this.iter = new PartWiseScoreIterator(this.score, this.score.hasPickupMeasure() ? 0 : 1,
+				this.score.getFullMeasureCount());
 	}
 
 	private Durational moveIterSteps(int steps) {
