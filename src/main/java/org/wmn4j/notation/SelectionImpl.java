@@ -3,6 +3,7 @@
  */
 package org.wmn4j.notation;
 
+import org.wmn4j.notation.access.PositionalIterator;
 import org.wmn4j.notation.access.Selection;
 
 import java.util.Iterator;
@@ -54,6 +55,6 @@ final class SelectionImpl implements Selection {
 
 	@Override
 	public Iterator<Durational> iterator() {
-		return new PartWiseScoreIterator(this.score, this.first, this.last);
+		return new PartwisePositionalIterator(this.score, this.first, this.last);
 	}
 }

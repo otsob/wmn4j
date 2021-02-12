@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
  * <p>
  * Instances of this class are not thread-safe.
  */
-final class PartWiseScoreIterator implements PositionalIterator {
+final class PartwisePositionalIterator implements PositionalIterator {
 
 	private final Iterator<Part> scoreIterator;
 
@@ -45,7 +45,7 @@ final class PartWiseScoreIterator implements PositionalIterator {
 	 * @param firstMeasure the number of the first measure to be included in iteration
 	 * @param lastMeasure  the number of the last measure to be included in iteration
 	 */
-	PartWiseScoreIterator(Score score, int firstMeasure, int lastMeasure) {
+	PartwisePositionalIterator(Score score, int firstMeasure, int lastMeasure) {
 		this.scoreIterator = score.iterator();
 		this.prevPart = this.scoreIterator.next();
 		this.prevPartIndex = 0;

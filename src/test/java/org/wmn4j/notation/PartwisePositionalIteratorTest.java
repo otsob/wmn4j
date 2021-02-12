@@ -17,19 +17,19 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class PartWiseScoreIteratorTest {
+class PartwisePositionalIteratorTest {
 
 	private Score score = null;
-	private PartWiseScoreIterator iter = null;
+	private PartwisePositionalIterator iter = null;
 
-	PartWiseScoreIteratorTest() {
+	PartwisePositionalIteratorTest() {
 		this.score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 	}
 
 	@BeforeEach
 	void setUp() {
 		assertNotNull(score);
-		this.iter = new PartWiseScoreIterator(this.score, this.score.hasPickupMeasure() ? 0 : 1,
+		this.iter = new PartwisePositionalIterator(this.score, this.score.hasPickupMeasure() ? 0 : 1,
 				this.score.getFullMeasureCount());
 	}
 

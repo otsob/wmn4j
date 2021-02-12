@@ -255,7 +255,7 @@ public final class Score implements Iterable<Part> {
 	 * partwise order
 	 */
 	public PositionalIterator partwiseIterator() {
-		return new PartWiseScoreIterator(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
+		return new PartwisePositionalIterator(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
 	}
 
 	/**
