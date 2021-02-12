@@ -120,7 +120,12 @@ public final class MultiStaffPart implements Part {
 
 	@Override
 	public PartIterator getPartIterator() {
-		return new MultiStaffPart.Iter(this);
+		return new MultiStaffPart.Iter(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
+	}
+
+	@Override
+	public PartIterator getPartIterator(int firstMeasure, int lastMeasure) {
+		return new MultiStaffPart.Iter(this, firstMeasure, lastMeasure);
 	}
 
 	@Override
@@ -139,29 +144,27 @@ public final class MultiStaffPart implements Part {
 		return builder.toString();
 	}
 
-	private static class Iter implements PartIterator {
+	class Iter implements PartIterator {
 		private final MultiStaffPart part;
 		private int keyIndex;
 		private final List<Integer> keys;
-		private int measureNumber;
+		private int nextMeasureNumber;
 		private int prevStaffNumber = 0;
 		private int prevMeasureNumber = 0;
+
+		private final int lastMeasure;
 
 		/**
 		 * Constructor.
 		 *
 		 * @param part the part for which the iterator is created
 		 */
-		Iter(MultiStaffPart part) {
+		Iter(MultiStaffPart part, int firstMeasure, int lastMeasure) {
 			this.part = part;
 			this.keyIndex = 0;
 			this.keys = this.part.getStaffNumbers();
-			this.measureNumber = 1;
-
-			// If there is a pickup measure start from measure 0.
-			if (this.part.staves.get(this.keys.get(0)).hasPickupMeasure()) {
-				this.measureNumber = 0;
-			}
+			this.nextMeasureNumber = firstMeasure;
+			this.lastMeasure = lastMeasure;
 		}
 
 		@Override
@@ -176,7 +179,7 @@ public final class MultiStaffPart implements Part {
 
 		@Override
 		public boolean hasNext() {
-			return this.measureNumber <= this.part.getFullMeasureCount();
+			return this.nextMeasureNumber <= this.lastMeasure;
 		}
 
 		@Override
@@ -185,13 +188,13 @@ public final class MultiStaffPart implements Part {
 
 			if (this.hasNext()) {
 				this.prevStaffNumber = this.keys.get(keyIndex);
-				this.prevMeasureNumber = this.measureNumber;
+				this.prevMeasureNumber = this.nextMeasureNumber;
 				measure = this.part.staves.get(this.prevStaffNumber).getMeasure(this.prevMeasureNumber);
 
 				++keyIndex;
 				if (keyIndex == this.keys.size()) {
 					keyIndex = 0;
-					++this.measureNumber;
+					++this.nextMeasureNumber;
 				}
 			} else {
 				throw new NoSuchElementException();

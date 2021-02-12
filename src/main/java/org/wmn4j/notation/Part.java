@@ -111,6 +111,17 @@ public interface Part extends Iterable<Measure> {
 	 */
 	PartIterator getPartIterator();
 
+	/**
+	 * Returns a part iterator that can be used to iterate through the measures in
+	 * this part.
+	 *
+	 * @param firstMeasure the measure number of the first measure to be included in iteration
+	 * @param lastMeasure  the measure number of the last measure to be included in iteration
+	 * @return an iterator that can be used to iterate through the measures in this
+	 * part
+	 */
+	PartIterator getPartIterator(int firstMeasure, int lastMeasure);
+
 	@Override
 	default Iterator<Measure> iterator() {
 		return getPartIterator();
