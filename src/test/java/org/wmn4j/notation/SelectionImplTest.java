@@ -5,10 +5,15 @@ package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
 import org.wmn4j.TestHelper;
+import org.wmn4j.notation.access.PositionalIterator;
 import org.wmn4j.notation.access.Selection;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SelectionImplTest {
 
@@ -51,6 +56,49 @@ class SelectionImplTest {
 		for (Durational durational : fullSelection) {
 			++count;
 		}
+
+		assertEquals(12 + 6 + 3, count);
+	}
+
+	@Test
+	void givenSelectionOfFullScoreAllPositionsAreIterated() {
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getMeasureCount());
+		final PositionalIterator iterator = fullSelection.positionalIterator();
+		final Set<Integer> measureNumbers = new HashSet<>();
+		int count = 0;
+		while (iterator.hasNext()) {
+			iterator.next();
+			measureNumbers.add(iterator.getPositionOfPrevious().getMeasureNumber());
+			++count;
+		}
+
+		assertEquals(6, measureNumbers.size());
+		assertTrue(measureNumbers.contains(1));
+		assertTrue(measureNumbers.contains(2));
+		assertTrue(measureNumbers.contains(3));
+		assertTrue(measureNumbers.contains(4));
+		assertTrue(measureNumbers.contains(5));
+		assertTrue(measureNumbers.contains(6));
+
+		assertEquals(3 + 6 + 12 + 6 + 3 + 3, count);
+	}
+
+	@Test
+	void givenRangeOfScoreAllPositionsAreIterated() {
+		final Selection fullSelection = new SelectionImpl(testScore, 3, 5);
+		final PositionalIterator iterator = fullSelection.positionalIterator();
+		final Set<Integer> measureNumbers = new HashSet<>();
+		int count = 0;
+		while (iterator.hasNext()) {
+			iterator.next();
+			measureNumbers.add(iterator.getPositionOfPrevious().getMeasureNumber());
+			++count;
+		}
+
+		assertEquals(3, measureNumbers.size());
+		assertTrue(measureNumbers.contains(3));
+		assertTrue(measureNumbers.contains(4));
+		assertTrue(measureNumbers.contains(5));
 
 		assertEquals(12 + 6 + 3, count);
 	}

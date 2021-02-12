@@ -54,6 +54,11 @@ final class SelectionImpl implements Selection {
 	}
 
 	@Override
+	public PositionalIterator positionalIterator() {
+		return new PartwisePositionalIterator(this.score, this.first, this.last);
+	}
+
+	@Override
 	public Iterator<Durational> iterator() {
 		return new PartwisePositionalIterator(this.score, this.first, this.last);
 	}

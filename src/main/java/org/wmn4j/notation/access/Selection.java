@@ -30,4 +30,12 @@ public interface Selection extends Iterable<Durational> {
 	 * @return the measure number to which the selection range ends (inclusive)
 	 */
 	int getLast();
+
+	/**
+	 * Returns an iterator that also provides access to the positions of the {@link Durational}
+	 * objects in this selection.
+	 *
+	 * @return an iterator that also provides access to the positions
+	 */
+	PositionalIterator positionalIterator();
 }
