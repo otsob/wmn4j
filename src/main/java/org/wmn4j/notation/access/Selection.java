@@ -5,6 +5,8 @@ package org.wmn4j.notation.access;
 
 import org.wmn4j.notation.Durational;
 
+import java.util.List;
+
 /**
  * Represents a selection of notation objects from a score.
  * <p>
@@ -30,6 +32,13 @@ public interface Selection extends Iterable<Durational> {
 	 * @return the measure number to which the selection range ends (inclusive)
 	 */
 	int getLast();
+
+	/**
+	 * Returns the indices of the parts in this selection in ascending order.
+	 *
+	 * @return the indices of the parts in this selection in ascending order
+	 */
+	List<Integer> getPartIndices();
 
 	/**
 	 * Returns an iterator that also provides access to the positions of the {@link Durational}

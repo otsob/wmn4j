@@ -12,7 +12,10 @@ import org.wmn4j.notation.access.PartIterator;
 import org.wmn4j.notation.access.Position;
 import org.wmn4j.notation.access.PositionalIterator;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -38,15 +41,31 @@ final class PartwisePositionalIterator implements PositionalIterator {
 	private final int firstMeasure;
 	private final int lastMeasure;
 
+	PartwisePositionalIterator(Score score, int firstMeasure, int lastMeasure) {
+		this(score, firstMeasure, lastMeasure, Collections.emptyList());
+	}
+
 	/**
 	 * Constructor.
 	 *
 	 * @param score        the score that this iterates through
 	 * @param firstMeasure the number of the first measure to be included in iteration
 	 * @param lastMeasure  the number of the last measure to be included in iteration
+	 * @param partIndices  the indices of the parts included in iteration
 	 */
-	PartwisePositionalIterator(Score score, int firstMeasure, int lastMeasure) {
-		this.scoreIterator = score.iterator();
+	PartwisePositionalIterator(Score score, int firstMeasure, int lastMeasure, List<Integer> partIndices) {
+
+		if (partIndices.isEmpty()) {
+			this.scoreIterator = score.iterator();
+		} else {
+			List<Part> selectedParts = new ArrayList<>();
+			for (Integer index : partIndices) {
+				selectedParts.add(score.getPart(index));
+			}
+
+			this.scoreIterator = selectedParts.iterator();
+		}
+
 		this.prevPart = this.scoreIterator.next();
 		this.prevPartIndex = 0;
 		this.firstMeasure = firstMeasure;

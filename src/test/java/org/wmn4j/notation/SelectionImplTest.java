@@ -8,7 +8,9 @@ import org.wmn4j.TestHelper;
 import org.wmn4j.notation.access.PositionalIterator;
 import org.wmn4j.notation.access.Selection;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -101,6 +103,55 @@ class SelectionImplTest {
 		assertTrue(measureNumbers.contains(5));
 
 		assertEquals(12 + 6 + 3, count);
+	}
+
+	@Test
+	void givenPartIndexOfOnePartOnlyGivenPartIsIterated() {
+		List<Integer> partIndices = new ArrayList<>();
+		partIndices.add(1);
+
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount(), partIndices);
+		final PositionalIterator iterator = fullSelection.positionalIterator();
+		final Set<Integer> measureNumbers = new HashSet<>();
+		int count = 0;
+		while (iterator.hasNext()) {
+			iterator.next();
+			measureNumbers.add(iterator.getPositionOfPrevious().getMeasureNumber());
+			++count;
+		}
+
+		assertEquals(6, measureNumbers.size());
+		assertTrue(measureNumbers.contains(1));
+		assertTrue(measureNumbers.contains(2));
+		assertTrue(measureNumbers.contains(3));
+		assertTrue(measureNumbers.contains(4));
+		assertTrue(measureNumbers.contains(5));
+		assertTrue(measureNumbers.contains(6));
+
+		assertEquals(1 + 2 + 4 + 2 + 1 + 1, count);
+	}
+
+	@Test
+	void givenFullScorePartIndicesAreCorrectlySet() {
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount());
+		final List<Integer> partIndices = fullSelection.getPartIndices();
+
+		assertEquals(2, partIndices.size());
+		assertEquals(0, partIndices.get(0));
+		assertEquals(1, partIndices.get(1));
+	}
+
+	@Test
+	void givenOnePartSelectionWithDuplicatesPartIndicesAreCorrectlySet() {
+		List<Integer> indices = new ArrayList<>();
+		indices.add(1);
+		indices.add(1);
+
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount(), indices);
+		final List<Integer> partIndices = fullSelection.getPartIndices();
+
+		assertEquals(1, partIndices.size());
+		assertEquals(1, partIndices.get(0));
 	}
 
 	@Test
