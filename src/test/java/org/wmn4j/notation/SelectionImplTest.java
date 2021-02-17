@@ -178,4 +178,33 @@ class SelectionImplTest {
 
 		assertEquals(6 + 12, count);
 	}
+
+	@Test
+	void givenFullSelectionSubselectionOfPartsIsCorrect() {
+
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount());
+
+		List<Integer> partIndices = new ArrayList<>();
+		partIndices.add(1);
+		final Selection subSelection = fullSelection.subSelection(partIndices);
+
+		final PositionalIterator iterator = subSelection.positionalIterator();
+		final Set<Integer> measureNumbers = new HashSet<>();
+		int count = 0;
+		while (iterator.hasNext()) {
+			iterator.next();
+			measureNumbers.add(iterator.getPositionOfPrevious().getMeasureNumber());
+			++count;
+		}
+
+		assertEquals(6, measureNumbers.size());
+		assertTrue(measureNumbers.contains(1));
+		assertTrue(measureNumbers.contains(2));
+		assertTrue(measureNumbers.contains(3));
+		assertTrue(measureNumbers.contains(4));
+		assertTrue(measureNumbers.contains(5));
+		assertTrue(measureNumbers.contains(6));
+
+		assertEquals(1 + 2 + 4 + 2 + 1 + 1, count);
+	}
 }

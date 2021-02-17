@@ -107,6 +107,11 @@ final class SelectionImpl implements Selection {
 	}
 
 	@Override
+	public Selection subSelection(Collection<Integer> partIndices) {
+		return new SelectionImpl(this.score, this.first, this.last, partIndices);
+	}
+
+	@Override
 	public Iterator<Durational> iterator() {
 		return positionalIterator();
 	}

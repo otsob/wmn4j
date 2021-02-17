@@ -5,6 +5,7 @@ package org.wmn4j.notation.access;
 
 import org.wmn4j.notation.Durational;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -56,4 +57,12 @@ public interface Selection extends Iterable<Durational> {
 	 * @return a subrange of measures from this selection
 	 */
 	Selection subSelection(int firstMeasure, int lastMeasure);
+
+	/**
+	 * Returns a selection or parts from this selection.
+	 *
+	 * @param partIndices the indices of the parts to select
+	 * @return a selection or parts from this selection
+	 */
+	Selection subSelection(Collection<Integer> partIndices);
 }
