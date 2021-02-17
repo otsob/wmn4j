@@ -64,6 +64,15 @@ public interface Part extends Iterable<Measure> {
 	Optional<String> getAttribute(Attribute attribute);
 
 	/**
+	 * Returns true if this part has a pickup measure.
+	 *
+	 * @return true if this part has a pickup measure, false otherwise
+	 */
+	default boolean hasPickupMeasure() {
+		return getMeasureCount() > getFullMeasureCount();
+	}
+
+	/**
 	 * Returns the number of measures in this part. The count is based on the
 	 * measure numbers, so even if a part has multiple staves its measure count is
 	 * the largest measure number.
@@ -101,6 +110,17 @@ public interface Part extends Iterable<Measure> {
 	 * part
 	 */
 	PartIterator getPartIterator();
+
+	/**
+	 * Returns a part iterator that can be used to iterate through the measures in
+	 * this part.
+	 *
+	 * @param firstMeasure the measure number of the first measure to be included in iteration
+	 * @param lastMeasure  the measure number of the last measure to be included in iteration
+	 * @return an iterator that can be used to iterate through the measures in this
+	 * part
+	 */
+	PartIterator getPartIterator(int firstMeasure, int lastMeasure);
 
 	@Override
 	default Iterator<Measure> iterator() {

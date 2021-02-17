@@ -1,35 +1,36 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.notation.access;
+
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
+package org.wmn4j.notation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.wmn4j.TestHelper;
-import org.wmn4j.notation.Durational;
-import org.wmn4j.notation.Durations;
-import org.wmn4j.notation.Note;
-import org.wmn4j.notation.Pitch;
-import org.wmn4j.notation.Score;
+import org.wmn4j.notation.access.Position;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class PartWiseScoreIteratorTest {
+class PartwisePositionalIteratorTest {
 
 	private Score score = null;
-	private PartWiseScoreIterator iter = null;
+	private PartwisePositionalIterator iter = null;
 
-	PartWiseScoreIteratorTest() {
+	PartwisePositionalIteratorTest() {
 		this.score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 	}
 
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
 		assertNotNull(score);
-		this.iter = new PartWiseScoreIterator(this.score);
+		this.iter = new PartwisePositionalIterator(this.score, this.score.hasPickupMeasure() ? 0 : 1,
+				this.score.getFullMeasureCount());
 	}
 
 	private Durational moveIterSteps(int steps) {

@@ -11,7 +11,6 @@ import org.wmn4j.notation.Key;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.PitchClass;
 import org.wmn4j.notation.Score;
-import org.wmn4j.notation.access.PartWiseScoreIterator;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -61,7 +60,7 @@ public final class KSKeyAnalysis implements KeyAnalysis {
 	 * @return a key analysis of the given selection
 	 */
 	public static KeyAnalysis of(Score score) {
-		return new KSKeyAnalysis(new PartWiseScoreIterator(score));
+		return new KSKeyAnalysis(score.partwiseIterator());
 	}
 
 	private static Key findBestMatchingKey(Iterator<Durational> selectionIterator) {
