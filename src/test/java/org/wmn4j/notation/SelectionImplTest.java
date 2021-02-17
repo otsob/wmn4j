@@ -207,4 +207,28 @@ class SelectionImplTest {
 
 		assertEquals(1 + 2 + 4 + 2 + 1 + 1, count);
 	}
+
+	@Test
+	void givenSubselectionByPartAndRangeThenCorrectNotesAreSelected() {
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount());
+
+		List<Integer> partIndices = new ArrayList<>();
+		partIndices.add(0);
+		final Selection subSelection = fullSelection.subSelection(partIndices).subSelection(2, 3);
+
+		final PositionalIterator iterator = subSelection.positionalIterator();
+		final Set<Integer> measureNumbers = new HashSet<>();
+		int count = 0;
+		while (iterator.hasNext()) {
+			iterator.next();
+			measureNumbers.add(iterator.getPositionOfPrevious().getMeasureNumber());
+			++count;
+		}
+
+		assertEquals(2, measureNumbers.size());
+		assertTrue(measureNumbers.contains(2));
+		assertTrue(measureNumbers.contains(3));
+
+		assertEquals(4 + 8, count);
+	}
 }

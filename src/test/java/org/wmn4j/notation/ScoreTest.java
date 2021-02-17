@@ -165,6 +165,43 @@ public class ScoreTest {
 	}
 
 	@Test
+	void testSelectParts() {
+		final int partCount = 3;
+		final int measureCount = 4;
+		final Score score = Score.of(getTestAttributes(), getTestParts(partCount, measureCount));
+
+		List<Integer> partIndices = new ArrayList<>();
+		partIndices.add(0);
+		partIndices.add(1);
+
+		final Selection selection = score.selectParts(partIndices);
+
+		assertEquals(1, selection.getFirst());
+		assertEquals(4, selection.getLast());
+
+		Set<Integer> iteratedParts = new HashSet<>();
+		Set<Integer> iteratedMeasures = new HashSet<>();
+
+		PositionalIterator iterator = selection.positionalIterator();
+		while (iterator.hasNext()) {
+			iterator.next();
+			final Position position = iterator.getPositionOfPrevious();
+			iteratedParts.add(position.getPartIndex());
+			iteratedMeasures.add(position.getMeasureNumber());
+		}
+
+		assertEquals(2, iteratedParts.size());
+		assertTrue(iteratedParts.contains(0));
+		assertTrue(iteratedParts.contains(1));
+
+		assertEquals(4, iteratedMeasures.size());
+		assertTrue(iteratedMeasures.contains(1));
+		assertTrue(iteratedMeasures.contains(2));
+		assertTrue(iteratedMeasures.contains(3));
+		assertTrue(iteratedMeasures.contains(4));
+	}
+
+	@Test
 	void testIterator() {
 		final int partCount = 10;
 		final int measureCount = 10;

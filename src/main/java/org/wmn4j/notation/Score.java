@@ -259,24 +259,40 @@ public final class Score implements Iterable<Part> {
 		return new PartwisePositionalIterator(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
 	}
 
+	private int getFirstMeasureNumber() {
+		return hasPickupMeasure() ? 0 : 1;
+	}
+
 	/**
 	 * Returns this score as a {@link Selection}.
 	 *
 	 * @return this score as a {@link Selection}
 	 */
 	public Selection toSelection() {
-		return new SelectionImpl(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
+		return new SelectionImpl(this, getFirstMeasureNumber(), getFullMeasureCount());
 	}
 
 	/**
 	 * Returns a range of measures of all parts in this score.
 	 *
 	 * @param firstMeasure the number of the first measure included in the range
-	 * @param lastMeasure the number of the last measure included in the range
+	 * @param lastMeasure  the number of the last measure included in the range
 	 * @return a range of measures of all parts in this score
 	 */
 	public Selection selectRange(int firstMeasure, int lastMeasure) {
 		return new SelectionImpl(this, firstMeasure, lastMeasure);
+	}
+
+	/**
+	 * Returns a selection of the score containing the parts at the given
+	 * indices.
+	 *
+	 * @param partIndices the indices of the parts in this Score to be included in the selection
+	 * @return a selection of the score containing the parts at the given
+	 * * indices
+	 */
+	public Selection selectParts(Collection<Integer> partIndices) {
+		return new SelectionImpl(this, getFirstMeasureNumber(), getFullMeasureCount(), partIndices);
 	}
 
 	/**
