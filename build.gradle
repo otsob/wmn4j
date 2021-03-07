@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'org.wmn4j'
-description = 'A simple Java API for handling western music notation.'
+description = 'A Java library for handling western music notation.'
 sourceCompatibility = '11'
 
 java {
