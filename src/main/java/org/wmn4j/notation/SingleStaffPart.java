@@ -7,7 +7,6 @@ import org.wmn4j.notation.access.PartIterator;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -112,7 +111,12 @@ public final class SingleStaffPart implements Part {
 
 	@Override
 	public PartIterator getPartIterator() {
-		return new SingleStaffPart.Iter(this);
+		return new SingleStaffPart.Iter(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
+	}
+
+	@Override
+	public PartIterator getPartIterator(int firstMeasure, int lastMeasure) {
+		return new SingleStaffPart.Iter(this, firstMeasure, lastMeasure);
 	}
 
 	@Override
@@ -146,13 +150,16 @@ public final class SingleStaffPart implements Part {
 		return builder.toString();
 	}
 
-	private static class Iter implements PartIterator {
+	class Iter implements PartIterator {
 
-		private final Iterator<Measure> staffIterator;
-		private int prevMeasureNumber = 0;
+		private final Staff staff;
+		private int nextMeasureNumber;
+		private final int lastMeasureNumber;
 
-		Iter(SingleStaffPart part) {
-			this.staffIterator = part.getStaff().iterator();
+		Iter(SingleStaffPart part, int firstMeasureNumber, int lastMeasureNumber) {
+			this.nextMeasureNumber = firstMeasureNumber;
+			this.lastMeasureNumber = lastMeasureNumber;
+			this.staff = part.getStaff();
 		}
 
 		@Override
@@ -162,12 +169,12 @@ public final class SingleStaffPart implements Part {
 
 		@Override
 		public int getMeasureNumberOfPrevious() {
-			return this.prevMeasureNumber;
+			return this.nextMeasureNumber - 1;
 		}
 
 		@Override
 		public boolean hasNext() {
-			return this.staffIterator.hasNext();
+			return this.nextMeasureNumber <= this.lastMeasureNumber;
 		}
 
 		@Override
@@ -176,9 +183,7 @@ public final class SingleStaffPart implements Part {
 				throw new NoSuchElementException();
 			}
 
-			final Measure next = this.staffIterator.next();
-			this.prevMeasureNumber = next.getNumber();
-			return next;
+			return this.staff.getMeasure(nextMeasureNumber++);
 		}
 
 		@Override

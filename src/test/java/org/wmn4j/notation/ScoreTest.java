@@ -7,17 +7,19 @@ import org.junit.jupiter.api.Test;
 import org.wmn4j.TestHelper;
 import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
-import org.wmn4j.notation.access.PartWiseScoreIterator;
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.ScoreIterator;
+import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -79,6 +81,14 @@ public class ScoreTest {
 	}
 
 	@Test
+	void testGetMeasureCountAndPickupMeasure() {
+		final Score score = Score.of(getTestAttributes(), getTestParts(5, 5));
+		assertEquals(5, score.getFullMeasureCount());
+		assertEquals(5, score.getFullMeasureCount());
+		assertFalse(score.hasPickupMeasure());
+	}
+
+	@Test
 	void testImmutability() {
 		final Map<Score.Attribute, String> attributes = getTestAttributes();
 		final List<Part> parts = getTestParts(5, 5);
@@ -92,6 +102,103 @@ public class ScoreTest {
 		attributes.put(Score.Attribute.TITLE, "ModifiedName");
 		assertEquals(SCORE_NAME, score.getTitle().get(),
 				"Score title was changed by modifying map used for creating score");
+	}
+
+	@Test
+	void testToSelection() {
+		final int partCount = 3;
+		final int measureCount = 4;
+		final Score score = Score.of(getTestAttributes(), getTestParts(partCount, measureCount));
+		final Selection selection = score.toSelection();
+
+		assertEquals(1, selection.getFirst());
+		assertEquals(measureCount, selection.getLast());
+
+		Set<Integer> iteratedParts = new HashSet<>();
+		Set<Integer> iteratedMeasures = new HashSet<>();
+
+		PositionalIterator iterator = selection.positionalIterator();
+		while (iterator.hasNext()) {
+			iterator.next();
+			final Position position = iterator.getPositionOfPrevious();
+			iteratedParts.add(position.getPartIndex());
+			iteratedMeasures.add(position.getMeasureNumber());
+		}
+
+		assertTrue(iteratedParts.contains(0));
+		assertTrue(iteratedParts.contains(1));
+		assertTrue(iteratedParts.contains(2));
+
+		assertTrue(iteratedMeasures.contains(1));
+		assertTrue(iteratedMeasures.contains(2));
+		assertTrue(iteratedMeasures.contains(3));
+		assertTrue(iteratedMeasures.contains(4));
+	}
+
+	@Test
+	void testSelectRange() {
+		final int partCount = 3;
+		final int measureCount = 4;
+		final Score score = Score.of(getTestAttributes(), getTestParts(partCount, measureCount));
+		final Selection selection = score.selectRange(2, 3);
+
+		assertEquals(2, selection.getFirst());
+		assertEquals(3, selection.getLast());
+
+		Set<Integer> iteratedParts = new HashSet<>();
+		Set<Integer> iteratedMeasures = new HashSet<>();
+
+		PositionalIterator iterator = selection.positionalIterator();
+		while (iterator.hasNext()) {
+			iterator.next();
+			final Position position = iterator.getPositionOfPrevious();
+			iteratedParts.add(position.getPartIndex());
+			iteratedMeasures.add(position.getMeasureNumber());
+		}
+
+		assertTrue(iteratedParts.contains(0));
+		assertTrue(iteratedParts.contains(1));
+		assertTrue(iteratedParts.contains(2));
+
+		assertTrue(iteratedMeasures.contains(2));
+		assertTrue(iteratedMeasures.contains(3));
+	}
+
+	@Test
+	void testSelectParts() {
+		final int partCount = 3;
+		final int measureCount = 4;
+		final Score score = Score.of(getTestAttributes(), getTestParts(partCount, measureCount));
+
+		List<Integer> partIndices = new ArrayList<>();
+		partIndices.add(0);
+		partIndices.add(1);
+
+		final Selection selection = score.selectParts(partIndices);
+
+		assertEquals(1, selection.getFirst());
+		assertEquals(4, selection.getLast());
+
+		Set<Integer> iteratedParts = new HashSet<>();
+		Set<Integer> iteratedMeasures = new HashSet<>();
+
+		PositionalIterator iterator = selection.positionalIterator();
+		while (iterator.hasNext()) {
+			iterator.next();
+			final Position position = iterator.getPositionOfPrevious();
+			iteratedParts.add(position.getPartIndex());
+			iteratedMeasures.add(position.getMeasureNumber());
+		}
+
+		assertEquals(2, iteratedParts.size());
+		assertTrue(iteratedParts.contains(0));
+		assertTrue(iteratedParts.contains(1));
+
+		assertEquals(4, iteratedMeasures.size());
+		assertTrue(iteratedMeasures.contains(1));
+		assertTrue(iteratedMeasures.contains(2));
+		assertTrue(iteratedMeasures.contains(3));
+		assertTrue(iteratedMeasures.contains(4));
 	}
 
 	@Test
@@ -144,7 +251,7 @@ public class ScoreTest {
 		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
 		assertTrue(score != null);
 
-		final ScoreIterator iterator = new PartWiseScoreIterator(score);
+		final PositionalIterator iterator = score.partwiseIterator();
 		while (iterator.hasNext()) {
 			final Durational elem = iterator.next();
 			final Position position = iterator.getPositionOfPrevious();

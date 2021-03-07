@@ -1,13 +1,21 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.notation.access;
 
-import org.wmn4j.notation.Durational;
-import org.wmn4j.notation.Part;
-import org.wmn4j.notation.Score;
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
+package org.wmn4j.notation;
 
+import org.wmn4j.notation.access.MeasureIterator;
+import org.wmn4j.notation.access.PartIterator;
+import org.wmn4j.notation.access.Position;
+import org.wmn4j.notation.access.PositionalIterator;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -17,7 +25,7 @@ import java.util.NoSuchElementException;
  * <p>
  * Instances of this class are not thread-safe.
  */
-public class PartWiseScoreIterator implements ScoreIterator {
+final class PartwisePositionalIterator implements PositionalIterator {
 
 	private final Iterator<Part> scoreIterator;
 
@@ -30,18 +38,39 @@ public class PartWiseScoreIterator implements ScoreIterator {
 	private int prevVoice;
 	private int prevIndex;
 
+	private final int firstMeasure;
+	private final int lastMeasure;
+
+	PartwisePositionalIterator(Score score, int firstMeasure, int lastMeasure) {
+		this(score, firstMeasure, lastMeasure, Collections.emptyList());
+	}
+
 	/**
 	 * Constructor.
 	 *
-	 * @param score the score that this iterates through.
+	 * @param score        the score that this iterates through
+	 * @param firstMeasure the number of the first measure to be included in iteration
+	 * @param lastMeasure  the number of the last measure to be included in iteration
+	 * @param partIndices  the indices of the parts included in iteration
 	 */
-	public PartWiseScoreIterator(Score score) {
-		this.scoreIterator = score.iterator();
-		// TODO: Consider a better way to handle iterating Parts and part index
-		// handling.
+	PartwisePositionalIterator(Score score, int firstMeasure, int lastMeasure, List<Integer> partIndices) {
+
+		if (partIndices.isEmpty()) {
+			this.scoreIterator = score.iterator();
+		} else {
+			List<Part> selectedParts = new ArrayList<>();
+			for (Integer index : partIndices) {
+				selectedParts.add(score.getPart(index));
+			}
+
+			this.scoreIterator = selectedParts.iterator();
+		}
+
 		this.prevPart = this.scoreIterator.next();
 		this.prevPartIndex = 0;
-		this.currentPartIterator = this.prevPart.getPartIterator();
+		this.firstMeasure = firstMeasure;
+		this.lastMeasure = lastMeasure;
+		this.currentPartIterator = this.prevPart.getPartIterator(this.firstMeasure, this.lastMeasure);
 		this.currentMeasureIterator = this.currentPartIterator.next().getMeasureIterator();
 	}
 
@@ -61,7 +90,7 @@ public class PartWiseScoreIterator implements ScoreIterator {
 			if (!this.currentPartIterator.hasNext()) {
 				this.prevPart = this.scoreIterator.next();
 				++this.prevPartIndex;
-				this.currentPartIterator = this.prevPart.getPartIterator();
+				this.currentPartIterator = this.prevPart.getPartIterator(this.firstMeasure, this.lastMeasure);
 			}
 
 			this.currentMeasureIterator = this.currentPartIterator.next().getMeasureIterator();

@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/otsob/wmn4j.svg?branch=master)](https://travis-ci.com/otsob/wmn4j)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-wmn4j is a Java API for handling western music notation.
+wmn4j is a Java library for handling western music notation.
 The main purpose of wmn4j is to enable easy and efficient analysis of scores and wmn4j is intended to also provide funtionality for algorithmic composition by generating scores.
 
 ## The structure of wmn4j
@@ -16,6 +16,7 @@ There are a few architectural design principles in wmn4j:
 
 ### Building wmn4j
 
+wmn4j is built with OpenJDK 11, and only Java 11 is supported.
 wmn4j uses Gradle and can be built by running Gradle build. With the current configuration the build consists of compilation, unit tests, and static analysis.
 It is recommended to delegate the building of the project to Gradle using the provided Gradle wrapper in the IDE to ensure all dependencies etc. are handled correctly.
 
@@ -24,7 +25,7 @@ It is recommended to delegate the building of the project to Gradle using the pr
 Contributions to wmn4j are very welcome. If you are interested, feel free to message me (otsob) through Github.
 Contributing to wmn4j happens throught pull requests. For commits we try to follow basic practices (for example, see the ones by [Painsi](https://gist.github.com/robertpainsi/b632364184e70900af4ab688decf6f53) or [Beams](https://chris.beams.io/posts/git-commit/)).
 
-As wmn4j is an API, the testing happens through unit tests and it is preferred that changes come accompanied by corresponding unit tests.
+As wmn4j is a library, the testing happens through unit tests and it is preferred that changes come accompanied by corresponding unit tests.
 
 The coding style of wmn4j is not very strict, but there are some [basic guidelines](CODING_CONVENTIONS.md).
 

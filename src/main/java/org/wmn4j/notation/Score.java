@@ -7,6 +7,8 @@ import org.wmn4j.mir.Pattern;
 import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.notation.access.MeasureIterator;
 import org.wmn4j.notation.access.Position;
+import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,6 +66,9 @@ public final class Score implements Iterable<Part> {
 	private final Map<Attribute, String> scoreAttr;
 	private final List<Part> parts;
 
+	private final int fullMeasureCount;
+	private final int measureCount;
+
 	/**
 	 * Returns a score with the given attributes and parts.
 	 *
@@ -88,6 +93,43 @@ public final class Score implements Iterable<Part> {
 		if (this.parts.isEmpty()) {
 			throw new IllegalArgumentException("Cannot create score: parts is empty");
 		}
+
+		this.measureCount = this.parts.stream().mapToInt(part -> part.getMeasureCount()).max().getAsInt();
+		this.fullMeasureCount = this.parts.stream().mapToInt(part -> part.getFullMeasureCount()).max().getAsInt();
+	}
+
+	/**
+	 * Returns the number of full measures in this score.
+	 * <p>
+	 * Pickup measures are not counted, that is, the number of measures
+	 * is the same as the largest measure number in the score.
+	 *
+	 * @return the number of full measures in this score
+	 */
+	public int getFullMeasureCount() {
+		return fullMeasureCount;
+	}
+
+	/**
+	 * Returns the number of measures in this score.
+	 * <p>
+	 * Pickup measures are included in the counte, that is, the number of measures
+	 * is the same as the largest measure number in the score plus a possible pickup
+	 * measure.
+	 *
+	 * @return the number of full measures in this score
+	 */
+	public int getMeasureCount() {
+		return measureCount;
+	}
+
+	/**
+	 * Returns true if this score has a pickup measure.
+	 *
+	 * @return true if this score has a pickup measure, false otherwise
+	 */
+	public boolean hasPickupMeasure() {
+		return fullMeasureCount < measureCount;
 	}
 
 	/**
@@ -200,6 +242,57 @@ public final class Score implements Iterable<Part> {
 	@Override
 	public Iterator<Part> iterator() {
 		return this.parts.iterator();
+	}
+
+	/**
+	 * Returns an iterator that iterates the durational notation objects in
+	 * partwise order.
+	 * <p>
+	 * Starts by iterating
+	 * through the part with the smallest number. Iterates through parts starting
+	 * from smallest measure number. Iterates through measure voice by voice.
+	 *
+	 * @return an iterator that iterates the durational notation objects in
+	 * partwise order
+	 */
+	public PositionalIterator partwiseIterator() {
+		return new PartwisePositionalIterator(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
+	}
+
+	private int getFirstMeasureNumber() {
+		return hasPickupMeasure() ? 0 : 1;
+	}
+
+	/**
+	 * Returns this score as a {@link Selection}.
+	 *
+	 * @return this score as a {@link Selection}
+	 */
+	public Selection toSelection() {
+		return new SelectionImpl(this, getFirstMeasureNumber(), getFullMeasureCount());
+	}
+
+	/**
+	 * Returns a range of measures of all parts in this score.
+	 *
+	 * @param firstMeasure the number of the first measure included in the range
+	 * @param lastMeasure  the number of the last measure included in the range
+	 * @return a range of measures of all parts in this score
+	 */
+	public Selection selectRange(int firstMeasure, int lastMeasure) {
+		return new SelectionImpl(this, firstMeasure, lastMeasure);
+	}
+
+	/**
+	 * Returns a selection of the score containing the parts at the given
+	 * indices.
+	 *
+	 * @param partIndices the indices of the parts in this Score to be included in the selection
+	 * @return a selection of the score containing the parts at the given
+	 * * indices
+	 */
+	public Selection selectParts(Collection<Integer> partIndices) {
+		return new SelectionImpl(this, getFirstMeasureNumber(), getFullMeasureCount(), partIndices);
 	}
 
 	/**

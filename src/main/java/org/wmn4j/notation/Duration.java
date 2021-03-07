@@ -183,7 +183,7 @@ public final class Duration implements Comparable<Duration> {
 	 */
 	public Duration addDot() {
 		/*
-		 * Adding the nth dot adds half of what the (n + 1)th dot added. For example,
+		 * Adding the nth dot adds half of what the (n - 1)th dot added. For example,
 		 * a duration with three dots d_3 is formed by adding dots to a dotless duration d_0:
 		 * d_3 = d_0 + d_0/2 + d_0/4 + d_0/8. This forms a geometric sum. From this it's
 		 * possible to infer that adding a dot to a duration d_n with n dots adds

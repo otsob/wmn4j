@@ -6,7 +6,6 @@ package org.wmn4j.io.musicxml;
 import org.w3c.dom.Element;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.Score;
-import org.wmn4j.notation.access.PartWiseScoreIterator;
 
 import java.util.Optional;
 
@@ -17,7 +16,7 @@ final class MusicXmlScoreWriterDom extends MusicXmlWriterDom {
 
 	MusicXmlScoreWriterDom(Score score) {
 		this.score = score;
-		this.divisions = computeDivisions(new PartWiseScoreIterator(score));
+		this.divisions = computeDivisions(score.partwiseIterator());
 	}
 
 	@Override
