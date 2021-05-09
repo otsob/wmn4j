@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class MeasureAttributesTest {
 
 	@Test
-	void testGetMeasureInfo() {
+	void testCreateMeasureAttributes() {
 		final MeasureAttributes attr = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Barline.SINGLE, Clefs.G);
 
@@ -30,7 +30,7 @@ class MeasureAttributesTest {
 	}
 
 	@Test
-	void testGetMeasureInfoWithInvalidParameters() {
+	void testCreateMeasureAttributesWithInvalidParameters() {
 
 		try {
 			final MeasureAttributes attr = MeasureAttributes.of(null, KeySignatures.CMAJ_AMIN, Barline.SINGLE,
