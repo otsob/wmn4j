@@ -5,6 +5,7 @@ package org.wmn4j.notation;
 
 import org.wmn4j.notation.access.MeasureIterator;
 import org.wmn4j.notation.access.Offset;
+import org.wmn4j.notation.directions.Direction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -238,6 +239,30 @@ public final class Measure implements Iterable<Durational> {
 	 */
 	public boolean containsClefChanges() {
 		return this.measureAttr.containsClefChanges();
+	}
+
+	/**
+	 * Returns true if this measure contains direction markings.
+	 * <p>
+	 * Directions are defined by the {@link Direction} type.
+	 *
+	 * @return true if this measure contains direction markings
+	 */
+	public boolean containsDirections() {
+		return measureAttr.containsDirections();
+	}
+
+	/**
+	 * Returns the directions in this measure.
+	 * <p>
+	 * The placement of the directions is represented using the {@link Offset} type,
+	 * measure from the beginning of the measure.
+	 * The returned list is sorted in ascending order of offset.
+	 *
+	 * @return the directions in this measure
+	 */
+	public List<Offset<Direction>> getDirections() {
+		return measureAttr.getDirections();
 	}
 
 	/**

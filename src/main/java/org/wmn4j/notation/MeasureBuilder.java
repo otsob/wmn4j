@@ -4,6 +4,7 @@
 package org.wmn4j.notation;
 
 import org.wmn4j.notation.access.Offset;
+import org.wmn4j.notation.directions.Direction;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -206,6 +207,18 @@ public class MeasureBuilder {
 	 */
 	public MeasureBuilder addClefChange(Duration offset, Clef clef) {
 		attributesBuilder.clefChanges.add(new Offset<>(clef, offset));
+		return this;
+	}
+
+	/**
+	 * Adds a {@link Direction} with the given offset.
+	 *
+	 * @param offset    the duration of the offset, can be null if direction is not offset
+	 * @param direction the direction to add at given offset
+	 * @return reference to this builder
+	 */
+	public MeasureBuilder addDirection(Duration offset, Direction direction) {
+		attributesBuilder.directions.add(new Offset<>(direction, offset));
 		return this;
 	}
 
@@ -449,6 +462,7 @@ public class MeasureBuilder {
 		private Barline leftBarline;
 		private Barline rightBarline;
 		private Set<Offset<Clef>> clefChanges;
+		private Set<Offset<Direction>> directions;
 
 		private MeasureAttributesBuilder() {
 			this.timeSignature = TimeSignatures.FOUR_FOUR;
@@ -457,6 +471,7 @@ public class MeasureBuilder {
 			this.leftBarline = Barline.NONE;
 			this.rightBarline = Barline.SINGLE;
 			this.clefChanges = new HashSet<>();
+			this.directions = new HashSet<>();
 		}
 
 		private MeasureAttributesBuilder(MeasureAttributes measureAttributes) {
@@ -466,10 +481,12 @@ public class MeasureBuilder {
 			this.leftBarline = measureAttributes.getLeftBarline();
 			this.rightBarline = measureAttributes.getRightBarline();
 			this.clefChanges = new HashSet<>(measureAttributes.getClefChanges());
+			this.directions = new HashSet<>(measureAttributes.getDirections());
 		}
 
 		private MeasureAttributes build() {
-			return MeasureAttributes.of(timeSignature, keySignature, rightBarline, leftBarline, clef, clefChanges);
+			return MeasureAttributes
+					.of(timeSignature, keySignature, rightBarline, leftBarline, clef, clefChanges, directions);
 		}
 
 		private boolean equalsInContent(MeasureAttributes measureAttributes) {
@@ -498,6 +515,10 @@ public class MeasureBuilder {
 			}
 
 			if (!clefChanges.equals(measureAttributes.getClefChanges())) {
+				return false;
+			}
+
+			if (!directions.equals(measureAttributes.getDirections())) {
 				return false;
 			}
 

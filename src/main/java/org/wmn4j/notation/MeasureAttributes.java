@@ -4,6 +4,7 @@
 package org.wmn4j.notation;
 
 import org.wmn4j.notation.access.Offset;
+import org.wmn4j.notation.directions.Direction;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +24,7 @@ public final class MeasureAttributes {
 	private final Barline leftBarline;
 	private final Clef clef;
 	private final List<Offset<Clef>> clefChanges;
+	private final List<Offset<Direction>> directions;
 
 	/**
 	 * Returns an instance with the given values. The left barline type will be set
@@ -35,8 +37,7 @@ public final class MeasureAttributes {
 	 * @return an instance with the given values
 	 */
 	public static MeasureAttributes of(TimeSignature timeSignature, KeySignature keySignature,
-			Barline rightBarline,
-			Clef clef) {
+			Barline rightBarline, Clef clef) {
 		return of(timeSignature, keySignature, rightBarline, Barline.NONE, clef);
 	}
 
@@ -51,9 +52,8 @@ public final class MeasureAttributes {
 	 * @return an instance with the given values
 	 */
 	public static MeasureAttributes of(TimeSignature timeSignature, KeySignature keySignature,
-			Barline rightBarline,
-			Barline leftBarline, Clef clef) {
-		return of(timeSignature, keySignature, rightBarline, leftBarline, clef, null);
+			Barline rightBarline, Barline leftBarline, Clef clef) {
+		return of(timeSignature, keySignature, rightBarline, leftBarline, clef, null, null);
 	}
 
 	/**
@@ -65,30 +65,38 @@ public final class MeasureAttributes {
 	 * @param leftBarline   the type of the left barline
 	 * @param clef          the clef in effect at the beginning of the measure
 	 * @param clefChanges   the clef changes within the measure
+	 * @param directions    the direction markings within the measure
 	 * @return an instance with the given values
 	 */
 	public static MeasureAttributes of(TimeSignature timeSignature, KeySignature keySignature,
-			Barline rightBarline,
-			Barline leftBarline, Clef clef, Collection<Offset<Clef>> clefChanges) {
+			Barline rightBarline, Barline leftBarline, Clef clef, Collection<Offset<Clef>> clefChanges,
+			Collection<Offset<Direction>> directions) {
 		// TODO: Potentially use interner pattern or similar for caching.
-		return new MeasureAttributes(timeSignature, keySignature, rightBarline, leftBarline, clef, clefChanges);
+		return new MeasureAttributes(timeSignature, keySignature, rightBarline, leftBarline, clef, clefChanges,
+				directions);
 	}
 
 	private MeasureAttributes(TimeSignature timeSig, KeySignature keySig, Barline rightBarline, Barline leftBarline,
-			Clef clef, Collection<Offset<Clef>> clefChanges) {
+			Clef clef, Collection<Offset<Clef>> clefChanges, Collection<Offset<Direction>> directions) {
+
 		this.timeSig = Objects.requireNonNull(timeSig);
 		this.keySig = Objects.requireNonNull(keySig);
 		this.rightBarline = Objects.requireNonNull(rightBarline);
 		this.leftBarline = Objects.requireNonNull(leftBarline);
 		this.clef = Objects.requireNonNull(clef);
 
-		if (clefChanges != null && !clefChanges.isEmpty()) {
-			List<Offset<Clef>> sortedClefChanges = new ArrayList<>(clefChanges);
-			sortedClefChanges.sort(Offset::compareTo);
-			this.clefChanges = Collections.unmodifiableList(sortedClefChanges);
-		} else {
-			this.clefChanges = Collections.emptyList();
+		this.clefChanges = createSortedCopy(clefChanges);
+		this.directions = createSortedCopy(directions);
+	}
+
+	private static <T> List<Offset<T>> createSortedCopy(Collection<Offset<T>> offsetElements) {
+		if (offsetElements != null && !offsetElements.isEmpty()) {
+			List<Offset<T>> sortedElements = new ArrayList<>(offsetElements);
+			sortedElements.sort(Offset::compareTo);
+			return Collections.unmodifiableList(sortedElements);
 		}
+
+		return Collections.emptyList();
 	}
 
 	/**
@@ -158,6 +166,27 @@ public final class MeasureAttributes {
 		return clefChanges;
 	}
 
+	/**
+	 * Returns true if this measure attributes instance contains directions.
+	 *
+	 * @return true if this measure attributes instance contains directions
+	 */
+	public boolean containsDirections() {
+		return !this.directions.isEmpty();
+	}
+
+	/**
+	 * Returns an unmodifiable view of the directions in these attributes.
+	 * <p>
+	 * The directions are sorted in ascending order of offset duration.
+	 * The offsets are measured from the beginning of the measure.
+	 *
+	 * @return an unmodifiable view of the directions in these attributes
+	 */
+	public List<Offset<Direction>> getDirections() {
+		return this.directions;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof MeasureAttributes)) {
@@ -190,7 +219,7 @@ public final class MeasureAttributes {
 			return false;
 		}
 
-		return true;
+		return this.directions.equals(other.directions);
 	}
 
 	@Override
@@ -200,16 +229,19 @@ public final class MeasureAttributes {
 				.append(this.leftBarline).append(", ").append("right barline: ").append(this.rightBarline).append(", ")
 				.append("Clef: ").append(this.clef).append(", ");
 
+		final String separator = " - ";
+
 		if (this.containsClefChanges()) {
-			strBuilder.append("Clef changes: ");
+			strBuilder.append("\nClef changes: ");
 			for (Offset<Clef> clefChange : this.clefChanges) {
-				String offsetString = "-";
+				strBuilder.append(clefChange).append(separator);
+			}
+		}
 
-				if (clefChange.getDuration().isPresent()) {
-					offsetString = clefChange.getDuration().get().toString();
-				}
-
-				strBuilder.append(clefChange.get()).append(" at ").append(offsetString);
+		if (this.containsDirections()) {
+			strBuilder.append("\nDirections: ");
+			for (Offset<Direction> direction : this.directions) {
+				strBuilder.append(direction).append(separator);
 			}
 		}
 
@@ -225,6 +257,7 @@ public final class MeasureAttributes {
 		hash = 83 * hash + Objects.hashCode(this.leftBarline);
 		hash = 83 * hash + Objects.hashCode(this.clef);
 		hash = 83 * hash + Objects.hashCode(this.clefChanges);
+		hash = 83 * hash + Objects.hashCode(this.directions);
 		return hash;
 	}
 }
