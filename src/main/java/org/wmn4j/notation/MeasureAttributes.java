@@ -3,11 +3,13 @@
  */
 package org.wmn4j.notation;
 
+import org.wmn4j.notation.access.Offset;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 /**
  * Represents the attributes of a measure that are often implicit in the
@@ -20,7 +22,7 @@ public final class MeasureAttributes {
 	private final Barline rightBarline;
 	private final Barline leftBarline;
 	private final Clef clef;
-	private final SortedMap<Duration, Clef> clefChanges;
+	private final List<Offset<Clef>> clefChanges;
 
 	/**
 	 * Returns an instance with the given values. The left barline type will be set
@@ -67,13 +69,13 @@ public final class MeasureAttributes {
 	 */
 	public static MeasureAttributes of(TimeSignature timeSignature, KeySignature keySignature,
 			Barline rightBarline,
-			Barline leftBarline, Clef clef, Map<Duration, Clef> clefChanges) {
+			Barline leftBarline, Clef clef, Collection<Offset<Clef>> clefChanges) {
 		// TODO: Potentially use interner pattern or similar for caching.
 		return new MeasureAttributes(timeSignature, keySignature, rightBarline, leftBarline, clef, clefChanges);
 	}
 
 	private MeasureAttributes(TimeSignature timeSig, KeySignature keySig, Barline rightBarline, Barline leftBarline,
-			Clef clef, Map<Duration, Clef> clefChanges) {
+			Clef clef, Collection<Offset<Clef>> clefChanges) {
 		this.timeSig = Objects.requireNonNull(timeSig);
 		this.keySig = Objects.requireNonNull(keySig);
 		this.rightBarline = Objects.requireNonNull(rightBarline);
@@ -81,9 +83,11 @@ public final class MeasureAttributes {
 		this.clef = Objects.requireNonNull(clef);
 
 		if (clefChanges != null && !clefChanges.isEmpty()) {
-			this.clefChanges = Collections.unmodifiableSortedMap(new TreeMap<>(clefChanges));
+			List<Offset<Clef>> sortedClefChanges = new ArrayList<>(clefChanges);
+			sortedClefChanges.sort(Offset::compareTo);
+			this.clefChanges = Collections.unmodifiableList(sortedClefChanges);
 		} else {
-			this.clefChanges = Collections.<Duration, Clef>emptySortedMap();
+			this.clefChanges = Collections.emptyList();
 		}
 	}
 
@@ -142,13 +146,15 @@ public final class MeasureAttributes {
 	}
 
 	/**
-	 * Returns the clef changes specified in the attributes. The keys in the map are
-	 * the offsets of the clef changes from the beginning of the measure.
-	 * The offsets are sorted from smallest to greatest.
+	 * Returns the clef changes specified in the attributes.
+	 * <p>
+	 * The placement of clef changes are represented using {@link Offset} types,
+	 * where the placement of the clef change is measured by an offset from the
+	 * beginning of th measure. The list is sorted in ascending order of offset.
 	 *
 	 * @return the clef changes specified in the attributes
 	 */
-	public SortedMap<Duration, Clef> getClefChanges() {
+	public List<Offset<Clef>> getClefChanges() {
 		return clefChanges;
 	}
 
@@ -194,13 +200,17 @@ public final class MeasureAttributes {
 				.append(this.leftBarline).append(", ").append("right barline: ").append(this.rightBarline).append(", ")
 				.append("Clef: ").append(this.clef).append(", ");
 
-		strBuilder.append("Clef changes: ");
 		if (this.containsClefChanges()) {
-			for (Duration d : this.clefChanges.keySet()) {
-				strBuilder.append(this.clefChanges.get(d)).append(" at ").append(d);
+			strBuilder.append("Clef changes: ");
+			for (Offset<Clef> clefChange : this.clefChanges) {
+				String offsetString = "-";
+
+				if (clefChange.getDuration().isPresent()) {
+					offsetString = clefChange.getDuration().get().toString();
+				}
+
+				strBuilder.append(clefChange.get()).append(" at ").append(offsetString);
 			}
-		} else {
-			strBuilder.append("None");
 		}
 
 		return strBuilder.append(".").toString();

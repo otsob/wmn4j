@@ -4,17 +4,10 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
-import org.wmn4j.notation.Barline;
-import org.wmn4j.notation.Clef;
-import org.wmn4j.notation.Clefs;
-import org.wmn4j.notation.Duration;
-import org.wmn4j.notation.Durations;
-import org.wmn4j.notation.KeySignatures;
-import org.wmn4j.notation.MeasureAttributes;
-import org.wmn4j.notation.TimeSignatures;
+import org.wmn4j.notation.access.Offset;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -79,10 +72,10 @@ class MeasureAttributesTest {
 	@Test
 	void testEquals() {
 
-		final Map<Duration, Clef> clefChangesA = new HashMap<>();
-		clefChangesA.put(Durations.HALF, Clefs.F);
-		final Map<Duration, Clef> clefChangesB = new HashMap<>();
-		clefChangesB.put(Durations.HALF.addDot(), Clefs.F);
+		final Set<Offset<Clef>> clefChangesA = new HashSet<>();
+		clefChangesA.add(new Offset<>(Clefs.F, Durations.HALF));
+		final Set<Offset<Clef>> clefChangesB = new HashSet<>();
+		clefChangesB.add(new Offset<>(Clefs.F, Durations.HALF.addDot()));
 
 		final MeasureAttributes attr = MeasureAttributes.of(TimeSignatures.FOUR_FOUR, KeySignatures.CMAJ_AMIN,
 				Barline.SINGLE, Barline.SINGLE, Clefs.G, clefChangesA);

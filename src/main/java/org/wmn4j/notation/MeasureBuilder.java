@@ -3,10 +3,15 @@
  */
 package org.wmn4j.notation;
 
+import org.wmn4j.notation.access.Offset;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -180,13 +185,15 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * Returns the clef changes in this builder. The keys in the map are the offset
-	 * values of the clef changes measured from the beginning of the measure.
+	 * Returns the clef changes set in this builder.
+	 * <p>
+	 * The placement of clef changes are represented using {@link Offset} types,
+	 * where the placement of the clef change is measured by an offset from the
+	 * beginning of the measure. The collection is not in any particular order.
 	 *
-	 * @return clef changes currently set for this builder. Durations are offsets
-	 * from the beginning of the measure.
+	 * @return the clef changes specified in the attributes
 	 */
-	public Map<Duration, Clef> getClefChanges() {
+	public Collection<Offset<Clef>> getClefChanges() {
 		return attributesBuilder.clefChanges;
 	}
 
@@ -198,7 +205,7 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder addClefChange(Duration offset, Clef clef) {
-		attributesBuilder.clefChanges.put(offset, clef);
+		attributesBuilder.clefChanges.add(new Offset<>(clef, offset));
 		return this;
 	}
 
@@ -441,7 +448,7 @@ public class MeasureBuilder {
 		private Clef clef;
 		private Barline leftBarline;
 		private Barline rightBarline;
-		private Map<Duration, Clef> clefChanges;
+		private Set<Offset<Clef>> clefChanges;
 
 		private MeasureAttributesBuilder() {
 			this.timeSignature = TimeSignatures.FOUR_FOUR;
@@ -449,7 +456,7 @@ public class MeasureBuilder {
 			this.clef = Clefs.G;
 			this.leftBarline = Barline.NONE;
 			this.rightBarline = Barline.SINGLE;
-			this.clefChanges = new HashMap<>();
+			this.clefChanges = new HashSet<>();
 		}
 
 		private MeasureAttributesBuilder(MeasureAttributes measureAttributes) {
@@ -458,7 +465,7 @@ public class MeasureBuilder {
 			this.clef = measureAttributes.getClef();
 			this.leftBarline = measureAttributes.getLeftBarline();
 			this.rightBarline = measureAttributes.getRightBarline();
-			this.clefChanges = new HashMap<>(measureAttributes.getClefChanges());
+			this.clefChanges = new HashSet<>(measureAttributes.getClefChanges());
 		}
 
 		private MeasureAttributes build() {

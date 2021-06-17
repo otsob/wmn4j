@@ -4,6 +4,7 @@
 package org.wmn4j.notation;
 
 import org.wmn4j.notation.access.MeasureIterator;
+import org.wmn4j.notation.access.Offset;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -218,14 +219,15 @@ public final class Measure implements Iterable<Durational> {
 	}
 
 	/**
-	 * Returns the clef changes in this measure. The keys in the map are
-	 * the offsets of the clef changes from the beginning of the measure.
-	 * The offsets are sorted from smallest to greatest.
+	 * Returns the clef changes in this measure.
+	 * <p>
+	 * The placement of clef changes are represented using {@link Offset} types,
+	 * where the placement of the clef change is measured by an offset from the
+	 * beginning of the measure. The list is sorted in ascending order of offset.
 	 *
-	 * @return a map of clef changes in this measure, where the duration key is the
-	 * offset counted from the beginning of the measure.
+	 * @return the clef changes in this measure.
 	 */
-	public SortedMap<Duration, Clef> getClefChanges() {
+	public List<Offset<Clef>> getClefChanges() {
 		return this.measureAttr.getClefChanges();
 	}
 

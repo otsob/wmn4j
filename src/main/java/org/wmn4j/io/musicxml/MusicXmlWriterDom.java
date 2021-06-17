@@ -32,6 +32,7 @@ import org.wmn4j.notation.Rest;
 import org.wmn4j.notation.SingleStaffPart;
 import org.wmn4j.notation.Staff;
 import org.wmn4j.notation.TimeSignature;
+import org.wmn4j.notation.access.Offset;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -255,7 +256,7 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		attributes.ifPresent(attrElement -> measureElement.appendChild(attrElement));
 
 		//Set up handling possible mid-measure clef changes
-		Map<Duration, Clef> undealtClefChanges = new HashMap<>(measure.getClefChanges());
+		Set<Offset<Clef>> undealtClefChanges = new HashSet<>(measure.getClefChanges());
 
 		fillMeasureElement(measureElement, null, measure);
 
@@ -338,7 +339,7 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 	}
 
 	public void fillMeasureElement(Element measureElement, Integer staffNumber, Measure measure) {
-		Map<Duration, Clef> undealtClefChanges = new HashMap<>(measure.getClefChanges());
+		Set<Offset<Clef>> undealtClefChanges = new HashSet<>(measure.getClefChanges());
 
 		//Notes
 		final List<Integer> voiceNumbers = measure.getVoiceNumbers();
@@ -535,7 +536,8 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 			return measure.getClef();
 		}
 
-		return measure.getClefChanges().get(measure.getClefChanges().lastKey());
+		final List<Offset<Clef>> clefChanges = measure.getClefChanges();
+		return clefChanges.get(clefChanges.size() - 1).get();
 	}
 
 	private Element createStavesElement(int staffCount) {
@@ -639,24 +641,31 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		return clefElement;
 	}
 
-	private void handleMidMeasureClefChanges(Element measureElement, Map<Duration, Clef> undealtClefChanges,
+	private void handleMidMeasureClefChanges(Element measureElement, Set<Offset<Clef>> undealtClefChanges,
 			Duration cumulatedDuration, Integer staffNumber) {
 
-		List<Duration> offsets = new ArrayList<>(undealtClefChanges.keySet());
+		List<Offset<Clef>> offsets = new ArrayList<>(undealtClefChanges);
 		Collections.sort(offsets);
-		for (Duration offset : offsets) {
+		for (Offset<Clef> offset : offsets) {
 
-			if (offset.isShorterThan(cumulatedDuration) || offset.equals(cumulatedDuration)) {
+			// Backward elements are not required for clef changes at beginning of measure.
+			if (offset.getDuration().isEmpty()) {
+				continue;
+			}
+
+			final Duration offsetDuration = offset.getDuration().get();
+
+			if (offsetDuration.isShorterThan(cumulatedDuration) || offsetDuration.equals(cumulatedDuration)) {
 
 				// Backup
-				if (!offset.equals(cumulatedDuration)) {
-					Element backupElement = createBackupElement(cumulatedDuration.subtract(offset));
+				if (!offsetDuration.equals(cumulatedDuration)) {
+					Element backupElement = createBackupElement(cumulatedDuration.subtract(offsetDuration));
 					measureElement.appendChild(backupElement);
 				}
 
 				// Clef
 				Element attributesElement = getDocument().createElement(MusicXmlTags.MEASURE_ATTRIBUTES);
-				Element clefElement = createClefElement(undealtClefChanges.get(offset), staffNumber);
+				Element clefElement = createClefElement(offset.get(), staffNumber);
 
 				attributesElement.appendChild(clefElement);
 				measureElement.appendChild(attributesElement);
@@ -664,8 +673,8 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 				undealtClefChanges.remove(offset);
 
 				// Forward
-				if (!offset.equals(cumulatedDuration)) {
-					Element forwardElement = createForwardElement(cumulatedDuration.subtract(offset));
+				if (!offsetDuration.equals(cumulatedDuration)) {
+					Element forwardElement = createForwardElement(cumulatedDuration.subtract(offsetDuration));
 					measureElement.appendChild(forwardElement);
 				}
 
