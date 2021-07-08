@@ -8,6 +8,7 @@ import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Clefs;
+import org.wmn4j.notation.directions.Direction;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
@@ -32,7 +33,6 @@ import org.wmn4j.notation.access.Offset;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -1202,4 +1202,32 @@ class MusicXmlFileChecks {
 		}
 	}
 
+	/*
+	 * Expects the contents of "direction_test.musicxml".
+	 */
+	static void assertDirectionsCorrect(Score score) {
+		final Part part = score.getPart(0);
+		assertTrue(part.isMultiStaff());
+		final Measure topStaffFirst = part.getMeasure(1, 1);
+		assertEquals(1, topStaffFirst.getVoiceCount());
+		assertTrue(topStaffFirst.containsDirections());
+
+		List<Offset<Direction>> topStaffFirstDirections = topStaffFirst.getDirections();
+		assertEquals(1, topStaffFirstDirections.size());
+
+		Offset<Direction> secondDirection = topStaffFirstDirections.get(0);
+		assertEquals(Durations.QUARTER.addDot(), secondDirection.getDuration().get());
+		assertEquals(Direction.of(Direction.Type.TEXT, "A text"), secondDirection.get());
+
+		final Measure topStaffSecond = part.getMeasure(1, 2);
+		assertEquals(2, topStaffSecond.getVoiceCount());
+		assertTrue(topStaffSecond.containsDirections());
+
+		List<Offset<Direction>> topStaffSecondDirections = topStaffSecond.getDirections();
+		assertEquals(1, topStaffSecondDirections.size());
+
+		Offset<Direction> thirdDirection = topStaffSecondDirections.get(0);
+		assertEquals(Durations.QUARTER.addDot(), thirdDirection.getDuration().get());
+		assertEquals(Direction.of(Direction.Type.TEXT, "Another text"), thirdDirection.get());
+	}
 }
