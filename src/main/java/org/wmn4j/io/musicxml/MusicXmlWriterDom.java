@@ -33,6 +33,7 @@ import org.wmn4j.notation.SingleStaffPart;
 import org.wmn4j.notation.Staff;
 import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.access.Offset;
+import org.wmn4j.notation.directions.Direction;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -255,9 +256,6 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 		final Optional<Element> attributes = createMeasureAttributesElement(measure, previousMeasure);
 		attributes.ifPresent(attrElement -> measureElement.appendChild(attrElement));
 
-		//Set up handling possible mid-measure clef changes
-		Set<Offset<Clef>> undealtClefChanges = new HashSet<>(measure.getClefChanges());
-
 		fillMeasureElement(measureElement, null, measure);
 
 		//Right barline
@@ -343,6 +341,12 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 
 		//Notes
 		final List<Integer> voiceNumbers = measure.getVoiceNumbers();
+		final List<Offset<Direction>> directions = measure.getDirections();
+
+		// Directions canbe added to beginning of measure with offsets
+		for (Offset<Direction> offsetDirection : directions) {
+			addDirectionElement(measureElement, offsetDirection, staffNumber);
+		}
 
 		int voicesHandled = 0;
 		for (Integer voiceNumber : voiceNumbers) {
@@ -398,6 +402,38 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 				}
 			}
 		}
+	}
+
+	private void addDirectionElement(Element measureElement, Offset<Direction> offsetDirection, Integer staffNumber) {
+		Element directionElement = getDocument().createElement(MusicXmlTags.DIRECTION);
+		directionElement.setAttribute(MusicXmlTags.DIRECTION_PLACEMENT, MusicXmlTags.DIRECTION_ABOVE);
+
+		Element directionTypeElement = getDocument().createElement(MusicXmlTags.DIRECTION_TYPE);
+		directionElement.appendChild(directionTypeElement);
+
+		final Direction direction = offsetDirection.get();
+		if (direction.getType().equals(Direction.Type.TEXT)) {
+			Element wordsElement = getDocument().createElement(MusicXmlTags.DIRECTION_WORDS);
+			wordsElement.setTextContent(direction.getText().orElse(""));
+			directionTypeElement.appendChild(wordsElement);
+
+			Optional<Duration> duration = offsetDirection.getDuration();
+			if (duration.isPresent()) {
+				Element offsetElement = getDocument().createElement(MusicXmlTags.OFFSET);
+				offsetElement.setTextContent(Integer.toString(divisionCountOf(duration.get())));
+				directionElement.appendChild(offsetElement);
+			}
+
+			if (staffNumber != null) {
+				Element staffElement = getDocument().createElement(MusicXmlTags.NOTE_STAFF);
+				staffElement.setTextContent(Integer.toString(staffNumber));
+				directionElement.appendChild(staffElement);
+			}
+		} else {
+			LOG.info("Only text type directions are currently supported: ignoring direction");
+		}
+
+		measureElement.appendChild(directionElement);
 	}
 
 	private Element createBarlineElement(Barline barline, String location) {
