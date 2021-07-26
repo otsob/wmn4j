@@ -7,9 +7,8 @@ import java.util.Objects;
 
 /**
  * Represents a pitch. Pitches consist of the basic pitch letter
- * {@link Pitch.Base}, alter number which tells by how many half-steps the pitch
- * is altered, and octave number which tells the octave of the note. Octave
- * number is based on
+ * {@link Pitch.Base}, accidentals, and octave number which tells the octave of the note.
+ * Octave number is based on
  * <a href="http://en.wikipedia.org/wiki/Scientific_pitch_notation">scientific
  * pitch notation</a>.
  * <p>

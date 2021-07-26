@@ -154,11 +154,13 @@ final class MusicXmlTags {
 	static final String TRILL_MARK = "trill-mark";
 	static final String TURN = "turn";
 
+	// Direction tags
 	static final String DIRECTION = "direction";
 	static final String DIRECTION_PLACEMENT = "placement";
 	static final String DIRECTION_TYPE = "direction-type";
 	static final String DIRECTION_ABOVE = "above";
 	static final String DIRECTION_WORDS = "words";
+	static final String OFFSET = "offset";
 
 	// Part tags
 	static final String PART = "part";

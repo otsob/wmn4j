@@ -35,6 +35,7 @@ import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
 import org.wmn4j.notation.SingleStaffPart;
 import org.wmn4j.notation.TimeSignature;
+import org.wmn4j.notation.directions.Direction;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -351,21 +352,49 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 
 			// Handle backup element
 			if (node.getNodeName().equals(MusicXmlTags.MEASURE_BACKUP)) {
-				backupDuration = getBackupDuration(node, contexts.get(staffNumberOfPreviousNote));
 				Context context = contexts.get(staffNumberOfPreviousNote);
+				backupDuration = getDuration(node, context.getDivisions());
 				context.setGraceNotesToNoteBuilder(context.getPreviousBuilder(), false);
 			}
 
 			// Handle note element
 			if (node.getNodeName().equals(MusicXmlTags.NOTE)) {
-				staffNumberOfPreviousNote = readNoteElementIntoMeasureBuilder(node, measureBuilders, chordBuffers,
+
+				final int staffNumber = readNoteElementIntoMeasureBuilder(node, measureBuilders, chordBuffers,
 						offsets, contexts,
 						connectedNotations);
+
+				if (backupDuration != null) {
+					// If a backup duration has been read and only the voice has changed, reduce
+					// the offset of that staff by backup.
+					if (staffNumber == staffNumberOfPreviousNote) {
+						List<Duration> staffOffsets = offsets.get(staffNumberOfPreviousNote);
+						if (!offsets.isEmpty()) {
+							Duration offset = Duration.sum(staffOffsets);
+							if (backupDuration.isShorterThan(offset)) {
+								offset = offset.subtract(backupDuration);
+								staffOffsets.clear();
+								staffOffsets.add(offset);
+							}
+						}
+					}
+
+					// Nullify backupDuration as it is not needed on staff changes or once it has
+					// been used up by moving back in the same staff.
+					backupDuration = null;
+				}
+
+				staffNumberOfPreviousNote = staffNumber;
 			}
 
 			// Handle barlines
 			if (node.getNodeName().equals(MusicXmlTags.BARLINE)) {
 				addBarline(node, measureBuilders);
+			}
+
+			// Handle directions
+			if (node.getNodeName().equals(MusicXmlTags.DIRECTION)) {
+				addDirection(node, measureBuilders, offsets, contexts);
 			}
 		}
 
@@ -390,14 +419,56 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 	}
 
-	private Duration getBackupDuration(Node backupNode, Context context) {
-		Duration backupDuration = getDuration(backupNode, context.getDivisions());
-		// In case the backup is to the beginning of the measure, do not consider it.
-		if (backupDuration != null && backupDuration.equals(context.getTimeSig().getTotalDuration())) {
-			backupDuration = null;
+	private void addDirection(Node directionNode, Map<Integer, MeasureBuilder> measureBuilders,
+			Map<Integer, List<Duration>> offsets, Map<Integer, Context> contexts) {
+
+		Optional<Node> directionTypeOpt = DocHelper.findChild(directionNode, MusicXmlTags.DIRECTION_TYPE);
+		if (directionTypeOpt.isEmpty()) {
+			LOG.warn("Direction missing direction-type");
+			return;
 		}
 
-		return backupDuration;
+		Node directionTypeNode = directionTypeOpt.get();
+		Optional<Node> wordsOpt = DocHelper.findChild(directionTypeNode, MusicXmlTags.DIRECTION_WORDS);
+		if (wordsOpt.isEmpty()) {
+			LOG.info("Only text type directions are currently supported: ignoring direction");
+			return;
+		}
+
+		Direction.Type directionType = Direction.Type.TEXT;
+
+		String directionText = wordsOpt.get().getTextContent();
+
+		Integer staffNumber = DocHelper.findChild(directionNode, MusicXmlTags.NOTE_STAFF)
+				.map(staffNode -> Integer.parseInt(staffNode.getTextContent()))
+				.orElse(MIN_STAFF_NUMBER);
+
+		if (directionType != null && directionText != null) {
+			MeasureBuilder builder = measureBuilders.get(staffNumber);
+
+			Collection<Duration> offsetDurations = offsets.get(staffNumber);
+			Duration offset = null;
+			if (!offsetDurations.isEmpty()) {
+				offset = Duration.sum(offsetDurations);
+			}
+			Optional<Node> offsetOpt = DocHelper.findChild(directionNode, MusicXmlTags.OFFSET);
+			if (offsetOpt.isPresent()) {
+				final int divisions = contexts.get(staffNumber).getDivisions();
+				int offsetNumber = Integer.parseInt(offsetOpt.get().getTextContent());
+				if (offset != null) {
+					offset = Duration.sum(offsetDurations);
+					if (offsetNumber < 0) {
+						offset = offset.subtract(Durations.QUARTER.divide(divisions).multiply(-offsetNumber));
+					} else {
+						offset = offset.add(Durations.QUARTER.divide(divisions).multiply(offsetNumber));
+					}
+				} else {
+					offset = Durations.QUARTER.divide(divisions).multiply(offsetNumber);
+				}
+			}
+
+			builder.addDirection(offset, Direction.of(directionType, directionText));
+		}
 	}
 
 	private void addClefChange(Node node, Map<Integer, MeasureBuilder> measureBuilders,
@@ -417,11 +488,12 @@ final class MusicXmlReaderDom implements MusicXmlReader {
 		}
 		if (clef != null && !offsets.get(clefStaff).isEmpty()) {
 			Duration cumulatedDur = Duration.sum(offsets.get(clefStaff));
-			if (backupDuration != null) {
+			MeasureBuilder builder = measureBuilders.get(clefStaff);
+			if (backupDuration != null && backupDuration.isShorterThan(builder.getTimeSignature().getTotalDuration())) {
 				cumulatedDur = cumulatedDur.subtract(backupDuration);
 			}
 
-			measureBuilders.get(clefStaff).addClefChange(cumulatedDur, clef);
+			builder.addClefChange(cumulatedDur, clef);
 			lastClefs.put(clefStaff, clef);
 		}
 	}

@@ -4,6 +4,10 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.notation.access.Offset;
+import org.wmn4j.notation.directions.Direction;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -337,5 +341,22 @@ class MeasureBuilderTest {
 		assertEquals(KeySignatures.DFLATMAJ_BFLATMIN, withSameAttributes.getKeySignature());
 		assertEquals(Barline.DOUBLE, withSameAttributes.getRightBarline());
 		assertEquals(Clefs.F, withSameAttributes.getClef());
+	}
+
+	@Test
+	void testBuildingWithDirections() {
+		final MeasureBuilder builder = new MeasureBuilder(1);
+		builder.addDirection(Durations.EIGHTH, Direction.of(Direction.Type.TEXT, "A text"));
+		builder.addDirection(Durations.SIXTEENTH, Direction.of(Direction.Type.TEXT, "Another text"));
+
+		builder.addToVoice(1, new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.WHOLE));
+
+		final Measure measure = builder.build();
+		assertTrue(measure.containsDirections());
+		final List<Offset<Direction>> directions = measure.getDirections();
+
+		assertEquals(2, directions.size());
+		assertEquals(new Offset<>(Direction.of(Direction.Type.TEXT, "Another text"), Durations.SIXTEENTH), directions.get(0));
+		assertEquals(new Offset<>(Direction.of(Direction.Type.TEXT, "A text"), Durations.EIGHTH), directions.get(1));
 	}
 }
