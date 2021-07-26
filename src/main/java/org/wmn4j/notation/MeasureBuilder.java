@@ -3,10 +3,16 @@
  */
 package org.wmn4j.notation;
 
+import org.wmn4j.notation.access.Offset;
+import org.wmn4j.notation.directions.Direction;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -180,13 +186,15 @@ public class MeasureBuilder {
 	}
 
 	/**
-	 * Returns the clef changes in this builder. The keys in the map are the offset
-	 * values of the clef changes measured from the beginning of the measure.
+	 * Returns the clef changes set in this builder.
+	 * <p>
+	 * The placement of clef changes are represented using {@link Offset} types,
+	 * where the placement of the clef change is measured by an offset from the
+	 * beginning of the measure. The collection is not in any particular order.
 	 *
-	 * @return clef changes currently set for this builder. Durations are offsets
-	 * from the beginning of the measure.
+	 * @return the clef changes specified in the attributes
 	 */
-	public Map<Duration, Clef> getClefChanges() {
+	public Collection<Offset<Clef>> getClefChanges() {
 		return attributesBuilder.clefChanges;
 	}
 
@@ -198,7 +206,19 @@ public class MeasureBuilder {
 	 * @return reference to this builder
 	 */
 	public MeasureBuilder addClefChange(Duration offset, Clef clef) {
-		attributesBuilder.clefChanges.put(offset, clef);
+		attributesBuilder.clefChanges.add(new Offset<>(clef, offset));
+		return this;
+	}
+
+	/**
+	 * Adds a {@link Direction} with the given offset.
+	 *
+	 * @param offset    the duration of the offset, can be null if direction is not offset
+	 * @param direction the direction to add at given offset
+	 * @return reference to this builder
+	 */
+	public MeasureBuilder addDirection(Duration offset, Direction direction) {
+		attributesBuilder.directions.add(new Offset<>(direction, offset));
 		return this;
 	}
 
@@ -441,7 +461,8 @@ public class MeasureBuilder {
 		private Clef clef;
 		private Barline leftBarline;
 		private Barline rightBarline;
-		private Map<Duration, Clef> clefChanges;
+		private Set<Offset<Clef>> clefChanges;
+		private Set<Offset<Direction>> directions;
 
 		private MeasureAttributesBuilder() {
 			this.timeSignature = TimeSignatures.FOUR_FOUR;
@@ -449,7 +470,8 @@ public class MeasureBuilder {
 			this.clef = Clefs.G;
 			this.leftBarline = Barline.NONE;
 			this.rightBarline = Barline.SINGLE;
-			this.clefChanges = new HashMap<>();
+			this.clefChanges = new HashSet<>();
+			this.directions = new HashSet<>();
 		}
 
 		private MeasureAttributesBuilder(MeasureAttributes measureAttributes) {
@@ -458,11 +480,13 @@ public class MeasureBuilder {
 			this.clef = measureAttributes.getClef();
 			this.leftBarline = measureAttributes.getLeftBarline();
 			this.rightBarline = measureAttributes.getRightBarline();
-			this.clefChanges = new HashMap<>(measureAttributes.getClefChanges());
+			this.clefChanges = new HashSet<>(measureAttributes.getClefChanges());
+			this.directions = new HashSet<>(measureAttributes.getDirections());
 		}
 
 		private MeasureAttributes build() {
-			return MeasureAttributes.of(timeSignature, keySignature, rightBarline, leftBarline, clef, clefChanges);
+			return MeasureAttributes
+					.of(timeSignature, keySignature, rightBarline, leftBarline, clef, clefChanges, directions);
 		}
 
 		private boolean equalsInContent(MeasureAttributes measureAttributes) {
@@ -491,6 +515,10 @@ public class MeasureBuilder {
 			}
 
 			if (!clefChanges.equals(measureAttributes.getClefChanges())) {
+				return false;
+			}
+
+			if (!directions.equals(measureAttributes.getDirections())) {
 				return false;
 			}
 
