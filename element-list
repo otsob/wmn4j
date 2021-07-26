@@ -6,3 +6,4 @@ org.wmn4j.mir
 org.wmn4j.mir.discovery
 org.wmn4j.notation
 org.wmn4j.notation.access
+org.wmn4j.notation.directions
