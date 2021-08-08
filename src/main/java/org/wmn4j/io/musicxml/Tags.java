@@ -218,7 +218,7 @@ final class Tags {
 
 	static final String YES = "yes";
 
-	Tags() {
+	private Tags() {
 		throw new UnsupportedOperationException("Not meant to be instantiated");
 	}
 }
