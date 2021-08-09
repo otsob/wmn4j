@@ -28,6 +28,14 @@ public class PartBuilder {
 
 	/**
 	 * Constructor.
+	 * <p>
+	 * Creates an empty builder with no attributes set.
+	 */
+	public PartBuilder() {
+	}
+
+	/**
+	 * Constructor.
 	 *
 	 * @param name the name of the part to be built.
 	 */

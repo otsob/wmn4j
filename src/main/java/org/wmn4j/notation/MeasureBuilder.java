@@ -41,6 +41,15 @@ public class MeasureBuilder {
 	}
 
 	/**
+	 * Creates an empty builder.
+	 */
+	public MeasureBuilder() {
+		this.voices = new HashMap<>();
+		this.attributesBuilder = new MeasureAttributesBuilder();
+		this.initialMeasureAttributes = null;
+	}
+
+	/**
 	 * Create a measure builder with the given attributes.
 	 *
 	 * @param number            measure number for measure being built

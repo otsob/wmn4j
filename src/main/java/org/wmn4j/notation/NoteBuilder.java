@@ -38,6 +38,16 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 
 	/**
 	 * Constructor.
+	 * <p>
+	 * This constructor does not set any default values for the values.
+	 */
+	public NoteBuilder() {
+		this.articulations = EnumSet.noneOf(Articulation.class);
+		this.ornaments = new HashSet<>();
+	}
+
+	/**
+	 * Constructor.
 	 *
 	 * @param pitch    the pitch set in this builder
 	 * @param duration the duration set in this builder
