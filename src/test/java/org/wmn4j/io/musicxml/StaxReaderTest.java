@@ -65,4 +65,28 @@ class StaxReaderTest {
 		final ScoreBuilder scoreBuilder = readScoreBuilder("singleC.xml", false);
 		MusicXmlFileChecks.assertSingleNoteScoreReadCorrectly(scoreBuilder.build());
 	}
+
+	@Test
+	void testChordsAndMultipleVoicesReadToScore() {
+		final Score score = readScore("twoMeasures.xml", false);
+		MusicXmlFileChecks.assertChordsAndMultipleVoicesReadCorrectly(score);
+	}
+
+	@Test
+	void testChordsAndMultipleVoicesReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("twoMeasures.xml", false);
+		MusicXmlFileChecks.assertChordsAndMultipleVoicesReadCorrectly(scoreBuilder.build());
+	}
+
+	@Test
+	void testReadScoreWithMultipleParts() {
+		final Score score = readScore("twoPartsAndMeasures.xml", false);
+		MusicXmlFileChecks.assertScoreWithMultiplePartsReadCorrectly(score);
+	}
+
+	@Test
+	void testReadScoreBuilderWithMultipleParts() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("twoPartsAndMeasures.xml", false);
+		MusicXmlFileChecks.assertScoreWithMultiplePartsReadCorrectly(scoreBuilder.build());
+	}
 }

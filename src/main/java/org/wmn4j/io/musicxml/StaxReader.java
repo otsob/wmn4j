@@ -11,11 +11,11 @@ import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.DurationalBuilder;
 import org.wmn4j.notation.Durations;
-import org.wmn4j.notation.MeasureBuilder;
 import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
 import org.wmn4j.notation.TimeSignature;
@@ -41,9 +41,6 @@ final class StaxReader implements MusicXmlReader {
 
 	private static final String PARSING_FAILURE = "Failed to parse XML: ";
 
-	private static final int MIN_STAFF_NUMBER = Part.DEFAULT_STAFF_NUMBER;
-	private static final int DEFAULT_STAFF_COUNT = 1;
-
 	private static final Logger LOG = LoggerFactory.getLogger(StaxReader.class);
 
 	private final boolean validateInput;
@@ -55,14 +52,12 @@ final class StaxReader implements MusicXmlReader {
 	private ScoreBuilder scoreBuilder;
 	private Score score;
 
+	private PartContext partContext;
+
+	// Divisions are defined within a part but can still be shared between
+	// multiple parts, so it's part of the context of the whole score.
 	private int currentDivisions;
-
-	private PartBuilder currentPartBuilder;
-	private MeasureBuilder currentMeasureBuilder;
 	private DurationalBuilder currentDurationalBuilder;
-
-	private int currentStaff;
-	private int currentVoice;
 
 	private int beats;
 	private int beatDivisions;
@@ -85,8 +80,8 @@ final class StaxReader implements MusicXmlReader {
 
 	@Override
 	public Score readScore() throws IOException, ParsingFailureException {
-		if (this.score == null) {
-			this.score = readScoreBuilder().build();
+		if (score == null) {
+			score = readScoreBuilder().build();
 		}
 
 		return score;
@@ -95,15 +90,15 @@ final class StaxReader implements MusicXmlReader {
 	@Override
 	public ScoreBuilder readScoreBuilder() throws IOException, ParsingFailureException {
 		if (scoreBuilder == null) {
-			this.scoreBuilder = new ScoreBuilder();
+			scoreBuilder = new ScoreBuilder();
 			fillScoreBuilder();
 		}
 
-		return this.scoreBuilder;
+		return scoreBuilder;
 	}
 
 	private void fillScoreBuilder() throws IOException, ParsingFailureException {
-		this.reader = createStreamReader(this.path);
+		reader = createStreamReader(path);
 		try {
 			consumeUntil(tag -> {
 				switch (tag) {
@@ -218,7 +213,7 @@ final class StaxReader implements MusicXmlReader {
 		consumeUntil(tag -> {
 			switch (tag) {
 				case Tags.WORK_TITLE:
-					consumeText(text -> this.scoreBuilder.setAttribute(Score.Attribute.TITLE, text));
+					consumeText(text -> scoreBuilder.setAttribute(Score.Attribute.TITLE, text));
 					break;
 				// Fall through for elements that are currently not supported
 				case Tags.WORK_NUMBER:
@@ -243,7 +238,7 @@ final class StaxReader implements MusicXmlReader {
 		consumeUntil(tag -> {
 			switch (tag) {
 				case Tags.CREATOR:
-					consumeText(text -> this.scoreBuilder.setAttribute(Score.Attribute.COMPOSER, text));
+					consumeText(text -> scoreBuilder.setAttribute(Score.Attribute.COMPOSER, text));
 					break;
 				// Fall through for elements that are currently not supported
 				case Tags.RIGHTS:
@@ -299,7 +294,7 @@ final class StaxReader implements MusicXmlReader {
 
 	private void consumePartElem() throws XMLStreamException {
 		final String partId = reader.getAttributeValue(0);
-		this.currentPartBuilder = this.partBuilders.get(partId);
+		partContext = new PartContext(partBuilders.get(partId));
 
 		consumeUntil(tag -> {
 			if (Tags.MEASURE.equals(tag)) {
@@ -307,13 +302,11 @@ final class StaxReader implements MusicXmlReader {
 			}
 		}, Tags.PART);
 
-		this.scoreBuilder.addPart(this.currentPartBuilder);
+		scoreBuilder.addPart(partContext.getPartBuilder());
 	}
 
 	private void consumeMeasureElem() throws XMLStreamException {
-		this.currentMeasureBuilder = new MeasureBuilder();
-		final int measureNumber = Integer.parseInt(reader.getAttributeValue(0));
-		this.currentMeasureBuilder.setNumber(measureNumber);
+		partContext.setMeasureNumber(Integer.parseInt(reader.getAttributeValue(0)));
 
 		consumeUntil(tag -> {
 			switch (tag) {
@@ -340,18 +333,20 @@ final class StaxReader implements MusicXmlReader {
 			}
 		}, Tags.MEASURE);
 
-		this.currentPartBuilder.add(this.currentMeasureBuilder);
+		partContext.finishMeasureElement();
 	}
 
 	private void consumeNoteElem() throws XMLStreamException {
 		currentDurationalBuilder = new NoteBuilder();
+		partContext.setChordTag(false);
 
 		consumeUntil(tag -> {
 			switch (tag) {
 				case Tags.DURATION:
 					consumeText(text -> {
 						final int divisions = Integer.parseInt(text);
-						final Duration duration = Durations.QUARTER.divide(currentDivisions).multiply(divisions);
+						final Duration duration = Durations.QUARTER.divide(currentDivisions)
+								.multiply(divisions);
 						currentDurationalBuilder.setDuration(duration);
 					});
 					break;
@@ -359,14 +354,24 @@ final class StaxReader implements MusicXmlReader {
 					consumePitchElem();
 					break;
 				case Tags.VOICE:
-					consumeText(text -> currentVoice = Integer.parseInt(text));
+					consumeText(text -> partContext.setVoice(Integer.parseInt(text)));
 					break;
 				case Tags.STAFF:
+					consumeText(text -> partContext.setStaff(Integer.parseInt(text)));
+					break;
+				case Tags.REST:
+					final Duration duration = currentDurationalBuilder.getDuration();
+					currentDurationalBuilder = new RestBuilder();
+					if (duration != null) {
+						currentDurationalBuilder.setDuration(duration);
+					}
+					break;
+				case Tags.CHORD:
+					partContext.setChordTag(true);
 					break;
 				// Fall through for elements that are currently not supported
 				case Tags.ACCIDENTAL:
 				case Tags.BEAM:
-				case Tags.CHORD:
 				case Tags.CUE:
 				case Tags.DOT:
 				case Tags.GRACE:
@@ -375,7 +380,6 @@ final class StaxReader implements MusicXmlReader {
 				case Tags.NOTATIONS:
 				case Tags.NOTEHEAD_TEXT:
 				case Tags.NOTEHEAD:
-				case Tags.REST:
 				case Tags.STEM:
 				case Tags.TIME_MODIFICATION:
 				case Tags.TYPE:
@@ -387,11 +391,16 @@ final class StaxReader implements MusicXmlReader {
 		}, Tags.NOTE);
 
 		if (currentDurationalBuilder instanceof NoteBuilder) {
-			((NoteBuilder) currentDurationalBuilder).setPitch(
+			NoteBuilder currentNoteBuilder = (NoteBuilder) currentDurationalBuilder;
+			currentNoteBuilder.setPitch(
 					Pitch.of(Transforms.stepToPitchBase(currentStep), Transforms.alterToAccidental(currentAlter),
 							currentOctave));
+
+			partContext.updateChordBuffer(currentNoteBuilder);
+		} else {
+			partContext.updateChordBuffer(null);
+			partContext.getMeasureBuilder().addToVoice(partContext.getVoice(), currentDurationalBuilder);
 		}
-		currentMeasureBuilder.addToVoice(currentVoice, currentDurationalBuilder);
 	}
 
 	private void consumePitchElem() throws XMLStreamException {
@@ -448,8 +457,8 @@ final class StaxReader implements MusicXmlReader {
 			switch (tag) {
 				case Tags.FIFTHS:
 					consumeText(
-							text -> currentMeasureBuilder.setKeySignature(
-									Transforms.fifthsToKeySig(Integer.parseInt(text))));
+							text -> partContext.getMeasureBuilder()
+									.setKeySignature(Transforms.fifthsToKeySig(Integer.parseInt(text))));
 					break;
 				// Fall through for elements that are currently not supported
 				case Tags.MODE:
@@ -482,7 +491,7 @@ final class StaxReader implements MusicXmlReader {
 			}
 		}, Tags.TIME);
 
-		currentMeasureBuilder.setTimeSignature(TimeSignature.of(beats, beatDivisions));
+		partContext.getMeasureBuilder().setTimeSignature(TimeSignature.of(beats, beatDivisions));
 	}
 
 	private void consumeBarlineElem() throws XMLStreamException {
@@ -510,9 +519,9 @@ final class StaxReader implements MusicXmlReader {
 
 		Barline barline = Transforms.barStyleToBarline(barStyle, repeatDirection);
 		if (Objects.equals(barlineLocation, Tags.LEFT)) {
-			currentMeasureBuilder.setLeftBarline(barline);
+			partContext.getMeasureBuilder().setLeftBarline(barline);
 		} else {
-			currentMeasureBuilder.setRightBarline(barline);
+			partContext.getMeasureBuilder().setRightBarline(barline);
 		}
 	}
 
@@ -533,7 +542,7 @@ final class StaxReader implements MusicXmlReader {
 
 		}, Tags.CLEF);
 
-		currentMeasureBuilder.setClef(Clef.of(Transforms.signToClefSymbol(clefSign), clefLine));
+		partContext.getMeasureBuilder().setClef(Clef.of(Transforms.signToClefSymbol(clefSign), clefLine));
 	}
 
 }
