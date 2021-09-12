@@ -3,7 +3,7 @@
  */
 package org.wmn4j.notation.access;
 
-import org.wmn4j.notation.SingleStaffPart;
+import org.wmn4j.notation.Part;
 
 /**
  * Represents the position of a {@link org.wmn4j.notation.Durational}
@@ -75,7 +75,7 @@ public final class Position {
 	 */
 	public Position(int partIndex, int measureNumber, int voiceNumber, int indexInVoice) {
 		this.partIndex = partIndex;
-		this.staffNumber = SingleStaffPart.STAFF_NUMBER;
+		this.staffNumber = Part.DEFAULT_STAFF_NUMBER;
 		this.measureNumber = measureNumber;
 		this.voiceNumber = voiceNumber;
 		this.indexInVoice = indexInVoice;

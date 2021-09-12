@@ -33,7 +33,6 @@ import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
-import org.wmn4j.notation.SingleStaffPart;
 import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.directions.Direction;
 import org.xml.sax.SAXException;
@@ -67,7 +66,7 @@ import java.util.function.Consumer;
  */
 final class MusicXmlReaderDom implements MusicXmlReader {
 
-	private static final int MIN_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
+	private static final int MIN_STAFF_NUMBER = Part.DEFAULT_STAFF_NUMBER;
 	private static final int DEFAULT_STAFF_COUNT = 1;
 	private static final String MUSICXML_V3_1_SCHEMA_PATH = "org/wmn4j/io/musicxml/musicxml.xsd";
 

@@ -23,7 +23,6 @@ import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
-import org.wmn4j.notation.SingleStaffPart;
 import org.wmn4j.notation.access.PositionalIterator;
 
 import java.io.IOException;
@@ -430,7 +429,7 @@ class MusicXmlScoreWriterDomTest {
 		assertEquals(1, writtenScore.getPartCount());
 		final Part part = writtenScore.getPart(0);
 		assertEquals(1, part.getMeasureCount());
-		final Measure measure = part.getMeasure(SingleStaffPart.STAFF_NUMBER, 1);
+		final Measure measure = part.getMeasure(Part.DEFAULT_STAFF_NUMBER, 1);
 		assertNotEquals(inexpressibleDuration, measure.get(1, 0).getDuration());
 		for (Durational dur : measure) {
 			assertTrue(dur.getDuration().hasExpression());

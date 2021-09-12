@@ -18,6 +18,11 @@ import java.util.Optional;
 public interface Part extends Iterable<Measure> {
 
 	/**
+	 * The default staff number for the staff in a single staff part.
+	 */
+	int DEFAULT_STAFF_NUMBER = 1;
+
+	/**
 	 * Attribute types that a part can have.
 	 */
 	enum Attribute {

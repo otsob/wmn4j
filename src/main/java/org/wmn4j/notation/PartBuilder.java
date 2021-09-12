@@ -24,7 +24,7 @@ public class PartBuilder {
 
 	private final SortedMap<Integer, List<MeasureBuilder>> staveContents = new TreeMap<>();
 	private final Map<Part.Attribute, String> partAttributes = new HashMap<>();
-	private static final int SINGLE_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
+	private static final int SINGLE_STAFF_NUMBER = Part.DEFAULT_STAFF_NUMBER;
 
 	/**
 	 * Constructor.

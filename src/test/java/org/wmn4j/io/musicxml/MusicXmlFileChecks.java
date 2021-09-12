@@ -444,13 +444,13 @@ class MusicXmlFileChecks {
 	 * Expects the contents of the file "articulations.xml"
 	 */
 	static void assertScoreWithArticulationsReadCorrectly(Score score) {
-		final Measure measureOne = score.getPart(0).getMeasure(SingleStaffPart.STAFF_NUMBER, 1);
+		final Measure measureOne = score.getPart(0).getMeasure(Part.DEFAULT_STAFF_NUMBER, 1);
 		assertTrue(((Note) measureOne.get(1, 0)).hasArticulation(Articulation.STACCATO));
 		assertTrue(((Note) measureOne.get(1, 1)).hasArticulation(Articulation.ACCENT));
 		assertTrue(((Note) measureOne.get(1, 2)).hasArticulation(Articulation.TENUTO));
 		assertTrue(((Note) measureOne.get(1, 3)).hasArticulation(Articulation.FERMATA));
 
-		final Measure measureTwo = score.getPart(0).getMeasure(SingleStaffPart.STAFF_NUMBER, 2);
+		final Measure measureTwo = score.getPart(0).getMeasure(Part.DEFAULT_STAFF_NUMBER, 2);
 		Note firstNoteInMeasureTwo = (Note) measureTwo.get(1, 0);
 		assertTrue(firstNoteInMeasureTwo.hasArticulation(Articulation.STACCATO));
 		assertTrue(firstNoteInMeasureTwo.hasArticulation(Articulation.ACCENT));
@@ -469,24 +469,24 @@ class MusicXmlFileChecks {
 
 		assertFalse(((Note) measureTwo.get(1, 3)).hasArticulations());
 
-		final Measure measureThree = score.getPart(0).getMeasure(SingleStaffPart.STAFF_NUMBER, 3);
+		final Measure measureThree = score.getPart(0).getMeasure(Part.DEFAULT_STAFF_NUMBER, 3);
 		assertTrue(((Note) measureThree.get(1, 0)).hasArticulation(Articulation.BREATH_MARK));
 		assertTrue(((Note) measureThree.get(1, 1)).hasArticulation(Articulation.CAESURA));
 		assertTrue(((Note) measureThree.get(1, 2)).hasArticulation(Articulation.TENUTO_STACCATO));
 		assertTrue(((Note) measureThree.get(1, 3)).hasArticulation(Articulation.SLIDE_OUT_UP));
 
-		final Measure measureFour = score.getPart(0).getMeasure(SingleStaffPart.STAFF_NUMBER, 4);
+		final Measure measureFour = score.getPart(0).getMeasure(Part.DEFAULT_STAFF_NUMBER, 4);
 		assertTrue(((Note) measureFour.get(1, 0)).hasArticulation(Articulation.SLIDE_OUT_DOWN));
 		assertTrue(((Note) measureFour.get(1, 2)).hasArticulation(Articulation.SLIDE_IN_DOWN));
 		assertTrue(((Note) measureFour.get(1, 3)).hasArticulation(Articulation.SLIDE_IN_UP));
 
-		final Measure measureFive = score.getPart(0).getMeasure(SingleStaffPart.STAFF_NUMBER, 5);
+		final Measure measureFive = score.getPart(0).getMeasure(Part.DEFAULT_STAFF_NUMBER, 5);
 		assertTrue(((Note) measureFive.get(1, 0)).hasArticulation(Articulation.SPICCATO));
 		assertTrue(((Note) measureFive.get(1, 1)).hasArticulation(Articulation.STACCATISSIMO));
 		assertTrue(((Note) measureFive.get(1, 2)).hasArticulation(Articulation.STRESS));
 		assertTrue(((Note) measureFive.get(1, 3)).hasArticulation(Articulation.STRONG_ACCENT));
 
-		final Measure measureSix = score.getPart(0).getMeasure(SingleStaffPart.STAFF_NUMBER, 6);
+		final Measure measureSix = score.getPart(0).getMeasure(Part.DEFAULT_STAFF_NUMBER, 6);
 		assertTrue(((Note) measureSix.get(1, 0)).hasArticulation(Articulation.UNSTRESS));
 	}
 

@@ -18,7 +18,6 @@ import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
-import org.wmn4j.notation.SingleStaffPart;
 import org.wmn4j.notation.TimeSignature;
 
 import javax.xml.stream.XMLInputFactory;
@@ -42,7 +41,7 @@ final class StaxReader implements MusicXmlReader {
 
 	private static final String PARSING_FAILURE = "Failed to parse XML: ";
 
-	private static final int MIN_STAFF_NUMBER = SingleStaffPart.STAFF_NUMBER;
+	private static final int MIN_STAFF_NUMBER = Part.DEFAULT_STAFF_NUMBER;
 	private static final int DEFAULT_STAFF_COUNT = 1;
 
 	private static final Logger LOG = LoggerFactory.getLogger(StaxReader.class);
