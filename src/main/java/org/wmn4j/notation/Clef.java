@@ -19,25 +19,43 @@ public final class Clef {
 	 * Represents the type of clef symbol.
 	 */
 	public enum Symbol {
+
 		/**
 		 * The G clef.
 		 */
-		G,
+		G(2),
 
 		/**
 		 * The F clef.
 		 */
-		F,
+		F(4),
 
 		/**
 		 * The C clef.
 		 */
-		C,
+		C(3),
 
 		/**
 		 * The percussion clef.
 		 */
-		PERCUSSION
+		PERCUSSION(3);
+
+		private int defaultLine;
+
+		Symbol(int defaultLine) {
+			this.defaultLine = defaultLine;
+		}
+
+		/**
+		 * Returns the line on which this type of clef symbol
+		 * is typically placed unless a line is explicitly specified.
+		 *
+		 * @return the line on which this type of clef symbol
+		 * is typically placed
+		 */
+		public int getDefaultLine() {
+			return defaultLine;
+		}
 	}
 
 	private final Symbol symbol;
