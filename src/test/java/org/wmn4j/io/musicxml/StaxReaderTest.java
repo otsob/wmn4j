@@ -89,4 +89,88 @@ class StaxReaderTest {
 		final ScoreBuilder scoreBuilder = readScoreBuilder("twoPartsAndMeasures.xml", false);
 		MusicXmlFileChecks.assertScoreWithMultiplePartsReadCorrectly(scoreBuilder.build());
 	}
+
+	@Test
+	void testBarlinesReadToScore() {
+		final Score score = readScore("barlines.xml", false);
+		MusicXmlFileChecks.assertBarlinesReadCorrectly(score);
+	}
+
+	@Test
+	void testBarlinesReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("barlines.xml", false);
+		MusicXmlFileChecks.assertBarlinesReadCorrectly(scoreBuilder.build());
+	}
+
+	@Test
+	void testClefsReadToScore() {
+		final Score score = readScore("clefs.xml", false);
+		MusicXmlFileChecks.assertClefsReadCorrectly(score);
+	}
+
+	@Test
+	void testClefsReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("clefs.xml", false);
+		MusicXmlFileChecks.assertClefsReadCorrectly(scoreBuilder.build());
+	}
+
+	@Test
+	void testMultiStaffClefsReadToScore() {
+		final Score score = readScore("multiStaffClefs.xml", false);
+		MusicXmlFileChecks.assertMultiStaffClefsReadCorrectlyToScore(score);
+	}
+
+	@Test
+	void testMultiStaffClefsReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("multiStaffClefs.xml", false);
+		MusicXmlFileChecks.assertMultiStaffClefsReadCorrectlyToScore(scoreBuilder.build());
+	}
+
+	@Test
+	void testKeySignaturesReadToScore() {
+		final Score score = readScore("keysigs.xml", false);
+		MusicXmlFileChecks.assertKeySignaturesReadToScoreCorrectly(score);
+	}
+
+	@Test
+	void testKeySignaturesReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("keysigs.xml", false);
+		MusicXmlFileChecks.assertKeySignaturesReadToScoreCorrectly(scoreBuilder.build());
+	}
+
+	@Test
+	void testMultiStaffPartReadToScore() {
+		final Score score = readScore("multistaff.xml", false);
+		MusicXmlFileChecks.assertMultiStaffPartReadCorrectly(score);
+	}
+
+	@Test
+	void testMultiStaffPartReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("multistaff.xml", false);
+		MusicXmlFileChecks.assertMultiStaffPartReadCorrectly(scoreBuilder.build());
+	}
+
+	@Test
+	void testTimeSignaturesReadToScore() {
+		final Score score = readScore("timesigs.xml", false);
+		MusicXmlFileChecks.assertTimeSignaturesReadCorrectly(score);
+	}
+
+	@Test
+	void testTimeSignaturesReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("timesigs.xml", false);
+		MusicXmlFileChecks.assertTimeSignaturesReadCorrectly(scoreBuilder.build());
+	}
+
+	@Test
+	void testTimeSignatureChangeReadToScore() {
+		final Score score = readScore("scoreIteratorTesting.xml", false);
+		MusicXmlFileChecks.assertTimeSignatureChangeReadCorrectly(score);
+	}
+
+	@Test
+	void testTimeSignatureChangeReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("scoreIteratorTesting.xml", false);
+		MusicXmlFileChecks.assertTimeSignatureChangeReadCorrectly(scoreBuilder.build());
+	}
 }

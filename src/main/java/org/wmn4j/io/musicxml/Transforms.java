@@ -10,6 +10,7 @@ import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.KeySignature;
 import org.wmn4j.notation.KeySignatures;
 import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.TimeSignature;
 
 import java.util.Objects;
 
@@ -56,6 +57,34 @@ final class Transforms {
 			default:
 				return Pitch.Base.B;
 		}
+	}
+
+	static TimeSignature.Symbol symbolStringToTimeSigSymbol(String symbolString) {
+		TimeSignature.Symbol symbol = TimeSignature.Symbol.NUMERIC;
+		if (symbolString != null) {
+			switch (symbolString) {
+				case Tags.COMMON:
+					symbol = TimeSignature.Symbol.COMMON;
+					break;
+				case Tags.CUT:
+					symbol = TimeSignature.Symbol.CUT_TIME;
+					break;
+				case Tags.SINGLE_NUMBER:
+					symbol = TimeSignature.Symbol.BEAT_NUMBER_ONLY;
+					break;
+				case Tags.NOTE:
+					symbol = TimeSignature.Symbol.BEAT_DURATION_AS_NOTE;
+					break;
+				case Tags.DOTTED_NOTE:
+					symbol = TimeSignature.Symbol.BEAT_DURATION_AS_DOTTED_NOTE;
+					break;
+				default:
+					// Default value is already set on initialization.
+					break;
+			}
+		}
+
+		return symbol;
 	}
 
 	static KeySignature fifthsToKeySig(int fifths) {

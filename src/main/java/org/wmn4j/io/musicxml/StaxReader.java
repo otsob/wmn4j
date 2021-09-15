@@ -61,8 +61,9 @@ final class StaxReader implements MusicXmlReader {
 
 	private int beats;
 	private int beatDivisions;
+	private TimeSignature.Symbol timeSymbol;
 
-	private String clefSign;
+	private Clef.Symbol clefSymbol;
 	private int clefLine;
 
 	private String barStyle;
@@ -305,6 +306,27 @@ final class StaxReader implements MusicXmlReader {
 		scoreBuilder.addPart(partContext.getPartBuilder());
 	}
 
+	private void consumeOffsetElem(String element) throws XMLStreamException {
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.DURATION:
+					if (element.equals(Tags.FORWARD)) {
+						consumeText(text ->
+								partContext.addForwardDuration(divisionsToDuration(text)));
+					} else if (element.equals(Tags.BACKUP)) {
+						consumeText(text ->
+								partContext.addBackupDuration(divisionsToDuration(text)));
+					}
+					break;
+				case Tags.STAFF:
+					LOG.warn("Encountered element {} with staff number. This is not supported currently.", element);
+					break;
+				default:
+					skipElement();
+			}
+		}, element);
+	}
+
 	private void consumeMeasureElem() throws XMLStreamException {
 		partContext.setMeasureNumber(Integer.parseInt(reader.getAttributeValue(0)));
 
@@ -314,8 +336,10 @@ final class StaxReader implements MusicXmlReader {
 					consumeNoteElem();
 					break;
 				case Tags.BACKUP:
+					consumeOffsetElem(Tags.BACKUP);
 					break;
 				case Tags.FORWARD:
+					consumeOffsetElem(Tags.FORWARD);
 					break;
 				case Tags.DIRECTION:
 					break;
@@ -336,6 +360,11 @@ final class StaxReader implements MusicXmlReader {
 		partContext.finishMeasureElement();
 	}
 
+	private Duration divisionsToDuration(String divisionsString) {
+		final int divisions = Integer.parseInt(divisionsString);
+		return Durations.QUARTER.divide(currentDivisions).multiply(divisions);
+	}
+
 	private void consumeNoteElem() throws XMLStreamException {
 		currentDurationalBuilder = new NoteBuilder();
 		partContext.setChordTag(false);
@@ -343,12 +372,7 @@ final class StaxReader implements MusicXmlReader {
 		consumeUntil(tag -> {
 			switch (tag) {
 				case Tags.DURATION:
-					consumeText(text -> {
-						final int divisions = Integer.parseInt(text);
-						final Duration duration = Durations.QUARTER.divide(currentDivisions)
-								.multiply(divisions);
-						currentDurationalBuilder.setDuration(duration);
-					});
+					consumeText(text -> currentDurationalBuilder.setDuration(divisionsToDuration(text)));
 					break;
 				case Tags.PITCH:
 					consumePitchElem();
@@ -475,6 +499,8 @@ final class StaxReader implements MusicXmlReader {
 	}
 
 	private void consumeTimeElem() throws XMLStreamException {
+		timeSymbol = Transforms.symbolStringToTimeSigSymbol(reader.getAttributeValue(null, Tags.SYMBOL));
+
 		consumeUntil(tag -> {
 			switch (tag) {
 				case Tags.BEATS:
@@ -491,11 +517,16 @@ final class StaxReader implements MusicXmlReader {
 			}
 		}, Tags.TIME);
 
-		partContext.getMeasureBuilder().setTimeSignature(TimeSignature.of(beats, beatDivisions));
+		final Duration beatDuration = Duration.of(1, beatDivisions);
+		partContext.getMeasureBuilder().setTimeSignature(TimeSignature.of(beats, beatDuration, timeSymbol));
 	}
 
 	private void consumeBarlineElem() throws XMLStreamException {
 		final String barlineLocation = reader.getAttributeValue(null, Tags.LOCATION);
+		// Empty the barstyle so that it either gets set to a value or the
+		// default single style barline is used.
+		barStyle = "";
+		repeatDirection = "";
 
 		consumeUntil(tag -> {
 			switch (tag) {
@@ -526,10 +557,14 @@ final class StaxReader implements MusicXmlReader {
 	}
 
 	private void consumeClefElem() throws XMLStreamException {
+		clefLine = 0;
+		final String clefStaffString = reader.getAttributeValue(null, Tags.NUMBER);
+		final int clefStaff = clefStaffString == null ? 0 : Integer.parseInt(clefStaffString);
+
 		consumeUntil(tag -> {
 			switch (tag) {
 				case Tags.SIGN:
-					consumeText(text -> clefSign = text);
+					consumeText(text -> clefSymbol = Transforms.signToClefSymbol(text));
 					break;
 				case Tags.LINE:
 					consumeText(text -> clefLine = Integer.parseInt(text));
@@ -542,7 +577,13 @@ final class StaxReader implements MusicXmlReader {
 
 		}, Tags.CLEF);
 
-		partContext.getMeasureBuilder().setClef(Clef.of(Transforms.signToClefSymbol(clefSign), clefLine));
+		// Zero indicates that clef line was not explicitly set so
+		// default valuea is to be used.
+		if (clefLine == 0) {
+			clefLine = clefSymbol.getDefaultLine();
+		}
+
+		partContext.addClef(Clef.of(clefSymbol, clefLine), clefStaff);
 	}
 
 }
