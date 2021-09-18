@@ -6,6 +6,7 @@ package org.wmn4j.io.musicxml;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wmn4j.io.ParsingFailureException;
+import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
@@ -393,6 +394,9 @@ final class StaxReader implements MusicXmlReader {
 				case Tags.CHORD:
 					partContext.setChordTag(true);
 					break;
+				case Tags.NOTATIONS:
+					consumeNotationsElem();
+					break;
 				// Fall through for elements that are currently not supported
 				case Tags.ACCIDENTAL:
 				case Tags.BEAM:
@@ -401,7 +405,6 @@ final class StaxReader implements MusicXmlReader {
 				case Tags.GRACE:
 				case Tags.INSTRUMENT:
 				case Tags.LYRIC:
-				case Tags.NOTATIONS:
 				case Tags.NOTEHEAD_TEXT:
 				case Tags.NOTEHEAD:
 				case Tags.STEM:
@@ -425,6 +428,32 @@ final class StaxReader implements MusicXmlReader {
 			partContext.updateChordBuffer(null);
 			partContext.getMeasureBuilder().addToVoice(partContext.getVoice(), currentDurationalBuilder);
 		}
+	}
+
+	private void consumeNotationsElem() throws XMLStreamException {
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.ARTICULATIONS:
+					consumeArticulations();
+					break;
+				case Tags.FERMATA:
+					if (currentDurationalBuilder instanceof NoteBuilder) {
+						((NoteBuilder) currentDurationalBuilder).addArticulation(Articulation.FERMATA);
+					}
+					break;
+				default:
+					skipElement();
+			}
+		}, Tags.NOTATIONS);
+	}
+
+	private void consumeArticulations() throws XMLStreamException {
+		consumeUntil(tag -> {
+			final Articulation articulation = Transforms.stringToArticulation(tag);
+			if (articulation != null && (currentDurationalBuilder instanceof NoteBuilder)) {
+				((NoteBuilder) currentDurationalBuilder).addArticulation(articulation);
+			}
+		}, Tags.ARTICULATIONS);
 	}
 
 	private void consumePitchElem() throws XMLStreamException {

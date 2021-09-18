@@ -173,4 +173,16 @@ class StaxReaderTest {
 		final ScoreBuilder scoreBuilder = readScoreBuilder("scoreIteratorTesting.xml", false);
 		MusicXmlFileChecks.assertTimeSignatureChangeReadCorrectly(scoreBuilder.build());
 	}
+
+	@Test
+	void testReadingScoreWithArticulations() {
+		final Score score = readScore("articulations.xml", false);
+		MusicXmlFileChecks.assertScoreWithArticulationsReadCorrectly(score);
+	}
+
+	@Test
+	void testReadingScoreBuilderWithArticulations() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("articulations.xml", false);
+		MusicXmlFileChecks.assertScoreWithArticulationsReadCorrectly(scoreBuilder.build());
+	}
 }

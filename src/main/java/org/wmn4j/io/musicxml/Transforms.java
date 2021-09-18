@@ -5,6 +5,7 @@ package org.wmn4j.io.musicxml;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.KeySignature;
@@ -57,6 +58,45 @@ final class Transforms {
 			default:
 				return Pitch.Base.B;
 		}
+	}
+
+	static Articulation stringToArticulation(String articulationString) {
+		switch (articulationString) {
+			case Tags.ACCENT:
+				return Articulation.ACCENT;
+			case Tags.BREATH_MARK:
+				return Articulation.BREATH_MARK;
+			case Tags.CAESURA:
+				return Articulation.CAESURA;
+			case Tags.FERMATA:
+				return Articulation.FERMATA;
+			case Tags.PLOP:
+				return Articulation.SLIDE_IN_DOWN;
+			case Tags.SCOOP:
+				return Articulation.SLIDE_IN_UP;
+			case Tags.FALLOFF:
+				return Articulation.SLIDE_OUT_DOWN;
+			case Tags.DOIT:
+				return Articulation.SLIDE_OUT_UP;
+			case Tags.SPICCATO:
+				return Articulation.SPICCATO;
+			case Tags.STACCATISSIMO:
+				return Articulation.STACCATISSIMO;
+			case Tags.STACCATO:
+				return Articulation.STACCATO;
+			case Tags.STRESS:
+				return Articulation.STRESS;
+			case Tags.STRONG_ACCENT:
+				return Articulation.STRONG_ACCENT;
+			case Tags.TENUTO:
+				return Articulation.TENUTO;
+			case Tags.DETACHED_LEGATO:
+				return Articulation.TENUTO_STACCATO;
+			case Tags.UNSTRESS:
+				return Articulation.UNSTRESS;
+		}
+
+		return null;
 	}
 
 	static TimeSignature.Symbol symbolStringToTimeSigSymbol(String symbolString) {
