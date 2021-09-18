@@ -175,6 +175,18 @@ class StaxReaderTest {
 	}
 
 	@Test
+	void testTiedNotesReadToScore() {
+		final Score score = readScore("tieTesting.xml", false);
+		MusicXmlFileChecks.assertTiedNotesReadCorrectly(score);
+	}
+
+	@Test
+	void testTiedNotesReadToScoreBuilder() {
+		final ScoreBuilder scoreBuilder = readScoreBuilder("tieTesting.xml", false);
+		MusicXmlFileChecks.assertTiedNotesReadCorrectly(scoreBuilder.build());
+	}
+
+	@Test
 	void testReadingScoreWithArticulations() {
 		final Score score = readScore("articulations.xml", false);
 		MusicXmlFileChecks.assertScoreWithArticulationsReadCorrectly(score);
@@ -184,5 +196,30 @@ class StaxReaderTest {
 	void testReadingScoreBuilderWithArticulations() {
 		final ScoreBuilder scoreBuilder = readScoreBuilder("articulations.xml", false);
 		MusicXmlFileChecks.assertScoreWithArticulationsReadCorrectly(scoreBuilder.build());
+	}
+
+	@Test
+	void testReadingNotationsIntoScoreFromSingleVoice() {
+		Score scoreWitNotations = readScore("single_staff_single_voice_notation_test.musicxml", false);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(scoreWitNotations);
+	}
+
+	@Test
+	void testReadingNotationsIntoScoreBuilderFromSingleVoice() {
+		ScoreBuilder scoreWitNotations = readScoreBuilder("single_staff_single_voice_notation_test.musicxml", false);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(scoreWitNotations.build());
+	}
+
+	@Test
+	void testReadingNotationsIntoScoreFromMultipleStavesAndVoices() {
+		Score scoreWitNotations = readScore("multi_staff_multi_voice_notation_test.xml", false);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreWitNotations);
+	}
+
+	@Test
+	void testReadingNotationsIntoScoreBuilderFromMultipleStavesAndVoices() {
+		ScoreBuilder scoreBuilderWitNotations = readScoreBuilder("multi_staff_multi_voice_notation_test.xml", false);
+		MusicXmlFileChecks
+				.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreBuilderWitNotations.build());
 	}
 }

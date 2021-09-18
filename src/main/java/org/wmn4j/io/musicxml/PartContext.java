@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 /**
  * Container class for keeping track of all the context dependent
@@ -32,6 +33,7 @@ final class PartContext {
 	private boolean hasChordTag;
 
 	private Set<Integer> staves = new HashSet<>();
+	private BiConsumer<Integer, Integer> arpeggioResolver;
 
 	private final PartBuilder partBuilder;
 
@@ -49,15 +51,19 @@ final class PartContext {
 		setStaff(Part.DEFAULT_STAFF_NUMBER);
 	}
 
-	public PartBuilder getPartBuilder() {
+	void setArpeggioResolver(BiConsumer<Integer, Integer> resolver) {
+		arpeggioResolver = resolver;
+	}
+
+	PartBuilder getPartBuilder() {
 		return partBuilder;
 	}
 
-	public int getVoice() {
+	int getVoice() {
 		return voice;
 	}
 
-	public void setVoice(int voice) {
+	void setVoice(int voice) {
 		this.voice = voice;
 	}
 
@@ -81,11 +87,11 @@ final class PartContext {
 		final ChordBuffer buffer = chordBuffers.get(staff);
 
 		if (!hasChordTag || noteBuilder == null) {
-			buffer.flushTo(measureBuilders.get(staff));
+			buffer.flushTo(measureBuilders.get(staff), arpeggioResolver);
 		}
 
 		if (noteBuilder != null) {
-			buffer.addNote(noteBuilder, voice);
+			buffer.addNote(noteBuilder, staff, voice);
 			if (!hasChordTag) {
 				offsetDurations.add(noteBuilder.getDuration());
 			}

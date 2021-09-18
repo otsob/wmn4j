@@ -3,8 +3,10 @@
  */
 package org.wmn4j.io.musicxml;
 
+import java.util.Set;
+
 /**
- * MusicXML tags. The name of the variables matches the tag string as closely as possible.
+ * MusicXML tags and attributes. The name of the variables matches the tag string as closely as possible.
  */
 final class Tags {
 
@@ -37,6 +39,7 @@ final class Tags {
 	static final String CODA = "coda";
 	static final String COMMON = "common";
 	static final String COMPOSER = "composer";
+	static final String CONTINUE = "continue";
 	static final String CREATOR = "creator";
 	static final String CREDIT = "credit";
 	static final String CUE = "cue";
@@ -217,6 +220,8 @@ final class Tags {
 	static final String WORK_TITLE = "work-title";
 
 	static final String YES = "yes";
+
+	static final Set<String> CONNECTED_NOTATIONS = Set.of(TIED, SLUR, GLISSANDO, SLIDE, ARPEGGIATE, NON_ARPEGGIATE);
 
 	private Tags() {
 		throw new UnsupportedOperationException("Not meant to be instantiated");

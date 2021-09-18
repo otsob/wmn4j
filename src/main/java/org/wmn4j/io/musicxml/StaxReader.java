@@ -9,9 +9,11 @@ import org.wmn4j.io.ParsingFailureException;
 import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Clef;
+import org.wmn4j.notation.ConnectableBuilder;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.DurationalBuilder;
 import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
@@ -73,6 +75,8 @@ final class StaxReader implements MusicXmlReader {
 	private String currentStep;
 	private int currentAlter;
 	private int currentOctave;
+
+	private final NotationResolver notationResolver = new NotationResolver();
 
 	StaxReader(Path path, boolean validate) {
 		this.path = Objects.requireNonNull(path);
@@ -297,6 +301,7 @@ final class StaxReader implements MusicXmlReader {
 	private void consumePartElem() throws XMLStreamException {
 		final String partId = reader.getAttributeValue(0);
 		partContext = new PartContext(partBuilders.get(partId));
+		notationResolver.reset(partContext);
 
 		consumeUntil(tag -> {
 			if (Tags.MEASURE.equals(tag)) {
@@ -423,6 +428,7 @@ final class StaxReader implements MusicXmlReader {
 					Pitch.of(Transforms.stepToPitchBase(currentStep), Transforms.alterToAccidental(currentAlter),
 							currentOctave));
 
+			notationResolver.continueOngoingNotations(currentNoteBuilder);
 			partContext.updateChordBuffer(currentNoteBuilder);
 		} else {
 			partContext.updateChordBuffer(null);
@@ -442,9 +448,41 @@ final class StaxReader implements MusicXmlReader {
 					}
 					break;
 				default:
+					if (Tags.CONNECTED_NOTATIONS.contains(tag)) {
+						readConnectedNotationElemAttributes(tag);
+					}
+
 					skipElement();
 			}
 		}, Tags.NOTATIONS);
+	}
+
+	private void readConnectedNotationElemAttributes(String notationTag) {
+		final String elementRoleType = reader.getAttributeValue(null, Tags.TYPE);
+		final String arpeggioDirection = reader.getAttributeValue(null, Tags.DIRECTION);
+		final Notation.Type type = Transforms.stringToNotationType(notationTag, arpeggioDirection);
+		final Notation.Style style = Transforms.stringToNotationStyle(reader.getAttributeValue(null, Tags.LINE_TYPE));
+		final int notationNumber = NotationResolver.parseNotationNumber(reader.getAttributeValue(null, Tags.NUMBER));
+		if (!(currentDurationalBuilder instanceof ConnectableBuilder)) {
+			LOG.warn("Trying to read connected notations when current builder is not of correct type");
+			return;
+		}
+		final ConnectableBuilder builder = (ConnectableBuilder) currentDurationalBuilder;
+		if (elementRoleType != null) {
+			switch (elementRoleType) {
+				case Tags.START: // Fall through. Start and bottom attributes explicitly start a notation.
+				case Tags.BOTTOM:
+				case Tags.CONTINUE:
+					notationResolver.startOrContinueNotation(notationNumber, type, style, builder);
+					break;
+				case Tags.STOP: // Fall through: Stop and top are the attributes that explicitly end a notation.
+				case Tags.TOP:
+					notationResolver.endNotation(notationNumber, type, builder);
+					break;
+			}
+		} else {
+			notationResolver.startOrContinueNotation(notationNumber, type, style, builder);
+		}
 	}
 
 	private void consumeArticulations() throws XMLStreamException {

@@ -10,6 +10,7 @@ import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.KeySignature;
 import org.wmn4j.notation.KeySignatures;
+import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.TimeSignature;
 
@@ -203,6 +204,53 @@ final class Transforms {
 		}
 
 		return type;
+	}
+
+	static Notation.Type stringToNotationType(String typeString, String arpeggioDirection) {
+		switch (typeString) {
+			case Tags.TIED:
+				return Notation.Type.TIE;
+			case Tags.SLUR:
+				return Notation.Type.SLUR;
+			case Tags.GLISSANDO:
+			case Tags.SLIDE: // Slide is practically always glissando in MusicXML, fall through.
+				return Notation.Type.GLISSANDO;
+			case Tags.ARPEGGIATE:
+				if (arpeggioDirection == null) {
+					return Notation.Type.ARPEGGIATE;
+				}
+
+				if (Tags.DOWN.equals(arpeggioDirection)) {
+					return Notation.Type.ARPEGGIATE_DOWN;
+				}
+
+				if (Tags.UP.equals(arpeggioDirection)) {
+					return Notation.Type.ARPEGGIATE_UP;
+				}
+			case Tags.NON_ARPEGGIATE:
+				return Notation.Type.NON_ARPEGGIATE;
+		}
+
+		LOG.warn("Tried to parse unsupported notation type: " + typeString);
+		return Notation.Type.SLUR;
+	}
+
+	static Notation.Style stringToNotationStyle(String styleString) {
+		if (styleString == null) {
+			return Notation.Style.SOLID;
+		}
+
+		switch (styleString) {
+			case Tags.DASHED:
+				return Notation.Style.DASHED;
+			case Tags.DOTTED:
+				return Notation.Style.DOTTED;
+			case Tags.WAVY:
+				return Notation.Style.WAVY;
+			case Tags.SOLID: // Fall through.
+			default:
+				return Notation.Style.SOLID;
+		}
 	}
 
 	private Transforms() {
