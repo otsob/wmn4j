@@ -66,38 +66,58 @@ public final class Notation {
 		/**
 		 * Specifies a tie between notes.
 		 */
-		TIE,
+		TIE(false),
 
 		/**
 		 * Specifies a slur.
 		 */
-		SLUR,
+		SLUR(false),
 
 		/**
 		 * Specifies a glissando notation.
 		 */
-		GLISSANDO,
+		GLISSANDO(false),
 
 		/**
 		 * Specifies an arpeggiation notation without specifying direction which is customarily
 		 * arpeggiated from lowest note upwards.
 		 */
-		ARPEGGIATE,
+		ARPEGGIATE(true),
 
 		/**
 		 * Specifies an arpeggiation from lowest note upwards that is explicitly marked with an arrow.
 		 */
-		ARPEGGIATE_UP,
+		ARPEGGIATE_UP(true),
 
 		/**
 		 * Specifies an arpeggiation from highest note downwards that is explicitly marked with an arrow.
 		 */
-		ARPEGGIATE_DOWN,
+		ARPEGGIATE_DOWN(true),
 
 		/**
 		 * Specifies a bracket indicating that notes should not be arpeggiated.
 		 */
-		NON_ARPEGGIATE,
+		NON_ARPEGGIATE(true);
+
+		private final boolean isArpeggiation;
+
+		Type(boolean isArpeggiation) {
+			this.isArpeggiation = isArpeggiation;
+		}
+
+		/**
+		 * Returns true if the type is a type of arpeggiation.
+		 * <p>
+		 * Arpeggiations differ from the other types in that they
+		 * are applicable to only the notes of chords.
+		 * Explicitly marking non-arpeggiation is also a type of arpeggiation
+		 * specifier.
+		 *
+		 * @return true if the type is a type of arpeggiation
+		 */
+		public boolean isArpeggiation() {
+			return isArpeggiation;
+		}
 	}
 
 	/**
