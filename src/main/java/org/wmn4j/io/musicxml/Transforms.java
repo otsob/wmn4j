@@ -12,6 +12,7 @@ import org.wmn4j.notation.KeySignature;
 import org.wmn4j.notation.KeySignatures;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.Score;
 import org.wmn4j.notation.TimeSignature;
 
 import java.util.Objects;
@@ -204,6 +205,20 @@ final class Transforms {
 		}
 
 		return type;
+	}
+
+	static Score.Attribute creatorTypeToAttribute(String type) {
+		if (type == null) {
+			return Score.Attribute.COMPOSER;
+		}
+
+		switch (type) {
+			case Tags.ARRANGER:
+				return Score.Attribute.ARRANGER;
+			case Tags.COMPOSER: // Fall through.
+			default:
+				return Score.Attribute.COMPOSER;
+		}
 	}
 
 	static Notation.Type stringToNotationType(String typeString, String arpeggioDirection) {

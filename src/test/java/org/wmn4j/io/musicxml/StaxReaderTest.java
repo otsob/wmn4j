@@ -199,6 +199,30 @@ class StaxReaderTest {
 	}
 
 	@Test
+	void testReadingScoreWithPickupMeasure() {
+		Score scoreWithPickup = readScore("pickup_measure_test.xml", false);
+		MusicXmlFileChecks.assertPickupMeasureReadCorrectly(scoreWithPickup);
+	}
+
+	@Test
+	void testReadingScoreBuilderWithPickupMeasure() {
+		ScoreBuilder scoreWithPickup = readScoreBuilder("pickup_measure_test.xml", false);
+		MusicXmlFileChecks.assertPickupMeasureReadCorrectly(scoreWithPickup.build());
+	}
+
+	@Test
+	void testReadingAttributesIntoScore() {
+		Score scoreWithAttributes = readScore("attribute_reading_test.xml", false);
+		MusicXmlFileChecks.assertScoreHasExpectedAttributes(scoreWithAttributes);
+	}
+
+	@Test
+	void testReadingAttributesIntoScoreBuilder() {
+		ScoreBuilder scoreWithAttributesBuilder = readScoreBuilder("attribute_reading_test.xml", false);
+		MusicXmlFileChecks.assertScoreHasExpectedAttributes(scoreWithAttributesBuilder.build());
+	}
+
+	@Test
 	void testReadingNotationsIntoScoreFromSingleVoice() {
 		Score scoreWitNotations = readScore("single_staff_single_voice_notation_test.musicxml", false);
 		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(scoreWitNotations);

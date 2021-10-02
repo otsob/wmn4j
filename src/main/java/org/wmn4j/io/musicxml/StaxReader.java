@@ -247,7 +247,8 @@ final class StaxReader implements MusicXmlReader {
 		consumeUntil(tag -> {
 			switch (tag) {
 				case Tags.CREATOR:
-					consumeText(text -> scoreBuilder.setAttribute(Score.Attribute.COMPOSER, text));
+					final String type = reader.getAttributeValue(null, Tags.TYPE);
+					consumeText(text -> scoreBuilder.setAttribute(Transforms.creatorTypeToAttribute(type), text));
 					break;
 				// Fall through for elements that are currently not supported
 				case Tags.RIGHTS:
