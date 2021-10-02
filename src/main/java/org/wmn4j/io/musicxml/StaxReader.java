@@ -15,6 +15,7 @@ import org.wmn4j.notation.DurationalBuilder;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.NoteBuilder;
+import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.Pitch;
@@ -488,6 +489,9 @@ final class StaxReader implements MusicXmlReader {
 						((NoteBuilder) currentDurationalBuilder).addArticulation(Articulation.FERMATA);
 					}
 					break;
+				case Tags.ORNAMENTS:
+					consumeOrnamentsElem();
+					break;
 				default:
 					if (Tags.CONNECTED_NOTATIONS.contains(tag)) {
 						readConnectedNotationElemAttributes(tag);
@@ -496,6 +500,31 @@ final class StaxReader implements MusicXmlReader {
 					skipElement();
 			}
 		}, Tags.NOTATIONS);
+	}
+
+	private void consumeOrnamentsElem() throws XMLStreamException {
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.TREMOLO:
+					consumeText(text -> {
+						final int tremololines = Integer.parseInt(text);
+
+						if (currentDurationalBuilder instanceof NoteBuilder) {
+							((NoteBuilder) currentDurationalBuilder).addOrnament(
+									Transforms.lineNumbersToTremolo(tremololines));
+						}
+					});
+					break;
+				default:
+					Ornament ornament = Transforms.tagToOrnament(tag);
+					if (ornament != null) {
+						if (currentDurationalBuilder instanceof NoteBuilder) {
+							((NoteBuilder) currentDurationalBuilder).addOrnament(ornament);
+						}
+					}
+			}
+
+		}, Tags.ORNAMENTS);
 	}
 
 	private void consumeTimeModificationElem() throws XMLStreamException {

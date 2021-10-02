@@ -11,6 +11,7 @@ import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.KeySignature;
 import org.wmn4j.notation.KeySignatures;
 import org.wmn4j.notation.Notation;
+import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.TimeSignature;
@@ -205,6 +206,44 @@ final class Transforms {
 		}
 
 		return type;
+	}
+
+	static Ornament tagToOrnament(String tag) {
+
+		if (tag == null) {
+			return null;
+		}
+
+		switch (tag) {
+			case Tags.DELAYED_INVERTED_TURN:
+				return Ornament.of(Ornament.Type.DELAYED_INVERTED_TURN);
+			case Tags.DELAYED_TURN:
+				return Ornament.of(Ornament.Type.DELAYED_TURN);
+			case Tags.INVERTED_MORDENT:
+				return Ornament.of(Ornament.Type.INVERTED_MORDENT);
+			case Tags.INVERTED_TURN:
+				return Ornament.of(Ornament.Type.INVERTED_TURN);
+			case Tags.MORDENT:
+				return Ornament.of(Ornament.Type.MORDENT);
+			case Tags.TRILL_MARK:
+				return Ornament.of(Ornament.Type.TRILL);
+			case Tags.TURN:
+				return Ornament.of(Ornament.Type.TURN);
+			default:
+				return null;
+		}
+	}
+
+	static Ornament lineNumbersToTremolo(int tremoloLines) {
+		switch (tremoloLines) {
+			case 2:
+				return Ornament.of(Ornament.Type.DOUBLE_TREMOLO);
+			case 3:
+				return Ornament.of(Ornament.Type.TRIPLE_TREMOLO);
+			case 1: // Fall through
+			default:
+				return Ornament.of(Ornament.Type.SINGLE_TREMOLO);
+		}
 	}
 
 	static Score.Attribute creatorTypeToAttribute(String type) {

@@ -376,4 +376,10 @@ class StaxReaderTest {
 		Score scoreWithTupletDurations = readScore("tuplet_test.musicxml", true);
 		MusicXmlFileChecks.assertTupletNotesReadCorrectly(scoreWithTupletDurations);
 	}
+
+	@Test
+	void testOrnamentsAreReadCorrectly() {
+		Score scoreWithOrnaments = readScore("ornament_test.musicxml", true);
+		MusicXmlFileChecks.assertOrnamentsAreCorrect(scoreWithOrnaments);
+	}
 }
