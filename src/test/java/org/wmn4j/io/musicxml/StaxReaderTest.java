@@ -222,4 +222,30 @@ class StaxReaderTest {
 		MusicXmlFileChecks
 				.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreBuilderWitNotations.build());
 	}
+
+	@Test
+	void testGivenFileWhereNoteContinuesOverClefChangeWhenScoreIsReadThenClefChangeIsCorrect() {
+		Score scoreWithClefChange = readScore("clef_change_where_note_in_another_voice_carries_over.xml", false);
+		MusicXmlFileChecks.assertClefChangeInCorrectPlaceWhenNoteCarriesOverClefChange(scoreWithClefChange);
+	}
+
+	@Test
+	void testGivenFileWhereNoteContinuesOverClefChangeWhenScoreBuilderIsReadThenClefChangeIsCorrect() {
+		ScoreBuilder scoreBuilderWithClefChange = readScoreBuilder(
+				"clef_change_where_note_in_another_voice_carries_over.xml", false);
+		MusicXmlFileChecks
+				.assertClefChangeInCorrectPlaceWhenNoteCarriesOverClefChange(scoreBuilderWithClefChange.build());
+	}
+
+	@Test
+	void testDottedDurationsAreReadWithCorrectDotCounts() {
+		Score scoreWithDottedDurations = readScore("dotted_note_test.musicxml", true);
+		MusicXmlFileChecks.assertDottedNotesReadCorrectly(scoreWithDottedDurations);
+	}
+
+	@Test
+	void testTupletDurationsAreReadWithCorrectTupletDivisors() {
+		Score scoreWithTupletDurations = readScore("tuplet_test.musicxml", true);
+		MusicXmlFileChecks.assertTupletNotesReadCorrectly(scoreWithTupletDurations);
+	}
 }

@@ -61,6 +61,9 @@ final class StaxReader implements MusicXmlReader {
 	// multiple parts, so it's part of the context of the whole score.
 	private int currentDivisions;
 	private DurationalBuilder currentDurationalBuilder;
+	private int currentDurDivisions;
+	private int currentDotCount;
+	private int currentTupletDivisor;
 
 	private int beats;
 	private int beatDivisions;
@@ -374,11 +377,13 @@ final class StaxReader implements MusicXmlReader {
 	private void consumeNoteElem() throws XMLStreamException {
 		currentDurationalBuilder = new NoteBuilder();
 		partContext.setChordTag(false);
+		currentDotCount = 0;
+		currentTupletDivisor = 1;
 
 		consumeUntil(tag -> {
 			switch (tag) {
 				case Tags.DURATION:
-					consumeText(text -> currentDurationalBuilder.setDuration(divisionsToDuration(text)));
+					consumeText(text -> currentDurDivisions = Integer.parseInt(text));
 					break;
 				case Tags.PITCH:
 					consumePitchElem();
@@ -390,11 +395,7 @@ final class StaxReader implements MusicXmlReader {
 					consumeText(text -> partContext.setStaff(Integer.parseInt(text)));
 					break;
 				case Tags.REST:
-					final Duration duration = currentDurationalBuilder.getDuration();
 					currentDurationalBuilder = new RestBuilder();
-					if (duration != null) {
-						currentDurationalBuilder.setDuration(duration);
-					}
 					break;
 				case Tags.CHORD:
 					partContext.setChordTag(true);
@@ -402,18 +403,22 @@ final class StaxReader implements MusicXmlReader {
 				case Tags.NOTATIONS:
 					consumeNotationsElem();
 					break;
+				case Tags.DOT:
+					++currentDotCount;
+					break;
+				case Tags.TIME_MODIFICATION:
+					consumeTimeModificationElem();
+					break;
 				// Fall through for elements that are currently not supported
 				case Tags.ACCIDENTAL:
 				case Tags.BEAM:
 				case Tags.CUE:
-				case Tags.DOT:
 				case Tags.GRACE:
 				case Tags.INSTRUMENT:
 				case Tags.LYRIC:
 				case Tags.NOTEHEAD_TEXT:
 				case Tags.NOTEHEAD:
 				case Tags.STEM:
-				case Tags.TIME_MODIFICATION:
 				case Tags.TYPE:
 				case Tags.UNPITCHED:
 				default:
@@ -421,6 +426,11 @@ final class StaxReader implements MusicXmlReader {
 
 			}
 		}, Tags.NOTE);
+
+		final int numerator = currentDurDivisions;
+		final int denominator = 4 * currentDivisions;
+		currentDurationalBuilder.setDuration(
+				Duration.of(numerator, denominator, currentDotCount, currentTupletDivisor));
 
 		if (currentDurationalBuilder instanceof NoteBuilder) {
 			NoteBuilder currentNoteBuilder = (NoteBuilder) currentDurationalBuilder;
@@ -434,6 +444,7 @@ final class StaxReader implements MusicXmlReader {
 			partContext.updateChordBuffer(null);
 			partContext.getMeasureBuilder().addToVoice(partContext.getVoice(), currentDurationalBuilder);
 		}
+
 	}
 
 	private void consumeNotationsElem() throws XMLStreamException {
@@ -455,6 +466,16 @@ final class StaxReader implements MusicXmlReader {
 					skipElement();
 			}
 		}, Tags.NOTATIONS);
+	}
+
+	private void consumeTimeModificationElem() throws XMLStreamException {
+		consumeUntil(tag -> {
+			if (tag.equals(Tags.ACTUAL_NOTES)) {
+				consumeText(text -> currentTupletDivisor = Integer.parseInt(text));
+			} else {
+				skipElement();
+			}
+		}, Tags.TIME_MODIFICATION);
 	}
 
 	private void readConnectedNotationElemAttributes(String notationTag) {
