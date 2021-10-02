@@ -199,6 +199,110 @@ class StaxReaderTest {
 	}
 
 	@Test
+	void testReadingIncorrectXmlFileToScore() {
+		final MusicXmlReader reader = getMusicXmlReader(
+				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"), true);
+		try {
+			reader.readScore();
+			fail("No exception was thrown when trying to read incorrectly formatted XML file");
+		} catch (IOException ioException) {
+			fail("Reading the score failed due to IOException when a parsing failure was expected");
+		} catch (ParsingFailureException e) {
+			// Pass the test, this exception is expected.
+		}
+	}
+
+	@Test
+	void testReadingIncorrectXmlFileToScoreBuilder() {
+		final MusicXmlReader reader = getMusicXmlReader(
+				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCinvalidXml.xml"), true);
+		try {
+			reader.readScoreBuilder();
+			fail("No exception was thrown when trying to read incorrectly formatted XML file");
+		} catch (IOException ioException) {
+			fail("Reading the score failed due to IOException when a parsing failure was expected");
+		} catch (ParsingFailureException e) {
+			// Pass the test, this exception is expected.
+		}
+	}
+
+	@Test
+	void testReadingIncorrectMusicXmlFileToScore() {
+		final MusicXmlReader reader = getMusicXmlReader(
+				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"), true);
+		try {
+			reader.readScore();
+			fail("No exception was thrown when trying to read XML file that does not comply to MusicXml schema");
+		} catch (IOException ioException) {
+			fail("Reading the score failed due to IOException when a parsing failure was expected");
+		} catch (ParsingFailureException e) {
+			// Pass the test, this exception is expected.
+		}
+	}
+
+	@Test
+	void testReadingIncorrectMusicXmlFileToScoreBuilder() {
+		final MusicXmlReader reader = getMusicXmlReader(
+				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleCInvalidMusicXml.xml"), true);
+		try {
+			reader.readScoreBuilder();
+			fail("No exception was thrown when trying to read XML file that does not comply to MusicXml schema");
+		} catch (IOException ioException) {
+			fail("Reading the score failed due to IOException when a parsing failure was expected");
+		} catch (ParsingFailureException e) {
+			// Pass the test, this exception is expected.
+		}
+	}
+
+	@Test
+	void testValidatingCorrectXmlFileWhenReadingToScore() {
+		final MusicXmlReader reader = getMusicXmlReader(
+				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"), true);
+		try {
+			reader.readScore();
+		} catch (Exception e) {
+			fail("Exception " + e + " was thrown while validating valid MusicXml file");
+		}
+	}
+
+	@Test
+	void testValidatingCorrectXmlFileWhenReadingToScoreBuilder() {
+		final MusicXmlReader reader = getMusicXmlReader(
+				Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + "singleC.xml"), true);
+		try {
+			reader.readScoreBuilder();
+		} catch (Exception e) {
+			fail("Exception " + e + " was thrown while validating valid MusicXml file");
+		}
+	}
+
+	@Test
+	void testReadingFileThatDoesNotExistToScore() {
+		final MusicXmlReader reader = getMusicXmlReader(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
+				+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"), true);
+		try {
+			reader.readScore();
+		} catch (ParsingFailureException parsingFailure) {
+			fail("Reading the score failed due to parsing failure when an io expection was expected");
+		} catch (IOException ioException) {
+			// Pass the test, this exception is expected.
+		}
+	}
+
+	@Test
+	void testReadingFileThatDoesNotExistToScoreBuilder() {
+		final MusicXmlReader reader = getMusicXmlReader(Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH
+				+ "aFileThatDoesNotAndShouldNotExistInTestFiles.xml"), true);
+		try {
+			reader.readScoreBuilder();
+		} catch (ParsingFailureException parsingFailure) {
+			fail("Reading the score failed due to parsing failure when an io expection was expected");
+		} catch (IOException ioException) {
+			// Pass the test, this exception is expected.
+		}
+	}
+
+	@Test
 	void testReadingScoreWithPickupMeasure() {
 		Score scoreWithPickup = readScore("pickup_measure_test.xml", false);
 		MusicXmlFileChecks.assertPickupMeasureReadCorrectly(scoreWithPickup);

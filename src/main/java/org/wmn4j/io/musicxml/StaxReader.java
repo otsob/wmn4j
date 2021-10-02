@@ -22,11 +22,17 @@ import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
 import org.wmn4j.notation.TimeSignature;
+import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stax.StAXSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,8 +48,7 @@ import java.util.function.Consumer;
  */
 final class StaxReader implements MusicXmlReader {
 
-	private static final String PARSING_FAILURE = "Failed to parse XML: ";
-
+	private static final String MUSICXML_V3_1_SCHEMA_PATH = "org/wmn4j/io/musicxml/musicxml.xsd";
 	private static final Logger LOG = LoggerFactory.getLogger(StaxReader.class);
 
 	private final boolean validateInput;
@@ -100,14 +105,22 @@ final class StaxReader implements MusicXmlReader {
 	public ScoreBuilder readScoreBuilder() throws IOException, ParsingFailureException {
 		if (scoreBuilder == null) {
 			scoreBuilder = new ScoreBuilder();
-			fillScoreBuilder();
+			try {
+				fillScoreBuilder();
+			} catch (SAXException e) {
+				throw new ParsingFailureException(getParsingFailureMessage(e.getMessage()));
+			}
 		}
 
 		return scoreBuilder;
 	}
 
-	private void fillScoreBuilder() throws IOException, ParsingFailureException {
+	private void fillScoreBuilder() throws IOException, ParsingFailureException, SAXException {
+		if (validateInput) {
+			validate();
+		}
 		reader = createStreamReader(path);
+
 		try {
 			consumeUntil(tag -> {
 				switch (tag) {
@@ -144,10 +157,26 @@ final class StaxReader implements MusicXmlReader {
 			reader.close();
 
 		} catch (XMLStreamException e) {
-			throw new ParsingFailureException(PARSING_FAILURE + e.getMessage());
+			throw new ParsingFailureException(getParsingFailureMessage(e.getMessage()));
 		}
 
 		// Close the input stream.
+		inputStream.close();
+	}
+
+	private void validate() throws IOException, ParsingFailureException {
+		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		ClassLoader classLoader = getClass().getClassLoader();
+		try {
+			Schema schema = factory.newSchema(classLoader.getResource(MUSICXML_V3_1_SCHEMA_PATH));
+			Validator validator = schema.newValidator();
+			final XMLStreamReader validationReader = createStreamReader(path);
+			validator.validate(new StAXSource(validationReader));
+			validationReader.close();
+		} catch (SAXException | XMLStreamException e) {
+			throw new ParsingFailureException(getParsingFailureMessage(e.getMessage()));
+		}
+
 		inputStream.close();
 	}
 
@@ -158,7 +187,7 @@ final class StaxReader implements MusicXmlReader {
 			inputStream = new FileInputStream(path.toFile());
 			return xmlInputFactory.createXMLStreamReader(inputStream);
 		} catch (XMLStreamException e) {
-			throw new ParsingFailureException(PARSING_FAILURE + e.getMessage());
+			throw new ParsingFailureException(getParsingFailureMessage(e.getMessage()));
 		} catch (FileNotFoundException e) {
 			throw new IOException("File " + path + " not found");
 		}
@@ -673,6 +702,10 @@ final class StaxReader implements MusicXmlReader {
 		}
 
 		partContext.addClef(Clef.of(clefSymbol, clefLine), clefStaff);
+	}
+
+	private String getParsingFailureMessage(String message) {
+		return "Parsing of " + path + " failed with: " + message;
 	}
 
 }
