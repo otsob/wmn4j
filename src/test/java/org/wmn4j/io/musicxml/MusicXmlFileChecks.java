@@ -8,7 +8,6 @@ import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Clefs;
-import org.wmn4j.notation.directions.Direction;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
@@ -30,6 +29,7 @@ import org.wmn4j.notation.Staff;
 import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.TimeSignatures;
 import org.wmn4j.notation.access.Offset;
+import org.wmn4j.notation.directions.Direction;
 
 import java.util.Arrays;
 import java.util.List;
@@ -300,7 +300,6 @@ class MusicXmlFileChecks {
 		assertEquals(new Offset<>(Clefs.ALTO, Durations.HALF.addDot()),
 				upper.getMeasure(1).getClefChanges().get(0), "Incorrect clef change");
 
-
 		assertEquals(Clefs.ALTO, upper.getMeasure(2).getClef(), "Incorrect clef measure 2 upper staff.");
 		assertFalse(upper.getMeasure(2).containsClefChanges(), "Upper staff measure 2 contains a clef change");
 
@@ -309,7 +308,8 @@ class MusicXmlFileChecks {
 		assertTrue(lower.getMeasure(1).containsClefChanges(), "Lower staff measure 1 does not contain a clef change");
 		final List<Offset<Clef>> clefChanges = lower.getMeasure(1).getClefChanges();
 		assertEquals(1, clefChanges.size(), "Incorrect number of clef changes");
-		assertEquals(new Offset<>(Clefs.G, Durations.HALF.add(Durations.SIXTEENTH.multiply(3))), clefChanges.get(0), "Incorrect clef change");
+		assertEquals(new Offset<>(Clefs.G, Durations.HALF.add(Durations.SIXTEENTH.multiply(3))), clefChanges.get(0),
+				"Incorrect clef change");
 
 		assertEquals(Clefs.G, lower.getMeasure(2).getClef(), "Incorrect clef measure 2 of lower staff");
 		assertFalse(lower.getMeasure(2).containsClefChanges(), "Lower staff measure 2 contians clef changes");

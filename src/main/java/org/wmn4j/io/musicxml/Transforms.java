@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Clef;
+import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.KeySignature;
 import org.wmn4j.notation.KeySignatures;
 import org.wmn4j.notation.Notation;
@@ -304,6 +306,45 @@ final class Transforms {
 			case Tags.SOLID: // Fall through.
 			default:
 				return Notation.Style.SOLID;
+		}
+	}
+
+	static Duration noteTypeToDuration(String noteType) {
+		if (noteType == null) {
+			return null;
+		}
+
+		switch (noteType) {
+			case Tags.NOTE_1024TH:
+				return Duration.of(1, 1024);
+			case Tags.NOTE_512TH:
+				return Duration.of(1, 512);
+			case Tags.NOTE_256TH:
+				return Duration.of(1, 256);
+			case Tags.NOTE_128TH:
+				return Duration.of(1, 128);
+			case Tags.NOTE_64TH:
+				return Duration.of(1, 64);
+			case Tags.NOTE_32TH:
+				return Duration.of(1, 32);
+			case Tags.NOTE_16TH:
+				return Durations.SIXTEENTH;
+			case Tags.NOTE_EIGHTH:
+				return Durations.EIGHTH;
+			case Tags.NOTE_QUARTER:
+				return Durations.QUARTER;
+			case Tags.NOTE_HALF:
+				return Durations.HALF;
+			case Tags.NOTE_WHOLE:
+				return Durations.WHOLE;
+			case Tags.NOTE_BREVE:
+				return Duration.of(2, 1);
+			case Tags.NOTE_LONG:
+				return Duration.of(4, 1);
+			case Tags.NOTE_MAXIMA:
+				return Duration.of(8, 1);
+			default:
+				return null;
 		}
 	}
 

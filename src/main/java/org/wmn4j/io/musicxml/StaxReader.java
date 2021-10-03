@@ -13,9 +13,11 @@ import org.wmn4j.notation.ConnectableBuilder;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.DurationalBuilder;
 import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.GraceNoteBuilder;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Ornament;
+import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.Pitch;
@@ -67,6 +69,7 @@ final class StaxReader implements MusicXmlReader {
 	// multiple parts, so it's part of the context of the whole score.
 	private int currentDivisions;
 	private DurationalBuilder currentDurationalBuilder;
+	private ConnectableBuilder currentConnectableBuilder;
 	private int currentDurDivisions;
 	private int currentDotCount;
 	private int currentTupletDivisor;
@@ -407,6 +410,7 @@ final class StaxReader implements MusicXmlReader {
 
 	private void consumeNoteElem() throws XMLStreamException {
 		currentDurationalBuilder = new NoteBuilder();
+		currentConnectableBuilder = (NoteBuilder) currentDurationalBuilder;
 		partContext.setChordTag(false);
 		currentDotCount = 0;
 		currentTupletDivisor = 1;
@@ -440,17 +444,33 @@ final class StaxReader implements MusicXmlReader {
 				case Tags.TIME_MODIFICATION:
 					consumeTimeModificationElem();
 					break;
+				case Tags.GRACE:
+					final GraceNoteBuilder graceNoteBuilder = GraceNoteBuilder.moveFrom(
+							(NoteBuilder) currentDurationalBuilder);
+					Ornamental.Type type = Ornamental.Type.GRACE_NOTE;
+					if (Objects.equals(reader.getAttributeValue(null, Tags.SLASH), Tags.YES)) {
+						type = Ornamental.Type.ACCIACCATURA;
+					}
+					graceNoteBuilder.setGraceNoteType(type);
+					currentConnectableBuilder = graceNoteBuilder;
+					break;
+				case Tags.TYPE:
+					if (currentConnectableBuilder instanceof GraceNoteBuilder) {
+						consumeText(text -> currentDurationalBuilder.setDuration(
+								Transforms.noteTypeToDuration(text)));
+					} else {
+						skipElement();
+					}
+					break;
 				// Fall through for elements that are currently not supported
 				case Tags.ACCIDENTAL:
 				case Tags.BEAM:
 				case Tags.CUE:
-				case Tags.GRACE:
 				case Tags.INSTRUMENT:
 				case Tags.LYRIC:
 				case Tags.NOTEHEAD_TEXT:
 				case Tags.NOTEHEAD:
 				case Tags.STEM:
-				case Tags.TYPE:
 				case Tags.UNPITCHED:
 				default:
 					skipElement();
@@ -458,24 +478,39 @@ final class StaxReader implements MusicXmlReader {
 			}
 		}, Tags.NOTE);
 
-		final int numerator = currentDurDivisions;
-		final int denominator = 4 * currentDivisions;
-		currentDurationalBuilder.setDuration(
-				Duration.of(numerator, denominator, currentDotCount, currentTupletDivisor));
+		if (currentConnectableBuilder instanceof NoteBuilder) {
+			final int numerator = currentDurDivisions;
+			final int denominator = 4 * currentDivisions;
+			currentDurationalBuilder.setDuration(
+					Duration.of(numerator, denominator, currentDotCount, currentTupletDivisor));
+		} else if (currentDurationalBuilder.getDuration() == null) {
+			// Default to eight note for displayable duration of grace note if the type has not been
+			// explicitly specified.
+			currentDurationalBuilder.setDuration(Durations.EIGHTH);
+		}
 
 		if (currentDurationalBuilder instanceof NoteBuilder) {
-			NoteBuilder currentNoteBuilder = (NoteBuilder) currentDurationalBuilder;
+			final NoteBuilder currentNoteBuilder = (NoteBuilder) currentDurationalBuilder;
 			currentNoteBuilder.setPitch(
 					Pitch.of(Transforms.stepToPitchBase(currentStep), Transforms.alterToAccidental(currentAlter),
 							currentOctave));
 
-			notationResolver.continueOngoingNotations(currentNoteBuilder);
-			partContext.updateChordBuffer(currentNoteBuilder);
+			if (currentConnectableBuilder instanceof NoteBuilder) {
+				partContext.updateChordBuffer(currentNoteBuilder);
+				if (partContext.hasGraceNotes()) {
+					partContext.addPreceedingOrnamentals(currentNoteBuilder);
+				}
+			} else if (currentConnectableBuilder instanceof GraceNoteBuilder) {
+				partContext.updateOrnamentalBuffer((GraceNoteBuilder) currentConnectableBuilder);
+			}
+
+			notationResolver.endNotations(currentConnectableBuilder);
+			notationResolver.startOrContinueNotations(currentConnectableBuilder);
+			notationResolver.continueOngoingNotations(currentConnectableBuilder);
 		} else {
 			partContext.updateChordBuffer(null);
 			partContext.getMeasureBuilder().addToVoice(partContext.getVoice(), currentDurationalBuilder);
 		}
-
 	}
 
 	private void consumeNotationsElem() throws XMLStreamException {
@@ -547,21 +582,20 @@ final class StaxReader implements MusicXmlReader {
 			LOG.warn("Trying to read connected notations when current builder is not of correct type");
 			return;
 		}
-		final ConnectableBuilder builder = (ConnectableBuilder) currentDurationalBuilder;
 		if (elementRoleType != null) {
 			switch (elementRoleType) {
 				case Tags.START: // Fall through. Start and bottom attributes explicitly start a notation.
 				case Tags.BOTTOM:
 				case Tags.CONTINUE:
-					notationResolver.startOrContinueNotation(notationNumber, type, style, builder);
+					notationResolver.addNotationToStartOrContinue(notationNumber, type, style);
 					break;
 				case Tags.STOP: // Fall through: Stop and top are the attributes that explicitly end a notation.
 				case Tags.TOP:
-					notationResolver.endNotation(notationNumber, type, builder);
+					notationResolver.addNotationToEnd(notationNumber, type);
 					break;
 			}
 		} else {
-			notationResolver.startOrContinueNotation(notationNumber, type, style, builder);
+			notationResolver.addNotationToStartOrContinue(notationNumber, type, style);
 		}
 	}
 

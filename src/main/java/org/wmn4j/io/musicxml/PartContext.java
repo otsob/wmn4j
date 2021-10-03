@@ -6,8 +6,11 @@ package org.wmn4j.io.musicxml;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.GraceNoteBuilder;
 import org.wmn4j.notation.MeasureBuilder;
 import org.wmn4j.notation.NoteBuilder;
+import org.wmn4j.notation.Ornamental;
+import org.wmn4j.notation.OrnamentalBuilder;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.access.Offset;
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -37,9 +41,13 @@ final class PartContext {
 
 	private final PartBuilder partBuilder;
 
+	private NoteBuilder prevNoteBuilder;
+
 	// All map integer keys represent staff numbers within a single part.
 	private Map<Integer, ChordBuffer> chordBuffers = new HashMap<>();
 	private Map<Integer, MeasureBuilder> measureBuilders = new HashMap<>();
+	private Map<Integer, OrnamentalBuffer> ornamentalNoteBuffers = new HashMap<>();
+
 	// Offset durations are handled as a list even though the forward element in
 	// MusicXML may contain a staff number (optional). However, the purpose of that
 	// is so unclear that it is ignored.
@@ -79,9 +87,9 @@ final class PartContext {
 	/**
 	 * Updates the chord buffer by setting previously accumulated
 	 * notebuilders to the measurebuilder as correct type and adding
-	 * the (optional) new note builder to buffer.
+	 * the (optional) new note noteBuilder to buffer.
 	 *
-	 * @param noteBuilder (can be null) note builder to add to buffer
+	 * @param noteBuilder (can be null) note noteBuilder to add to buffer
 	 */
 	void updateChordBuffer(NoteBuilder noteBuilder) {
 		final ChordBuffer buffer = chordBuffers.get(staff);
@@ -96,6 +104,12 @@ final class PartContext {
 				offsetDurations.add(noteBuilder.getDuration());
 			}
 		}
+
+		prevNoteBuilder = noteBuilder;
+	}
+
+	void updateOrnamentalBuffer(GraceNoteBuilder graceNoteBuilder) {
+		ornamentalNoteBuffers.get(staff).addNote(graceNoteBuilder, hasChordTag, staff, voice, arpeggioResolver);
 	}
 
 	private Duration getOffset() {
@@ -129,7 +143,40 @@ final class PartContext {
 		this.hasChordTag = hasChordTag;
 	}
 
+	boolean hasGraceNotes() {
+		return !ornamentalNoteBuffers.get(staff).isEmpty();
+	}
+
+	void addPreceedingOrnamentals(NoteBuilder noteBuilder) {
+		List<OrnamentalBuilder> ornamentals = ornamentalNoteBuffers.get(staff).popOrnamentalBuilders();
+
+		// Check for simple appogiatura type case.
+		if (ornamentals.size() == 1 && ornamentals.get(0) instanceof GraceNoteBuilder) {
+			final GraceNoteBuilder graceNoteBuilder = (GraceNoteBuilder) ornamentals.get(0);
+			final int interval = noteBuilder.getPitch().toInt() - graceNoteBuilder.getPitch().toInt();
+			// Consider as an appoggiatura grace notes that are at most one whole step away
+			// and have a duration type that is half of the principal notes's duration. Also if
+			// the acciaccatura type has already been set, then the grace note cannot be an appoggiatura.
+			if (Math.abs(interval) <= 2
+					&& noteBuilder.getDuration().divide(2).equals(graceNoteBuilder.getDisplayableDuration())
+					&& !graceNoteBuilder.getGraceNoteType().equals(Ornamental.Type.ACCIACCATURA)) {
+				graceNoteBuilder.setGraceNoteType(Ornamental.Type.APPOGGIATURA);
+			}
+		}
+
+		noteBuilder.setPrecedingGraceNotes(ornamentals);
+	}
+
+	void addSucceedingOrnamentals(NoteBuilder noteBuilder) {
+		final List<OrnamentalBuilder> ornamentals = ornamentalNoteBuffers.get(staff).popOrnamentalBuilders();
+		noteBuilder.setSucceedingGraceNotes(ornamentals);
+	}
+
 	void finishMeasureElement() {
+		if (prevNoteBuilder != null && hasGraceNotes()) {
+			prevNoteBuilder.setSucceedingGraceNotes(ornamentalNoteBuffers.get(staff).popOrnamentalBuilders());
+		}
+
 		clearChordBuffers();
 		for (Map.Entry<Integer, MeasureBuilder> entry : measureBuilders.entrySet()) {
 			final int staffNumber = entry.getKey();
@@ -199,6 +246,7 @@ final class PartContext {
 
 		measureBuilders.put(staff, newBuilder);
 		chordBuffers.put(staff, new ChordBuffer());
+		ornamentalNoteBuffers.put(staff, new OrnamentalBuffer());
 	}
 
 	/**

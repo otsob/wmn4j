@@ -13,12 +13,10 @@ import org.wmn4j.notation.NoteBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -27,12 +25,11 @@ import java.util.stream.Collectors;
  * separately for each staff and each voice within a staff.
  */
 class NotationResolver {
-
-	private static final Set<Notation.Type> ARPEGGIATIONS = EnumSet.of(Notation.Type.ARPEGGIATE,
-			Notation.Type.ARPEGGIATE_DOWN, Notation.Type.ARPEGGIATE_UP, Notation.Type.NON_ARPEGGIATE);
-
 	private static final Notation.Style DEFAULT_STYLE = Notation.Style.SOLID;
 	private static final Logger LOG = LoggerFactory.getLogger(NotationResolver.class);
+
+	private List<Unresolved> notationsToStartOrContinue = new ArrayList<>();
+	private List<Unresolved> notationsToEnd = new ArrayList<>();
 
 	static int parseNotationNumber(String numberString) {
 		// Default to zero when the number attribute is not set
@@ -51,8 +48,17 @@ class NotationResolver {
 		return false;
 	}
 
-	void startOrContinueNotation(int notationNumber, Notation.Type notationType,
-			Notation.Style notationStyle, ConnectableBuilder builder) {
+	void addNotationToStartOrContinue(int notationNumber, Notation.Type notationType,
+			Notation.Style notationStyle) {
+		notationsToStartOrContinue.add(new Unresolved(notationNumber, notationType, notationStyle));
+	}
+
+	void startOrContinueNotations(ConnectableBuilder builder) {
+		notationsToStartOrContinue.forEach(notation -> startOrContinueNotation(notation, builder));
+		notationsToStartOrContinue.clear();
+	}
+
+	private void startOrContinueNotation(Unresolved unresolved, ConnectableBuilder builder) {
 
 		final int staffNumber = currentPartContext.getStaff();
 		final int voiceNumber = currentPartContext.getVoice();
@@ -67,13 +73,12 @@ class NotationResolver {
 		}
 
 		final var unresolveds = unresolvedForVoices.get(voiceNumber);
-		Unresolved unresolved = new Unresolved(notationNumber, notationType, notationStyle);
 		// Get the existing one if there is one, otherwise put the new unresolved.
 		if (!unresolveds.containsKey(unresolved)) {
 			unresolveds.put(unresolved, unresolved);
 		}
-		unresolved = unresolveds.get(unresolved);
-		unresolved.addConnectedBuilder(builder);
+		Unresolved addedUnresolved = unresolveds.get(unresolved);
+		addedUnresolved.addConnectedBuilder(builder);
 	}
 
 	void continueOngoingNotations(ConnectableBuilder builder) {
@@ -110,32 +115,39 @@ class NotationResolver {
 			// Check the size to avoid resolving arpeggios for chords that have just been started.
 			if (unresolvedArpeggiation.connectedBuilders.size() > 1) {
 				final ConnectableBuilder lastBuilder = unresolvedArpeggiation.popLastBuilder();
-				endNotation(unresolvedArpeggiation.notationNumber, unresolvedArpeggiation.notationType, lastBuilder);
+				endNotation(unresolvedArpeggiation, lastBuilder);
 			}
 		}
 	}
 
-	void endNotation(int notationNumber, Notation.Type notationType, ConnectableBuilder lastBuilder) {
+	void addNotationToEnd(int notationNumber, Notation.Type notationType) {
+		notationsToEnd.add(new Unresolved(notationNumber, notationType, DEFAULT_STYLE));
+	}
 
+	void endNotations(ConnectableBuilder lastBuilder) {
+		notationsToEnd.forEach(notation -> endNotation(notation, lastBuilder));
+		notationsToEnd.clear();
+	}
+
+	private void endNotation(Unresolved unresolved, ConnectableBuilder lastBuilder) {
 		final int staffNumber = currentPartContext.getStaff();
 		final int voiceNumber = currentPartContext.getVoice();
 
 		if (!hasUnresolvedNotations(staffNumber, voiceNumber)) {
 			LOG.warn("Trying to end notation in a voice with no notations, staff {}, voice {}, type {}", staffNumber,
-					voiceNumber, notationType);
+					voiceNumber, unresolved.notationType);
 			return;
 		}
 
 		final var unresolvedsForVoice = unresolvedNotations.get(staffNumber).get(voiceNumber);
-		final var unresolvedNotation = unresolvedsForVoice.getOrDefault(
-				new Unresolved(notationNumber, notationType, DEFAULT_STYLE), null);
+		final var unresolvedNotation = unresolvedsForVoice.getOrDefault(unresolved, null);
 		if (unresolvedNotation != null) {
 			unresolvedNotation.addConnectedBuilder(lastBuilder);
 			unresolvedNotation.resolve();
 			unresolvedsForVoice.remove(unresolvedNotation);
 		} else {
 			LOG.warn("Trying to end notation that has no builders, staff {}, voice {}, type {}, notation number {}",
-					staffNumber, voiceNumber, notationType, notationNumber);
+					staffNumber, voiceNumber, unresolved.notationType, unresolved.notationNumber);
 		}
 	}
 
@@ -176,6 +188,18 @@ class NotationResolver {
 					connectedBuilders.get(i).connectWith(notation, (NoteBuilder) nextBuilder);
 				} else if (nextBuilder instanceof GraceNoteBuilder) {
 					connectedBuilders.get(i).connectWith(notation, (GraceNoteBuilder) nextBuilder);
+				}
+			}
+
+			// If the notation ends on a grace note, check if the grace notes should be
+			// added as succeeding grace notes to a NoteBuilder.
+			if (connectedBuilders.get(indexOfLast) instanceof GraceNoteBuilder) {
+				for (int i = indexOfLast; i >= 0; --i) {
+					ConnectableBuilder builder = connectedBuilders.get(i);
+					if (builder instanceof NoteBuilder) {
+						currentPartContext.addSucceedingOrnamentals((NoteBuilder) builder);
+						break;
+					}
 				}
 			}
 		}

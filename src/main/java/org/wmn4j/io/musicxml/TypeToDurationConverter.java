@@ -39,7 +39,13 @@ enum TypeToDurationConverter {
 		return Collections.unmodifiableMap(types);
 	}
 
-	Duration getDuration(String typeTag) {
-		return noteTypeDurations.get(typeTag);
+	/**
+	 * Returns the duration corresponding to the note type string. Defaults to null if no such type exists.
+	 *
+	 * @param typeString MusicXML note type string
+	 * @return the duration corresponding to the note type string or null if no such type exists
+	 */
+	Duration getDuration(String typeString) {
+		return noteTypeDurations.getOrDefault(typeString, null);
 	}
 }
