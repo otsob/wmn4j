@@ -70,6 +70,11 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 		this(builder.getPitch(), builder.getDuration());
 		builder.getArticulations()
 				.forEach(articulation -> this.articulations.add(articulation));
+
+		builder.getOrnaments().stream()
+				.filter(ornament -> !ornament.getType().equals(Ornament.Type.GRACE_NOTES)
+						&& !ornament.getType().equals(Ornament.Type.SUCCEEDING_GRACE_NOTES))
+				.forEach(ornament -> this.ornaments.add(ornament));
 	}
 
 	/**
