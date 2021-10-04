@@ -1144,7 +1144,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of "grace_note_test.musicxml".
+	 * Expects the contents of "grace_note_chord_test.musicxml".
 	 */
 	static void assertGraceNoteChordsAreCorrect(Score score) {
 		final Measure firstMeasure = score.getPart(0).getMeasure(1, 1);
