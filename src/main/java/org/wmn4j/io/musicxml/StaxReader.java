@@ -3,6 +3,7 @@
  */
 package org.wmn4j.io.musicxml;
 
+import org.apache.commons.math3.fraction.Fraction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wmn4j.io.ParsingFailureException;
@@ -25,6 +26,7 @@ import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
 import org.wmn4j.notation.TimeSignature;
+import org.wmn4j.notation.directions.Direction;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -385,6 +387,7 @@ final class StaxReader implements MusicXmlReader {
 					consumeOffsetElem(Tags.FORWARD);
 					break;
 				case Tags.DIRECTION:
+					consumeDirectionElem();
 					break;
 				case Tags.ATTRIBUTES:
 					consumeAttributesElem();
@@ -403,9 +406,51 @@ final class StaxReader implements MusicXmlReader {
 		partContext.finishMeasureElement();
 	}
 
+	private void consumeDirectionElem() throws XMLStreamException {
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.DIRECTION_TYPE:
+					consumeDirectionTypeElem();
+					break;
+				case Tags.OFFSET:
+					consumeText(text -> partContext.setDirectionOffset(divisionsToFraction(text)));
+					break;
+				case Tags.STAFF:
+					consumeText(text -> partContext.setDirectionStaff(Integer.parseInt(text)));
+					break;
+				default:
+					skipElement();
+			}
+
+		}, Tags.DIRECTION);
+
+		partContext.addDirection();
+	}
+
+	private void consumeDirectionTypeElem() throws XMLStreamException {
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.WORDS:
+					partContext.setDirectionType(Direction.Type.TEXT);
+					consumeText(text -> partContext.setDirectionText(text));
+					break;
+				// Only text directions (words tag) are currently supported.
+				default:
+					skipElement();
+			}
+
+		}, Tags.DIRECTION_TYPE);
+	}
+
 	private Duration divisionsToDuration(String divisionsString) {
 		final int divisions = Integer.parseInt(divisionsString);
 		return Durations.QUARTER.divide(currentDivisions).multiply(divisions);
+	}
+
+	private Fraction divisionsToFraction(String divisionsString) {
+		final int divisions = Integer.parseInt(divisionsString);
+		Fraction duration = new Fraction(1, 4);
+		return duration.divide(currentDivisions).multiply(divisions);
 	}
 
 	private void consumeNoteElem() throws XMLStreamException {

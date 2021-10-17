@@ -51,6 +51,7 @@ final class Tags {
 	static final String DEFAULTS = "defaults";
 	static final String DETACHED_LEGATO = "detached-legato";
 	static final String DIRECTION = "direction";
+	static final String DIRECTION_TYPE = "direction-type";
 	static final String DIRECTIVE = "directive";
 	static final String DISPLAY_OCTAVE = "display-octave";
 	static final String DISPLAY_STEP = "display-step";

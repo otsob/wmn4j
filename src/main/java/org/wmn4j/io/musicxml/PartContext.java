@@ -3,6 +3,7 @@
  */
 package org.wmn4j.io.musicxml;
 
+import org.apache.commons.math3.fraction.Fraction;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
@@ -14,6 +15,7 @@ import org.wmn4j.notation.OrnamentalBuilder;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.access.Offset;
+import org.wmn4j.notation.directions.Direction;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +44,11 @@ final class PartContext {
 	private final PartBuilder partBuilder;
 
 	private NoteBuilder prevNoteBuilder;
+
+	private Direction.Type directionType;
+	private String directionText;
+	private Fraction directionOffset;
+	private int directionStaff = Part.DEFAULT_STAFF_NUMBER;
 
 	// All map integer keys represent staff numbers within a single part.
 	private Map<Integer, ChordBuffer> chordBuffers = new HashMap<>();
@@ -203,6 +210,7 @@ final class PartContext {
 		}
 
 		copiedBuilder.getClefChanges().clear();
+		copiedBuilder.getDirections().clear();
 
 		return copiedBuilder;
 	}
@@ -269,5 +277,62 @@ final class PartContext {
 		} else {
 			builder.addClefChange(offset, clef);
 		}
+	}
+
+	void setDirectionOffset(Fraction offset) {
+		this.directionOffset = offset;
+	}
+
+	void setDirectionType(Direction.Type directionType) {
+		this.directionType = directionType;
+	}
+
+	void setDirectionText(String directionText) {
+		this.directionText = directionText;
+	}
+
+	void setDirectionStaff(int directionStaff) {
+		this.directionStaff = directionStaff;
+	}
+
+	void addDirection() {
+		if (directionType == null) {
+			// All direction types are not supported yet, so if directionType may not have been set.
+			return;
+		}
+
+		measureBuilders.get(directionStaff)
+				.addDirection(getDirectionOffset(), Direction.of(directionType, directionText));
+		directionOffset = null;
+		directionType = null;
+		directionText = null;
+		directionStaff = Part.DEFAULT_STAFF_NUMBER;
+	}
+
+	private Duration getDirectionOffset() {
+		if (offsetDurations.isEmpty()) {
+			if (directionOffset != null && directionOffset.compareTo(Fraction.ZERO) > 0) {
+				return Duration.of(directionOffset.getNumerator(), directionOffset.getDenominator());
+			}
+
+			return null;
+		}
+
+		Duration offset = Duration.sum(offsetDurations);
+
+		if (!backupDurations.isEmpty()) {
+			offset = offset.subtract(Duration.sum(backupDurations));
+		}
+
+		if (directionOffset != null) {
+			final Fraction absOffset = directionOffset.abs();
+			final Duration absOffsetDur = Duration.of(absOffset.getNumerator(), absOffset.getDenominator());
+			if (directionOffset.equals(absOffset)) {
+				offset = offset.add(absOffsetDur);
+			} else {
+				offset = offset.subtract(absOffsetDur);
+			}
+		}
+		return offset;
 	}
 }

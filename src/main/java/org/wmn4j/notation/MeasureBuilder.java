@@ -208,6 +208,19 @@ public class MeasureBuilder {
 	}
 
 	/**
+	 * Returns the directions set in this builder.
+	 * <p>
+	 * The placement of directions are represented using {@link Offset} types,
+	 * where the placement of the directions is measured by an offset from the
+	 * beginning of the measure. The collection is not in any particular order.
+	 *
+	 * @return the directions set in this builder
+	 */
+	public Collection<Offset<Direction>> getDirections() {
+		return attributesBuilder.directions;
+	}
+
+	/**
 	 * Adds a clef change at the given offset.
 	 *
 	 * @param offset offset of clef change from beginning of measure

@@ -395,4 +395,9 @@ class StaxReaderTest {
 		MusicXmlFileChecks.assertGraceNoteChordsAreCorrect(scoreWithGraceNotes);
 	}
 
+	@Test
+	void testGivenFileWithDirectionsThenDirectionsCorrectlyRead() {
+		Score scoreWithDirections = readScore("directions_test.musicxml", true);
+		MusicXmlFileChecks.assertDirectionsCorrect(scoreWithDirections);
+	}
 }
