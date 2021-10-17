@@ -121,6 +121,17 @@ final class StaxReader implements MusicXmlReader {
 		return scoreBuilder;
 	}
 
+	@Override
+	public void close() throws IOException {
+		try {
+			reader.close();
+		} catch (XMLStreamException e) {
+			throw new IOException("Failed to close reader");
+		}
+
+		inputStream.close();
+	}
+
 	private void fillScoreBuilder() throws IOException, ParsingFailureException, SAXException {
 		if (validateInput) {
 			validate();
@@ -156,18 +167,16 @@ final class StaxReader implements MusicXmlReader {
 				}
 			}, Tags.SCORE_PARTWISE);
 
-			// Ensure the reader is at the end of document and close the reader.
+			// Ensure the reader is at the end of document.
 			while (reader.getEventType() != XMLStreamConstants.END_DOCUMENT) {
 				reader.next();
 			}
-			reader.close();
-
 		} catch (XMLStreamException e) {
 			throw new ParsingFailureException(getParsingFailureMessage(e.getMessage()));
 		}
 
-		// Close the input stream.
-		inputStream.close();
+		// Close all IO resources
+		close();
 	}
 
 	private void validate() throws IOException, ParsingFailureException {
