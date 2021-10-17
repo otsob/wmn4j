@@ -6,6 +6,7 @@ package org.wmn4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
+import org.wmn4j.io.ScoreReader;
 import org.wmn4j.io.musicxml.MusicXmlReader;
 import org.wmn4j.notation.ChordBuilder;
 import org.wmn4j.notation.Durations;
@@ -65,12 +66,11 @@ public class TestHelper {
 		Score score = null;
 
 		final Path path = Paths.get(TESTFILE_PATH, pathString);
-		final MusicXmlReader reader = MusicXmlReader.nonValidatingReaderFor(path);
 
-		try {
+		try (ScoreReader reader = MusicXmlReader.nonValidatingReaderFor(path)) {
 			score = reader.readScore();
 		} catch (final Exception e) {
-			LOG.error("Failed to read score from " + path.toString() + " with exception: " + e);
+			LOG.error("Failed to read score from " + path + " with exception: " + e);
 		}
 
 		return score;

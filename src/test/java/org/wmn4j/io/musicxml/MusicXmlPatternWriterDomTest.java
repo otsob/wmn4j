@@ -48,13 +48,12 @@ class MusicXmlPatternWriterDomTest {
 	Path temporaryDirectory;
 
 	private Score writeAndReadUsingWriter(MusicXmlWriter writer) {
-		Path file = temporaryDirectory.resolve("file.xml");
+		Path file = temporaryDirectory.resolve("file.musicxml");
 		writer.write(file);
 
-		final MusicXmlReader reader = MusicXmlReader.readerFor(file);
 		Score writtenScore = null;
 
-		try {
+		try (final MusicXmlReader reader = MusicXmlReader.readerFor(file)) {
 			writtenScore = reader.readScore();
 		} catch (final IOException | ParsingFailureException e) {
 			fail("Reading score written by MusicXmlWriterDom failed with exception " + e);
@@ -237,7 +236,8 @@ class MusicXmlPatternWriterDomTest {
 
 	@Test
 	void givenTwoMultivoicePatternsWhenPatternsAreWrittenThenOutputHasCorrectLayout() {
-		List<Durational> singleNoteVoice = Arrays.asList(Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4, Durations.QUARTER));
+		List<Durational> singleNoteVoice = Arrays.asList(
+				Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4, Durations.QUARTER));
 
 		Map<Integer, List<? extends Durational>> pattern1voices = new HashMap<>();
 		pattern1voices.put(1, singleNoteVoice);
@@ -252,7 +252,7 @@ class MusicXmlPatternWriterDomTest {
 		Collection<Pattern> patterns = Arrays.asList(pattern1, pattern2);
 		MusicXmlWriter writer = new MusicXmlPatternWriterDom(patterns);
 
-		Path path = temporaryDirectory.resolve("temporary_file.xml");
+		Path path = temporaryDirectory.resolve("temporary_file.musicxml");
 		writer.write(path);
 
 		Document musicXmlDocument = TestHelper.readDocument(path);
@@ -295,7 +295,8 @@ class MusicXmlPatternWriterDomTest {
 
 	@Test
 	void testGivenPatternsWithNamesAndLabelsWhenWrittenToMusicXmlThenNamesAndLabelsCorrectlyOutputted() {
-		List<Durational> singleNoteVoice = Arrays.asList(Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4, Durations.QUARTER));
+		List<Durational> singleNoteVoice = Arrays.asList(
+				Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4, Durations.QUARTER));
 
 		Set<String> labels = new HashSet<>();
 		labels.add("LabelA1");
@@ -313,7 +314,7 @@ class MusicXmlPatternWriterDomTest {
 		Collection<Pattern> patterns = Arrays.asList(monophonicPattern, polyphonicPattern);
 		MusicXmlWriter writer = new MusicXmlPatternWriterDom(patterns);
 
-		Path path = temporaryDirectory.resolve("file.xml");
+		Path path = temporaryDirectory.resolve("file.musicxml");
 		writer.write(path);
 
 		final Document musicXmlDocument = TestHelper.readDocument(path);

@@ -23,7 +23,7 @@ class PartwisePositionalIteratorTest {
 	private PartwisePositionalIterator iter = null;
 
 	PartwisePositionalIteratorTest() {
-		this.score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
+		this.score = TestHelper.readScore("musicxml/scoreIteratorTesting.musicxml");
 	}
 
 	@BeforeEach

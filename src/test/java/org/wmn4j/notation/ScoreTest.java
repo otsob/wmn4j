@@ -228,7 +228,7 @@ public class ScoreTest {
 
 	@Test
 	void testGetAtPositionLimits() {
-		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
+		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.musicxml");
 
 		try {
 			score.getAt(new Position(0, 1, 1, 5, 0));
@@ -248,7 +248,7 @@ public class ScoreTest {
 
 	@Test
 	void testIteratorAndGetAtPosition() {
-		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.xml");
+		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.musicxml");
 		assertTrue(score != null);
 
 		final PositionalIterator iterator = score.partwiseIterator();
@@ -261,7 +261,7 @@ public class ScoreTest {
 
 	@Test
 	void testGetAtPositionInChord() {
-		final Score score = TestHelper.readScore("musicxml/positionInChord.xml");
+		final Score score = TestHelper.readScore("musicxml/positionInChord.musicxml");
 		assertTrue(score != null);
 
 		// Get the middle note (E) from the chord in the score.
@@ -272,7 +272,7 @@ public class ScoreTest {
 
 	@Test
 	void testGivenSinglePartSingleVoiceContentWhenGettingWithPatternPositionCorrectPatternsAreReturned() {
-		final Score score = TestHelper.readScore("musicxml/basic_pattern_position_test.xml");
+		final Score score = TestHelper.readScore("musicxml/basic_pattern_position_test.musicxml");
 
 		List<Position> simplePositions = new ArrayList<>();
 		simplePositions.add(new Position(0, 1, 1, 0));
@@ -315,7 +315,7 @@ public class ScoreTest {
 
 	@Test
 	void testGivenSingleVoiceContentWhenGettingWithPatternPositionsWithChordsCorrectPatternsAreReturned() {
-		final Score score = TestHelper.readScore("musicxml/basic_pattern_position_test.xml");
+		final Score score = TestHelper.readScore("musicxml/basic_pattern_position_test.musicxml");
 
 		List<Position> positionsWithChord = new ArrayList<>();
 		positionsWithChord.add(new Position(0, 2, 1, 2));
@@ -352,7 +352,7 @@ public class ScoreTest {
 
 	@Test
 	void testGivenScoreWithMultistaffPartsWithMultipleVoicesThenGetAtPatternReturnsCorrectPatterns() {
-		final Score score = TestHelper.readScore("musicxml/multi_part_pattern_position_test.xml");
+		final Score score = TestHelper.readScore("musicxml/multi_part_pattern_position_test.musicxml");
 
 		List<Position> positionsAcrossParts = new ArrayList<>();
 		positionsAcrossParts.add(new Position(0, 1, 1, 1, 1));
@@ -394,7 +394,7 @@ public class ScoreTest {
 
 	@Test
 	void testGivenScoreWithMultistaffPartsAndPositionsFromOverlappingVoicesThenGetAtPatternReturnsCorrectPatterns() {
-		final Score score = TestHelper.readScore("musicxml/multi_part_pattern_position_test.xml");
+		final Score score = TestHelper.readScore("musicxml/multi_part_pattern_position_test.musicxml");
 
 		List<Position> positionsWithOverlappingVoices = new ArrayList<>();
 		positionsWithOverlappingVoices.add(new Position(0, 1, 2, 1, 0));
@@ -437,7 +437,7 @@ public class ScoreTest {
 
 	@Test
 	void testGivenPatternPositionsOutsideScoreNoSuchElementExceptionIsThrown() {
-		final Score score = TestHelper.readScore("musicxml/multi_part_pattern_position_test.xml");
+		final Score score = TestHelper.readScore("musicxml/multi_part_pattern_position_test.musicxml");
 
 		assertThrows(NoSuchElementException.class, () -> score.getAt(new PatternPosition(
 						Arrays.asList(new Position(0, 1, 1, 1, 0),

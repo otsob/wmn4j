@@ -6,6 +6,7 @@ package org.wmn4j.io;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 /**
@@ -13,7 +14,7 @@ import java.io.IOException;
  * <p>
  * Implementations of this interface are not guaranteed to be thread-safe.
  */
-public interface ScoreReader {
+public interface ScoreReader extends Closeable {
 
 	/**
 	 * Returns a score with the contents of the music notation file defined by the path set in this reader.

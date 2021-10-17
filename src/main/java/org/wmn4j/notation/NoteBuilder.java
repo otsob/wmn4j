@@ -38,6 +38,16 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 
 	/**
 	 * Constructor.
+	 * <p>
+	 * This constructor does not set any default values for the values.
+	 */
+	public NoteBuilder() {
+		this.articulations = EnumSet.noneOf(Articulation.class);
+		this.ornaments = new HashSet<>();
+	}
+
+	/**
+	 * Constructor.
 	 *
 	 * @param pitch    the pitch set in this builder
 	 * @param duration the duration set in this builder
@@ -60,6 +70,11 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 		this(builder.getPitch(), builder.getDuration());
 		builder.getArticulations()
 				.forEach(articulation -> this.articulations.add(articulation));
+
+		builder.getOrnaments().stream()
+				.filter(ornament -> !ornament.getType().equals(Ornament.Type.GRACE_NOTES)
+						&& !ornament.getType().equals(Ornament.Type.SUCCEEDING_GRACE_NOTES))
+				.forEach(ornament -> this.ornaments.add(ornament));
 	}
 
 	/**

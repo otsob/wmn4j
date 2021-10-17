@@ -1130,10 +1130,10 @@ abstract class MusicXmlWriterDom implements MusicXmlWriter {
 			Notation.Type type = notation.getType();
 			Element notationElement = document.createElement(ARPEGGIATION_TYPES.get(type));
 
-			final Integer notationNumber = getNextAvailableNotationNumber();
-			unresolvedNotations.put(notation, notationNumber);
-
-			notationElement.setAttribute(MusicXmlTags.NOTATION_NUMBER, notationNumber.toString());
+			// Use a constant for arpeggio notation number and do not set it to the element attribute
+			// because multiple different arpeggiations rarely happen for the same note, and
+			// number resolving is harder to implement for arpeggios.
+			unresolvedNotations.put(notation, 0);
 
 			if (type.equals(Notation.Type.ARPEGGIATE_DOWN)) {
 				notationElement.setAttribute(MusicXmlTags.ARPEGGIO_DIRECTION, MusicXmlTags.ARPEGGIO_DIRECTION_DOWN);

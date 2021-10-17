@@ -38,6 +38,38 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 	}
 
 	/**
+	 * Constructor.
+	 * <p>
+	 * The note builder is copied, so this constructor does not take ownership of it.
+	 *
+	 * @param noteBuilder the note builder from which all attributes are copied to this grace note builder
+	 */
+	public GraceNoteBuilder(NoteBuilder noteBuilder) {
+		this(noteBuilder, true);
+	}
+
+	/**
+	 * Returns a new {@link GraceNoteBuilder} that takes ownership of the given note builder.
+	 *
+	 * @param noteBuilder the note builder that the returned grace note builder takes ownership of
+	 * @return a new {@link GraceNoteBuilder} that takes ownership of the given note builder
+	 */
+	public static GraceNoteBuilder moveFrom(NoteBuilder noteBuilder) {
+		return new GraceNoteBuilder(noteBuilder, false);
+	}
+
+	private GraceNoteBuilder(NoteBuilder noteBuilder, boolean deepCopy) {
+		if (deepCopy) {
+			this.noteBuilder = new NoteBuilder(noteBuilder);
+		} else {
+			this.noteBuilder = noteBuilder;
+		}
+		graceNoteType = GraceNote.Type.GRACE_NOTE;
+		isBuilding = false;
+		principalNoteConnections = Collections.emptyList();
+	}
+
+	/**
 	 * Returns the pitch set in this builder.
 	 *
 	 * @return the pitch set in this builder

@@ -21,7 +21,7 @@ public class PointSetTest {
 
 	/*
 	 * Returns the expected points in the point set representation
-	 * of "musicxml/pattern_discovery/basic_point_set_test.xml"
+	 * of "musicxml/pattern_discovery/basic_point_set_test.musicxml"
 	 */
 	private List<NoteEventVector> getExpectedVectorsForBasicTest() {
 		List<NoteEventVector> vectors = new ArrayList<>();
@@ -66,7 +66,7 @@ public class PointSetTest {
 
 	@Test
 	void testGivenScoreWithSingleStaffPointSetHasCorrectPoints() {
-		final Score score = TestHelper.readScore("musicxml/pattern_discovery/basic_point_set_test.xml");
+		final Score score = TestHelper.readScore("musicxml/pattern_discovery/basic_point_set_test.musicxml");
 		assertNotNull(score);
 
 		final PointSet pointSet = new PointSet(score);
@@ -91,7 +91,7 @@ public class PointSetTest {
 
 	@Test
 	void testGivenScoreWithSingleStaffPointSetReturnsCorrectPositions() {
-		final Score score = TestHelper.readScore("musicxml/pattern_discovery/basic_point_set_test.xml");
+		final Score score = TestHelper.readScore("musicxml/pattern_discovery/basic_point_set_test.musicxml");
 		assertNotNull(score);
 
 		final PointSet pointSet = new PointSet(score);
@@ -118,7 +118,7 @@ public class PointSetTest {
 
 	/*
 	 * Returns the expected points in the point set representation
-	 * of "musicxml/pattern_discovery/multipart_point_set_test.xml"
+	 * of "musicxml/pattern_discovery/multipart_point_set_test.musicxml"
 	 */
 	private List<NoteEventVector> getExpectedVectorsForMultiPartTest() {
 		List<NoteEventVector> vectors = new ArrayList<>();
@@ -150,7 +150,7 @@ public class PointSetTest {
 
 	@Test
 	void testGivenScoreWithMultiplePartsPointSetReturnsCorrectPositions() {
-		final Score score = TestHelper.readScore("musicxml/pattern_discovery/multipart_point_set_test.xml");
+		final Score score = TestHelper.readScore("musicxml/pattern_discovery/multipart_point_set_test.musicxml");
 		assertNotNull(score);
 
 		final PointSet pointSet = new PointSet(score);
@@ -176,7 +176,7 @@ public class PointSetTest {
 
 	@Test
 	void testGivenScoreWithMultiplePartsPointSetHasCorrectPoints() {
-		final Score score = TestHelper.readScore("musicxml/pattern_discovery/multipart_point_set_test.xml");
+		final Score score = TestHelper.readScore("musicxml/pattern_discovery/multipart_point_set_test.musicxml");
 		assertNotNull(score);
 
 		final PointSet pointSet = new PointSet(score);
