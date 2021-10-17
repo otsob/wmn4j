@@ -49,7 +49,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "singleC.xml"
+	 * Expects the contents of the file "singleC.musicxml"
 	 */
 	static void assertSingleNoteScoreReadCorrectly(Score score) {
 		assertEquals("Single C", score.getAttribute(Score.Attribute.MOVEMENT_TITLE).get());
@@ -75,7 +75,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "twoMeasures.xml"
+	 * Expects the contents of the file "twoMeasures.musicxml"
 	 */
 	static void assertChordsAndMultipleVoicesReadCorrectly(Score score) {
 		assertEquals(1, score.getPartCount());
@@ -142,7 +142,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "twoPartsAndMeasures.xml"
+	 * Expects the contents of the file "twoPartsAndMeasures.musicxml"
 	 */
 	static void assertScoreWithMultiplePartsReadCorrectly(Score score) {
 		assertEquals("Multistaff test file", score.getAttribute(Score.Attribute.MOVEMENT_TITLE).get());
@@ -220,7 +220,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "barlines.xml"
+	 * Expects the contents of the file "barlines.musicxml"
 	 */
 	static void assertBarlinesReadCorrectly(Score score) {
 
@@ -256,7 +256,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "clefs.xml"
+	 * Expects the contents of the file "clefs.musicxml"
 	 */
 	static void assertClefsReadCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getPart(0);
@@ -285,7 +285,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "multiStaffClefs.xml"
+	 * Expects the contents of the file "multiStaffClefs.musicxml"
 	 */
 	static void assertMultiStaffClefsReadCorrectlyToScore(Score score) {
 		final MultiStaffPart part = (MultiStaffPart) score.getPart(0);
@@ -316,7 +316,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "keysigs.xml"
+	 * Expects the contents of the file "keysigs.musicxml"
 	 */
 	static void assertKeySignaturesReadToScoreCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getPart(0);
@@ -327,7 +327,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "multistaff.xml"
+	 * Expects the contents of the file "multistaff.musicxml"
 	 */
 	static void assertMultiStaffPartReadCorrectly(Score score) {
 		assertEquals(2, score.getPartCount());
@@ -368,7 +368,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "timesigs.xml"
+	 * Expects the contents of the file "timesigs.musicxml"
 	 */
 	static void assertTimeSignaturesReadCorrectly(Score score) {
 		assertEquals(1, score.getPartCount());
@@ -388,7 +388,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "scoreIteratorTesting.xml"
+	 * Expects the contents of the file "scoreIteratorTesting.musicxml"
 	 */
 	static void assertTimeSignatureChangeReadCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getPart(0);
@@ -397,7 +397,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "tieTesting.xml"
+	 * Expects the contents of the file "tieTesting.musicxml"
 	 */
 	static void assertTiedNotesReadCorrectly(Score score) {
 		final SingleStaffPart part = (SingleStaffPart) score.getPart(0);
@@ -441,7 +441,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of the file "articulations.xml"
+	 * Expects the contents of the file "articulations.musicxml"
 	 */
 	static void assertScoreWithArticulationsReadCorrectly(Score score) {
 		final Measure measureOne = score.getPart(0).getMeasure(Part.DEFAULT_STAFF_NUMBER, 1);
@@ -491,7 +491,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the content of "articulationsOnMultipleStaves.xml".
+	 * Expects the content of "articulationsOnMultipleStaves.musicxml".
 	 */
 	static void assertArticulationsReadCorrectlyFromMultipleStaves(Score score) {
 		MultiStaffPart part = (MultiStaffPart) score.getPart(0);
@@ -526,7 +526,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of "pickup_measure_test.xml".
+	 * Expects the contents of "pickup_measure_test.musicxml".
 	 */
 	static void assertPickupMeasureReadCorrectly(Score score) {
 		assertEquals(1, score.getPartCount());
@@ -553,7 +553,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expectes the contents of "attribute_reading_test.xml".
+	 * Expectes the contents of "attribute_reading_test.musicxml".
 	 */
 	static void assertScoreHasExpectedAttributes(Score score) {
 		assertEquals("Composition title", score.getTitle().get());
@@ -724,7 +724,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the content of "multi_staff_multi_voice_notation_test.xml".
+	 * Expects the content of "multi_staff_multi_voice_notation_test.musicxml".
 	 */
 	static void assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(Score score) {
 		assertEquals(1, score.getPartCount(), "Score is expected to have single part");
@@ -887,7 +887,7 @@ class MusicXmlFileChecks {
 	}
 
 	/*
-	 * Expects the contents of "clef_change_where_note_in_another_voice_carries_over.xml".
+	 * Expects the contents of "clef_change_where_note_in_another_voice_carries_over.musicxml".
 	 */
 	static void assertClefChangeInCorrectPlaceWhenNoteCarriesOverClefChange(Score score) {
 		final Measure measure = score.getPart(0).getMeasure(1, 1);

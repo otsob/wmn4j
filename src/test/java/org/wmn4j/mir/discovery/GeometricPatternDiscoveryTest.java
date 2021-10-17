@@ -25,7 +25,7 @@ public class GeometricPatternDiscoveryTest {
 
 	@Test
 	void testGivenRepeatedMotifsAndZeroCompressionRatioThenSiatechfReturnsCorrectTecs() {
-		final Score score = TestHelper.readScore("musicxml/pattern_discovery/monophonic_pattern_discovery_test.xml");
+		final Score score = TestHelper.readScore("musicxml/pattern_discovery/monophonic_pattern_discovery_test.musicxml");
 		assertNotNull(score);
 
 		final PatternDiscovery patternDiscovery = GeometricPatternDiscovery.withSiatechf(score, 0.0);
@@ -169,7 +169,7 @@ public class GeometricPatternDiscoveryTest {
 
 	@Test
 	void testGivenRepeatedMotifsAndSmallCompressionRatioThenSiatechfReturnsCorrectTecs() {
-		final Score score = TestHelper.readScore("musicxml/pattern_discovery/monophonic_pattern_discovery_test.xml");
+		final Score score = TestHelper.readScore("musicxml/pattern_discovery/monophonic_pattern_discovery_test.musicxml");
 		assertNotNull(score);
 
 		final PatternDiscovery patternDiscovery = GeometricPatternDiscovery.withSiatechf(score, 6.0 / 4.0 - 1e-7);
