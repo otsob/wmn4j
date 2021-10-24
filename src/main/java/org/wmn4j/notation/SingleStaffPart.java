@@ -19,11 +19,6 @@ import java.util.Optional;
  */
 public final class SingleStaffPart implements Part {
 
-	/**
-	 * The default staff number for the staff in a single staff part.
-	 */
-	public static final int STAFF_NUMBER = 1;
-
 	private final Map<Part.Attribute, String> partAttributes;
 	private final Staff staff;
 
@@ -79,7 +74,7 @@ public final class SingleStaffPart implements Part {
 
 	@Override
 	public List<Integer> getStaffNumbers() {
-		return Collections.singletonList(STAFF_NUMBER);
+		return Collections.singletonList(DEFAULT_STAFF_NUMBER);
 	}
 
 	/**
@@ -94,7 +89,7 @@ public final class SingleStaffPart implements Part {
 
 	@Override
 	public Measure getMeasure(int staffNumber, int measureNumber) {
-		if (staffNumber != STAFF_NUMBER) {
+		if (staffNumber != DEFAULT_STAFF_NUMBER) {
 			throw new NoSuchElementException("No staff with number " + staffNumber + " in a single staff part");
 		}
 		return this.getMeasure(measureNumber);
@@ -164,7 +159,7 @@ public final class SingleStaffPart implements Part {
 
 		@Override
 		public int getStaffNumberOfPrevious() {
-			return SingleStaffPart.STAFF_NUMBER;
+			return Part.DEFAULT_STAFF_NUMBER;
 		}
 
 		@Override

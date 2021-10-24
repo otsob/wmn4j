@@ -23,7 +23,6 @@ import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
-import org.wmn4j.notation.SingleStaffPart;
 import org.wmn4j.notation.access.PositionalIterator;
 
 import java.io.IOException;
@@ -53,12 +52,11 @@ class MusicXmlScoreWriterDomTest {
 
 	private Score readMusicXmlTestFile(String testFileName, boolean validate) {
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
-		final MusicXmlReader reader = validate ?
-				MusicXmlReader.readerFor(path) :
-				MusicXmlReader.nonValidatingReaderFor(path);
 		Score score = null;
 
-		try {
+		try (final MusicXmlReader reader = validate ?
+				MusicXmlReader.readerFor(path) :
+				MusicXmlReader.nonValidatingReaderFor(path)) {
 			score = reader.readScore();
 		} catch (final IOException | ParsingFailureException e) {
 			fail("Parsing failed with exception " + e);
@@ -70,13 +68,12 @@ class MusicXmlScoreWriterDomTest {
 
 	private Score writeAndReadScore(Score score) {
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
-		Path file = temporaryDirectory.resolve("file.xml");
+		Path file = temporaryDirectory.resolve("file.musicxml");
 		writer.write(file);
 
-		final MusicXmlReader reader = MusicXmlReader.readerFor(file);
 		Score writtenScore = null;
 
-		try {
+		try (final MusicXmlReader reader = MusicXmlReader.readerFor(file)) {
 			writtenScore = reader.readScore();
 		} catch (final IOException | ParsingFailureException e) {
 			fail("Reading score written by MusicXmlScoreWriterDom failed with exception " + e);
@@ -130,7 +127,7 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testWritingKeySignatures() {
-		Score score = readMusicXmlTestFile("keysigs.xml", false);
+		Score score = readMusicXmlTestFile("keysigs.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertKeySignaturesReadToScoreCorrectly(writtenScore);
@@ -138,7 +135,7 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testWritingTimeSignatures() {
-		Score score = readMusicXmlTestFile("timesigs.xml", false);
+		Score score = readMusicXmlTestFile("timesigs.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertTimeSignaturesReadCorrectly(writtenScore);
@@ -146,7 +143,7 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testWritingClefs() {
-		Score score = readMusicXmlTestFile("clefs.xml", false);
+		Score score = readMusicXmlTestFile("clefs.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertClefsReadCorrectly(writtenScore);
@@ -154,7 +151,7 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testWritingBarlines() {
-		Score score = readMusicXmlTestFile("barlines.xml", false);
+		Score score = readMusicXmlTestFile("barlines.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertBarlinesReadCorrectly(writtenScore);
@@ -162,7 +159,7 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testWritingMultipleVoicesAndChords() {
-		Score score = readMusicXmlTestFile("twoMeasures.xml", false);
+		Score score = readMusicXmlTestFile("twoMeasures.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertChordsAndMultipleVoicesReadCorrectly(writtenScore);
@@ -170,7 +167,7 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testWritingPickupMeasure() {
-		Score score = readMusicXmlTestFile("pickup_measure_test.xml", false);
+		Score score = readMusicXmlTestFile("pickup_measure_test.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertPickupMeasureReadCorrectly(writtenScore);
@@ -178,7 +175,7 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testWritingScoreAttributes() {
-		Score score = readMusicXmlTestFile("attribute_reading_test.xml", false);
+		Score score = readMusicXmlTestFile("attribute_reading_test.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertScoreHasExpectedAttributes(writtenScore);
@@ -186,7 +183,7 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testWritingScoreWithMultiStaffPart() {
-		Score score = readMusicXmlTestFile("multistaff.xml", false);
+		Score score = readMusicXmlTestFile("multistaff.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertMultiStaffPartReadCorrectly(writtenScore);
@@ -194,7 +191,7 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testWritingArticulations() {
-		Score score = readMusicXmlTestFile("articulations.xml", false);
+		Score score = readMusicXmlTestFile("articulations.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertScoreWithArticulationsReadCorrectly(writtenScore);
@@ -202,7 +199,7 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testArticulationsOnMultipleStaves() {
-		Score score = readMusicXmlTestFile("articulationsOnMultipleStaves.xml", false);
+		Score score = readMusicXmlTestFile("articulationsOnMultipleStaves.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
 
 		MusicXmlFileChecks.assertArticulationsReadCorrectlyFromMultipleStaves(writtenScore);
@@ -218,10 +215,10 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testWritingBasicNoteAppearances() {
-		final Score score = readMusicXmlTestFile("basic_duration_appearances.xml", false);
+		final Score score = readMusicXmlTestFile("basic_duration_appearances.musicxml", false);
 
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
-		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
+		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
 		writer.write(filePath);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -257,10 +254,10 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testWritingBasicDottedNoteAppearances() {
-		final Score score = readMusicXmlTestFile("basic_dotted_duration_appearances.xml", false);
+		final Score score = readMusicXmlTestFile("basic_dotted_duration_appearances.musicxml", false);
 
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
-		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
+		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
 		writer.write(filePath);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -294,10 +291,10 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void testWritingTupletAppearances() {
-		final Score score = readMusicXmlTestFile("tuplet_writing_test.xml", false);
+		final Score score = readMusicXmlTestFile("tuplet_writing_test.musicxml", false);
 
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
-		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
+		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
 		writer.write(filePath);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -370,7 +367,7 @@ class MusicXmlScoreWriterDomTest {
 		writeAndReadScore(score);
 
 		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
-		Path filePath = temporaryDirectory.resolve("temporary_file.xml");
+		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
 		writer.write(filePath);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -408,7 +405,7 @@ class MusicXmlScoreWriterDomTest {
 
 	@Test
 	void whenScoreHasMultipleVoicesWithSlursAndGlissandoThenTheyAreWrittenToFile() {
-		Score score = readMusicXmlTestFile("multi_staff_multi_voice_notation_test.xml", false);
+		Score score = readMusicXmlTestFile("multi_staff_multi_voice_notation_test.musicxml", false);
 		Score writtenScore = writeAndReadScore(score);
 		MusicXmlFileChecks.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(writtenScore);
 	}
@@ -430,7 +427,7 @@ class MusicXmlScoreWriterDomTest {
 		assertEquals(1, writtenScore.getPartCount());
 		final Part part = writtenScore.getPart(0);
 		assertEquals(1, part.getMeasureCount());
-		final Measure measure = part.getMeasure(SingleStaffPart.STAFF_NUMBER, 1);
+		final Measure measure = part.getMeasure(Part.DEFAULT_STAFF_NUMBER, 1);
 		assertNotEquals(inexpressibleDuration, measure.get(1, 0).getDuration());
 		for (Durational dur : measure) {
 			assertTrue(dur.getDuration().hasExpression());

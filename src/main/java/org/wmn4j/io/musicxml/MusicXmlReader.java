@@ -22,7 +22,7 @@ public interface MusicXmlReader extends ScoreReader {
 	 * @return a reader for the MusicXML file at the given path
 	 */
 	static MusicXmlReader readerFor(Path path) {
-		return new MusicXmlReaderDom(path, true);
+		return new StaxReader(path, true);
 	}
 
 	/**
@@ -33,6 +33,6 @@ public interface MusicXmlReader extends ScoreReader {
 	 * @return a reader for the MusicXML file at the given path that skips validation
 	 */
 	static MusicXmlReader nonValidatingReaderFor(Path path) {
-		return new MusicXmlReaderDom(path, false);
+		return new StaxReader(path, false);
 	}
 }

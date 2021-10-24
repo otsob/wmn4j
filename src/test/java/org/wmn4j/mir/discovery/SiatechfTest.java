@@ -21,7 +21,7 @@ public class SiatechfTest {
 
 	@Test
 	void testGivenSimpleRepeatedMotifsAndZeroCompressionRatioThenSiatechfReturnsAllTecs() {
-		final Score score = TestHelper.readScore("musicxml/pattern_discovery/monophonic_pattern_discovery_test.xml");
+		final Score score = TestHelper.readScore("musicxml/pattern_discovery/monophonic_pattern_discovery_test.musicxml");
 		assertNotNull(score);
 
 		final PointSet pointSet = new PointSet(score);
@@ -101,7 +101,7 @@ public class SiatechfTest {
 
 	@Test
 	void testGivenSimpleRepeatedMotifsAndNonZeroCompressionRatioThenSiatechfReturnsCorrectTecs() {
-		final Score score = TestHelper.readScore("musicxml/pattern_discovery/monophonic_pattern_discovery_test.xml");
+		final Score score = TestHelper.readScore("musicxml/pattern_discovery/monophonic_pattern_discovery_test.musicxml");
 		assertNotNull(score);
 
 		final PointSet pointSet = new PointSet(score);

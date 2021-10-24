@@ -41,6 +41,15 @@ public class MeasureBuilder {
 	}
 
 	/**
+	 * Creates an empty builder.
+	 */
+	public MeasureBuilder() {
+		this.voices = new HashMap<>();
+		this.attributesBuilder = new MeasureAttributesBuilder();
+		this.initialMeasureAttributes = null;
+	}
+
+	/**
 	 * Create a measure builder with the given attributes.
 	 *
 	 * @param number            measure number for measure being built
@@ -196,6 +205,19 @@ public class MeasureBuilder {
 	 */
 	public Collection<Offset<Clef>> getClefChanges() {
 		return attributesBuilder.clefChanges;
+	}
+
+	/**
+	 * Returns the directions set in this builder.
+	 * <p>
+	 * The placement of directions are represented using {@link Offset} types,
+	 * where the placement of the directions is measured by an offset from the
+	 * beginning of the measure. The collection is not in any particular order.
+	 *
+	 * @return the directions set in this builder
+	 */
+	public Collection<Offset<Direction>> getDirections() {
+		return attributesBuilder.directions;
 	}
 
 	/**

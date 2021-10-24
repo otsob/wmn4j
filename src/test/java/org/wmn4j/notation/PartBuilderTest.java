@@ -189,8 +189,8 @@ class PartBuilderTest {
 		partBuilder.add(firstMeasureBuilder).add(secondMeasureBuilder);
 		final Part part = partBuilder.build();
 
-		final Note firstNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 1).get(1, 0);
-		final Note secondNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 2).get(1, 0);
+		final Note firstNote = (Note) part.getMeasure(Part.DEFAULT_STAFF_NUMBER, 1).get(1, 0);
+		final Note secondNote = (Note) part.getMeasure(Part.DEFAULT_STAFF_NUMBER, 2).get(1, 0);
 
 		assertTrue(firstNote.getFollowingTiedNote().isPresent());
 		assertEquals(secondNote, firstNote.getFollowingTiedNote().get());
@@ -214,8 +214,8 @@ class PartBuilderTest {
 		partBuilder.addToStaff(2, firstMeasureBuilder);
 		final Part part = partBuilder.build();
 
-		final Note firstNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 1).get(1, 0);
-		final Note secondNote = (Note) part.getMeasure(SingleStaffPart.STAFF_NUMBER, 2).get(1, 0);
+		final Note firstNote = (Note) part.getMeasure(Part.DEFAULT_STAFF_NUMBER, 1).get(1, 0);
+		final Note secondNote = (Note) part.getMeasure(Part.DEFAULT_STAFF_NUMBER, 2).get(1, 0);
 
 		assertEquals(firstNoteBuilder.build(), firstNote);
 		assertEquals(secondNoteBuilder.build(), secondNote);
