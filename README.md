@@ -1,6 +1,6 @@
 # Western Music Notation for Java (wmn4j)
 
-[![Build Status](https://travis-ci.com/otsob/wmn4j.svg?branch=master)](https://travis-ci.com/otsob/wmn4j)
+![pull_request](https://github.com/otsob/wmn4j/actions/workflows/pull_request.yaml/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 wmn4j is a Java library for handling western music notation.
