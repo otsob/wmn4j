@@ -19,10 +19,8 @@ jobs:
       - name: Generate Javadoc
         run: ./gradlew javadoc
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@3.5.9
+        uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          CLEAN: true
-          FOLDER: build/docs/javadoc
-          TARGET_FOLDER: .
+          branch: gh-pages
+          folder: build/docs/javadoc
+          target-folder: .
