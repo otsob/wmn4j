@@ -1,7 +1,11 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.representation;
+
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
+package org.wmn4j.representation.geometric;
 
 import org.wmn4j.utils.RandomMultipliers;
 
