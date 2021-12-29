@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
  * Represents a pattern consisting of pitch event points.
  * <p>
  * This class is effectively immutable assuming the constructor is correctly used.
+ *
+ * @param <T> the point type to use for the pattern
  */
 public final class PointPattern<T extends Point<T>> implements Iterable<T> {
 
