@@ -3,6 +3,8 @@
  */
 package org.wmn4j.mir.discovery;
 
+import org.wmn4j.utils.RandomMultipliers;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;

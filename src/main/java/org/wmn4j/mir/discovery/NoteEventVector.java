@@ -3,6 +3,8 @@
  */
 package org.wmn4j.mir.discovery;
 
+import org.wmn4j.utils.RandomMultipliers;
+
 /**
  * Vector representation of a note event. NoteEventVectors are
  * ordered lexicographically.
