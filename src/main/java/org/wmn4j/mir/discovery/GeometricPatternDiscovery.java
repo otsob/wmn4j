@@ -5,6 +5,8 @@ package org.wmn4j.mir.discovery;
 
 import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.notation.Score;
+import org.wmn4j.representation.geometric.Point2D;
+import org.wmn4j.representation.geometric.PointSet;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,16 +51,19 @@ public final class GeometricPatternDiscovery implements PatternDiscovery {
 			throw new IllegalArgumentException("Compression ratio must be non-negative, was " + compressionRatio);
 		}
 
-		final PointSet pointSet = new PointSet(score);
-		final Collection<Tec> tecs = Siatechf.computeMtpTecs(pointSet, compressionRatio);
+		final PointSet<Point2D> pointSet = PointSet.fromScore(score);
+		final var tecs = Siatechf.computeMtpTecs(pointSet, compressionRatio);
 		final Collection<Collection<PatternPosition>> allPatterns = new ArrayList<>(tecs.size());
-		for (Tec tec : tecs) {
+		for (var tec : tecs) {
 			final Collection<PatternPosition> patternPositions = new ArrayList<>(tec.getTranslators().size() + 1);
 
-			final PointPattern pattern = tec.getPattern();
+			final var pattern = tec.getPattern();
 
-			for (NoteEventVector translator : tec.getTranslators()) {
-				patternPositions.add(pointSet.getPosition(pattern, translator));
+			for (var translator : tec.getTranslators()) {
+				var patternPosition = pointSet.getPosition(pattern, translator);
+				if (patternPosition.isPresent()) {
+					patternPositions.add(patternPosition.get());
+				}
 			}
 
 			allPatterns.add(patternPositions);

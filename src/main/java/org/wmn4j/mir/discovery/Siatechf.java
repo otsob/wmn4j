@@ -3,6 +3,10 @@
  */
 package org.wmn4j.mir.discovery;
 
+import org.wmn4j.representation.geometric.Point;
+import org.wmn4j.representation.geometric.PointPattern;
+import org.wmn4j.representation.geometric.PointSet;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,22 +49,22 @@ final class Siatechf {
 	 * @return all TECs in the given point set whose compression ratio exceeds the
 	 * given minimum
 	 */
-	static List<Tec> computeMtpTecs(PointSet pointSet, double minCompressionRatio) {
+	static <T extends Point<T>> List<Tec<T>> computeMtpTecs(PointSet<T> pointSet, double minCompressionRatio) {
 
-		final Map<NoteEventVector, List<IndexPair>> mtpMap = computeMtpMap(pointSet);
+		final Map<T, List<IndexPair>> mtpMap = computeMtpMap(pointSet);
 
-		final List<Tec> tecs = new ArrayList<>();
-		final Set<PointPattern> vectorizedPatterns = new HashSet<>();
+		final List<Tec<T>> tecs = new ArrayList<>();
+		final Set<PointPattern<T>> vectorizedPatterns = new HashSet<>();
 
-		for (NoteEventVector difference : mtpMap.keySet()) {
-			final PointPattern pattern = computeMtp(mtpMap.get(difference), pointSet);
-			final PointPattern vectorizedPattern = pattern.vectorized();
+		for (T difference : mtpMap.keySet()) {
+			final PointPattern<T> pattern = computeMtp(mtpMap.get(difference), pointSet);
+			final PointPattern<T> vectorizedPattern = pattern.vectorized();
 
 			if (!vectorizedPatterns.contains(vectorizedPattern)) {
 				if (upperBoundOnCompressionRatio(pattern, mtpMap) >= minCompressionRatio) {
-					final List<NoteEventVector> translators = findTranslators(pattern, mtpMap, pointSet);
+					final List<T> translators = findTranslators(pattern, mtpMap, pointSet);
 					if (compressionRatio(pattern, translators) >= minCompressionRatio) {
-						tecs.add(new Tec(pattern, translators));
+						tecs.add(new Tec<>(pattern, translators));
 					}
 				}
 				vectorizedPatterns.add(vectorizedPattern);
@@ -70,24 +74,25 @@ final class Siatechf {
 		return tecs;
 	}
 
-	private static PointPattern computeMtp(List<IndexPair> mtpIndexPairs, PointSet pointSet) {
-		final List<NoteEventVector> patternPoints = new ArrayList<>();
+	private static <T extends Point<T>> PointPattern<T> computeMtp(List<IndexPair> mtpIndexPairs,
+			PointSet<T> pointSet) {
+		final List<T> patternPoints = new ArrayList<>();
 		for (IndexPair indexPair : mtpIndexPairs) {
 			patternPoints.add(pointSet.get(indexPair.getFirst()));
 		}
 
-		return new PointPattern(patternPoints);
+		return new PointPattern<>(patternPoints);
 	}
 
-	private static Map<NoteEventVector, List<IndexPair>> computeMtpMap(PointSet pointSet) {
-		final Map<NoteEventVector, List<IndexPair>> mtpMap = new HashMap<>();
+	private static <T extends Point<T>> Map<T, List<IndexPair>> computeMtpMap(PointSet<T> pointSet) {
+		final Map<T, List<IndexPair>> mtpMap = new HashMap<>();
 
 		for (int i = 0; i < pointSet.size() - 1; ++i) {
 
-			final NoteEventVector origin = pointSet.get(i);
+			final T origin = pointSet.get(i);
 
 			for (int j = i + 1; j < pointSet.size(); ++j) {
-				final NoteEventVector diff = pointSet.get(j).subtract(origin);
+				final T diff = pointSet.get(j).subtract(origin);
 
 				if (!mtpMap.containsKey(diff)) {
 					mtpMap.put(diff, new ArrayList<>());
@@ -100,11 +105,11 @@ final class Siatechf {
 		return mtpMap;
 	}
 
-	private static List<NoteEventVector> findTranslators(PointPattern pattern,
-			Map<NoteEventVector, List<IndexPair>> mtpMap, PointSet pointSet) {
+	private static <T extends Point<T>> List<T> findTranslators(PointPattern<T> pattern,
+			Map<T, List<IndexPair>> mtpMap, PointSet<T> pointSet) {
 
 		if (pattern.size() == 1) {
-			final List<NoteEventVector> translators = new ArrayList<>();
+			final List<T> translators = new ArrayList<>();
 			for (int i = 0; i < pointSet.size(); ++i) {
 				translators.add(pointSet.get(i).subtract(pattern.get(0)));
 			}
@@ -113,7 +118,7 @@ final class Siatechf {
 		}
 
 		List<Integer> targetIndices = new ArrayList<>();
-		final PointPattern vectorizedPattern = pattern.vectorized();
+		final PointPattern<T> vectorizedPattern = pattern.vectorized();
 
 		for (IndexPair indexPair : mtpMap.get(vectorizedPattern.get(0))) {
 			targetIndices.add(indexPair.getSecond());
@@ -141,8 +146,8 @@ final class Siatechf {
 			targetIndices = newTargetIndices;
 		}
 
-		final List<NoteEventVector> translators = new ArrayList<>();
-		final NoteEventVector lastPoint = pattern.get(pattern.size() - 1);
+		final List<T> translators = new ArrayList<>();
+		final T lastPoint = pattern.get(pattern.size() - 1);
 
 		for (Integer i : targetIndices) {
 			translators.add(pointSet.get(i).subtract(lastPoint));
@@ -159,8 +164,8 @@ final class Siatechf {
 	 * @param mtpMap  the map of MTPs index pairs in the input point set
 	 * @return an upper bound on the upper bound of the compression ratio of the pattern
 	 */
-	private static double upperBoundOnCompressionRatio(PointPattern pattern,
-			Map<NoteEventVector, List<IndexPair>> mtpMap) {
+	private static <T extends Point<T>> double upperBoundOnCompressionRatio(PointPattern<T> pattern,
+			Map<T, List<IndexPair>> mtpMap) {
 
 		final int patternSize = pattern.size();
 		if (patternSize == 1) {
@@ -180,11 +185,11 @@ final class Siatechf {
 	 * @param translators the translators (including the zero vector).
 	 * @return the compression ratio of the TEC for the given pattern and translators
 	 */
-	private static double compressionRatio(PointPattern pattern, List<NoteEventVector> translators) {
-		final Set<NoteEventVector> coveredSet = new HashSet<>(pattern.size() + translators.size());
+	private static <T extends Point<T>> double compressionRatio(PointPattern<T> pattern, List<T> translators) {
+		final Set<T> coveredSet = new HashSet<>(pattern.size() + translators.size());
 
-		for (NoteEventVector translator : translators) {
-			for (NoteEventVector point : pattern) {
+		for (T translator : translators) {
+			for (T point : pattern) {
 				coveredSet.add(point.add(translator));
 			}
 		}
