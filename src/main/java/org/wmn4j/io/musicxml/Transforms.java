@@ -22,6 +22,8 @@ import java.util.Objects;
 
 /**
  * Transforms for transforming wmn4j objects from values parsed from MusicXML.
+ * <p>
+ * NOTE: Many of the methods in this class/namespace may return null.
  */
 final class Transforms {
 
@@ -163,6 +165,27 @@ final class Transforms {
 		}
 
 		return KeySignatures.CMAJ_AMIN;
+	}
+
+	static String timeSignatureTypeToString(TimeSignature.Symbol symbol) {
+
+		switch (symbol) {
+			case COMMON:
+				return Tags.COMMON;
+			case CUT_TIME:
+				return Tags.CUT;
+			case BEAT_NUMBER_ONLY:
+				return Tags.SINGLE_NUMBER;
+			case BEAT_DURATION_AS_NOTE:
+				return Tags.NOTE;
+			case BEAT_DURATION_AS_DOTTED_NOTE:
+				return Tags.DOTTED_NOTE;
+			case NUMERIC: // Fall through to default
+			default:
+				// Do not set symbol if NUMERIC
+		}
+
+		return null;
 	}
 
 	static Barline barStyleToBarline(String barStyleString, String repeatString) {
@@ -345,6 +368,44 @@ final class Transforms {
 				return Duration.of(8, 1);
 			default:
 				return null;
+		}
+	}
+
+	static String clefSymbolToString(Clef.Symbol symbol) {
+		switch (symbol) {
+			case G:
+				return Tags.G;
+			case F:
+				return Tags.F;
+			case C:
+				return Tags.C;
+			case PERCUSSION:
+				return Tags.PERCUSSION;
+			default:
+				throw new IllegalStateException("Unexpected clef symbol: " + symbol);
+		}
+	}
+
+	static String barlineStyleToString(Barline barline) {
+		switch (barline) {
+			case SINGLE:
+				return Tags.REGULAR;
+			case DOUBLE:
+				return Tags.LIGHT_LIGHT;
+			case REPEAT_LEFT:
+				return Tags.HEAVY_LIGHT;
+			case REPEAT_RIGHT: // Fall through
+			case FINAL:
+				return Tags.LIGHT_HEAVY;
+			case DASHED:
+				return Tags.DASHED;
+			case THICK:
+				return Tags.HEAVY;
+			case INVISIBLE:  // Fall through
+			case NONE:
+				return Tags.NONE;
+			default:
+				throw new IllegalStateException("Unexpected barline type: " + barline);
 		}
 	}
 
