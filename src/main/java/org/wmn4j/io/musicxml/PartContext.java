@@ -128,7 +128,15 @@ final class PartContext {
 
 		if (!backupDurations.isEmpty()) {
 			final Duration backupDuration = Duration.sum(backupDurations);
-			offsetDuration = offsetDuration.subtract(backupDuration);
+
+			// Backups with length exactly equal to the offset may occur on
+			// staff changes, in which case offset is null and durations
+			// should be reset.
+			if (offsetDuration.isLongerThan(backupDuration)) {
+				offsetDuration = offsetDuration.subtract(backupDuration);
+			} else {
+				offsetDuration = null;
+			}
 			backupDurations.clear();
 		}
 
