@@ -14,6 +14,7 @@ import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.Measure;
+import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Part;
@@ -58,6 +59,7 @@ final class StaxScoreWriter implements MusicXmlWriter {
 	private final List<String> partIds = new ArrayList<>();
 	private XMLStreamWriter writer;
 	private final int divisions;
+	private NotationWriteResolver notationResolver;
 
 	static void writeValue(XMLStreamWriter writer, String tag, String value) throws XMLStreamException {
 		writer.writeStartElement(tag);
@@ -85,6 +87,7 @@ final class StaxScoreWriter implements MusicXmlWriter {
 
 		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 			writer = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
+			notationResolver = new NotationWriteResolver(writer);
 
 			writer.writeStartDocument("UTF-8", "1.0");
 			final String version = "4.0";
@@ -535,6 +538,7 @@ final class StaxScoreWriter implements MusicXmlWriter {
 	private void writeNotations(Note note) throws XMLStreamException {
 		writer.writeStartElement(Tags.NOTATIONS);
 		writeArticulations(note.getArticulations());
+		writeConnectedNotations(note, note.getNotations());
 		writeOrnaments(note.getOrnaments());
 
 		writer.writeEndElement();
@@ -600,5 +604,36 @@ final class StaxScoreWriter implements MusicXmlWriter {
 			}
 		}
 		writer.writeEndElement();
+	}
+
+	private void writeConnectedNotations(Notation.Connectable connectable, Collection<Notation> notations)
+			throws XMLStreamException {
+		if (notations.isEmpty()) {
+			return;
+		}
+
+		for (Notation notation : notations) {
+			final var type = notation.getType();
+
+			if (notationResolver.canStartOrStop(type)) {
+				final var connection = connectable.getConnection(notation);
+				if (connection.isEmpty()) {
+					LOG.warn("Could not get expected notation connection of type {} for {}", type, connectable);
+					continue;
+				}
+
+				if (connection.get().isBeginning()) {
+					notationResolver.writeNotationStartElement(notation);
+				}
+
+				if (connection.get().isEnd()) {
+					notationResolver.writeNotationStopElement(notation);
+				}
+			}
+
+			if (notationResolver.isArpeggiation(type)) {
+				notationResolver.writeArpeggiationElement(notation);
+			}
+		}
 	}
 }
