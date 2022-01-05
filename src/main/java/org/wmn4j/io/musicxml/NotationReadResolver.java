@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
  * connected by the notation have been read from the MusicXML file. Notations are tracked
  * separately for each staff and each voice within a staff.
  */
-class NotationResolver {
+class NotationReadResolver {
 	private static final Notation.Style DEFAULT_STYLE = Notation.Style.SOLID;
-	private static final Logger LOG = LoggerFactory.getLogger(NotationResolver.class);
+	private static final Logger LOG = LoggerFactory.getLogger(NotationReadResolver.class);
 
 	private List<Unresolved> notationsToStartOrContinue = new ArrayList<>();
 	private List<Unresolved> notationsToEnd = new ArrayList<>();
