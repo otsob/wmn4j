@@ -59,6 +59,12 @@ final class StaxScoreWriter implements MusicXmlWriter {
 	private XMLStreamWriter writer;
 	private final int divisions;
 
+	static void writeValue(XMLStreamWriter writer, String tag, String value) throws XMLStreamException {
+		writer.writeStartElement(tag);
+		writer.writeCharacters(value);
+		writer.writeEndElement();
+	}
+
 	StaxScoreWriter(Score score) {
 		this.score = score;
 		this.divisions = computeDivisions(score.partwiseIterator());
@@ -470,7 +476,9 @@ final class StaxScoreWriter implements MusicXmlWriter {
 
 		writePitch(note.getPitch());
 		writeDuration(note.getDuration());
-		writeVoiceAndStaff(voice, staff);
+		writeVoice(voice);
+		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(note.getDuration(), writer);
+		writeStaff(staff);
 		writeNotations(note);
 
 		writer.writeEndElement();
@@ -489,7 +497,9 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		writer.writeEndElement();
 
 		writeDuration(rest.getDuration());
-		writeVoiceAndStaff(voice, staff);
+		writeVoice(voice);
+		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(rest.getDuration(), writer);
+		writeStaff(staff);
 
 		writer.writeEndElement();
 	}
@@ -510,11 +520,13 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		writer.writeEndElement();
 	}
 
-	private void writeVoiceAndStaff(Integer voice, Integer staff) throws XMLStreamException {
+	private void writeVoice(Integer voice) throws XMLStreamException {
 		if (voice != null) {
 			writeValue(Tags.VOICE, voice.toString());
 		}
+	}
 
+	private void writeStaff(Integer staff) throws XMLStreamException {
 		if (staff != null) {
 			writeValue(Tags.STAFF, staff.toString());
 		}
