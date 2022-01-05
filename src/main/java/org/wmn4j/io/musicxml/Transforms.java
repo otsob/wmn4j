@@ -409,6 +409,46 @@ final class Transforms {
 		}
 	}
 
+	static String articulationToTag(Articulation articulation) {
+		switch (articulation) {
+			case ACCENT:
+				return Tags.ACCENT;
+			case BREATH_MARK:
+				return Tags.BREATH_MARK;
+			case CAESURA:
+				return Tags.CAESURA;
+			case SLIDE_IN_DOWN:
+				return Tags.PLOP;
+			case SLIDE_IN_UP:
+				return Tags.SCOOP;
+			case SLIDE_OUT_DOWN:
+				return Tags.FALLOFF;
+			case SLIDE_OUT_UP:
+				return Tags.DOIT;
+			case SPICCATO:
+				return Tags.SPICCATO;
+			case STACCATISSIMO:
+				return Tags.STACCATISSIMO;
+			case STACCATO:
+				return Tags.STACCATO;
+			case STRESS:
+				return Tags.STRESS;
+			case STRONG_ACCENT:
+				return Tags.STRONG_ACCENT;
+			case TENUTO:
+				return Tags.TENUTO;
+			case TENUTO_STACCATO:
+				return Tags.DETACHED_LEGATO;
+			case UNSTRESS:
+				return Tags.UNSTRESS;
+			case FERMATA:
+				// Fermata is not treated as an articulation in MusicXml, so fermatas ar handled elsewhere.
+				// Fall through to null
+			default:
+				return null;
+		}
+	}
+
 	private Transforms() {
 		throw new UnsupportedOperationException("Not meant to be instantiated");
 	}

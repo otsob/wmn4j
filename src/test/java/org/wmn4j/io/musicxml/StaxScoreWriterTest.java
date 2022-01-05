@@ -171,4 +171,20 @@ public class StaxScoreWriterTest {
 
 		MusicXmlFileChecks.assertMultiStaffPartReadCorrectly(writtenScore);
 	}
+
+	@Test
+	void testWritingArticulations() {
+		Score score = readMusicXmlTestFile("articulations.musicxml", false);
+		Score writtenScore = writeAndReadScore(score);
+
+		MusicXmlFileChecks.assertScoreWithArticulationsReadCorrectly(writtenScore);
+	}
+
+	@Test
+	void testArticulationsOnMultipleStaves() {
+		Score score = readMusicXmlTestFile("articulationsOnMultipleStaves.musicxml", false);
+		Score writtenScore = writeAndReadScore(score);
+
+		MusicXmlFileChecks.assertArticulationsReadCorrectlyFromMultipleStaves(writtenScore);
+	}
 }

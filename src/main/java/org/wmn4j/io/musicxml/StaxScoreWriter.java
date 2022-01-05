@@ -6,6 +6,7 @@ package org.wmn4j.io.musicxml;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wmn4j.Wmn4j;
+import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Clef;
@@ -40,6 +41,7 @@ import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -467,6 +469,7 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		writePitch(note.getPitch());
 		writeDuration(note.getDuration());
 		writeVoiceAndStaff(voice, staff);
+		writeNotations(note);
 
 		writer.writeEndElement();
 	}
@@ -512,6 +515,34 @@ final class StaxScoreWriter implements MusicXmlWriter {
 
 		if (staff != null) {
 			writeValue(Tags.STAFF, staff.toString());
+		}
+	}
+
+	private void writeNotations(Note note) throws XMLStreamException {
+		writer.writeStartElement(Tags.NOTATIONS);
+		writeArticulations(note.getArticulations());
+		writer.writeEndElement();
+	}
+
+	private void writeArticulations(Collection<Articulation> articulations) throws XMLStreamException {
+		if (articulations.isEmpty()) {
+			return;
+		}
+
+		if (articulations.contains(Articulation.FERMATA)) {
+			writeValue(Tags.FERMATA, "");
+		}
+
+		// The articulations element is only created for articulations other than fermata.
+		if (!(articulations.size() == 1 && articulations.contains(Articulation.FERMATA))) {
+			writer.writeStartElement(Tags.ARTICULATIONS);
+			for (Articulation articulation : articulations) {
+				String tag = Transforms.articulationToTag(articulation);
+				if (tag != null) {
+					writeValue(tag, "");
+				}
+			}
+			writer.writeEndElement();
 		}
 	}
 }
