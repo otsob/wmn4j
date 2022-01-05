@@ -187,4 +187,12 @@ public class StaxScoreWriterTest {
 
 		MusicXmlFileChecks.assertArticulationsReadCorrectlyFromMultipleStaves(writtenScore);
 	}
+
+	@Test
+	void testWritingOrnaments() {
+		Score score = readMusicXmlTestFile("ornament_test.musicxml", false);
+		Score writtenScore = writeAndReadScore(score);
+
+		MusicXmlFileChecks.assertOrnamentsAreCorrect(writtenScore);
+	}
 }

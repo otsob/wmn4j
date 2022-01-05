@@ -449,6 +449,31 @@ final class Transforms {
 		}
 	}
 
+	static String ornamentToTag(Ornament.Type ornamentType) {
+		switch (ornamentType) {
+			case DELAYED_INVERTED_TURN:
+				return Tags.DELAYED_INVERTED_TURN;
+			case DELAYED_TURN:
+				return Tags.DELAYED_TURN;
+			case INVERTED_MORDENT:
+				return Tags.INVERTED_MORDENT;
+			case INVERTED_TURN:
+				return Tags.INVERTED_TURN;
+			case MORDENT:
+				return Tags.MORDENT;
+			case SINGLE_TREMOLO: // Fall through
+			case DOUBLE_TREMOLO: // Fall through
+			case TRIPLE_TREMOLO:
+				return Tags.TREMOLO;
+			case TRILL:
+				return Tags.TRILL_MARK;
+			case TURN:
+				return Tags.TURN;
+			default:
+				return null;
+		}
+	}
+
 	private Transforms() {
 		throw new UnsupportedOperationException("Not meant to be instantiated");
 	}

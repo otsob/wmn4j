@@ -15,6 +15,7 @@ import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.Note;
+import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Rest;
@@ -47,6 +48,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 final class StaxScoreWriter implements MusicXmlWriter {
 
@@ -521,6 +523,8 @@ final class StaxScoreWriter implements MusicXmlWriter {
 	private void writeNotations(Note note) throws XMLStreamException {
 		writer.writeStartElement(Tags.NOTATIONS);
 		writeArticulations(note.getArticulations());
+		writeOrnaments(note.getOrnaments());
+
 		writer.writeEndElement();
 	}
 
@@ -544,5 +548,45 @@ final class StaxScoreWriter implements MusicXmlWriter {
 			}
 			writer.writeEndElement();
 		}
+	}
+
+	private void writeOrnaments(Collection<Ornament> ornaments) throws XMLStreamException {
+		final Predicate<Ornament> isGraceNote = (o) -> o.getType()
+				.equals(Ornament.Type.SUCCEEDING_GRACE_NOTES)
+				|| o.getType().equals(Ornament.Type.GRACE_NOTES);
+
+		// If ornaments is empty or the only ornament is of type grace notes then do not add ornaments element.
+		if (ornaments.size() <= 1 && ornaments.stream().anyMatch(isGraceNote)) {
+			return;
+		}
+
+		writer.writeStartElement(Tags.ORNAMENTS);
+		for (Ornament ornament : ornaments) {
+			if (isGraceNote.test(ornament)) {
+				continue;
+			}
+
+			final var type = ornament.getType();
+			final String tag = Transforms.ornamentToTag(type);
+			if (tag != null) {
+				String content;
+				switch (type) {
+					case SINGLE_TREMOLO:
+						content = "1";
+						break;
+					case DOUBLE_TREMOLO:
+						content = "2";
+						break;
+					case TRIPLE_TREMOLO:
+						content = "3";
+						break;
+					default:
+						content = "";
+				}
+
+				writeValue(tag, content);
+			}
+		}
+		writer.writeEndElement();
 	}
 }
