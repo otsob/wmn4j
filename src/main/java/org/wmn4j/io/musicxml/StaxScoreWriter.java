@@ -9,6 +9,7 @@ import org.wmn4j.Wmn4j;
 import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.ChordBuilder;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durational;
@@ -16,11 +17,14 @@ import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
+import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Rest;
+import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
+import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.access.Offset;
 
 import javax.xml.stream.XMLOutputFactory;
@@ -404,12 +408,10 @@ final class StaxScoreWriter implements MusicXmlWriter {
 					offset = offset.add(durational.getDuration());
 				}
 
-				if (durational instanceof Note) {
-					writeNote((Note) durational, voice, staffNumber, false);
-				} else if (durational instanceof Chord) {
-					writeChord((Chord) durational, voice, staffNumber);
-				} else if (durational instanceof Rest) {
-					writeRest((Rest) durational, voice, staffNumber);
+				if (durational.getDuration().hasExpression()) {
+					writeDurational(staffNumber, voice, durational);
+				} else {
+					writeDecomposedDurationals(staffNumber, voice, durational, measure.getTimeSignature());
 				}
 
 				handleMidMeasureClefChanges(isMultiStaff, undealtClefChanges, offset, staffNumber);
@@ -423,6 +425,42 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		}
 
 		return toDivisionCount(offset);
+	}
+
+	private void writeDurational(Integer staffNumber, Integer voice, Durational durational) throws XMLStreamException {
+		if (durational instanceof Note) {
+			writeNote((Note) durational, voice, staffNumber, false);
+		} else if (durational instanceof Chord) {
+			writeChord((Chord) durational, voice, staffNumber);
+		} else if (durational instanceof Rest) {
+			writeRest((Rest) durational, voice, staffNumber);
+		}
+	}
+
+	private void writeDecomposedDurationals(Integer staffNumber, Integer voice, Durational durational,
+			TimeSignature timeSig) throws XMLStreamException {
+
+		final var decomposedDurations = durational.getDuration().decompose(timeSig.getTotalDuration());
+
+		if (durational instanceof Note) {
+			for (Duration duration : decomposedDurations) {
+				NoteBuilder builder = new NoteBuilder((Note) durational);
+				builder.setDuration(duration);
+				writeNote(builder.build(), voice, staffNumber, false);
+			}
+		} else if (durational instanceof Chord) {
+			for (Duration duration : decomposedDurations) {
+				ChordBuilder builder = new ChordBuilder((Chord) durational);
+				builder.setDuration(duration);
+				writeChord(builder.build(), voice, staffNumber);
+			}
+		} else if (durational instanceof Rest) {
+			for (Duration duration : decomposedDurations) {
+				RestBuilder builder = new RestBuilder((Rest) durational);
+				builder.setDuration(duration);
+				writeRest(builder.build(), voice, staffNumber);
+			}
+		}
 	}
 
 	private void handleMidMeasureClefChanges(boolean isMultiStaff, List<Offset<Clef>> undealtClefChanges,
