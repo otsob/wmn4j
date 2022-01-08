@@ -322,8 +322,23 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		}
 	}
 
+	private boolean isAttributesElementRequired(Measure current, Measure previous) {
+		if (previous == null) {
+			return true;
+		}
+
+		return !(current.getKeySignature().equals(previous.getKeySignature())
+				&& current.getTimeSignature().equals(previous.getTimeSignature())
+				&& current.getClef().equals(previous.getClef()));
+	}
+
 	private void writeMeasureAttributes(Measure current, Measure previous, boolean isMultiStaff, Integer staffNumber)
 			throws XMLStreamException {
+
+		if (!isAttributesElementRequired(current, previous)) {
+			return;
+		}
+
 		writer.writeStartElement(Tags.ATTRIBUTES);
 
 		// Write divisions
