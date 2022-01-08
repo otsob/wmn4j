@@ -30,10 +30,10 @@ class NotationWriteResolver {
 			Notation.Type.ARPEGGIATE_UP, Tags.ARPEGGIATE);
 
 	private static final Map<Notation.Style, String> NOTATION_STYLES = Map.of(
-			Notation.Style.SOLID, MusicXmlTags.NOTATION_LINE_SOLID,
-			Notation.Style.DASHED, MusicXmlTags.NOTATION_LINE_DASHED,
-			Notation.Style.DOTTED, MusicXmlTags.NOTATION_LINE_DOTTED,
-			Notation.Style.WAVY, MusicXmlTags.NOTATION_LINE_WAVY);
+			Notation.Style.SOLID, Tags.SOLID,
+			Notation.Style.DASHED, Tags.DASHED,
+			Notation.Style.DOTTED, Tags.DOTTED,
+			Notation.Style.WAVY, Tags.WAVY);
 
 	private final XMLStreamWriter writer;
 	private Integer nextAvailableNotationNumber = Integer.valueOf(1);

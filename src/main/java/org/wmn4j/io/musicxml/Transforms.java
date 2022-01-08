@@ -190,22 +190,22 @@ final class Transforms {
 
 	static Barline barStyleToBarline(String barStyleString, String repeatString) {
 		switch (barStyleString) {
-			case MusicXmlTags.BARLINE_STYLE_DASHED:
+			case Tags.DASHED:
 				return Barline.DASHED;
-			case MusicXmlTags.BARLINE_STYLE_HEAVY:
+			case Tags.HEAVY:
 				return Barline.THICK;
-			case MusicXmlTags.BARLINE_STYLE_HEAVY_LIGHT:
+			case Tags.HEAVY_LIGHT:
 				return Barline.REPEAT_LEFT;
-			case MusicXmlTags.BARLINE_STYLE_INVISIBLE:
+			case Tags.NONE:
 				return Barline.INVISIBLE;
-			case MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY: {
+			case Tags.LIGHT_HEAVY: {
 				if (Objects.equals(repeatString, Tags.BACKWARD)) {
 					return Barline.REPEAT_RIGHT;
 				} else {
 					return Barline.FINAL;
 				}
 			}
-			case MusicXmlTags.BARLINE_STYLE_LIGHT_LIGHT:
+			case Tags.LIGHT_LIGHT:
 				return Barline.DOUBLE;
 			default:
 				return Barline.SINGLE;
@@ -215,16 +215,16 @@ final class Transforms {
 	static Clef.Symbol signToClefSymbol(String clefSign) {
 		Clef.Symbol type;
 		switch (clefSign) {
-			case MusicXmlTags.CLEF_F:
+			case Tags.F:
 				type = Clef.Symbol.F;
 				break;
-			case MusicXmlTags.CLEF_C:
+			case Tags.C:
 				type = Clef.Symbol.C;
 				break;
-			case MusicXmlTags.CLEF_PERC:
+			case Tags.PERCUSSION:
 				type = Clef.Symbol.PERCUSSION;
 				break;
-			case MusicXmlTags.CLEF_G: // Fall through
+			case Tags.G: // Fall through
 			default:
 				type = Clef.Symbol.G;
 				break;
