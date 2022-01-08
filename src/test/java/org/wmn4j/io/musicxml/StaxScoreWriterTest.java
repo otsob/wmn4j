@@ -447,4 +447,11 @@ public class StaxScoreWriterTest {
 		Score writtenScore = writeAndReadScore(score);
 		MusicXmlFileChecks.assertGraceNoteChordsAreCorrect(writtenScore);
 	}
+
+	@Test
+	void testGivenScoreWithDirectionsThenDirectionsAreCorrectlyWritten() {
+		Score score = readMusicXmlTestFile("directions_test.musicxml", true);
+		Score writtenScore = writeAndReadScore(score);
+		MusicXmlFileChecks.assertDirectionsCorrect(writtenScore);
+	}
 }

@@ -29,6 +29,7 @@ import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.access.Offset;
+import org.wmn4j.notation.directions.Direction;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -393,6 +394,8 @@ final class StaxScoreWriter implements MusicXmlWriter {
 	private int writeMeasureContents(Measure measure, Integer staff, boolean isMultiStaff)
 			throws XMLStreamException {
 
+		writeDirections(measure.getDirections(), staff);
+
 		final List<Offset<Clef>> undealtClefChanges = new ArrayList<>(measure.getClefChanges());
 
 		final var voiceNumbers = measure.getVoiceNumbers();
@@ -428,6 +431,38 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		}
 
 		return toDivisionCount(offset);
+	}
+
+	private void writeDirections(Iterable<Offset<Direction>> offsetDirections, Integer staffNumber)
+			throws XMLStreamException {
+
+		for (var offsetDirection : offsetDirections) {
+			writer.writeStartElement(Tags.DIRECTION);
+			writer.writeAttribute(Tags.PLACEMENT, Tags.ABOVE);
+
+			writer.writeStartElement(Tags.DIRECTION_TYPE);
+			final var direction = offsetDirection.get();
+
+			if (direction.getType().equals(Direction.Type.TEXT)) {
+				writeValue(Tags.WORDS, direction.getText().orElse(""));
+			} else {
+				LOG.info("Only text type directions are currently supported: ignoring direction with type {}",
+						direction.getType());
+			}
+
+			// End direction-type element
+			writer.writeEndElement();
+
+			final var offset = offsetDirection.getDuration();
+			if (offset.isPresent()) {
+				writeValue(Tags.OFFSET, Integer.toString(toDivisionCount(offset.get())));
+			}
+
+			writeStaff(staffNumber);
+
+			// End direction element
+			writer.writeEndElement();
+		}
 	}
 
 	private void writeDurational(Integer staffNumber, Integer voice, Durational durational) throws XMLStreamException {
