@@ -14,11 +14,14 @@ import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
+import org.wmn4j.notation.GraceNote;
+import org.wmn4j.notation.GraceNoteChord;
 import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Ornament;
+import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Rest;
@@ -507,7 +510,11 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		return ((divisions * Durations.QUARTER.getDenominator()) / duration.getDenominator()) * duration.getNumerator();
 	}
 
-	private void writeNote(Note note, Integer voice, Integer staff, boolean addChordTag) throws XMLStreamException {
+	private void writeNote(Note note, Integer voice, Integer staff, boolean addChordTag)
+			throws XMLStreamException {
+
+		writeGraceNotes(note, voice, staff, Ornament.Type.GRACE_NOTES);
+
 		writer.writeStartElement(Tags.NOTE);
 
 		if (addChordTag) {
@@ -520,9 +527,58 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		writeVoice(voice);
 		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(note.getDuration(), writer);
 		writeStaff(staff);
-		writeNotations(note);
+		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments());
 
 		writer.writeEndElement();
+
+		writeGraceNotes(note, voice, staff, Ornament.Type.SUCCEEDING_GRACE_NOTES);
+	}
+
+	private void writeGraceNotes(Note note, Integer voice, Integer staff, Ornament.Type ornamentType)
+			throws XMLStreamException {
+		final var graceNotes = note.getOrnaments().stream()
+				.filter(ornament -> ornament.getType().equals(ornamentType))
+				.findFirst();
+		if (graceNotes.isPresent()) {
+			final var ornamentalNotes = graceNotes.get().getOrnamentalNotes();
+			for (var ornamental : ornamentalNotes) {
+				if (ornamental instanceof GraceNote) {
+					writeGraceNote((GraceNote) ornamental, voice, staff, false);
+				} else if (ornamental instanceof GraceNoteChord) {
+					writeGraceNoteChord((GraceNoteChord) ornamental, voice, staff);
+				}
+			}
+		}
+	}
+
+	private void writeGraceNote(GraceNote note, Integer voice, Integer staff, boolean addChordTag)
+			throws XMLStreamException {
+		writer.writeStartElement(Tags.NOTE);
+
+		writer.writeStartElement(Tags.GRACE);
+		if (note.getType().equals(Ornamental.Type.ACCIACCATURA)) {
+			writer.writeAttribute(Tags.SLASH, Tags.YES);
+		}
+		writer.writeEndElement();
+
+		if (addChordTag) {
+			writer.writeStartElement(Tags.CHORD);
+			writer.writeEndElement();
+		}
+
+		writePitch(note.getPitch());
+		writeVoice(voice);
+		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(note.getDisplayableDuration(), writer);
+		writeStaff(staff);
+		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments());
+
+		writer.writeEndElement();
+	}
+
+	private void writeGraceNoteChord(GraceNoteChord chord, Integer voice, Integer staff) throws XMLStreamException {
+		for (int i = 0; i < chord.getNoteCount(); ++i) {
+			writeGraceNote(chord.getNote(i), voice, staff, i > 0);
+		}
 	}
 
 	private void writeChord(Chord chord, Integer voice, Integer staff) throws XMLStreamException {
@@ -573,11 +629,12 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		}
 	}
 
-	private void writeNotations(Note note) throws XMLStreamException {
+	private void writeNotations(Notation.Connectable connectable, Set<Articulation> articulations,
+			Set<Notation> notations, Collection<Ornament> ornaments) throws XMLStreamException {
 		writer.writeStartElement(Tags.NOTATIONS);
-		writeArticulations(note.getArticulations());
-		writeConnectedNotations(note, note.getNotations());
-		writeOrnaments(note.getOrnaments());
+		writeArticulations(articulations);
+		writeConnectedNotations(connectable, notations);
+		writeOrnaments(ornaments);
 
 		writer.writeEndElement();
 	}
