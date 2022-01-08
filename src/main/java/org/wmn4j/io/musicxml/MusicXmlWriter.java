@@ -23,7 +23,7 @@ public interface MusicXmlWriter extends ScoreWriter {
 	 * @return an instance of a writer for the given {@link Score}
 	 */
 	static MusicXmlWriter writerFor(Score score) {
-		return new MusicXmlScoreWriterDom(score);
+		return new StaxScoreWriter(score);
 	}
 
 	/**
