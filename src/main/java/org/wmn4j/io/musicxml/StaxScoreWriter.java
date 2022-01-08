@@ -34,19 +34,11 @@ import org.wmn4j.notation.directions.Direction;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.OutputStream;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -70,9 +62,13 @@ final class StaxScoreWriter implements MusicXmlWriter {
 	private NotationWriteResolver notationResolver;
 
 	static void writeValue(XMLStreamWriter writer, String tag, String value) throws XMLStreamException {
-		writer.writeStartElement(tag);
-		writer.writeCharacters(value);
-		writer.writeEndElement();
+		if (value.isEmpty()) {
+			writer.writeEmptyElement(tag);
+		} else {
+			writer.writeStartElement(tag);
+			writer.writeCharacters(value);
+			writer.writeEndElement();
+		}
 	}
 
 	StaxScoreWriter(Score score) {
@@ -93,8 +89,10 @@ final class StaxScoreWriter implements MusicXmlWriter {
 	@Override
 	public void write(Path path) {
 
-		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+		try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path.toString()))) {
+
 			writer = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
+
 			notationResolver = new NotationWriteResolver(writer);
 
 			writer.writeStartDocument("UTF-8", "1.0");
@@ -114,26 +112,9 @@ final class StaxScoreWriter implements MusicXmlWriter {
 
 			writer.flush();
 			writer.close();
-
-			Files.writeString(path, indentXmlString(outputStream.toString(StandardCharsets.UTF_8)),
-					StandardCharsets.UTF_8);
-		} catch (XMLStreamException | IOException | TransformerException e) {
+		} catch (XMLStreamException | IOException e) {
 			LOG.error("Writing MusicXML failed with {}", e.getMessage());
 		}
-	}
-
-	private String indentXmlString(String xml) throws TransformerException {
-
-		Transformer transformer = TransformerFactory.newInstance().newTransformer();
-
-		final String yes = "yes";
-		transformer.setOutputProperty(OutputKeys.INDENT, yes);
-		transformer.setOutputProperty(OutputKeys.STANDALONE, yes);
-
-		StringWriter output = new StringWriter();
-		transformer.transform(new StreamSource(new StringReader(xml)), new StreamResult(output));
-
-		return output.toString();
 	}
 
 	private void writeValue(String tag, String value) throws XMLStreamException {
@@ -568,8 +549,7 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		writer.writeStartElement(Tags.NOTE);
 
 		if (addChordTag) {
-			writer.writeStartElement(Tags.CHORD);
-			writer.writeEndElement();
+			writer.writeEmptyElement(Tags.CHORD);
 		}
 
 		writePitch(note.getPitch());
@@ -605,15 +585,13 @@ final class StaxScoreWriter implements MusicXmlWriter {
 			throws XMLStreamException {
 		writer.writeStartElement(Tags.NOTE);
 
-		writer.writeStartElement(Tags.GRACE);
+		writer.writeEmptyElement(Tags.GRACE);
 		if (note.getType().equals(Ornamental.Type.ACCIACCATURA)) {
 			writer.writeAttribute(Tags.SLASH, Tags.YES);
 		}
-		writer.writeEndElement();
 
 		if (addChordTag) {
-			writer.writeStartElement(Tags.CHORD);
-			writer.writeEndElement();
+			writer.writeEmptyElement(Tags.CHORD);
 		}
 
 		writePitch(note.getPitch());
@@ -695,7 +673,7 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		}
 
 		if (articulations.contains(Articulation.FERMATA)) {
-			writeValue(Tags.FERMATA, "");
+			writer.writeEmptyElement(Tags.FERMATA);
 		}
 
 		// The articulations element is only created for articulations other than fermata.
@@ -704,7 +682,7 @@ final class StaxScoreWriter implements MusicXmlWriter {
 			for (Articulation articulation : articulations) {
 				String tag = Transforms.articulationToTag(articulation);
 				if (tag != null) {
-					writeValue(tag, "");
+					writer.writeEmptyElement(tag);
 				}
 			}
 			writer.writeEndElement();
