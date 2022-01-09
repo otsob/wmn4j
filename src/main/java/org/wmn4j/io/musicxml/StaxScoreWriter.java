@@ -59,8 +59,10 @@ final class StaxScoreWriter implements MusicXmlWriter {
 	private final Path path;
 	private final List<String> partIds = new ArrayList<>();
 	private XMLStreamWriter writer;
+	private OutputStream outputStream;
 	private final int divisions;
 	private NotationWriteResolver notationResolver;
+	private boolean isClosed;
 
 	static void writeValue(XMLStreamWriter writer, String tag, String value) throws XMLStreamException {
 		if (value.isEmpty()) {
@@ -76,6 +78,7 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		this.score = score;
 		this.path = path;
 		this.divisions = computeDivisions(score.partwiseIterator());
+		this.isClosed = false;
 	}
 
 	private String getDTD(String version) {
@@ -89,10 +92,9 @@ final class StaxScoreWriter implements MusicXmlWriter {
 	}
 
 	@Override
-	public void write() {
-
-		try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path.toString()))) {
-
+	public void write() throws IOException {
+		try {
+			outputStream = new BufferedOutputStream(new FileOutputStream(path.toString()));
 			writer = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
 
 			notationResolver = new NotationWriteResolver(writer);
@@ -113,9 +115,25 @@ final class StaxScoreWriter implements MusicXmlWriter {
 			writer.writeEndDocument();
 
 			writer.flush();
-			writer.close();
 		} catch (XMLStreamException | IOException e) {
 			LOG.error("Writing MusicXML failed with {}", e.getMessage());
+		}
+
+		close();
+	}
+
+	@Override
+	public void close() throws IOException {
+		if (!isClosed) {
+			isClosed = true;
+
+			try {
+				writer.close();
+			} catch (XMLStreamException e) {
+				throw new IOException("Failed to close with exception: " + e.getMessage());
+			}
+
+			outputStream.close();
 		}
 	}
 

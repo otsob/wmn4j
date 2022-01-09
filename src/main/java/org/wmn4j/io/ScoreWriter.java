@@ -3,6 +3,7 @@
  */
 package org.wmn4j.io;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 /**
@@ -12,7 +13,7 @@ import java.io.IOException;
  * separate instances need to be used.
  * Implementations of this interface are not guaranteed to be thread-safe.
  */
-public interface ScoreWriter {
+public interface ScoreWriter extends Closeable {
 
 	/**
 	 * Writes the contents in this writer into a file specified by the given path.

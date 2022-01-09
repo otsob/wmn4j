@@ -51,7 +51,7 @@ public class StaxScoreWriterTest {
 	private final String MUSICXML_FILE_PATH = "musicxml/";
 
 	private void writeOrFail(MusicXmlWriter writer) {
-		try {
+		try (writer) {
 			writer.write();
 		} catch (IOException e) {
 			fail("Writing score failed with exception " + e);
