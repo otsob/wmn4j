@@ -3,6 +3,8 @@
  */
 package org.wmn4j.io;
 
+import java.io.IOException;
+
 /**
  * Represents a writer for music notation files. The only supported file type is currently MusicXML.
  * <p>
@@ -14,6 +16,8 @@ public interface ScoreWriter {
 
 	/**
 	 * Writes the contents in this writer into a file specified by the given path.
+	 *
+	 * @throws IOException in case the score cannot be written to the output
 	 */
-	void write();
+	void write() throws IOException;
 }

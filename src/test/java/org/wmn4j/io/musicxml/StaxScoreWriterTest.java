@@ -50,6 +50,14 @@ public class StaxScoreWriterTest {
 
 	private final String MUSICXML_FILE_PATH = "musicxml/";
 
+	private void writeOrFail(MusicXmlWriter writer) {
+		try {
+			writer.write();
+		} catch (IOException e) {
+			fail("Writing score failed with exception " + e);
+		}
+	}
+
 	private Score readMusicXmlTestFile(String testFileName, boolean validate) {
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
 		Score score = null;
@@ -69,7 +77,7 @@ public class StaxScoreWriterTest {
 	private Score writeAndReadScore(Score score) {
 		Path file = temporaryDirectory.resolve("file.musicxml");
 		MusicXmlWriter writer = new StaxScoreWriter(score, file);
-		writer.write();
+		writeOrFail(writer);
 
 		Score writtenScore = null;
 
@@ -219,7 +227,7 @@ public class StaxScoreWriterTest {
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
 		MusicXmlWriter writer = new StaxScoreWriter(score, filePath);
-		writer.write();
+		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
 		final Node partNode = document.getElementsByTagName(Tags.PART).item(0);
@@ -258,7 +266,7 @@ public class StaxScoreWriterTest {
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
 		MusicXmlWriter writer = new StaxScoreWriter(score, filePath);
-		writer.write();
+		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
 		final Node partNode = document.getElementsByTagName(Tags.PART).item(0);
@@ -295,7 +303,7 @@ public class StaxScoreWriterTest {
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
 		MusicXmlWriter writer = new StaxScoreWriter(score, filePath);
-		writer.write();
+		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
 		final Node partNode = document.getElementsByTagName(Tags.PART).item(0);
@@ -368,7 +376,7 @@ public class StaxScoreWriterTest {
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
 		MusicXmlWriter writer = new StaxScoreWriter(score, filePath);
-		writer.write();
+		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
 
