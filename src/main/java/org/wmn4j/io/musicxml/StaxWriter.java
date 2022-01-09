@@ -51,9 +51,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-final class StaxScoreWriter implements MusicXmlWriter {
+final class StaxWriter implements MusicXmlWriter {
 
-	private static final Logger LOG = LoggerFactory.getLogger(StaxScoreWriter.class);
+	private static final Logger LOG = LoggerFactory.getLogger(StaxWriter.class);
 
 	private final Score score;
 	private final Path path;
@@ -74,7 +74,7 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		}
 	}
 
-	StaxScoreWriter(Score score, Path path) {
+	StaxWriter(Score score, Path path) {
 		this.score = score;
 		this.path = path;
 		this.divisions = computeDivisions(score.partwiseIterator());

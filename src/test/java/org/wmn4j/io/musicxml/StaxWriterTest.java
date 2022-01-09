@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class StaxScoreWriterTest {
+public class StaxWriterTest {
 
 	@TempDir
 	Path temporaryDirectory;
@@ -76,7 +76,7 @@ public class StaxScoreWriterTest {
 
 	private Score writeAndReadScore(Score score) {
 		Path file = temporaryDirectory.resolve("file.musicxml");
-		MusicXmlWriter writer = new StaxScoreWriter(score, file);
+		MusicXmlWriter writer = new StaxWriter(score, file);
 		writeOrFail(writer);
 
 		Score writtenScore = null;
@@ -226,7 +226,7 @@ public class StaxScoreWriterTest {
 		final Score score = readMusicXmlTestFile("basic_duration_appearances.musicxml", false);
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		MusicXmlWriter writer = new StaxScoreWriter(score, filePath);
+		MusicXmlWriter writer = new StaxWriter(score, filePath);
 		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -265,7 +265,7 @@ public class StaxScoreWriterTest {
 		final Score score = readMusicXmlTestFile("basic_dotted_duration_appearances.musicxml", false);
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		MusicXmlWriter writer = new StaxScoreWriter(score, filePath);
+		MusicXmlWriter writer = new StaxWriter(score, filePath);
 		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -302,7 +302,7 @@ public class StaxScoreWriterTest {
 		final Score score = readMusicXmlTestFile("tuplet_writing_test.musicxml", false);
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		MusicXmlWriter writer = new StaxScoreWriter(score, filePath);
+		MusicXmlWriter writer = new StaxWriter(score, filePath);
 		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -375,7 +375,7 @@ public class StaxScoreWriterTest {
 		writeAndReadScore(score);
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		MusicXmlWriter writer = new StaxScoreWriter(score, filePath);
+		MusicXmlWriter writer = new StaxWriter(score, filePath);
 		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);

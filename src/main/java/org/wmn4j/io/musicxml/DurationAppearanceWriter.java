@@ -59,7 +59,7 @@ enum DurationAppearanceWriter {
 
 		// Add dots
 		for (int i = 0; i < dotCount; ++i) {
-			StaxScoreWriter.writeValue(writer, Tags.DOT, "");
+			StaxWriter.writeValue(writer, Tags.DOT, "");
 		}
 	}
 
@@ -80,10 +80,10 @@ enum DurationAppearanceWriter {
 
 			writer.writeStartElement(Tags.TIME_MODIFICATION);
 
-			StaxScoreWriter.writeValue(writer, Tags.ACTUAL_NOTES,
+			StaxWriter.writeValue(writer, Tags.ACTUAL_NOTES,
 					Integer.toString(tupletNotesThatFitInTheDividedDuration));
 
-			StaxScoreWriter.writeValue(writer, Tags.NORMAL_NOTES,
+			StaxWriter.writeValue(writer, Tags.NORMAL_NOTES,
 					Integer.toString(normalNotesThatWouldFitInTheSplitDuration));
 
 			writer.writeEndElement();
@@ -109,7 +109,7 @@ enum DurationAppearanceWriter {
 	private void writeDurationType(XMLStreamWriter writer, Duration duration) throws XMLStreamException {
 		String type = basicDurationAppearances.get(duration);
 		if (type != null && !type.isBlank()) {
-			StaxScoreWriter.writeValue(writer, Tags.TYPE, type);
+			StaxWriter.writeValue(writer, Tags.TYPE, type);
 		}
 	}
 }
