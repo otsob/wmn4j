@@ -22,6 +22,8 @@ import java.util.Objects;
 
 /**
  * Transforms for transforming wmn4j objects from values parsed from MusicXML.
+ * <p>
+ * NOTE: Many of the methods in this class/namespace may return null.
  */
 final class Transforms {
 
@@ -165,24 +167,45 @@ final class Transforms {
 		return KeySignatures.CMAJ_AMIN;
 	}
 
+	static String timeSignatureTypeToString(TimeSignature.Symbol symbol) {
+
+		switch (symbol) {
+			case COMMON:
+				return Tags.COMMON;
+			case CUT_TIME:
+				return Tags.CUT;
+			case BEAT_NUMBER_ONLY:
+				return Tags.SINGLE_NUMBER;
+			case BEAT_DURATION_AS_NOTE:
+				return Tags.NOTE;
+			case BEAT_DURATION_AS_DOTTED_NOTE:
+				return Tags.DOTTED_NOTE;
+			case NUMERIC: // Fall through to default
+			default:
+				// Do not set symbol if NUMERIC
+		}
+
+		return null;
+	}
+
 	static Barline barStyleToBarline(String barStyleString, String repeatString) {
 		switch (barStyleString) {
-			case MusicXmlTags.BARLINE_STYLE_DASHED:
+			case Tags.DASHED:
 				return Barline.DASHED;
-			case MusicXmlTags.BARLINE_STYLE_HEAVY:
+			case Tags.HEAVY:
 				return Barline.THICK;
-			case MusicXmlTags.BARLINE_STYLE_HEAVY_LIGHT:
+			case Tags.HEAVY_LIGHT:
 				return Barline.REPEAT_LEFT;
-			case MusicXmlTags.BARLINE_STYLE_INVISIBLE:
+			case Tags.NONE:
 				return Barline.INVISIBLE;
-			case MusicXmlTags.BARLINE_STYLE_LIGHT_HEAVY: {
+			case Tags.LIGHT_HEAVY: {
 				if (Objects.equals(repeatString, Tags.BACKWARD)) {
 					return Barline.REPEAT_RIGHT;
 				} else {
 					return Barline.FINAL;
 				}
 			}
-			case MusicXmlTags.BARLINE_STYLE_LIGHT_LIGHT:
+			case Tags.LIGHT_LIGHT:
 				return Barline.DOUBLE;
 			default:
 				return Barline.SINGLE;
@@ -192,16 +215,16 @@ final class Transforms {
 	static Clef.Symbol signToClefSymbol(String clefSign) {
 		Clef.Symbol type;
 		switch (clefSign) {
-			case MusicXmlTags.CLEF_F:
+			case Tags.F:
 				type = Clef.Symbol.F;
 				break;
-			case MusicXmlTags.CLEF_C:
+			case Tags.C:
 				type = Clef.Symbol.C;
 				break;
-			case MusicXmlTags.CLEF_PERC:
+			case Tags.PERCUSSION:
 				type = Clef.Symbol.PERCUSSION;
 				break;
-			case MusicXmlTags.CLEF_G: // Fall through
+			case Tags.G: // Fall through
 			default:
 				type = Clef.Symbol.G;
 				break;
@@ -343,6 +366,109 @@ final class Transforms {
 				return Duration.of(4, 1);
 			case Tags.NOTE_MAXIMA:
 				return Duration.of(8, 1);
+			default:
+				return null;
+		}
+	}
+
+	static String clefSymbolToString(Clef.Symbol symbol) {
+		switch (symbol) {
+			case G:
+				return Tags.G;
+			case F:
+				return Tags.F;
+			case C:
+				return Tags.C;
+			case PERCUSSION:
+				return Tags.PERCUSSION;
+			default:
+				throw new IllegalStateException("Unexpected clef symbol: " + symbol);
+		}
+	}
+
+	static String barlineStyleToString(Barline barline) {
+		switch (barline) {
+			case SINGLE:
+				return Tags.REGULAR;
+			case DOUBLE:
+				return Tags.LIGHT_LIGHT;
+			case REPEAT_LEFT:
+				return Tags.HEAVY_LIGHT;
+			case REPEAT_RIGHT: // Fall through
+			case FINAL:
+				return Tags.LIGHT_HEAVY;
+			case DASHED:
+				return Tags.DASHED;
+			case THICK:
+				return Tags.HEAVY;
+			case INVISIBLE:  // Fall through
+			case NONE:
+				return Tags.NONE;
+			default:
+				throw new IllegalStateException("Unexpected barline type: " + barline);
+		}
+	}
+
+	static String articulationToTag(Articulation articulation) {
+		switch (articulation) {
+			case ACCENT:
+				return Tags.ACCENT;
+			case BREATH_MARK:
+				return Tags.BREATH_MARK;
+			case CAESURA:
+				return Tags.CAESURA;
+			case SLIDE_IN_DOWN:
+				return Tags.PLOP;
+			case SLIDE_IN_UP:
+				return Tags.SCOOP;
+			case SLIDE_OUT_DOWN:
+				return Tags.FALLOFF;
+			case SLIDE_OUT_UP:
+				return Tags.DOIT;
+			case SPICCATO:
+				return Tags.SPICCATO;
+			case STACCATISSIMO:
+				return Tags.STACCATISSIMO;
+			case STACCATO:
+				return Tags.STACCATO;
+			case STRESS:
+				return Tags.STRESS;
+			case STRONG_ACCENT:
+				return Tags.STRONG_ACCENT;
+			case TENUTO:
+				return Tags.TENUTO;
+			case TENUTO_STACCATO:
+				return Tags.DETACHED_LEGATO;
+			case UNSTRESS:
+				return Tags.UNSTRESS;
+			case FERMATA:
+				// Fermata is not treated as an articulation in MusicXml, so fermatas ar handled elsewhere.
+				// Fall through to null
+			default:
+				return null;
+		}
+	}
+
+	static String ornamentToTag(Ornament.Type ornamentType) {
+		switch (ornamentType) {
+			case DELAYED_INVERTED_TURN:
+				return Tags.DELAYED_INVERTED_TURN;
+			case DELAYED_TURN:
+				return Tags.DELAYED_TURN;
+			case INVERTED_MORDENT:
+				return Tags.INVERTED_MORDENT;
+			case INVERTED_TURN:
+				return Tags.INVERTED_TURN;
+			case MORDENT:
+				return Tags.MORDENT;
+			case SINGLE_TREMOLO: // Fall through
+			case DOUBLE_TREMOLO: // Fall through
+			case TRIPLE_TREMOLO:
+				return Tags.TREMOLO;
+			case TRILL:
+				return Tags.TRILL_MARK;
+			case TURN:
+				return Tags.TURN;
 			default:
 				return null;
 		}

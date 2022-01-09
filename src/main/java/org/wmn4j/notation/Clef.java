@@ -59,7 +59,7 @@ public final class Clef {
 	}
 
 	private final Symbol symbol;
-	// The the center of the clef counted from bottom.
+	// The center of the clef counted from bottom.
 	private final int line;
 
 	/**

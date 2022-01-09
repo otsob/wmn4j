@@ -12,6 +12,8 @@ import java.io.IOException;
 /**
  * Represents a reader for music notation files. The only supported file type is MusicXML.
  * <p>
+ * ScoreReader implementations are expected to be single use: for reading separate scores,
+ * separate instances need to be used.
  * Implementations of this interface are not guaranteed to be thread-safe.
  */
 public interface ScoreReader extends Closeable {
