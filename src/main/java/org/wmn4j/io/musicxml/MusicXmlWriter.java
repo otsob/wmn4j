@@ -6,6 +6,8 @@ package org.wmn4j.io.musicxml;
 import org.wmn4j.io.ScoreWriter;
 import org.wmn4j.notation.Score;
 
+import java.nio.file.Path;
+
 /**
  * Represents a writer for MusicXML files.
  * <p>
@@ -14,12 +16,13 @@ import org.wmn4j.notation.Score;
 public interface MusicXmlWriter extends ScoreWriter {
 
 	/**
-	 * Returns an instance of a writer for the given {@link Score}.
+	 * Returns an instance of a writer for the given {@link Score} and path.
 	 *
 	 * @param score the score for which the writer is created
+	 * @param path  the path to which the MusicXML file is written
 	 * @return an instance of a writer for the given {@link Score}
 	 */
-	static MusicXmlWriter writerFor(Score score) {
-		return new StaxScoreWriter(score);
+	static MusicXmlWriter writerFor(Score score, Path path) {
+		return new StaxScoreWriter(score, path);
 	}
 }

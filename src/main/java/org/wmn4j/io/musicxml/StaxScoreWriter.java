@@ -56,6 +56,7 @@ final class StaxScoreWriter implements MusicXmlWriter {
 	private static final Logger LOG = LoggerFactory.getLogger(StaxScoreWriter.class);
 
 	private final Score score;
+	private final Path path;
 	private final List<String> partIds = new ArrayList<>();
 	private XMLStreamWriter writer;
 	private final int divisions;
@@ -71,8 +72,9 @@ final class StaxScoreWriter implements MusicXmlWriter {
 		}
 	}
 
-	StaxScoreWriter(Score score) {
+	StaxScoreWriter(Score score, Path path) {
 		this.score = score;
+		this.path = path;
 		this.divisions = computeDivisions(score.partwiseIterator());
 	}
 
@@ -87,7 +89,7 @@ final class StaxScoreWriter implements MusicXmlWriter {
 	}
 
 	@Override
-	public void write(Path path) {
+	public void write() {
 
 		try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path.toString()))) {
 

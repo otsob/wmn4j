@@ -67,9 +67,9 @@ public class StaxScoreWriterTest {
 	}
 
 	private Score writeAndReadScore(Score score) {
-		MusicXmlWriter writer = new StaxScoreWriter(score);
 		Path file = temporaryDirectory.resolve("file.musicxml");
-		writer.write(file);
+		MusicXmlWriter writer = new StaxScoreWriter(score, file);
+		writer.write();
 
 		Score writtenScore = null;
 
@@ -217,9 +217,9 @@ public class StaxScoreWriterTest {
 	void testWritingBasicNoteAppearances() {
 		final Score score = readMusicXmlTestFile("basic_duration_appearances.musicxml", false);
 
-		MusicXmlWriter writer = new StaxScoreWriter(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		writer.write(filePath);
+		MusicXmlWriter writer = new StaxScoreWriter(score, filePath);
+		writer.write();
 
 		final Document document = TestHelper.readDocument(filePath);
 		final Node partNode = document.getElementsByTagName(Tags.PART).item(0);
@@ -256,9 +256,9 @@ public class StaxScoreWriterTest {
 	void testWritingBasicDottedNoteAppearances() {
 		final Score score = readMusicXmlTestFile("basic_dotted_duration_appearances.musicxml", false);
 
-		MusicXmlWriter writer = new StaxScoreWriter(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		writer.write(filePath);
+		MusicXmlWriter writer = new StaxScoreWriter(score, filePath);
+		writer.write();
 
 		final Document document = TestHelper.readDocument(filePath);
 		final Node partNode = document.getElementsByTagName(Tags.PART).item(0);
@@ -293,9 +293,9 @@ public class StaxScoreWriterTest {
 	void testWritingTupletAppearances() {
 		final Score score = readMusicXmlTestFile("tuplet_writing_test.musicxml", false);
 
-		MusicXmlWriter writer = new StaxScoreWriter(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		writer.write(filePath);
+		MusicXmlWriter writer = new StaxScoreWriter(score, filePath);
+		writer.write();
 
 		final Document document = TestHelper.readDocument(filePath);
 		final Node partNode = document.getElementsByTagName(Tags.PART).item(0);
@@ -366,9 +366,9 @@ public class StaxScoreWriterTest {
 		// Check that score is valid MusicXML
 		writeAndReadScore(score);
 
-		MusicXmlWriter writer = new StaxScoreWriter(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		writer.write(filePath);
+		MusicXmlWriter writer = new StaxScoreWriter(score, filePath);
+		writer.write();
 
 		final Document document = TestHelper.readDocument(filePath);
 
