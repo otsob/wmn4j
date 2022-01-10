@@ -5,7 +5,9 @@ package org.wmn4j.mir;
 
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Durational;
+import org.wmn4j.notation.Score;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +101,17 @@ public interface Pattern extends Iterable<Durational> {
 	 */
 	static Pattern of(Map<Integer, List<? extends Durational>> voices) {
 		return new PolyphonicPattern(voices);
+	}
+
+	/**
+	 * Returns a {@link Score} with contents concatenated from
+	 * the given patterns.
+	 *
+	 * @param patterns the patterns that are concatenated to form the contents of the score
+	 * @return a score with the contents of the given patterns
+	 */
+	static Score toScore(Collection<Pattern> patterns) {
+		return new PatternsToScoreConverter(patterns).convert();
 	}
 
 	/**
@@ -233,4 +246,5 @@ public interface Pattern extends Iterable<Durational> {
 	 * @return the number of durational notation elements in this pattern
 	 */
 	int size();
+
 }
