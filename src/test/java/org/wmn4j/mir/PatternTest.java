@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class PatternTest {
 
 	@Test
-	public void testCreatingPatternFromList() {
+	void testCreatingPatternFromList() {
 		final Note noteC = Note.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4, Durations.HALF);
 		final Note noteD = Note.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4, Durations.HALF);
 		final Note noteE = Note.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4, Durations.QUARTER);
@@ -66,7 +66,7 @@ public class PatternTest {
 	}
 
 	@Test
-	public void testCreatingPatternFromMap() {
+	void testCreatingPatternFromMap() {
 		final Map<Integer, List<? extends Durational>> voices = new HashMap<>();
 		List<Durational> voice1 = new ArrayList<>();
 		voice1.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH));
