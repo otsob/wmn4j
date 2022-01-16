@@ -11,6 +11,7 @@ import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.access.Position;
 import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +38,18 @@ public final class PointSet<T extends Point<T>> {
 	 * @param score the score from which the point set is created
 	 * @return 2 dimensional point set created for the given score
 	 */
-	public static PointSet<Point2D> fromScore(Score score) {
-		final PositionalIterator positionalIterator = score.partwiseIterator();
+	public static PointSet<Point2D> from(Score score) {
+		return from(score.toSelection());
+	}
+
+	/**
+	 * Returns a 2 dimensional point set (with double components) created for the given selection.
+	 *
+	 * @param selection the selection from which the point set is created
+	 * @return 2 dimensional point set created for the given selection
+	 */
+	public static PointSet<Point2D> from(Selection selection) {
+		final PositionalIterator positionalIterator = selection.partwiseIterator();
 		Position prevPos = null;
 		double fullMeasuresOffset = 0.0;
 		double offsetWithinMeasure = 0.0;
@@ -56,8 +67,9 @@ public final class PointSet<T extends Point<T>> {
 				offsetWithinMeasure = 0.0;
 			} else if (prevPos != null && prevPos.getMeasureNumber() != pos.getMeasureNumber()) {
 				// Measure changes.
-				final Measure prevMeasure = score.getPart(prevPos.getPartIndex()).getMeasure(prevPos.getStaffNumber(),
-						prevPos.getMeasureNumber());
+				final Measure prevMeasure = selection.getPart(prevPos.getPartIndex())
+						.getMeasure(prevPos.getStaffNumber(),
+								prevPos.getMeasureNumber());
 				final double prevMeasureDuration = prevMeasure.getTimeSignature().getTotalDuration().toDouble();
 				fullMeasuresOffset += prevMeasureDuration;
 				offsetWithinMeasure = 0.0;

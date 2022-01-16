@@ -51,7 +51,7 @@ public final class GeometricPatternDiscovery implements PatternDiscovery {
 			throw new IllegalArgumentException("Compression ratio must be non-negative, was " + compressionRatio);
 		}
 
-		final PointSet<Point2D> pointSet = PointSet.fromScore(score);
+		final PointSet<Point2D> pointSet = PointSet.from(score);
 		final var tecs = Siatechf.computeMtpTecs(pointSet, compressionRatio);
 		final Collection<Collection<PatternPosition>> allPatterns = new ArrayList<>(tecs.size());
 		for (var tec : tecs) {

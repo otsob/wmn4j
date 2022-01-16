@@ -10,6 +10,7 @@ import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.TimeSignatures;
 import org.wmn4j.notation.access.Position;
+import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class PointSetTest {
 		final Score score = TestHelper.readScore("musicxml/pattern_discovery/basic_point_set_test.musicxml");
 		assertNotNull(score);
 
-		final PointSet<Point2D> pointSet = PointSet.fromScore(score);
+		final PointSet<Point2D> pointSet = PointSet.from(score);
 		assertEquals(13, pointSet.size());
 
 		final List<Point2D> expectedVectors = getExpectedVectorsForBasicTest();
@@ -94,7 +95,7 @@ public class PointSetTest {
 		final Score score = TestHelper.readScore("musicxml/pattern_discovery/basic_point_set_test.musicxml");
 		assertNotNull(score);
 
-		final PointSet<Point2D> pointSet = PointSet.fromScore(score);
+		final PointSet<Point2D> pointSet = PointSet.from(score);
 		assertEquals(13, pointSet.size());
 
 		final List<Point2D> expectedVectors = getExpectedVectorsForBasicTest();
@@ -153,7 +154,7 @@ public class PointSetTest {
 		final Score score = TestHelper.readScore("musicxml/pattern_discovery/multipart_point_set_test.musicxml");
 		assertNotNull(score);
 
-		final PointSet<Point2D> pointSet = PointSet.fromScore(score);
+		final PointSet<Point2D> pointSet = PointSet.from(score);
 		assertEquals(14, pointSet.size());
 
 		List<Point2D> expected = getExpectedVectorsForMultiPartTest();
@@ -179,7 +180,7 @@ public class PointSetTest {
 		final Score score = TestHelper.readScore("musicxml/pattern_discovery/multipart_point_set_test.musicxml");
 		assertNotNull(score);
 
-		final PointSet<Point2D> pointSet = PointSet.fromScore(score);
+		final PointSet<Point2D> pointSet = PointSet.from(score);
 		assertEquals(14, pointSet.size());
 
 		List<Point2D> expected = getExpectedVectorsForMultiPartTest();
@@ -200,5 +201,24 @@ public class PointSetTest {
 		assertEquals(new Position(1, 2, 1, 1), pointSet.getPosition(expected.get(11)).get());
 		assertEquals(new Position(2, 2, 1, 1), pointSet.getPosition(expected.get(12)).get());
 		assertEquals(new Position(0, 2, 1, 1), pointSet.getPosition(expected.get(13)).get());
+	}
+
+	@Test
+	void testGivenSelectionWithMultiplePartsPointSetHasCorrectPoints() {
+		final Score score = TestHelper.readScore("musicxml/pattern_discovery/multipart_point_set_test.musicxml");
+		assertNotNull(score);
+
+		final Selection selection = score.selectRange(2, 2);
+
+		final PointSet<Point2D> pointSet = PointSet.from(selection);
+		assertEquals(5, pointSet.size());
+
+		List<Point2D> expected = getExpectedVectorsForMultiPartTest();
+
+		assertEquals(new Point2D(0.0, Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 2).toInt()), pointSet.get(0));
+		assertEquals(new Point2D(0.25, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 3).toInt()), pointSet.get(1));
+		assertEquals(new Point2D(0.25, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4).toInt()), pointSet.get(2));
+		assertEquals(new Point2D(0.25, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4).toInt()), pointSet.get(3));
+		assertEquals(new Point2D(0.25, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5).toInt()), pointSet.get(4));
 	}
 }
