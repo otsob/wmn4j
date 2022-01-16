@@ -7,11 +7,18 @@
  */
 package org.wmn4j.representation.geometric;
 
+import org.wmn4j.mir.Pattern;
+import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.Durational;
+import org.wmn4j.notation.Note;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -36,6 +43,42 @@ public final class PointPattern<T extends Point<T>> implements Iterable<T> {
 	public PointPattern(List<T> points) {
 		this.points = points;
 		this.hash = computeHash();
+	}
+
+	/**
+	 * Returns a point pattern created from the given {@link Pattern}.
+	 *
+	 * @param pattern the pattern from which the point pattern is created
+	 * @return a point pattern created from the given {@link Pattern}
+	 */
+	public static PointPattern<Point2D> from(Pattern pattern) {
+		return new PointPattern<>(patternToPoints(pattern));
+	}
+
+	private static List<Point2D> patternToPoints(Pattern pattern) {
+		Set<Point2D> points = new HashSet<>();
+
+		for (var voice : pattern.getVoiceNumbers()) {
+			double offset = 0.0;
+			for (Durational dur : pattern.getVoice(voice)) {
+
+				if (dur instanceof Note) {
+					final Point2D point = new Point2D(offset, ((Note) dur).getPitch().toInt());
+					points.add(point);
+				} else if (dur instanceof Chord) {
+					final Chord chord = (Chord) dur;
+					for (Note note : chord) {
+						final Point2D point = new Point2D(offset, note.getPitch().toInt());
+						points.add(point);
+					}
+				}
+
+				offset += dur.getDuration().toDouble();
+			}
+		}
+		List<Point2D> sortedPoints = new ArrayList<>(points);
+		Collections.sort(sortedPoints);
+		return sortedPoints;
 	}
 
 	/**
