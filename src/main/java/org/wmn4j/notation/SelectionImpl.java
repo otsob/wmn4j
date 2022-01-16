@@ -97,6 +97,11 @@ final class SelectionImpl implements Selection {
 	}
 
 	@Override
+	public Part getPart(int index) {
+		return score.getPart(index);
+	}
+
+	@Override
 	public PositionalIterator partwiseIterator() {
 		return new PartwisePositionalIterator(this.score, this.first, this.last, this.partIndices);
 	}
