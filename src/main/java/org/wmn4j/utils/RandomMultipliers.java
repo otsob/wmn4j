@@ -1,7 +1,11 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.mir.discovery;
+
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
+package org.wmn4j.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +15,10 @@ import java.util.Random;
  * Generates and caches random multipliers for use in hash functions.
  * NOTE: This class is not thread-safe.
  */
-enum RandomMultipliers {
+public enum RandomMultipliers {
+	/**
+	 * The singleton instance of this class.
+	 */
 	INSTANCE;
 
 	private static final int INCREMENT = 50;
@@ -38,7 +45,7 @@ enum RandomMultipliers {
 	 * @param index the index of the multiplier
 	 * @return a random multiplier at the given index
 	 */
-	long getMultiplier(int index) {
+	public long getMultiplier(int index) {
 
 		while (this.multipliers.size() < index + INCREMENT) {
 			this.generateMultipliers(INCREMENT);

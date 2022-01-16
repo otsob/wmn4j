@@ -43,12 +43,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-class MusicXmlScoreWriterDomTest {
+public class StaxWriterTest {
 
 	@TempDir
 	Path temporaryDirectory;
 
 	private final String MUSICXML_FILE_PATH = "musicxml/";
+
+	private void writeOrFail(MusicXmlWriter writer) {
+		try (writer) {
+			writer.write();
+		} catch (IOException e) {
+			fail("Writing score failed with exception " + e);
+		}
+	}
 
 	private Score readMusicXmlTestFile(String testFileName, boolean validate) {
 		final Path path = Paths.get(TestHelper.TESTFILE_PATH + MUSICXML_FILE_PATH + testFileName);
@@ -67,9 +75,9 @@ class MusicXmlScoreWriterDomTest {
 	}
 
 	private Score writeAndReadScore(Score score) {
-		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path file = temporaryDirectory.resolve("file.musicxml");
-		writer.write(file);
+		MusicXmlWriter writer = new StaxWriter(score, file);
+		writeOrFail(writer);
 
 		Score writtenScore = null;
 
@@ -217,19 +225,19 @@ class MusicXmlScoreWriterDomTest {
 	void testWritingBasicNoteAppearances() {
 		final Score score = readMusicXmlTestFile("basic_duration_appearances.musicxml", false);
 
-		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		writer.write(filePath);
+		MusicXmlWriter writer = new StaxWriter(score, filePath);
+		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
-		final Node partNode = document.getElementsByTagName(MusicXmlTags.PART).item(0);
+		final Node partNode = document.getElementsByTagName(Tags.PART).item(0);
 		assertNotNull(partNode);
 
-		final Optional<Node> measureNode = DocHelper.findChild(partNode, MusicXmlTags.MEASURE);
+		final Optional<Node> measureNode = DocHelper.findChild(partNode, Tags.MEASURE);
 		assertTrue(measureNode.isPresent());
 
-		final List<Node> noteNodes = DocHelper.findChildren(measureNode.get(), MusicXmlTags.NOTE).stream()
-				.filter(node -> DocHelper.findChild(node, MusicXmlTags.NOTE_REST).isEmpty())
+		final List<Node> noteNodes = DocHelper.findChildren(measureNode.get(), Tags.NOTE).stream()
+				.filter(node -> DocHelper.findChild(node, Tags.REST).isEmpty())
 				.collect(Collectors.toList());
 
 		assertEquals(8, noteNodes.size(), "Wrong number of note notes found in written test document");
@@ -245,7 +253,7 @@ class MusicXmlScoreWriterDomTest {
 	}
 
 	private void assertNoteNodeDurationTypeElement(String expectedDurationTypeText, Node noteNode) {
-		final List<Node> durationTypeNodes = DocHelper.findChildren(noteNode, MusicXmlTags.NOTE_DURATION_TYPE);
+		final List<Node> durationTypeNodes = DocHelper.findChildren(noteNode, Tags.TYPE);
 		assertEquals(1, durationTypeNodes.size());
 
 		final Node durationTypeNode = durationTypeNodes.get(0);
@@ -256,19 +264,19 @@ class MusicXmlScoreWriterDomTest {
 	void testWritingBasicDottedNoteAppearances() {
 		final Score score = readMusicXmlTestFile("basic_dotted_duration_appearances.musicxml", false);
 
-		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		writer.write(filePath);
+		MusicXmlWriter writer = new StaxWriter(score, filePath);
+		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
-		final Node partNode = document.getElementsByTagName(MusicXmlTags.PART).item(0);
+		final Node partNode = document.getElementsByTagName(Tags.PART).item(0);
 		assertNotNull(partNode);
 
-		final Optional<Node> measureNode = DocHelper.findChild(partNode, MusicXmlTags.MEASURE);
+		final Optional<Node> measureNode = DocHelper.findChild(partNode, Tags.MEASURE);
 		assertTrue(measureNode.isPresent());
 
-		final List<Node> noteNodes = DocHelper.findChildren(measureNode.get(), MusicXmlTags.NOTE).stream()
-				.filter(node -> DocHelper.findChild(node, MusicXmlTags.NOTE_REST).isEmpty())
+		final List<Node> noteNodes = DocHelper.findChildren(measureNode.get(), Tags.NOTE).stream()
+				.filter(node -> DocHelper.findChild(node, Tags.REST).isEmpty())
 				.collect(Collectors.toList());
 
 		assertEquals(8, noteNodes.size(), "Wrong number of note notes found in written test document");
@@ -285,7 +293,7 @@ class MusicXmlScoreWriterDomTest {
 
 	private void assertBasicDottedNoteAppearance(String expectedDurationTypeText, Node noteNode) {
 		assertNoteNodeDurationTypeElement(expectedDurationTypeText, noteNode);
-		List<Node> dotNodes = DocHelper.findChildren(noteNode, MusicXmlTags.DOT);
+		List<Node> dotNodes = DocHelper.findChildren(noteNode, Tags.DOT);
 		assertEquals(1, dotNodes.size(), "Incorrect number of dot nodes");
 	}
 
@@ -293,19 +301,19 @@ class MusicXmlScoreWriterDomTest {
 	void testWritingTupletAppearances() {
 		final Score score = readMusicXmlTestFile("tuplet_writing_test.musicxml", false);
 
-		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		writer.write(filePath);
+		MusicXmlWriter writer = new StaxWriter(score, filePath);
+		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
-		final Node partNode = document.getElementsByTagName(MusicXmlTags.PART).item(0);
+		final Node partNode = document.getElementsByTagName(Tags.PART).item(0);
 		assertNotNull(partNode);
 
-		final Optional<Node> measureNode = DocHelper.findChild(partNode, MusicXmlTags.MEASURE);
+		final Optional<Node> measureNode = DocHelper.findChild(partNode, Tags.MEASURE);
 		assertTrue(measureNode.isPresent());
 
-		final List<Node> noteNodes = DocHelper.findChildren(measureNode.get(), MusicXmlTags.NOTE).stream()
-				.filter(node -> DocHelper.findChild(node, MusicXmlTags.NOTE_REST).isEmpty())
+		final List<Node> noteNodes = DocHelper.findChildren(measureNode.get(), Tags.NOTE).stream()
+				.filter(node -> DocHelper.findChild(node, Tags.REST).isEmpty())
 				.collect(Collectors.toList());
 
 		assertEquals(15, noteNodes.size());
@@ -333,19 +341,19 @@ class MusicXmlScoreWriterDomTest {
 			int expectedActualNotesNumber, int expectedNormalNotesNumber) {
 
 		assertNoteNodeDurationTypeElement(expectedDurationTypeText, noteNode);
-		final List<Node> timeModificationNodes = DocHelper.findChildren(noteNode, MusicXmlTags.TIME_MODIFICATION);
+		final List<Node> timeModificationNodes = DocHelper.findChildren(noteNode, Tags.TIME_MODIFICATION);
 		assertEquals(1, timeModificationNodes.size(), "Found incorrect number of time-modification nodes");
 
 		final Node timeModification = timeModificationNodes.get(0);
 
 		final List<Node> actualNotesNodes = DocHelper
-				.findChildren(timeModification, MusicXmlTags.TIME_MODIFICATION_ACTUAL_NOTES);
+				.findChildren(timeModification, Tags.ACTUAL_NOTES);
 		assertEquals(1, actualNotesNodes.size(), "Found incorrect number of actual-notes nodes");
 		assertEquals(expectedActualNotesNumber, Integer.parseInt(actualNotesNodes.get(0).getTextContent()),
 				"Incorrect value for actual-notes");
 
 		final List<Node> normalNotesNodes = DocHelper
-				.findChildren(timeModification, MusicXmlTags.TIME_MODIFICATION_NORMAL_NOTES);
+				.findChildren(timeModification, Tags.NORMAL_NOTES);
 		assertEquals(1, normalNotesNodes.size(), "Found incorrect number of normal-notes nodes");
 		assertEquals(expectedNormalNotesNumber, Integer.parseInt(normalNotesNodes.get(0).getTextContent()),
 				"Incorrect value for normal-notes");
@@ -366,23 +374,23 @@ class MusicXmlScoreWriterDomTest {
 		// Check that score is valid MusicXML
 		writeAndReadScore(score);
 
-		MusicXmlWriter writer = new MusicXmlScoreWriterDom(score);
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		writer.write(filePath);
+		MusicXmlWriter writer = new StaxWriter(score, filePath);
+		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
 
-		final Node identificationElement = document.getElementsByTagName(MusicXmlTags.SCORE_IDENTIFICATION).item(0);
+		final Node identificationElement = document.getElementsByTagName(Tags.IDENTIFICATION).item(0);
 		assertNotNull(identificationElement, "Missing identification element entirely");
 
-		final Optional<Node> encodingElement = DocHelper.findChild(identificationElement, MusicXmlTags.ENCODING);
+		final Optional<Node> encodingElement = DocHelper.findChild(identificationElement, Tags.ENCODING);
 		assertTrue(encodingElement.isPresent(), "Missing encoding element");
 
-		final Optional<Node> softwareElement = DocHelper.findChild(encodingElement.get(), MusicXmlTags.SOFTWARE);
+		final Optional<Node> softwareElement = DocHelper.findChild(encodingElement.get(), Tags.SOFTWARE);
 		assertTrue(softwareElement.isPresent(), "Missing software element");
 		assertEquals(Wmn4j.getNameWithVersion(), softwareElement.get().getTextContent());
 
-		final Optional<Node> dateElement = DocHelper.findChild(encodingElement.get(), MusicXmlTags.ENCODING_DATE);
+		final Optional<Node> dateElement = DocHelper.findChild(encodingElement.get(), Tags.ENCODING_DATE);
 		assertTrue(dateElement.isPresent(), "Missing encoding date");
 
 		final DateFormat musicXmlDateFormat = new SimpleDateFormat("yyyy-MM-dd");

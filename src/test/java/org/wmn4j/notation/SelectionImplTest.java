@@ -65,7 +65,7 @@ class SelectionImplTest {
 	@Test
 	void givenSelectionOfFullScoreAllPositionsAreIterated() {
 		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getMeasureCount());
-		final PositionalIterator iterator = fullSelection.positionalIterator();
+		final PositionalIterator iterator = fullSelection.partwiseIterator();
 		final Set<Integer> measureNumbers = new HashSet<>();
 		int count = 0;
 		while (iterator.hasNext()) {
@@ -88,7 +88,7 @@ class SelectionImplTest {
 	@Test
 	void givenRangeOfScoreAllPositionsAreIterated() {
 		final Selection fullSelection = new SelectionImpl(testScore, 3, 5);
-		final PositionalIterator iterator = fullSelection.positionalIterator();
+		final PositionalIterator iterator = fullSelection.partwiseIterator();
 		final Set<Integer> measureNumbers = new HashSet<>();
 		int count = 0;
 		while (iterator.hasNext()) {
@@ -111,7 +111,7 @@ class SelectionImplTest {
 		partIndices.add(1);
 
 		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount(), partIndices);
-		final PositionalIterator iterator = fullSelection.positionalIterator();
+		final PositionalIterator iterator = fullSelection.partwiseIterator();
 		final Set<Integer> measureNumbers = new HashSet<>();
 		int count = 0;
 		while (iterator.hasNext()) {
@@ -163,7 +163,7 @@ class SelectionImplTest {
 		assertEquals(2, subSelection.getFirst());
 		assertEquals(3, subSelection.getLast());
 
-		final PositionalIterator iterator = subSelection.positionalIterator();
+		final PositionalIterator iterator = subSelection.partwiseIterator();
 		final Set<Integer> measureNumbers = new HashSet<>();
 		int count = 0;
 		while (iterator.hasNext()) {
@@ -188,7 +188,7 @@ class SelectionImplTest {
 		partIndices.add(1);
 		final Selection subSelection = fullSelection.subSelection(partIndices);
 
-		final PositionalIterator iterator = subSelection.positionalIterator();
+		final PositionalIterator iterator = subSelection.partwiseIterator();
 		final Set<Integer> measureNumbers = new HashSet<>();
 		int count = 0;
 		while (iterator.hasNext()) {
@@ -216,7 +216,7 @@ class SelectionImplTest {
 		partIndices.add(0);
 		final Selection subSelection = fullSelection.subSelection(partIndices).subSelection(2, 3);
 
-		final PositionalIterator iterator = subSelection.positionalIterator();
+		final PositionalIterator iterator = subSelection.partwiseIterator();
 		final Set<Integer> measureNumbers = new HashSet<>();
 		int count = 0;
 		while (iterator.hasNext()) {

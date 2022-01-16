@@ -95,8 +95,8 @@ public interface Part extends Iterable<Measure> {
 	int getMeasureCount();
 
 	/**
-	 * Returns the the number of complete measures. Does not include the measure
-	 * number if there is one.
+	 * Returns the number of complete measures. Does not include the pickup measure
+	 * if there is one.
 	 *
 	 * @return the number of measures excluding the pickup measure
 	 */

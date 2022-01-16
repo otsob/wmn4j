@@ -90,12 +90,15 @@ final class StaxReader implements MusicXmlReader {
 	private int currentAlter;
 	private int currentOctave;
 
-	private final NotationResolver notationResolver = new NotationResolver();
+	private boolean isClosed;
+
+	private final NotationReadResolver notationResolver = new NotationReadResolver();
 
 	StaxReader(Path path, boolean validate) {
 		this.path = Objects.requireNonNull(path);
 		this.validateInput = validate;
 		this.partBuilders = new HashMap<>();
+		this.isClosed = false;
 	}
 
 	@Override
@@ -123,13 +126,17 @@ final class StaxReader implements MusicXmlReader {
 
 	@Override
 	public void close() throws IOException {
-		try {
-			reader.close();
-		} catch (XMLStreamException e) {
-			throw new IOException("Failed to close reader");
-		}
+		if (!isClosed) {
+			isClosed = true;
 
-		inputStream.close();
+			try {
+				reader.close();
+			} catch (XMLStreamException e) {
+				throw new IOException("Failed to close reader");
+			}
+
+			inputStream.close();
+		}
 	}
 
 	private void fillScoreBuilder() throws IOException, ParsingFailureException, SAXException {
@@ -631,7 +638,8 @@ final class StaxReader implements MusicXmlReader {
 		final String arpeggioDirection = reader.getAttributeValue(null, Tags.DIRECTION);
 		final Notation.Type type = Transforms.stringToNotationType(notationTag, arpeggioDirection);
 		final Notation.Style style = Transforms.stringToNotationStyle(reader.getAttributeValue(null, Tags.LINE_TYPE));
-		final int notationNumber = NotationResolver.parseNotationNumber(reader.getAttributeValue(null, Tags.NUMBER));
+		final int notationNumber = NotationReadResolver.parseNotationNumber(
+				reader.getAttributeValue(null, Tags.NUMBER));
 		if (!(currentDurationalBuilder instanceof ConnectableBuilder)) {
 			LOG.warn("Trying to read connected notations when current builder is not of correct type");
 			return;

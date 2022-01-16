@@ -1,15 +1,18 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.mir.discovery;
+
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
+package org.wmn4j.representation.geometric;
+
+import org.wmn4j.utils.RandomMultipliers;
 
 /**
- * Vector representation of a note event. NoteEventVectors are
- * ordered lexicographically.
- * <p>
- * This class is immutable.
+ * A 2-dimensional note event point with double-type components.
  */
-final class NoteEventVector implements Comparable<NoteEventVector> {
+public final class Point2D implements Point<Point2D> {
 
 	private static final long HASH_MULTIPLIER_0 = RandomMultipliers.INSTANCE.getMultiplier(0);
 	private static final long HASH_MULTIPLIER_1 = RandomMultipliers.INSTANCE.getMultiplier(1);
@@ -24,14 +27,13 @@ final class NoteEventVector implements Comparable<NoteEventVector> {
 	 * The raw offset value is only used for computations internally. Comparisons and
 	 * hashes use the rounded offset value.
 	 */
-	private final double rawOffset;
-	private final double roundedOffset;
-	private final int pitch;
-	private final int part;
+	private final double rawOnset;
+	private final double roundedOnset;
+	private final double pitch;
 	private final int hash;
 
-	NoteEventVector(double offset, int pitch, int part) {
-		this.rawOffset = offset;
+	public Point2D(double offset, double pitch) {
+		this.rawOnset = offset;
 		/*
 		 * This rounding is necessary to ensure that values close to each other
 		 * are considered equal and produce the same hash.
@@ -40,54 +42,41 @@ final class NoteEventVector implements Comparable<NoteEventVector> {
 		 * offsets that duration values should produce, this is expected
 		 * to work well enough.
 		 */
-		this.roundedOffset = Math.round(rawOffset * ROUNDING_FACTOR) / ROUNDING_FACTOR;
+		this.roundedOnset = Math.round(rawOnset * ROUNDING_FACTOR) / ROUNDING_FACTOR;
 		this.pitch = pitch;
-		this.part = part;
 		this.hash = computeHash();
 	}
 
-	double getRoundedOffset() {
-		return roundedOffset;
-	}
-
-	int getPitch() {
-		return pitch;
-	}
-
-	int getPart() {
-		return part;
-	}
-
-	NoteEventVector add(NoteEventVector other) {
-		final double offsetSum = rawOffset + other.rawOffset;
-		final int pitchSum = pitch + other.getPitch();
-		final int partSum = part + other.getPart();
-
-		return new NoteEventVector(offsetSum, pitchSum, partSum);
-	}
-
-	NoteEventVector subtract(NoteEventVector other) {
-		final double offsetDifference = rawOffset - other.rawOffset;
-		final int pitchDifference = pitch - other.getPitch();
-		final int partDifference = part - other.getPart();
-
-		return new NoteEventVector(offsetDifference, pitchDifference, partDifference);
+	@Override
+	public int getDimensionality() {
+		return 2;
 	}
 
 	@Override
-	public int compareTo(NoteEventVector other) {
+	public Point2D add(Point2D other) {
+		final double offsetSum = rawOnset + other.rawOnset;
+		final double pitchSum = pitch + other.pitch;
 
-		final int offsetComparison = Double.compare(roundedOffset, other.roundedOffset);
+		return new Point2D(offsetSum, pitchSum);
+	}
+
+	@Override
+	public Point2D subtract(Point2D other) {
+		final double offsetDifference = rawOnset - other.rawOnset;
+		final double pitchDifference = pitch - other.pitch;
+
+		return new Point2D(offsetDifference, pitchDifference);
+	}
+
+	@Override
+	public int compareTo(Point2D other) {
+
+		final int offsetComparison = Double.compare(roundedOnset, other.roundedOnset);
 		if (offsetComparison != 0) {
 			return offsetComparison;
 		}
 
-		final int pitchComparison = Integer.compare(pitch, other.getPitch());
-		if (pitchComparison != 0) {
-			return pitchComparison;
-		}
-
-		return Integer.compare(part, other.getPart());
+		return Double.compare(pitch, other.pitch);
 	}
 
 	@Override
@@ -96,11 +85,11 @@ final class NoteEventVector implements Comparable<NoteEventVector> {
 			return true;
 		}
 
-		if (!(o instanceof NoteEventVector)) {
+		if (!(o instanceof Point2D)) {
 			return false;
 		}
 
-		final NoteEventVector other = (NoteEventVector) o;
+		final Point2D other = (Point2D) o;
 		return this.compareTo(other) == 0;
 	}
 
@@ -112,14 +101,17 @@ final class NoteEventVector implements Comparable<NoteEventVector> {
 		 */
 		long hash = HASH_MULTIPLIER_0;
 
-		final long bits = Double.doubleToRawLongBits(roundedOffset);
-		final int firstOffsetPart = (int) (bits >> 32);
+		final long offsetBits = Double.doubleToRawLongBits(roundedOnset);
+		final int firstOffsetPart = (int) (offsetBits >> 32);
 		hash += firstOffsetPart * HASH_MULTIPLIER_1;
-		final int secondOffsetPart = (int) bits;
+		final int secondOffsetPart = (int) offsetBits;
 		hash += secondOffsetPart * HASH_MULTIPLIER_2;
 
-		hash += pitch * HASH_MULTIPLIER_3;
-		hash += part * HASH_MULTIPLIER_4;
+		final long pitchBits = Double.doubleToRawLongBits(roundedOnset);
+		final int firstPitchPart = (int) (pitchBits >> 32);
+		hash += firstPitchPart * HASH_MULTIPLIER_3;
+		final int secondPitchPart = (int) pitchBits;
+		hash += secondPitchPart * HASH_MULTIPLIER_4;
 
 		return (int) hash;
 	}
@@ -133,8 +125,7 @@ final class NoteEventVector implements Comparable<NoteEventVector> {
 	public String toString() {
 		final StringBuilder strBuilder = new StringBuilder();
 		final String separator = ", ";
-		strBuilder.append("(").append(roundedOffset).append(separator).append(pitch).append(separator).append(part)
-				.append(")");
+		strBuilder.append("(").append(roundedOnset).append(separator).append(pitch).append(")");
 
 		return strBuilder.toString();
 	}

@@ -1,7 +1,11 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.mir.discovery;
+
+/*
+ * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
+ */
+package org.wmn4j.utils;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,10 +1,8 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-package org.wmn4j.io.musicxml;
+package org.wmn4j.mir;
 
-import org.w3c.dom.Element;
-import org.wmn4j.mir.Pattern;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Clef;
@@ -18,6 +16,7 @@ import org.wmn4j.notation.MeasureAttributes;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.Score;
 import org.wmn4j.notation.SingleStaffPart;
 import org.wmn4j.notation.Staff;
 import org.wmn4j.notation.TimeSignature;
@@ -26,48 +25,38 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
+class PatternsToScoreConverter {
 
 	private static final KeySignature DEFAULT_KEY_SIGNATURE = KeySignatures.CMAJ_AMIN;
 	private static final Barline PATTERN_ENDING_BARLINE = Barline.DOUBLE;
 	private static final Barline PATTERN_SEPARATING_BARLINE = Barline.INVISIBLE;
 	private static final String DEFAULT_SCORE_TITLE = "Patterns";
 	private static final String VOICE_NAME = "Voice";
-	private static final String ABBREVIATED_VOICE_NAME = "V";
 	private static final int MIDDLE_C_AS_INT = Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4).toInt();
 
 	private static final TimeSignature DEFAULT_TIME_SIGNATURE = TimeSignature.of(2, 1);
 	private static final Duration MEASURE_CUTOFF_DURATION = DEFAULT_TIME_SIGNATURE.getTotalDuration();
 
-	private final int divisions;
-	private final List<Part> partsFromPatterns;
 	private int nextMeasureNumber = 1;
-	private final Set<Integer> newSystemBeginningMeasureNumbers;
 	private final Map<Integer, String> annotations;
+	private final Collection<Pattern> patterns;
 
-	MusicXmlPatternWriterDom(Collection<Pattern> patterns) {
-		Collection<Durational> allDurationals = new ArrayList<>();
-		patterns.forEach(pattern -> {
-			for (Durational dur : pattern) {
-				allDurationals.add(dur);
-			}
-		});
-
-		this.divisions = computeDivisions(allDurationals.iterator());
-		this.newSystemBeginningMeasureNumbers = new HashSet<>();
+	PatternsToScoreConverter(Collection<Pattern> patterns) {
 		this.annotations = new HashMap<>();
-		this.partsFromPatterns = fromPatterns(patterns);
+		this.patterns = patterns;
 	}
 
-	MusicXmlPatternWriterDom(Pattern pattern) {
-		this(Collections.singletonList(pattern));
+	Score convert() {
+		List<Part> parts = fromPatterns(patterns);
+		Map<Score.Attribute, String> attributes = new HashMap<>();
+		attributes.put(Score.Attribute.TITLE, DEFAULT_SCORE_TITLE);
+		return Score.of(attributes, parts);
 	}
 
 	private List<Part> fromPatterns(Collection<Pattern> patterns) {
@@ -87,11 +76,10 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 			List<Measure> measures = voiceToMeasureList(pattern.iterator(), true);
 			allMeasures.addAll(measures);
 			final Integer firstMeasureNumber = measures.get(0).getNumber();
-			newSystemBeginningMeasureNumbers.add(firstMeasureNumber);
 			annotations.put(firstMeasureNumber, createPatternAnnotation(pattern));
 		}
 
-		return SingleStaffPart.of("", Staff.of(allMeasures));
+		return SingleStaffPart.of(VOICE_NAME + "-1", Staff.of(allMeasures));
 	}
 
 	private List<Part> multiVoicePatternsToParts(Collection<Pattern> patterns, int maxNumberOfVoices) {
@@ -123,14 +111,14 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 			evenOutMeasureListLengthsAndUpdateNextMeasureNumber(staveContents);
 
 			final Integer firstMeasureNumber = measureNumberBeforeStaffCreation;
-			newSystemBeginningMeasureNumbers.add(firstMeasureNumber);
 			annotations.put(firstMeasureNumber, createPatternAnnotation(pattern));
 		}
 
 		List<Part> parts = new ArrayList<>();
+		int voice = 1;
 
 		for (List<Measure> staffContent : staveContents) {
-			parts.add(SingleStaffPart.of("", Staff.of(staffContent)));
+			parts.add(SingleStaffPart.of(VOICE_NAME + " " + voice++, Staff.of(staffContent)));
 		}
 
 		return parts;
@@ -255,56 +243,6 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		return Measure.of(measureNumber, Collections.singletonMap(1, measureContent), attributes);
 	}
 
-	@Override
-	protected int getDivisions() {
-		return divisions;
-	}
-
-	@Override
-	protected void writeScoreAttributes(Element rootElement) {
-		final Element workTitleElement = getDocument().createElement(MusicXmlTags.SCORE_WORK_TITLE);
-		workTitleElement.setTextContent(DEFAULT_SCORE_TITLE);
-
-		final Element workElement = getDocument().createElement(MusicXmlTags.SCORE_WORK);
-		workElement.appendChild(workTitleElement);
-		rootElement.appendChild(workElement);
-
-		rootElement.appendChild(createIdentificationElement());
-	}
-
-	@Override
-	protected Element createIdentificationElement() {
-		final Element identificationElement = getDocument().createElement(MusicXmlTags.SCORE_IDENTIFICATION);
-		identificationElement.appendChild(createEncodingElement());
-		return identificationElement;
-	}
-
-	@Override
-	protected void writePartList(Element scoreRoot) {
-		final Element partList = getDocument().createElement(MusicXmlTags.PART_LIST);
-
-		for (int i = 0; i < partsFromPatterns.size(); ++i) {
-			final String partNumberString = Integer.toString(i + 1);
-			final String partId = "P" + partNumberString;
-			addPartWithId(partId, partsFromPatterns.get(i));
-
-			final Element partElement = getDocument().createElement(MusicXmlTags.PLIST_SCORE_PART);
-			partElement.setAttribute(MusicXmlTags.PART_ID, partId);
-
-			final Element partName = getDocument().createElement(MusicXmlTags.PART_NAME);
-			partName.setTextContent(VOICE_NAME + " " + partNumberString);
-			partElement.appendChild(partName);
-
-			final Element abbreviatedPartName = getDocument().createElement(MusicXmlTags.PART_NAME_ABBREVIATION);
-			abbreviatedPartName.setTextContent(ABBREVIATED_VOICE_NAME + " " + partNumberString);
-			partElement.appendChild(abbreviatedPartName);
-
-			partList.appendChild(partElement);
-		}
-
-		scoreRoot.appendChild(partList);
-	}
-
 	private Clef findSuitableClef(List<Durational> voice) {
 		int sumOfPitch = 0;
 		int pitchCount = 0;
@@ -332,27 +270,5 @@ final class MusicXmlPatternWriterDom extends MusicXmlWriterDom {
 		}
 
 		return Clefs.F;
-	}
-
-	@Override
-	protected boolean showTimeSignature() {
-		return false;
-	}
-
-	@Override
-	protected boolean startNewSystem(Measure measure) {
-		return newSystemBeginningMeasureNumbers.contains(measure.getNumber());
-	}
-
-	@Override
-	protected String getAnnotation(Measure measure) {
-		Integer measureNumber = measure.getNumber();
-		if (annotations.containsKey(measureNumber)) {
-			String annotation = annotations.get(measureNumber);
-			annotations.remove(measureNumber);
-			return annotation;
-		}
-
-		return "";
 	}
 }

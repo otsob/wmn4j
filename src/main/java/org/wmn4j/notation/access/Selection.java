@@ -4,6 +4,7 @@
 package org.wmn4j.notation.access;
 
 import org.wmn4j.notation.Durational;
+import org.wmn4j.notation.Part;
 
 import java.util.Collection;
 import java.util.List;
@@ -42,12 +43,21 @@ public interface Selection extends Iterable<Durational> {
 	List<Integer> getPartIndices();
 
 	/**
+	 * Returns the part at the given index.
+	 *
+	 * @param index the index of the part
+	 * @return the part at the given index
+	 */
+	Part getPart(int index);
+
+	/**
 	 * Returns an iterator that also provides access to the positions of the {@link Durational}
-	 * objects in this selection.
+	 * objects in this selection. The iterator iterates the selection by going through each
+	 * part before moving on to the next part.
 	 *
 	 * @return an iterator that also provides access to the positions
 	 */
-	PositionalIterator positionalIterator();
+	PositionalIterator partwiseIterator();
 
 	/**
 	 * Returns a selection of measures from this selection.
