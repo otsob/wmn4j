@@ -37,7 +37,7 @@ public final class PointSet<T extends Point<T>> {
 	 * @param score the score from which the point set is created
 	 * @return 2 dimensional point set created for the given score
 	 */
-	public static PointSet<Point2D> fromScore(Score score) {
+	public static PointSet<Point2D> from(Score score) {
 		final PositionalIterator positionalIterator = score.partwiseIterator();
 		Position prevPos = null;
 		double fullMeasuresOffset = 0.0;

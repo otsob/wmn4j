@@ -69,7 +69,7 @@ public class PointSetTest {
 		final Score score = TestHelper.readScore("musicxml/pattern_discovery/basic_point_set_test.musicxml");
 		assertNotNull(score);
 
-		final PointSet<Point2D> pointSet = PointSet.fromScore(score);
+		final PointSet<Point2D> pointSet = PointSet.from(score);
 		assertEquals(13, pointSet.size());
 
 		final List<Point2D> expectedVectors = getExpectedVectorsForBasicTest();
@@ -94,7 +94,7 @@ public class PointSetTest {
 		final Score score = TestHelper.readScore("musicxml/pattern_discovery/basic_point_set_test.musicxml");
 		assertNotNull(score);
 
-		final PointSet<Point2D> pointSet = PointSet.fromScore(score);
+		final PointSet<Point2D> pointSet = PointSet.from(score);
 		assertEquals(13, pointSet.size());
 
 		final List<Point2D> expectedVectors = getExpectedVectorsForBasicTest();
@@ -153,7 +153,7 @@ public class PointSetTest {
 		final Score score = TestHelper.readScore("musicxml/pattern_discovery/multipart_point_set_test.musicxml");
 		assertNotNull(score);
 
-		final PointSet<Point2D> pointSet = PointSet.fromScore(score);
+		final PointSet<Point2D> pointSet = PointSet.from(score);
 		assertEquals(14, pointSet.size());
 
 		List<Point2D> expected = getExpectedVectorsForMultiPartTest();
@@ -179,7 +179,7 @@ public class PointSetTest {
 		final Score score = TestHelper.readScore("musicxml/pattern_discovery/multipart_point_set_test.musicxml");
 		assertNotNull(score);
 
-		final PointSet<Point2D> pointSet = PointSet.fromScore(score);
+		final PointSet<Point2D> pointSet = PointSet.from(score);
 		assertEquals(14, pointSet.size());
 
 		List<Point2D> expected = getExpectedVectorsForMultiPartTest();

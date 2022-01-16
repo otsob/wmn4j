@@ -28,7 +28,7 @@ public class SiatechfTest {
 				"musicxml/pattern_discovery/monophonic_pattern_discovery_test.musicxml");
 		assertNotNull(score);
 
-		final PointSet<Point2D> pointSet = PointSet.fromScore(score);
+		final PointSet<Point2D> pointSet = PointSet.from(score);
 		var tecs = Siatechf.computeMtpTecs(pointSet, 0.0);
 		final var expandedTecs = tecs.stream().map(this::expandTec).collect(Collectors.toList());
 
@@ -108,7 +108,7 @@ public class SiatechfTest {
 				"musicxml/pattern_discovery/monophonic_pattern_discovery_test.musicxml");
 		assertNotNull(score);
 
-		final PointSet<Point2D> pointSet = PointSet.fromScore(score);
+		final PointSet<Point2D> pointSet = PointSet.from(score);
 		var tecs = Siatechf.computeMtpTecs(pointSet, 6.0 / 4.0 - 1e-7);
 		final var expandedTecs = tecs.stream().map(this::expandTec).collect(Collectors.toList());
 
