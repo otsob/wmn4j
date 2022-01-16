@@ -97,7 +97,7 @@ final class SelectionImpl implements Selection {
 	}
 
 	@Override
-	public PositionalIterator positionalIterator() {
+	public PositionalIterator partwiseIterator() {
 		return new PartwisePositionalIterator(this.score, this.first, this.last, this.partIndices);
 	}
 
@@ -113,6 +113,6 @@ final class SelectionImpl implements Selection {
 
 	@Override
 	public Iterator<Durational> iterator() {
-		return positionalIterator();
+		return partwiseIterator();
 	}
 }

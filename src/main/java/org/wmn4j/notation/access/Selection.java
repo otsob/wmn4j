@@ -43,11 +43,12 @@ public interface Selection extends Iterable<Durational> {
 
 	/**
 	 * Returns an iterator that also provides access to the positions of the {@link Durational}
-	 * objects in this selection.
+	 * objects in this selection. The iterator iterates the selection by going through each
+	 * part before moving on to the next part.
 	 *
 	 * @return an iterator that also provides access to the positions
 	 */
-	PositionalIterator positionalIterator();
+	PositionalIterator partwiseIterator();
 
 	/**
 	 * Returns a selection of measures from this selection.

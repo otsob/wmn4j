@@ -117,7 +117,7 @@ public class ScoreTest {
 		Set<Integer> iteratedParts = new HashSet<>();
 		Set<Integer> iteratedMeasures = new HashSet<>();
 
-		PositionalIterator iterator = selection.positionalIterator();
+		PositionalIterator iterator = selection.partwiseIterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			final Position position = iterator.getPositionOfPrevious();
@@ -148,7 +148,7 @@ public class ScoreTest {
 		Set<Integer> iteratedParts = new HashSet<>();
 		Set<Integer> iteratedMeasures = new HashSet<>();
 
-		PositionalIterator iterator = selection.positionalIterator();
+		PositionalIterator iterator = selection.partwiseIterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			final Position position = iterator.getPositionOfPrevious();
@@ -182,7 +182,7 @@ public class ScoreTest {
 		Set<Integer> iteratedParts = new HashSet<>();
 		Set<Integer> iteratedMeasures = new HashSet<>();
 
-		PositionalIterator iterator = selection.positionalIterator();
+		PositionalIterator iterator = selection.partwiseIterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			final Position position = iterator.getPositionOfPrevious();
