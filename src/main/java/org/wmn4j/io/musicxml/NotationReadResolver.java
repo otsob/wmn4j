@@ -134,7 +134,7 @@ class NotationReadResolver {
 		final int voiceNumber = currentPartContext.getVoice();
 
 		if (!hasUnresolvedNotations(staffNumber, voiceNumber)) {
-			LOG.warn("Trying to end notation in a voice with no notations, staff {}, voice {}, type {}", staffNumber,
+			LOG.trace("Trying to end notation in a voice with no notations, staff {}, voice {}, type {}", staffNumber,
 					voiceNumber, unresolved.notationType);
 			return;
 		}
@@ -146,7 +146,7 @@ class NotationReadResolver {
 			unresolvedNotation.resolve();
 			unresolvedsForVoice.remove(unresolvedNotation);
 		} else {
-			LOG.warn("Trying to end notation that has no builders, staff {}, voice {}, type {}, notation number {}",
+			LOG.trace("Trying to end notation that has no builders, staff {}, voice {}, type {}, notation number {}",
 					staffNumber, voiceNumber, unresolved.notationType, unresolved.notationNumber);
 		}
 	}
