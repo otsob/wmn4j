@@ -389,7 +389,8 @@ final class StaxReader implements MusicXmlReader {
 	}
 
 	private void consumeMeasureElem() throws XMLStreamException {
-		partContext.setMeasureNumber(Integer.parseInt(reader.getAttributeValue(0)));
+		partContext.setMeasureNumber(Integer.parseInt(
+				reader.getAttributeValue(null, Tags.NUMBER)));
 
 		consumeUntil(tag -> {
 			switch (tag) {
