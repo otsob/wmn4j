@@ -570,7 +570,7 @@ final class StaxReader implements MusicXmlReader {
 			notationResolver.startOrContinueNotations(currentConnectableBuilder);
 			notationResolver.continueOngoingNotations(currentConnectableBuilder);
 		} else {
-			partContext.updateChordBuffer(null);
+			partContext.updateChordBuffer(currentDurationalBuilder);
 			partContext.getMeasureBuilder().addToVoice(partContext.getVoice(), currentDurationalBuilder);
 		}
 	}

@@ -7,6 +7,7 @@ import org.apache.commons.math3.fraction.Fraction;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
+import org.wmn4j.notation.DurationalBuilder;
 import org.wmn4j.notation.GraceNoteBuilder;
 import org.wmn4j.notation.MeasureBuilder;
 import org.wmn4j.notation.NoteBuilder;
@@ -14,6 +15,7 @@ import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.OrnamentalBuilder;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
+import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.access.Offset;
 import org.wmn4j.notation.directions.Direction;
 
@@ -94,25 +96,30 @@ final class PartContext {
 	/**
 	 * Updates the chord buffer by setting previously accumulated
 	 * notebuilders to the measurebuilder as correct type and adding
-	 * the (optional) new note noteBuilder to buffer.
+	 * the (optional) new note builder to buffer.
 	 *
-	 * @param noteBuilder (can be null) note noteBuilder to add to buffer
+	 * @param builder (can be null) durational builder that can be a notebuilder or restbuilder
 	 */
-	void updateChordBuffer(NoteBuilder noteBuilder) {
+	void updateChordBuffer(DurationalBuilder builder) {
 		final ChordBuffer buffer = chordBuffers.get(staff);
 
-		if (!hasChordTag || noteBuilder == null) {
+		if (!hasChordTag || builder == null) {
 			buffer.flushTo(measureBuilders.get(staff), arpeggioResolver);
 		}
 
-		if (noteBuilder != null) {
-			buffer.addNote(noteBuilder, staff, voice);
-			if (!hasChordTag) {
-				offsetDurations.add(noteBuilder.getDuration());
+		if (builder instanceof NoteBuilder) {
+			NoteBuilder noteBuilder = (NoteBuilder) builder;
+			if (noteBuilder != null) {
+				buffer.addNote(noteBuilder, staff, voice);
+				if (!hasChordTag) {
+					offsetDurations.add(noteBuilder.getDuration());
+				}
 			}
-		}
 
-		prevNoteBuilder = noteBuilder;
+			prevNoteBuilder = noteBuilder;
+		} else if (builder instanceof RestBuilder) {
+			offsetDurations.add(builder.getDuration());
+		}
 	}
 
 	void updateOrnamentalBuffer(GraceNoteBuilder graceNoteBuilder) {
@@ -329,7 +336,11 @@ final class PartContext {
 		Duration offset = Duration.sum(offsetDurations);
 
 		if (!backupDurations.isEmpty()) {
-			offset = offset.subtract(Duration.sum(backupDurations));
+			final Duration backup = Duration.sum(backupDurations);
+			if (backup.equals(offset)) {
+				return null;
+			}
+			offset = offset.subtract(backup);
 		}
 
 		if (directionOffset != null) {
