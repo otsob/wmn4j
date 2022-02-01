@@ -20,8 +20,8 @@ public final class Point2D implements Point<Point2D> {
 	private static final double ROUNDING_FACTOR = Math.pow(10, OFFSET_PLACES);
 
 	/**
-	 * The raw offset value is only used for computations internally. Comparisons and
-	 * hashes use the rounded offset value.
+	 * The raw onset value is only used for computations internally. Comparisons and
+	 * hashes use the rounded onset value.
 	 */
 	private final double rawOnset;
 	private final double roundedOnset;
