@@ -8,7 +8,7 @@ plugins {
 
 group = 'org.wmn4j'
 description = 'A Java library for handling western music notation.'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 
 java {
     withJavadocJar()
