@@ -16,8 +16,8 @@ public final class Point2D implements Point<Point2D> {
 	private static final long HASH_MULTIPLIER_3 = RandomMultipliers.INSTANCE.getMultiplier(3);
 	private static final long HASH_MULTIPLIER_4 = RandomMultipliers.INSTANCE.getMultiplier(4);
 
-	private static final int OFFSET_PLACES = 8;
-	private static final double ROUNDING_FACTOR = Math.pow(10, OFFSET_PLACES);
+	private static final int ONSET_PLACES = 8;
+	private static final double ROUNDING_FACTOR = Math.pow(10, ONSET_PLACES);
 
 	/**
 	 * The raw onset value is only used for computations internally. Comparisons and
@@ -28,14 +28,20 @@ public final class Point2D implements Point<Point2D> {
 	private final double pitch;
 	private final int hash;
 
-	public Point2D(double offset, double pitch) {
-		this.rawOnset = offset;
+	/**
+	 * Constructs a new Point2D.
+	 *
+	 * @param onset the onset time of a note event
+	 * @param pitch the pitch number of a note event
+	 */
+	public Point2D(double onset, double pitch) {
+		this.rawOnset = onset;
 		/*
 		 * This rounding is necessary to ensure that values close to each other
 		 * are considered equal and produce the same hash.
 		 * This rounding method is slightly flawed and will not work
 		 * if greater precision is needed. Due to the limited types of
-		 * offsets that duration values should produce, this is expected
+		 * onsets that duration values should produce, this is expected
 		 * to work well enough.
 		 */
 		this.roundedOnset = Math.round(rawOnset * ROUNDING_FACTOR) / ROUNDING_FACTOR;
@@ -50,26 +56,26 @@ public final class Point2D implements Point<Point2D> {
 
 	@Override
 	public Point2D add(Point2D other) {
-		final double offsetSum = rawOnset + other.rawOnset;
+		final double onsetSum = rawOnset + other.rawOnset;
 		final double pitchSum = pitch + other.pitch;
 
-		return new Point2D(offsetSum, pitchSum);
+		return new Point2D(onsetSum, pitchSum);
 	}
 
 	@Override
 	public Point2D subtract(Point2D other) {
-		final double offsetDifference = rawOnset - other.rawOnset;
+		final double onsetDifference = rawOnset - other.rawOnset;
 		final double pitchDifference = pitch - other.pitch;
 
-		return new Point2D(offsetDifference, pitchDifference);
+		return new Point2D(onsetDifference, pitchDifference);
 	}
 
 	@Override
 	public int compareTo(Point2D other) {
 
-		final int offsetComparison = Double.compare(roundedOnset, other.roundedOnset);
-		if (offsetComparison != 0) {
-			return offsetComparison;
+		final int onsetComparison = Double.compare(roundedOnset, other.roundedOnset);
+		if (onsetComparison != 0) {
+			return onsetComparison;
 		}
 
 		return Double.compare(pitch, other.pitch);
@@ -97,11 +103,11 @@ public final class Point2D implements Point<Point2D> {
 		 */
 		long hash = HASH_MULTIPLIER_0;
 
-		final long offsetBits = Double.doubleToRawLongBits(roundedOnset);
-		final int firstOffsetPart = (int) (offsetBits >> 32);
-		hash += firstOffsetPart * HASH_MULTIPLIER_1;
-		final int secondOffsetPart = (int) offsetBits;
-		hash += secondOffsetPart * HASH_MULTIPLIER_2;
+		final long onsetBits = Double.doubleToRawLongBits(roundedOnset);
+		final int firstonsetPart = (int) (onsetBits >> 32);
+		hash += firstonsetPart * HASH_MULTIPLIER_1;
+		final int secondonsetPart = (int) onsetBits;
+		hash += secondonsetPart * HASH_MULTIPLIER_2;
 
 		final long pitchBits = Double.doubleToRawLongBits(roundedOnset);
 		final int firstPitchPart = (int) (pitchBits >> 32);
