@@ -10,7 +10,7 @@ package org.wmn4j.notation;
  * <p>
  * All implementations of this interface must be thread-safe.
  */
-public interface Durational {
+public sealed interface Durational permits Note, Rest, Chord {
 
 	/**
 	 * Returns the duration of this.
