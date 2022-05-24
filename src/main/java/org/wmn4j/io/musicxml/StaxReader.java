@@ -137,12 +137,16 @@ final class StaxReader implements MusicXmlReader {
 			}
 
 			try {
-				reader.close();
+				if (reader != null) {
+					reader.close();
+				}
 			} catch (XMLStreamException e) {
 				throw new IOException("Failed to close reader");
 			}
 
-			inputStream.close();
+			if (inputStream != null) {
+				inputStream.close();
+			}
 		}
 	}
 
