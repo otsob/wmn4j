@@ -38,6 +38,7 @@ import javax.xml.transform.stax.StAXSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -47,6 +48,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.zip.ZipFile;
 
 /**
  * Implements a MusicXML reader using the Stax Cursor API.
@@ -62,6 +64,7 @@ final class StaxReader implements MusicXmlReader {
 
 	private XMLStreamReader reader;
 	private InputStream inputStream;
+	private ZipFile compressedFile;
 	private ScoreBuilder scoreBuilder;
 	private Score score;
 
@@ -128,6 +131,10 @@ final class StaxReader implements MusicXmlReader {
 	public void close() throws IOException {
 		if (!isClosed) {
 			isClosed = true;
+
+			if (compressedFile != null) {
+				compressedFile.close();
+			}
 
 			try {
 				reader.close();
@@ -202,17 +209,39 @@ final class StaxReader implements MusicXmlReader {
 		inputStream.close();
 	}
 
+	private boolean isCompressed(Path path) {
+		return path.getFileName().toString().endsWith(".mxl");
+	}
+
 	private XMLStreamReader createStreamReader(Path path) throws IOException, ParsingFailureException {
 		final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 
 		try {
-			inputStream = new FileInputStream(path.toFile());
-			return xmlInputFactory.createXMLStreamReader(inputStream);
+			if (isCompressed(path)) {
+				inputStream = getStreamToZipEntry(path);
+			} else {
+				inputStream = new FileInputStream(path.toFile());
+			}
+
+			return xmlInputFactory.createXMLStreamReader(new BufferedInputStream(inputStream));
 		} catch (XMLStreamException e) {
 			throw new ParsingFailureException(getParsingFailureMessage(e.getMessage()));
 		} catch (FileNotFoundException e) {
 			throw new IOException("File " + path + " not found");
 		}
+	}
+
+	private InputStream getStreamToZipEntry(Path path) throws IOException {
+		compressedFile = new ZipFile(path.toString());
+		var entries = compressedFile.entries();
+		while (entries.hasMoreElements()) {
+			final var entry = entries.nextElement();
+			if (!entry.getName().startsWith("META-INF")) {
+				return compressedFile.getInputStream(entry);
+			}
+		}
+
+		throw new IOException("Invalid compressed MusicXML file: missing MusicXML content.");
 	}
 
 	private void consumeText(Consumer<String> consumer) throws XMLStreamException {

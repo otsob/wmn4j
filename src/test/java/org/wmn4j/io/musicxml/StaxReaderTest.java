@@ -345,6 +345,12 @@ class StaxReaderTest {
 	}
 
 	@Test
+	void testReadingNotationsIntoScoreFromCompressedMultipleStavesAndVoices() {
+		Score scoreWitNotations = readScore("multi_staff_multi_voice_notation_test.mxl", true);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreWitNotations);
+	}
+
+	@Test
 	void testReadingNotationsIntoScoreBuilderFromMultipleStavesAndVoices() {
 		ScoreBuilder scoreBuilderWitNotations = readScoreBuilder("multi_staff_multi_voice_notation_test.musicxml",
 				false);
