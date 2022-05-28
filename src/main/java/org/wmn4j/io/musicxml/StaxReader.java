@@ -47,6 +47,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.zip.ZipFile;
 
@@ -57,6 +58,7 @@ final class StaxReader implements MusicXmlReader {
 
 	private static final String MUSICXML_V3_1_SCHEMA_PATH = "org/wmn4j/io/musicxml/musicxml.xsd";
 	private static final Logger LOG = LoggerFactory.getLogger(StaxReader.class);
+	private static final Set<String> VALID_EXTENSIONS = Set.of("xml", "musicxml", "mxl");
 
 	private final boolean validateInput;
 	private final Path path;
@@ -213,15 +215,25 @@ final class StaxReader implements MusicXmlReader {
 		inputStream.close();
 	}
 
-	private boolean isCompressed(Path path) {
-		return path.getFileName().toString().endsWith(".mxl");
+	private boolean isCompressed(String extension) {
+		return "mxl".equals(extension);
+	}
+
+	private String getExtension(Path path) {
+		final String[] split = path.toString().split("\\.");
+		return split[split.length - 1];
 	}
 
 	private XMLStreamReader createStreamReader(Path path) throws IOException, ParsingFailureException {
 		final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		final String extension = getExtension(path);
+		if (validateInput && !VALID_EXTENSIONS.contains(extension)) {
+			throw new ParsingFailureException(
+					"Not a valid file extension for MusicXML, must be one of " + VALID_EXTENSIONS);
+		}
 
 		try {
-			if (isCompressed(path)) {
+			if (isCompressed(extension)) {
 				inputStream = getStreamToZipEntry(path);
 			} else {
 				inputStream = new FileInputStream(path.toFile());
