@@ -43,10 +43,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.zip.ZipFile;
 
@@ -57,6 +59,8 @@ final class StaxReader implements MusicXmlReader {
 
 	private static final String MUSICXML_V3_1_SCHEMA_PATH = "org/wmn4j/io/musicxml/musicxml.xsd";
 	private static final Logger LOG = LoggerFactory.getLogger(StaxReader.class);
+	private static final String COMPRESSED_EXTENSION = "mxl";
+	private static final Set<String> VALID_EXTENSIONS = Set.of("xml", "musicxml", COMPRESSED_EXTENSION);
 
 	private final boolean validateInput;
 	private final Path path;
@@ -78,6 +82,8 @@ final class StaxReader implements MusicXmlReader {
 	private int currentDurDivisions;
 	private int currentDotCount;
 	private int currentTupletDivisor;
+
+	private String mxlMainFilePath;
 
 	private int beats;
 	private int beatDivisions;
@@ -213,15 +219,26 @@ final class StaxReader implements MusicXmlReader {
 		inputStream.close();
 	}
 
-	private boolean isCompressed(Path path) {
-		return path.getFileName().toString().endsWith(".mxl");
+	private boolean isCompressed(Path path, String extension) throws IOException {
+		return Objects.equals(Files.probeContentType(path), "application/vnd.recordare.musicxml")
+				|| Objects.equals(COMPRESSED_EXTENSION, extension);
+	}
+
+	private String getExtension(Path path) {
+		final String[] split = path.toString().split("\\.");
+		return split[split.length - 1];
 	}
 
 	private XMLStreamReader createStreamReader(Path path) throws IOException, ParsingFailureException {
 		final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		final String extension = getExtension(path);
+		if (validateInput && !VALID_EXTENSIONS.contains(extension)) {
+			throw new ParsingFailureException(
+					"Not a valid file extension for MusicXML, must be one of " + VALID_EXTENSIONS);
+		}
 
 		try {
-			if (isCompressed(path)) {
+			if (isCompressed(path, extension)) {
 				inputStream = getStreamToZipEntry(path);
 			} else {
 				inputStream = new FileInputStream(path.toFile());
@@ -235,17 +252,43 @@ final class StaxReader implements MusicXmlReader {
 		}
 	}
 
-	private InputStream getStreamToZipEntry(Path path) throws IOException {
+	private void findMainMusicXmlFile(ZipFile zipFile) throws IOException, XMLStreamException {
+		inputStream = zipFile.getInputStream(zipFile.getEntry("META-INF/container.xml"));
+		final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		reader = xmlInputFactory.createXMLStreamReader(new BufferedInputStream(inputStream));
+
+		while (reader.getEventType() != XMLStreamConstants.END_DOCUMENT) {
+			consumeUntil(tag -> {
+				final String path = reader.getAttributeValue(null, "full-path");
+				final String mediaType = reader.getAttributeValue(null, "media-type");
+
+				if (mediaType == null || "application/vnd.recordare.musicxml+xml".equals(mediaType)) {
+					mxlMainFilePath = path;
+				}
+
+			}, "rootfile");
+		}
+
+		reader.close();
+		reader = null;
+
+		inputStream.close();
+		inputStream = null;
+	}
+
+	private InputStream getStreamToZipEntry(Path path) throws
+			ParsingFailureException, IOException, XMLStreamException {
 		compressedFile = new ZipFile(path.toString());
+		findMainMusicXmlFile(compressedFile);
 		var entries = compressedFile.entries();
 		while (entries.hasMoreElements()) {
 			final var entry = entries.nextElement();
-			if (!entry.getName().startsWith("META-INF")) {
+			if (entry.getName().equals(mxlMainFilePath)) {
 				return compressedFile.getInputStream(entry);
 			}
 		}
 
-		throw new IOException("Invalid compressed MusicXML file: missing MusicXML content.");
+		throw new ParsingFailureException("Invalid compressed MusicXML file: missing MusicXML content.");
 	}
 
 	private void consumeText(Consumer<String> consumer) throws XMLStreamException {
@@ -680,7 +723,8 @@ final class StaxReader implements MusicXmlReader {
 		final String elementRoleType = reader.getAttributeValue(null, Tags.TYPE);
 		final String arpeggioDirection = reader.getAttributeValue(null, Tags.DIRECTION);
 		final Notation.Type type = Transforms.stringToNotationType(notationTag, arpeggioDirection);
-		final Notation.Style style = Transforms.stringToNotationStyle(reader.getAttributeValue(null, Tags.LINE_TYPE));
+		final Notation.Style style = Transforms.stringToNotationStyle(
+				reader.getAttributeValue(null, Tags.LINE_TYPE));
 		final int notationNumber = NotationReadResolver.parseNotationNumber(
 				reader.getAttributeValue(null, Tags.NUMBER));
 		if (!(currentDurationalBuilder instanceof ConnectableBuilder)) {
