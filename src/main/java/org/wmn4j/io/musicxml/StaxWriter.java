@@ -50,14 +50,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 final class StaxWriter implements MusicXmlWriter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(StaxWriter.class);
+	public static final String ENCODING = "UTF-8";
+	public static final String XML_VERSION = "1.0";
 
 	private final Score score;
 	private final Path path;
 	private final List<String> partIds = new ArrayList<>();
+	private final boolean compress;
 	private XMLStreamWriter writer;
 	private OutputStream outputStream;
 	private final int divisions;
@@ -74,10 +79,11 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 	}
 
-	StaxWriter(Score score, Path path) {
+	StaxWriter(Score score, Path path, boolean compress) {
 		this.score = score;
 		this.path = path;
 		this.divisions = computeDivisions(score.partwiseIterator());
+		this.compress = compress;
 		this.isClosed = false;
 	}
 
@@ -91,15 +97,57 @@ final class StaxWriter implements MusicXmlWriter {
 		return builder.toString();
 	}
 
+	private void writeMetaInf(XMLStreamWriter metaInfWriter, String filename) throws XMLStreamException {
+		metaInfWriter.writeStartDocument(ENCODING, XML_VERSION);
+
+		metaInfWriter.writeStartElement(CompressedMxl.CONTAINER_TAG);
+		metaInfWriter.writeStartElement(CompressedMxl.ROOTFILES_TAG);
+
+		metaInfWriter.writeStartElement(CompressedMxl.ROOTFILE_TAG);
+		metaInfWriter.writeAttribute(CompressedMxl.FULL_PATH_ATTR, filename);
+		metaInfWriter.writeAttribute(CompressedMxl.MEDIA_TYPE_ATTR, CompressedMxl.UNCOMPRESSED_CONTENT_TYPE);
+
+		metaInfWriter.writeEndElement();
+		metaInfWriter.writeEndElement();
+
+		metaInfWriter.writeEndElement();
+		metaInfWriter.writeEndDocument();
+		metaInfWriter.flush();
+	}
+
+	private OutputStream createOutputStream() throws IOException, XMLStreamException {
+		OutputStream outputStream;
+		FileOutputStream foutput = new FileOutputStream(path.toString());
+
+		if (compress) {
+			ZipOutputStream zipOut = new ZipOutputStream(foutput);
+			outputStream = new BufferedOutputStream(zipOut);
+
+			XMLStreamWriter metaInfWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
+			ZipEntry metaInf = new ZipEntry(CompressedMxl.META_INF_PATH);
+			final String filename = path.getFileName().toString();
+			zipOut.putNextEntry(metaInf);
+			writeMetaInf(metaInfWriter, filename);
+			metaInfWriter.close();
+			zipOut.closeEntry();
+
+			zipOut.putNextEntry(new ZipEntry(filename));
+		} else {
+			outputStream = new BufferedOutputStream(foutput);
+		}
+
+		return outputStream;
+	}
+
 	@Override
 	public void write() throws IOException {
 		try {
-			outputStream = new BufferedOutputStream(new FileOutputStream(path.toString()));
+			outputStream = createOutputStream();
 			writer = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
 
 			notationResolver = new NotationWriteResolver(writer);
 
-			writer.writeStartDocument("UTF-8", "1.0");
+			writer.writeStartDocument(ENCODING, XML_VERSION);
 			final String version = "4.0";
 			writer.writeDTD(getDTD(version));
 

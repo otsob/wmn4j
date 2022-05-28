@@ -18,11 +18,12 @@ public interface MusicXmlWriter extends ScoreWriter {
 	/**
 	 * Returns an instance of a writer for the given {@link Score} and path.
 	 *
-	 * @param score the score for which the writer is created
-	 * @param path  the path to which the MusicXML file is written
+	 * @param score    the score for which the writer is created
+	 * @param path     the path to which the MusicXML file is written
+	 * @param compress set true to write compressed MusicXML, otherwise writes uncompressed
 	 * @return an instance of a writer for the given {@link Score}
 	 */
-	static MusicXmlWriter writerFor(Score score, Path path) {
-		return new StaxWriter(score, path);
+	static MusicXmlWriter writerFor(Score score, Path path, boolean compress) {
+		return new StaxWriter(score, path, compress);
 	}
 }
