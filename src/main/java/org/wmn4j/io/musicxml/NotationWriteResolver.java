@@ -61,7 +61,7 @@ class NotationWriteResolver {
 		// number resolving is harder to implement for arpeggios.
 		unresolvedNotations.put(notation, 0);
 
-		writer.writeStartElement(ARPEGGIATION_TYPES.get(type));
+		writer.writeEmptyElement(ARPEGGIATION_TYPES.get(type));
 
 		if (type.equals(Notation.Type.ARPEGGIATE_DOWN)) {
 			writer.writeAttribute(Tags.DIRECTION, Tags.DOWN);
@@ -70,8 +70,6 @@ class NotationWriteResolver {
 		if (type.equals(Notation.Type.ARPEGGIATE_UP)) {
 			writer.writeAttribute(Tags.DIRECTION, Tags.UP);
 		}
-
-		writer.writeEndElement();
 	}
 
 	void writeNotationStartElement(Notation notation) throws XMLStreamException {

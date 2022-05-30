@@ -49,7 +49,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -252,10 +251,13 @@ final class StaxWriter implements MusicXmlWriter {
 			String partId = "P" + partNumber++;
 			writer.writeAttribute(Tags.ID, partId);
 
-			// Name is always required, default to empty string if not defined.
-			final var name = part.getName().orElse("");
-
-			writeValue(Tags.PART_NAME, name);
+			// Name is always required, default to empty tag if not defined.
+			final var name = part.getName();
+			if (name.isPresent()) {
+				writeValue(Tags.PART_NAME, name.get());
+			} else {
+				writer.writeEmptyElement(Tags.PART_NAME);
+			}
 
 			final var abbrName = part.getAttribute(Part.Attribute.ABBREVIATED_NAME);
 			if (abbrName.isPresent()) {
@@ -328,11 +330,12 @@ final class StaxWriter implements MusicXmlWriter {
 			writeMeasureAttributes(current, prev, isMultiStaff, s);
 
 			final int backup = writeMeasureContents(current, s, isMultiStaff);
+			writeBarline(current, false);
+
 			if (!s.equals(lastStaff)) {
 				writeOffset(backup, false);
 			}
 
-			writeBarline(current, false);
 		}
 
 		writer.writeEndElement();
@@ -725,8 +728,32 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 	}
 
+	private boolean hasOnlyGraceNoteOrnaments(Collection<Ornament> ornaments) {
+		return ornaments.stream().allMatch(StaxWriter::isGraceNote);
+	}
+
+	private boolean hasWritableNotations(Notation.Connectable connectable, Collection<Notation> notations) {
+		for (Notation notation : notations) {
+			boolean isBeginningOrEnd = connectable.getConnection(notation)
+					.map(connection -> connection.isBeginning() || connection.isEnd())
+					.orElse(false);
+
+			if (isBeginningOrEnd || notation.getType().isArpeggiation()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private void writeNotations(Notation.Connectable connectable, Set<Articulation> articulations,
 			Set<Notation> notations, Collection<Ornament> ornaments) throws XMLStreamException {
+
+		if (articulations.isEmpty() && !hasWritableNotations(connectable, notations) && hasOnlyGraceNoteOrnaments(
+				ornaments)) {
+			return;
+		}
+
 		writer.writeStartElement(Tags.NOTATIONS);
 		writeArticulations(articulations);
 		writeConnectedNotations(connectable, notations);
@@ -757,19 +784,21 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 	}
 
-	private void writeOrnaments(Collection<Ornament> ornaments) throws XMLStreamException {
-		final Predicate<Ornament> isGraceNote = (o) -> o.getType()
+	private static boolean isGraceNote(Ornament ornament) {
+		return ornament.getType()
 				.equals(Ornament.Type.SUCCEEDING_GRACE_NOTES)
-				|| o.getType().equals(Ornament.Type.GRACE_NOTES);
+				|| ornament.getType().equals(Ornament.Type.GRACE_NOTES);
+	}
 
+	private void writeOrnaments(Collection<Ornament> ornaments) throws XMLStreamException {
 		// If ornaments is empty or the only ornament is of type grace notes then do not add ornaments element.
-		if (ornaments.size() <= 1 && ornaments.stream().anyMatch(isGraceNote)) {
+		if (hasOnlyGraceNoteOrnaments(ornaments)) {
 			return;
 		}
 
 		writer.writeStartElement(Tags.ORNAMENTS);
 		for (Ornament ornament : ornaments) {
-			if (isGraceNote.test(ornament)) {
+			if (isGraceNote(ornament)) {
 				continue;
 			}
 
@@ -791,7 +820,11 @@ final class StaxWriter implements MusicXmlWriter {
 						content = "";
 				}
 
-				writeValue(tag, content);
+				if (content.isEmpty()) {
+					writer.writeEmptyElement(tag);
+				} else {
+					writeValue(tag, content);
+				}
 			}
 		}
 		writer.writeEndElement();
@@ -799,7 +832,7 @@ final class StaxWriter implements MusicXmlWriter {
 
 	private void writeConnectedNotations(Notation.Connectable connectable, Collection<Notation> notations)
 			throws XMLStreamException {
-		if (notations.isEmpty()) {
+		if (!hasWritableNotations(connectable, notations)) {
 			return;
 		}
 
