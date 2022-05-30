@@ -44,6 +44,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -126,7 +127,7 @@ final class StaxWriter implements MusicXmlWriter {
 
 			XMLStreamWriter metaInfWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
 			ZipEntry metaInf = new ZipEntry(CompressedMxl.META_INF_PATH);
-			final String filename = path.getFileName().toString();
+			String filename = getFilename();
 			zipOut.putNextEntry(metaInf);
 			writeMetaInf(metaInfWriter, filename);
 			metaInfWriter.close();
@@ -138,6 +139,22 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 
 		return outputStream;
+	}
+
+	private String getFilename() {
+		List<String> splitFilename = new ArrayList<>();
+		Collections.addAll(splitFilename, path.getFileName().toString().split("\\."));
+		final int lastIndex = splitFilename.size() - 1;
+
+		final String extension = "musicxml";
+
+		if (splitFilename.get(lastIndex).equals("mxl")) {
+			splitFilename.set(lastIndex, extension);
+		} else {
+			splitFilename.add(extension);
+		}
+
+		return String.join(".", splitFilename);
 	}
 
 	@Override
