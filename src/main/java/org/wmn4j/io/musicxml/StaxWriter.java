@@ -67,6 +67,7 @@ final class StaxWriter implements MusicXmlWriter {
 	private final int divisions;
 	private NotationWriteResolver notationResolver;
 	private boolean isClosed;
+	private boolean stavesWritten;
 
 	static void writeValue(XMLStreamWriter writer, String tag, String value) throws XMLStreamException {
 		if (value.isEmpty()) {
@@ -84,6 +85,7 @@ final class StaxWriter implements MusicXmlWriter {
 		this.divisions = computeDivisions(score.partwiseIterator());
 		this.compress = compress;
 		this.isClosed = false;
+		this.stavesWritten = false;
 	}
 
 	private String getDTD(String version) {
@@ -276,6 +278,7 @@ final class StaxWriter implements MusicXmlWriter {
 			final String partId = partIds.get(i);
 			final Part part = score.getPart(i);
 			writePart(partId, part);
+			stavesWritten = false;
 		}
 	}
 
@@ -327,7 +330,7 @@ final class StaxWriter implements MusicXmlWriter {
 			Measure current = part.getMeasure(s, m);
 			writeBarline(current, true);
 
-			writeMeasureAttributes(current, prev, isMultiStaff, s);
+			writeMeasureAttributes(current, prev, isMultiStaff, s, part.getStaffCount());
 
 			final int backup = writeMeasureContents(current, s, isMultiStaff);
 			writeBarline(current, false);
@@ -384,7 +387,8 @@ final class StaxWriter implements MusicXmlWriter {
 				&& current.getClef().equals(previous.getClef()));
 	}
 
-	private void writeMeasureAttributes(Measure current, Measure previous, boolean isMultiStaff, Integer staffNumber)
+	private void writeMeasureAttributes(Measure current, Measure previous, boolean isMultiStaff, Integer staffNumber,
+			int staffCount)
 			throws XMLStreamException {
 
 		if (!isAttributesElementRequired(current, previous)) {
@@ -424,6 +428,12 @@ final class StaxWriter implements MusicXmlWriter {
 			writeValue(Tags.BEAT_TYPE, Integer.toString(timeSig.getBeatDuration().getDenominator()));
 
 			writer.writeEndElement();
+		}
+
+		// Write staves
+		if (!stavesWritten) {
+			writeValue(Tags.STAVES, Integer.toString(staffCount));
+			stavesWritten = true;
 		}
 
 		// Write clef
