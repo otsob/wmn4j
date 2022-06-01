@@ -17,13 +17,18 @@ public interface MusicXmlWriter extends ScoreWriter {
 
 	/**
 	 * Returns an instance of a writer for the given {@link Score} and path.
+	 * <p>
+	 * The MusicXML output can be minified and compressed for very compact output.
+	 * However, some incorrectly implemented MusicXML parsers may depend on even
+	 * insignificant whitespace so minified MusicXML files might not work with all software.
 	 *
 	 * @param score    the score for which the writer is created
 	 * @param path     the path to which the MusicXML file is written
 	 * @param compress set true to write compressed MusicXML, otherwise writes uncompressed
+	 * @param minify   set true to produce minified MusicXML with no unnecessary whitespace
 	 * @return an instance of a writer for the given {@link Score}
 	 */
-	static MusicXmlWriter writerFor(Score score, Path path, boolean compress) {
-		return new StaxWriter(score, path, compress);
+	static MusicXmlWriter writerFor(Score score, Path path, boolean compress, boolean minify) {
+		return new StaxWriter(score, path, compress, minify);
 	}
 }

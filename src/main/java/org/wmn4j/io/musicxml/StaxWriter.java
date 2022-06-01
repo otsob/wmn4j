@@ -63,6 +63,8 @@ final class StaxWriter implements MusicXmlWriter {
 	private final Path path;
 	private final List<String> partIds = new ArrayList<>();
 	private final boolean compress;
+	private final boolean minify;
+
 	private XMLStreamWriter writer;
 	private OutputStream outputStream;
 	private final int divisions;
@@ -80,11 +82,12 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 	}
 
-	StaxWriter(Score score, Path path, boolean compress) {
+	StaxWriter(Score score, Path path, boolean compress, boolean minify) {
 		this.score = score;
 		this.path = path;
 		this.divisions = computeDivisions(score.partwiseIterator());
 		this.compress = compress;
+		this.minify = minify;
 		this.isClosed = false;
 		this.stavesWritten = false;
 	}
@@ -125,7 +128,7 @@ final class StaxWriter implements MusicXmlWriter {
 			ZipOutputStream zipOut = new ZipOutputStream(foutput);
 			outputStream = new BufferedOutputStream(zipOut);
 
-			XMLStreamWriter metaInfWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
+			XMLStreamWriter metaInfWriter = createWriter(outputStream);
 			ZipEntry metaInf = new ZipEntry(CompressedMxl.META_INF_PATH);
 			String filename = getFilename();
 			zipOut.putNextEntry(metaInf);
@@ -157,11 +160,19 @@ final class StaxWriter implements MusicXmlWriter {
 		return String.join(".", splitFilename);
 	}
 
+	private XMLStreamWriter createWriter(OutputStream outputStream) throws XMLStreamException {
+		if (minify) {
+			return XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
+		}
+
+		return new IndentingXmlStreamWriter(outputStream);
+	}
+
 	@Override
 	public void write() throws IOException {
 		try {
 			outputStream = createOutputStream();
-			writer = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
+			writer = createWriter(outputStream);
 
 			notationResolver = new NotationWriteResolver(writer);
 
@@ -385,9 +396,8 @@ final class StaxWriter implements MusicXmlWriter {
 			}
 
 			if (repeatDirection != null) {
-				writer.writeStartElement(Tags.REPEAT);
+				writer.writeEmptyElement(Tags.REPEAT);
 				writer.writeAttribute(Tags.DIRECTION, repeatDirection);
-				writer.writeEndElement();
 			}
 
 			writer.writeEndElement();

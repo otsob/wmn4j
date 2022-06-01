@@ -77,7 +77,7 @@ public class StaxWriterTest {
 	private Score writeAndReadScore(Score score, boolean compress) {
 		final String filename = compress ? "file.mxl" : "file.musicxml";
 		Path file = temporaryDirectory.resolve(filename);
-		MusicXmlWriter writer = new StaxWriter(score, file, compress);
+		MusicXmlWriter writer = new StaxWriter(score, file, compress, false);
 		writeOrFail(writer);
 
 		Score writtenScore = null;
@@ -227,7 +227,7 @@ public class StaxWriterTest {
 		final Score score = readMusicXmlTestFile("basic_duration_appearances.musicxml", false);
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		MusicXmlWriter writer = new StaxWriter(score, filePath, false);
+		MusicXmlWriter writer = new StaxWriter(score, filePath, false, false);
 		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -266,7 +266,7 @@ public class StaxWriterTest {
 		final Score score = readMusicXmlTestFile("basic_dotted_duration_appearances.musicxml", false);
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		MusicXmlWriter writer = new StaxWriter(score, filePath, false);
+		MusicXmlWriter writer = new StaxWriter(score, filePath, false, false);
 		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -303,7 +303,7 @@ public class StaxWriterTest {
 		final Score score = readMusicXmlTestFile("tuplet_writing_test.musicxml", false);
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		MusicXmlWriter writer = new StaxWriter(score, filePath, false);
+		MusicXmlWriter writer = new StaxWriter(score, filePath, false, false);
 		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -376,7 +376,7 @@ public class StaxWriterTest {
 		writeAndReadScore(score, false);
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		MusicXmlWriter writer = new StaxWriter(score, filePath, false);
+		MusicXmlWriter writer = new StaxWriter(score, filePath, false, false);
 		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
