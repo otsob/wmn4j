@@ -57,7 +57,7 @@ import java.util.zip.ZipFile;
  */
 final class StaxReader implements MusicXmlReader {
 
-	private static final String MUSICXML_V3_1_SCHEMA_PATH = "org/wmn4j/io/musicxml/musicxml.xsd";
+	private static final String MUSICXML_V4_0_SCHEMA_PATH = "org/wmn4j/io/musicxml/musicxml.xsd";
 	private static final Logger LOG = LoggerFactory.getLogger(StaxReader.class);
 	private static final String COMPRESSED_EXTENSION = "mxl";
 	private static final Set<String> VALID_EXTENSIONS = Set.of("xml", "musicxml", COMPRESSED_EXTENSION);
@@ -207,7 +207,7 @@ final class StaxReader implements MusicXmlReader {
 		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		ClassLoader classLoader = getClass().getClassLoader();
 		try {
-			Schema schema = factory.newSchema(classLoader.getResource(MUSICXML_V3_1_SCHEMA_PATH));
+			Schema schema = factory.newSchema(classLoader.getResource(MUSICXML_V4_0_SCHEMA_PATH));
 			Validator validator = schema.newValidator();
 			final XMLStreamReader validationReader = createStreamReader(path);
 			validator.validate(new StAXSource(validationReader));
