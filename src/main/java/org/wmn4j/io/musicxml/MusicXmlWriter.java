@@ -11,6 +11,7 @@ import java.nio.file.Path;
 /**
  * Represents a writer for MusicXML files.
  * The default MusicXML version for output is currently 4.0.
+ * Only part-wise scores are currently supported.
  * <p>
  * Implementations of this interface are not guaranteed to be thread-safe.
  */
