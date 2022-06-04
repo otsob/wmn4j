@@ -10,6 +10,7 @@ import java.nio.file.Path;
 
 /**
  * Represents a writer for MusicXML files.
+ * The default MusicXML version for output is currently 4.0.
  * <p>
  * Implementations of this interface are not guaranteed to be thread-safe.
  */
