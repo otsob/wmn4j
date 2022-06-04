@@ -17,6 +17,10 @@ public interface MusicXmlReader extends ScoreReader {
 	/**
 	 * Returns a reader for the MusicXML file at the given path.
 	 * The MusicXML file is validated against the schema.
+	 * Accepted file extensions are .xml, .musicxml, and .mxl (for compressed
+	 * MusicXML). The input MusicXML is validated against version 4.0 schema,
+	 * which should accept also earlier versions of MusicXML. Only part-wise
+	 * scores are currently supported.
 	 *
 	 * @param path the path of the file for which this reader is created
 	 * @return a reader for the MusicXML file at the given path

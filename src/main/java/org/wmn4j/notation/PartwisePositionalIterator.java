@@ -27,19 +27,24 @@ import java.util.NoSuchElementException;
  */
 final class PartwisePositionalIterator implements PositionalIterator {
 
-	private final Iterator<Part> scoreIterator;
+	private static final int NEXT_NOT_CALLED_INDEX = -1;
+	private final Score score;
 
+	private final int firstMeasure;
+	private final int lastMeasure;
+
+	private final Iterator<Integer> partIndexIterator;
 	private PartIterator currentPartIterator;
 	private MeasureIterator currentMeasureIterator;
-	private Part prevPart;
+	private int currentPartIndex;
+
+	// These variables keep track of what was the position
+	// of the durational returned by last call of next.
 	private int prevPartIndex;
 	private int prevStaffNumber;
 	private int prevMeasureNumber;
 	private int prevVoice;
 	private int prevIndex;
-
-	private final int firstMeasure;
-	private final int lastMeasure;
 
 	PartwisePositionalIterator(Score score, int firstMeasure, int lastMeasure) {
 		this(score, firstMeasure, lastMeasure, Collections.emptyList());
@@ -54,60 +59,69 @@ final class PartwisePositionalIterator implements PositionalIterator {
 	 * @param partIndices  the indices of the parts included in iteration
 	 */
 	PartwisePositionalIterator(Score score, int firstMeasure, int lastMeasure, List<Integer> partIndices) {
-
-		if (partIndices.isEmpty()) {
-			this.scoreIterator = score.iterator();
-		} else {
-			List<Part> selectedParts = new ArrayList<>();
-			for (Integer index : partIndices) {
-				selectedParts.add(score.getPart(index));
-			}
-
-			this.scoreIterator = selectedParts.iterator();
-		}
-
-		this.prevPart = this.scoreIterator.next();
-		this.prevPartIndex = 0;
+		this.score = score;
 		this.firstMeasure = firstMeasure;
 		this.lastMeasure = lastMeasure;
-		this.currentPartIterator = this.prevPart.getPartIterator(this.firstMeasure, this.lastMeasure);
+
+		if (partIndices == null || partIndices.isEmpty()) {
+			this.partIndexIterator = score.toSelection().getPartIndices().iterator();
+		} else {
+			this.partIndexIterator = new ArrayList<>(partIndices).iterator();
+		}
+
+		this.currentPartIndex = this.partIndexIterator.next();
+		this.prevPartIndex = NEXT_NOT_CALLED_INDEX;
+		this.currentPartIterator = score.getPart(this.currentPartIndex)
+				.getPartIterator(this.firstMeasure, this.lastMeasure);
 		this.currentMeasureIterator = this.currentPartIterator.next().getMeasureIterator();
+
+		findNextMeasureWithContent();
 	}
 
 	@Override
 	public boolean hasNext() {
-		return this.currentMeasureIterator.hasNext() || this.currentPartIterator.hasNext()
-				|| this.scoreIterator.hasNext();
+		// Current measure iterator should always be kept at
+		// the next measure with content. Measure iterator
+		// hasNext should only return false when there is nothing
+		// more to iterate in the score.
+		return currentMeasureIterator.hasNext();
 	}
 
 	@Override
 	public Durational next() {
-		if (!this.hasNext()) {
+		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}
 
-		if (!this.currentMeasureIterator.hasNext()) {
-			if (!this.currentPartIterator.hasNext()) {
-				this.prevPart = this.scoreIterator.next();
-				++this.prevPartIndex;
-				this.currentPartIterator = this.prevPart.getPartIterator(this.firstMeasure, this.lastMeasure);
-			}
+		final Durational next = currentMeasureIterator.next();
+		prevPartIndex = currentPartIndex;
+		prevStaffNumber = currentPartIterator.getStaffNumberOfPrevious();
+		prevMeasureNumber = currentPartIterator.getMeasureNumberOfPrevious();
+		prevVoice = currentMeasureIterator.getVoiceOfPrevious();
+		prevIndex = currentMeasureIterator.getIndexOfPrevious();
 
-			this.currentMeasureIterator = this.currentPartIterator.next().getMeasureIterator();
-		}
-
-		final Durational next = this.currentMeasureIterator.next();
-		this.prevStaffNumber = this.currentPartIterator.getStaffNumberOfPrevious();
-		this.prevMeasureNumber = this.currentPartIterator.getMeasureNumberOfPrevious();
-		this.prevVoice = this.currentMeasureIterator.getVoiceOfPrevious();
-		this.prevIndex = this.currentMeasureIterator.getIndexOfPrevious();
+		findNextMeasureWithContent();
 
 		return next;
 	}
 
+	private void findNextMeasureWithContent() {
+		while (!currentMeasureIterator.hasNext()) {
+			if (currentPartIterator.hasNext()) {
+				currentMeasureIterator = currentPartIterator.next().getMeasureIterator();
+			} else if (partIndexIterator.hasNext()) {
+				currentPartIndex = partIndexIterator.next();
+				currentPartIterator = score.getPart(currentPartIndex).getPartIterator(firstMeasure, lastMeasure);
+			} else {
+				// Nothing more to iterate.
+				break;
+			}
+		}
+	}
+
 	@Override
 	public Position getPositionOfPrevious() {
-		if (this.prevPart == null) {
+		if (prevPartIndex == NEXT_NOT_CALLED_INDEX) {
 			throw new IllegalStateException("no previous position available because next has not been called yet");
 		}
 

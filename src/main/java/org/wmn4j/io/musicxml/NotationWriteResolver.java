@@ -61,7 +61,7 @@ class NotationWriteResolver {
 		// number resolving is harder to implement for arpeggios.
 		unresolvedNotations.put(notation, 0);
 
-		writer.writeStartElement(ARPEGGIATION_TYPES.get(type));
+		writer.writeEmptyElement(ARPEGGIATION_TYPES.get(type));
 
 		if (type.equals(Notation.Type.ARPEGGIATE_DOWN)) {
 			writer.writeAttribute(Tags.DIRECTION, Tags.DOWN);
@@ -70,13 +70,11 @@ class NotationWriteResolver {
 		if (type.equals(Notation.Type.ARPEGGIATE_UP)) {
 			writer.writeAttribute(Tags.DIRECTION, Tags.UP);
 		}
-
-		writer.writeEndElement();
 	}
 
 	void writeNotationStartElement(Notation notation) throws XMLStreamException {
 
-		writer.writeStartElement(NOTATION_TYPES_WITH_START_STOP.get(notation.getType()));
+		writer.writeEmptyElement(NOTATION_TYPES_WITH_START_STOP.get(notation.getType()));
 
 		final Integer notationNumber = getNextAvailableNotationNumber();
 		unresolvedNotations.put(notation, notationNumber);
@@ -91,14 +89,12 @@ class NotationWriteResolver {
 				writer.writeAttribute(Tags.LINE_TYPE, NOTATION_STYLES.get(notation.getStyle()));
 			}
 		}
-
-		writer.writeEndElement();
 	}
 
 	void writeNotationStopElement(Notation notation) throws XMLStreamException {
 		if (unresolvedNotations.containsKey(notation)) {
 
-			writer.writeStartElement(NOTATION_TYPES_WITH_START_STOP.get(notation.getType()));
+			writer.writeEmptyElement(NOTATION_TYPES_WITH_START_STOP.get(notation.getType()));
 			writer.writeAttribute(Tags.NUMBER, unresolvedNotations.get(notation).toString());
 
 			usedNotationNumbers.remove(unresolvedNotations.get(notation));
@@ -112,7 +108,6 @@ class NotationWriteResolver {
 					writer.writeAttribute(Tags.LINE_TYPE, NOTATION_STYLES.get(notation.getStyle()));
 				}
 			}
-			writer.writeEndElement();
 		}
 
 	}
