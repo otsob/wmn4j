@@ -502,6 +502,10 @@ final class StaxWriter implements MusicXmlWriter {
 
 		final List<Offset<Clef>> undealtClefChanges = new ArrayList<>(measure.getClefChanges());
 
+		if (measure.isEmpty()) {
+			return toDivisionCount(measure.getTimeSignature().getTotalDuration());
+		}
+
 		final var voiceNumbers = measure.getVoiceNumbers();
 		Duration offset = null;
 
