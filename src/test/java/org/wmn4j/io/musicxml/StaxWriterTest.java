@@ -74,9 +74,10 @@ public class StaxWriterTest {
 		return score;
 	}
 
-	private Score writeAndReadScore(Score score) {
-		Path file = temporaryDirectory.resolve("file.musicxml");
-		MusicXmlWriter writer = new StaxWriter(score, file);
+	private Score writeAndReadScore(Score score, boolean compress) {
+		final String filename = compress ? "file.mxl" : "file.musicxml";
+		Path file = temporaryDirectory.resolve(filename);
+		MusicXmlWriter writer = new StaxWriter(score, file, compress, false);
 		writeOrFail(writer);
 
 		Score writtenScore = null;
@@ -84,7 +85,7 @@ public class StaxWriterTest {
 		try (final MusicXmlReader reader = MusicXmlReader.readerFor(file)) {
 			writtenScore = reader.readScore();
 		} catch (final IOException | ParsingFailureException e) {
-			fail("Reading score written by MusicXmlScoreWriterDom failed with exception " + e);
+			fail("Reading score written by StaxWriter failed with exception " + e);
 		}
 
 		assertNotNull(writtenScore);
@@ -108,7 +109,7 @@ public class StaxWriterTest {
 		scoreBuilder.addPart(partBuilder);
 		Score score = scoreBuilder.build();
 
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 
 		PositionalIterator iterator = writtenScore.partwiseIterator();
 
@@ -136,7 +137,7 @@ public class StaxWriterTest {
 	@Test
 	void testWritingKeySignatures() {
 		Score score = readMusicXmlTestFile("keysigs.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 
 		MusicXmlFileChecks.assertKeySignaturesReadToScoreCorrectly(writtenScore);
 	}
@@ -144,7 +145,7 @@ public class StaxWriterTest {
 	@Test
 	void testWritingTimeSignatures() {
 		Score score = readMusicXmlTestFile("timesigs.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 
 		MusicXmlFileChecks.assertTimeSignaturesReadCorrectly(writtenScore);
 	}
@@ -152,7 +153,7 @@ public class StaxWriterTest {
 	@Test
 	void testWritingClefs() {
 		Score score = readMusicXmlTestFile("clefs.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 
 		MusicXmlFileChecks.assertClefsReadCorrectly(writtenScore);
 	}
@@ -160,7 +161,7 @@ public class StaxWriterTest {
 	@Test
 	void testWritingBarlines() {
 		Score score = readMusicXmlTestFile("barlines.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 
 		MusicXmlFileChecks.assertBarlinesReadCorrectly(writtenScore);
 	}
@@ -168,7 +169,7 @@ public class StaxWriterTest {
 	@Test
 	void testWritingMultipleVoicesAndChords() {
 		Score score = readMusicXmlTestFile("twoMeasures.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 
 		MusicXmlFileChecks.assertChordsAndMultipleVoicesReadCorrectly(writtenScore);
 	}
@@ -176,7 +177,7 @@ public class StaxWriterTest {
 	@Test
 	void testWritingPickupMeasure() {
 		Score score = readMusicXmlTestFile("pickup_measure_test.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 
 		MusicXmlFileChecks.assertPickupMeasureReadCorrectly(writtenScore);
 	}
@@ -184,7 +185,7 @@ public class StaxWriterTest {
 	@Test
 	void testWritingScoreAttributes() {
 		Score score = readMusicXmlTestFile("attribute_reading_test.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 
 		MusicXmlFileChecks.assertScoreHasExpectedAttributes(writtenScore);
 	}
@@ -192,7 +193,7 @@ public class StaxWriterTest {
 	@Test
 	void testWritingScoreWithMultiStaffPart() {
 		Score score = readMusicXmlTestFile("multistaff.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 
 		MusicXmlFileChecks.assertMultiStaffPartReadCorrectly(writtenScore);
 	}
@@ -200,7 +201,7 @@ public class StaxWriterTest {
 	@Test
 	void testWritingArticulations() {
 		Score score = readMusicXmlTestFile("articulations.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 
 		MusicXmlFileChecks.assertScoreWithArticulationsReadCorrectly(writtenScore);
 	}
@@ -208,7 +209,7 @@ public class StaxWriterTest {
 	@Test
 	void testArticulationsOnMultipleStaves() {
 		Score score = readMusicXmlTestFile("articulationsOnMultipleStaves.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 
 		MusicXmlFileChecks.assertArticulationsReadCorrectlyFromMultipleStaves(writtenScore);
 	}
@@ -216,7 +217,7 @@ public class StaxWriterTest {
 	@Test
 	void testWritingOrnaments() {
 		Score score = readMusicXmlTestFile("ornament_test.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 
 		MusicXmlFileChecks.assertOrnamentsAreCorrect(writtenScore);
 	}
@@ -226,7 +227,7 @@ public class StaxWriterTest {
 		final Score score = readMusicXmlTestFile("basic_duration_appearances.musicxml", false);
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		MusicXmlWriter writer = new StaxWriter(score, filePath);
+		MusicXmlWriter writer = new StaxWriter(score, filePath, false, false);
 		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -265,7 +266,7 @@ public class StaxWriterTest {
 		final Score score = readMusicXmlTestFile("basic_dotted_duration_appearances.musicxml", false);
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		MusicXmlWriter writer = new StaxWriter(score, filePath);
+		MusicXmlWriter writer = new StaxWriter(score, filePath, false, false);
 		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -302,7 +303,7 @@ public class StaxWriterTest {
 		final Score score = readMusicXmlTestFile("tuplet_writing_test.musicxml", false);
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		MusicXmlWriter writer = new StaxWriter(score, filePath);
+		MusicXmlWriter writer = new StaxWriter(score, filePath, false, false);
 		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -372,10 +373,10 @@ public class StaxWriterTest {
 		final Score score = scoreBuilder.build();
 
 		// Check that score is valid MusicXML
-		writeAndReadScore(score);
+		writeAndReadScore(score, false);
 
 		Path filePath = temporaryDirectory.resolve("temporary_file.musicxml");
-		MusicXmlWriter writer = new StaxWriter(score, filePath);
+		MusicXmlWriter writer = new StaxWriter(score, filePath, false, false);
 		writeOrFail(writer);
 
 		final Document document = TestHelper.readDocument(filePath);
@@ -407,14 +408,21 @@ public class StaxWriterTest {
 	@Test
 	void whenScoreHasSingleVoiceWithSlursAndGlissandoThenTheyAreWrittenToFile() {
 		Score score = readMusicXmlTestFile("single_staff_single_voice_notation_test.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 		MusicXmlFileChecks.assertNotationsReadCorrectlyFromSingleVoiceToScore(writtenScore);
 	}
 
 	@Test
 	void whenScoreHasMultipleVoicesWithSlursAndGlissandoThenTheyAreWrittenToFile() {
 		Score score = readMusicXmlTestFile("multi_staff_multi_voice_notation_test.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(writtenScore);
+	}
+
+	@Test
+	void testWritingCompressedMusicXml() {
+		Score score = readMusicXmlTestFile("multi_staff_multi_voice_notation_test.mxl", false);
+		Score writtenScore = writeAndReadScore(score, true);
 		MusicXmlFileChecks.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(writtenScore);
 	}
 
@@ -431,7 +439,7 @@ public class StaxWriterTest {
 		builder.addPart(partBuilder);
 		Score score = builder.build();
 
-		final Score writtenScore = writeAndReadScore(score);
+		final Score writtenScore = writeAndReadScore(score, false);
 		assertEquals(1, writtenScore.getPartCount());
 		final Part part = writtenScore.getPart(0);
 		assertEquals(1, part.getMeasureCount());
@@ -445,21 +453,21 @@ public class StaxWriterTest {
 	@Test
 	void testGivenScoreWithGraceNotesThenGraceNotesAreCorrectlyWritten() {
 		Score score = readMusicXmlTestFile("grace_note_test.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 		MusicXmlFileChecks.assertGraceNotesAreCorrect(writtenScore);
 	}
 
 	@Test
 	void testGivenScoreWithGraceNoteChordsThenGraceNoteChordsAreCorrectlyWritten() {
 		Score score = readMusicXmlTestFile("grace_note_chord_test.musicxml", false);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 		MusicXmlFileChecks.assertGraceNoteChordsAreCorrect(writtenScore);
 	}
 
 	@Test
 	void testGivenScoreWithDirectionsThenDirectionsAreCorrectlyWritten() {
 		Score score = readMusicXmlTestFile("directions_test.musicxml", true);
-		Score writtenScore = writeAndReadScore(score);
+		Score writtenScore = writeAndReadScore(score, false);
 		MusicXmlFileChecks.assertDirectionsCorrect(writtenScore);
 	}
 }

@@ -38,23 +38,29 @@ import javax.xml.transform.stax.StAXSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.zip.ZipFile;
 
 /**
  * Implements a MusicXML reader using the Stax Cursor API.
  */
 final class StaxReader implements MusicXmlReader {
 
-	private static final String MUSICXML_V3_1_SCHEMA_PATH = "org/wmn4j/io/musicxml/musicxml.xsd";
+	private static final String MUSICXML_V4_0_SCHEMA_PATH = "org/wmn4j/io/musicxml/musicxml.xsd";
 	private static final Logger LOG = LoggerFactory.getLogger(StaxReader.class);
+	private static final String COMPRESSED_EXTENSION = "mxl";
+	private static final Set<String> VALID_EXTENSIONS = Set.of("xml", "musicxml", COMPRESSED_EXTENSION);
 
 	private final boolean validateInput;
 	private final Path path;
@@ -62,6 +68,7 @@ final class StaxReader implements MusicXmlReader {
 
 	private XMLStreamReader reader;
 	private InputStream inputStream;
+	private ZipFile compressedFile;
 	private ScoreBuilder scoreBuilder;
 	private Score score;
 
@@ -75,6 +82,8 @@ final class StaxReader implements MusicXmlReader {
 	private int currentDurDivisions;
 	private int currentDotCount;
 	private int currentTupletDivisor;
+
+	private String mxlMainFilePath;
 
 	private int beats;
 	private int beatDivisions;
@@ -129,13 +138,21 @@ final class StaxReader implements MusicXmlReader {
 		if (!isClosed) {
 			isClosed = true;
 
+			if (compressedFile != null) {
+				compressedFile.close();
+			}
+
 			try {
-				reader.close();
+				if (reader != null) {
+					reader.close();
+				}
 			} catch (XMLStreamException e) {
 				throw new IOException("Failed to close reader");
 			}
 
-			inputStream.close();
+			if (inputStream != null) {
+				inputStream.close();
+			}
 		}
 	}
 
@@ -190,7 +207,7 @@ final class StaxReader implements MusicXmlReader {
 		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		ClassLoader classLoader = getClass().getClassLoader();
 		try {
-			Schema schema = factory.newSchema(classLoader.getResource(MUSICXML_V3_1_SCHEMA_PATH));
+			Schema schema = factory.newSchema(classLoader.getResource(MUSICXML_V4_0_SCHEMA_PATH));
 			Validator validator = schema.newValidator();
 			final XMLStreamReader validationReader = createStreamReader(path);
 			validator.validate(new StAXSource(validationReader));
@@ -202,17 +219,76 @@ final class StaxReader implements MusicXmlReader {
 		inputStream.close();
 	}
 
+	private boolean isCompressed(Path path, String extension) throws IOException {
+		return Objects.equals(Files.probeContentType(path), CompressedMxl.COMPRESSED_CONTENT_TYPE)
+				|| Objects.equals(COMPRESSED_EXTENSION, extension);
+	}
+
+	private String getExtension(Path path) {
+		final String[] split = path.toString().split("\\.");
+		return split[split.length - 1];
+	}
+
 	private XMLStreamReader createStreamReader(Path path) throws IOException, ParsingFailureException {
 		final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		final String extension = getExtension(path);
+		if (validateInput && !VALID_EXTENSIONS.contains(extension)) {
+			throw new ParsingFailureException(
+					"Not a valid file extension for MusicXML, must be one of " + VALID_EXTENSIONS);
+		}
 
 		try {
-			inputStream = new FileInputStream(path.toFile());
-			return xmlInputFactory.createXMLStreamReader(inputStream);
+			if (isCompressed(path, extension)) {
+				inputStream = getStreamToZipEntry(path);
+			} else {
+				inputStream = new FileInputStream(path.toFile());
+			}
+
+			return xmlInputFactory.createXMLStreamReader(new BufferedInputStream(inputStream));
 		} catch (XMLStreamException e) {
 			throw new ParsingFailureException(getParsingFailureMessage(e.getMessage()));
 		} catch (FileNotFoundException e) {
 			throw new IOException("File " + path + " not found");
 		}
+	}
+
+	private void findMainMusicXmlFile(ZipFile zipFile) throws IOException, XMLStreamException {
+		inputStream = zipFile.getInputStream(zipFile.getEntry(CompressedMxl.META_INF_PATH));
+		final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		reader = xmlInputFactory.createXMLStreamReader(new BufferedInputStream(inputStream));
+
+		while (reader.getEventType() != XMLStreamConstants.END_DOCUMENT) {
+			consumeUntil(tag -> {
+				final String path = reader.getAttributeValue(null, CompressedMxl.FULL_PATH_ATTR);
+				final String mediaType = reader.getAttributeValue(null, CompressedMxl.MEDIA_TYPE_ATTR);
+
+				if (mediaType == null || CompressedMxl.UNCOMPRESSED_CONTENT_TYPE.equals(mediaType)) {
+					mxlMainFilePath = path;
+				}
+
+			}, CompressedMxl.ROOTFILE_TAG);
+		}
+
+		reader.close();
+		reader = null;
+
+		inputStream.close();
+		inputStream = null;
+	}
+
+	private InputStream getStreamToZipEntry(Path path) throws
+			ParsingFailureException, IOException, XMLStreamException {
+		compressedFile = new ZipFile(path.toString());
+		findMainMusicXmlFile(compressedFile);
+		var entries = compressedFile.entries();
+		while (entries.hasMoreElements()) {
+			final var entry = entries.nextElement();
+			if (entry.getName().equals(mxlMainFilePath)) {
+				return compressedFile.getInputStream(entry);
+			}
+		}
+
+		throw new ParsingFailureException("Invalid compressed MusicXML file: missing MusicXML content.");
 	}
 
 	private void consumeText(Consumer<String> consumer) throws XMLStreamException {
@@ -388,9 +464,18 @@ final class StaxReader implements MusicXmlReader {
 		}, element);
 	}
 
+	private void updateMeasureNumber() throws XMLStreamException {
+		try {
+			final String measureNumberStr = reader.getAttributeValue(null, Tags.NUMBER).replaceAll("\\D", "");
+			partContext.setMeasureNumber(Integer.parseInt(measureNumberStr));
+		} catch (NumberFormatException e) {
+			// If measure "number" does not contain a number at all, just increment the number.
+			partContext.incrementMeasureNumber();
+		}
+	}
+
 	private void consumeMeasureElem() throws XMLStreamException {
-		partContext.setMeasureNumber(Integer.parseInt(
-				reader.getAttributeValue(null, Tags.NUMBER)));
+		updateMeasureNumber();
 
 		consumeUntil(tag -> {
 			switch (tag) {
@@ -638,7 +723,8 @@ final class StaxReader implements MusicXmlReader {
 		final String elementRoleType = reader.getAttributeValue(null, Tags.TYPE);
 		final String arpeggioDirection = reader.getAttributeValue(null, Tags.DIRECTION);
 		final Notation.Type type = Transforms.stringToNotationType(notationTag, arpeggioDirection);
-		final Notation.Style style = Transforms.stringToNotationStyle(reader.getAttributeValue(null, Tags.LINE_TYPE));
+		final Notation.Style style = Transforms.stringToNotationStyle(
+				reader.getAttributeValue(null, Tags.LINE_TYPE));
 		final int notationNumber = NotationReadResolver.parseNotationNumber(
 				reader.getAttributeValue(null, Tags.NUMBER));
 		if (!(currentDurationalBuilder instanceof ConnectableBuilder)) {

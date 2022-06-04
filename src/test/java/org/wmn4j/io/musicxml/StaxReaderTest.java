@@ -61,6 +61,14 @@ class StaxReaderTest {
 	}
 
 	@Test
+	void testReadScoreWithNonNumericMeasureNumber() {
+		// The score is otherwise equal to singleC.musicxml, apart from having measure-
+		// number with a non-numeric character in it.
+		final Score score = readScore("nonnumeric_measure_number.musicxml", true);
+		MusicXmlFileChecks.assertSingleNoteScoreReadCorrectly(score);
+	}
+
+	@Test
 	void testReadScoreBuilderWithSingleNote() {
 		final ScoreBuilder scoreBuilder = readScoreBuilder("singleC.musicxml", false);
 		MusicXmlFileChecks.assertSingleNoteScoreReadCorrectly(scoreBuilder.build());
@@ -341,6 +349,12 @@ class StaxReaderTest {
 	@Test
 	void testReadingNotationsIntoScoreFromMultipleStavesAndVoices() {
 		Score scoreWitNotations = readScore("multi_staff_multi_voice_notation_test.musicxml", false);
+		MusicXmlFileChecks.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreWitNotations);
+	}
+
+	@Test
+	void testReadingNotationsIntoScoreFromCompressedMultipleStavesAndVoices() {
+		Score scoreWitNotations = readScore("multi_staff_multi_voice_notation_test.mxl", true);
 		MusicXmlFileChecks.assertNotationsReadCorrectlyFromMultipleStavesWithMultipleVoices(scoreWitNotations);
 	}
 

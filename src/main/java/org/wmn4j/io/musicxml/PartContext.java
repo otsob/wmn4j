@@ -354,4 +354,8 @@ final class PartContext {
 		}
 		return offset;
 	}
+
+	public void incrementMeasureNumber() {
+		++measureNumber;
+	}
 }
