@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.wmn4j.TestHelper;
 import org.wmn4j.notation.access.Position;
+import org.wmn4j.notation.access.PositionalIterator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -104,4 +105,20 @@ class PartwisePositionalIteratorTest {
 		final Position fourth = new Position(bottomPartNumber, 1, 3, 1, 0);
 		assertEquals(fourth, this.iter.getPositionOfPrevious());
 	}
+
+	@Test
+	void testIteratingEmptyMeasures() {
+		final Score score = TestHelper.readScore("musicxml/empty_measure_iteration_test.musicxml");
+
+		final PositionalIterator iter = new PartwisePositionalIterator(score, 1, 3);
+
+		int noteCount = 0;
+		while (iter.hasNext()) {
+			iter.next();
+			++noteCount;
+		}
+
+		assertEquals(3, noteCount);
+	}
+
 }

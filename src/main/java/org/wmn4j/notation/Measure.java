@@ -302,6 +302,38 @@ public final class Measure implements Iterable<Durational> {
 	 * @return true if this measure is a full measure rest
 	 */
 	public boolean isFullMeasureRest() {
+		final var voiceNumbers = getVoiceNumbers();
+		if (voiceNumbers.size() > 1) {
+			return false;
+		}
+
+		if (voiceNumbers.isEmpty()) {
+			return true;
+		}
+
+		final var voice = voices.get(voiceNumbers.get(0));
+		if (voice.size() > 1) {
+			return false;
+		}
+
+		if (voice.isEmpty()) {
+			return true;
+		}
+
+		final var durational = voice.get(0);
+		if (!durational.isRest()) {
+			return false;
+		}
+
+		return durational.getDuration().equals(getTimeSignature().getTotalDuration());
+	}
+
+	/**
+	 * Returns true if this measure is empty.
+	 *
+	 * @return true if this measure is empty
+	 */
+	public boolean isEmpty() {
 		return this.voices.isEmpty();
 	}
 

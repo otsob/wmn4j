@@ -44,25 +44,33 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 final class StaxWriter implements MusicXmlWriter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(StaxWriter.class);
+	public static final String ENCODING = "UTF-8";
+	public static final String XML_VERSION = "1.0";
 
 	private final Score score;
 	private final Path path;
 	private final List<String> partIds = new ArrayList<>();
+	private final boolean compress;
+	private final boolean minify;
+
 	private XMLStreamWriter writer;
 	private OutputStream outputStream;
 	private final int divisions;
 	private NotationWriteResolver notationResolver;
 	private boolean isClosed;
+	private boolean stavesWritten;
 
 	static void writeValue(XMLStreamWriter writer, String tag, String value) throws XMLStreamException {
 		if (value.isEmpty()) {
@@ -74,11 +82,14 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 	}
 
-	StaxWriter(Score score, Path path) {
+	StaxWriter(Score score, Path path, boolean compress, boolean minify) {
 		this.score = score;
 		this.path = path;
 		this.divisions = computeDivisions(score.partwiseIterator());
+		this.compress = compress;
+		this.minify = minify;
 		this.isClosed = false;
+		this.stavesWritten = false;
 	}
 
 	private String getDTD(String version) {
@@ -91,15 +102,81 @@ final class StaxWriter implements MusicXmlWriter {
 		return builder.toString();
 	}
 
+	private void writeMetaInf(XMLStreamWriter metaInfWriter, String filename) throws XMLStreamException {
+		metaInfWriter.writeStartDocument(ENCODING, XML_VERSION);
+
+		metaInfWriter.writeStartElement(CompressedMxl.CONTAINER_TAG);
+		metaInfWriter.writeStartElement(CompressedMxl.ROOTFILES_TAG);
+
+		metaInfWriter.writeStartElement(CompressedMxl.ROOTFILE_TAG);
+		metaInfWriter.writeAttribute(CompressedMxl.FULL_PATH_ATTR, filename);
+		metaInfWriter.writeAttribute(CompressedMxl.MEDIA_TYPE_ATTR, CompressedMxl.UNCOMPRESSED_CONTENT_TYPE);
+
+		metaInfWriter.writeEndElement();
+		metaInfWriter.writeEndElement();
+
+		metaInfWriter.writeEndElement();
+		metaInfWriter.writeEndDocument();
+		metaInfWriter.flush();
+	}
+
+	private OutputStream createOutputStream() throws IOException, XMLStreamException {
+		OutputStream outputStream;
+		FileOutputStream foutput = new FileOutputStream(path.toString());
+
+		if (compress) {
+			ZipOutputStream zipOut = new ZipOutputStream(foutput);
+			outputStream = new BufferedOutputStream(zipOut);
+
+			XMLStreamWriter metaInfWriter = createWriter(outputStream);
+			ZipEntry metaInf = new ZipEntry(CompressedMxl.META_INF_PATH);
+			String filename = getFilename();
+			zipOut.putNextEntry(metaInf);
+			writeMetaInf(metaInfWriter, filename);
+			metaInfWriter.close();
+			zipOut.closeEntry();
+
+			zipOut.putNextEntry(new ZipEntry(filename));
+		} else {
+			outputStream = new BufferedOutputStream(foutput);
+		}
+
+		return outputStream;
+	}
+
+	private String getFilename() {
+		List<String> splitFilename = new ArrayList<>();
+		Collections.addAll(splitFilename, path.getFileName().toString().split("\\."));
+		final int lastIndex = splitFilename.size() - 1;
+
+		final String extension = "musicxml";
+
+		if (splitFilename.get(lastIndex).equals("mxl")) {
+			splitFilename.set(lastIndex, extension);
+		} else {
+			splitFilename.add(extension);
+		}
+
+		return String.join(".", splitFilename);
+	}
+
+	private XMLStreamWriter createWriter(OutputStream outputStream) throws XMLStreamException {
+		if (minify) {
+			return XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
+		}
+
+		return new IndentingXmlStreamWriter(outputStream);
+	}
+
 	@Override
 	public void write() throws IOException {
 		try {
-			outputStream = new BufferedOutputStream(new FileOutputStream(path.toString()));
-			writer = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
+			outputStream = createOutputStream();
+			writer = createWriter(outputStream);
 
 			notationResolver = new NotationWriteResolver(writer);
 
-			writer.writeStartDocument("UTF-8", "1.0");
+			writer.writeStartDocument(ENCODING, XML_VERSION);
 			final String version = "4.0";
 			writer.writeDTD(getDTD(version));
 
@@ -204,10 +281,13 @@ final class StaxWriter implements MusicXmlWriter {
 			String partId = "P" + partNumber++;
 			writer.writeAttribute(Tags.ID, partId);
 
-			// Name is always required, default to empty string if not defined.
-			final var name = part.getName().orElse("");
-
-			writeValue(Tags.PART_NAME, name);
+			// Name is always required, default to empty tag if not defined.
+			final var name = part.getName();
+			if (name.isPresent()) {
+				writeValue(Tags.PART_NAME, name.get());
+			} else {
+				writer.writeEmptyElement(Tags.PART_NAME);
+			}
 
 			final var abbrName = part.getAttribute(Part.Attribute.ABBREVIATED_NAME);
 			if (abbrName.isPresent()) {
@@ -226,6 +306,7 @@ final class StaxWriter implements MusicXmlWriter {
 			final String partId = partIds.get(i);
 			final Part part = score.getPart(i);
 			writePart(partId, part);
+			stavesWritten = false;
 		}
 	}
 
@@ -277,14 +358,15 @@ final class StaxWriter implements MusicXmlWriter {
 			Measure current = part.getMeasure(s, m);
 			writeBarline(current, true);
 
-			writeMeasureAttributes(current, prev, isMultiStaff, s);
+			writeMeasureAttributes(current, prev, isMultiStaff, s, part.getStaffCount());
 
 			final int backup = writeMeasureContents(current, s, isMultiStaff);
+			writeBarline(current, false);
+
 			if (!s.equals(lastStaff)) {
 				writeOffset(backup, false);
 			}
 
-			writeBarline(current, false);
 		}
 
 		writer.writeEndElement();
@@ -314,9 +396,8 @@ final class StaxWriter implements MusicXmlWriter {
 			}
 
 			if (repeatDirection != null) {
-				writer.writeStartElement(Tags.REPEAT);
+				writer.writeEmptyElement(Tags.REPEAT);
 				writer.writeAttribute(Tags.DIRECTION, repeatDirection);
-				writer.writeEndElement();
 			}
 
 			writer.writeEndElement();
@@ -333,7 +414,8 @@ final class StaxWriter implements MusicXmlWriter {
 				&& current.getClef().equals(previous.getClef()));
 	}
 
-	private void writeMeasureAttributes(Measure current, Measure previous, boolean isMultiStaff, Integer staffNumber)
+	private void writeMeasureAttributes(Measure current, Measure previous, boolean isMultiStaff, Integer staffNumber,
+			int staffCount)
 			throws XMLStreamException {
 
 		if (!isAttributesElementRequired(current, previous)) {
@@ -375,6 +457,12 @@ final class StaxWriter implements MusicXmlWriter {
 			writer.writeEndElement();
 		}
 
+		// Write staves
+		if (!stavesWritten) {
+			writeValue(Tags.STAVES, Integer.toString(staffCount));
+			stavesWritten = true;
+		}
+
 		// Write clef
 		final var clef = current.getClef();
 		if (previous == null || !clef.equals(getLastClefInEffect(previous))) {
@@ -413,6 +501,10 @@ final class StaxWriter implements MusicXmlWriter {
 		writeDirections(measure.getDirections(), staff);
 
 		final List<Offset<Clef>> undealtClefChanges = new ArrayList<>(measure.getClefChanges());
+
+		if (measure.isEmpty()) {
+			return toDivisionCount(measure.getTimeSignature().getTotalDuration());
+		}
 
 		final var voiceNumbers = measure.getVoiceNumbers();
 		Duration offset = null;
@@ -677,8 +769,32 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 	}
 
+	private boolean hasOnlyGraceNoteOrnaments(Collection<Ornament> ornaments) {
+		return ornaments.stream().allMatch(StaxWriter::isGraceNote);
+	}
+
+	private boolean hasWritableNotations(Notation.Connectable connectable, Collection<Notation> notations) {
+		for (Notation notation : notations) {
+			boolean isBeginningOrEnd = connectable.getConnection(notation)
+					.map(connection -> connection.isBeginning() || connection.isEnd())
+					.orElse(false);
+
+			if (isBeginningOrEnd || notation.getType().isArpeggiation()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private void writeNotations(Notation.Connectable connectable, Set<Articulation> articulations,
 			Set<Notation> notations, Collection<Ornament> ornaments) throws XMLStreamException {
+
+		if (articulations.isEmpty() && !hasWritableNotations(connectable, notations) && hasOnlyGraceNoteOrnaments(
+				ornaments)) {
+			return;
+		}
+
 		writer.writeStartElement(Tags.NOTATIONS);
 		writeArticulations(articulations);
 		writeConnectedNotations(connectable, notations);
@@ -709,19 +825,21 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 	}
 
-	private void writeOrnaments(Collection<Ornament> ornaments) throws XMLStreamException {
-		final Predicate<Ornament> isGraceNote = (o) -> o.getType()
+	private static boolean isGraceNote(Ornament ornament) {
+		return ornament.getType()
 				.equals(Ornament.Type.SUCCEEDING_GRACE_NOTES)
-				|| o.getType().equals(Ornament.Type.GRACE_NOTES);
+				|| ornament.getType().equals(Ornament.Type.GRACE_NOTES);
+	}
 
+	private void writeOrnaments(Collection<Ornament> ornaments) throws XMLStreamException {
 		// If ornaments is empty or the only ornament is of type grace notes then do not add ornaments element.
-		if (ornaments.size() <= 1 && ornaments.stream().anyMatch(isGraceNote)) {
+		if (hasOnlyGraceNoteOrnaments(ornaments)) {
 			return;
 		}
 
 		writer.writeStartElement(Tags.ORNAMENTS);
 		for (Ornament ornament : ornaments) {
-			if (isGraceNote.test(ornament)) {
+			if (isGraceNote(ornament)) {
 				continue;
 			}
 
@@ -743,7 +861,11 @@ final class StaxWriter implements MusicXmlWriter {
 						content = "";
 				}
 
-				writeValue(tag, content);
+				if (content.isEmpty()) {
+					writer.writeEmptyElement(tag);
+				} else {
+					writeValue(tag, content);
+				}
 			}
 		}
 		writer.writeEndElement();
@@ -751,7 +873,7 @@ final class StaxWriter implements MusicXmlWriter {
 
 	private void writeConnectedNotations(Notation.Connectable connectable, Collection<Notation> notations)
 			throws XMLStreamException {
-		if (notations.isEmpty()) {
+		if (!hasWritableNotations(connectable, notations)) {
 			return;
 		}
 

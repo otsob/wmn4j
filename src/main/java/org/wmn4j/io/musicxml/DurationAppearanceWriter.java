@@ -47,17 +47,17 @@ enum DurationAppearanceWriter {
 	}
 
 	void writeAppearanceElements(Duration duration, XMLStreamWriter writer) throws XMLStreamException {
-		final int dotCount = duration.getDotCount();
 		final int tupletDivisor = duration.getTupletDivisor();
 		final Duration basicDurationType = duration.removeDots().multiply(tupletDivisor);
 
 		if (tupletDivisor == 1) {
-			writeDurationType(writer, basicDurationType);
+			writeDurationType(writer, basicDurationType, duration.getDotCount());
 		} else {
 			writeTupletElementsIfNeeded(duration, writer);
 		}
+	}
 
-		// Add dots
+	private void writeDots(XMLStreamWriter writer, int dotCount) throws XMLStreamException {
 		for (int i = 0; i < dotCount; ++i) {
 			StaxWriter.writeValue(writer, Tags.DOT, "");
 		}
@@ -70,7 +70,7 @@ enum DurationAppearanceWriter {
 		Duration showTypeDuration = getShowableDurationTypeForTuplet(denominator);
 
 		if (basicDurationAppearances.containsKey(showTypeDuration)) {
-			writeDurationType(writer, showTypeDuration);
+			writeDurationType(writer, showTypeDuration, duration.getDotCount());
 
 			final Duration durationThatIsSplitByTuplet = duration.multiply(tupletNotesThatFitInTheDividedDuration);
 
@@ -106,10 +106,12 @@ enum DurationAppearanceWriter {
 		return Duration.of(1, greatestPowerOfTwoUnderDenominator);
 	}
 
-	private void writeDurationType(XMLStreamWriter writer, Duration duration) throws XMLStreamException {
+	private void writeDurationType(XMLStreamWriter writer, Duration duration, int dotCount) throws XMLStreamException {
 		String type = basicDurationAppearances.get(duration);
 		if (type != null && !type.isBlank()) {
 			StaxWriter.writeValue(writer, Tags.TYPE, type);
 		}
+
+		writeDots(writer, dotCount);
 	}
 }

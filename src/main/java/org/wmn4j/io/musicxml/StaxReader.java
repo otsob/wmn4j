@@ -57,7 +57,7 @@ import java.util.zip.ZipFile;
  */
 final class StaxReader implements MusicXmlReader {
 
-	private static final String MUSICXML_V3_1_SCHEMA_PATH = "org/wmn4j/io/musicxml/musicxml.xsd";
+	private static final String MUSICXML_V4_0_SCHEMA_PATH = "org/wmn4j/io/musicxml/musicxml.xsd";
 	private static final Logger LOG = LoggerFactory.getLogger(StaxReader.class);
 	private static final String COMPRESSED_EXTENSION = "mxl";
 	private static final Set<String> VALID_EXTENSIONS = Set.of("xml", "musicxml", COMPRESSED_EXTENSION);
@@ -207,7 +207,7 @@ final class StaxReader implements MusicXmlReader {
 		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		ClassLoader classLoader = getClass().getClassLoader();
 		try {
-			Schema schema = factory.newSchema(classLoader.getResource(MUSICXML_V3_1_SCHEMA_PATH));
+			Schema schema = factory.newSchema(classLoader.getResource(MUSICXML_V4_0_SCHEMA_PATH));
 			Validator validator = schema.newValidator();
 			final XMLStreamReader validationReader = createStreamReader(path);
 			validator.validate(new StAXSource(validationReader));
@@ -220,7 +220,7 @@ final class StaxReader implements MusicXmlReader {
 	}
 
 	private boolean isCompressed(Path path, String extension) throws IOException {
-		return Objects.equals(Files.probeContentType(path), "application/vnd.recordare.musicxml")
+		return Objects.equals(Files.probeContentType(path), CompressedMxl.COMPRESSED_CONTENT_TYPE)
 				|| Objects.equals(COMPRESSED_EXTENSION, extension);
 	}
 
@@ -253,20 +253,20 @@ final class StaxReader implements MusicXmlReader {
 	}
 
 	private void findMainMusicXmlFile(ZipFile zipFile) throws IOException, XMLStreamException {
-		inputStream = zipFile.getInputStream(zipFile.getEntry("META-INF/container.xml"));
+		inputStream = zipFile.getInputStream(zipFile.getEntry(CompressedMxl.META_INF_PATH));
 		final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 		reader = xmlInputFactory.createXMLStreamReader(new BufferedInputStream(inputStream));
 
 		while (reader.getEventType() != XMLStreamConstants.END_DOCUMENT) {
 			consumeUntil(tag -> {
-				final String path = reader.getAttributeValue(null, "full-path");
-				final String mediaType = reader.getAttributeValue(null, "media-type");
+				final String path = reader.getAttributeValue(null, CompressedMxl.FULL_PATH_ATTR);
+				final String mediaType = reader.getAttributeValue(null, CompressedMxl.MEDIA_TYPE_ATTR);
 
-				if (mediaType == null || "application/vnd.recordare.musicxml+xml".equals(mediaType)) {
+				if (mediaType == null || CompressedMxl.UNCOMPRESSED_CONTENT_TYPE.equals(mediaType)) {
 					mxlMainFilePath = path;
 				}
 
-			}, "rootfile");
+			}, CompressedMxl.ROOTFILE_TAG);
 		}
 
 		reader.close();
