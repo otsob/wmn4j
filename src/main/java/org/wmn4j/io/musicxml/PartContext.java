@@ -111,12 +111,10 @@ final class PartContext {
 		}
 
 		if (builder.isNoteBuilder()) {
-			NoteBuilder noteBuilder = (NoteBuilder) builder;
-			if (noteBuilder != null) {
-				buffer.addNote(noteBuilder, staff, voice);
-				if (!hasChordTag) {
-					offsetDurations.add(noteBuilder.getDuration());
-				}
+			NoteBuilder noteBuilder = builder.toNoteBuilder();
+			buffer.addNote(noteBuilder, staff, voice);
+			if (!hasChordTag) {
+				offsetDurations.add(noteBuilder.getDuration());
 			}
 
 			prevNoteBuilder = noteBuilder;
