@@ -8,7 +8,7 @@ package org.wmn4j.notation;
  * <p>
  * Implementations of this interface are not guaranteed to be thread-safe.
  */
-public interface DurationalBuilder {
+public sealed interface DurationalBuilder permits NoteBuilder, RestBuilder, ChordBuilder {
 
 	/**
 	 * Returns a durational notation element with the values set in the builder.
