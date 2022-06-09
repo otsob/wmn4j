@@ -73,7 +73,7 @@ class ChordTest {
 	void testGetNoteOrderCorrect() {
 		for (int i = 0; i < cMajor.getNoteCount(); ++i) {
 			if (i != 0) {
-				assertFalse(cMajor.getNote(i - 1).getPitch().isHigherThan(cMajor.getNote(i).getPitch()));
+				assertFalse(cMajor.getNote(i - 1).getPitch().get().isHigherThan(cMajor.getNote(i).getPitch().get()));
 			}
 		}
 	}

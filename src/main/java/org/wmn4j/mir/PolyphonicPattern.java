@@ -282,19 +282,23 @@ final class PolyphonicPattern implements Pattern {
 	@Override
 	public boolean equalsEnharmonically(Pattern other) {
 		BiFunction<Iterable<Durational>, Iterable<Durational>, Boolean> equalsEnharmonically = (voiceA, voiceB) ->
-				isNoteContentEqualWithTransformation(voiceA, voiceB, note -> note.getPitch().toInt());
+				isNoteContentEqualWithTransformation(voiceA, voiceB,
+						note -> note.getPitch().orElseGet(note::getDisplayPitch).toInt());
 		return containsEqualVoices(other, equalsEnharmonically);
 	}
 
 	@Override
 	public boolean equalsTranspositionally(Pattern other) {
 
+		// TODO: Reimplement this with PointPatterns
+
 		Function<Durational, Integer> toPitchNumber = durational -> {
 			if (durational.isNote()) {
-				return durational.toNote().getPitch().toInt();
+				final Note note = durational.toNote();
+				return note.getPitch().orElseGet(note::getDisplayPitch).toInt();
 			}
 
-			return ((Chord) durational).getLowestNote().getPitch().toInt();
+			return ((Chord) durational).getLowestNote().getPitch().get().toInt();
 		};
 
 		// Get the first pitches available in this patterns voices. For chords get the lowest.
@@ -322,7 +326,8 @@ final class PolyphonicPattern implements Pattern {
 			final int transposition = pitchNumberInOther - firstPitchNumberInThis;
 			transpositionalEquivalenceCandidates.add((voiceA, voiceB) ->
 					isNoteContentEqualWithTransformations(voiceA, voiceB,
-							note -> note.getPitch().toInt() + transposition, note -> note.getPitch().toInt()));
+							note -> note.getPitch().get().toInt() + transposition,
+							note -> note.getPitch().get().toInt()));
 		}
 
 		return transpositionalEquivalenceCandidates.stream()

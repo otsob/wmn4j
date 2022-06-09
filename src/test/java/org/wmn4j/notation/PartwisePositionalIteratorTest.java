@@ -59,7 +59,7 @@ class PartwisePositionalIteratorTest {
 		Durational next = moveIterSteps(1);
 		assertTrue(next.isNote());
 		Note n = (Note) next;
-		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), n.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), n.getPitch().get());
 		assertEquals(Durations.QUARTER, n.getDuration());
 
 		// Move to the rest in the first measure of top part.
@@ -76,7 +76,7 @@ class PartwisePositionalIteratorTest {
 		next = moveIterSteps(5);
 		assertTrue(next.isNote());
 		n = (Note) next;
-		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), n.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), n.getPitch().get());
 		assertEquals(Durations.QUARTER, n.getDuration());
 	}
 

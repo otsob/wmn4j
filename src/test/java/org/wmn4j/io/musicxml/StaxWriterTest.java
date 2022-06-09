@@ -114,21 +114,21 @@ public class StaxWriterTest {
 		PositionalIterator iterator = writtenScore.partwiseIterator();
 
 		Note note = (Note) iterator.next();
-		assertEquals(Pitch.Base.C, note.getPitch().getBase());
-		assertEquals(Pitch.Accidental.NATURAL, note.getPitch().getAccidental());
-		assertEquals(0, note.getPitch().getOctave());
+		assertEquals(Pitch.Base.C, note.getPitch().get().getBase());
+		assertEquals(Pitch.Accidental.NATURAL, note.getPitch().get().getAccidental());
+		assertEquals(0, note.getPitch().get().getOctave());
 		assertEquals(Durations.QUARTER, note.getDuration());
 
 		note = (Note) iterator.next();
-		assertEquals(Pitch.Base.D, note.getPitch().getBase());
-		assertEquals(Pitch.Accidental.SHARP, note.getPitch().getAccidental());
-		assertEquals(1, note.getPitch().getOctave());
+		assertEquals(Pitch.Base.D, note.getPitch().get().getBase());
+		assertEquals(Pitch.Accidental.SHARP, note.getPitch().get().getAccidental());
+		assertEquals(1, note.getPitch().get().getOctave());
 		assertEquals(Durations.HALF, note.getDuration());
 
 		note = (Note) iterator.next();
-		assertEquals(Pitch.Base.E, note.getPitch().getBase());
-		assertEquals(Pitch.Accidental.DOUBLE_FLAT, note.getPitch().getAccidental());
-		assertEquals(2, note.getPitch().getOctave());
+		assertEquals(Pitch.Base.E, note.getPitch().get().getBase());
+		assertEquals(Pitch.Accidental.DOUBLE_FLAT, note.getPitch().get().getAccidental());
+		assertEquals(2, note.getPitch().get().getOctave());
 		assertEquals(Durations.QUARTER_TRIPLET, note.getDuration());
 
 		assertFalse(iterator.hasNext());

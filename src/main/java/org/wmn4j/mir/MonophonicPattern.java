@@ -4,8 +4,8 @@
 package org.wmn4j.mir;
 
 import org.wmn4j.notation.Durational;
+import org.wmn4j.notation.OptionallyPitched;
 import org.wmn4j.notation.Pitch;
-import org.wmn4j.notation.Pitched;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -136,8 +136,8 @@ final class MonophonicPattern implements Pattern {
 
 		List<Pitch> pitches = new ArrayList<>();
 		for (Durational dur : contents) {
-			if (dur instanceof Pitched) {
-				pitches.add(((Pitched) dur).getPitch());
+			if (dur.isNote()) {
+				dur.toNote().getPitch().ifPresent(p -> pitches.add(p));
 			}
 		}
 
@@ -174,11 +174,11 @@ final class MonophonicPattern implements Pattern {
 	 * are expressed as integers denoting how many half-steps the interval consists of.
 	 */
 	private static List<Integer> createIntervalNumberList(Iterable<Durational> contents) {
-		List<Pitched> pitchedElements = new ArrayList<>();
+		List<OptionallyPitched> pitchedElements = new ArrayList<>();
 
 		for (Durational dur : contents) {
-			if (dur instanceof Pitched) {
-				pitchedElements.add((Pitched) dur);
+			if (dur instanceof OptionallyPitched) {
+				pitchedElements.add((OptionallyPitched) dur);
 			}
 		}
 
@@ -188,10 +188,10 @@ final class MonophonicPattern implements Pattern {
 		}
 
 		List<Integer> intervalNumbers = new ArrayList<>();
-		int previous = pitchedElements.get(0).getPitch().toInt();
+		int previous = pitchedElements.get(0).getPitch().map(Pitch::toInt).orElse(0);
 
 		for (int i = 1; i < pitchedElements.size(); ++i) {
-			final int current = pitchedElements.get(i).getPitch().toInt();
+			final int current = pitchedElements.get(i).getPitch().map(Pitch::toInt).orElse(0);
 			intervalNumbers.add(current - previous);
 			previous = current;
 		}

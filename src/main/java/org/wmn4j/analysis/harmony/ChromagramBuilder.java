@@ -5,6 +5,7 @@ package org.wmn4j.analysis.harmony;
 
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Note;
+import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.PitchClass;
 
 import java.util.EnumMap;
@@ -91,15 +92,19 @@ public final class ChromagramBuilder {
 	}
 
 	/**
-	 * Increments the value of the pitch class of the note.
+	 * Increments the value of the pitch class of the note if the note has pitch.
 	 * If a weight function is specified, then the added value is provided by the weight
 	 * function.
 	 *
 	 * @param note note for which the pitch class is incremented
 	 */
 	public void add(Note note) {
-		final PitchClass pc = note.getPitch().getPitchClass();
-		double value = profile.get(note.getPitch().getPitchClass());
+		if (!note.hasPitch()) {
+			return;
+		}
+		final Pitch pitch = note.getPitch().get();
+		final PitchClass pc = pitch.getPitchClass();
+		double value = profile.get(pitch.getPitchClass());
 		value += weightFunction.apply(note);
 		this.setValue(pc, value);
 	}

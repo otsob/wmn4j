@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  *
  * @param <T> the type of pitched object this chord contains
  */
-final class GenericChord<T extends Pitched> implements Iterable<T> {
+final class GenericChord<T extends OptionallyPitched> implements Iterable<T> {
 
 	private final List<T> pitchedElements;
 
@@ -28,12 +28,12 @@ final class GenericChord<T extends Pitched> implements Iterable<T> {
 			throw new IllegalArgumentException("Chord cannot be constructed with an empty List of elements");
 		}
 
-		elementsCopy.sort(Pitched::compareByPitch);
+		elementsCopy.sort(OptionallyPitched::compareByPitch);
 		this.pitchedElements = Collections.unmodifiableList(elementsCopy);
 	}
 
 	/**
-	 * Returns the {@link Pitched} type at the given index counting from lowest pitch in
+	 * Returns the {@link OptionallyPitched} type at the given index counting from lowest pitch in
 	 * this {@link GenericChord}.
 	 *
 	 * @param fromLowest index of pitched, 0 being the lowest pitched in the chord
@@ -109,7 +109,7 @@ final class GenericChord<T extends Pitched> implements Iterable<T> {
 	 */
 	boolean contains(Pitch pitch) {
 		for (T pitched : this.pitchedElements) {
-			if (pitched.getPitch().equals(pitch)) {
+			if (pitched.hasPitch() && pitched.getPitch().get().equals(pitch)) {
 				return true;
 			}
 		}
@@ -136,7 +136,7 @@ final class GenericChord<T extends Pitched> implements Iterable<T> {
 	GenericChord<T> remove(Pitch pitch) {
 		if (this.contains(pitch)) {
 			final List<T> newNotes = new ArrayList<T>(this.pitchedElements);
-			newNotes.removeIf(pitched -> pitched.getPitch().equals(pitch));
+			newNotes.removeIf(pitched -> Objects.equals(pitched.getPitch().orElse(null), (pitch)));
 			return new GenericChord<>(newNotes);
 		}
 

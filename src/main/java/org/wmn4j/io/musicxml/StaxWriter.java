@@ -20,6 +20,7 @@ import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.NoteBuilder;
+import org.wmn4j.notation.OptionallyPitched;
 import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.Part;
@@ -664,7 +665,7 @@ final class StaxWriter implements MusicXmlWriter {
 			writer.writeEmptyElement(Tags.CHORD);
 		}
 
-		writePitch(note.getPitch());
+		writePitch(note);
 		writeDuration(note.getDuration());
 		writeVoice(voice);
 		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(note.getDuration(), writer);
@@ -706,7 +707,7 @@ final class StaxWriter implements MusicXmlWriter {
 			writer.writeEmptyElement(Tags.CHORD);
 		}
 
-		writePitch(note.getPitch());
+		writePitch(note);
 		writeVoice(voice);
 		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(note.getDisplayableDuration(), writer);
 		writeStaff(staff);
@@ -745,7 +746,9 @@ final class StaxWriter implements MusicXmlWriter {
 		writeValue(Tags.DURATION, Integer.toString(toDivisionCount(duration)));
 	}
 
-	private void writePitch(Pitch pitch) throws XMLStreamException {
+	private void writePitch(OptionallyPitched note) throws XMLStreamException {
+		Pitch pitch = note.getPitch().get();
+
 		writer.writeStartElement(Tags.PITCH);
 
 		writeValue(Tags.STEP, pitch.getBase().toString());

@@ -7,6 +7,7 @@ import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Measure;
+import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.access.Position;
 import org.wmn4j.notation.access.PositionalIterator;
@@ -82,19 +83,25 @@ public final class PointSet<T extends Point<T>> {
 				final double totalOffset = fullMeasuresOffset + offsetWithinMeasure;
 
 				if (dur.isNote()) {
-					final int pitch = dur.toNote().getPitch().toInt();
-					final Point2D vector = new Point2D(totalOffset, pitch);
-					noteEvents.add(vector);
-					positions.put(vector, pos);
+					final Note note = dur.toNote();
+					if (note.hasPitch()) {
+						final int pitch = dur.toNote().getPitch().get().toInt();
+						final Point2D vector = new Point2D(totalOffset, pitch);
+						noteEvents.add(vector);
+						positions.put(vector, pos);
+					}
 				} else if (dur.isChord()) {
 					final Chord chord = dur.toChord();
 					for (int chordIndex = 0; chordIndex < chord.getNoteCount(); ++chordIndex) {
-						final int pitch = chord.getNote(chordIndex).getPitch().toInt();
-						Position positionInChord = new Position(pos.getPartIndex(), pos.getStaffNumber(),
-								pos.getMeasureNumber(), pos.getVoiceNumber(), pos.getIndexInVoice(), chordIndex);
-						final Point2D vector = new Point2D(totalOffset, pitch);
-						noteEvents.add(vector);
-						positions.put(vector, positionInChord);
+						final Note note = chord.getNote(chordIndex);
+						if (note.hasPitch()) {
+							final int pitch = chord.getNote(chordIndex).getPitch().get().toInt();
+							Position positionInChord = new Position(pos.getPartIndex(), pos.getStaffNumber(),
+									pos.getMeasureNumber(), pos.getVoiceNumber(), pos.getIndexInVoice(), chordIndex);
+							final Point2D vector = new Point2D(totalOffset, pitch);
+							noteEvents.add(vector);
+							positions.put(vector, positionInChord);
+						}
 					}
 				}
 			}
