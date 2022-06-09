@@ -45,4 +45,34 @@ public sealed interface Durational permits Note, Rest, Chord {
 	default boolean isChord() {
 		return false;
 	}
+
+	/**
+	 * Converts this to Rest if this is a rest.
+	 * Otherwise throws exception.
+	 *
+	 * @return this as a rest
+	 */
+	default Rest toRest() {
+		return (Rest) this;
+	}
+
+	/**
+	 * Converts this to Note if this is a note.
+	 * Otherwise throws exception.
+	 *
+	 * @return this as a note
+	 */
+	default Note toNote() {
+		return (Note) this;
+	}
+
+	/**
+	 * Converts this to Chord if this is a chord.
+	 * Otherwise throws exception.
+	 *
+	 * @return this as a chord
+	 */
+	default Chord toChord() {
+		return (Chord) this;
+	}
 }

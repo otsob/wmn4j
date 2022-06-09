@@ -8,7 +8,6 @@
 package org.wmn4j.representation.geometric;
 
 import org.wmn4j.mir.Pattern;
-import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Note;
 
@@ -63,11 +62,10 @@ public final class PointPattern<T extends Point<T>> implements Iterable<T> {
 			for (Durational dur : pattern.getVoice(voice)) {
 
 				if (dur.isNote()) {
-					final Point2D point = new Point2D(offset, ((Note) dur).getPitch().toInt());
+					final Point2D point = new Point2D(offset, dur.toNote().getPitch().toInt());
 					points.add(point);
 				} else if (dur.isChord()) {
-					final Chord chord = (Chord) dur;
-					for (Note note : chord) {
+					for (Note note : dur.toChord()) {
 						final Point2D point = new Point2D(offset, note.getPitch().toInt());
 						points.add(point);
 					}

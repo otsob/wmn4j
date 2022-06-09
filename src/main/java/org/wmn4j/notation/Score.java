@@ -187,7 +187,7 @@ public final class Score implements Iterable<Part> {
 
 		if (position.isInChord()) {
 			if (dur.isChord()) {
-				final Chord chord = (Chord) dur;
+				final Chord chord = dur.toChord();
 				dur = chord.getNote(position.getIndexInChord());
 			} else {
 				throw new NoSuchElementException("The element at the position is not a Chord.");

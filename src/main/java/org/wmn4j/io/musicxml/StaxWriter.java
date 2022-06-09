@@ -575,11 +575,11 @@ final class StaxWriter implements MusicXmlWriter {
 
 	private void writeDurational(Integer staffNumber, Integer voice, Durational durational) throws XMLStreamException {
 		if (durational.isNote()) {
-			writeNote((Note) durational, voice, staffNumber, false);
+			writeNote(durational.toNote(), voice, staffNumber, false);
 		} else if (durational.isChord()) {
-			writeChord((Chord) durational, voice, staffNumber);
+			writeChord(durational.toChord(), voice, staffNumber);
 		} else if (durational.isRest()) {
-			writeRest((Rest) durational, voice, staffNumber);
+			writeRest(durational.toRest(), voice, staffNumber);
 		}
 	}
 
@@ -590,19 +590,19 @@ final class StaxWriter implements MusicXmlWriter {
 
 		if (durational.isNote()) {
 			for (Duration duration : decomposedDurations) {
-				NoteBuilder builder = new NoteBuilder((Note) durational);
+				NoteBuilder builder = new NoteBuilder(durational.toNote());
 				builder.setDuration(duration);
 				writeNote(builder.build(), voice, staffNumber, false);
 			}
 		} else if (durational.isChord()) {
 			for (Duration duration : decomposedDurations) {
-				ChordBuilder builder = new ChordBuilder((Chord) durational);
+				ChordBuilder builder = new ChordBuilder(durational.toChord());
 				builder.setDuration(duration);
 				writeChord(builder.build(), voice, staffNumber);
 			}
 		} else if (durational.isRest()) {
 			for (Duration duration : decomposedDurations) {
-				RestBuilder builder = new RestBuilder((Rest) durational);
+				RestBuilder builder = new RestBuilder(durational.toRest());
 				builder.setDuration(duration);
 				writeRest(builder.build(), voice, staffNumber);
 			}

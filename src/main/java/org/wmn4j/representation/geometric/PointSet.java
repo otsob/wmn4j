@@ -7,7 +7,6 @@ import org.wmn4j.mir.PatternPosition;
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Measure;
-import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.access.Position;
 import org.wmn4j.notation.access.PositionalIterator;
@@ -83,12 +82,12 @@ public final class PointSet<T extends Point<T>> {
 				final double totalOffset = fullMeasuresOffset + offsetWithinMeasure;
 
 				if (dur.isNote()) {
-					final int pitch = ((Note) dur).getPitch().toInt();
+					final int pitch = dur.toNote().getPitch().toInt();
 					final Point2D vector = new Point2D(totalOffset, pitch);
 					noteEvents.add(vector);
 					positions.put(vector, pos);
-				} else {
-					final Chord chord = (Chord) dur;
+				} else if (dur.isChord()) {
+					final Chord chord = dur.toChord();
 					for (int chordIndex = 0; chordIndex < chord.getNoteCount(); ++chordIndex) {
 						final int pitch = chord.getNote(chordIndex).getPitch().toInt();
 						Position positionInChord = new Position(pos.getPartIndex(), pos.getStaffNumber(),
@@ -115,8 +114,7 @@ public final class PointSet<T extends Point<T>> {
 		}
 
 		if (dur.isNote()) {
-			final Note note = (Note) dur;
-			if (note.isTiedFromPrevious()) {
+			if (dur.toNote().isTiedFromPrevious()) {
 				return false;
 			}
 		}

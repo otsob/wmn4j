@@ -220,16 +220,16 @@ final class PolyphonicPattern implements Pattern {
 			Durational durationalB = voiceBWithoutRests.get(i);
 
 			if (durationalA.isChord() && durationalB.isChord()) {
-				Chord chordA = (Chord) durationalA;
-				Chord chordB = (Chord) durationalB;
+				Chord chordA = durationalA.toChord();
+				Chord chordB = durationalB.toChord();
 
 				if (!areChordsEqualWithTransformedNotes(chordA, chordB, voiceANoteTransformation,
 						voiceBNoteTransformation)) {
 					return false;
 				}
 			} else if (durationalA.isNote() && durationalB.isNote()) {
-				Note noteA = (Note) durationalA;
-				Note noteB = (Note) durationalB;
+				Note noteA = durationalA.toNote();
+				Note noteB = durationalB.toNote();
 
 				if (!voiceANoteTransformation.apply(noteA).equals(voiceBNoteTransformation.apply(noteB))) {
 					return false;
@@ -291,7 +291,7 @@ final class PolyphonicPattern implements Pattern {
 
 		Function<Durational, Integer> toPitchNumber = durational -> {
 			if (durational.isNote()) {
-				return ((Note) durational).getPitch().toInt();
+				return durational.toNote().getPitch().toInt();
 			}
 
 			return ((Chord) durational).getLowestNote().getPitch().toInt();
