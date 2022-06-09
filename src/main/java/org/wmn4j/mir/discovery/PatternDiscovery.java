@@ -35,7 +35,7 @@ public interface PatternDiscovery {
 		for (Collection<PatternPosition> positions : allPatternPositions) {
 			Collection<Pattern> patterns = new ArrayList<>(positions.size());
 			for (PatternPosition position : positions) {
-				patterns.add(score.getAt(position));
+				patterns.add(position.getFrom(score));
 			}
 
 			allPatterns.add(patterns);

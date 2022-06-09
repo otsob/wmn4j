@@ -3,6 +3,7 @@
  */
 package org.wmn4j.mir;
 
+import org.wmn4j.notation.Score;
 import org.wmn4j.notation.access.Position;
 
 import java.util.Collection;
@@ -46,6 +47,26 @@ public final class PatternPosition {
 		}
 
 		return Collections.unmodifiableSortedMap(partitionedPositions);
+	}
+
+	/**
+	 * Returns the pattern specified by this pattern position in the given score.
+	 * <p>
+	 * The returned pattern contains a voice for each staff that the pattern position refers to.
+	 * If the pattern position refers to a staff that has multiple voices and any of the notes
+	 * referred to by the pattern overlap, then separate pattern voices are created for each
+	 * of the voices within the staff.
+	 * <p>
+	 * The pattern contains only those notes that are included in the pattern specified by the
+	 * position, the intermediate notes are replaced by padding rests.
+	 *
+	 * @param score the score from which the get the pattern specified by this pattern position
+	 * @return the pattern specified by the this pattern position in the given score
+	 * @throws java.util.NoSuchElementException if this pattern position refers to a note outside the score
+	 */
+	public Pattern getFrom(Score score) {
+		PatternExtractor locator = new PatternExtractor(score, this);
+		return locator.extract();
 	}
 
 	/**
