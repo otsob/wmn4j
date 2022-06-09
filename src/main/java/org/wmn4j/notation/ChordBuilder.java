@@ -74,6 +74,11 @@ public final class ChordBuilder implements DurationalBuilder, Iterable<NoteBuild
 		this.noteBuilders.removeIf(filter);
 	}
 
+	@Override
+	public boolean isChordBuilder() {
+		return true;
+	}
+
 	/**
 	 * Sets a new duration to this builder and all the NoteBuilders in it.
 	 *

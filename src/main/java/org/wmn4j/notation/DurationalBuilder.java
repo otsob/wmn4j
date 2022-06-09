@@ -30,4 +30,31 @@ public sealed interface DurationalBuilder permits NoteBuilder, RestBuilder, Chor
 	 * @param duration the duration that is set to this builder
 	 */
 	void setDuration(Duration duration);
+
+	/**
+	 * Returns true if this is a rest builder, false otherwise.
+	 *
+	 * @return true if this is a rest builder, false otherwise
+	 */
+	default boolean isRestBuilder() {
+		return false;
+	}
+
+	/**
+	 * Returns true if this is a note builder, false otherwise.
+	 *
+	 * @return true if this is a note builder, false otherwise
+	 */
+	default boolean isNoteBuilder() {
+		return false;
+	}
+
+	/**
+	 * Returns true if this is a chord builder, false otherwise.
+	 *
+	 * @return true if this is a chord builder, false otherwise
+	 */
+	default boolean isChordBuilder() {
+		return false;
+	}
 }

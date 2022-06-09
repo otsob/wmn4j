@@ -15,7 +15,6 @@ import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.OrnamentalBuilder;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
-import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.access.Offset;
 import org.wmn4j.notation.directions.Direction;
 
@@ -107,7 +106,11 @@ final class PartContext {
 			buffer.flushTo(measureBuilders.get(staff), arpeggioResolver);
 		}
 
-		if (builder instanceof NoteBuilder) {
+		if (builder == null) {
+			return;
+		}
+
+		if (builder.isNoteBuilder()) {
 			NoteBuilder noteBuilder = (NoteBuilder) builder;
 			if (noteBuilder != null) {
 				buffer.addNote(noteBuilder, staff, voice);
@@ -117,7 +120,7 @@ final class PartContext {
 			}
 
 			prevNoteBuilder = noteBuilder;
-		} else if (builder instanceof RestBuilder) {
+		} else if (builder.isRestBuilder()) {
 			offsetDurations.add(builder.getDuration());
 		}
 	}

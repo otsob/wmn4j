@@ -89,6 +89,11 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 				.forEach(articulation -> this.articulations.add(articulation));
 	}
 
+	@Override
+	public boolean isNoteBuilder() {
+		return true;
+	}
+
 	/**
 	 * Returns the pitch set in this builder.
 	 *
