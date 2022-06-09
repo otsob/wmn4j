@@ -230,7 +230,7 @@ final class PatternExtractor {
 				if (positionsInPart.isEmpty()) {
 					break;
 				}
-			} else if (durational instanceof Chord) {
+			} else if (durational.isChord()) {
 				// Check if there are references to notes within the chord.
 				Chord chord = (Chord) durational;
 				List<Note> includedNotes = new ArrayList<>();

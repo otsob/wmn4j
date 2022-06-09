@@ -3,7 +3,6 @@
  */
 package org.wmn4j.mir;
 
-import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Pitched;
@@ -42,7 +41,7 @@ final class MonophonicPattern implements Pattern {
 		if (this.contents.isEmpty()) {
 			throw new IllegalArgumentException("Cannot create pattern with empty contents");
 		}
-		if (this.contents.stream().anyMatch((dur) -> (dur instanceof Chord))) {
+		if (this.contents.stream().anyMatch((dur) -> (dur.isChord()))) {
 			throw new IllegalArgumentException("Contents contain a Chord. Contents must be monophonic");
 		}
 		this.name = name;

@@ -62,10 +62,10 @@ public final class PointPattern<T extends Point<T>> implements Iterable<T> {
 			double offset = 0.0;
 			for (Durational dur : pattern.getVoice(voice)) {
 
-				if (dur instanceof Note) {
+				if (dur.isNote()) {
 					final Point2D point = new Point2D(offset, ((Note) dur).getPitch().toInt());
 					points.add(point);
-				} else if (dur instanceof Chord) {
+				} else if (dur.isChord()) {
 					final Chord chord = (Chord) dur;
 					for (Note note : chord) {
 						final Point2D point = new Point2D(offset, note.getPitch().toInt());

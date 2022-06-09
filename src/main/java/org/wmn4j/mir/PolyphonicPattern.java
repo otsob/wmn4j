@@ -54,7 +54,7 @@ final class PolyphonicPattern implements Pattern {
 		if (this.voices.keySet().size() == 1) {
 			final Integer voiceNumber = this.voices.keySet().iterator().next();
 			final boolean isMonophonic = this.voices.get(voiceNumber).stream()
-					.noneMatch(durational -> durational instanceof Chord);
+					.noneMatch(durational -> durational.isChord());
 			if (isMonophonic) {
 				throw new IllegalArgumentException("Trying to create a polyphonic pattern with monophonic contents");
 			}
@@ -219,7 +219,7 @@ final class PolyphonicPattern implements Pattern {
 			Durational durationalA = voiceAWithoutRests.get(i);
 			Durational durationalB = voiceBWithoutRests.get(i);
 
-			if (durationalA instanceof Chord && durationalB instanceof Chord) {
+			if (durationalA.isChord() && durationalB.isChord()) {
 				Chord chordA = (Chord) durationalA;
 				Chord chordB = (Chord) durationalB;
 
@@ -227,7 +227,7 @@ final class PolyphonicPattern implements Pattern {
 						voiceBNoteTransformation)) {
 					return false;
 				}
-			} else if (durationalA instanceof Note && durationalB instanceof Note) {
+			} else if (durationalA.isNote() && durationalB.isNote()) {
 				Note noteA = (Note) durationalA;
 				Note noteB = (Note) durationalB;
 
@@ -290,7 +290,7 @@ final class PolyphonicPattern implements Pattern {
 	public boolean equalsTranspositionally(Pattern other) {
 
 		Function<Durational, Integer> toPitchNumber = durational -> {
-			if (durational instanceof Note) {
+			if (durational.isNote()) {
 				return ((Note) durational).getPitch().toInt();
 			}
 

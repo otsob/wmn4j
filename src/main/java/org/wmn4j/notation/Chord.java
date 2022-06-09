@@ -66,6 +66,11 @@ public final class Chord implements Durational, Iterable<Note> {
 		return this.internalChord.getNote(0).getDuration();
 	}
 
+	@Override
+	public boolean isChord() {
+		return true;
+	}
+
 	/**
 	 * Returns the {@link Note} at the given index counting from lowest pitch in
 	 * this {@link Chord}.

@@ -67,10 +67,10 @@ public final class KSKeyAnalysis implements KeyAnalysis {
 		final ChromagramBuilder builder = new ChromagramBuilder(ChromagramBuilder::durationWeight);
 		while (selectionIterator.hasNext()) {
 			Durational dur = selectionIterator.next();
-			if (dur instanceof Note) {
+			if (dur.isNote()) {
 				builder.add((Note) dur);
 			}
-			if (dur instanceof Chord) {
+			if (dur.isChord()) {
 				builder.add((Chord) dur);
 			}
 		}

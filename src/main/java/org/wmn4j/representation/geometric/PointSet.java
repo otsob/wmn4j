@@ -82,7 +82,7 @@ public final class PointSet<T extends Point<T>> {
 			if (hasOnset(dur)) {
 				final double totalOffset = fullMeasuresOffset + offsetWithinMeasure;
 
-				if (dur instanceof Note) {
+				if (dur.isNote()) {
 					final int pitch = ((Note) dur).getPitch().toInt();
 					final Point2D vector = new Point2D(totalOffset, pitch);
 					noteEvents.add(vector);
@@ -114,7 +114,7 @@ public final class PointSet<T extends Point<T>> {
 			return false;
 		}
 
-		if (dur instanceof Note) {
+		if (dur.isNote()) {
 			final Note note = (Note) dur;
 			if (note.isTiedFromPrevious()) {
 				return false;

@@ -247,12 +247,12 @@ class PatternsToScoreConverter {
 		int sumOfPitch = 0;
 		int pitchCount = 0;
 		for (Durational durational : voice) {
-			if (durational instanceof Note) {
+			if (durational.isNote()) {
 				sumOfPitch += ((Note) durational).getPitch().toInt();
 				pitchCount++;
 			}
 
-			if (durational instanceof Chord) {
+			if (durational.isChord()) {
 				for (Note note : (Chord) durational) {
 					sumOfPitch += note.getPitch().toInt();
 					pitchCount++;

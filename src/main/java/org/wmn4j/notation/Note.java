@@ -301,8 +301,8 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 	}
 
 	@Override
-	public boolean isRest() {
-		return false;
+	public boolean isNote() {
+		return true;
 	}
 
 	/**
