@@ -518,4 +518,22 @@ class NoteBuilderTest {
 
 		assertEquals(note, slurToNote.get().getFollowingNote().get());
 	}
+
+	@Test
+	void testBuildUnpitchedNote() {
+		final Pitch pitch = Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4);
+		final NoteBuilder builder = new NoteBuilder(pitch,
+				Durations.QUARTER);
+
+		builder.setUnpitched();
+		builder.setDisplayPitch(pitch);
+		final Note note = builder.build();
+		assertFalse(note.hasArticulations());
+		assertFalse(note.hasNotations());
+		assertFalse(note.isTied());
+
+		assertFalse(note.hasPitch());
+		assertTrue(note.getPitch().isEmpty());
+		assertEquals(pitch, note.getDisplayPitch());
+	}
 }

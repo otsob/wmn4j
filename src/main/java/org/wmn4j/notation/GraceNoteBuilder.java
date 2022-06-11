@@ -88,6 +88,17 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 	}
 
 	/**
+	 * Sets this builder to create an unpitched note with the
+	 * display pitch set in this.
+	 *
+	 * @return reference to this
+	 */
+	public GraceNoteBuilder setUnpitched() {
+		this.noteBuilder.setUnpitched();
+		return this;
+	}
+
+	/**
 	 * Returns the display pitch set in this builder.
 	 *
 	 * @return the displayed pitch set in this builder

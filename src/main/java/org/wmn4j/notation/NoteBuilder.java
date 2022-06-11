@@ -114,6 +114,17 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	}
 
 	/**
+	 * Sets this builder to create an unpitched note with the
+	 * display pitch set in this.
+	 *
+	 * @return reference to this
+	 */
+	public NoteBuilder setUnpitched() {
+		this.pitch = null;
+		return this;
+	}
+
+	/**
 	 * Returns the duration set in this builder.
 	 *
 	 * @return the duration currently set in this builder
