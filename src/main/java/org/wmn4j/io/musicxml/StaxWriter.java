@@ -28,6 +28,7 @@ import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Rest;
 import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
+import org.wmn4j.notation.Staff;
 import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.access.Offset;
 import org.wmn4j.notation.directions.Direction;
@@ -71,7 +72,7 @@ final class StaxWriter implements MusicXmlWriter {
 	private final int divisions;
 	private NotationWriteResolver notationResolver;
 	private boolean isClosed;
-	private boolean stavesWritten;
+	private boolean staffInfoWritten;
 
 	static void writeValue(XMLStreamWriter writer, String tag, String value) throws XMLStreamException {
 		if (value.isEmpty()) {
@@ -90,7 +91,7 @@ final class StaxWriter implements MusicXmlWriter {
 		this.compress = compress;
 		this.minify = minify;
 		this.isClosed = false;
-		this.stavesWritten = false;
+		this.staffInfoWritten = false;
 	}
 
 	private String getDTD(String version) {
@@ -307,7 +308,7 @@ final class StaxWriter implements MusicXmlWriter {
 			final String partId = partIds.get(i);
 			final Part part = score.getPart(i);
 			writePart(partId, part);
-			stavesWritten = false;
+			staffInfoWritten = false;
 		}
 	}
 
@@ -359,7 +360,8 @@ final class StaxWriter implements MusicXmlWriter {
 			Measure current = part.getMeasure(s, m);
 			writeBarline(current, true);
 
-			writeMeasureAttributes(current, prev, isMultiStaff, s, part.getStaffCount());
+			final Staff.Type staffType = part.getStaff(s).getType();
+			writeMeasureAttributes(current, prev, isMultiStaff, s, part.getStaffCount(), staffType);
 
 			final int backup = writeMeasureContents(current, s, isMultiStaff);
 			writeBarline(current, false);
@@ -416,7 +418,7 @@ final class StaxWriter implements MusicXmlWriter {
 	}
 
 	private void writeMeasureAttributes(Measure current, Measure previous, boolean isMultiStaff, Integer staffNumber,
-			int staffCount)
+			int staffCount, Staff.Type staffType)
 			throws XMLStreamException {
 
 		if (!isAttributesElementRequired(current, previous)) {
@@ -459,9 +461,10 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 
 		// Write staves
-		if (!stavesWritten) {
+		boolean staffCountWritten = false;
+		if (!staffInfoWritten) {
 			writeValue(Tags.STAVES, Integer.toString(staffCount));
-			stavesWritten = true;
+			staffCountWritten = true;
 		}
 
 		// Write clef
@@ -469,6 +472,18 @@ final class StaxWriter implements MusicXmlWriter {
 		if (previous == null || !clef.equals(getLastClefInEffect(previous))) {
 			writeClef(isMultiStaff, staffNumber, clef);
 		}
+
+		// Write staff line count if needed (only when staffCount has been written)
+		// staff-details needs to be written after clef.
+		boolean staffDetailsWritten = false;
+		if (!staffInfoWritten && Staff.Type.SINGLE_LINE.equals(staffType)) {
+			writer.writeStartElement(Tags.STAFF_DETAILS);
+			writeValue(Tags.STAFF_LINES, Integer.toString(1));
+			writer.writeEndElement();
+			staffDetailsWritten = true;
+		}
+
+		staffInfoWritten = staffCountWritten || staffDetailsWritten;
 
 		writer.writeEndElement();
 	}
@@ -747,17 +762,20 @@ final class StaxWriter implements MusicXmlWriter {
 	}
 
 	private void writePitch(OptionallyPitched note) throws XMLStreamException {
-		Pitch pitch = note.getPitch().get();
-
-		writer.writeStartElement(Tags.PITCH);
-
-		writeValue(Tags.STEP, pitch.getBase().toString());
-
-		writeValue(Tags.ALTER, Integer.toString(pitch.getAccidental().getAlterationInt()));
-
-		writeValue(Tags.OCTAVE, Integer.toString(pitch.getOctave()));
-
-		writer.writeEndElement();
+		if (note.hasPitch()) {
+			final Pitch pitch = note.getPitch().get();
+			writer.writeStartElement(Tags.PITCH);
+			writeValue(Tags.STEP, pitch.getBase().toString());
+			writeValue(Tags.ALTER, Integer.toString(pitch.getAccidental().getAlterationInt()));
+			writeValue(Tags.OCTAVE, Integer.toString(pitch.getOctave()));
+			writer.writeEndElement();
+		} else {
+			final Pitch displayPitch = note.getDisplayPitch();
+			writer.writeStartElement(Tags.UNPITCHED);
+			writeValue(Tags.DISPLAY_STEP, displayPitch.getBase().toString());
+			writeValue(Tags.DISPLAY_OCTAVE, Integer.toString(displayPitch.getOctave()));
+			writer.writeEndElement();
+		}
 	}
 
 	private void writeVoice(Integer voice) throws XMLStreamException {
