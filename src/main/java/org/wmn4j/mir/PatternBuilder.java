@@ -3,7 +3,6 @@
  */
 package org.wmn4j.mir;
 
-import org.wmn4j.notation.ChordBuilder;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.DurationalBuilder;
 
@@ -60,7 +59,7 @@ public final class PatternBuilder {
 			voices.put(voice, new ArrayList<>());
 		}
 
-		if (durationalBuilder instanceof ChordBuilder || voices.keySet().size() > 1) {
+		if (durationalBuilder.isChordBuilder() || voices.keySet().size() > 1) {
 			isMonophonic = false;
 		}
 

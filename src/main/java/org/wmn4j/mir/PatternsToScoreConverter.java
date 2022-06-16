@@ -4,7 +4,6 @@
 package org.wmn4j.mir;
 
 import org.wmn4j.notation.Barline;
-import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Clefs;
 import org.wmn4j.notation.Duration;
@@ -247,15 +246,21 @@ class PatternsToScoreConverter {
 		int sumOfPitch = 0;
 		int pitchCount = 0;
 		for (Durational durational : voice) {
-			if (durational instanceof Note) {
-				sumOfPitch += ((Note) durational).getPitch().toInt();
-				pitchCount++;
+			if (durational.isNote()) {
+				final var pitch = durational.toNote().getPitch();
+				if (pitch.isPresent()) {
+					sumOfPitch += pitch.get().toInt();
+					pitchCount++;
+				}
 			}
 
-			if (durational instanceof Chord) {
-				for (Note note : (Chord) durational) {
-					sumOfPitch += note.getPitch().toInt();
-					pitchCount++;
+			if (durational.isChord()) {
+				for (Note note : durational.toChord()) {
+					final var pitch = note.getPitch();
+					if (pitch.isPresent()) {
+						sumOfPitch += pitch.get().toInt();
+						pitchCount++;
+					}
 				}
 			}
 		}

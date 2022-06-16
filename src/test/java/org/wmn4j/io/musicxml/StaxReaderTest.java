@@ -415,4 +415,10 @@ class StaxReaderTest {
 		Score scoreWithDirections = readScore("directions_test.musicxml", true);
 		MusicXmlFileChecks.assertDirectionsCorrect(scoreWithDirections);
 	}
+
+	@Test
+	void testGivenPercussionNotationThenUnpitchedNotesAreCorrectlyRead() {
+		Score percussionScore = readScore("unpitched_notes_test.musicxml", true);
+		MusicXmlFileChecks.assertUnpitchedPercussionNotesCorrect(percussionScore);
+	}
 }

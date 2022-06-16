@@ -15,7 +15,7 @@ import java.util.Set;
  * <p>
  * This class is immutable.
  */
-public final class GraceNote implements Pitched, Ornamental, Notation.Connectable {
+public final class GraceNote implements OptionallyPitched, Ornamental, Notation.Connectable {
 
 	private final Note note;
 	private final Ornamental.Type type;
@@ -34,14 +34,14 @@ public final class GraceNote implements Pitched, Ornamental, Notation.Connectabl
 	 */
 	public static GraceNote of(Pitch pitch, Duration displayableDuration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments, Ornamental.Type type) {
-		return new GraceNote(pitch, displayableDuration, articulations, notationConnections, ornaments,
+		return new GraceNote(pitch, null, displayableDuration, articulations, notationConnections, ornaments,
 				type, Collections.emptyList());
 	}
 
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch                    the pitch of the grace note
+	 * @param pitch                    (optional/nullable) the pitch of the grace note
 	 * @param displayableDuration      the displayable duration of the grace note
 	 * @param articulations            a set of Articulations associated with the grace note
 	 * @param notationConnections      connections to other elements through notations
@@ -50,21 +50,21 @@ public final class GraceNote implements Pitched, Ornamental, Notation.Connectabl
 	 * @param principalNoteConnections connections to principal note
 	 * @return an instance with the given parameters
 	 */
-	static GraceNote of(Pitch pitch, Duration displayableDuration, Set<Articulation> articulations,
+	static GraceNote of(Pitch pitch, Pitch displayPitch, Duration displayableDuration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments, Ornamental.Type type,
 			Collection<Notation.Connection> principalNoteConnections) {
-		return new GraceNote(pitch, displayableDuration, articulations, notationConnections, ornaments,
+		return new GraceNote(pitch, displayPitch, displayableDuration, articulations, notationConnections, ornaments,
 				type, principalNoteConnections);
 	}
 
 	/**
 	 * Private constructor.
 	 */
-	private GraceNote(Pitch pitch, Duration duration, Set<Articulation> articulations,
+	private GraceNote(Pitch pitch, Pitch displayPitch, Duration duration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments,
 			Ornamental.Type type, Collection<Notation.Connection> principalNoteConnections) {
 
-		this.note = Note.of(pitch, duration, articulations, notationConnections, ornaments);
+		this.note = Note.of(pitch, displayPitch, duration, articulations, notationConnections, ornaments);
 		this.type = Objects.requireNonNull(type);
 		this.principalNoteConnections = Collections.unmodifiableList(new ArrayList<>(principalNoteConnections));
 	}
@@ -73,14 +73,19 @@ public final class GraceNote implements Pitched, Ornamental, Notation.Connectabl
 		return principalNoteConnections;
 	}
 
-	/**
-	 * Returns the pitch of this grace note.
-	 *
-	 * @return the pitch of this note
-	 */
 	@Override
-	public Pitch getPitch() {
+	public boolean hasPitch() {
+		return note.hasPitch();
+	}
+
+	@Override
+	public Optional<Pitch> getPitch() {
 		return note.getPitch();
+	}
+
+	@Override
+	public Pitch getDisplayPitch() {
+		return note.getDisplayPitch();
 	}
 
 	/**

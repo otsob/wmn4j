@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -73,7 +74,7 @@ class ChordTest {
 	void testGetNoteOrderCorrect() {
 		for (int i = 0; i < cMajor.getNoteCount(); ++i) {
 			if (i != 0) {
-				assertFalse(cMajor.getNote(i - 1).getPitch().isHigherThan(cMajor.getNote(i).getPitch()));
+				assertFalse(cMajor.getNote(i - 1).getPitch().get().isHigherThan(cMajor.getNote(i).getPitch().get()));
 			}
 		}
 	}
@@ -116,15 +117,18 @@ class ChordTest {
 	}
 
 	@Test
-	void testContainstNote() {
-		assertTrue(this.cMajor.contains(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER)));
+	void testContainsNote() {
+		assertTrue(
+				this.cMajor.contains(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER)));
 		assertFalse(this.cMajor.contains(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.FLAT, 4), Durations.QUARTER)));
 		final HashSet<Articulation> articulations = new HashSet<>();
 		articulations.add(Articulation.STACCATO);
-		final Note staccatoC5 = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.QUARTER, articulations);
+		final Note staccatoC5 = Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.QUARTER,
+				articulations);
 		final Chord staccatoC = this.cMajor.add(staccatoC5);
 		assertTrue(staccatoC.contains(staccatoC5));
-		assertFalse(staccatoC.contains(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.QUARTER)));
+		assertFalse(
+				staccatoC.contains(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.QUARTER)));
 		assertFalse(this.cMajor.contains(staccatoC5));
 	}
 
@@ -136,20 +140,26 @@ class ChordTest {
 
 	@Test
 	public void testGetNote() {
-		assertEquals(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER), this.cMajor.getNote(1));
-		assertEquals(Note.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 3), Durations.QUARTER), this.dMajor.getNote(2));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER),
+				this.cMajor.getNote(1));
+		assertEquals(Note.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 3), Durations.QUARTER),
+				this.dMajor.getNote(2));
 	}
 
 	@Test
 	void testGetLowestNote() {
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER), this.cMajor.getLowestNote());
-		assertEquals(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4), Durations.QUARTER), this.fMinor.getLowestNote());
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER),
+				this.cMajor.getLowest());
+		assertEquals(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4), Durations.QUARTER),
+				this.fMinor.getLowest());
 	}
 
 	@Test
 	void testGetHighestNote() {
-		assertEquals(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.QUARTER), this.cMajor.getHighestNote());
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.QUARTER), this.fMinor.getHighestNote());
+		assertEquals(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.QUARTER),
+				this.cMajor.getHighest());
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.QUARTER),
+				this.fMinor.getHighest());
 	}
 
 	@Test
@@ -179,13 +189,16 @@ class ChordTest {
 
 	@Test
 	void testAddNote() {
-		final Chord cMaj = this.cMajor.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.QUARTER));
+		final Chord cMaj = this.cMajor.add(
+				Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.QUARTER));
 		assertFalse(this.cMajor.equals(cMaj));
 		assertEquals(4, cMaj.getNoteCount());
-		assertEquals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.QUARTER), cMaj.getHighestNote());
+		assertEquals(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.QUARTER),
+				cMaj.getHighest());
 
 		try {
-			final Chord illegalCMaj = this.cMajor.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH));
+			final Chord illegalCMaj = this.cMajor.add(
+					Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH));
 			fail("Failed to throw expected exception");
 		} catch (final IllegalArgumentException e) {
 			// Pass because exception is expected
@@ -206,10 +219,13 @@ class ChordTest {
 	void testHasArticulation() {
 		List<Note> cMajorNotesWithAccentAndStaccato = new ArrayList<>();
 		cMajorNotesWithAccentAndStaccato
-				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER, EnumSet.of(Articulation.ACCENT)));
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER,
+						EnumSet.of(Articulation.ACCENT)));
 		cMajorNotesWithAccentAndStaccato
-				.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER, EnumSet.of(Articulation.STACCATO)));
-		cMajorNotesWithAccentAndStaccato.add(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+				.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER,
+						EnumSet.of(Articulation.STACCATO)));
+		cMajorNotesWithAccentAndStaccato.add(
+				Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
 		Chord cMajorWithArticulations = Chord.of(cMajorNotesWithAccentAndStaccato);
 
 		assertTrue(cMajorWithArticulations.hasArticulation(Articulation.STACCATO));
@@ -224,10 +240,13 @@ class ChordTest {
 	void testGetArticulations() {
 		List<Note> cMajorNotesWithAccentAndStaccato = new ArrayList<>();
 		cMajorNotesWithAccentAndStaccato
-				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER, EnumSet.of(Articulation.ACCENT)));
+				.add(Note.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER,
+						EnumSet.of(Articulation.ACCENT)));
 		cMajorNotesWithAccentAndStaccato
-				.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER, EnumSet.of(Articulation.STACCATO)));
-		cMajorNotesWithAccentAndStaccato.add(Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
+				.add(Note.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER,
+						EnumSet.of(Articulation.STACCATO)));
+		cMajorNotesWithAccentAndStaccato.add(
+				Note.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
 		Chord cMajorWithArticulations = Chord.of(cMajorNotesWithAccentAndStaccato);
 
 		Collection<Articulation> articulations = cMajorWithArticulations.getArticulations();
@@ -241,10 +260,12 @@ class ChordTest {
 
 	@Test
 	void testRemoveNote() {
-		final Chord D_FSharp = this.dMajor.remove(Note.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 3), Durations.QUARTER));
+		final Chord D_FSharp = this.dMajor.remove(
+				Note.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 3), Durations.QUARTER));
 		assertFalse(this.dMajor.equals(D_FSharp));
 		assertEquals(2, D_FSharp.getNoteCount());
-		assertEquals(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 3), Durations.QUARTER), D_FSharp.getHighestNote());
+		assertEquals(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 3), Durations.QUARTER),
+				D_FSharp.getHighest());
 	}
 
 	@Test
@@ -252,7 +273,49 @@ class ChordTest {
 		final Chord D_FSharp = this.dMajor.remove(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 3));
 		assertFalse(this.dMajor.equals(D_FSharp));
 		assertEquals(2, D_FSharp.getNoteCount());
-		assertEquals(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 3), Durations.QUARTER), D_FSharp.getHighestNote());
+		assertEquals(Note.of(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 3), Durations.QUARTER),
+				D_FSharp.getHighest());
+	}
+
+	@Test
+	void testLowestAndHighestPitchedNotesWhenPresent() {
+		final NoteBuilder lowUnpitched = new NoteBuilder();
+		lowUnpitched.setDuration(Durations.QUARTER);
+		lowUnpitched.setUnpitched();
+		lowUnpitched.setDisplayPitch(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 3));
+
+		final NoteBuilder highUnpitched = new NoteBuilder();
+		highUnpitched.setDuration(Durations.QUARTER);
+		highUnpitched.setUnpitched();
+		highUnpitched.setDisplayPitch(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5));
+
+		final Chord withUnpitched = dMajor.add(highUnpitched.build()).add(lowUnpitched.build());
+		assertTrue(withUnpitched.getLowestPitchedNote().isPresent());
+		assertEquals(dMajor.getLowest(), withUnpitched.getLowestPitchedNote().get());
+
+		assertTrue(withUnpitched.getHighestPitchedNote().isPresent());
+		assertEquals(dMajor.getHighest(), withUnpitched.getHighestPitchedNote().get());
+	}
+
+	@Test
+	void testLowestAndHighestPitchedNotesWhenAbsent() {
+		final List<Note> unpitchedNotes = new ArrayList<>();
+		Note lowestPositioned = Note.of(null, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER,
+				Collections.emptySet(), Collections.emptyList(), Collections.emptyList());
+		unpitchedNotes.add(lowestPositioned);
+		unpitchedNotes.add(Note.of(null, Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER,
+				Collections.emptySet(), Collections.emptyList(), Collections.emptyList()));
+		Note highestPositioned = Note.of(null, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.QUARTER,
+				Collections.emptySet(), Collections.emptyList(), Collections.emptyList());
+		unpitchedNotes.add(highestPositioned);
+
+		final Chord unpitchedChord = Chord.of(unpitchedNotes);
+
+		assertTrue(unpitchedChord.getHighestPitchedNote().isEmpty());
+		assertTrue(unpitchedChord.getLowestPitchedNote().isEmpty());
+
+		assertEquals(lowestPositioned, unpitchedChord.getLowest());
+		assertEquals(highestPositioned, unpitchedChord.getHighest());
 	}
 
 	@Test

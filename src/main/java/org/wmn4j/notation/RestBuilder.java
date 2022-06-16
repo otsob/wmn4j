@@ -38,6 +38,11 @@ public final class RestBuilder implements DurationalBuilder {
 		setDuration(rest.getDuration());
 	}
 
+	@Override
+	public boolean isRestBuilder() {
+		return true;
+	}
+
 	/**
 	 * Set the duration in this builder.
 	 *

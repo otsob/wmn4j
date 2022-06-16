@@ -86,7 +86,7 @@ class GraceNoteChordTest {
 	void testGetNoteOrderCorrect() {
 		for (int i = 0; i < cMajor.getNoteCount(); ++i) {
 			if (i != 0) {
-				assertFalse(cMajor.getNote(i - 1).getPitch().isHigherThan(cMajor.getNote(i).getPitch()));
+				assertFalse(cMajor.getNote(i - 1).getPitch().get().isHigherThan(cMajor.getNote(i).getPitch().get()));
 			}
 		}
 	}
@@ -143,20 +143,20 @@ class GraceNoteChordTest {
 	void testGetLowestNote() {
 		assertEquals(
 				new GraceNoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER).build(),
-				this.cMajor.getLowestNote());
+				this.cMajor.getLowest());
 		assertEquals(
 				new GraceNoteBuilder(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4), Durations.QUARTER).build(),
-				this.fMinor.getLowestNote());
+				this.fMinor.getLowest());
 	}
 
 	@Test
 	void testGetHighestNote() {
 		assertEquals(
 				new GraceNoteBuilder(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.QUARTER).build(),
-				this.cMajor.getHighestNote());
+				this.cMajor.getHighest());
 		assertEquals(
 				new GraceNoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.QUARTER).build(),
-				this.fMinor.getHighestNote());
+				this.fMinor.getHighest());
 	}
 
 	@Test
@@ -190,7 +190,7 @@ class GraceNoteChordTest {
 		assertEquals(4, cMaj.getNoteCount());
 		assertEquals(
 				new GraceNoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.QUARTER).build(),
-				cMaj.getHighestNote());
+				cMaj.getHighest());
 
 		assertThrows(IllegalArgumentException.class, () -> this.cMajor
 				.add(new GraceNoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH)
@@ -217,7 +217,7 @@ class GraceNoteChordTest {
 		assertFalse(this.dMajor.equals(D_FSharp));
 		assertEquals(2, D_FSharp.getNoteCount());
 		assertEquals(new GraceNoteBuilder(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 3), Durations.QUARTER).build(),
-				D_FSharp.getHighestNote());
+				D_FSharp.getHighest());
 	}
 
 	@Test
@@ -226,7 +226,7 @@ class GraceNoteChordTest {
 		assertFalse(this.dMajor.equals(D_FSharp));
 		assertEquals(2, D_FSharp.getNoteCount());
 		assertEquals(new GraceNoteBuilder(Pitch.of(Pitch.Base.F, Pitch.Accidental.SHARP, 3), Durations.QUARTER).build(),
-				D_FSharp.getHighestNote());
+				D_FSharp.getHighest());
 	}
 
 	@Test

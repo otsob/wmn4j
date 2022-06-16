@@ -88,6 +88,35 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 	}
 
 	/**
+	 * Sets this builder to create an unpitched note with the
+	 * display pitch set in this.
+	 *
+	 * @return reference to this
+	 */
+	public GraceNoteBuilder setUnpitched() {
+		this.noteBuilder.setUnpitched();
+		return this;
+	}
+
+	/**
+	 * Returns the display pitch set in this builder.
+	 *
+	 * @return the displayed pitch set in this builder
+	 */
+	public Pitch getDisplayPitch() {
+		return noteBuilder.getPitch();
+	}
+
+	/**
+	 * Sets the display pitch in this builder.
+	 *
+	 * @param pitch the display pitch to be set in this builder
+	 */
+	public void setDisplayPitch(Pitch pitch) {
+		noteBuilder.setPitch(pitch);
+	}
+
+	/**
 	 * Returns the grace note type set in this builder.
 	 *
 	 * @return the grace note type set in this builder
@@ -230,7 +259,8 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 			isBuilding = true;
 
 			this.cachedNote = GraceNote
-					.of(noteBuilder.getPitch(), noteBuilder.getDuration(), noteBuilder.getArticulations(),
+					.of(noteBuilder.getPitch(), noteBuilder.getDisplayPitch(), noteBuilder.getDuration(),
+							noteBuilder.getArticulations(),
 							noteBuilder.getResolvedNotationConnections(), noteBuilder.getOrnaments(), graceNoteType,
 							principalNoteConnections);
 

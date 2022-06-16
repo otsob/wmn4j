@@ -6,6 +6,7 @@ package org.wmn4j.io.musicxml;
 import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.ChordBuilder;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Clefs;
 import org.wmn4j.notation.Duration;
@@ -18,6 +19,7 @@ import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.MultiStaffPart;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
+import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.Part;
@@ -406,7 +408,7 @@ class MusicXmlFileChecks {
 		final Note first = (Note) firstMeasure.get(1, 0);
 		assertTrue(first.isTiedToFollowing());
 		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
-				first.getFollowingTiedNote().get().getPitch());
+				first.getFollowingTiedNote().get().getPitch().get());
 
 		final Note second = (Note) firstMeasure.get(1, 1);
 		assertTrue(second.isTiedFromPrevious());
@@ -1046,7 +1048,7 @@ class MusicXmlFileChecks {
 		List<GraceNote> firstNoteGraceNotes = getGraceNotes(firstNote, Ornament.Type.GRACE_NOTES, GraceNote.class);
 		assertEquals(1, firstNoteGraceNotes.size());
 		final GraceNote firstGraceNote = firstNoteGraceNotes.get(0);
-		assertEquals(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), firstGraceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), firstGraceNote.getPitch().get());
 		assertEquals(Durations.EIGHTH, firstGraceNote.getDisplayableDuration());
 		assertEquals(GraceNote.Type.ACCIACCATURA, firstGraceNote.getType());
 		assertTrue(firstGraceNote.hasArticulation(Articulation.STACCATO));
@@ -1056,7 +1058,7 @@ class MusicXmlFileChecks {
 		List<GraceNote> secondNoteGraceNotes = getGraceNotes(secondNote, Ornament.Type.GRACE_NOTES, GraceNote.class);
 		assertEquals(1, secondNoteGraceNotes.size());
 		final GraceNote secondGraceNote = secondNoteGraceNotes.get(0);
-		assertEquals(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4), secondGraceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4), secondGraceNote.getPitch().get());
 		assertEquals(Durations.EIGHTH, secondGraceNote.getDisplayableDuration());
 		assertEquals(GraceNote.Type.APPOGGIATURA, secondGraceNote.getType());
 		assertTrue(secondGraceNote.hasArticulation(Articulation.TENUTO));
@@ -1067,7 +1069,7 @@ class MusicXmlFileChecks {
 				GraceNote.class);
 		assertEquals(1, thirdNoteGraceNotes.size());
 		final GraceNote thirdGraceNote = thirdNoteGraceNotes.get(0);
-		assertEquals(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), thirdGraceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), thirdGraceNote.getPitch().get());
 		assertEquals(GraceNote.Type.GRACE_NOTE, thirdGraceNote.getType());
 		assertEquals(Durations.EIGHTH, thirdGraceNote.getDisplayableDuration());
 		assertTrue(thirdGraceNote.hasOrnament(Ornament.Type.TRILL));
@@ -1083,13 +1085,13 @@ class MusicXmlFileChecks {
 				GraceNote.class);
 		assertEquals(2, fourthNotePrecedingGraceNotes.size());
 		final GraceNote fourthGraceNote = fourthNotePrecedingGraceNotes.get(0);
-		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), fourthGraceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), fourthGraceNote.getPitch().get());
 		assertEquals(GraceNote.Type.GRACE_NOTE, fourthGraceNote.getType());
 		assertEquals(Durations.SIXTEENTH, fourthGraceNote.getDisplayableDuration());
 		assertTrue(fourthGraceNote.beginsNotation(Notation.Type.SLUR));
 
 		final GraceNote fifthGraceNote = fourthNotePrecedingGraceNotes.get(1);
-		assertEquals(Pitch.of(Pitch.Base.B, Pitch.Accidental.NATURAL, 4), fifthGraceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.B, Pitch.Accidental.NATURAL, 4), fifthGraceNote.getPitch().get());
 		assertEquals(GraceNote.Type.GRACE_NOTE, fifthGraceNote.getType());
 		assertEquals(Durations.SIXTEENTH, fifthGraceNote.getDisplayableDuration());
 		assertTrue(fifthGraceNote.hasNotation(Notation.Type.SLUR));
@@ -1100,13 +1102,13 @@ class MusicXmlFileChecks {
 
 		assertEquals(2, fourthNoteSucceedingGraceNotes.size());
 		final GraceNote sixthGraceNote = fourthNoteSucceedingGraceNotes.get(0);
-		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), sixthGraceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5), sixthGraceNote.getPitch().get());
 		assertEquals(GraceNote.Type.GRACE_NOTE, sixthGraceNote.getType());
 		assertEquals(Durations.SIXTEENTH, sixthGraceNote.getDisplayableDuration());
 		assertTrue(sixthGraceNote.hasNotation(Notation.Type.SLUR));
 
 		final GraceNote seventhGraceNote = fourthNoteSucceedingGraceNotes.get(1);
-		assertEquals(Pitch.of(Pitch.Base.B, Pitch.Accidental.NATURAL, 4), seventhGraceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.B, Pitch.Accidental.NATURAL, 4), seventhGraceNote.getPitch().get());
 		assertEquals(GraceNote.Type.GRACE_NOTE, seventhGraceNote.getType());
 		assertEquals(Durations.SIXTEENTH, seventhGraceNote.getDisplayableDuration());
 		assertTrue(seventhGraceNote.endsNotation(Notation.Type.SLUR));
@@ -1119,13 +1121,13 @@ class MusicXmlFileChecks {
 		assertEquals(2, fifthNoteGraceNotes.size());
 
 		final GraceNote eightGraceNote = fifthNoteGraceNotes.get(0);
-		assertEquals(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4), eightGraceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4), eightGraceNote.getPitch().get());
 		assertEquals(Durations.QUARTER, eightGraceNote.getDisplayableDuration());
 		assertTrue(eightGraceNote.beginsNotation(Notation.Type.SLUR));
 		assertTrue(eightGraceNote.endsNotation(Notation.Type.GLISSANDO));
 
 		final GraceNote ninthGraceNote = fifthNoteGraceNotes.get(1);
-		assertEquals(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), ninthGraceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), ninthGraceNote.getPitch().get());
 		assertEquals(Durations.QUARTER, ninthGraceNote.getDisplayableDuration());
 		assertTrue(ninthGraceNote.hasNotation(Notation.Type.SLUR));
 	}
@@ -1196,7 +1198,7 @@ class MusicXmlFileChecks {
 		assertEquals(expectedPitches.size(), chord.getNoteCount());
 		for (int i = 0; i < expectedPitches.size(); ++i) {
 			final GraceNote note = chord.getNote(i);
-			assertEquals(expectedPitches.get(i), note.getPitch());
+			assertEquals(expectedPitches.get(i), note.getPitch().get());
 			assertEquals(expectedType, note.getType());
 			assertEquals(expectedDuration, note.getDisplayableDuration());
 		}
@@ -1229,5 +1231,58 @@ class MusicXmlFileChecks {
 		Offset<Direction> thirdDirection = topStaffSecondDirections.get(0);
 		assertEquals(Durations.QUARTER.addDot(), thirdDirection.getDuration().get());
 		assertEquals(Direction.of(Direction.Type.TEXT, "Another text"), thirdDirection.get());
+	}
+
+	/*
+	 * Expects the contents of "unpitched_notes_test.musicxml".
+	 */
+	static void assertUnpitchedPercussionNotesCorrect(Score score) {
+		assertEquals(2, score.getPartCount());
+		assertEquals(1, score.getMeasureCount());
+
+		final Part drumPart = score.getPart(0);
+		assertFalse(drumPart.isMultiStaff());
+		final Staff drumStaff = drumPart.getStaff(SingleStaffPart.DEFAULT_STAFF_NUMBER);
+		assertEquals(Staff.Type.NORMAL, drumStaff.getType());
+		final Measure drumMeasure = drumPart.getMeasure(SingleStaffPart.DEFAULT_STAFF_NUMBER, 1);
+		assertEquals(1, drumMeasure.getVoiceCount());
+		assertEquals(Clefs.PERCUSSION, drumMeasure.getClef());
+
+		NoteBuilder firstDrumNote = new NoteBuilder();
+		firstDrumNote.setDuration(Durations.QUARTER);
+		firstDrumNote.setUnpitched();
+		firstDrumNote.setDisplayPitch(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5));
+
+		assertEquals(firstDrumNote.build(), drumMeasure.get(1, 0));
+		assertEquals(firstDrumNote.build(), drumMeasure.get(1, 1));
+		assertEquals(Rest.of(Durations.QUARTER), drumMeasure.get(1, 2));
+
+		ChordBuilder drumChord = new ChordBuilder(firstDrumNote);
+		drumChord.add(new NoteBuilder().setUnpitched()
+				.setDisplayPitch(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4)));
+
+		// There's one pitched not in the test file to test unpitched-pitched mixed
+		// chords.
+		drumChord.add(new NoteBuilder()
+				.setPitch(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4)));
+
+		drumChord.add(new NoteBuilder().setUnpitched()
+				.setDisplayPitch(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 5)));
+
+		drumChord.setDuration(Durations.QUARTER);
+		assertEquals(drumChord.build(), drumMeasure.get(1, 3));
+
+		final Part snarePart = score.getPart(1);
+		assertFalse(snarePart.isMultiStaff());
+		final Staff snareStaff = snarePart.getStaff(Part.DEFAULT_STAFF_NUMBER);
+		assertEquals(Staff.Type.SINGLE_LINE, snareStaff.getType());
+		final Measure snareMeasure = snareStaff.getMeasure(1);
+
+		NoteBuilder snareNote = new NoteBuilder().setUnpitched().setDisplayPitch(Staff.SINGLE_LINE_PITCH);
+		snareNote.setDuration(Durations.QUARTER);
+		assertEquals(snareNote.build(), snareMeasure.get(1, 0));
+		assertEquals(snareNote.build(), snareMeasure.get(1, 1));
+		assertEquals(Rest.of(Durations.QUARTER), snareMeasure.get(1, 2));
+		assertEquals(snareNote.build(), snareMeasure.get(1, 3));
 	}
 }

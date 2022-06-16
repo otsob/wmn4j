@@ -186,8 +186,8 @@ public final class Score implements Iterable<Part> {
 		Durational dur = measure.get(position.getVoiceNumber(), position.getIndexInVoice());
 
 		if (position.isInChord()) {
-			if (dur instanceof Chord) {
-				final Chord chord = (Chord) dur;
+			if (dur.isChord()) {
+				final Chord chord = dur.toChord();
 				dur = chord.getNote(position.getIndexInChord());
 			} else {
 				throw new NoSuchElementException("The element at the position is not a Chord.");

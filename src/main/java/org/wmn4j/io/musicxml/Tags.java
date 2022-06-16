@@ -185,6 +185,7 @@ final class Tags {
 	static final String STACCATO = "staccato";
 	static final String STAFF = "staff";
 	static final String STAFF_DETAILS = "staff-details";
+	static final String STAFF_LINES = "staff-lines";
 	static final String START = "start";
 	static final String STAVES = "staves";
 	static final String STEM = "stem";

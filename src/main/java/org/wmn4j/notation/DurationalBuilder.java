@@ -8,7 +8,7 @@ package org.wmn4j.notation;
  * <p>
  * Implementations of this interface are not guaranteed to be thread-safe.
  */
-public interface DurationalBuilder {
+public sealed interface DurationalBuilder permits NoteBuilder, RestBuilder, ChordBuilder {
 
 	/**
 	 * Returns a durational notation element with the values set in the builder.
@@ -30,4 +30,61 @@ public interface DurationalBuilder {
 	 * @param duration the duration that is set to this builder
 	 */
 	void setDuration(Duration duration);
+
+	/**
+	 * Returns true if this is a rest builder, false otherwise.
+	 *
+	 * @return true if this is a rest builder, false otherwise
+	 */
+	default boolean isRestBuilder() {
+		return false;
+	}
+
+	/**
+	 * Returns true if this is a note builder, false otherwise.
+	 *
+	 * @return true if this is a note builder, false otherwise
+	 */
+	default boolean isNoteBuilder() {
+		return false;
+	}
+
+	/**
+	 * Returns true if this is a chord builder, false otherwise.
+	 *
+	 * @return true if this is a chord builder, false otherwise
+	 */
+	default boolean isChordBuilder() {
+		return false;
+	}
+
+	/**
+	 * Converts this to RestBuilder if this is a RestBuilder.
+	 * Otherwise throws exception.
+	 *
+	 * @return this as a rest builder
+	 */
+	default RestBuilder toRestBuilder() {
+		return (RestBuilder) this;
+	}
+
+	/**
+	 * Converts this to NoteBuilder if this is a NoteBuilder.
+	 * Otherwise throws exception.
+	 *
+	 * @return this as a note builder
+	 */
+	default NoteBuilder toNoteBuilder() {
+		return (NoteBuilder) this;
+	}
+
+	/**
+	 * Converts this to ChordBuilder if this is a ChordBuilder.
+	 * Otherwise throws exception.
+	 *
+	 * @return this as a chord builder
+	 */
+	default ChordBuilder toChordBuilder() {
+		return (ChordBuilder) this;
+	}
 }

@@ -23,7 +23,7 @@ checkstyle {
 // Temporary workaround: checkstyle 8.37 cannot handle sealed keyword
 // used in Durational and the checkstyle version apparently cannot be overridden...
 checkstyleMain.exclude('org/wmn4j/notation/Durational.java')
-
+checkstyleMain.exclude('org/wmn4j/notation/DurationalBuilder.java')
 
 repositories {
     mavenCentral()

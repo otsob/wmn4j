@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder {
 
 	private Pitch pitch;
+	private Pitch displayPitch;
 	private Duration duration;
 	private Set<Articulation> articulations;
 	private Set<Ornament> ornaments;
@@ -84,9 +85,14 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * @param note the note from which pitch, duration, and articulations are copied to the created builder
 	 */
 	public NoteBuilder(Note note) {
-		this(note.getPitch(), note.getDuration());
+		this(note.getPitch().orElse(null), note.getDuration());
 		note.getArticulations()
 				.forEach(articulation -> this.articulations.add(articulation));
+	}
+
+	@Override
+	public boolean isNoteBuilder() {
+		return true;
 	}
 
 	/**
@@ -102,9 +108,22 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * Sets the pitch in this builder.
 	 *
 	 * @param pitch the pitch to be set in this builder
+	 * @return reference to this
 	 */
-	public void setPitch(Pitch pitch) {
+	public NoteBuilder setPitch(Pitch pitch) {
 		this.pitch = pitch;
+		return this;
+	}
+
+	/**
+	 * Sets this builder to create an unpitched note with the
+	 * display pitch set in this.
+	 *
+	 * @return reference to this
+	 */
+	public NoteBuilder setUnpitched() {
+		this.pitch = null;
+		return this;
 	}
 
 	/**
@@ -418,7 +437,8 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 			isBuilding = true;
 
 			this.cachedNote = Note
-					.of(this.pitch, this.duration, this.articulations, getResolvedNotationConnections(),
+					.of(this.pitch, this.displayPitch, this.duration, this.articulations,
+							getResolvedNotationConnections(),
 							buildOrnaments());
 
 			updateGraceNoteBuilders();
@@ -462,5 +482,25 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 				}
 			}
 		}
+	}
+
+	/**
+	 * Returns the shown pitch set in this builder.
+	 *
+	 * @return the shown pitch set in this builder
+	 */
+	public Pitch getDisplayPitch() {
+		return displayPitch;
+	}
+
+	/**
+	 * Sets the displayed pitch in this builder.
+	 *
+	 * @param displayPitch the displayed pitch set in this builder
+	 * @return reference to this for chaining
+	 */
+	public NoteBuilder setDisplayPitch(Pitch displayPitch) {
+		this.displayPitch = displayPitch;
+		return this;
 	}
 }
