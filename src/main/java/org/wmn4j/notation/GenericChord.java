@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -55,7 +56,7 @@ final class GenericChord<T extends OptionallyPitched> implements Iterable<T> {
 	 *
 	 * @return the pitched with the lowest pitch in this Chord.
 	 */
-	T getLowestNote() {
+	T getLowest() {
 		return this.getNote(0);
 	}
 
@@ -64,8 +65,36 @@ final class GenericChord<T extends OptionallyPitched> implements Iterable<T> {
 	 *
 	 * @return the pitched with the highest pitch in this Chord.
 	 */
-	T getHighestNote() {
+	T getHighest() {
 		return this.getNote(this.pitchedElements.size() - 1);
+	}
+
+	/**
+	 * Returns the element with the lowest pitch if there are pitched elements in this chord,
+	 * empty otherwise.
+	 *
+	 * @return the element with the lowest pitch if there are pitched elements in this chord,
+	 * empty otherwise
+	 */
+	Optional<T> getLowestPitchedNote() {
+		return pitchedElements.stream().filter(OptionallyPitched::hasPitch).findFirst();
+	}
+
+	/**
+	 * Returns the element with the highest pitch if there are pitched elements in this chord,
+	 * empty otherwise.
+	 *
+	 * @return the element with the highest pitch if there are pitched elements in this chord,
+	 * empty otherwise
+	 */
+	Optional<T> getHighestPitchedNote() {
+		for (int i = getNoteCount() - 1; i >= 0; --i) {
+			final T current = pitchedElements.get(i);
+			if (current.hasPitch()) {
+				return Optional.of(current);
+			}
+		}
+		return Optional.empty();
 	}
 
 	/**

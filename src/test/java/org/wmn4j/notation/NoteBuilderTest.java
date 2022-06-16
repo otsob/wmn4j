@@ -510,9 +510,9 @@ class NoteBuilderTest {
 
 		Optional<Notation.Connection> glissandoToRoot = graceNote.getConnection(glissando);
 		assertTrue(glissandoToRoot.isPresent());
-		assertEquals(graceNoteChord.getLowestNote(), glissandoToRoot.get().getFollowingGraceNote().get());
+		assertEquals(graceNoteChord.getLowest(), glissandoToRoot.get().getFollowingGraceNote().get());
 
-		final GraceNote graceNoteChordThird = graceNoteChord.getHighestNote();
+		final GraceNote graceNoteChordThird = graceNoteChord.getHighest();
 		Optional<Notation.Connection> slurToNote = graceNoteChordThird.getConnection(slur);
 		assertTrue(slurToNote.isPresent());
 

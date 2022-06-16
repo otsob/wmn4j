@@ -504,16 +504,16 @@ class NoteTest {
 		final GraceNoteChord graceNoteChordFromNote = (GraceNoteChord) ornamentalNotes.get(0);
 		assertEquals(3, graceNoteChordFromNote.getNoteCount());
 
-		final GraceNote highest = graceNoteChordFromNote.getHighestNote();
+		final GraceNote highest = graceNoteChordFromNote.getHighest();
 		assertEquals(fifth, highest);
 		Optional<Notation.Connection> slurToPrincipal = highest.getConnection(slur);
 		assertTrue(slurToPrincipal.isPresent());
 		final Note connectedTo = slurToPrincipal.get().getFollowingNote().get();
 		assertEquals(note, connectedTo);
 
-		assertTrue(graceNoteChordFromNote.getLowestNote().beginsNotation(Notation.Type.ARPEGGIATE));
+		assertTrue(graceNoteChordFromNote.getLowest().beginsNotation(Notation.Type.ARPEGGIATE));
 		assertTrue(graceNoteChordFromNote.getNote(1).hasNotation(Notation.Type.ARPEGGIATE));
-		assertTrue(graceNoteChordFromNote.getHighestNote().endsNotation(Notation.Type.ARPEGGIATE));
+		assertTrue(graceNoteChordFromNote.getHighest().endsNotation(Notation.Type.ARPEGGIATE));
 	}
 
 	@Test

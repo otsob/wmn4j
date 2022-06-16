@@ -298,7 +298,7 @@ final class PolyphonicPattern implements Pattern {
 				return note.getPitch().orElseGet(note::getDisplayPitch).toInt();
 			}
 
-			return ((Chord) durational).getLowestNote().getPitch().get().toInt();
+			return ((Chord) durational).getLowest().getPitch().get().toInt();
 		};
 
 		// Get the first pitches available in this patterns voices. For chords get the lowest.
