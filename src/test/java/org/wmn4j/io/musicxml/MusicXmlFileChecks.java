@@ -6,6 +6,7 @@ package org.wmn4j.io.musicxml;
 import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Chord;
+import org.wmn4j.notation.ChordBuilder;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Clefs;
 import org.wmn4j.notation.Duration;
@@ -18,6 +19,7 @@ import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.MultiStaffPart;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
+import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.Part;
@@ -1229,5 +1231,58 @@ class MusicXmlFileChecks {
 		Offset<Direction> thirdDirection = topStaffSecondDirections.get(0);
 		assertEquals(Durations.QUARTER.addDot(), thirdDirection.getDuration().get());
 		assertEquals(Direction.of(Direction.Type.TEXT, "Another text"), thirdDirection.get());
+	}
+
+	/*
+	 * Expects the contents of "unpitched_notes_test.musicxml".
+	 */
+	static void assertUnpitchedPercussionNotesCorrect(Score score) {
+		assertEquals(2, score.getPartCount());
+		assertEquals(1, score.getMeasureCount());
+
+		final Part drumPart = score.getPart(0);
+		assertFalse(drumPart.isMultiStaff());
+		final Staff drumStaff = drumPart.getStaff(SingleStaffPart.DEFAULT_STAFF_NUMBER);
+		assertEquals(Staff.Type.NORMAL, drumStaff.getType());
+		final Measure drumMeasure = drumPart.getMeasure(SingleStaffPart.DEFAULT_STAFF_NUMBER, 1);
+		assertEquals(1, drumMeasure.getVoiceCount());
+		assertEquals(Clefs.PERCUSSION, drumMeasure.getClef());
+
+		NoteBuilder firstDrumNote = new NoteBuilder();
+		firstDrumNote.setDuration(Durations.QUARTER);
+		firstDrumNote.setUnpitched();
+		firstDrumNote.setDisplayPitch(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5));
+
+		assertEquals(firstDrumNote.build(), drumMeasure.get(1, 0));
+		assertEquals(firstDrumNote.build(), drumMeasure.get(1, 1));
+		assertEquals(Rest.of(Durations.QUARTER), drumMeasure.get(1, 2));
+
+		ChordBuilder drumChord = new ChordBuilder(firstDrumNote);
+		drumChord.add(new NoteBuilder().setUnpitched()
+				.setDisplayPitch(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4)));
+
+		// There's one pitched not in the test file to test unpitched-pitched mixed
+		// chords.
+		drumChord.add(new NoteBuilder()
+				.setPitch(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4)));
+
+		drumChord.add(new NoteBuilder().setUnpitched()
+				.setDisplayPitch(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 5)));
+
+		drumChord.setDuration(Durations.QUARTER);
+		assertEquals(drumChord.build(), drumMeasure.get(1, 3));
+
+		final Part snarePart = score.getPart(1);
+		assertFalse(snarePart.isMultiStaff());
+		final Staff snareStaff = snarePart.getStaff(Part.DEFAULT_STAFF_NUMBER);
+		assertEquals(Staff.Type.SINGLE_LINE, snareStaff.getType());
+		final Measure snareMeasure = snareStaff.getMeasure(1);
+
+		NoteBuilder snareNote = new NoteBuilder().setUnpitched().setDisplayPitch(Staff.SINGLE_LINE_PITCH);
+		snareNote.setDuration(Durations.QUARTER);
+		assertEquals(snareNote.build(), snareMeasure.get(1, 0));
+		assertEquals(snareNote.build(), snareMeasure.get(1, 1));
+		assertEquals(Rest.of(Durations.QUARTER), snareMeasure.get(1, 2));
+		assertEquals(snareNote.build(), snareMeasure.get(1, 3));
 	}
 }

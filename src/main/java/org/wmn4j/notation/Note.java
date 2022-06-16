@@ -505,22 +505,24 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 			strBuilder.append(tieString);
 		}
 
+		final String endDelimiter = ")";
+		final String startDelimiter = "(";
 		if (pitch != null) {
 			strBuilder.append(this.pitch);
 		} else {
-			strBuilder.append("Unpitched");
+			strBuilder.append("Unpitched").append(startDelimiter).append(displayPitch).append(endDelimiter);
 		}
 		strBuilder.append(this.duration.toString());
 
 		if (!this.articulations.isEmpty()) {
 
-			strBuilder.append("(");
+			strBuilder.append(startDelimiter);
 			for (Articulation articulation : this.articulations) {
 				strBuilder.append(articulation.toString()).append(" ");
 			}
 
 			strBuilder.replace(strBuilder.length() - 1, strBuilder.length(), "");
-			strBuilder.append(")");
+			strBuilder.append(endDelimiter);
 		}
 
 		if (this.isTiedToFollowing()) {

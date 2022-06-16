@@ -15,6 +15,7 @@ import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.OrnamentalBuilder;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
+import org.wmn4j.notation.Staff;
 import org.wmn4j.notation.access.Offset;
 import org.wmn4j.notation.directions.Direction;
 
@@ -358,5 +359,13 @@ final class PartContext {
 
 	public void incrementMeasureNumber() {
 		++measureNumber;
+	}
+
+	public void setStaffLines(int lines) {
+		if (lines == 1) {
+			partBuilder.setStaffType(Staff.Type.SINGLE_LINE, staff);
+		} else {
+			partBuilder.setStaffType(Staff.Type.NORMAL, staff);
+		}
 	}
 }

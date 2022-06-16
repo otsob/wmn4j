@@ -108,9 +108,11 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * Sets the pitch in this builder.
 	 *
 	 * @param pitch the pitch to be set in this builder
+	 * @return reference to this
 	 */
-	public void setPitch(Pitch pitch) {
+	public NoteBuilder setPitch(Pitch pitch) {
 		this.pitch = pitch;
+		return this;
 	}
 
 	/**

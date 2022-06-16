@@ -120,6 +120,14 @@ public final class SingleStaffPart implements Part {
 	}
 
 	@Override
+	public Staff getStaff(int staffNumber) {
+		if (staffNumber != DEFAULT_STAFF_NUMBER) {
+			throw new NoSuchElementException("Single staff part only has staff at number " + DEFAULT_STAFF_NUMBER);
+		}
+		return staff;
+	}
+
+	@Override
 	public int getMeasureCount() {
 		return this.staff.getMeasureCount();
 	}

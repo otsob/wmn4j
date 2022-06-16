@@ -89,12 +89,7 @@ public final class MultiStaffPart implements Part {
 		return this.staves.get(this.getStaffNumbers().get(0)).getFullMeasureCount();
 	}
 
-	/**
-	 * Returns the {@link Staff} with the given number in this part.
-	 *
-	 * @param number number of staff
-	 * @return the staff associated with the number
-	 */
+	@Override
 	public Staff getStaff(int number) {
 		return this.staves.get(number);
 	}

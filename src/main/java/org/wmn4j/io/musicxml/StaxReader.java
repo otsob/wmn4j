@@ -97,6 +97,7 @@ final class StaxReader implements MusicXmlReader {
 
 	private String currentStep;
 	private int currentAlter;
+	private boolean isCurrentUnpitched;
 	private int currentOctave;
 
 	private boolean isClosed;
@@ -568,7 +569,8 @@ final class StaxReader implements MusicXmlReader {
 					consumeText(text -> currentDurDivisions = Integer.parseInt(text));
 					break;
 				case Tags.PITCH:
-					consumePitchElem();
+				case Tags.UNPITCHED:
+					consumePitchElem(tag);
 					break;
 				case Tags.VOICE:
 					consumeText(text -> partContext.setVoice(Integer.parseInt(text)));
@@ -618,7 +620,6 @@ final class StaxReader implements MusicXmlReader {
 				case Tags.NOTEHEAD_TEXT:
 				case Tags.NOTEHEAD:
 				case Tags.STEM:
-				case Tags.UNPITCHED:
 				default:
 					skipElement();
 
@@ -638,9 +639,15 @@ final class StaxReader implements MusicXmlReader {
 
 		if (currentDurationalBuilder instanceof NoteBuilder) {
 			final NoteBuilder currentNoteBuilder = (NoteBuilder) currentDurationalBuilder;
-			currentNoteBuilder.setPitch(
+			final Pitch writtenPitch =
 					Pitch.of(Transforms.stepToPitchBase(currentStep), Transforms.alterToAccidental(currentAlter),
-							currentOctave));
+							currentOctave);
+
+			if (isCurrentUnpitched) {
+				currentNoteBuilder.setUnpitched().setDisplayPitch(writtenPitch);
+			} else {
+				currentNoteBuilder.setPitch(writtenPitch);
+			}
 
 			if (currentConnectableBuilder instanceof NoteBuilder) {
 				partContext.updateChordBuffer(currentNoteBuilder);
@@ -757,21 +764,28 @@ final class StaxReader implements MusicXmlReader {
 		}, Tags.ARTICULATIONS);
 	}
 
-	private void consumePitchElem() throws XMLStreamException {
+	private void consumePitchElem(String pitchTag) throws XMLStreamException {
 		// Alter is optional, so it needs to be set to zero to account for the absence of the element.
 		currentAlter = 0;
+		if (pitchTag.equals(Tags.PITCH)) {
+			isCurrentUnpitched = false;
+		} else if (pitchTag.equals(Tags.UNPITCHED)) {
+			isCurrentUnpitched = true;
+		}
 
 		consumeUntil(tag -> {
 			switch (tag) {
 				case Tags.STEP:
+				case Tags.DISPLAY_STEP:
 					consumeText(text -> currentStep = text);
 					break;
 				case Tags.ALTER:
 					consumeText(text -> currentAlter = Integer.parseInt(text));
 				case Tags.OCTAVE:
+				case Tags.DISPLAY_OCTAVE:
 					consumeText(text -> currentOctave = Integer.parseInt(text));
 			}
-		}, Tags.PITCH);
+		}, pitchTag);
 	}
 
 	private void consumeAttributesElem() throws XMLStreamException {
@@ -791,10 +805,12 @@ final class StaxReader implements MusicXmlReader {
 				case Tags.CLEF:
 					consumeClefElem();
 					break;
+				case Tags.STAFF_DETAILS:
+					consumeStaffDetails();
+					break;
 				// Fall through for elements that are currently not supported
 				case Tags.PART_SYMBOL:
 				case Tags.INSTRUMENTS:
-				case Tags.STAFF_DETAILS:
 				case Tags.TRANSPOSE:
 				case Tags.FOR_PART:
 				case Tags.DIRECTIVE:
@@ -804,6 +820,19 @@ final class StaxReader implements MusicXmlReader {
 			}
 
 		}, Tags.ATTRIBUTES);
+	}
+
+	private void consumeStaffDetails() throws XMLStreamException {
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.STAFF_LINES:
+					consumeText(text -> partContext.setStaffLines(Integer.parseInt(text)));
+					break;
+				default:
+					break;
+
+			}
+		}, Tags.STAFF_DETAILS);
 	}
 
 	private void consumeKeyElem() throws XMLStreamException {
