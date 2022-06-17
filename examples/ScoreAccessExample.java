@@ -42,6 +42,7 @@ public class ScoreAccessExample {
 			// the score.
 			if (durational.isRest()) {
 				position = iter.getPositionOfPrevious();
+				break;
 			}
 		}
 
