@@ -33,18 +33,22 @@ public class ScoreBuilder {
 	 *
 	 * @param attribute      the attribute to be set
 	 * @param attributeValue value for the attribute
+	 * @return reference to this
 	 */
-	public void setAttribute(Score.Attribute attribute, String attributeValue) {
+	public ScoreBuilder setAttribute(Score.Attribute attribute, String attributeValue) {
 		this.scoreAttr.put(attribute, attributeValue);
+		return this;
 	}
 
 	/**
 	 * Add {@link PartBuilder} to this builder.
 	 *
 	 * @param partBuilder partBuilder to add to this builder
+	 * @return reference to this
 	 */
-	public void addPart(PartBuilder partBuilder) {
+	public ScoreBuilder addPart(PartBuilder partBuilder) {
 		this.partBuilders.add(partBuilder);
+		return this;
 	}
 
 	/**

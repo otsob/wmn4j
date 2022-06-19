@@ -140,10 +140,12 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * Sets the duration in this builder.
 	 *
 	 * @param duration The duration to be set in this builder
+	 * @return reference to this
 	 */
 	@Override
-	public void setDuration(Duration duration) {
+	public NoteBuilder setDuration(Duration duration) {
 		this.duration = duration;
+		return this;
 	}
 
 	/**
@@ -159,18 +161,22 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * Sets the articulations in this builder.
 	 *
 	 * @param articulations the articulations that are set into this builder
+	 * @return reference to this
 	 */
-	public void setArticulations(Set<Articulation> articulations) {
+	public NoteBuilder setArticulations(Set<Articulation> articulations) {
 		this.articulations = articulations;
+		return this;
 	}
 
 	/**
 	 * Adds an articulation to this builder.
 	 *
 	 * @param articulation the articulation that is added to this builder
+	 * @return reference to this
 	 */
-	public void addArticulation(Articulation articulation) {
+	public NoteBuilder addArticulation(Articulation articulation) {
 		this.articulations.add(articulation);
+		return this;
 	}
 
 	/**
@@ -179,9 +185,11 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * {@link NoteBuilder#setSucceedingGraceNotes(List)} methods should be used.
 	 *
 	 * @param ornament the ornament to add to this builder
+	 * @return reference to this
 	 */
-	public void addOrnament(Ornament ornament) {
+	public NoteBuilder addOrnament(Ornament ornament) {
 		ornaments.add(ornament);
+		return this;
 	}
 
 	/**
@@ -191,10 +199,12 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * in the last grace note builder in the list. This builder takes ownership of the given builders.
 	 *
 	 * @param graceNoteBuilders the builders for the grace notes that this builder will add to the built note
+	 * @return reference to this
 	 */
-	public void setPrecedingGraceNotes(List<? extends OrnamentalBuilder> graceNoteBuilders) {
+	public NoteBuilder setPrecedingGraceNotes(List<? extends OrnamentalBuilder> graceNoteBuilders) {
 		precedingGraceNotes = graceNoteBuilders;
 		setPrincipalNoteForAll(precedingGraceNotes);
+		return this;
 	}
 
 	/**
@@ -203,10 +213,12 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * This builder takes ownership of the given builders.
 	 *
 	 * @param graceNoteBuilders the builders for the grace notes that this builder will add to the built note
+	 * @return reference to this
 	 */
-	public void setSucceedingGraceNotes(List<? extends OrnamentalBuilder> graceNoteBuilders) {
+	public NoteBuilder setSucceedingGraceNotes(List<? extends OrnamentalBuilder> graceNoteBuilders) {
 		succeedingGraceNotes = graceNoteBuilders;
 		setPrincipalNoteForAll(succeedingGraceNotes);
+		return this;
 	}
 
 	private void setPrincipalNoteForAll(List<? extends OrnamentalBuilder> ornamentalBuilders) {
@@ -234,10 +246,12 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * returned by the call of {@link #build build} on this will be tied to the
 	 * <code>Note</code> built by builder.
 	 *
-	 * @param builder The builder for the following note that this is to be tied to.
+	 * @param builder The builder for the following note that this is to be tied to
+	 * @return reference to this
 	 */
-	public void addTieToFollowing(NoteBuilder builder) {
+	public NoteBuilder addTieToFollowing(NoteBuilder builder) {
 		connectWith(Notation.of(Notation.Type.TIE), builder);
+		return this;
 	}
 
 	/**
@@ -272,15 +286,17 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	}
 
 	@Override
-	public void connectWith(Notation notation, NoteBuilder targetNoteBuilder) {
+	public NoteBuilder connectWith(Notation notation, NoteBuilder targetNoteBuilder) {
 		noteConnections.put(notation, targetNoteBuilder);
 		targetNoteBuilder.addToConnectedFrom(notation);
+		return this;
 	}
 
 	@Override
-	public void connectWith(Notation notation, GraceNoteBuilder targetNoteBuilder) {
+	public NoteBuilder connectWith(Notation notation, GraceNoteBuilder targetNoteBuilder) {
 		graceNoteConnections.put(notation, targetNoteBuilder);
 		targetNoteBuilder.addToConnectedFrom(notation);
+		return this;
 	}
 
 	/**

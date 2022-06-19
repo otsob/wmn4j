@@ -28,8 +28,9 @@ public sealed interface DurationalBuilder permits NoteBuilder, RestBuilder, Chor
 	 * Sets the duration of this builder to the given value.
 	 *
 	 * @param duration the duration that is set to this builder
+	 * @return reference to this
 	 */
-	void setDuration(Duration duration);
+	DurationalBuilder setDuration(Duration duration);
 
 	/**
 	 * Returns true if this is a rest builder, false otherwise.
