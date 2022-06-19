@@ -69,9 +69,11 @@ public final class ChordBuilder implements DurationalBuilder, Iterable<NoteBuild
 	 * Remove a NoteBuilder placed in this ChordBuilder.
 	 *
 	 * @param filter Predicate to determine which NoteBuilders are removed
+	 * @return reference to this
 	 */
-	public void removeIf(Predicate<NoteBuilder> filter) {
+	public ChordBuilder removeIf(Predicate<NoteBuilder> filter) {
 		this.noteBuilders.removeIf(filter);
+		return this;
 	}
 
 	@Override
@@ -83,13 +85,15 @@ public final class ChordBuilder implements DurationalBuilder, Iterable<NoteBuild
 	 * Sets a new duration to this builder and all the NoteBuilders in it.
 	 *
 	 * @param duration Duration to set
+	 * @return reference to this
 	 */
 	@Override
-	public void setDuration(Duration duration) {
+	public ChordBuilder setDuration(Duration duration) {
 		for (NoteBuilder builder : this) {
 			builder.setDuration(duration);
 		}
 		this.duration = duration;
+		return this;
 	}
 
 	@Override
@@ -108,5 +112,4 @@ public final class ChordBuilder implements DurationalBuilder, Iterable<NoteBuild
 		this.noteBuilders.forEach((builder) -> notes.add(builder.build()));
 		return Chord.of(notes);
 	}
-
 }

@@ -14,8 +14,9 @@ public interface ConnectableBuilder {
 	 *
 	 * @param notation          the notation with which this is connected to the target
 	 * @param targetNoteBuilder the note builder to which this is connected using the given notation
+	 * @return reference to this
 	 */
-	void connectWith(Notation notation, NoteBuilder targetNoteBuilder);
+	ConnectableBuilder connectWith(Notation notation, NoteBuilder targetNoteBuilder);
 
 	/**
 	 * Connects this builder to the given grace note builder with the specified notation.
@@ -24,6 +25,7 @@ public interface ConnectableBuilder {
 	 *
 	 * @param notation          the notation with which this is connected to the target
 	 * @param targetNoteBuilder the grace note builder to which this is connected using the given notation
+	 * @return reference to this
 	 */
-	void connectWith(Notation notation, GraceNoteBuilder targetNoteBuilder);
+	ConnectableBuilder connectWith(Notation notation, GraceNoteBuilder targetNoteBuilder);
 }

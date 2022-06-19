@@ -33,13 +33,11 @@ public class ScoreBuildingExample {
 		// Create a builder for the first measure contents and
 		// set some of its attributes.
 		MeasureBuilder firstMeasure = new MeasureBuilder(1);
-		firstMeasure.setClef(Clefs.F);
-		firstMeasure.setTimeSignature(TimeSignature.of(3, 4));
+		firstMeasure.setClef(Clefs.F).setTimeSignature(TimeSignature.of(3, 4));
 
 		// Creating a note and a rest builder and adding them to voice 1 of the measure.
 		NoteBuilder firstNote = new NoteBuilder(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.HALF);
-		firstMeasure.addToVoice(1, firstNote);
-		firstMeasure.addToVoice(1, new RestBuilder(Durations.QUARTER));
+		firstMeasure.addToVoice(1, firstNote).addToVoice(1, new RestBuilder(Durations.QUARTER));
 
 		partBuilder.addToStaff(Part.DEFAULT_STAFF_NUMBER, firstMeasure);
 
@@ -54,8 +52,7 @@ public class ScoreBuildingExample {
 		// Connect the notes with a slur
 		secondNote.connectWith(Notation.of(Notation.Type.SLUR), thirdNote);
 
-		secondMeasure.addToVoice(1, secondNote);
-		secondMeasure.addToVoice(1, thirdNote);
+		secondMeasure.addToVoice(1, secondNote).addToVoice(1, thirdNote);
 
 		partBuilder.addToStaff(Part.DEFAULT_STAFF_NUMBER, secondMeasure);
 		scoreBuilder.addPart(partBuilder);
