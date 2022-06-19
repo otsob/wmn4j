@@ -149,8 +149,8 @@ public class PartBuilder {
 	 *
 	 * @return the name set in this builder
 	 */
-	public Optional<String> getName() {
-		return Optional.ofNullable(partAttributes.getOrDefault(Part.Attribute.NAME, null));
+	public String getName() {
+		return partAttributes.getOrDefault(Part.Attribute.NAME, null);
 	}
 
 	private List<Measure> getBuiltMeasures(List<MeasureBuilder> builders) {
