@@ -30,9 +30,11 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
-    implementation 'org.slf4j:slf4j-jdk14:1.7.32'
+    implementation 'org.slf4j:slf4j-api:1.7.36'
     implementation 'org.apache.commons:commons-math3:3.6.1'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    testImplementation 'org.slf4j:slf4j-jdk14:1.7.36'
 }
 
 test {
