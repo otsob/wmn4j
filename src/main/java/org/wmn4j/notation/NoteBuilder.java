@@ -3,6 +3,8 @@
  */
 package org.wmn4j.notation;
 
+import org.wmn4j.notation.techniques.Technique;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -33,6 +35,8 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	private Set<Notation> connectedFrom = new HashSet<>();
 	private List<? extends OrnamentalBuilder> precedingGraceNotes = new ArrayList<>();
 	private List<? extends OrnamentalBuilder> succeedingGraceNotes = new ArrayList<>();
+
+	private Set<Technique> techniques = new HashSet<>();
 
 	private Note cachedNote;
 	private boolean isBuilding;
@@ -238,6 +242,26 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 */
 	public Collection<Ornament> getOrnaments() {
 		return ornaments;
+	}
+
+	/**
+	 * Adds the technique to this builder.
+	 *
+	 * @param technique the technique to add
+	 * @return a reference to this
+	 */
+	public NoteBuilder addTechnique(Technique technique) {
+		techniques.add(technique);
+		return this;
+	}
+
+	/**
+	 * Returns the techniques set in this builder.
+	 *
+	 * @return the techniques set in this builder
+	 */
+	public Set<Technique> getTechniques() {
+		return techniques;
 	}
 
 	/**
@@ -455,7 +479,8 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 			this.cachedNote = Note
 					.of(this.pitch, this.displayPitch, this.duration, this.articulations,
 							getResolvedNotationConnections(),
-							buildOrnaments());
+							buildOrnaments(),
+							techniques);
 
 			updateGraceNoteBuilders();
 

@@ -301,12 +301,12 @@ class ChordTest {
 	void testLowestAndHighestPitchedNotesWhenAbsent() {
 		final List<Note> unpitchedNotes = new ArrayList<>();
 		Note lowestPositioned = Note.of(null, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER,
-				Collections.emptySet(), Collections.emptyList(), Collections.emptyList());
+				Collections.emptySet(), Collections.emptyList(), Collections.emptyList(), Collections.emptySet());
 		unpitchedNotes.add(lowestPositioned);
 		unpitchedNotes.add(Note.of(null, Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), Durations.QUARTER,
-				Collections.emptySet(), Collections.emptyList(), Collections.emptyList()));
+				Collections.emptySet(), Collections.emptyList(), Collections.emptyList(), Collections.emptySet()));
 		Note highestPositioned = Note.of(null, Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), Durations.QUARTER,
-				Collections.emptySet(), Collections.emptyList(), Collections.emptyList());
+				Collections.emptySet(), Collections.emptyList(), Collections.emptyList(), Collections.emptySet());
 		unpitchedNotes.add(highestPositioned);
 
 		final Chord unpitchedChord = Chord.of(unpitchedNotes);
