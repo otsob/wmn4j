@@ -18,6 +18,7 @@ final class Tags {
 	static final String ARPEGGIATE = "arpeggiate";
 	static final String ARRANGER = "arranger";
 	static final String ARROW = "arrow";
+	static final String ARROW_DIRECTION = "arrow-direction";
 	static final String ARTICULATIONS = "articulations";
 	static final String ATTRIBUTES = "attributes";
 	static final String BACKUP = "backup";
@@ -93,6 +94,8 @@ final class Tags {
 	static final String HEAVY_LIGHT = "heavy-light";
 	static final String HEEL = "heel";
 	static final String HOLE = "hole";
+
+	static final String HOLE_CLOSED = "hole-closed";
 	static final String ID = "id";
 	static final String IDENTIFICATION = "identification";
 	static final String INSTRUMENT = "instrument";

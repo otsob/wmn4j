@@ -32,6 +32,7 @@ import org.wmn4j.notation.Staff;
 import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.access.Offset;
 import org.wmn4j.notation.directions.Direction;
+import org.wmn4j.notation.techniques.Technique;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -685,7 +686,7 @@ final class StaxWriter implements MusicXmlWriter {
 		writeVoice(voice);
 		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(note.getDuration(), writer);
 		writeStaff(staff);
-		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments());
+		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments(), note.getTechniques());
 
 		writer.writeEndElement();
 
@@ -726,7 +727,7 @@ final class StaxWriter implements MusicXmlWriter {
 		writeVoice(voice);
 		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(note.getDisplayableDuration(), writer);
 		writeStaff(staff);
-		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments());
+		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments(), note.getTechniques());
 
 		writer.writeEndElement();
 	}
@@ -809,9 +810,11 @@ final class StaxWriter implements MusicXmlWriter {
 	}
 
 	private void writeNotations(Notation.Connectable connectable, Set<Articulation> articulations,
-			Set<Notation> notations, Collection<Ornament> ornaments) throws XMLStreamException {
+			Set<Notation> notations, Collection<Ornament> ornaments, Collection<Technique> techniques)
+			throws XMLStreamException {
 
-		if (articulations.isEmpty() && !hasWritableNotations(connectable, notations) && hasOnlyGraceNoteOrnaments(
+		if (articulations.isEmpty() && techniques.isEmpty() && !hasWritableNotations(connectable, notations)
+				&& hasOnlyGraceNoteOrnaments(
 				ornaments)) {
 			return;
 		}
@@ -820,6 +823,39 @@ final class StaxWriter implements MusicXmlWriter {
 		writeArticulations(articulations);
 		writeConnectedNotations(connectable, notations);
 		writeOrnaments(ornaments);
+		writeTechnicals(techniques);
+
+		writer.writeEndElement();
+	}
+
+	private void writeTechnicals(Collection<Technique> techniques) throws XMLStreamException {
+		if (techniques.isEmpty()) {
+			return;
+		}
+
+		writer.writeStartElement(Tags.TECHNICAL);
+
+		for (final var technique : techniques) {
+			// TODO: Rewrite the special cases to work with complex technique types
+			if (technique.getType().equals(Technique.Type.HOLE)) {
+				writer.writeStartElement(Tags.HOLE);
+				writeValue(Tags.HOLE_CLOSED, Tags.YES);
+				writer.writeEndElement();
+			} else if (technique.getType().equals(Technique.Type.ARROW)) {
+				writer.writeStartElement(Tags.ARROW);
+				writeValue(Tags.ARROW_DIRECTION, Tags.DOWN);
+				writer.writeEndElement();
+			} else {
+				final String tag = Transforms.techniqueTypeToTag(technique.getType());
+				if (technique.getText().isPresent()) {
+					writeValue(tag, technique.getText().get());
+				} else if (technique.getNumber().isPresent()) {
+					writeValue(tag, Integer.toString(technique.getNumber().getAsInt()));
+				} else {
+					writer.writeEmptyElement(tag);
+				}
+			}
+		}
 
 		writer.writeEndElement();
 	}

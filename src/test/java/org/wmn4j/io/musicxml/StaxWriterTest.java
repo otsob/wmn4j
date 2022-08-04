@@ -477,4 +477,11 @@ public class StaxWriterTest {
 		Score writtenScore = writeAndReadScore(score, false);
 		MusicXmlFileChecks.assertUnpitchedPercussionNotesCorrect(writtenScore);
 	}
+
+	@Test
+	void testGivenPlayingTechniqueMarkingsThenAllTechniquesAreCorrectlyWritten() {
+		Score score = readMusicXmlTestFile("techniques_test.musicxml", false);
+		Score writtenScore = writeAndReadScore(score, false);
+		MusicXmlFileChecks.assertPlayingTechniquesAreCorrect(writtenScore);
+	}
 }

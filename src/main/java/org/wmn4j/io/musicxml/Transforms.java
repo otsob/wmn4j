@@ -544,6 +544,75 @@ final class Transforms {
 		}
 	}
 
+	static String techniqueTypeToTag(Technique.Type type) {
+		switch (type) {
+			case UP_BOW:
+				return Tags.UP_BOW;
+			case DOWN_BOW:
+				return Tags.DOWN_BOW;
+			case HARMONIC:
+				return Tags.HARMONIC;
+			case OPEN_STRING:
+				return Tags.OPEN_STRING;
+			case THUMB_POSITION:
+				return Tags.THUMB_POSITION;
+			case FINGERING:
+				return Tags.FINGERING;
+			case PLUCK:
+				return Tags.PLUCK;
+			case DOUBLE_TONGUE:
+				return Tags.DOUBLE_TONGUE;
+			case TRIPLE_TONGUE:
+				return Tags.TRIPLE_TONGUE;
+			case STOPPED:
+				return Tags.STOPPED;
+			case SNAP_PIZZICATO:
+				return Tags.SNAP_PIZZICATO;
+			case FRET:
+				return Tags.FRET;
+			case STRING:
+				return Tags.STRING;
+			case HAMMER_ON:
+				return Tags.HAMMER_ON;
+			case PULL_OFF:
+				return Tags.PULL_OFF;
+			case BEND:
+				return Tags.BEND;
+			case TAP:
+				return Tags.TAP;
+			case HEEL:
+				return Tags.HEEL;
+			case TOE:
+				return Tags.TOE;
+			case FINGERNAILS:
+				return Tags.FINGERNAILS;
+			case HOLE:
+				return Tags.HOLE;
+			case ARROW:
+				return Tags.ARROW;
+			case HANDBELL:
+				return Tags.HANDBELL;
+			case BRASS_BEND:
+				return Tags.BRASS_BEND;
+			case FLIP:
+				return Tags.FLIP;
+			case SMEAR:
+				return Tags.SMEAR;
+			case OPEN:
+				return Tags.OPEN;
+			case HALF_MUTED:
+				return Tags.HALF_MUTED;
+			case HARMON_MUTE:
+				return Tags.HARMON_MUTE;
+			case GOLPE:
+				return Tags.GOLPE;
+			case OTHER:
+				return Tags.OTHER_TECHNICAL;
+			default:
+				return null;
+		}
+	}
+
 	private Transforms() {
 		throw new UnsupportedOperationException("Not meant to be instantiated");
 	}
