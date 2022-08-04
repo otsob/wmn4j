@@ -41,4 +41,9 @@ final class NumericTechnique extends Technique {
 	public int hashCode() {
 		return Objects.hash(super.hashCode(), number);
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "-" + number;
+	}
 }

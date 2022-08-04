@@ -27,6 +27,7 @@ import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
 import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.directions.Direction;
+import org.wmn4j.notation.techniques.Technique;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -99,6 +100,8 @@ final class StaxReader implements MusicXmlReader {
 	private int currentAlter;
 	private boolean isCurrentUnpitched;
 	private int currentOctave;
+
+	private String currentTechniqueText;
 
 	private boolean isClosed;
 
@@ -221,8 +224,8 @@ final class StaxReader implements MusicXmlReader {
 	}
 
 	private boolean isCompressed(Path path, String extension) throws IOException {
-		return Objects.equals(Files.probeContentType(path), CompressedMxl.COMPRESSED_CONTENT_TYPE)
-				|| Objects.equals(COMPRESSED_EXTENSION, extension);
+		return Objects.equals(Files.probeContentType(path), CompressedMxl.COMPRESSED_CONTENT_TYPE) || Objects.equals(
+				COMPRESSED_EXTENSION, extension);
 	}
 
 	private String getExtension(Path path) {
@@ -277,8 +280,7 @@ final class StaxReader implements MusicXmlReader {
 		inputStream = null;
 	}
 
-	private InputStream getStreamToZipEntry(Path path) throws
-			ParsingFailureException, IOException, XMLStreamException {
+	private InputStream getStreamToZipEntry(Path path) throws ParsingFailureException, IOException, XMLStreamException {
 		compressedFile = new ZipFile(path.toString());
 		findMainMusicXmlFile(compressedFile);
 		var entries = compressedFile.entries();
@@ -313,8 +315,7 @@ final class StaxReader implements MusicXmlReader {
 		return event == XMLStreamConstants.END_ELEMENT && Objects.equals(tag, reader.getLocalName());
 	}
 
-	@FunctionalInterface
-	interface ElementConsumer {
+	@FunctionalInterface interface ElementConsumer {
 		/**
 		 * Consumes an internal element of a containing element and stops the cursor
 		 * at the end tag of the consumed internal element.
@@ -449,11 +450,9 @@ final class StaxReader implements MusicXmlReader {
 			switch (tag) {
 				case Tags.DURATION:
 					if (element.equals(Tags.FORWARD)) {
-						consumeText(text ->
-								partContext.addForwardDuration(divisionsToDuration(text)));
+						consumeText(text -> partContext.addForwardDuration(divisionsToDuration(text)));
 					} else if (element.equals(Tags.BACKUP)) {
-						consumeText(text ->
-								partContext.addBackupDuration(divisionsToDuration(text)));
+						consumeText(text -> partContext.addBackupDuration(divisionsToDuration(text)));
 					}
 					break;
 				case Tags.STAFF:
@@ -605,8 +604,7 @@ final class StaxReader implements MusicXmlReader {
 					break;
 				case Tags.TYPE:
 					if (currentConnectableBuilder instanceof GraceNoteBuilder) {
-						consumeText(text -> currentDurationalBuilder.setDuration(
-								Transforms.noteTypeToDuration(text)));
+						consumeText(text -> currentDurationalBuilder.setDuration(Transforms.noteTypeToDuration(text)));
 					} else {
 						skipElement();
 					}
@@ -639,9 +637,8 @@ final class StaxReader implements MusicXmlReader {
 
 		if (currentDurationalBuilder instanceof NoteBuilder) {
 			final NoteBuilder currentNoteBuilder = (NoteBuilder) currentDurationalBuilder;
-			final Pitch writtenPitch =
-					Pitch.of(Transforms.stepToPitchBase(currentStep), Transforms.alterToAccidental(currentAlter),
-							currentOctave);
+			final Pitch writtenPitch = Pitch.of(Transforms.stepToPitchBase(currentStep),
+					Transforms.alterToAccidental(currentAlter), currentOctave);
 
 			if (isCurrentUnpitched) {
 				currentNoteBuilder.setUnpitched().setDisplayPitch(writtenPitch);
@@ -681,6 +678,9 @@ final class StaxReader implements MusicXmlReader {
 				case Tags.ORNAMENTS:
 					consumeOrnamentsElem();
 					break;
+				case Tags.TECHNICAL:
+					consumePlayingTechniques();
+					break;
 				default:
 					if (Tags.CONNECTED_NOTATIONS.contains(tag)) {
 						readConnectedNotationElemAttributes(tag);
@@ -689,6 +689,37 @@ final class StaxReader implements MusicXmlReader {
 					skipElement();
 			}
 		}, Tags.NOTATIONS);
+	}
+
+	private void consumePlayingTechniques() throws XMLStreamException {
+		consumeUntil(tag -> {
+			final var type = Transforms.tagToTechniqueType(tag);
+			if (type == null) {
+				return;
+			}
+
+			if (type.equals(Technique.Type.HARMONIC)) {
+				partContext.setArtificialHarmonic(true);
+			}
+
+			Technique technique = null;
+			currentTechniqueText = null;
+			consumeText(text -> currentTechniqueText = text);
+
+			if (currentTechniqueText != null) {
+				try {
+					technique = Technique.of(type, Integer.parseInt(currentTechniqueText));
+				} catch (NumberFormatException e) {
+					technique = Technique.of(type, currentTechniqueText);
+				}
+			} else {
+				technique = Technique.of(type);
+			}
+
+			if (currentDurationalBuilder instanceof NoteBuilder) {
+				((NoteBuilder) currentDurationalBuilder).addTechnique(technique);
+			}
+		}, Tags.TECHNICAL);
 	}
 
 	private void consumeOrnamentsElem() throws XMLStreamException {
@@ -730,8 +761,7 @@ final class StaxReader implements MusicXmlReader {
 		final String elementRoleType = reader.getAttributeValue(null, Tags.TYPE);
 		final String arpeggioDirection = reader.getAttributeValue(null, Tags.DIRECTION);
 		final Notation.Type type = Transforms.stringToNotationType(notationTag, arpeggioDirection);
-		final Notation.Style style = Transforms.stringToNotationStyle(
-				reader.getAttributeValue(null, Tags.LINE_TYPE));
+		final Notation.Style style = Transforms.stringToNotationStyle(reader.getAttributeValue(null, Tags.LINE_TYPE));
 		final int notationNumber = NotationReadResolver.parseNotationNumber(
 				reader.getAttributeValue(null, Tags.NUMBER));
 		if (!(currentDurationalBuilder instanceof ConnectableBuilder)) {
@@ -839,9 +869,8 @@ final class StaxReader implements MusicXmlReader {
 		consumeUntil(tag -> {
 			switch (tag) {
 				case Tags.FIFTHS:
-					consumeText(
-							text -> partContext.getMeasureBuilder()
-									.setKeySignature(Transforms.fifthsToKeySig(Integer.parseInt(text))));
+					consumeText(text -> partContext.getMeasureBuilder()
+							.setKeySignature(Transforms.fifthsToKeySig(Integer.parseInt(text))));
 					break;
 				// Fall through for elements that are currently not supported
 				case Tags.MODE:

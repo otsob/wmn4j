@@ -17,6 +17,7 @@ import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.TimeSignature;
+import org.wmn4j.notation.techniques.Technique;
 
 import java.util.Objects;
 
@@ -469,6 +470,75 @@ final class Transforms {
 				return Tags.TRILL_MARK;
 			case TURN:
 				return Tags.TURN;
+			default:
+				return null;
+		}
+	}
+
+	static Technique.Type tagToTechniqueType(String tag) {
+		switch (tag) {
+			case Tags.UP_BOW:
+				return Technique.Type.UP_BOW;
+			case Tags.DOWN_BOW:
+				return Technique.Type.DOWN_BOW;
+			case Tags.HARMONIC:
+				return Technique.Type.HARMONIC;
+			case Tags.OPEN_STRING:
+				return Technique.Type.OPEN_STRING;
+			case Tags.THUMB_POSITION:
+				return Technique.Type.THUMB_POSITION;
+			case Tags.FINGERING:
+				return Technique.Type.FINGERING;
+			case Tags.PLUCK:
+				return Technique.Type.PLUCK;
+			case Tags.DOUBLE_TONGUE:
+				return Technique.Type.DOUBLE_TONGUE;
+			case Tags.TRIPLE_TONGUE:
+				return Technique.Type.TRIPLE_TONGUE;
+			case Tags.STOPPED:
+				return Technique.Type.STOPPED;
+			case Tags.SNAP_PIZZICATO:
+				return Technique.Type.SNAP_PIZZICATO;
+			case Tags.FRET:
+				return Technique.Type.FRET;
+			case Tags.STRING:
+				return Technique.Type.STRING;
+			case Tags.HAMMER_ON:
+				return Technique.Type.HAMMER_ON;
+			case Tags.PULL_OFF:
+				return Technique.Type.PULL_OFF;
+			case Tags.BEND:
+				return Technique.Type.BEND;
+			case Tags.TAP:
+				return Technique.Type.TAP;
+			case Tags.HEEL:
+				return Technique.Type.HEEL;
+			case Tags.TOE:
+				return Technique.Type.TOE;
+			case Tags.FINGERNAILS:
+				return Technique.Type.FINGERNAILS;
+			case Tags.HOLE:
+				return Technique.Type.HOLE;
+			case Tags.ARROW:
+				return Technique.Type.ARROW;
+			case Tags.HANDBELL:
+				return Technique.Type.HANDBELL;
+			case Tags.BRASS_BEND:
+				return Technique.Type.BRASS_BEND;
+			case Tags.FLIP:
+				return Technique.Type.FLIP;
+			case Tags.SMEAR:
+				return Technique.Type.SMEAR;
+			case Tags.OPEN:
+				return Technique.Type.OPEN;
+			case Tags.HALF_MUTED:
+				return Technique.Type.HALF_MUTED;
+			case Tags.HARMON_MUTE:
+				return Technique.Type.HARMON_MUTE;
+			case Tags.GOLPE:
+				return Technique.Type.GOLPE;
+			case Tags.OTHER_TECHNICAL:
+				return Technique.Type.OTHER;
 			default:
 				return null;
 		}

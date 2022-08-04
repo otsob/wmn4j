@@ -40,6 +40,8 @@ final class PartContext {
 
 	private boolean hasChordTag;
 
+	private boolean isArtificialHarmonic;
+
 	private Set<Integer> staves = new HashSet<>();
 	private BiConsumer<Integer, Integer> arpeggioResolver;
 
@@ -105,13 +107,14 @@ final class PartContext {
 
 		if (!hasChordTag || builder == null) {
 			buffer.flushTo(measureBuilders.get(staff), arpeggioResolver);
+			isArtificialHarmonic = false;
 		}
 
 		if (builder == null) {
 			return;
 		}
 
-		if (builder.isNoteBuilder()) {
+		if (builder.isNoteBuilder() && !isArtificialHarmonic) {
 			NoteBuilder noteBuilder = builder.toNoteBuilder();
 			buffer.addNote(noteBuilder, staff, voice);
 			if (!hasChordTag) {
@@ -367,5 +370,9 @@ final class PartContext {
 		} else {
 			partBuilder.setStaffType(Staff.Type.NORMAL, staff);
 		}
+	}
+
+	public void setArtificialHarmonic(boolean artificialHarmonic) {
+		isArtificialHarmonic = artificialHarmonic;
 	}
 }

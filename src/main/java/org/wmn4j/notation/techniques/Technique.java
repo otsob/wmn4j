@@ -129,7 +129,7 @@ public sealed class Technique permits NumericTechnique, TextualTechnique {
 		ARROW,
 
 		/**
-		 * Indicates a handbell symbol.
+		 * Indicates a handbell technique.
 		 */
 		HANDBELL,
 
@@ -254,5 +254,10 @@ public sealed class Technique permits NumericTechnique, TextualTechnique {
 	@Override
 	public int hashCode() {
 		return Objects.hash(type);
+	}
+
+	@Override
+	public String toString() {
+		return type.toString();
 	}
 }

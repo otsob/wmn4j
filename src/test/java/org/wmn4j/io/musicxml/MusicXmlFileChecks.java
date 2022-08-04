@@ -32,10 +32,12 @@ import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.TimeSignatures;
 import org.wmn4j.notation.access.Offset;
 import org.wmn4j.notation.directions.Direction;
+import org.wmn4j.notation.techniques.Technique;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1284,5 +1286,31 @@ class MusicXmlFileChecks {
 		assertEquals(snareNote.build(), snareMeasure.get(1, 1));
 		assertEquals(Rest.of(Durations.QUARTER), snareMeasure.get(1, 2));
 		assertEquals(snareNote.build(), snareMeasure.get(1, 3));
+	}
+
+	private static void assertTechniques(Durational durational, Set<Technique> techniques) {
+		assertTrue(durational.isNote());
+		final Note note = durational.toNote();
+		assertEquals(techniques, note.getTechniques());
+	}
+
+	/*
+	 * Expects the contents of "techniques_test.musicxml".
+	 */
+	static void assertPlayingTechniquesAreCorrect(Score score) {
+		assertEquals(1, score.getPartCount());
+		final var measure = score.getPart(0).getMeasure(Part.DEFAULT_STAFF_NUMBER, 1);
+
+		assertTechniques(measure.get(1, 0), Set.of(Technique.of(Technique.Type.DOWN_BOW)));
+		assertTechniques(measure.get(1, 1), Set.of(Technique.of(Technique.Type.PLUCK, "p")));
+		assertTechniques(measure.get(1, 2),
+				Set.of(Technique.of(Technique.Type.STRING, 4),
+						Technique.of(Technique.Type.FINGERING, 3)));
+		assertTechniques(measure.get(1, 3), Set.of(Technique.of(Technique.Type.HARMONIC)));
+		assertTechniques(measure.get(1, 4), Set.of(Technique.of(Technique.Type.HARMONIC)));
+
+		assertTechniques(measure.get(1, 5), Set.of(Technique.of(Technique.Type.HOLE)));
+		assertTechniques(measure.get(1, 6), Set.of(Technique.of(Technique.Type.ARROW)));
+		assertTechniques(measure.get(1, 7), Set.of(Technique.of(Technique.Type.HANDBELL, "martellato")));
 	}
 }
