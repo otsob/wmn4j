@@ -19,12 +19,15 @@ final class Tags {
 	static final String ARRANGER = "arranger";
 	static final String ARROW = "arrow";
 	static final String ARROW_DIRECTION = "arrow-direction";
+
+	static final String ARTIFICIAL = "artificial";
 	static final String ARTICULATIONS = "articulations";
 	static final String ATTRIBUTES = "attributes";
 	static final String BACKUP = "backup";
 	static final String BACKWARD = "backward";
 	static final String BARLINE = "barline";
 	static final String BAR_STYLE = "bar-style";
+	static final String BASE_PITCH = "base-pitch";
 	static final String BEAM = "beam";
 	static final String BEATS = "beats";
 	static final String BEAT_TYPE = "beat-type";
@@ -124,6 +127,7 @@ final class Tags {
 	static final String MORDENT = "mordent";
 	static final String MOVEMENT_NUMBER = "movement-number";
 	static final String MOVEMENT_TITLE = "movement-title";
+	static final String NATURAL = "natural";
 	static final String NEW_SYSTEM = "new-system";
 	static final String NO = "no";
 	static final String NONE = "none";
@@ -192,6 +196,7 @@ final class Tags {
 	static final String SNAP_PIZZICATO = "snap-pizzicato";
 	static final String SOFTWARE = "software";
 	static final String SOLID = "solid";
+	static final String SOUNDING_PITCH = "sounding-pitch";
 	static final String SOURCE = "source";
 	static final String SPICCATO = "spiccato";
 	static final String STACCATISSIMO = "staccatissimo";
@@ -219,6 +224,7 @@ final class Tags {
 	static final String TIME_MODIFICATION = "time-modification";
 	static final String TOE = "toe";
 	static final String TOP = "top";
+	static final String TOUCHING_PITCH = "touching-pitch";
 	static final String TRANSPOSE = "transpose";
 	static final String TREMOLO = "tremolo";
 	static final String TRILL_MARK = "trill-mark";

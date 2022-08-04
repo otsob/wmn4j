@@ -3,6 +3,9 @@
  */
 package org.wmn4j.notation.techniques;
 
+import org.wmn4j.notation.Pitch;
+
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -12,7 +15,7 @@ import java.util.OptionalInt;
  * <p>
  * This class and all its subclasses are immutable.
  */
-public sealed class Technique permits NumericTechnique, TextualTechnique {
+public sealed class Technique permits NumericTechnique, TextualTechnique, ComplexTechnique {
 
 	/**
 	 * Defines the type of the playing technique.
@@ -31,7 +34,7 @@ public sealed class Technique permits NumericTechnique, TextualTechnique {
 		/**
 		 * Harmonic on a stringed instrument.
 		 */
-		HARMONIC(false, false, false),
+		HARMONIC(false, false, true),
 
 		/**
 		 * Open string on a stringed instrument.
@@ -234,6 +237,51 @@ public sealed class Technique permits NumericTechnique, TextualTechnique {
 	}
 
 	/**
+	 * Denotes the additional values of more complex technique types.
+	 */
+	public enum AdditionalValue {
+		/**
+		 * The base pitch of a harmonic.
+		 */
+		HARMONIC_BASE_PITCH(Pitch.class),
+
+		/**
+		 * The sounding pitch of a harmonic.
+		 */
+		HARMONIC_SOUNDING_PITCH(Pitch.class),
+
+		/**
+		 * The pitch at which a string is pressed to produce a harmonic.
+		 */
+		HARMONIC_TOUCHING_PITCH(Pitch.class),
+
+		/**
+		 * True for artificial harmonics.
+		 */
+		IS_ARTIFICIAL_HARMONIC(Boolean.class),
+
+		/**
+		 * True for natural harmonics.
+		 */
+		IS_NATURAL_HARMONIC(Boolean.class);
+
+		private final Class<?> valueClass;
+
+		AdditionalValue(Class<?> valueClass) {
+			this.valueClass = valueClass;
+		}
+
+		/**
+		 * Returns the class of the value.
+		 *
+		 * @return the class of the value
+		 */
+		public Class<?> getValueClass() {
+			return valueClass;
+		}
+	}
+
+	/**
 	 * Returns a new plain technique with the given type.
 	 *
 	 * @param type the type of the technique
@@ -263,6 +311,17 @@ public sealed class Technique permits NumericTechnique, TextualTechnique {
 	 */
 	public static Technique of(Type type, int number) {
 		return new NumericTechnique(type, number);
+	}
+
+	/**
+	 * Returns a new technique marking with additional values.
+	 *
+	 * @param type             the type of the techniqy
+	 * @param additionalValues the additional values of the technique marking
+	 * @return a new technique marking with additional values
+	 */
+	public static Technique of(Type type, Map<AdditionalValue, Object> additionalValues) {
+		return new ComplexTechnique(type, additionalValues);
 	}
 
 	private final Type type;
@@ -296,6 +355,20 @@ public sealed class Technique permits NumericTechnique, TextualTechnique {
 	 */
 	public OptionalInt getNumber() {
 		return OptionalInt.empty();
+	}
+
+	/**
+	 * Returns the value of the additional technique value if present.
+	 * <p>
+	 * These are available only for complex technique types.
+	 *
+	 * @param value     the name of the value
+	 * @param valueType the type of the value
+	 * @param <T>       the type of the value
+	 * @return the value of the additional technique value if present
+	 */
+	public <T> Optional<T> getValue(AdditionalValue value, Class<T> valueType) {
+		return Optional.empty();
 	}
 
 	@Override

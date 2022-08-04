@@ -15,9 +15,11 @@ import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.OrnamentalBuilder;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
+import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Staff;
 import org.wmn4j.notation.access.Offset;
 import org.wmn4j.notation.directions.Direction;
+import org.wmn4j.notation.techniques.Technique;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +42,10 @@ final class PartContext {
 
 	private boolean hasChordTag;
 
-	private boolean isArtificialHarmonic;
+	// Flag that is set to true if the previous note read
+	// has been an artificial harmonic marking note and not
+	// an individual note.
+	private boolean isPrevArtificialHarmonicPitch;
 
 	private Set<Integer> staves = new HashSet<>();
 	private BiConsumer<Integer, Integer> arpeggioResolver;
@@ -64,6 +69,8 @@ final class PartContext {
 	// is so unclear that it is ignored.
 	private Collection<Duration> offsetDurations = new ArrayList<>();
 	private Collection<Duration> backupDurations = new ArrayList<>();
+
+	private Map<Technique.AdditionalValue, Object> harmonicValues = new HashMap<>();
 
 	PartContext(PartBuilder partBuilder) {
 		this.partBuilder = partBuilder;
@@ -106,15 +113,24 @@ final class PartContext {
 		final ChordBuffer buffer = chordBuffers.get(staff);
 
 		if (!hasChordTag || builder == null) {
-			buffer.flushTo(measureBuilders.get(staff), arpeggioResolver);
-			isArtificialHarmonic = false;
+			DurationalBuilder added = buffer.flushTo(measureBuilders.get(staff), arpeggioResolver);
+
+			// The touching and sounding pitches of artificial harmonics are handled
+			// as notes with the chord tag in MusicXML. When a previous "chord" ends,
+			// and it has been a note with an artificial harmonic and not really a chord,
+			// the accumulated harmonic values need to be added.
+			if (isPrevArtificialHarmonicPitch && added.isNoteBuilder()) {
+				added.toNoteBuilder().addTechnique(Technique.of(Technique.Type.HARMONIC, harmonicValues));
+				harmonicValues = new HashMap<>();
+				isPrevArtificialHarmonicPitch = false;
+			}
 		}
 
 		if (builder == null) {
 			return;
 		}
 
-		if (builder.isNoteBuilder() && !isArtificialHarmonic) {
+		if (builder.isNoteBuilder() && !isPrevArtificialHarmonicPitch) {
 			NoteBuilder noteBuilder = builder.toNoteBuilder();
 			buffer.addNote(noteBuilder, staff, voice);
 			if (!hasChordTag) {
@@ -372,7 +388,21 @@ final class PartContext {
 		}
 	}
 
-	public void setArtificialHarmonic(boolean artificialHarmonic) {
-		isArtificialHarmonic = artificialHarmonic;
+	public void setArtificialHarmonic() {
+		harmonicValues.put(Technique.AdditionalValue.IS_ARTIFICIAL_HARMONIC, Boolean.TRUE);
+	}
+
+	public void setArtificialHarmonicBasePitch(Pitch pitch) {
+		harmonicValues.put(Technique.AdditionalValue.HARMONIC_BASE_PITCH, pitch);
+	}
+
+	public void setArtificialHarmonicTouchingPitch(Pitch pitch) {
+		harmonicValues.put(Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH, pitch);
+		isPrevArtificialHarmonicPitch = true;
+	}
+
+	public void setArtificialHarmonicSoundingPitch(Pitch pitch) {
+		harmonicValues.put(Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH, pitch);
+		isPrevArtificialHarmonicPitch = true;
 	}
 }

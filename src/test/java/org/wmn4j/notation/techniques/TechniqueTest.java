@@ -4,6 +4,10 @@
 package org.wmn4j.notation.techniques;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.notation.Pitch;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -68,5 +72,36 @@ class TechniqueTest {
 		final var numericTech1 = Technique.of(Technique.Type.STRING, 1);
 		final var numericTech2 = Technique.of(Technique.Type.STRING, 2);
 		assertNotEquals(numericTech1, numericTech2);
+	}
+
+	@Test
+	void testGivenArtificialHarmonicAdditionalValuesAreAccessible() {
+		final Map<Technique.AdditionalValue, Object> additionalValues = new HashMap<>();
+		additionalValues.put(Technique.AdditionalValue.IS_ARTIFICIAL_HARMONIC, true);
+		additionalValues.put(Technique.AdditionalValue.HARMONIC_BASE_PITCH,
+				Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4));
+		additionalValues.put(Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH,
+				Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4));
+		additionalValues.put(Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH,
+				Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 6));
+
+		final var harmonic = Technique.of(Technique.Type.HARMONIC, additionalValues);
+		assertTrue(harmonic.getType().isComplex());
+
+		assertEquals(Boolean.TRUE,
+				harmonic.getValue(Technique.AdditionalValue.IS_ARTIFICIAL_HARMONIC,
+						Technique.AdditionalValue.IS_ARTIFICIAL_HARMONIC.getValueClass()).get());
+
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+				harmonic.getValue(Technique.AdditionalValue.HARMONIC_BASE_PITCH,
+						Technique.AdditionalValue.HARMONIC_BASE_PITCH.getValueClass()).get());
+
+		assertEquals(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4),
+				harmonic.getValue(Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH,
+						Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH.getValueClass()).get());
+
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 6),
+				harmonic.getValue(Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH,
+						Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH.getValueClass()).get());
 	}
 }

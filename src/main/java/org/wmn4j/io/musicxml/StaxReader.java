@@ -101,8 +101,11 @@ final class StaxReader implements MusicXmlReader {
 	private boolean isCurrentUnpitched;
 	private int currentOctave;
 
+	private Pitch currentPitch;
+
 	private Technique currentTechnique;
 	private String currentTechniqueText;
+	private Map<Technique.AdditionalValue, Object> currentAdditionalTechValues;
 
 	private boolean isClosed;
 
@@ -638,13 +641,11 @@ final class StaxReader implements MusicXmlReader {
 
 		if (currentDurationalBuilder instanceof NoteBuilder) {
 			final NoteBuilder currentNoteBuilder = (NoteBuilder) currentDurationalBuilder;
-			final Pitch writtenPitch = Pitch.of(Transforms.stepToPitchBase(currentStep),
-					Transforms.alterToAccidental(currentAlter), currentOctave);
 
 			if (isCurrentUnpitched) {
-				currentNoteBuilder.setUnpitched().setDisplayPitch(writtenPitch);
+				currentNoteBuilder.setUnpitched().setDisplayPitch(currentPitch);
 			} else {
-				currentNoteBuilder.setPitch(writtenPitch);
+				currentNoteBuilder.setPitch(currentPitch);
 			}
 
 			if (currentConnectableBuilder instanceof NoteBuilder) {
@@ -701,7 +702,8 @@ final class StaxReader implements MusicXmlReader {
 					consumeHarmonMuteTechnical();
 					break;
 				case Tags.HARMONIC:
-					partContext.setArtificialHarmonic(true);
+					consumeHarmonicNote();
+					break;
 				case Tags.BEND:
 				case Tags.HOLE:
 				case Tags.ARROW:
@@ -713,6 +715,32 @@ final class StaxReader implements MusicXmlReader {
 				((NoteBuilder) currentDurationalBuilder).addTechnique(currentTechnique);
 			}
 		}, Tags.TECHNICAL);
+	}
+
+	private void consumeHarmonicNote() throws XMLStreamException {
+		consumeUntil(harmonicTag -> {
+			switch (harmonicTag) {
+				case Tags.ARTIFICIAL:
+					partContext.setArtificialHarmonic();
+					break;
+				case Tags.BASE_PITCH:
+					partContext.setArtificialHarmonicBasePitch(currentPitch);
+					break;
+				case Tags.TOUCHING_PITCH:
+					partContext.setArtificialHarmonicTouchingPitch(currentPitch);
+					break;
+				case Tags.SOUNDING_PITCH:
+					partContext.setArtificialHarmonicSoundingPitch(currentPitch);
+					break;
+				case Tags.NATURAL:
+					currentTechnique = Technique.of(Technique.Type.HARMONIC,
+							Map.of(Technique.AdditionalValue.IS_NATURAL_HARMONIC, Boolean.TRUE));
+					break;
+				default:
+					break;
+			}
+
+		}, Tags.HARMONIC);
 	}
 
 	private void consumeHarmonMuteTechnical() throws XMLStreamException {
@@ -844,6 +872,9 @@ final class StaxReader implements MusicXmlReader {
 					consumeText(text -> currentOctave = Integer.parseInt(text));
 			}
 		}, pitchTag);
+
+		currentPitch = Pitch.of(Transforms.stepToPitchBase(currentStep),
+				Transforms.alterToAccidental(currentAlter), currentOctave);
 	}
 
 	private void consumeAttributesElem() throws XMLStreamException {

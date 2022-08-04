@@ -49,9 +49,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -74,6 +76,9 @@ final class StaxWriter implements MusicXmlWriter {
 	private NotationWriteResolver notationResolver;
 	private boolean isClosed;
 	private boolean staffInfoWritten;
+
+	private final Map<Technique.AdditionalValue, Pitch> artificialHarmonicPitches = new EnumMap<>(
+			Technique.AdditionalValue.class);
 
 	static void writeValue(XMLStreamWriter writer, String tag, String value) throws XMLStreamException {
 		if (value.isEmpty()) {
@@ -685,7 +690,59 @@ final class StaxWriter implements MusicXmlWriter {
 
 		writer.writeEndElement();
 
+		if (!artificialHarmonicPitches.isEmpty()) {
+			writeArtificialHarmonicPitches(note.getDuration(), voice, staff);
+			artificialHarmonicPitches.clear();
+		}
+
 		writeGraceNotes(note, voice, staff, Ornament.Type.SUCCEEDING_GRACE_NOTES);
+	}
+
+	private void writeArtificialHarmonicPitches(Duration baseNoteDuration, Integer voice, Integer staff)
+			throws XMLStreamException {
+
+		final var touchingPitch = artificialHarmonicPitches.getOrDefault(
+				Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH, null);
+
+		if (touchingPitch != null) {
+			writeArtificialHarmonicNote(touchingPitch, false, baseNoteDuration, voice, staff, Tags.TOUCHING_PITCH);
+		}
+
+		final var soundingPitch = artificialHarmonicPitches.getOrDefault(
+				Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH, null);
+
+		if (soundingPitch != null) {
+			writeArtificialHarmonicNote(soundingPitch, true, baseNoteDuration, voice, staff, Tags.SOUNDING_PITCH);
+		}
+	}
+
+	private void writeArtificialHarmonicNote(Pitch soundingPitch, boolean hide, Duration baseNoteDuration,
+			Integer voice,
+			Integer staff, String harmonicTypeTag) throws XMLStreamException {
+		writer.writeStartElement(Tags.NOTE);
+		if (hide) {
+			writer.writeAttribute(Tags.PRINT_OBJECT, Tags.NO);
+		}
+		writer.writeEmptyElement(Tags.CHORD);
+		writePitchElement(soundingPitch);
+		writeDuration(baseNoteDuration);
+		writeVoice(voice);
+		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(baseNoteDuration, writer);
+		writeStaff(staff);
+
+		writer.writeStartElement(Tags.NOTATIONS);
+		writer.writeStartElement(Tags.TECHNICAL);
+		writer.writeStartElement(Tags.HARMONIC);
+
+		writer.writeEmptyElement(Tags.ARTIFICIAL);
+		writer.writeEmptyElement(harmonicTypeTag);
+
+		writer.writeEndElement(); // End harmonic
+		writer.writeEndElement(); // End technical
+		writer.writeEndElement(); // End notations
+
+		// End note element
+		writer.writeEndElement();
 	}
 
 	private void writeGraceNotes(Note note, Integer voice, Integer staff, Ornament.Type ornamentType)
@@ -724,6 +781,11 @@ final class StaxWriter implements MusicXmlWriter {
 		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments(), note.getTechniques());
 
 		writer.writeEndElement();
+
+		if (!artificialHarmonicPitches.isEmpty()) {
+			writeArtificialHarmonicPitches(note.getDisplayableDuration(), voice, staff);
+			artificialHarmonicPitches.clear();
+		}
 	}
 
 	private void writeGraceNoteChord(GraceNoteChord chord, Integer voice, Integer staff) throws XMLStreamException {
@@ -759,11 +821,7 @@ final class StaxWriter implements MusicXmlWriter {
 	private void writePitch(OptionallyPitched note) throws XMLStreamException {
 		if (note.hasPitch()) {
 			final Pitch pitch = note.getPitch().get();
-			writer.writeStartElement(Tags.PITCH);
-			writeValue(Tags.STEP, pitch.getBase().toString());
-			writeValue(Tags.ALTER, Integer.toString(pitch.getAccidental().getAlterationInt()));
-			writeValue(Tags.OCTAVE, Integer.toString(pitch.getOctave()));
-			writer.writeEndElement();
+			writePitchElement(pitch);
 		} else {
 			final Pitch displayPitch = note.getDisplayPitch();
 			writer.writeStartElement(Tags.UNPITCHED);
@@ -771,6 +829,14 @@ final class StaxWriter implements MusicXmlWriter {
 			writeValue(Tags.DISPLAY_OCTAVE, Integer.toString(displayPitch.getOctave()));
 			writer.writeEndElement();
 		}
+	}
+
+	private void writePitchElement(Pitch pitch) throws XMLStreamException {
+		writer.writeStartElement(Tags.PITCH);
+		writeValue(Tags.STEP, pitch.getBase().toString());
+		writeValue(Tags.ALTER, Integer.toString(pitch.getAccidental().getAlterationInt()));
+		writeValue(Tags.OCTAVE, Integer.toString(pitch.getOctave()));
+		writer.writeEndElement();
 	}
 
 	private void writeVoice(Integer voice) throws XMLStreamException {
@@ -836,8 +902,7 @@ final class StaxWriter implements MusicXmlWriter {
 					writeHarmonMuteTechnical(technique);
 					break;
 				case HARMONIC:
-					// TODO:
-					writeBasicTechnicalElement(technique);
+					writeHarmonic(technique);
 					break;
 				case BEND:
 					// TODO
@@ -857,6 +922,30 @@ final class StaxWriter implements MusicXmlWriter {
 				default:
 					writeBasicTechnicalElement(technique);
 			}
+		}
+
+		writer.writeEndElement();
+	}
+
+	private void writeHarmonic(Technique harmonic) throws XMLStreamException {
+		final var isNatural = harmonic.getValue(Technique.AdditionalValue.IS_NATURAL_HARMONIC,
+				Technique.AdditionalValue.IS_NATURAL_HARMONIC.getValueClass());
+
+		writer.writeStartElement(Tags.HARMONIC);
+
+		if (isNatural.isPresent() && isNatural.get().equals(Boolean.TRUE)) {
+			writer.writeEmptyElement(Tags.NATURAL);
+		} else {
+			writer.writeEmptyElement(Tags.ARTIFICIAL);
+			writer.writeEmptyElement(Tags.BASE_PITCH);
+
+			// Add the touching and sounding pitches, so they can be written
+			// as separate note elements after the base pitch note element.
+			harmonic.getValue(Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH, Pitch.class).ifPresent(
+					pitch -> artificialHarmonicPitches.put(Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH, pitch));
+
+			harmonic.getValue(Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH, Pitch.class).ifPresent(
+					pitch -> artificialHarmonicPitches.put(Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH, pitch));
 		}
 
 		writer.writeEndElement();

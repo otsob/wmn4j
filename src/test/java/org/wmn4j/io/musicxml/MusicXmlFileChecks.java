@@ -36,6 +36,7 @@ import org.wmn4j.notation.techniques.Technique;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -1306,9 +1307,18 @@ class MusicXmlFileChecks {
 		assertTechniques(measure.get(1, 2),
 				Set.of(Technique.of(Technique.Type.STRING, 4),
 						Technique.of(Technique.Type.FINGERING, 3)));
-		assertTechniques(measure.get(1, 3), Set.of(Technique.of(Technique.Type.HARMONIC)));
-		assertTechniques(measure.get(1, 4), Set.of(Technique.of(Technique.Type.HARMONIC)));
-
+		assertTechniques(measure.get(1, 3),
+				Set.of(Technique.of(Technique.Type.HARMONIC, Map.of(
+						Technique.AdditionalValue.IS_NATURAL_HARMONIC, Boolean.TRUE))));
+		assertTechniques(measure.get(1, 4),
+				Set.of(Technique.of(Technique.Type.HARMONIC, Map.of(
+						Technique.AdditionalValue.IS_ARTIFICIAL_HARMONIC, Boolean.TRUE,
+						Technique.AdditionalValue.HARMONIC_BASE_PITCH,
+						Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5),
+						Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH,
+						Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 5),
+						Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH,
+						Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 7)))));
 		assertTechniques(measure.get(1, 5), Set.of(Technique.of(Technique.Type.HOLE)));
 		assertTechniques(measure.get(1, 6), Set.of(Technique.of(Technique.Type.ARROW)));
 		assertTechniques(measure.get(1, 7), Set.of(Technique.of(Technique.Type.HARMON_MUTE_HALF_OPEN)));
