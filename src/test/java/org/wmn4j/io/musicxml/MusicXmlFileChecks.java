@@ -1311,6 +1311,6 @@ class MusicXmlFileChecks {
 
 		assertTechniques(measure.get(1, 5), Set.of(Technique.of(Technique.Type.HOLE)));
 		assertTechniques(measure.get(1, 6), Set.of(Technique.of(Technique.Type.ARROW)));
-		assertTechniques(measure.get(1, 7), Set.of(Technique.of(Technique.Type.HANDBELL, "martellato")));
+		assertTechniques(measure.get(1, 7), Set.of(Technique.of(Technique.Type.HARMON_MUTE_HALF_OPEN)));
 	}
 }

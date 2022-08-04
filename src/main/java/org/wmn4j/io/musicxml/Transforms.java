@@ -357,7 +357,7 @@ final class Transforms {
 				return Durations.EIGHTH;
 			case Tags.NOTE_QUARTER:
 				return Durations.QUARTER;
-			case Tags.NOTE_HALF:
+			case Tags.HALF:
 				return Durations.HALF;
 			case Tags.NOTE_WHOLE:
 				return Durations.WHOLE;
@@ -533,8 +533,6 @@ final class Transforms {
 				return Technique.Type.OPEN;
 			case Tags.HALF_MUTED:
 				return Technique.Type.HALF_MUTED;
-			case Tags.HARMON_MUTE:
-				return Technique.Type.HARMON_MUTE;
 			case Tags.GOLPE:
 				return Technique.Type.GOLPE;
 			case Tags.OTHER_TECHNICAL:
@@ -602,7 +600,9 @@ final class Transforms {
 				return Tags.OPEN;
 			case HALF_MUTED:
 				return Tags.HALF_MUTED;
-			case HARMON_MUTE:
+			case HARMON_MUTE_CLOSED: // Fall through
+			case HARMON_MUTE_OPEN: // Fall through
+			case HARMON_MUTE_HALF_OPEN:
 				return Tags.HARMON_MUTE;
 			case GOLPE:
 				return Tags.GOLPE;

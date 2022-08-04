@@ -21,157 +21,216 @@ public sealed class Technique permits NumericTechnique, TextualTechnique {
 		/**
 		 * Up bow on a stringed instrument.
 		 */
-		UP_BOW,
+		UP_BOW(false, false, false),
 
 		/**
 		 * Down bow on a stringed instrument.
 		 */
-		DOWN_BOW,
+		DOWN_BOW(false, false, false),
 
 		/**
 		 * Harmonic on a stringed instrument.
 		 */
-		HARMONIC,
+		HARMONIC(false, false, false),
 
 		/**
 		 * Open string on a stringed instrument.
 		 */
-		OPEN_STRING,
+		OPEN_STRING(false, false, false),
 
 		/**
 		 * Thumb position on a stringed instrument (e.g., cello).
 		 */
-		THUMB_POSITION,
+		THUMB_POSITION(false, false, false),
 
 		/**
 		 * Fingering marking (number).
 		 */
-		FINGERING,
+		FINGERING(false, true, false),
 
 		/**
 		 * Indicates the plucking finger on a plucked string instrument.
 		 */
-		PLUCK,
+		PLUCK(true, false, false),
 
 		/**
 		 * Indicates double tongue technique on a wind instrument.
 		 */
-		DOUBLE_TONGUE,
+		DOUBLE_TONGUE(false, false, false),
 
 		/**
 		 * Indicates triple tongue technique on a wind instrument.
 		 */
-		TRIPLE_TONGUE,
+		TRIPLE_TONGUE(false, false, false),
 
 		/**
 		 * Indicates stopped on a wind instrument (e.g., french horn).
 		 */
-		STOPPED,
+		STOPPED(false, false, false),
 
 		/**
 		 * Indicates snap pizzicato.
 		 */
-		SNAP_PIZZICATO,
+		SNAP_PIZZICATO(false, false, false),
 
 		/**
 		 * Indicates fret number.
 		 */
-		FRET,
+		FRET(false, true, false),
 
 		/**
 		 * Indicates string of a stringed instrument as a number.
 		 */
-		STRING,
+		STRING(false, true, false),
 
 		/**
 		 * Indicates hammer-on on a stringed instrument (e.g., guitar).
 		 */
-		HAMMER_ON,
+		HAMMER_ON(true, false, false),
 
 		/**
 		 * Indicates pull-off on a stringed instrument (e.g., guitar).
 		 */
-		PULL_OFF,
+		PULL_OFF(true, false, false),
 
 		/**
 		 * Indicates a bend (e.g., on a guitar).
 		 */
-		BEND,
+		BEND(false, false, true),
 
 		/**
 		 * Indicates tapping technique (e.g., on a guitar).
 		 */
-		TAP,
+		TAP(true, false, false),
 
 		/**
 		 * Indicates use of heel on an organ pedal.
 		 */
-		HEEL,
+		HEEL(false, false, false),
 
 		/**
 		 * Indicates use of toe on an organ pedal.
 		 */
-		TOE,
+		TOE(false, false, false),
 
 		/**
 		 * Indicates use of fingernails on a plucked string instrument (e.g., harp).
 		 */
-		FINGERNAILS,
+		FINGERNAILS(false, false, false),
 
 		/**
 		 * Indicates hole markings on a wind instrument.
 		 */
-		HOLE,
+		HOLE(false, false, true),
 
 		/**
 		 * Defines an arrow symbol.
 		 */
-		ARROW,
+		ARROW(false, false, true),
 
 		/**
 		 * Indicates a handbell technique.
 		 */
-		HANDBELL,
+		HANDBELL(true, false, false),
 
 		/**
 		 * Indicates a bend symbol used with brass instruments.
 		 */
-		BRASS_BEND,
+		BRASS_BEND(false, false, false),
 
 		/**
 		 * Indicates a flip symbol used with brass instruments.
 		 */
-		FLIP,
+		FLIP(false, false, false),
 
 		/**
 		 * Indicates a smear technique used with brass instruments.
 		 */
-		SMEAR,
+		SMEAR(false, false, false),
 
 		/**
 		 * Indicates an open symbol (a circle).
 		 */
-		OPEN,
+		OPEN(false, false, false),
 
 		/**
 		 * Indicates a half-muted technique (e.f. used with horn).
 		 */
-		HALF_MUTED,
+		HALF_MUTED(false, false, false),
 
 		/**
-		 * Indicates use of a harmon mute with brass instruments.
+		 * Indicates use of a closed harmon mute with brass instruments.
 		 */
-		HARMON_MUTE,
+		HARMON_MUTE_CLOSED(false, false, false),
+
+		/**
+		 * Indicates use of an open harmon mute with brass instruments.
+		 */
+		HARMON_MUTE_OPEN(false, false, false),
+
+		/**
+		 * Indicates use of a half-open harmon mute with brass instruments.
+		 */
+		HARMON_MUTE_HALF_OPEN(false, false, false),
 
 		/**
 		 * Represents the golpe symbol that is used for indicating tapping the pick guard in guitar music.
 		 */
-		GOLPE,
+		GOLPE(false, false, false),
 
 		/**
 		 * Indicates a textual technique marking.
 		 */
-		OTHER
+		OTHER(true, false, false);
+
+		private final boolean isTextual;
+		private final boolean isNumeric;
+		private final boolean isComplex;
+
+		Type(boolean isTextual, boolean isNumeric, boolean isComplex) {
+			this.isTextual = isTextual;
+			this.isNumeric = isNumeric;
+			this.isComplex = isComplex;
+		}
+
+		/**
+		 * Returns true if this is a plain type of technique marking with only a symbol.
+		 *
+		 * @return true if this is a plain type of technique marking with only a symbol
+		 */
+		public boolean isSymbolic() {
+			return !(isTextual || isNumeric || isComplex);
+		}
+
+		/**
+		 * Returns true if this is a textual technique marking.
+		 *
+		 * @return true if this is a textual technique marking
+		 */
+		public boolean isTextual() {
+			return isTextual;
+		}
+
+		/**
+		 * Returns true if this is a numeric technique marking.
+		 *
+		 * @return true if this is a numeric technique marking
+		 */
+		public boolean isNumeric() {
+			return isNumeric;
+		}
+
+		/**
+		 * Returns true if this is a complex technique marking.
+		 * <p>
+		 * Complex technique markings are types like artificial harmonics that
+		 * contain more complicate additional data.
+		 *
+		 * @return true if this is a complex technique marking
+		 */
+		public boolean isComplex() {
+			return isComplex;
+		}
 	}
 
 	/**

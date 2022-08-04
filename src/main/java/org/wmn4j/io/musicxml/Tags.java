@@ -89,6 +89,8 @@ final class Tags {
 	static final String HANDBELL = "handbell";
 	static final String HARMONIC = "harmonic";
 	static final String HARMONY = "harmony";
+
+	static final String HARMON_CLOSED = "harmon-closed";
 	static final String HARMON_MUTE = "harmon-mute";
 	static final String HEAVY = "heavy";
 	static final String HEAVY_LIGHT = "heavy-light";
@@ -140,7 +142,7 @@ final class Tags {
 	static final String NOTE_64TH = "64th";
 	static final String NOTE_BREVE = "breve";
 	static final String NOTE_EIGHTH = "eighth";
-	static final String NOTE_HALF = "half";
+	static final String HALF = "half";
 	static final String NOTE_LONG = "long";
 	static final String NOTE_MAXIMA = "maxima";
 	static final String NOTE_QUARTER = "quarter";

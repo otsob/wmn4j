@@ -101,6 +101,7 @@ final class StaxReader implements MusicXmlReader {
 	private boolean isCurrentUnpitched;
 	private int currentOctave;
 
+	private Technique currentTechnique;
 	private String currentTechniqueText;
 
 	private boolean isClosed;
@@ -692,34 +693,61 @@ final class StaxReader implements MusicXmlReader {
 	}
 
 	private void consumePlayingTechniques() throws XMLStreamException {
+		currentTechnique = null;
+
 		consumeUntil(tag -> {
-			final var type = Transforms.tagToTechniqueType(tag);
-			if (type == null) {
-				return;
+			switch (tag) {
+				case Tags.HARMON_MUTE:
+					consumeHarmonMuteTechnical();
+					break;
+				case Tags.HARMONIC:
+					partContext.setArtificialHarmonic(true);
+				case Tags.BEND:
+				case Tags.HOLE:
+				case Tags.ARROW:
+				default:
+					consumeBasicTechnical(tag);
 			}
 
-			if (type.equals(Technique.Type.HARMONIC)) {
-				partContext.setArtificialHarmonic(true);
-			}
-
-			Technique technique = null;
-			currentTechniqueText = null;
-			consumeText(text -> currentTechniqueText = text);
-
-			if (currentTechniqueText != null) {
-				try {
-					technique = Technique.of(type, Integer.parseInt(currentTechniqueText));
-				} catch (NumberFormatException e) {
-					technique = Technique.of(type, currentTechniqueText);
-				}
-			} else {
-				technique = Technique.of(type);
-			}
-
-			if (currentDurationalBuilder instanceof NoteBuilder) {
-				((NoteBuilder) currentDurationalBuilder).addTechnique(technique);
+			if (currentDurationalBuilder instanceof NoteBuilder && currentTechnique != null) {
+				((NoteBuilder) currentDurationalBuilder).addTechnique(currentTechnique);
 			}
 		}, Tags.TECHNICAL);
+	}
+
+	private void consumeHarmonMuteTechnical() throws XMLStreamException {
+		consumeUntil(harmonTag -> {
+			consumeText(text -> currentTechniqueText = text);
+			if (Tags.YES.equals(currentTechniqueText)) {
+				currentTechnique = Technique.of(Technique.Type.HARMON_MUTE_CLOSED);
+			} else if (Tags.NO.equals(currentTechniqueText)) {
+				currentTechnique = Technique.of(Technique.Type.HARMON_MUTE_OPEN);
+			} else {
+				currentTechnique = Technique.of(Technique.Type.HARMON_MUTE_HALF_OPEN);
+			}
+		}, Tags.HARMON_MUTE);
+	}
+
+	private void consumeBasicTechnical(String tag) throws XMLStreamException {
+		final var type = Transforms.tagToTechniqueType(tag);
+
+		if (type == null) {
+			LOG.warn("Could not find type for technical tag {}", tag);
+			return;
+		}
+
+		currentTechniqueText = null;
+		consumeText(text -> currentTechniqueText = text);
+
+		if (currentTechniqueText != null) {
+			try {
+				currentTechnique = Technique.of(type, Integer.parseInt(currentTechniqueText));
+			} catch (NumberFormatException e) {
+				currentTechnique = Technique.of(type, currentTechniqueText);
+			}
+		} else {
+			currentTechnique = Technique.of(type);
+		}
 	}
 
 	private void consumeOrnamentsElem() throws XMLStreamException {
