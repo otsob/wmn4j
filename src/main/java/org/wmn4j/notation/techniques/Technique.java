@@ -4,19 +4,20 @@
 package org.wmn4j.notation.techniques;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 /**
  * Represents a playing technique marking.
  * <p>
  * This class and all its subclasses are immutable.
  */
-public final class Technique {
+public sealed class Technique permits NumericTechnique, TextualTechnique {
 
 	/**
 	 * Defines the type of the playing technique.
 	 */
-	enum Type {
-
+	public enum Type {
 		/**
 		 * Up bow on a stringed instrument.
 		 */
@@ -173,6 +174,38 @@ public final class Technique {
 		OTHER
 	}
 
+	/**
+	 * Returns a new plain technique with the given type.
+	 *
+	 * @param type the type of the technique
+	 * @return new plain technique with the given type
+	 */
+	public static Technique of(Type type) {
+		return new Technique(type);
+	}
+
+	/**
+	 * Returns a new technique marking of a textual type.
+	 *
+	 * @param type the type of the technique
+	 * @param text the text of the technique
+	 * @return a new technique marking of a textual type
+	 */
+	public static Technique of(Type type, String text) {
+		return new TextualTechnique(type, text);
+	}
+
+	/**
+	 * Returns a new technique marking with a number in it.
+	 *
+	 * @param type   the type of the technique
+	 * @param number the number in the technique marking
+	 * @return a new technique marking with a number in it
+	 */
+	public static Technique of(Type type, int number) {
+		return new NumericTechnique(type, number);
+	}
+
 	private final Type type;
 
 	Technique(Type type) {
@@ -186,5 +219,40 @@ public final class Technique {
 	 */
 	public Type getType() {
 		return type;
+	}
+
+	/**
+	 * Returns the text in this technique marking if this is a textual technique marking.
+	 *
+	 * @return the text in this technique marking if this is a textual technique marking
+	 */
+	public Optional<String> getText() {
+		return Optional.empty();
+	}
+
+	/**
+	 * Returns the number in this technique marking if this is a numeric technique marking.
+	 *
+	 * @return the number in this technique marking if this is a numeric technique marking
+	 */
+	public OptionalInt getNumber() {
+		return OptionalInt.empty();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Technique technique = (Technique) o;
+		return type == technique.type;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(type);
 	}
 }

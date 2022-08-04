@@ -24,6 +24,7 @@ checkstyle {
 // used in Durational and the checkstyle version apparently cannot be overridden...
 checkstyleMain.exclude('org/wmn4j/notation/Durational.java')
 checkstyleMain.exclude('org/wmn4j/notation/DurationalBuilder.java')
+checkstyleMain.exclude('org/wmn4j/notation/techniques/Technique.java')
 
 repositories {
     mavenCentral()
