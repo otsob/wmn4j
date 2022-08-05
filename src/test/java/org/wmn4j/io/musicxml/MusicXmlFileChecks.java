@@ -32,10 +32,13 @@ import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.TimeSignatures;
 import org.wmn4j.notation.access.Offset;
 import org.wmn4j.notation.directions.Direction;
+import org.wmn4j.notation.techniques.Technique;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1284,5 +1287,49 @@ class MusicXmlFileChecks {
 		assertEquals(snareNote.build(), snareMeasure.get(1, 1));
 		assertEquals(Rest.of(Durations.QUARTER), snareMeasure.get(1, 2));
 		assertEquals(snareNote.build(), snareMeasure.get(1, 3));
+	}
+
+	private static void assertTechniques(Durational durational, Set<Technique> techniques) {
+		assertTrue(durational.isNote());
+		final Note note = durational.toNote();
+		assertEquals(techniques, note.getTechniques());
+	}
+
+	/*
+	 * Expects the contents of "techniques_test.musicxml".
+	 */
+	static void assertPlayingTechniquesAreCorrect(Score score) {
+		assertEquals(1, score.getPartCount());
+		final var measure = score.getPart(0).getMeasure(Part.DEFAULT_STAFF_NUMBER, 1);
+
+		assertTechniques(measure.get(1, 0), Set.of(Technique.of(Technique.Type.DOWN_BOW)));
+		assertTechniques(measure.get(1, 1), Set.of(Technique.of(Technique.Type.PLUCK, "p")));
+		assertTechniques(measure.get(1, 2),
+				Set.of(Technique.of(Technique.Type.STRING, 4),
+						Technique.of(Technique.Type.FINGERING, 3),
+						Technique.of(Technique.Type.BEND, Map.of(Technique.AdditionalValue.BEND_SEMITONES, 2.0)),
+						Technique.of(Technique.Type.BEND, Map.of(Technique.AdditionalValue.BEND_SEMITONES, -2.0,
+								Technique.AdditionalValue.BEND_RELEASE, Durations.EIGHTH))));
+		assertTechniques(measure.get(1, 3),
+				Set.of(Technique.of(Technique.Type.HARMONIC, Map.of(
+						Technique.AdditionalValue.IS_NATURAL_HARMONIC, Boolean.TRUE))));
+		assertTechniques(measure.get(1, 4),
+				Set.of(Technique.of(Technique.Type.HARMONIC, Map.of(
+						Technique.AdditionalValue.IS_ARTIFICIAL_HARMONIC, Boolean.TRUE,
+						Technique.AdditionalValue.HARMONIC_BASE_PITCH,
+						Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5),
+						Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH,
+						Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 5),
+						Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH,
+						Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 7)))));
+		assertTechniques(measure.get(1, 5), Set.of(Technique.of(Technique.Type.HOLE,
+				Map.of(Technique.AdditionalValue.WIND_HOLE_TYPE, "thumb",
+						Technique.AdditionalValue.WIND_HOLE_POSITION, Technique.Opening.OPEN,
+						Technique.AdditionalValue.WIND_HOLE_SHAPE, "circle"))));
+		assertTechniques(measure.get(1, 6), Set.of(Technique.of(Technique.Type.ARROW,
+				Map.of(Technique.AdditionalValue.ARROW_DIRECTION, "southeast",
+						Technique.AdditionalValue.ARROW_STYLE, "single"))));
+		assertTechniques(measure.get(1, 7), Set.of(Technique.of(Technique.Type.HARMON_MUTE,
+				Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION, Technique.Opening.HALF_OPEN))));
 	}
 }

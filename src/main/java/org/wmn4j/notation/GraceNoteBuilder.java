@@ -277,7 +277,8 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 			this.cachedNote = GraceNote
 					.of(noteBuilder.getPitch(), noteBuilder.getDisplayPitch(), noteBuilder.getDuration(),
 							noteBuilder.getArticulations(),
-							noteBuilder.getResolvedNotationConnections(), noteBuilder.getOrnaments(), graceNoteType,
+							noteBuilder.getResolvedNotationConnections(), noteBuilder.getOrnaments(),
+							noteBuilder.getTechniques(), graceNoteType,
 							principalNoteConnections);
 
 			isBuilding = false;

@@ -37,7 +37,7 @@ enum DurationAppearanceWriter {
 		appearences.put(Durations.SIXTEENTH, Tags.NOTE_16TH);
 		appearences.put(Durations.EIGHTH, Tags.NOTE_EIGHTH);
 		appearences.put(Durations.QUARTER, Tags.NOTE_QUARTER);
-		appearences.put(Durations.HALF, Tags.NOTE_HALF);
+		appearences.put(Durations.HALF, Tags.HALF);
 		appearences.put(Durations.WHOLE, Tags.NOTE_WHOLE);
 		appearences.put(Duration.of(2, 1), Tags.NOTE_BREVE);
 		appearences.put(Duration.of(4, 1), Tags.NOTE_LONG);

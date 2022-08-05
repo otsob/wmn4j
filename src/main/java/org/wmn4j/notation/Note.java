@@ -3,6 +3,8 @@
  */
 package org.wmn4j.notation;
 
+import org.wmn4j.notation.techniques.Technique;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,6 +32,8 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	private final Set<Articulation> articulations;
 	private final Collection<Notation.Connection> notationConnections;
 	private final Collection<Ornament> ornaments;
+
+	private final Set<Technique> techniques;
 
 	/**
 	 * Returns an instance with the given parameters.
@@ -64,7 +68,7 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations) {
-		return new Note(pitch, null, duration, articulations, null, null);
+		return new Note(pitch, null, duration, articulations, null, null, null);
 	}
 
 	/**
@@ -78,7 +82,7 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections) {
-		return new Note(pitch, null, duration, articulations, notationConnections, null);
+		return new Note(pitch, null, duration, articulations, notationConnections, null, null);
 	}
 
 	/**
@@ -90,18 +94,21 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	 * @param articulations       a set of Articulations associated with the note
 	 * @param notationConnections the notation connections for the note
 	 * @param ornaments           ornaments for the note
+	 * @param techniques          the playing techniques related to the note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Pitch displayPitch, Duration duration, Set<Articulation> articulations,
-			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments) {
-		return new Note(pitch, displayPitch, duration, articulations, notationConnections, ornaments);
+			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments,
+			Set<Technique> techniques) {
+		return new Note(pitch, displayPitch, duration, articulations, notationConnections, ornaments, techniques);
 	}
 
 	/**
 	 * Private constructor.
 	 */
 	private Note(Pitch pitch, Pitch displayPitch, Duration duration, Set<Articulation> articulations,
-			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments) {
+			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments,
+			Set<Technique> techniques) {
 
 		this.pitch = pitch;
 		this.displayPitch = Objects.requireNonNull(displayPitch == null ? pitch : displayPitch,
@@ -124,6 +131,12 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 			this.ornaments = copyOrnaments(ornaments);
 		} else {
 			this.ornaments = Collections.emptySet();
+		}
+
+		if (techniques != null && !techniques.isEmpty()) {
+			this.techniques = Set.copyOf(techniques);
+		} else {
+			this.techniques = Collections.emptySet();
 		}
 	}
 
@@ -217,7 +230,7 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 			Collection<Notation.Connection> connections) {
 		return GraceNote.of(original.getPitch().orElse(null), original.getDisplayableDuration(),
 				original.getArticulations(), copyConnections(target, connections),
-				original.getOrnaments(), original.getType());
+				original.getOrnaments(), original.getTechniques(), original.getType());
 	}
 
 	private Collection<Notation.Connection> copyConnections(Notation.Connectable target,
@@ -425,6 +438,15 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	 */
 	public Collection<Ornament> getOrnaments() {
 		return ornaments;
+	}
+
+	/**
+	 * Returns an unmodifiable view of the playing techniques of this note.
+	 *
+	 * @return an unmodifiable view of the playing techniques of this note
+	 */
+	public Set<Technique> getTechniques() {
+		return techniques;
 	}
 
 	/**
