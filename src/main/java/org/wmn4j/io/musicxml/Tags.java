@@ -19,7 +19,9 @@ final class Tags {
 	static final String ARRANGER = "arranger";
 	static final String ARROW = "arrow";
 	static final String ARROW_DIRECTION = "arrow-direction";
-
+	static final String ARROW_STYLE = "arrow-style";
+	static final String ARROWHEAD = "arrowhead";
+	static final String CIRCULAR_ARROW = "circular-arrow";
 	static final String ARTIFICIAL = "artificial";
 	static final String ARTICULATIONS = "articulations";
 	static final String ATTRIBUTES = "attributes";

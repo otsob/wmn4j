@@ -1326,7 +1326,9 @@ class MusicXmlFileChecks {
 				Map.of(Technique.AdditionalValue.WIND_HOLE_TYPE, "thumb",
 						Technique.AdditionalValue.WIND_HOLE_POSITION, Technique.Opening.OPEN,
 						Technique.AdditionalValue.WIND_HOLE_SHAPE, "circle"))));
-		assertTechniques(measure.get(1, 6), Set.of(Technique.of(Technique.Type.ARROW)));
+		assertTechniques(measure.get(1, 6), Set.of(Technique.of(Technique.Type.ARROW,
+				Map.of(Technique.AdditionalValue.ARROW_DIRECTION, "southeast",
+						Technique.AdditionalValue.ARROW_STYLE, "single"))));
 		assertTechniques(measure.get(1, 7), Set.of(Technique.of(Technique.Type.HARMON_MUTE,
 				Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION, Technique.Opening.HALF_OPEN))));
 	}

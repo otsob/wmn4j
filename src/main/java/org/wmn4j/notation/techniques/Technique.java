@@ -315,7 +315,28 @@ public sealed class Technique permits NumericTechnique, TextualTechnique, Comple
 		/**
 		 * The hole symbols shape for wind instrumetn hole notation.
 		 */
-		WIND_HOLE_SHAPE(String.class);
+		WIND_HOLE_SHAPE(String.class),
+
+		/**
+		 * The direction of an arrow marking.
+		 */
+		ARROW_DIRECTION(String.class),
+
+		/**
+		 * The style of an arrow marking.
+		 */
+		ARROW_STYLE(String.class),
+
+		/**
+		 * Denotes the presence of an arrowhead.
+		 */
+		ARROWHEAD(Boolean.class),
+
+		/**
+		 * Denotes a circular arrow and its direction.
+		 */
+		CIRCULAR_ARROW(String.class);
+
 		private final Class<?> valueClass;
 
 		AdditionalValue(Class<?> valueClass) {

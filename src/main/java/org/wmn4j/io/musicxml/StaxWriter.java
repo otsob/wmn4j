@@ -908,14 +908,37 @@ final class StaxWriter implements MusicXmlWriter {
 					writeHoleElement(technique);
 					break;
 				case ARROW:
-					// TODO
-					writer.writeStartElement(Tags.ARROW);
-					writeValue(Tags.ARROW_DIRECTION, Tags.DOWN);
-					writer.writeEndElement();
+					writeArrowElement(technique);
 					break;
 				default:
 					writeBasicTechnicalElement(technique);
 			}
+		}
+
+		writer.writeEndElement();
+	}
+
+	private void writeArrowElement(Technique arrow) throws XMLStreamException {
+		writer.writeStartElement(Tags.ARROW);
+
+		final var direction = arrow.getValue(Technique.AdditionalValue.ARROW_DIRECTION, String.class);
+		if (direction.isPresent()) {
+			writeValue(Tags.ARROW_DIRECTION, direction.get());
+		}
+
+		final var style = arrow.getValue(Technique.AdditionalValue.ARROW_STYLE, String.class);
+		if (style.isPresent()) {
+			writeValue(Tags.ARROW_STYLE, style.get());
+		}
+
+		final var arrowhead = arrow.getValue(Technique.AdditionalValue.ARROWHEAD, Boolean.class);
+		if (arrowhead.isPresent() && arrowhead.get().equals(Boolean.TRUE)) {
+			writer.writeEmptyElement(Tags.ARROWHEAD);
+		}
+
+		final var circular = arrow.getValue(Technique.AdditionalValue.CIRCULAR_ARROW, String.class);
+		if (circular.isPresent()) {
+			writeValue(Tags.CIRCULAR_ARROW, circular.get());
 		}
 
 		writer.writeEndElement();

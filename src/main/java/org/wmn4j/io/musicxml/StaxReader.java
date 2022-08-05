@@ -712,6 +712,8 @@ final class StaxReader implements MusicXmlReader {
 					consumeHoleElement();
 					break;
 				case Tags.ARROW:
+					consumeArrowElement();
+					break;
 				default:
 					consumeBasicTechnical(tag);
 			}
@@ -720,6 +722,35 @@ final class StaxReader implements MusicXmlReader {
 				((NoteBuilder) currentDurationalBuilder).addTechnique(currentTechnique);
 			}
 		}, Tags.TECHNICAL);
+	}
+
+	private void consumeArrowElement() throws XMLStreamException {
+		final Map<Technique.AdditionalValue, Object> arrowAttributes = new EnumMap<>(Technique.AdditionalValue.class);
+
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.ARROW_DIRECTION:
+					consumeText(text -> currentTechniqueText = text);
+					arrowAttributes.put(Technique.AdditionalValue.ARROW_DIRECTION, currentTechniqueText);
+					break;
+				case Tags.ARROW_STYLE:
+					consumeText(text -> currentTechniqueText = text);
+					arrowAttributes.put(Technique.AdditionalValue.ARROW_STYLE, currentTechniqueText);
+					break;
+				case Tags.ARROWHEAD:
+					arrowAttributes.put(Technique.AdditionalValue.ARROWHEAD, Boolean.TRUE);
+					break;
+				case Tags.CIRCULAR_ARROW:
+					consumeText(text -> currentTechniqueText = text);
+					arrowAttributes.put(Technique.AdditionalValue.CIRCULAR_ARROW, currentTechniqueText);
+					break;
+				default:
+					break;
+			}
+
+		}, Tags.ARROW);
+
+		currentTechnique = Technique.of(Technique.Type.ARROW, arrowAttributes);
 	}
 
 	private void consumeHoleElement() throws XMLStreamException {
