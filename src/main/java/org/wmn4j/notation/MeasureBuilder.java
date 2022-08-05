@@ -287,9 +287,11 @@ public class MeasureBuilder {
 	 * @param voice   the number of the voice to be modified
 	 * @param index   the index in the voice
 	 * @param builder element to be placed in index on voice
+	 * @return reference to this
 	 */
-	public void setElement(int voice, int index, DurationalBuilder builder) {
+	public MeasureBuilder setElement(int voice, int index, DurationalBuilder builder) {
 		this.voices.get(voice).set(index, builder);
+		return this;
 	}
 
 	/**

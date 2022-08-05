@@ -82,9 +82,42 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 	 * Sets the pitch in this builder.
 	 *
 	 * @param pitch the pitch to be set in this builder
+	 * @return reference to this
 	 */
-	public void setPitch(Pitch pitch) {
+	public GraceNoteBuilder setPitch(Pitch pitch) {
 		noteBuilder.setPitch(pitch);
+		return this;
+	}
+
+	/**
+	 * Sets this builder to create an unpitched note with the
+	 * display pitch set in this.
+	 *
+	 * @return reference to this
+	 */
+	public GraceNoteBuilder setUnpitched() {
+		this.noteBuilder.setUnpitched();
+		return this;
+	}
+
+	/**
+	 * Returns the display pitch set in this builder.
+	 *
+	 * @return the displayed pitch set in this builder
+	 */
+	public Pitch getDisplayPitch() {
+		return noteBuilder.getPitch();
+	}
+
+	/**
+	 * Sets the display pitch in this builder.
+	 *
+	 * @param pitch the display pitch to be set in this builder
+	 * @return reference to this
+	 */
+	public GraceNoteBuilder setDisplayPitch(Pitch pitch) {
+		noteBuilder.setPitch(pitch);
+		return this;
 	}
 
 	/**
@@ -100,9 +133,11 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 	 * Sets the grace note type for this builder.
 	 *
 	 * @param graceNoteType the grace note type to set in this builder
+	 * @return reference to this
 	 */
-	public void setGraceNoteType(GraceNote.Type graceNoteType) {
+	public GraceNoteBuilder setGraceNoteType(GraceNote.Type graceNoteType) {
 		this.graceNoteType = graceNoteType;
+		return this;
 	}
 
 	/**
@@ -130,9 +165,11 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 	 * Sets the displayable duration in this builder.
 	 *
 	 * @param duration The duration to be set in this builder
+	 * @return reference to this
 	 */
-	public void setDisplayableDuration(Duration duration) {
+	public GraceNoteBuilder setDisplayableDuration(Duration duration) {
 		noteBuilder.setDuration(duration);
+		return this;
 	}
 
 	/**
@@ -160,27 +197,33 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 	 * Sets the articulations in this builder.
 	 *
 	 * @param articulations the articulations that are set into this builder
+	 * @return reference to this
 	 */
-	public void setArticulations(Set<Articulation> articulations) {
+	public GraceNoteBuilder setArticulations(Set<Articulation> articulations) {
 		noteBuilder.setArticulations(articulations);
+		return this;
 	}
 
 	/**
 	 * Adds an articulation to this builder.
 	 *
 	 * @param articulation the articulation that is added to this builder
+	 * @return reference to this
 	 */
-	public void addArticulation(Articulation articulation) {
+	public GraceNoteBuilder addArticulation(Articulation articulation) {
 		noteBuilder.addArticulation(articulation);
+		return this;
 	}
 
 	/**
 	 * Adds the given ornament to this builder.
 	 *
 	 * @param ornament the ornament to add to this builder
+	 * @return reference to this
 	 */
-	public void addOrnament(Ornament ornament) {
+	public GraceNoteBuilder addOrnament(Ornament ornament) {
 		noteBuilder.addOrnament(ornament);
+		return this;
 	}
 
 	void setPrincipalNoteConnections(Collection<Notation.Connection> connections) {
@@ -188,13 +231,15 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 	}
 
 	@Override
-	public void connectWith(Notation notation, NoteBuilder targetNoteBuilder) {
+	public GraceNoteBuilder connectWith(Notation notation, NoteBuilder targetNoteBuilder) {
 		noteBuilder.connectWith(notation, targetNoteBuilder);
+		return this;
 	}
 
 	@Override
-	public void connectWith(Notation notation, GraceNoteBuilder targetNoteBuilder) {
+	public GraceNoteBuilder connectWith(Notation notation, GraceNoteBuilder targetNoteBuilder) {
 		noteBuilder.connectWith(notation, targetNoteBuilder);
+		return this;
 	}
 
 	/**
@@ -230,8 +275,10 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 			isBuilding = true;
 
 			this.cachedNote = GraceNote
-					.of(noteBuilder.getPitch(), noteBuilder.getDuration(), noteBuilder.getArticulations(),
-							noteBuilder.getResolvedNotationConnections(), noteBuilder.getOrnaments(), graceNoteType,
+					.of(noteBuilder.getPitch(), noteBuilder.getDisplayPitch(), noteBuilder.getDuration(),
+							noteBuilder.getArticulations(),
+							noteBuilder.getResolvedNotationConnections(), noteBuilder.getOrnaments(),
+							noteBuilder.getTechniques(), graceNoteType,
 							principalNoteConnections);
 
 			isBuilding = false;

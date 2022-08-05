@@ -5,6 +5,7 @@ package org.wmn4j.analysis.harmony;
 
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Note;
+import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.PitchClass;
 
 import java.util.EnumMap;
@@ -68,13 +69,15 @@ public final class ChromagramBuilder {
 	 *
 	 * @param pc    the pitch class for which the value is set
 	 * @param value a non-negative value to set for the pitch class
+	 * @return reference to this
 	 */
-	public void setValue(PitchClass pc, double value) {
+	public ChromagramBuilder setValue(PitchClass pc, double value) {
 		if (value < 0.0) {
 			throw new IllegalArgumentException("value must be at least 0.0");
 		}
 
 		this.profile.put(pc, value);
+		return this;
 	}
 
 	/**
@@ -83,25 +86,34 @@ public final class ChromagramBuilder {
 	 * function.
 	 *
 	 * @param chord chord for which the pitch classes of the notes are incremented
+	 * @return reference to this
 	 */
-	public void add(Chord chord) {
+	public ChromagramBuilder add(Chord chord) {
 		for (Note note : chord) {
 			this.add(note);
 		}
+
+		return this;
 	}
 
 	/**
-	 * Increments the value of the pitch class of the note.
+	 * Increments the value of the pitch class of the note if the note has pitch.
 	 * If a weight function is specified, then the added value is provided by the weight
 	 * function.
 	 *
 	 * @param note note for which the pitch class is incremented
+	 * @return reference to this
 	 */
-	public void add(Note note) {
-		final PitchClass pc = note.getPitch().getPitchClass();
-		double value = profile.get(note.getPitch().getPitchClass());
-		value += weightFunction.apply(note);
-		this.setValue(pc, value);
+	public ChromagramBuilder add(Note note) {
+		if (note.hasPitch()) {
+			final Pitch pitch = note.getPitch().get();
+			final PitchClass pc = pitch.getPitchClass();
+			double value = profile.get(pitch.getPitchClass());
+			value += weightFunction.apply(note);
+			this.setValue(pc, value);
+		}
+
+		return this;
 	}
 
 	/**

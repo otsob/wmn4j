@@ -3,6 +3,8 @@
  */
 package org.wmn4j.notation;
 
+import org.wmn4j.notation.techniques.Technique;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder {
 
 	private Pitch pitch;
+	private Pitch displayPitch;
 	private Duration duration;
 	private Set<Articulation> articulations;
 	private Set<Ornament> ornaments;
@@ -32,6 +35,8 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	private Set<Notation> connectedFrom = new HashSet<>();
 	private List<? extends OrnamentalBuilder> precedingGraceNotes = new ArrayList<>();
 	private List<? extends OrnamentalBuilder> succeedingGraceNotes = new ArrayList<>();
+
+	private Set<Technique> techniques = new HashSet<>();
 
 	private Note cachedNote;
 	private boolean isBuilding;
@@ -84,9 +89,14 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * @param note the note from which pitch, duration, and articulations are copied to the created builder
 	 */
 	public NoteBuilder(Note note) {
-		this(note.getPitch(), note.getDuration());
+		this(note.getPitch().orElse(null), note.getDuration());
 		note.getArticulations()
 				.forEach(articulation -> this.articulations.add(articulation));
+	}
+
+	@Override
+	public boolean isNoteBuilder() {
+		return true;
 	}
 
 	/**
@@ -102,9 +112,22 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * Sets the pitch in this builder.
 	 *
 	 * @param pitch the pitch to be set in this builder
+	 * @return reference to this
 	 */
-	public void setPitch(Pitch pitch) {
+	public NoteBuilder setPitch(Pitch pitch) {
 		this.pitch = pitch;
+		return this;
+	}
+
+	/**
+	 * Sets this builder to create an unpitched note with the
+	 * display pitch set in this.
+	 *
+	 * @return reference to this
+	 */
+	public NoteBuilder setUnpitched() {
+		this.pitch = null;
+		return this;
 	}
 
 	/**
@@ -121,10 +144,12 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * Sets the duration in this builder.
 	 *
 	 * @param duration The duration to be set in this builder
+	 * @return reference to this
 	 */
 	@Override
-	public void setDuration(Duration duration) {
+	public NoteBuilder setDuration(Duration duration) {
 		this.duration = duration;
+		return this;
 	}
 
 	/**
@@ -140,18 +165,22 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * Sets the articulations in this builder.
 	 *
 	 * @param articulations the articulations that are set into this builder
+	 * @return reference to this
 	 */
-	public void setArticulations(Set<Articulation> articulations) {
+	public NoteBuilder setArticulations(Set<Articulation> articulations) {
 		this.articulations = articulations;
+		return this;
 	}
 
 	/**
 	 * Adds an articulation to this builder.
 	 *
 	 * @param articulation the articulation that is added to this builder
+	 * @return reference to this
 	 */
-	public void addArticulation(Articulation articulation) {
+	public NoteBuilder addArticulation(Articulation articulation) {
 		this.articulations.add(articulation);
+		return this;
 	}
 
 	/**
@@ -160,9 +189,11 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * {@link NoteBuilder#setSucceedingGraceNotes(List)} methods should be used.
 	 *
 	 * @param ornament the ornament to add to this builder
+	 * @return reference to this
 	 */
-	public void addOrnament(Ornament ornament) {
+	public NoteBuilder addOrnament(Ornament ornament) {
 		ornaments.add(ornament);
+		return this;
 	}
 
 	/**
@@ -172,10 +203,12 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * in the last grace note builder in the list. This builder takes ownership of the given builders.
 	 *
 	 * @param graceNoteBuilders the builders for the grace notes that this builder will add to the built note
+	 * @return reference to this
 	 */
-	public void setPrecedingGraceNotes(List<? extends OrnamentalBuilder> graceNoteBuilders) {
+	public NoteBuilder setPrecedingGraceNotes(List<? extends OrnamentalBuilder> graceNoteBuilders) {
 		precedingGraceNotes = graceNoteBuilders;
 		setPrincipalNoteForAll(precedingGraceNotes);
+		return this;
 	}
 
 	/**
@@ -184,10 +217,12 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	 * This builder takes ownership of the given builders.
 	 *
 	 * @param graceNoteBuilders the builders for the grace notes that this builder will add to the built note
+	 * @return reference to this
 	 */
-	public void setSucceedingGraceNotes(List<? extends OrnamentalBuilder> graceNoteBuilders) {
+	public NoteBuilder setSucceedingGraceNotes(List<? extends OrnamentalBuilder> graceNoteBuilders) {
 		succeedingGraceNotes = graceNoteBuilders;
 		setPrincipalNoteForAll(succeedingGraceNotes);
+		return this;
 	}
 
 	private void setPrincipalNoteForAll(List<? extends OrnamentalBuilder> ornamentalBuilders) {
@@ -210,15 +245,37 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	}
 
 	/**
+	 * Adds the technique to this builder.
+	 *
+	 * @param technique the technique to add
+	 * @return a reference to this
+	 */
+	public NoteBuilder addTechnique(Technique technique) {
+		techniques.add(technique);
+		return this;
+	}
+
+	/**
+	 * Returns the techniques set in this builder.
+	 *
+	 * @return the techniques set in this builder
+	 */
+	public Set<Technique> getTechniques() {
+		return techniques;
+	}
+
+	/**
 	 * Tie this builder to a following builder. The builder that this is tied to
 	 * should be built before this. When the notes are built the {@link Note}
 	 * returned by the call of {@link #build build} on this will be tied to the
 	 * <code>Note</code> built by builder.
 	 *
-	 * @param builder The builder for the following note that this is to be tied to.
+	 * @param builder The builder for the following note that this is to be tied to
+	 * @return reference to this
 	 */
-	public void addTieToFollowing(NoteBuilder builder) {
+	public NoteBuilder addTieToFollowing(NoteBuilder builder) {
 		connectWith(Notation.of(Notation.Type.TIE), builder);
+		return this;
 	}
 
 	/**
@@ -253,15 +310,17 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	}
 
 	@Override
-	public void connectWith(Notation notation, NoteBuilder targetNoteBuilder) {
+	public NoteBuilder connectWith(Notation notation, NoteBuilder targetNoteBuilder) {
 		noteConnections.put(notation, targetNoteBuilder);
 		targetNoteBuilder.addToConnectedFrom(notation);
+		return this;
 	}
 
 	@Override
-	public void connectWith(Notation notation, GraceNoteBuilder targetNoteBuilder) {
+	public NoteBuilder connectWith(Notation notation, GraceNoteBuilder targetNoteBuilder) {
 		graceNoteConnections.put(notation, targetNoteBuilder);
 		targetNoteBuilder.addToConnectedFrom(notation);
+		return this;
 	}
 
 	/**
@@ -418,8 +477,10 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 			isBuilding = true;
 
 			this.cachedNote = Note
-					.of(this.pitch, this.duration, this.articulations, getResolvedNotationConnections(),
-							buildOrnaments());
+					.of(this.pitch, this.displayPitch, this.duration, this.articulations,
+							getResolvedNotationConnections(),
+							buildOrnaments(),
+							techniques);
 
 			updateGraceNoteBuilders();
 
@@ -462,5 +523,25 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 				}
 			}
 		}
+	}
+
+	/**
+	 * Returns the shown pitch set in this builder.
+	 *
+	 * @return the shown pitch set in this builder
+	 */
+	public Pitch getDisplayPitch() {
+		return displayPitch;
+	}
+
+	/**
+	 * Sets the displayed pitch in this builder.
+	 *
+	 * @param displayPitch the displayed pitch set in this builder
+	 * @return reference to this for chaining
+	 */
+	public NoteBuilder setDisplayPitch(Pitch displayPitch) {
+		this.displayPitch = displayPitch;
+		return this;
 	}
 }

@@ -3,6 +3,8 @@
  */
 package org.wmn4j.notation;
 
+import org.wmn4j.notation.techniques.Technique;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,20 +17,23 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Represents a note. Notes have pitch, duration,
+ * Represents a note. Notes have (optionally) pitch, duration,
  * articulations, and can be tied. A sequence of tied notes functions like a
  * singly linked list where a previous note keeps track of the following tied
  * note.
  * <p>
  * This class is immutable.
  */
-public final class Note implements Durational, Pitched, Notation.Connectable {
+public final class Note implements Durational, OptionallyPitched, Notation.Connectable {
 
 	private final Pitch pitch;
+	private final Pitch displayPitch;
 	private final Duration duration;
 	private final Set<Articulation> articulations;
 	private final Collection<Notation.Connection> notationConnections;
 	private final Collection<Ornament> ornaments;
+
+	private final Set<Technique> techniques;
 
 	/**
 	 * Returns an instance with the given parameters.
@@ -46,7 +51,7 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch    the pitch of the note
+	 * @param pitch    (optional) the pitch of the note
 	 * @param duration the duration of the note
 	 * @return an instance with the given parameters
 	 */
@@ -57,19 +62,19 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch         the pitch of the note
+	 * @param pitch         (optional) the pitch of the note
 	 * @param duration      the duration of the note
 	 * @param articulations a set of Articulations associated with the note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations) {
-		return new Note(pitch, duration, articulations, null, null);
+		return new Note(pitch, null, duration, articulations, null, null, null);
 	}
 
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch               the pitch of the note
+	 * @param pitch               (optional/nullable) the pitch of the note
 	 * @param duration            the duration of the note
 	 * @param articulations       a set of Articulations associated with the note
 	 * @param notationConnections the notation connections for the note
@@ -77,31 +82,38 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections) {
-		return new Note(pitch, duration, articulations, notationConnections, null);
+		return new Note(pitch, null, duration, articulations, notationConnections, null, null);
 	}
 
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch               the pitch of the note
+	 * @param pitch               (optional/nullable) the sounding pitch of the note
+	 * @param displayPitch        (optional/nullable) the written displayed pitch or staff position of the note
 	 * @param duration            the duration of the note
 	 * @param articulations       a set of Articulations associated with the note
 	 * @param notationConnections the notation connections for the note
 	 * @param ornaments           ornaments for the note
+	 * @param techniques          the playing techniques related to the note
 	 * @return an instance with the given parameters
 	 */
-	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments) {
-		return new Note(pitch, duration, articulations, notationConnections, ornaments);
+	public static Note of(Pitch pitch, Pitch displayPitch, Duration duration, Set<Articulation> articulations,
+			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments,
+			Set<Technique> techniques) {
+		return new Note(pitch, displayPitch, duration, articulations, notationConnections, ornaments, techniques);
 	}
 
 	/**
 	 * Private constructor.
 	 */
-	private Note(Pitch pitch, Duration duration, Set<Articulation> articulations,
-			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments) {
+	private Note(Pitch pitch, Pitch displayPitch, Duration duration, Set<Articulation> articulations,
+			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments,
+			Set<Technique> techniques) {
 
-		this.pitch = Objects.requireNonNull(pitch);
+		this.pitch = pitch;
+		this.displayPitch = Objects.requireNonNull(displayPitch == null ? pitch : displayPitch,
+				"Cannot create a note without at least display pitch");
+
 		this.duration = Objects.requireNonNull(duration);
 		if (articulations != null && !articulations.isEmpty()) {
 			this.articulations = Collections.unmodifiableSet(EnumSet.copyOf(articulations));
@@ -119,6 +131,12 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 			this.ornaments = copyOrnaments(ornaments);
 		} else {
 			this.ornaments = Collections.emptySet();
+		}
+
+		if (techniques != null && !techniques.isEmpty()) {
+			this.techniques = Set.copyOf(techniques);
+		} else {
+			this.techniques = Collections.emptySet();
 		}
 	}
 
@@ -210,9 +228,9 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 
 	private GraceNote copyGraceNoteWithConnections(Notation.Connectable target, GraceNote original,
 			Collection<Notation.Connection> connections) {
-		return GraceNote.of(original.getPitch(), original.getDisplayableDuration(),
+		return GraceNote.of(original.getPitch().orElse(null), original.getDisplayableDuration(),
 				original.getArticulations(), copyConnections(target, connections),
-				original.getOrnaments(), original.getType());
+				original.getOrnaments(), original.getTechniques(), original.getType());
 	}
 
 	private Collection<Notation.Connection> copyConnections(Notation.Connectable target,
@@ -280,14 +298,23 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 		return notationConnections;
 	}
 
-	/**
-	 * Returns the pitch of this note.
-	 *
-	 * @return the pitch of this note
-	 */
 	@Override
-	public Pitch getPitch() {
-		return this.pitch;
+	public boolean hasPitch() {
+		return pitch != null;
+	}
+
+	@Override
+	public Optional<Pitch> getPitch() {
+		return Optional.ofNullable(pitch);
+	}
+
+	@Override
+	public Pitch getDisplayPitch() {
+		if (pitch != null) {
+			return pitch;
+		}
+
+		return displayPitch;
 	}
 
 	/**
@@ -301,8 +328,8 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 	}
 
 	@Override
-	public boolean isRest() {
-		return false;
+	public boolean isNote() {
+		return true;
 	}
 
 	/**
@@ -414,6 +441,15 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 	}
 
 	/**
+	 * Returns an unmodifiable view of the playing techniques of this note.
+	 *
+	 * @return an unmodifiable view of the playing techniques of this note
+	 */
+	public Set<Technique> getTechniques() {
+		return techniques;
+	}
+
+	/**
 	 * Returns true if this note is tied to a following note.
 	 *
 	 * @return true if this note is tied to a following note
@@ -491,17 +527,24 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 			strBuilder.append(tieString);
 		}
 
-		strBuilder.append(this.pitch.toString()).append(this.duration.toString());
+		final String endDelimiter = ")";
+		final String startDelimiter = "(";
+		if (pitch != null) {
+			strBuilder.append(this.pitch);
+		} else {
+			strBuilder.append("Unpitched").append(startDelimiter).append(displayPitch).append(endDelimiter);
+		}
+		strBuilder.append(this.duration.toString());
 
 		if (!this.articulations.isEmpty()) {
 
-			strBuilder.append("(");
+			strBuilder.append(startDelimiter);
 			for (Articulation articulation : this.articulations) {
 				strBuilder.append(articulation.toString()).append(" ");
 			}
 
 			strBuilder.replace(strBuilder.length() - 1, strBuilder.length(), "");
-			strBuilder.append(")");
+			strBuilder.append(endDelimiter);
 		}
 
 		if (this.isTiedToFollowing()) {
@@ -518,7 +561,7 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 	 * @return true if this note is equal to the given note in pitch and duration
 	 */
 	public boolean equalsInPitchAndDuration(Note other) {
-		return this.pitch.equals(other.pitch) && this.duration.equals(other.duration);
+		return Objects.equals(pitch, other.pitch) && this.duration.equals(other.duration);
 	}
 
 	/**
@@ -540,6 +583,10 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 		}
 
 		final Note other = (Note) o;
+
+		if (!this.displayPitch.equals(other.displayPitch)) {
+			return false;
+		}
 
 		if (!this.equalsInPitchAndDuration(other)) {
 			return false;
@@ -569,6 +616,7 @@ public final class Note implements Durational, Pitched, Notation.Connectable {
 	public int hashCode() {
 		int hash = 3;
 		hash = 79 * hash + Objects.hashCode(this.pitch);
+		hash = 79 * hash + Objects.hashCode(this.displayPitch);
 		hash = 79 * hash + Objects.hashCode(this.duration);
 		hash = 79 * hash + Objects.hashCode(this.articulations);
 		hash = 79 * hash + Objects.hashCode(getNotationConnectionTypes());

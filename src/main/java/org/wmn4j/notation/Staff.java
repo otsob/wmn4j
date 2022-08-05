@@ -17,6 +17,11 @@ import java.util.NoSuchElementException;
 public final class Staff implements Iterable<Measure> {
 
 	/**
+	 * The default display pitch for single line staves.
+	 */
+	public static final Pitch SINGLE_LINE_PITCH = Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4);
+
+	/**
 	 * Type of staff.
 	 */
 	public enum Type {
@@ -34,23 +39,28 @@ public final class Staff implements Iterable<Measure> {
 	private final Type type;
 
 	/**
+	 * Returns a staff with the given type and measures.
+	 *
+	 * @param type     the type of the staff
+	 * @param measures the measures in the staff
+	 * @return a staff with the given type and measures
+	 */
+	public static Staff of(Type type, List<Measure> measures) {
+		return new Staff(type, measures);
+	}
+
+	/**
 	 * Returns a staff with the given measures.
 	 *
 	 * @param measures the measures in the staff
 	 * @return a staff with the given measures
 	 */
 	public static Staff of(List<Measure> measures) {
-		return new Staff(measures);
+		return new Staff(Type.NORMAL, measures);
 	}
 
-	/**
-	 * Constructor.
-	 *
-	 * @param measures the measures in the staff.
-	 */
-	private Staff(List<Measure> measures) {
-		// TODO: Add constructor that allows setting staff type.
-		this.type = Type.NORMAL;
+	private Staff(Type type, List<Measure> measures) {
+		this.type = type;
 
 		final List<Measure> tmpMeasures = new ArrayList<>();
 

@@ -20,6 +20,7 @@ import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.NoteBuilder;
+import org.wmn4j.notation.OptionallyPitched;
 import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.Part;
@@ -27,9 +28,11 @@ import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Rest;
 import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
+import org.wmn4j.notation.Staff;
 import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.access.Offset;
 import org.wmn4j.notation.directions.Direction;
+import org.wmn4j.notation.techniques.Technique;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -46,9 +49,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -70,7 +75,10 @@ final class StaxWriter implements MusicXmlWriter {
 	private final int divisions;
 	private NotationWriteResolver notationResolver;
 	private boolean isClosed;
-	private boolean stavesWritten;
+	private boolean staffInfoWritten;
+
+	private final Map<Technique.AdditionalValue, Pitch> artificialHarmonicPitches = new EnumMap<>(
+			Technique.AdditionalValue.class);
 
 	static void writeValue(XMLStreamWriter writer, String tag, String value) throws XMLStreamException {
 		if (value.isEmpty()) {
@@ -89,7 +97,7 @@ final class StaxWriter implements MusicXmlWriter {
 		this.compress = compress;
 		this.minify = minify;
 		this.isClosed = false;
-		this.stavesWritten = false;
+		this.staffInfoWritten = false;
 	}
 
 	private String getDTD(String version) {
@@ -306,7 +314,7 @@ final class StaxWriter implements MusicXmlWriter {
 			final String partId = partIds.get(i);
 			final Part part = score.getPart(i);
 			writePart(partId, part);
-			stavesWritten = false;
+			staffInfoWritten = false;
 		}
 	}
 
@@ -322,8 +330,7 @@ final class StaxWriter implements MusicXmlWriter {
 		// divisions per quarter note
 		int lcd = Durations.QUARTER.getDenominator();
 		for (Integer denominator : denominators) {
-			lcd = (lcd * denominator)
-					/ BigInteger.valueOf(lcd).gcd(BigInteger.valueOf(denominator)).intValue();
+			lcd = (lcd * denominator) / BigInteger.valueOf(lcd).gcd(BigInteger.valueOf(denominator)).intValue();
 		}
 
 		return lcd / Durations.QUARTER.getDenominator();
@@ -358,7 +365,8 @@ final class StaxWriter implements MusicXmlWriter {
 			Measure current = part.getMeasure(s, m);
 			writeBarline(current, true);
 
-			writeMeasureAttributes(current, prev, isMultiStaff, s, part.getStaffCount());
+			final Staff.Type staffType = part.getStaff(s).getType();
+			writeMeasureAttributes(current, prev, isMultiStaff, s, part.getStaffCount(), staffType);
 
 			final int backup = writeMeasureContents(current, s, isMultiStaff);
 			writeBarline(current, false);
@@ -409,14 +417,12 @@ final class StaxWriter implements MusicXmlWriter {
 			return true;
 		}
 
-		return !(current.getKeySignature().equals(previous.getKeySignature())
-				&& current.getTimeSignature().equals(previous.getTimeSignature())
-				&& current.getClef().equals(previous.getClef()));
+		return !(current.getKeySignature().equals(previous.getKeySignature()) && current.getTimeSignature()
+				.equals(previous.getTimeSignature()) && current.getClef().equals(previous.getClef()));
 	}
 
 	private void writeMeasureAttributes(Measure current, Measure previous, boolean isMultiStaff, Integer staffNumber,
-			int staffCount)
-			throws XMLStreamException {
+			int staffCount, Staff.Type staffType) throws XMLStreamException {
 
 		if (!isAttributesElementRequired(current, previous)) {
 			return;
@@ -458,9 +464,10 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 
 		// Write staves
-		if (!stavesWritten) {
+		boolean staffCountWritten = false;
+		if (!staffInfoWritten) {
 			writeValue(Tags.STAVES, Integer.toString(staffCount));
-			stavesWritten = true;
+			staffCountWritten = true;
 		}
 
 		// Write clef
@@ -468,6 +475,18 @@ final class StaxWriter implements MusicXmlWriter {
 		if (previous == null || !clef.equals(getLastClefInEffect(previous))) {
 			writeClef(isMultiStaff, staffNumber, clef);
 		}
+
+		// Write staff line count if needed (only when staffCount has been written)
+		// staff-details needs to be written after clef.
+		boolean staffDetailsWritten = false;
+		if (!staffInfoWritten && Staff.Type.SINGLE_LINE.equals(staffType)) {
+			writer.writeStartElement(Tags.STAFF_DETAILS);
+			writeValue(Tags.STAFF_LINES, Integer.toString(1));
+			writer.writeEndElement();
+			staffDetailsWritten = true;
+		}
+
+		staffInfoWritten = staffCountWritten || staffDetailsWritten;
 
 		writer.writeEndElement();
 	}
@@ -495,8 +514,7 @@ final class StaxWriter implements MusicXmlWriter {
 		return clefChanges.get(clefChanges.size() - 1).get();
 	}
 
-	private int writeMeasureContents(Measure measure, Integer staff, boolean isMultiStaff)
-			throws XMLStreamException {
+	private int writeMeasureContents(Measure measure, Integer staff, boolean isMultiStaff) throws XMLStreamException {
 
 		writeDirections(measure.getDirections(), staff);
 
@@ -574,12 +592,12 @@ final class StaxWriter implements MusicXmlWriter {
 	}
 
 	private void writeDurational(Integer staffNumber, Integer voice, Durational durational) throws XMLStreamException {
-		if (durational instanceof Note) {
-			writeNote((Note) durational, voice, staffNumber, false);
-		} else if (durational instanceof Chord) {
-			writeChord((Chord) durational, voice, staffNumber);
-		} else if (durational instanceof Rest) {
-			writeRest((Rest) durational, voice, staffNumber);
+		if (durational.isNote()) {
+			writeNote(durational.toNote(), voice, staffNumber, false);
+		} else if (durational.isChord()) {
+			writeChord(durational.toChord(), voice, staffNumber);
+		} else if (durational.isRest()) {
+			writeRest(durational.toRest(), voice, staffNumber);
 		}
 	}
 
@@ -588,21 +606,21 @@ final class StaxWriter implements MusicXmlWriter {
 
 		final var decomposedDurations = durational.getDuration().decompose(timeSig.getTotalDuration());
 
-		if (durational instanceof Note) {
+		if (durational.isNote()) {
 			for (Duration duration : decomposedDurations) {
-				NoteBuilder builder = new NoteBuilder((Note) durational);
+				NoteBuilder builder = new NoteBuilder(durational.toNote());
 				builder.setDuration(duration);
 				writeNote(builder.build(), voice, staffNumber, false);
 			}
-		} else if (durational instanceof Chord) {
+		} else if (durational.isChord()) {
 			for (Duration duration : decomposedDurations) {
-				ChordBuilder builder = new ChordBuilder((Chord) durational);
+				ChordBuilder builder = new ChordBuilder(durational.toChord());
 				builder.setDuration(duration);
 				writeChord(builder.build(), voice, staffNumber);
 			}
-		} else if (durational instanceof Rest) {
+		} else if (durational.isRest()) {
 			for (Duration duration : decomposedDurations) {
-				RestBuilder builder = new RestBuilder((Rest) durational);
+				RestBuilder builder = new RestBuilder(durational.toRest());
 				builder.setDuration(duration);
 				writeRest(builder.build(), voice, staffNumber);
 			}
@@ -653,8 +671,7 @@ final class StaxWriter implements MusicXmlWriter {
 		return ((divisions * Durations.QUARTER.getDenominator()) / duration.getDenominator()) * duration.getNumerator();
 	}
 
-	private void writeNote(Note note, Integer voice, Integer staff, boolean addChordTag)
-			throws XMLStreamException {
+	private void writeNote(Note note, Integer voice, Integer staff, boolean addChordTag) throws XMLStreamException {
 
 		writeGraceNotes(note, voice, staff, Ornament.Type.GRACE_NOTES);
 
@@ -664,22 +681,73 @@ final class StaxWriter implements MusicXmlWriter {
 			writer.writeEmptyElement(Tags.CHORD);
 		}
 
-		writePitch(note.getPitch());
+		writePitch(note);
 		writeDuration(note.getDuration());
 		writeVoice(voice);
 		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(note.getDuration(), writer);
 		writeStaff(staff);
-		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments());
+		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments(), note.getTechniques());
 
 		writer.writeEndElement();
+
+		if (!artificialHarmonicPitches.isEmpty()) {
+			writeArtificialHarmonicPitches(note.getDuration(), voice, staff);
+			artificialHarmonicPitches.clear();
+		}
 
 		writeGraceNotes(note, voice, staff, Ornament.Type.SUCCEEDING_GRACE_NOTES);
 	}
 
+	private void writeArtificialHarmonicPitches(Duration baseNoteDuration, Integer voice, Integer staff)
+			throws XMLStreamException {
+
+		final var touchingPitch = artificialHarmonicPitches.getOrDefault(
+				Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH, null);
+
+		if (touchingPitch != null) {
+			writeArtificialHarmonicNote(touchingPitch, false, baseNoteDuration, voice, staff, Tags.TOUCHING_PITCH);
+		}
+
+		final var soundingPitch = artificialHarmonicPitches.getOrDefault(
+				Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH, null);
+
+		if (soundingPitch != null) {
+			writeArtificialHarmonicNote(soundingPitch, true, baseNoteDuration, voice, staff, Tags.SOUNDING_PITCH);
+		}
+	}
+
+	private void writeArtificialHarmonicNote(Pitch soundingPitch, boolean hide, Duration baseNoteDuration,
+			Integer voice,
+			Integer staff, String harmonicTypeTag) throws XMLStreamException {
+		writer.writeStartElement(Tags.NOTE);
+		if (hide) {
+			writer.writeAttribute(Tags.PRINT_OBJECT, Tags.NO);
+		}
+		writer.writeEmptyElement(Tags.CHORD);
+		writePitchElement(soundingPitch);
+		writeDuration(baseNoteDuration);
+		writeVoice(voice);
+		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(baseNoteDuration, writer);
+		writeStaff(staff);
+
+		writer.writeStartElement(Tags.NOTATIONS);
+		writer.writeStartElement(Tags.TECHNICAL);
+		writer.writeStartElement(Tags.HARMONIC);
+
+		writer.writeEmptyElement(Tags.ARTIFICIAL);
+		writer.writeEmptyElement(harmonicTypeTag);
+
+		writer.writeEndElement(); // End harmonic
+		writer.writeEndElement(); // End technical
+		writer.writeEndElement(); // End notations
+
+		// End note element
+		writer.writeEndElement();
+	}
+
 	private void writeGraceNotes(Note note, Integer voice, Integer staff, Ornament.Type ornamentType)
 			throws XMLStreamException {
-		final var graceNotes = note.getOrnaments().stream()
-				.filter(ornament -> ornament.getType().equals(ornamentType))
+		final var graceNotes = note.getOrnaments().stream().filter(ornament -> ornament.getType().equals(ornamentType))
 				.findFirst();
 		if (graceNotes.isPresent()) {
 			final var ornamentalNotes = graceNotes.get().getOrnamentalNotes();
@@ -706,13 +774,18 @@ final class StaxWriter implements MusicXmlWriter {
 			writer.writeEmptyElement(Tags.CHORD);
 		}
 
-		writePitch(note.getPitch());
+		writePitch(note);
 		writeVoice(voice);
 		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(note.getDisplayableDuration(), writer);
 		writeStaff(staff);
-		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments());
+		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments(), note.getTechniques());
 
 		writer.writeEndElement();
+
+		if (!artificialHarmonicPitches.isEmpty()) {
+			writeArtificialHarmonicPitches(note.getDisplayableDuration(), voice, staff);
+			artificialHarmonicPitches.clear();
+		}
 	}
 
 	private void writeGraceNoteChord(GraceNoteChord chord, Integer voice, Integer staff) throws XMLStreamException {
@@ -745,15 +818,24 @@ final class StaxWriter implements MusicXmlWriter {
 		writeValue(Tags.DURATION, Integer.toString(toDivisionCount(duration)));
 	}
 
-	private void writePitch(Pitch pitch) throws XMLStreamException {
+	private void writePitch(OptionallyPitched note) throws XMLStreamException {
+		if (note.hasPitch()) {
+			final Pitch pitch = note.getPitch().get();
+			writePitchElement(pitch);
+		} else {
+			final Pitch displayPitch = note.getDisplayPitch();
+			writer.writeStartElement(Tags.UNPITCHED);
+			writeValue(Tags.DISPLAY_STEP, displayPitch.getBase().toString());
+			writeValue(Tags.DISPLAY_OCTAVE, Integer.toString(displayPitch.getOctave()));
+			writer.writeEndElement();
+		}
+	}
+
+	private void writePitchElement(Pitch pitch) throws XMLStreamException {
 		writer.writeStartElement(Tags.PITCH);
-
 		writeValue(Tags.STEP, pitch.getBase().toString());
-
 		writeValue(Tags.ALTER, Integer.toString(pitch.getAccidental().getAlterationInt()));
-
 		writeValue(Tags.OCTAVE, Integer.toString(pitch.getOctave()));
-
 		writer.writeEndElement();
 	}
 
@@ -776,8 +858,7 @@ final class StaxWriter implements MusicXmlWriter {
 	private boolean hasWritableNotations(Notation.Connectable connectable, Collection<Notation> notations) {
 		for (Notation notation : notations) {
 			boolean isBeginningOrEnd = connectable.getConnection(notation)
-					.map(connection -> connection.isBeginning() || connection.isEnd())
-					.orElse(false);
+					.map(connection -> connection.isBeginning() || connection.isEnd()).orElse(false);
 
 			if (isBeginningOrEnd || notation.getType().isArpeggiation()) {
 				return true;
@@ -788,10 +869,11 @@ final class StaxWriter implements MusicXmlWriter {
 	}
 
 	private void writeNotations(Notation.Connectable connectable, Set<Articulation> articulations,
-			Set<Notation> notations, Collection<Ornament> ornaments) throws XMLStreamException {
+			Set<Notation> notations, Collection<Ornament> ornaments, Collection<Technique> techniques)
+			throws XMLStreamException {
 
-		if (articulations.isEmpty() && !hasWritableNotations(connectable, notations) && hasOnlyGraceNoteOrnaments(
-				ornaments)) {
+		if (articulations.isEmpty() && techniques.isEmpty() && !hasWritableNotations(connectable, notations)
+				&& hasOnlyGraceNoteOrnaments(ornaments)) {
 			return;
 		}
 
@@ -799,8 +881,164 @@ final class StaxWriter implements MusicXmlWriter {
 		writeArticulations(articulations);
 		writeConnectedNotations(connectable, notations);
 		writeOrnaments(ornaments);
+		writeTechnicals(techniques);
 
 		writer.writeEndElement();
+	}
+
+	private void writeTechnicals(Collection<Technique> techniques) throws XMLStreamException {
+		if (techniques.isEmpty()) {
+			return;
+		}
+
+		writer.writeStartElement(Tags.TECHNICAL);
+
+		for (final var technique : techniques) {
+			switch (technique.getType()) {
+				case HARMON_MUTE:
+					writeHarmonMuteTechnical(technique);
+					break;
+				case HARMONIC:
+					writeHarmonic(technique);
+					break;
+				case BEND:
+					writeBendElement(technique);
+					break;
+				case HOLE:
+					writeHoleElement(technique);
+					break;
+				case ARROW:
+					writeArrowElement(technique);
+					break;
+				default:
+					writeBasicTechnicalElement(technique);
+			}
+		}
+
+		writer.writeEndElement();
+	}
+
+	private void writeArrowElement(Technique arrow) throws XMLStreamException {
+		writer.writeStartElement(Tags.ARROW);
+
+		final var direction = arrow.getValue(Technique.AdditionalValue.ARROW_DIRECTION, String.class);
+		if (direction.isPresent()) {
+			writeValue(Tags.ARROW_DIRECTION, direction.get());
+		}
+
+		final var style = arrow.getValue(Technique.AdditionalValue.ARROW_STYLE, String.class);
+		if (style.isPresent()) {
+			writeValue(Tags.ARROW_STYLE, style.get());
+		}
+
+		final var arrowhead = arrow.getValue(Technique.AdditionalValue.ARROWHEAD, Boolean.class);
+		if (arrowhead.isPresent() && arrowhead.get().equals(Boolean.TRUE)) {
+			writer.writeEmptyElement(Tags.ARROWHEAD);
+		}
+
+		final var circular = arrow.getValue(Technique.AdditionalValue.CIRCULAR_ARROW, String.class);
+		if (circular.isPresent()) {
+			writeValue(Tags.CIRCULAR_ARROW, circular.get());
+		}
+
+		writer.writeEndElement();
+	}
+
+	private void writeHoleElement(Technique hole) throws XMLStreamException {
+		writer.writeStartElement(Tags.HOLE);
+
+		final var holeType = hole.getValue(Technique.AdditionalValue.WIND_HOLE_TYPE, String.class);
+		if (holeType.isPresent()) {
+			writeValue(Tags.HOLE_TYPE, holeType.get());
+		}
+
+		final var holeClosed = hole.getValue(Technique.AdditionalValue.WIND_HOLE_POSITION, Technique.Opening.class);
+		if (holeClosed.isPresent()) {
+			writeValue(Tags.HOLE_CLOSED, Transforms.openingTypeToText(holeClosed.get()));
+		}
+
+		final var holeShape = hole.getValue(Technique.AdditionalValue.WIND_HOLE_SHAPE, String.class);
+		if (holeShape.isPresent()) {
+			writeValue(Tags.HOLE_SHAPE, holeShape.get());
+		}
+
+		writer.writeEndElement();
+	}
+
+	private void writeBendElement(Technique bend) throws XMLStreamException {
+		writer.writeStartElement(Tags.BEND);
+		final var alter = bend.getValue(Technique.AdditionalValue.BEND_SEMITONES, Double.class);
+		if (alter.isPresent()) {
+			writeValue(Tags.BEND_ALTER, alter.get().toString());
+		}
+
+		final var preBend = bend.getValue(Technique.AdditionalValue.PRE_BEND, Boolean.class);
+		if (preBend.isPresent() && preBend.get().equals(Boolean.TRUE)) {
+			writer.writeEmptyElement(Tags.PRE_BEND);
+		}
+
+		final var release = bend.getValue(Technique.AdditionalValue.BEND_RELEASE, Duration.class);
+		if (release.isPresent()) {
+			writer.writeEmptyElement(Tags.RELEASE);
+			writer.writeAttribute(Tags.OFFSET, Integer.toString(toDivisionCount(release.get())));
+		}
+
+		final var withBar = bend.getValue(Technique.AdditionalValue.BEND_WITH_BAR, String.class);
+		if (withBar.isPresent()) {
+			writeValue(Tags.WITH_BAR, withBar.get());
+		}
+
+		writer.writeEndElement();
+	}
+
+	private void writeHarmonic(Technique harmonic) throws XMLStreamException {
+		final var isNatural = harmonic.getValue(Technique.AdditionalValue.IS_NATURAL_HARMONIC,
+				Technique.AdditionalValue.IS_NATURAL_HARMONIC.getValueClass());
+
+		writer.writeStartElement(Tags.HARMONIC);
+
+		if (isNatural.isPresent() && isNatural.get().equals(Boolean.TRUE)) {
+			writer.writeEmptyElement(Tags.NATURAL);
+		} else {
+			writer.writeEmptyElement(Tags.ARTIFICIAL);
+			writer.writeEmptyElement(Tags.BASE_PITCH);
+
+			// Add the touching and sounding pitches, so they can be written
+			// as separate note elements after the base pitch note element.
+			harmonic.getValue(Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH, Pitch.class).ifPresent(
+					pitch -> artificialHarmonicPitches.put(Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH, pitch));
+
+			harmonic.getValue(Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH, Pitch.class).ifPresent(
+					pitch -> artificialHarmonicPitches.put(Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH, pitch));
+		}
+
+		writer.writeEndElement();
+	}
+
+	private void writeHarmonMuteTechnical(Technique technique) throws XMLStreamException {
+		final var harmonMutePosition = technique.getValue(Technique.AdditionalValue.HARMON_MUTE_POSITION,
+				Technique.Opening.class);
+
+		if (harmonMutePosition.isEmpty()) {
+			LOG.warn("Harmon mute technique marking missing position.");
+			return;
+		}
+
+		writer.writeStartElement(Tags.HARMON_MUTE);
+		final var harmonClosedValue = Transforms.openingTypeToText(harmonMutePosition.get());
+		writeValue(Tags.HARMON_CLOSED, harmonClosedValue);
+		writer.writeEndElement();
+	}
+
+	private void writeBasicTechnicalElement(Technique technique) throws XMLStreamException {
+		final String tag = Transforms.techniqueTypeToTag(technique.getType());
+		if (technique.getText().isPresent()) {
+			writeValue(tag, technique.getText().get());
+		} else if (technique.getNumber().isPresent()) {
+			writeValue(tag, Integer.toString(technique.getNumber().getAsInt()));
+		} else {
+			writer.writeEmptyElement(tag);
+		}
 	}
 
 	private void writeArticulations(Collection<Articulation> articulations) throws XMLStreamException {
@@ -826,9 +1064,8 @@ final class StaxWriter implements MusicXmlWriter {
 	}
 
 	private static boolean isGraceNote(Ornament ornament) {
-		return ornament.getType()
-				.equals(Ornament.Type.SUCCEEDING_GRACE_NOTES)
-				|| ornament.getType().equals(Ornament.Type.GRACE_NOTES);
+		return ornament.getType().equals(Ornament.Type.SUCCEEDING_GRACE_NOTES) || ornament.getType()
+				.equals(Ornament.Type.GRACE_NOTES);
 	}
 
 	private void writeOrnaments(Collection<Ornament> ornaments) throws XMLStreamException {

@@ -49,6 +49,24 @@ public final class Point2D implements Point<Point2D> {
 		this.hash = computeHash();
 	}
 
+	/**
+	 * Returns the number representing the pitch dimension.
+	 *
+	 * @return the number representing the pitch dimension
+	 */
+	public double getPitch() {
+		return pitch;
+	}
+
+	/**
+	 * Returns the number representing onset dimension.
+	 *
+	 * @return the number representing onset dimension
+	 */
+	public double getOnset() {
+		return roundedOnset;
+	}
+
 	@Override
 	public int getDimensionality() {
 		return 2;

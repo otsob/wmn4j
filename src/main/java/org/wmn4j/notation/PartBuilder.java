@@ -25,6 +25,7 @@ public class PartBuilder {
 	private final SortedMap<Integer, List<MeasureBuilder>> staveContents = new TreeMap<>();
 	private final Map<Part.Attribute, String> partAttributes = new HashMap<>();
 	private static final int SINGLE_STAFF_NUMBER = Part.DEFAULT_STAFF_NUMBER;
+	private final Map<Integer, Staff.Type> staffTypes = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -115,9 +116,23 @@ public class PartBuilder {
 	 *
 	 * @param attribute the attribute to be set
 	 * @param value     the value that will be set for the attribute
+	 * @return reference to this
 	 */
-	public void setAttribute(Part.Attribute attribute, String value) {
+	public PartBuilder setAttribute(Part.Attribute attribute, String value) {
 		this.partAttributes.put(attribute, value);
+		return this;
+	}
+
+	/**
+	 * Set the staff type for the staff with the given number.
+	 *
+	 * @param type        the type of the staff
+	 * @param staffNumber the number of the staff for which type is set
+	 * @return reference to this
+	 */
+	public PartBuilder setStaffType(Staff.Type type, int staffNumber) {
+		staffTypes.put(staffNumber, type);
+		return this;
 	}
 
 	/**
@@ -134,8 +149,8 @@ public class PartBuilder {
 	 *
 	 * @return the name set in this builder
 	 */
-	public Optional<String> getName() {
-		return Optional.ofNullable(partAttributes.getOrDefault(Part.Attribute.NAME, null));
+	public String getName() {
+		return partAttributes.getOrDefault(Part.Attribute.NAME, null);
 	}
 
 	private List<Measure> getBuiltMeasures(List<MeasureBuilder> builders) {
@@ -149,13 +164,15 @@ public class PartBuilder {
 	 */
 	public Part build() {
 		if (this.staveContents.size() == 1) {
+			final Staff.Type type = staffTypes.getOrDefault(SINGLE_STAFF_NUMBER, Staff.Type.NORMAL);
 			return SingleStaffPart.of(this.partAttributes,
-					Staff.of(getBuiltMeasures(this.staveContents.get(SINGLE_STAFF_NUMBER))));
+					Staff.of(type, getBuiltMeasures(this.staveContents.get(SINGLE_STAFF_NUMBER))));
 		} else {
 			padShorterStavesWithRestMeasures();
 			final Map<Integer, Staff> staves = new HashMap<>();
 			for (int staffNumber : this.staveContents.keySet()) {
-				staves.put(staffNumber, Staff.of(getBuiltMeasures(this.staveContents.get(staffNumber))));
+				final Staff.Type type = staffTypes.getOrDefault(staffNumber, Staff.Type.NORMAL);
+				staves.put(staffNumber, Staff.of(type, getBuiltMeasures(this.staveContents.get(staffNumber))));
 			}
 
 			return MultiStaffPart.of(this.partAttributes, staves);

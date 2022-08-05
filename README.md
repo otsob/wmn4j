@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 wmn4j is a Java library for handling western music notation. The main purpose of wmn4j is to enable easy and efficient
-analysis of scores and wmn4j is intended to also provide funtionality for algorithmic composition by generating scores.
+analysis of scores and wmn4j is intended to also provide functionality for algorithmic composition by generating scores.
 
 ## The structure of wmn4j
 
@@ -14,6 +14,8 @@ few architectural design principles in wmn4j:
 * All notation classes are immutable
 * Builder classes are used for creating objects
 * Scores can be read using different types of iterators
+
+See the [examples](./examples) directory for simple examples of how to use wmn4j.
 
 ### Building wmn4j
 

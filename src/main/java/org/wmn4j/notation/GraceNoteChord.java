@@ -6,6 +6,7 @@ package org.wmn4j.notation;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -57,12 +58,13 @@ public final class GraceNoteChord implements Ornamental, Iterable<GraceNote> {
 
 	@Override
 	public Type getType() {
-		return this.internalChord.getLowestNote().getType();
+		return this.internalChord.getLowest().getType();
 	}
 
 	/**
-	 * Returns the {@link GraceNote} at the given index counting from lowest pitch in
-	 * this {@link GraceNoteChord}.
+	 * Returns the {@link GraceNote} at the given index counting from lowest staff position
+	 * in this {@link GraceNoteChord}. The position is indicated by the display pitch of the note
+	 * (see {@link GraceNote#getDisplayPitch}).
 	 *
 	 * @param fromLowest index of note, 0 being the lowest note in the chord
 	 * @return the note from index fromLowest
@@ -74,21 +76,43 @@ public final class GraceNoteChord implements Ornamental, Iterable<GraceNote> {
 	}
 
 	/**
-	 * Returns the lowest grace note in this chord.
+	 * Returns the lowest positioned grace note in this chord.
 	 *
-	 * @return the grace note with the lowest pitch in this chord.
+	 * @return the grace note with the lowest staff position in this chord
 	 */
-	public GraceNote getLowestNote() {
-		return internalChord.getLowestNote();
+	public GraceNote getLowest() {
+		return internalChord.getLowest();
 	}
 
 	/**
-	 * Returns the highest grace note in this chord.
+	 * Returns the highest positioned grace note in this chord.
 	 *
-	 * @return the grace note with the highest pitch in this chord.
+	 * @return the grace note with the highest staff position in this chord
 	 */
-	public GraceNote getHighestNote() {
-		return internalChord.getHighestNote();
+	public GraceNote getHighest() {
+		return internalChord.getHighest();
+	}
+
+	/**
+	 * Returns the element with the lowest pitch if there are pitched elements in this chord,
+	 * empty otherwise.
+	 *
+	 * @return the element with the lowest pitch if there are pitched elements in this chord,
+	 * empty otherwise
+	 */
+	Optional<GraceNote> getLowestPitchedNote() {
+		return internalChord.getLowestPitchedNote();
+	}
+
+	/**
+	 * Returns the element with the highest pitch if there are pitched elements in this chord,
+	 * empty otherwise.
+	 *
+	 * @return the element with the highest pitch if there are pitched elements in this chord,
+	 * empty otherwise
+	 */
+	Optional<GraceNote> getHighestPitchedNote() {
+		return internalChord.getHighestPitchedNote();
 	}
 
 	/**

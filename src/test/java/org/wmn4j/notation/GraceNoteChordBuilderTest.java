@@ -30,8 +30,8 @@ class GraceNoteChordBuilderTest {
 
 		assertEquals(3, graceNoteChord.getNoteCount());
 		assertEquals(Durations.EIGHTH, graceNoteChord.getDisplayableDuration());
-		assertEquals(root, graceNoteChord.getLowestNote());
+		assertEquals(root, graceNoteChord.getLowest());
 		assertEquals(third, graceNoteChord.getNote(1));
-		assertEquals(fifth, graceNoteChord.getHighestNote());
+		assertEquals(fifth, graceNoteChord.getHighest());
 	}
 }

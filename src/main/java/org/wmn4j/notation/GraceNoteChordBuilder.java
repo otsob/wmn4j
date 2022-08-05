@@ -29,9 +29,11 @@ public final class GraceNoteChordBuilder implements OrnamentalBuilder, Iterable<
 	 * Adds the given grace note builder to this chord builder.
 	 *
 	 * @param graceNoteBuilder the grace note builder that is added to this builder
+	 * @return reference to this
 	 */
-	public void add(GraceNoteBuilder graceNoteBuilder) {
+	public GraceNoteChordBuilder add(GraceNoteBuilder graceNoteBuilder) {
 		noteBuilders.add(graceNoteBuilder);
+		return this;
 	}
 
 	void setPrincipalNote(NoteBuilder principalNote) {

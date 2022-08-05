@@ -268,7 +268,7 @@ public class PolyphonicPatternTest {
 
 		Map<Integer, List<? extends Durational>> modifiedVoices = createReferencePatternVoices();
 		List<Durational> modifiedVoice = new ArrayList<>(modifiedVoices.get(1));
-		Note note = Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.DOUBLE_FLAT, 4), Durations.SIXTEENTH);
+		Note note = Note.of(Pitch.of(Pitch.Base.D, Pitch.Accidental.DOUBLE_FLAT, 4), Durations.EIGHTH);
 		modifiedVoice.set(0, note);
 		modifiedVoices.put(1, modifiedVoice);
 
