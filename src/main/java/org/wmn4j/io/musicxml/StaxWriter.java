@@ -905,7 +905,7 @@ final class StaxWriter implements MusicXmlWriter {
 					writeHarmonic(technique);
 					break;
 				case BEND:
-					// TODO
+					writeBendElement(technique);
 					break;
 				case HOLE:
 					// TODO
@@ -922,6 +922,32 @@ final class StaxWriter implements MusicXmlWriter {
 				default:
 					writeBasicTechnicalElement(technique);
 			}
+		}
+
+		writer.writeEndElement();
+	}
+
+	private void writeBendElement(Technique bend) throws XMLStreamException {
+		writer.writeStartElement(Tags.BEND);
+		final var alter = bend.getValue(Technique.AdditionalValue.BEND_SEMITONES, Double.class);
+		if (alter.isPresent()) {
+			writeValue(Tags.BEND_ALTER, alter.get().toString());
+		}
+
+		final var preBend = bend.getValue(Technique.AdditionalValue.PRE_BEND, Boolean.class);
+		if (preBend.isPresent() && preBend.get().equals(Boolean.TRUE)) {
+			writer.writeEmptyElement(Tags.PRE_BEND);
+		}
+
+		final var release = bend.getValue(Technique.AdditionalValue.BEND_RELEASE, Duration.class);
+		if (release.isPresent()) {
+			writer.writeEmptyElement(Tags.RELEASE);
+			writer.writeAttribute(Tags.OFFSET, Integer.toString(toDivisionCount(release.get())));
+		}
+
+		final var withBar = bend.getValue(Technique.AdditionalValue.BEND_WITH_BAR, String.class);
+		if (withBar.isPresent()) {
+			writeValue(Tags.WITH_BAR, withBar.get());
 		}
 
 		writer.writeEndElement();

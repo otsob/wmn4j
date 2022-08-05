@@ -135,6 +135,13 @@
                     <technical>
                         <string>4</string>
                         <fingering placement="above">3</fingering>
+                        <bend shape="curved">
+                            <bend-alter>2</bend-alter>
+                        </bend>
+                        <bend shape="curved">
+                            <bend-alter>-2</bend-alter>
+                            <release offset="1"/>
+                        </bend>
                     </technical>
                 </notations>
             </note>

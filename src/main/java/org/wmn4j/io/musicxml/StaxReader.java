@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -705,6 +706,8 @@ final class StaxReader implements MusicXmlReader {
 					consumeHarmonicNote();
 					break;
 				case Tags.BEND:
+					consumeBendElement();
+					break;
 				case Tags.HOLE:
 				case Tags.ARROW:
 				default:
@@ -715,6 +718,36 @@ final class StaxReader implements MusicXmlReader {
 				((NoteBuilder) currentDurationalBuilder).addTechnique(currentTechnique);
 			}
 		}, Tags.TECHNICAL);
+	}
+
+	private void consumeBendElement() throws XMLStreamException {
+		final Map<Technique.AdditionalValue, Object> bendAttributes = new EnumMap<>(Technique.AdditionalValue.class);
+
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.BEND_ALTER:
+					consumeText(text -> currentTechniqueText = text);
+					var alter = Double.parseDouble(currentTechniqueText);
+					bendAttributes.put(Technique.AdditionalValue.BEND_SEMITONES, alter);
+					break;
+				case Tags.PRE_BEND:
+					bendAttributes.put(Technique.AdditionalValue.PRE_BEND, Boolean.TRUE);
+					break;
+				case Tags.RELEASE:
+					Duration offset = divisionsToDuration(reader.getAttributeValue(null, Tags.OFFSET));
+					bendAttributes.put(Technique.AdditionalValue.BEND_RELEASE, offset);
+					break;
+				case Tags.WITH_BAR:
+					consumeText(text -> currentTechniqueText = text);
+					bendAttributes.put(Technique.AdditionalValue.BEND_WITH_BAR, currentTechniqueText);
+					break;
+				default:
+					break;
+			}
+
+		}, Tags.BEND);
+
+		currentTechnique = Technique.of(Technique.Type.BEND, bendAttributes);
 	}
 
 	private void consumeHarmonicNote() throws XMLStreamException {

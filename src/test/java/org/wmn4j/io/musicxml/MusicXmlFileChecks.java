@@ -1306,7 +1306,10 @@ class MusicXmlFileChecks {
 		assertTechniques(measure.get(1, 1), Set.of(Technique.of(Technique.Type.PLUCK, "p")));
 		assertTechniques(measure.get(1, 2),
 				Set.of(Technique.of(Technique.Type.STRING, 4),
-						Technique.of(Technique.Type.FINGERING, 3)));
+						Technique.of(Technique.Type.FINGERING, 3),
+						Technique.of(Technique.Type.BEND, Map.of(Technique.AdditionalValue.BEND_SEMITONES, 2.0)),
+						Technique.of(Technique.Type.BEND, Map.of(Technique.AdditionalValue.BEND_SEMITONES, -2.0,
+								Technique.AdditionalValue.BEND_RELEASE, Durations.EIGHTH))));
 		assertTechniques(measure.get(1, 3),
 				Set.of(Technique.of(Technique.Type.HARMONIC, Map.of(
 						Technique.AdditionalValue.IS_NATURAL_HARMONIC, Boolean.TRUE))));

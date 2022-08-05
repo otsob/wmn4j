@@ -3,6 +3,7 @@
  */
 package org.wmn4j.notation.techniques;
 
+import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Pitch;
 
 import java.util.Map;
@@ -241,6 +242,17 @@ public sealed class Technique permits NumericTechnique, TextualTechnique, Comple
 	 */
 	public enum AdditionalValue {
 		/**
+		 * Denotes releasing a bend at the associated offset from bend start.
+		 */
+		BEND_RELEASE(Duration.class),
+
+		/**
+		 * The alteration in semitones for a bend technique.
+		 * Allows microtonal bends.
+		 */
+		BEND_SEMITONES(Double.class),
+
+		/**
 		 * The base pitch of a harmonic.
 		 */
 		HARMONIC_BASE_PITCH(Pitch.class),
@@ -263,7 +275,17 @@ public sealed class Technique permits NumericTechnique, TextualTechnique, Comple
 		/**
 		 * True for natural harmonics.
 		 */
-		IS_NATURAL_HARMONIC(Boolean.class);
+		IS_NATURAL_HARMONIC(Boolean.class),
+
+		/**
+		 * Denotes a pre-bend.
+		 */
+		PRE_BEND(Boolean.class),
+
+		/**
+		 * Denotes bending using a whammy bar on guitar with a text direction.
+		 */
+		BEND_WITH_BAR(String.class);
 
 		private final Class<?> valueClass;
 

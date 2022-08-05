@@ -32,6 +32,8 @@ final class Tags {
 	static final String BEATS = "beats";
 	static final String BEAT_TYPE = "beat-type";
 	static final String BEND = "bend";
+
+	static final String BEND_ALTER = "bend-alter";
 	static final String BOTTOM = "bottom";
 	static final String BRASS_BEND = "brass-bend";
 	static final String BREATH_MARK = "breath-mark";
@@ -173,11 +175,15 @@ final class Tags {
 	static final String PLACEMENT = "placement";
 	static final String PLOP = "plop";
 	static final String PLUCK = "pluck";
+
+	static final String PRE_BEND = "pre-bend";
+
 	static final String PRINT = "print";
 	static final String PRINT_OBJECT = "print-object";
 	static final String PULL_OFF = "pull-off";
 	static final String REGULAR = "regular";
 	static final String RELATION = "relation";
+	static final String RELEASE = "release";
 	static final String REPEAT = "repeat";
 	static final String REST = "rest";
 	static final String RIGHT = "right";
@@ -239,6 +245,7 @@ final class Tags {
 	static final String VOICE = "voice";
 	static final String WAVY = "wavy";
 	static final String WAVY_LINE = "wavy-line";
+	static final String WITH_BAR = "with-bar";
 	static final String WORDS = "words";
 	static final String WORK = "work";
 	static final String WORK_NUMBER = "work-number";
