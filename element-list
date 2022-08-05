@@ -7,5 +7,6 @@ org.wmn4j.mir.discovery
 org.wmn4j.notation
 org.wmn4j.notation.access
 org.wmn4j.notation.directions
+org.wmn4j.notation.techniques
 org.wmn4j.representation.geometric
 org.wmn4j.utils
