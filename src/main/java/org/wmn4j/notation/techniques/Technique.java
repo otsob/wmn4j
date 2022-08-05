@@ -300,8 +300,22 @@ public sealed class Technique permits NumericTechnique, TextualTechnique, Comple
 		/**
 		 * Denotes the position of a harmon mute.
 		 */
-		HARMON_MUTE_POSITION(Opening.class);
+		HARMON_MUTE_POSITION(Opening.class),
 
+		/**
+		 * The type of hole marking for wind instrument.
+		 */
+		WIND_HOLE_TYPE(String.class),
+
+		/**
+		 * The hole position (open, closed, half open) for a wind instrument hole notation.
+		 */
+		WIND_HOLE_POSITION(Opening.class),
+
+		/**
+		 * The hole symbols shape for wind instrumetn hole notation.
+		 */
+		WIND_HOLE_SHAPE(String.class);
 		private final Class<?> valueClass;
 
 		AdditionalValue(Class<?> valueClass) {

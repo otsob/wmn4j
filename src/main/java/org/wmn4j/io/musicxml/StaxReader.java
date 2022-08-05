@@ -709,6 +709,8 @@ final class StaxReader implements MusicXmlReader {
 					consumeBendElement();
 					break;
 				case Tags.HOLE:
+					consumeHoleElement();
+					break;
 				case Tags.ARROW:
 				default:
 					consumeBasicTechnical(tag);
@@ -718,6 +720,31 @@ final class StaxReader implements MusicXmlReader {
 				((NoteBuilder) currentDurationalBuilder).addTechnique(currentTechnique);
 			}
 		}, Tags.TECHNICAL);
+	}
+
+	private void consumeHoleElement() throws XMLStreamException {
+		final Map<Technique.AdditionalValue, Object> holeAttributes = new EnumMap<>(Technique.AdditionalValue.class);
+
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.HOLE_SHAPE:
+					consumeText(text -> currentTechniqueText = text);
+					holeAttributes.put(Technique.AdditionalValue.WIND_HOLE_SHAPE, currentTechniqueText);
+					break;
+				case Tags.HOLE_CLOSED:
+					consumeText(text -> currentTechniqueText = text);
+					holeAttributes.put(Technique.AdditionalValue.WIND_HOLE_POSITION,
+							Transforms.textToOpeningType(currentTechniqueText));
+					break;
+				case Tags.HOLE_TYPE:
+					consumeText(text -> currentTechniqueText = text);
+					holeAttributes.put(Technique.AdditionalValue.WIND_HOLE_TYPE, currentTechniqueText);
+				default:
+					break;
+			}
+		}, Tags.HOLE);
+
+		currentTechnique = Technique.of(Technique.Type.HOLE, holeAttributes);
 	}
 
 	private void consumeBendElement() throws XMLStreamException {
@@ -779,19 +806,10 @@ final class StaxReader implements MusicXmlReader {
 	private void consumeHarmonMuteTechnical() throws XMLStreamException {
 		consumeUntil(harmonTag -> {
 			consumeText(text -> currentTechniqueText = text);
-			if (Tags.YES.equals(currentTechniqueText)) {
-				currentTechnique = Technique.of(Technique.Type.HARMON_MUTE,
-						Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION,
-								Technique.Opening.CLOSED));
-			} else if (Tags.NO.equals(currentTechniqueText)) {
-				currentTechnique = Technique.of(Technique.Type.HARMON_MUTE,
-						Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION,
-								Technique.Opening.OPEN));
-			} else {
-				currentTechnique = Technique.of(Technique.Type.HARMON_MUTE,
-						Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION,
-								Technique.Opening.HALF_OPEN));
-			}
+			final var opening = Transforms.textToOpeningType(currentTechniqueText);
+			currentTechnique = Technique.of(Technique.Type.HARMON_MUTE,
+					Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION,
+							opening));
 		}, Tags.HARMON_MUTE);
 	}
 

@@ -905,10 +905,7 @@ final class StaxWriter implements MusicXmlWriter {
 					writeBendElement(technique);
 					break;
 				case HOLE:
-					// TODO
-					writer.writeStartElement(Tags.HOLE);
-					writeValue(Tags.HOLE_CLOSED, Tags.YES);
-					writer.writeEndElement();
+					writeHoleElement(technique);
 					break;
 				case ARROW:
 					// TODO
@@ -919,6 +916,27 @@ final class StaxWriter implements MusicXmlWriter {
 				default:
 					writeBasicTechnicalElement(technique);
 			}
+		}
+
+		writer.writeEndElement();
+	}
+
+	private void writeHoleElement(Technique hole) throws XMLStreamException {
+		writer.writeStartElement(Tags.HOLE);
+
+		final var holeType = hole.getValue(Technique.AdditionalValue.WIND_HOLE_TYPE, String.class);
+		if (holeType.isPresent()) {
+			writeValue(Tags.HOLE_TYPE, holeType.get());
+		}
+
+		final var holeClosed = hole.getValue(Technique.AdditionalValue.WIND_HOLE_POSITION, Technique.Opening.class);
+		if (holeClosed.isPresent()) {
+			writeValue(Tags.HOLE_CLOSED, Transforms.openingTypeToText(holeClosed.get()));
+		}
+
+		final var holeShape = hole.getValue(Technique.AdditionalValue.WIND_HOLE_SHAPE, String.class);
+		if (holeShape.isPresent()) {
+			writeValue(Tags.HOLE_SHAPE, holeShape.get());
 		}
 
 		writer.writeEndElement();
@@ -984,15 +1002,8 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 
 		writer.writeStartElement(Tags.HARMON_MUTE);
-
-		if (harmonMutePosition.get().equals(Technique.Opening.CLOSED)) {
-			writeValue(Tags.HARMON_CLOSED, Tags.YES);
-		} else if (technique.getType().equals(Technique.Opening.OPEN)) {
-			writeValue(Tags.HARMON_CLOSED, Tags.NO);
-		} else {
-			writeValue(Tags.HARMON_CLOSED, Tags.HALF);
-		}
-
+		final var harmonClosedValue = Transforms.openingTypeToText(harmonMutePosition.get());
+		writeValue(Tags.HARMON_CLOSED, harmonClosedValue);
 		writer.writeEndElement();
 	}
 

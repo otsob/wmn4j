@@ -101,8 +101,9 @@ final class Tags {
 	static final String HEAVY_LIGHT = "heavy-light";
 	static final String HEEL = "heel";
 	static final String HOLE = "hole";
-
 	static final String HOLE_CLOSED = "hole-closed";
+	static final String HOLE_SHAPE = "hole-shape";
+	static final String HOLE_TYPE = "hole-type";
 	static final String ID = "id";
 	static final String IDENTIFICATION = "identification";
 	static final String INSTRUMENT = "instrument";

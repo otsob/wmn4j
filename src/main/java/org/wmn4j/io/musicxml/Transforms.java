@@ -611,6 +611,32 @@ final class Transforms {
 		}
 	}
 
+	static Technique.Opening textToOpeningType(String text) {
+		switch (text) {
+			case Tags.YES:
+				return Technique.Opening.CLOSED;
+			case Tags.NO:
+				return Technique.Opening.OPEN;
+			case Tags.HALF:
+				return Technique.Opening.HALF_OPEN;
+			default:
+				return null;
+		}
+	}
+
+	static String openingTypeToText(Technique.Opening opening) {
+		switch (opening) {
+			case CLOSED:
+				return Tags.YES;
+			case OPEN:
+				return Tags.NO;
+			case HALF_OPEN:
+				return Tags.HALF;
+			default:
+				return null;
+		}
+	}
+
 	private Transforms() {
 		throw new UnsupportedOperationException("Not meant to be instantiated");
 	}

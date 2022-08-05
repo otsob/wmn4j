@@ -1322,7 +1322,10 @@ class MusicXmlFileChecks {
 						Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 5),
 						Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH,
 						Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 7)))));
-		assertTechniques(measure.get(1, 5), Set.of(Technique.of(Technique.Type.HOLE)));
+		assertTechniques(measure.get(1, 5), Set.of(Technique.of(Technique.Type.HOLE,
+				Map.of(Technique.AdditionalValue.WIND_HOLE_TYPE, "thumb",
+						Technique.AdditionalValue.WIND_HOLE_POSITION, Technique.Opening.OPEN,
+						Technique.AdditionalValue.WIND_HOLE_SHAPE, "circle"))));
 		assertTechniques(measure.get(1, 6), Set.of(Technique.of(Technique.Type.ARROW)));
 		assertTechniques(measure.get(1, 7), Set.of(Technique.of(Technique.Type.HARMON_MUTE,
 				Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION, Technique.Opening.HALF_OPEN))));
