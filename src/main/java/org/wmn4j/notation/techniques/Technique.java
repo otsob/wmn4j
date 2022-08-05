@@ -163,19 +163,9 @@ public sealed class Technique permits NumericTechnique, TextualTechnique, Comple
 		HALF_MUTED(false, false, false),
 
 		/**
-		 * Indicates use of a closed harmon mute with brass instruments.
+		 * Indicates use of a harmon mute with brass instruments.
 		 */
-		HARMON_MUTE_CLOSED(false, false, false),
-
-		/**
-		 * Indicates use of an open harmon mute with brass instruments.
-		 */
-		HARMON_MUTE_OPEN(false, false, false),
-
-		/**
-		 * Indicates use of a half-open harmon mute with brass instruments.
-		 */
-		HARMON_MUTE_HALF_OPEN(false, false, false),
+		HARMON_MUTE(false, false, true),
 
 		/**
 		 * Represents the golpe symbol that is used for indicating tapping the pick guard in guitar music.
@@ -238,6 +228,26 @@ public sealed class Technique permits NumericTechnique, TextualTechnique, Comple
 	}
 
 	/**
+	 * Denotes hole/mute positions on wind instruments.
+	 */
+	public enum Opening {
+		/**
+		 * Fully open.
+		 */
+		OPEN,
+
+		/**
+		 * Fully closed.
+		 */
+		CLOSED,
+
+		/**
+		 * Half open.
+		 */
+		HALF_OPEN;
+	}
+
+	/**
 	 * Denotes the additional values of more complex technique types.
 	 */
 	public enum AdditionalValue {
@@ -285,7 +295,12 @@ public sealed class Technique permits NumericTechnique, TextualTechnique, Comple
 		/**
 		 * Denotes bending using a whammy bar on guitar with a text direction.
 		 */
-		BEND_WITH_BAR(String.class);
+		BEND_WITH_BAR(String.class),
+
+		/**
+		 * Denotes the position of a harmon mute.
+		 */
+		HARMON_MUTE_POSITION(Opening.class);
 
 		private final Class<?> valueClass;
 

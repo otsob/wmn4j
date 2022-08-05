@@ -895,10 +895,7 @@ final class StaxWriter implements MusicXmlWriter {
 
 		for (final var technique : techniques) {
 			switch (technique.getType()) {
-				case HARMON_MUTE_CLOSED:
-				case HARMON_MUTE_OPEN:
-				case HARMON_MUTE_HALF_OPEN:
-					// Write harmon mute technical
+				case HARMON_MUTE:
 					writeHarmonMuteTechnical(technique);
 					break;
 				case HARMONIC:
@@ -978,10 +975,19 @@ final class StaxWriter implements MusicXmlWriter {
 	}
 
 	private void writeHarmonMuteTechnical(Technique technique) throws XMLStreamException {
+		final var harmonMutePosition = technique.getValue(Technique.AdditionalValue.HARMON_MUTE_POSITION,
+				Technique.Opening.class);
+
+		if (harmonMutePosition.isEmpty()) {
+			LOG.warn("Harmon mute technique marking missing position.");
+			return;
+		}
+
 		writer.writeStartElement(Tags.HARMON_MUTE);
-		if (technique.getType().equals(Technique.Type.HARMON_MUTE_CLOSED)) {
+
+		if (harmonMutePosition.get().equals(Technique.Opening.CLOSED)) {
 			writeValue(Tags.HARMON_CLOSED, Tags.YES);
-		} else if (technique.getType().equals(Technique.Type.HARMON_MUTE_OPEN)) {
+		} else if (technique.getType().equals(Technique.Opening.OPEN)) {
 			writeValue(Tags.HARMON_CLOSED, Tags.NO);
 		} else {
 			writeValue(Tags.HARMON_CLOSED, Tags.HALF);

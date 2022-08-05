@@ -780,11 +780,17 @@ final class StaxReader implements MusicXmlReader {
 		consumeUntil(harmonTag -> {
 			consumeText(text -> currentTechniqueText = text);
 			if (Tags.YES.equals(currentTechniqueText)) {
-				currentTechnique = Technique.of(Technique.Type.HARMON_MUTE_CLOSED);
+				currentTechnique = Technique.of(Technique.Type.HARMON_MUTE,
+						Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION,
+								Technique.Opening.CLOSED));
 			} else if (Tags.NO.equals(currentTechniqueText)) {
-				currentTechnique = Technique.of(Technique.Type.HARMON_MUTE_OPEN);
+				currentTechnique = Technique.of(Technique.Type.HARMON_MUTE,
+						Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION,
+								Technique.Opening.OPEN));
 			} else {
-				currentTechnique = Technique.of(Technique.Type.HARMON_MUTE_HALF_OPEN);
+				currentTechnique = Technique.of(Technique.Type.HARMON_MUTE,
+						Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION,
+								Technique.Opening.HALF_OPEN));
 			}
 		}, Tags.HARMON_MUTE);
 	}

@@ -1324,6 +1324,7 @@ class MusicXmlFileChecks {
 						Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 7)))));
 		assertTechniques(measure.get(1, 5), Set.of(Technique.of(Technique.Type.HOLE)));
 		assertTechniques(measure.get(1, 6), Set.of(Technique.of(Technique.Type.ARROW)));
-		assertTechniques(measure.get(1, 7), Set.of(Technique.of(Technique.Type.HARMON_MUTE_HALF_OPEN)));
+		assertTechniques(measure.get(1, 7), Set.of(Technique.of(Technique.Type.HARMON_MUTE,
+				Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION, Technique.Opening.HALF_OPEN))));
 	}
 }

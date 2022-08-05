@@ -600,9 +600,7 @@ final class Transforms {
 				return Tags.OPEN;
 			case HALF_MUTED:
 				return Tags.HALF_MUTED;
-			case HARMON_MUTE_CLOSED: // Fall through
-			case HARMON_MUTE_OPEN: // Fall through
-			case HARMON_MUTE_HALF_OPEN:
+			case HARMON_MUTE:
 				return Tags.HARMON_MUTE;
 			case GOLPE:
 				return Tags.GOLPE;
