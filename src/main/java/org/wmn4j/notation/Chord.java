@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -20,7 +21,7 @@ public final class Chord implements Durational, Iterable<Note> {
 	private final GenericChord<Note> internalChord;
 
 	/**
-	 * Returns an instance of with the given {@link Note} objects.
+	 * Returns a chord with the given {@link Note} objects.
 	 *
 	 * @param n A non-empty and non-null array of {@link Note} objects
 	 * @return a chord with the given notes
@@ -66,11 +67,17 @@ public final class Chord implements Durational, Iterable<Note> {
 		return this.internalChord.getNote(0).getDuration();
 	}
 
+	@Override
+	public boolean isChord() {
+		return true;
+	}
+
 	/**
-	 * Returns the {@link Note} at the given index counting from lowest pitch in
-	 * this {@link Chord}.
+	 * Returns the {@link Note} at the given index counting from lowest staff position
+	 * in this {@link Chord}. The position is indicated by the display pitch of the note
+	 * (see {@link Note#getDisplayPitch}).
 	 *
-	 * @param fromLowest index of note, 0 being the lowest note in the chord
+	 * @param fromLowest index of note, 0 being the lowest staff positioned note in the chord
 	 * @return the note from index fromLowest
 	 * @throws IllegalArgumentException if fromLowest is smaller than 0 or at least
 	 *                                  the number of notes in this Chord
@@ -80,21 +87,43 @@ public final class Chord implements Durational, Iterable<Note> {
 	}
 
 	/**
-	 * Returns the lowest note in this chord.
+	 * Returns the lowest positioned note in this chord.
 	 *
-	 * @return the note with the lowest pitch in this Chord.
+	 * @return the note with the lowest staff position in this Chord
 	 */
-	public Note getLowestNote() {
-		return internalChord.getLowestNote();
+	public Note getLowest() {
+		return internalChord.getLowest();
 	}
 
 	/**
-	 * Returns the highest note in this chord.
+	 * Returns the highest positioned note in this chord.
 	 *
-	 * @return the note with the highest pitch in this Chord.
+	 * @return the note with the highest staff position in this Chord
 	 */
-	public Note getHighestNote() {
-		return internalChord.getHighestNote();
+	public Note getHighest() {
+		return internalChord.getHighest();
+	}
+
+	/**
+	 * Returns the element with the lowest pitch if there are pitched elements in this chord,
+	 * empty otherwise.
+	 *
+	 * @return the element with the lowest pitch if there are pitched elements in this chord,
+	 * empty otherwise
+	 */
+	Optional<Note> getLowestPitchedNote() {
+		return internalChord.getLowestPitchedNote();
+	}
+
+	/**
+	 * Returns the element with the highest pitch if there are pitched elements in this chord,
+	 * empty otherwise.
+	 *
+	 * @return the element with the highest pitch if there are pitched elements in this chord,
+	 * empty otherwise
+	 */
+	Optional<Note> getHighestPitchedNote() {
+		return internalChord.getHighestPitchedNote();
 	}
 
 	/**

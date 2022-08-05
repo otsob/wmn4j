@@ -85,6 +85,15 @@ public interface Part extends Iterable<Measure> {
 	}
 
 	/**
+	 * Returns the staff with the given number.
+	 *
+	 * @param staffNumber the number of the staff to return
+	 * @return the staff with the given number
+	 * @throws NoSuchElementException if no staff with given number exists in this part
+	 */
+	Staff getStaff(int staffNumber);
+
+	/**
 	 * Returns the number of measures in this part. The count is based on the
 	 * measure numbers, so even if a part has multiple staves its measure count is
 	 * the largest measure number.

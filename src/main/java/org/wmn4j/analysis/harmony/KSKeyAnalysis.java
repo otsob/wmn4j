@@ -5,10 +5,8 @@ package org.wmn4j.analysis.harmony;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Key;
-import org.wmn4j.notation.Note;
 import org.wmn4j.notation.PitchClass;
 import org.wmn4j.notation.Score;
 
@@ -67,11 +65,11 @@ public final class KSKeyAnalysis implements KeyAnalysis {
 		final ChromagramBuilder builder = new ChromagramBuilder(ChromagramBuilder::durationWeight);
 		while (selectionIterator.hasNext()) {
 			Durational dur = selectionIterator.next();
-			if (dur instanceof Note) {
-				builder.add((Note) dur);
+			if (dur.isNote()) {
+				builder.add(dur.toNote());
 			}
-			if (dur instanceof Chord) {
-				builder.add((Chord) dur);
+			if (dur.isChord()) {
+				builder.add(dur.toChord());
 			}
 		}
 

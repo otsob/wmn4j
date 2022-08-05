@@ -27,6 +27,7 @@ import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
 import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.directions.Direction;
+import org.wmn4j.notation.techniques.Technique;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -45,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -97,7 +99,14 @@ final class StaxReader implements MusicXmlReader {
 
 	private String currentStep;
 	private int currentAlter;
+	private boolean isCurrentUnpitched;
 	private int currentOctave;
+
+	private Pitch currentPitch;
+
+	private Technique currentTechnique;
+	private String currentTechniqueText;
+	private Map<Technique.AdditionalValue, Object> currentAdditionalTechValues;
 
 	private boolean isClosed;
 
@@ -220,8 +229,8 @@ final class StaxReader implements MusicXmlReader {
 	}
 
 	private boolean isCompressed(Path path, String extension) throws IOException {
-		return Objects.equals(Files.probeContentType(path), CompressedMxl.COMPRESSED_CONTENT_TYPE)
-				|| Objects.equals(COMPRESSED_EXTENSION, extension);
+		return Objects.equals(Files.probeContentType(path), CompressedMxl.COMPRESSED_CONTENT_TYPE) || Objects.equals(
+				COMPRESSED_EXTENSION, extension);
 	}
 
 	private String getExtension(Path path) {
@@ -276,8 +285,7 @@ final class StaxReader implements MusicXmlReader {
 		inputStream = null;
 	}
 
-	private InputStream getStreamToZipEntry(Path path) throws
-			ParsingFailureException, IOException, XMLStreamException {
+	private InputStream getStreamToZipEntry(Path path) throws ParsingFailureException, IOException, XMLStreamException {
 		compressedFile = new ZipFile(path.toString());
 		findMainMusicXmlFile(compressedFile);
 		var entries = compressedFile.entries();
@@ -312,8 +320,7 @@ final class StaxReader implements MusicXmlReader {
 		return event == XMLStreamConstants.END_ELEMENT && Objects.equals(tag, reader.getLocalName());
 	}
 
-	@FunctionalInterface
-	interface ElementConsumer {
+	@FunctionalInterface interface ElementConsumer {
 		/**
 		 * Consumes an internal element of a containing element and stops the cursor
 		 * at the end tag of the consumed internal element.
@@ -448,11 +455,9 @@ final class StaxReader implements MusicXmlReader {
 			switch (tag) {
 				case Tags.DURATION:
 					if (element.equals(Tags.FORWARD)) {
-						consumeText(text ->
-								partContext.addForwardDuration(divisionsToDuration(text)));
+						consumeText(text -> partContext.addForwardDuration(divisionsToDuration(text)));
 					} else if (element.equals(Tags.BACKUP)) {
-						consumeText(text ->
-								partContext.addBackupDuration(divisionsToDuration(text)));
+						consumeText(text -> partContext.addBackupDuration(divisionsToDuration(text)));
 					}
 					break;
 				case Tags.STAFF:
@@ -464,7 +469,7 @@ final class StaxReader implements MusicXmlReader {
 		}, element);
 	}
 
-	private void updateMeasureNumber() throws XMLStreamException {
+	private void updateMeasureNumber() {
 		try {
 			final String measureNumberStr = reader.getAttributeValue(null, Tags.NUMBER).replaceAll("\\D", "");
 			partContext.setMeasureNumber(Integer.parseInt(measureNumberStr));
@@ -568,7 +573,8 @@ final class StaxReader implements MusicXmlReader {
 					consumeText(text -> currentDurDivisions = Integer.parseInt(text));
 					break;
 				case Tags.PITCH:
-					consumePitchElem();
+				case Tags.UNPITCHED:
+					consumePitchElem(tag);
 					break;
 				case Tags.VOICE:
 					consumeText(text -> partContext.setVoice(Integer.parseInt(text)));
@@ -603,8 +609,7 @@ final class StaxReader implements MusicXmlReader {
 					break;
 				case Tags.TYPE:
 					if (currentConnectableBuilder instanceof GraceNoteBuilder) {
-						consumeText(text -> currentDurationalBuilder.setDuration(
-								Transforms.noteTypeToDuration(text)));
+						consumeText(text -> currentDurationalBuilder.setDuration(Transforms.noteTypeToDuration(text)));
 					} else {
 						skipElement();
 					}
@@ -618,7 +623,6 @@ final class StaxReader implements MusicXmlReader {
 				case Tags.NOTEHEAD_TEXT:
 				case Tags.NOTEHEAD:
 				case Tags.STEM:
-				case Tags.UNPITCHED:
 				default:
 					skipElement();
 
@@ -638,9 +642,12 @@ final class StaxReader implements MusicXmlReader {
 
 		if (currentDurationalBuilder instanceof NoteBuilder) {
 			final NoteBuilder currentNoteBuilder = (NoteBuilder) currentDurationalBuilder;
-			currentNoteBuilder.setPitch(
-					Pitch.of(Transforms.stepToPitchBase(currentStep), Transforms.alterToAccidental(currentAlter),
-							currentOctave));
+
+			if (isCurrentUnpitched) {
+				currentNoteBuilder.setUnpitched().setDisplayPitch(currentPitch);
+			} else {
+				currentNoteBuilder.setPitch(currentPitch);
+			}
 
 			if (currentConnectableBuilder instanceof NoteBuilder) {
 				partContext.updateChordBuffer(currentNoteBuilder);
@@ -674,6 +681,9 @@ final class StaxReader implements MusicXmlReader {
 				case Tags.ORNAMENTS:
 					consumeOrnamentsElem();
 					break;
+				case Tags.TECHNICAL:
+					consumePlayingTechniques();
+					break;
 				default:
 					if (Tags.CONNECTED_NOTATIONS.contains(tag)) {
 						readConnectedNotationElemAttributes(tag);
@@ -682,6 +692,178 @@ final class StaxReader implements MusicXmlReader {
 					skipElement();
 			}
 		}, Tags.NOTATIONS);
+	}
+
+	private void consumePlayingTechniques() throws XMLStreamException {
+		currentTechnique = null;
+
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.HARMON_MUTE:
+					consumeHarmonMuteTechnical();
+					break;
+				case Tags.HARMONIC:
+					consumeHarmonicNote();
+					break;
+				case Tags.BEND:
+					consumeBendElement();
+					break;
+				case Tags.HOLE:
+					consumeHoleElement();
+					break;
+				case Tags.ARROW:
+					consumeArrowElement();
+					break;
+				default:
+					consumeBasicTechnical(tag);
+			}
+
+			if (currentDurationalBuilder instanceof NoteBuilder && currentTechnique != null) {
+				((NoteBuilder) currentDurationalBuilder).addTechnique(currentTechnique);
+			}
+		}, Tags.TECHNICAL);
+	}
+
+	private void consumeArrowElement() throws XMLStreamException {
+		final Map<Technique.AdditionalValue, Object> arrowAttributes = new EnumMap<>(Technique.AdditionalValue.class);
+
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.ARROW_DIRECTION:
+					consumeText(text -> currentTechniqueText = text);
+					arrowAttributes.put(Technique.AdditionalValue.ARROW_DIRECTION, currentTechniqueText);
+					break;
+				case Tags.ARROW_STYLE:
+					consumeText(text -> currentTechniqueText = text);
+					arrowAttributes.put(Technique.AdditionalValue.ARROW_STYLE, currentTechniqueText);
+					break;
+				case Tags.ARROWHEAD:
+					arrowAttributes.put(Technique.AdditionalValue.ARROWHEAD, Boolean.TRUE);
+					break;
+				case Tags.CIRCULAR_ARROW:
+					consumeText(text -> currentTechniqueText = text);
+					arrowAttributes.put(Technique.AdditionalValue.CIRCULAR_ARROW, currentTechniqueText);
+					break;
+				default:
+					break;
+			}
+
+		}, Tags.ARROW);
+
+		currentTechnique = Technique.of(Technique.Type.ARROW, arrowAttributes);
+	}
+
+	private void consumeHoleElement() throws XMLStreamException {
+		final Map<Technique.AdditionalValue, Object> holeAttributes = new EnumMap<>(Technique.AdditionalValue.class);
+
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.HOLE_SHAPE:
+					consumeText(text -> currentTechniqueText = text);
+					holeAttributes.put(Technique.AdditionalValue.WIND_HOLE_SHAPE, currentTechniqueText);
+					break;
+				case Tags.HOLE_CLOSED:
+					consumeText(text -> currentTechniqueText = text);
+					holeAttributes.put(Technique.AdditionalValue.WIND_HOLE_POSITION,
+							Transforms.textToOpeningType(currentTechniqueText));
+					break;
+				case Tags.HOLE_TYPE:
+					consumeText(text -> currentTechniqueText = text);
+					holeAttributes.put(Technique.AdditionalValue.WIND_HOLE_TYPE, currentTechniqueText);
+				default:
+					break;
+			}
+		}, Tags.HOLE);
+
+		currentTechnique = Technique.of(Technique.Type.HOLE, holeAttributes);
+	}
+
+	private void consumeBendElement() throws XMLStreamException {
+		final Map<Technique.AdditionalValue, Object> bendAttributes = new EnumMap<>(Technique.AdditionalValue.class);
+
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.BEND_ALTER:
+					consumeText(text -> currentTechniqueText = text);
+					var alter = Double.parseDouble(currentTechniqueText);
+					bendAttributes.put(Technique.AdditionalValue.BEND_SEMITONES, alter);
+					break;
+				case Tags.PRE_BEND:
+					bendAttributes.put(Technique.AdditionalValue.PRE_BEND, Boolean.TRUE);
+					break;
+				case Tags.RELEASE:
+					Duration offset = divisionsToDuration(reader.getAttributeValue(null, Tags.OFFSET));
+					bendAttributes.put(Technique.AdditionalValue.BEND_RELEASE, offset);
+					break;
+				case Tags.WITH_BAR:
+					consumeText(text -> currentTechniqueText = text);
+					bendAttributes.put(Technique.AdditionalValue.BEND_WITH_BAR, currentTechniqueText);
+					break;
+				default:
+					break;
+			}
+
+		}, Tags.BEND);
+
+		currentTechnique = Technique.of(Technique.Type.BEND, bendAttributes);
+	}
+
+	private void consumeHarmonicNote() throws XMLStreamException {
+		consumeUntil(harmonicTag -> {
+			switch (harmonicTag) {
+				case Tags.ARTIFICIAL:
+					partContext.setArtificialHarmonic();
+					break;
+				case Tags.BASE_PITCH:
+					partContext.setArtificialHarmonicBasePitch(currentPitch);
+					break;
+				case Tags.TOUCHING_PITCH:
+					partContext.setArtificialHarmonicTouchingPitch(currentPitch);
+					break;
+				case Tags.SOUNDING_PITCH:
+					partContext.setArtificialHarmonicSoundingPitch(currentPitch);
+					break;
+				case Tags.NATURAL:
+					currentTechnique = Technique.of(Technique.Type.HARMONIC,
+							Map.of(Technique.AdditionalValue.IS_NATURAL_HARMONIC, Boolean.TRUE));
+					break;
+				default:
+					break;
+			}
+
+		}, Tags.HARMONIC);
+	}
+
+	private void consumeHarmonMuteTechnical() throws XMLStreamException {
+		consumeUntil(harmonTag -> {
+			consumeText(text -> currentTechniqueText = text);
+			final var opening = Transforms.textToOpeningType(currentTechniqueText);
+			currentTechnique = Technique.of(Technique.Type.HARMON_MUTE,
+					Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION,
+							opening));
+		}, Tags.HARMON_MUTE);
+	}
+
+	private void consumeBasicTechnical(String tag) throws XMLStreamException {
+		final var type = Transforms.tagToTechniqueType(tag);
+
+		if (type == null) {
+			LOG.warn("Could not find type for technical tag {}", tag);
+			return;
+		}
+
+		currentTechniqueText = null;
+		consumeText(text -> currentTechniqueText = text);
+
+		if (currentTechniqueText != null) {
+			try {
+				currentTechnique = Technique.of(type, Integer.parseInt(currentTechniqueText));
+			} catch (NumberFormatException e) {
+				currentTechnique = Technique.of(type, currentTechniqueText);
+			}
+		} else {
+			currentTechnique = Technique.of(type);
+		}
 	}
 
 	private void consumeOrnamentsElem() throws XMLStreamException {
@@ -723,8 +905,7 @@ final class StaxReader implements MusicXmlReader {
 		final String elementRoleType = reader.getAttributeValue(null, Tags.TYPE);
 		final String arpeggioDirection = reader.getAttributeValue(null, Tags.DIRECTION);
 		final Notation.Type type = Transforms.stringToNotationType(notationTag, arpeggioDirection);
-		final Notation.Style style = Transforms.stringToNotationStyle(
-				reader.getAttributeValue(null, Tags.LINE_TYPE));
+		final Notation.Style style = Transforms.stringToNotationStyle(reader.getAttributeValue(null, Tags.LINE_TYPE));
 		final int notationNumber = NotationReadResolver.parseNotationNumber(
 				reader.getAttributeValue(null, Tags.NUMBER));
 		if (!(currentDurationalBuilder instanceof ConnectableBuilder)) {
@@ -757,21 +938,31 @@ final class StaxReader implements MusicXmlReader {
 		}, Tags.ARTICULATIONS);
 	}
 
-	private void consumePitchElem() throws XMLStreamException {
+	private void consumePitchElem(String pitchTag) throws XMLStreamException {
 		// Alter is optional, so it needs to be set to zero to account for the absence of the element.
 		currentAlter = 0;
+		if (pitchTag.equals(Tags.PITCH)) {
+			isCurrentUnpitched = false;
+		} else if (pitchTag.equals(Tags.UNPITCHED)) {
+			isCurrentUnpitched = true;
+		}
 
 		consumeUntil(tag -> {
 			switch (tag) {
 				case Tags.STEP:
+				case Tags.DISPLAY_STEP:
 					consumeText(text -> currentStep = text);
 					break;
 				case Tags.ALTER:
 					consumeText(text -> currentAlter = Integer.parseInt(text));
 				case Tags.OCTAVE:
+				case Tags.DISPLAY_OCTAVE:
 					consumeText(text -> currentOctave = Integer.parseInt(text));
 			}
-		}, Tags.PITCH);
+		}, pitchTag);
+
+		currentPitch = Pitch.of(Transforms.stepToPitchBase(currentStep),
+				Transforms.alterToAccidental(currentAlter), currentOctave);
 	}
 
 	private void consumeAttributesElem() throws XMLStreamException {
@@ -791,10 +982,12 @@ final class StaxReader implements MusicXmlReader {
 				case Tags.CLEF:
 					consumeClefElem();
 					break;
+				case Tags.STAFF_DETAILS:
+					consumeStaffDetails();
+					break;
 				// Fall through for elements that are currently not supported
 				case Tags.PART_SYMBOL:
 				case Tags.INSTRUMENTS:
-				case Tags.STAFF_DETAILS:
 				case Tags.TRANSPOSE:
 				case Tags.FOR_PART:
 				case Tags.DIRECTIVE:
@@ -806,13 +999,25 @@ final class StaxReader implements MusicXmlReader {
 		}, Tags.ATTRIBUTES);
 	}
 
+	private void consumeStaffDetails() throws XMLStreamException {
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.STAFF_LINES:
+					consumeText(text -> partContext.setStaffLines(Integer.parseInt(text)));
+					break;
+				default:
+					break;
+
+			}
+		}, Tags.STAFF_DETAILS);
+	}
+
 	private void consumeKeyElem() throws XMLStreamException {
 		consumeUntil(tag -> {
 			switch (tag) {
 				case Tags.FIFTHS:
-					consumeText(
-							text -> partContext.getMeasureBuilder()
-									.setKeySignature(Transforms.fifthsToKeySig(Integer.parseInt(text))));
+					consumeText(text -> partContext.getMeasureBuilder()
+							.setKeySignature(Transforms.fifthsToKeySig(Integer.parseInt(text))));
 					break;
 				// Fall through for elements that are currently not supported
 				case Tags.MODE:

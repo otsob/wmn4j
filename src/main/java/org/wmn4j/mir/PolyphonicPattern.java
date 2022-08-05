@@ -6,9 +6,9 @@ package org.wmn4j.mir;
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Note;
+import org.wmn4j.representation.geometric.PointPattern;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,7 +21,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Class that represents a polyphonic pattern. In a polyphonic pattern there can be
@@ -54,7 +53,7 @@ final class PolyphonicPattern implements Pattern {
 		if (this.voices.keySet().size() == 1) {
 			final Integer voiceNumber = this.voices.keySet().iterator().next();
 			final boolean isMonophonic = this.voices.get(voiceNumber).stream()
-					.noneMatch(durational -> durational instanceof Chord);
+					.noneMatch(durational -> durational.isChord());
 			if (isMonophonic) {
 				throw new IllegalArgumentException("Trying to create a polyphonic pattern with monophonic contents");
 			}
@@ -219,17 +218,17 @@ final class PolyphonicPattern implements Pattern {
 			Durational durationalA = voiceAWithoutRests.get(i);
 			Durational durationalB = voiceBWithoutRests.get(i);
 
-			if (durationalA instanceof Chord && durationalB instanceof Chord) {
-				Chord chordA = (Chord) durationalA;
-				Chord chordB = (Chord) durationalB;
+			if (durationalA.isChord() && durationalB.isChord()) {
+				Chord chordA = durationalA.toChord();
+				Chord chordB = durationalB.toChord();
 
 				if (!areChordsEqualWithTransformedNotes(chordA, chordB, voiceANoteTransformation,
 						voiceBNoteTransformation)) {
 					return false;
 				}
-			} else if (durationalA instanceof Note && durationalB instanceof Note) {
-				Note noteA = (Note) durationalA;
-				Note noteB = (Note) durationalB;
+			} else if (durationalA.isNote() && durationalB.isNote()) {
+				Note noteA = durationalA.toNote();
+				Note noteB = durationalB.toNote();
 
 				if (!voiceANoteTransformation.apply(noteA).equals(voiceBNoteTransformation.apply(noteB))) {
 					return false;
@@ -281,52 +280,38 @@ final class PolyphonicPattern implements Pattern {
 
 	@Override
 	public boolean equalsEnharmonically(Pattern other) {
-		BiFunction<Iterable<Durational>, Iterable<Durational>, Boolean> equalsEnharmonically = (voiceA, voiceB) ->
-				isNoteContentEqualWithTransformation(voiceA, voiceB, note -> note.getPitch().toInt());
-		return containsEqualVoices(other, equalsEnharmonically);
+		final var thisPitches = PointPattern.from(this);
+		final var otherPitches = PointPattern.from(other);
+
+		if (thisPitches.size() != otherPitches.size()) {
+			return false;
+		}
+
+		for (int i = 0; i < thisPitches.size(); ++i) {
+			if (thisPitches.get(i).getPitch() != otherPitches.get(i).getPitch()) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Override
 	public boolean equalsTranspositionally(Pattern other) {
+		final var thisIntervals = PointPattern.from(this).vectorized();
+		final var otherIntervals = PointPattern.from(other).vectorized();
 
-		Function<Durational, Integer> toPitchNumber = durational -> {
-			if (durational instanceof Note) {
-				return ((Note) durational).getPitch().toInt();
-			}
+		if (thisIntervals.size() != otherIntervals.size()) {
+			return false;
+		}
 
-			return ((Chord) durational).getLowestNote().getPitch().toInt();
-		};
-
-		// Get the first pitches available in this patterns voices. For chords get the lowest.
-		Collection<Integer> firstPitchNumbersInThis = voices.values().stream()
-				.map(voice -> voice.stream().filter(durational -> !durational.isRest()).findFirst())
-				.filter(first -> first.isPresent())
-				.map(Optional::get)
-				.map(toPitchNumber).collect(Collectors.toList());
-
-		// Get the first pitch number of one voice from other.
-
-		Integer pitchNumberInOther = null;
-		for (Durational durational : other.getVoice(other.getVoiceNumbers().get(0))) {
-			if (!durational.isRest()) {
-				pitchNumberInOther = toPitchNumber.apply(durational);
-				break;
+		for (int i = 0; i < thisIntervals.size(); ++i) {
+			if (thisIntervals.get(i).getPitch() != otherIntervals.get(i).getPitch()) {
+				return false;
 			}
 		}
 
-		// Based on the pitch differences, create all tranpositional equivalence comparisons for the
-		// possible transposition candidates.
-		Collection<BiFunction<Iterable<Durational>, Iterable<Durational>, Boolean>> transpositionalEquivalenceCandidates
-				= new ArrayList<>();
-		for (Integer firstPitchNumberInThis : firstPitchNumbersInThis) {
-			final int transposition = pitchNumberInOther - firstPitchNumberInThis;
-			transpositionalEquivalenceCandidates.add((voiceA, voiceB) ->
-					isNoteContentEqualWithTransformations(voiceA, voiceB,
-							note -> note.getPitch().toInt() + transposition, note -> note.getPitch().toInt()));
-		}
-
-		return transpositionalEquivalenceCandidates.stream()
-				.anyMatch(transpositionallyEquals -> containsEqualVoices(other, transpositionallyEquals));
+		return true;
 	}
 
 	@Override

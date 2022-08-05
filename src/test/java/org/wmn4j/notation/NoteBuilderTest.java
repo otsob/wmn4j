@@ -24,7 +24,7 @@ class NoteBuilderTest {
 		final Note noteWithoutArticulations = Note.of(Pitch.Base.A, Pitch.Accidental.FLAT, 2, Duration.of(1, 12));
 		NoteBuilder builderWithoutArticulations = new NoteBuilder(noteWithoutArticulations);
 
-		assertEquals(noteWithoutArticulations.getPitch(), builderWithoutArticulations.getPitch());
+		assertEquals(noteWithoutArticulations.getPitch().get(), builderWithoutArticulations.getPitch());
 		assertEquals(noteWithoutArticulations.getDuration(), builderWithoutArticulations.getDuration());
 		assertEquals(noteWithoutArticulations.getArticulations(), builderWithoutArticulations.getArticulations());
 		assertEquals(noteWithoutArticulations, builderWithoutArticulations.build());
@@ -34,7 +34,7 @@ class NoteBuilderTest {
 						EnumSet.of(Articulation.ACCENT, Articulation.STACCATO));
 		NoteBuilder builderWithArticulations = new NoteBuilder(noteWithArticulations);
 
-		assertEquals(noteWithArticulations.getPitch(), builderWithArticulations.getPitch());
+		assertEquals(noteWithArticulations.getPitch().get(), builderWithArticulations.getPitch());
 		assertEquals(noteWithArticulations.getDuration(), builderWithArticulations.getDuration());
 		assertEquals(noteWithArticulations.getArticulations(), builderWithArticulations.getArticulations());
 		assertEquals(noteWithArticulations, builderWithArticulations.build());
@@ -93,19 +93,19 @@ class NoteBuilderTest {
 		final Note secondNote = second.build();
 		final Note thirdNote = third.build();
 
-		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), firstNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), firstNote.getPitch().get());
 		assertTrue(firstNote.isTiedToFollowing());
 		assertFalse(firstNote.isTiedFromPrevious());
 		assertEquals(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4),
-				firstNote.getFollowingTiedNote().get().getPitch());
+				firstNote.getFollowingTiedNote().get().getPitch().get());
 
-		assertEquals(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), secondNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), secondNote.getPitch().get());
 		assertTrue(secondNote.isTiedToFollowing());
 		assertTrue(secondNote.isTiedFromPrevious());
 		assertEquals(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4),
-				secondNote.getFollowingTiedNote().get().getPitch());
+				secondNote.getFollowingTiedNote().get().getPitch().get());
 
-		assertEquals(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), thirdNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), thirdNote.getPitch().get());
 		assertFalse(thirdNote.isTiedToFollowing());
 		assertTrue(thirdNote.isTiedFromPrevious());
 	}
@@ -370,9 +370,9 @@ class NoteBuilderTest {
 		List<Ornamental> graceNotes = precedingGraceNotes.get().getOrnamentalNotes();
 		assertEquals(2, graceNotes.size());
 		GraceNote firstGraceNote = (GraceNote) graceNotes.get(0);
-		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), firstGraceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), firstGraceNote.getPitch().get());
 		GraceNote secondGraceNote = (GraceNote) graceNotes.get(1);
-		assertEquals(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), secondGraceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), secondGraceNote.getPitch().get());
 
 		assertTrue(firstGraceNote.beginsNotation(Notation.Type.SLUR));
 		Optional<Notation.Connection> firstConnection = firstGraceNote.getConnection(firstSlur);
@@ -406,9 +406,9 @@ class NoteBuilderTest {
 		List<Ornamental> succeedingGraceNotes = succeedingGraceNotesOpt.get().getOrnamentalNotes();
 		assertEquals(2, succeedingGraceNotes.size());
 		GraceNote thirdGracenote = (GraceNote) succeedingGraceNotes.get(0);
-		assertEquals(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4), thirdGracenote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4), thirdGracenote.getPitch().get());
 		GraceNote fourthGraceNote = (GraceNote) succeedingGraceNotes.get(1);
-		assertEquals(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), fourthGraceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 4), fourthGraceNote.getPitch().get());
 
 		assertTrue(note.beginsNotation(Notation.Type.SLUR));
 		Optional<Notation.Connection> thirdConnection = note.getConnection(lastSlur);
@@ -443,7 +443,7 @@ class NoteBuilderTest {
 		final GraceNote graceNote = graceNoteBuilder.build();
 		final Note lastNote = lastNoteBuilder.build();
 
-		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), firstNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), firstNote.getPitch().get());
 		assertTrue(firstNote.beginsNotation(Notation.Type.GLISSANDO));
 		Optional<Notation.Connection> glissandoToGraceNote = firstNote.getConnection(glissando);
 		assertTrue(glissandoToGraceNote.isPresent());
@@ -453,7 +453,7 @@ class NoteBuilderTest {
 		assertEquals(1, firstNote.getNotations().size());
 		assertTrue(firstNote.getOrnaments().isEmpty());
 
-		assertEquals(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), lastNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 4), lastNote.getPitch().get());
 		assertTrue(lastNote.hasOrnament(Ornament.Type.GRACE_NOTES));
 		assertTrue(lastNote.endsNotation(Notation.Type.SLUR));
 
@@ -466,7 +466,7 @@ class NoteBuilderTest {
 		assertEquals(beginningOfSlur, endOfGlissando);
 		assertEquals(graceNote, endOfGlissando);
 
-		assertEquals(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), graceNote.getPitch());
+		assertEquals(Pitch.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4), graceNote.getPitch().get());
 
 		assertTrue(graceNote.endsNotation(Notation.Type.GLISSANDO));
 		assertTrue(graceNote.beginsNotation(Notation.Type.SLUR));
@@ -510,12 +510,30 @@ class NoteBuilderTest {
 
 		Optional<Notation.Connection> glissandoToRoot = graceNote.getConnection(glissando);
 		assertTrue(glissandoToRoot.isPresent());
-		assertEquals(graceNoteChord.getLowestNote(), glissandoToRoot.get().getFollowingGraceNote().get());
+		assertEquals(graceNoteChord.getLowest(), glissandoToRoot.get().getFollowingGraceNote().get());
 
-		final GraceNote graceNoteChordThird = graceNoteChord.getHighestNote();
+		final GraceNote graceNoteChordThird = graceNoteChord.getHighest();
 		Optional<Notation.Connection> slurToNote = graceNoteChordThird.getConnection(slur);
 		assertTrue(slurToNote.isPresent());
 
 		assertEquals(note, slurToNote.get().getFollowingNote().get());
+	}
+
+	@Test
+	void testBuildUnpitchedNote() {
+		final Pitch pitch = Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4);
+		final NoteBuilder builder = new NoteBuilder(pitch,
+				Durations.QUARTER);
+
+		builder.setUnpitched();
+		builder.setDisplayPitch(pitch);
+		final Note note = builder.build();
+		assertFalse(note.hasArticulations());
+		assertFalse(note.hasNotations());
+		assertFalse(note.isTied());
+
+		assertFalse(note.hasPitch());
+		assertTrue(note.getPitch().isEmpty());
+		assertEquals(pitch, note.getDisplayPitch());
 	}
 }

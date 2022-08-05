@@ -21,8 +21,13 @@ class GraceNoteBuilderTest {
 		final GraceNote note = builder.build();
 		assertFalse(note.hasArticulations());
 		assertFalse(note.hasNotations());
-		assertEquals(GraceNote.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.QUARTER,
-				Collections.emptySet(), Collections.emptyList(), Collections.emptySet(), Ornamental.Type.GRACE_NOTE),
+		assertEquals(GraceNote.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4),
+						Durations.QUARTER,
+						Collections.emptySet(),
+						Collections.emptyList(),
+						Collections.emptyList(),
+						Collections.emptySet(),
+						Ornamental.Type.GRACE_NOTE),
 				note);
 	}
 

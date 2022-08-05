@@ -3,7 +3,6 @@
  */
 package org.wmn4j.mir;
 
-import org.wmn4j.notation.ChordBuilder;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.DurationalBuilder;
 
@@ -42,9 +41,11 @@ public final class PatternBuilder {
 	 * constructing polyphonic patterns with multiple voices.
 	 *
 	 * @param builder the durational builder that is added to the default voice in this builder
+	 * @return reference to this
 	 */
-	public void add(DurationalBuilder builder) {
+	public PatternBuilder add(DurationalBuilder builder) {
 		addToVoice(DEFAULT_VOICE_NUMBER, builder);
+		return this;
 	}
 
 	/**
@@ -54,17 +55,19 @@ public final class PatternBuilder {
 	 *
 	 * @param voice             the number of the voice to which the durational builder is added
 	 * @param durationalBuilder the durational builder that is added to the given voice in this builder
+	 * @return reference to this
 	 */
-	public void addToVoice(int voice, DurationalBuilder durationalBuilder) {
+	public PatternBuilder addToVoice(int voice, DurationalBuilder durationalBuilder) {
 		if (!voices.containsKey(voice)) {
 			voices.put(voice, new ArrayList<>());
 		}
 
-		if (durationalBuilder instanceof ChordBuilder || voices.keySet().size() > 1) {
+		if (durationalBuilder.isChordBuilder() || voices.keySet().size() > 1) {
 			isMonophonic = false;
 		}
 
 		voices.get(voice).add(durationalBuilder);
+		return this;
 	}
 
 	/**
@@ -81,18 +84,22 @@ public final class PatternBuilder {
 	 * Sets the name of the pattern to be built.
 	 *
 	 * @param name the non-null name of the pattern to be built
+	 * @return reference to this
 	 */
-	public void setName(String name) {
+	public PatternBuilder setName(String name) {
 		this.name = Objects.requireNonNull(name);
+		return this;
 	}
 
 	/**
 	 * Adds the given label to this builder.
 	 *
-	 * @param label the label to be added to this builder.
+	 * @param label the label to be added to this builder
+	 * @return reference to this
 	 */
-	public void addLabel(String label) {
+	public PatternBuilder addLabel(String label) {
 		this.labels.add(label);
+		return this;
 	}
 
 	/**

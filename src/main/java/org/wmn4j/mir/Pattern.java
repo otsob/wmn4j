@@ -3,7 +3,6 @@
  */
 package org.wmn4j.mir;
 
-import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Score;
 
@@ -85,7 +84,7 @@ public interface Pattern extends Iterable<Durational> {
 	 * @return a pattern with the given contents
 	 */
 	static Pattern of(List<? extends Durational> contents, String name, Set<String> labels) {
-		final boolean isPolyphonic = contents.stream().anyMatch(durational -> durational instanceof Chord);
+		final boolean isPolyphonic = contents.stream().anyMatch(durational -> durational.isChord());
 		if (isPolyphonic) {
 			return new PolyphonicPattern(contents, name, labels);
 		}

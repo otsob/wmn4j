@@ -17,6 +17,7 @@ import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.TimeSignature;
+import org.wmn4j.notation.techniques.Technique;
 
 import java.util.Objects;
 
@@ -356,7 +357,7 @@ final class Transforms {
 				return Durations.EIGHTH;
 			case Tags.NOTE_QUARTER:
 				return Durations.QUARTER;
-			case Tags.NOTE_HALF:
+			case Tags.HALF:
 				return Durations.HALF;
 			case Tags.NOTE_WHOLE:
 				return Durations.WHOLE;
@@ -469,6 +470,168 @@ final class Transforms {
 				return Tags.TRILL_MARK;
 			case TURN:
 				return Tags.TURN;
+			default:
+				return null;
+		}
+	}
+
+	static Technique.Type tagToTechniqueType(String tag) {
+		switch (tag) {
+			case Tags.UP_BOW:
+				return Technique.Type.UP_BOW;
+			case Tags.DOWN_BOW:
+				return Technique.Type.DOWN_BOW;
+			case Tags.HARMONIC:
+				return Technique.Type.HARMONIC;
+			case Tags.OPEN_STRING:
+				return Technique.Type.OPEN_STRING;
+			case Tags.THUMB_POSITION:
+				return Technique.Type.THUMB_POSITION;
+			case Tags.FINGERING:
+				return Technique.Type.FINGERING;
+			case Tags.PLUCK:
+				return Technique.Type.PLUCK;
+			case Tags.DOUBLE_TONGUE:
+				return Technique.Type.DOUBLE_TONGUE;
+			case Tags.TRIPLE_TONGUE:
+				return Technique.Type.TRIPLE_TONGUE;
+			case Tags.STOPPED:
+				return Technique.Type.STOPPED;
+			case Tags.SNAP_PIZZICATO:
+				return Technique.Type.SNAP_PIZZICATO;
+			case Tags.FRET:
+				return Technique.Type.FRET;
+			case Tags.STRING:
+				return Technique.Type.STRING;
+			case Tags.HAMMER_ON:
+				return Technique.Type.HAMMER_ON;
+			case Tags.PULL_OFF:
+				return Technique.Type.PULL_OFF;
+			case Tags.BEND:
+				return Technique.Type.BEND;
+			case Tags.TAP:
+				return Technique.Type.TAP;
+			case Tags.HEEL:
+				return Technique.Type.HEEL;
+			case Tags.TOE:
+				return Technique.Type.TOE;
+			case Tags.FINGERNAILS:
+				return Technique.Type.FINGERNAILS;
+			case Tags.HOLE:
+				return Technique.Type.HOLE;
+			case Tags.ARROW:
+				return Technique.Type.ARROW;
+			case Tags.HANDBELL:
+				return Technique.Type.HANDBELL;
+			case Tags.BRASS_BEND:
+				return Technique.Type.BRASS_BEND;
+			case Tags.FLIP:
+				return Technique.Type.FLIP;
+			case Tags.SMEAR:
+				return Technique.Type.SMEAR;
+			case Tags.OPEN:
+				return Technique.Type.OPEN;
+			case Tags.HALF_MUTED:
+				return Technique.Type.HALF_MUTED;
+			case Tags.GOLPE:
+				return Technique.Type.GOLPE;
+			case Tags.OTHER_TECHNICAL:
+				return Technique.Type.OTHER;
+			default:
+				return null;
+		}
+	}
+
+	static String techniqueTypeToTag(Technique.Type type) {
+		switch (type) {
+			case UP_BOW:
+				return Tags.UP_BOW;
+			case DOWN_BOW:
+				return Tags.DOWN_BOW;
+			case HARMONIC:
+				return Tags.HARMONIC;
+			case OPEN_STRING:
+				return Tags.OPEN_STRING;
+			case THUMB_POSITION:
+				return Tags.THUMB_POSITION;
+			case FINGERING:
+				return Tags.FINGERING;
+			case PLUCK:
+				return Tags.PLUCK;
+			case DOUBLE_TONGUE:
+				return Tags.DOUBLE_TONGUE;
+			case TRIPLE_TONGUE:
+				return Tags.TRIPLE_TONGUE;
+			case STOPPED:
+				return Tags.STOPPED;
+			case SNAP_PIZZICATO:
+				return Tags.SNAP_PIZZICATO;
+			case FRET:
+				return Tags.FRET;
+			case STRING:
+				return Tags.STRING;
+			case HAMMER_ON:
+				return Tags.HAMMER_ON;
+			case PULL_OFF:
+				return Tags.PULL_OFF;
+			case BEND:
+				return Tags.BEND;
+			case TAP:
+				return Tags.TAP;
+			case HEEL:
+				return Tags.HEEL;
+			case TOE:
+				return Tags.TOE;
+			case FINGERNAILS:
+				return Tags.FINGERNAILS;
+			case HOLE:
+				return Tags.HOLE;
+			case ARROW:
+				return Tags.ARROW;
+			case HANDBELL:
+				return Tags.HANDBELL;
+			case BRASS_BEND:
+				return Tags.BRASS_BEND;
+			case FLIP:
+				return Tags.FLIP;
+			case SMEAR:
+				return Tags.SMEAR;
+			case OPEN:
+				return Tags.OPEN;
+			case HALF_MUTED:
+				return Tags.HALF_MUTED;
+			case HARMON_MUTE:
+				return Tags.HARMON_MUTE;
+			case GOLPE:
+				return Tags.GOLPE;
+			case OTHER:
+				return Tags.OTHER_TECHNICAL;
+			default:
+				return null;
+		}
+	}
+
+	static Technique.Opening textToOpeningType(String text) {
+		switch (text) {
+			case Tags.YES:
+				return Technique.Opening.CLOSED;
+			case Tags.NO:
+				return Technique.Opening.OPEN;
+			case Tags.HALF:
+				return Technique.Opening.HALF_OPEN;
+			default:
+				return null;
+		}
+	}
+
+	static String openingTypeToText(Technique.Opening opening) {
+		switch (opening) {
+			case CLOSED:
+				return Tags.YES;
+			case OPEN:
+				return Tags.NO;
+			case HALF_OPEN:
+				return Tags.HALF;
 			default:
 				return null;
 		}

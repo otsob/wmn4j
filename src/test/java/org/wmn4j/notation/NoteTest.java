@@ -17,6 +17,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -391,8 +392,10 @@ class NoteTest {
 		assertTrue(note.getOrnaments().isEmpty());
 
 		final Note ornamentedNote = Note
-				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 5), Durations.EIGHTH, Collections.emptySet(),
-						Collections.emptyList(), Arrays.asList(Ornament.of(Ornament.Type.MORDENT)));
+				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 5), null, Durations.EIGHTH,
+						Collections.emptySet(),
+						Collections.emptyList(), Arrays.asList(Ornament.of(Ornament.Type.MORDENT)),
+						Collections.emptySet());
 
 		assertTrue(ornamentedNote.hasOrnaments());
 		assertTrue(ornamentedNote.hasOrnament(Ornament.Type.MORDENT));
@@ -408,29 +411,33 @@ class NoteTest {
 
 		final GraceNote graceNoteAfter = GraceNote
 				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
-						Arrays.asList(endOfSlur), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
+						Arrays.asList(endOfSlur), Collections.emptyList(), Collections.emptySet(),
+						Ornamental.Type.GRACE_NOTE);
 
 		final Ornament succeedingGraceNotes = Ornament
 				.succeedingGraceNotes(Arrays.asList(graceNoteAfter));
 
 		final GraceNote middleGraceNote = GraceNote
-				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), Durations.EIGHTH, Collections.emptySet(),
-						Collections.emptyList(), Collections.emptyList(), Ornamental.Type.GRACE_NOTE,
+				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 3), null, Durations.EIGHTH, Collections.emptySet(),
+						Collections.emptyList(), Collections.emptyList(), Collections.emptySet(),
+						Ornamental.Type.GRACE_NOTE,
 						Arrays.asList(Notation.Connection.of(slur, Note.of(
 								Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))));
 
 		Notation.Connection beginning = Notation.Connection.beginningOf(slur, middleGraceNote);
 		final GraceNote firstGraceNote = GraceNote
 				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 1), Durations.EIGHTH, Collections.emptySet(),
-						Arrays.asList(beginning), Collections.emptyList(), Ornamental.Type.GRACE_NOTE);
+						Arrays.asList(beginning), Collections.emptyList(), Collections.emptySet(),
+						Ornamental.Type.GRACE_NOTE);
 
 		final Ornament graceNotes = Ornament
 				.graceNotes(Arrays.asList(firstGraceNote, middleGraceNote));
 
 		final Note note = Note
-				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH, Collections.emptySet(),
+				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), null, Durations.EIGHTH, Collections.emptySet(),
 						Arrays.asList(Notation.Connection.of(slur, graceNoteAfter)),
-						Arrays.asList(succeedingGraceNotes, graceNotes));
+						Arrays.asList(succeedingGraceNotes, graceNotes),
+						Collections.emptySet());
 
 		assertEquals(2, note.getOrnaments().size());
 		final Ornament graceNotesBefore = note.getOrnaments().stream()
@@ -440,10 +447,10 @@ class NoteTest {
 		final GraceNote first = (GraceNote) graceNotesBefore.getOrnamentalNotes().get(0);
 		assertEquals(firstGraceNote, first);
 		final GraceNote secondInSlur = first.getConnection(slur).get().getFollowingGraceNote().get();
-		assertEquals(middleGraceNote.getPitch(), secondInSlur.getPitch());
+		assertEquals(middleGraceNote.getPitch().get(), secondInSlur.getPitch().get());
 
 		final GraceNote second = (GraceNote) graceNotesBefore.getOrnamentalNotes().get(1);
-		assertEquals(middleGraceNote.getPitch(), second.getPitch());
+		assertEquals(middleGraceNote.getPitch().get(), second.getPitch().get());
 		assertEquals(note, second.getConnection(slur).get().getFollowingNote().get());
 
 		assertEquals(graceNoteAfter, note.getConnection(slur).get().getFollowingGraceNote().get());
@@ -466,26 +473,30 @@ class NoteTest {
 		final Notation.Connection slurBegin = Notation.Connection.beginningOf(slur, Note.of(
 				Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), Durations.QUARTER));
 		final GraceNote fifth = GraceNote
-				.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
-						Arrays.asList(arpeggiationEnd, slurBegin), Collections.emptyList(),
+				.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 2), null, Durations.EIGHTH, Collections.emptySet(),
+						Arrays.asList(arpeggiationEnd, slurBegin), Collections.emptyList(), Collections.emptySet(),
 						Ornamental.Type.ACCIACCATURA, Arrays.asList(slurBegin));
 
 		final Notation.Connection arpeggiationMiddle = Notation.Connection.of(arpeggiate, fifth);
 		final GraceNote third = GraceNote
 				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
-						Arrays.asList(arpeggiationMiddle), Collections.emptyList(), Ornamental.Type.ACCIACCATURA);
+						Arrays.asList(arpeggiationMiddle), Collections.emptyList(), Collections.emptySet(),
+						Ornamental.Type.ACCIACCATURA);
 
 		final Notation.Connection arpeggiationBegin = Notation.Connection.beginningOf(arpeggiate, third);
 		final GraceNote root = GraceNote
 				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 2), Durations.EIGHTH, Collections.emptySet(),
-						Arrays.asList(arpeggiationBegin), Collections.emptyList(), Ornamental.Type.ACCIACCATURA);
+						Arrays.asList(arpeggiationBegin), Collections.emptyList(), Collections.emptySet(),
+						Ornamental.Type.ACCIACCATURA);
 
 		final GraceNoteChord graceNoteChord = GraceNoteChord.of(Arrays.asList(root, third, fifth));
 		final Ornament graceNotes = Ornament.graceNotes(Arrays.asList(graceNoteChord));
 		final Note note = Note
-				.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), Durations.QUARTER, Collections.emptySet(),
+				.of(Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4), null, Durations.QUARTER,
+						Collections.emptySet(),
 						Arrays.asList(Notation.Connection.endOf(slur)),
-						Arrays.asList(graceNotes));
+						Arrays.asList(graceNotes),
+						Collections.emptySet());
 
 		assertEquals(1, note.getOrnaments().size());
 		assertTrue(note.hasOrnament(Ornament.Type.GRACE_NOTES));
@@ -501,15 +512,56 @@ class NoteTest {
 		final GraceNoteChord graceNoteChordFromNote = (GraceNoteChord) ornamentalNotes.get(0);
 		assertEquals(3, graceNoteChordFromNote.getNoteCount());
 
-		final GraceNote highest = graceNoteChordFromNote.getHighestNote();
+		final GraceNote highest = graceNoteChordFromNote.getHighest();
 		assertEquals(fifth, highest);
 		Optional<Notation.Connection> slurToPrincipal = highest.getConnection(slur);
 		assertTrue(slurToPrincipal.isPresent());
 		final Note connectedTo = slurToPrincipal.get().getFollowingNote().get();
 		assertEquals(note, connectedTo);
 
-		assertTrue(graceNoteChordFromNote.getLowestNote().beginsNotation(Notation.Type.ARPEGGIATE));
+		assertTrue(graceNoteChordFromNote.getLowest().beginsNotation(Notation.Type.ARPEGGIATE));
 		assertTrue(graceNoteChordFromNote.getNote(1).hasNotation(Notation.Type.ARPEGGIATE));
-		assertTrue(graceNoteChordFromNote.getHighestNote().endsNotation(Notation.Type.ARPEGGIATE));
+		assertTrue(graceNoteChordFromNote.getHighest().endsNotation(Notation.Type.ARPEGGIATE));
+	}
+
+	@Test
+	void testGivenNullPitchUnpitchedNoteIsCreated() {
+		final Pitch displayPitch = Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4);
+		final Note note = Note
+				.of(null, displayPitch, Durations.QUARTER,
+						Collections.emptySet(),
+						Collections.emptyList(),
+						Collections.emptyList(),
+						Collections.emptySet());
+
+		assertFalse(note.hasPitch());
+		assertTrue(note.getPitch().isEmpty());
+		assertEquals(displayPitch, note.getDisplayPitch());
+	}
+
+	@Test
+	void testGivenNullPitchesExceptionIsThrown() {
+		assertThrows(NullPointerException.class, () -> Note
+				.of(null, null, Durations.QUARTER,
+						Collections.emptySet(),
+						Collections.emptyList(),
+						Collections.emptyList(),
+						Collections.emptySet()));
+	}
+
+	@Test
+	void testGivenNoDisplayPitchActualPitchIsUsed() {
+		final Pitch pitch = Pitch.of(Pitch.Base.A, Pitch.Accidental.NATURAL, 4);
+		final Note note = Note
+				.of(pitch, null, Durations.QUARTER,
+						Collections.emptySet(),
+						Collections.emptyList(),
+						Collections.emptyList(),
+						Collections.emptySet());
+
+		assertTrue(note.hasPitch());
+		assertTrue(note.getPitch().isPresent());
+		assertEquals(note.getPitch().get(), note.getDisplayPitch());
+		assertTrue(note.getTechniques().isEmpty());
 	}
 }

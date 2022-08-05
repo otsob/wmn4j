@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN"
+        "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise version="3.1">
+    <work>
+        <work-title>Techniques test</work-title>
+    </work>
+    <identification>
+        <encoding>
+            <software>MuseScore 3.6.2</software>
+            <encoding-date>2022-08-04</encoding-date>
+            <supports element="accidental" type="yes"/>
+            <supports element="beam" type="yes"/>
+            <supports element="print" attribute="new-page" type="yes" value="yes"/>
+            <supports element="print" attribute="new-system" type="yes" value="yes"/>
+            <supports element="stem" type="yes"/>
+        </encoding>
+    </identification>
+    <defaults>
+        <scaling>
+            <millimeters>7</millimeters>
+            <tenths>40</tenths>
+        </scaling>
+        <page-layout>
+            <page-height>1697.14</page-height>
+            <page-width>1200</page-width>
+            <page-margins type="even">
+                <left-margin>85.7143</left-margin>
+                <right-margin>85.7143</right-margin>
+                <top-margin>85.7143</top-margin>
+                <bottom-margin>85.7143</bottom-margin>
+            </page-margins>
+            <page-margins type="odd">
+                <left-margin>85.7143</left-margin>
+                <right-margin>85.7143</right-margin>
+                <top-margin>85.7143</top-margin>
+                <bottom-margin>85.7143</bottom-margin>
+            </page-margins>
+        </page-layout>
+        <word-font font-family="Edwin" font-size="10"/>
+        <lyric-font font-family="Edwin" font-size="10"/>
+    </defaults>
+    <credit page="1">
+        <credit-type>title</credit-type>
+        <credit-words default-x="600" default-y="1611.43" justify="center" valign="top" font-size="22">Techniques test
+        </credit-words>
+    </credit>
+    <part-list>
+        <part-group type="start" number="1">
+            <group-symbol>brace</group-symbol>
+        </part-group>
+        <score-part id="P1">
+            <part-name>Piano</part-name>
+            <part-abbreviation>Pno.</part-abbreviation>
+            <score-instrument id="P1-I1">
+                <instrument-name>Piano</instrument-name>
+            </score-instrument>
+            <midi-device id="P1-I1" port="1"></midi-device>
+            <midi-instrument id="P1-I1">
+                <midi-channel>1</midi-channel>
+                <midi-program>1</midi-program>
+                <volume>78.7402</volume>
+                <pan>0</pan>
+            </midi-instrument>
+        </score-part>
+    </part-list>
+    <part id="P1">
+        <measure number="1" width="551.88">
+            <print>
+                <system-layout>
+                    <system-margins>
+                        <left-margin>50.00</left-margin>
+                        <right-margin>426.69</right-margin>
+                    </system-margins>
+                    <top-system-distance>170.00</top-system-distance>
+                </system-layout>
+            </print>
+            <attributes>
+                <divisions>2</divisions>
+                <key>
+                    <fifths>0</fifths>
+                </key>
+                <time>
+                    <beats>4</beats>
+                    <beat-type>4</beat-type>
+                </time>
+                <clef>
+                    <sign>G</sign>
+                    <line>2</line>
+                </clef>
+            </attributes>
+            <note default-x="80.72" default-y="-15.00">
+                <pitch>
+                    <step>C</step>
+                    <octave>5</octave>
+                </pitch>
+                <duration>1</duration>
+                <voice>1</voice>
+                <type>eighth</type>
+                <stem>down</stem>
+                <beam number="1">begin</beam>
+                <notations>
+                    <technical>
+                        <down-bow placement="above"/>
+                    </technical>
+                </notations>
+            </note>
+            <note default-x="138.29" default-y="-15.00">
+                <pitch>
+                    <step>C</step>
+                    <octave>5</octave>
+                </pitch>
+                <duration>1</duration>
+                <voice>1</voice>
+                <type>eighth</type>
+                <stem>down</stem>
+                <beam number="1">continue</beam>
+                <notations>
+                    <technical>
+                        <pluck placement="above">p</pluck>
+                    </technical>
+                </notations>
+            </note>
+            <note default-x="195.85" default-y="-15.00">
+                <pitch>
+                    <step>C</step>
+                    <octave>5</octave>
+                </pitch>
+                <duration>1</duration>
+                <voice>1</voice>
+                <type>eighth</type>
+                <stem>down</stem>
+                <beam number="1">continue</beam>
+                <notations>
+                    <technical>
+                        <string>4</string>
+                        <fingering placement="above">3</fingering>
+                        <bend shape="curved">
+                            <bend-alter>2</bend-alter>
+                        </bend>
+                        <bend shape="curved">
+                            <bend-alter>-2</bend-alter>
+                            <release offset="1"/>
+                        </bend>
+                    </technical>
+                </notations>
+            </note>
+            <note default-x="253.41" default-y="-15.00">
+                <pitch>
+                    <step>C</step>
+                    <octave>5</octave>
+                </pitch>
+                <duration>1</duration>
+                <voice>1</voice>
+                <type>eighth</type>
+                <stem>down</stem>
+                <beam number="1">end</beam>
+                <notations>
+                    <technical>
+                        <harmonic default-x="3" default-y="24" placement="above" print-object="yes">
+                            <natural/>
+                        </harmonic>
+                    </technical>
+                </notations>
+            </note>
+            <note>
+                <pitch>
+                    <step>C</step>
+                    <octave>5</octave>
+                </pitch>
+                <duration>1</duration>
+                <voice>1</voice>
+                <type>eighth</type>
+                <notations>
+                    <technical>
+                        <harmonic>
+                            <artificial/>
+                            <base-pitch/>
+                        </harmonic>
+                    </technical>
+                </notations>
+            </note>
+            <note>
+                <chord/>
+                <pitch>
+                    <step>F</step>
+                    <octave>5</octave>
+                </pitch>
+                <duration>1</duration>
+                <voice>1</voice>
+                <type>eighth</type>
+                <notehead filled="no">diamond</notehead>
+                <notations>
+                    <technical>
+                        <harmonic>
+                            <artificial/>
+                            <touching-pitch/>
+                        </harmonic>
+                    </technical>
+                </notations>
+            </note>
+            <note print-object="no">
+                <chord/>
+                <pitch>
+                    <step>C</step>
+                    <octave>7</octave>
+                </pitch>
+                <duration>1</duration>
+                <voice>1</voice>
+                <type>eighth</type>
+                <notations>
+                    <technical>
+                        <harmonic>
+                            <artificial/>
+                            <sounding-pitch/>
+                        </harmonic>
+                    </technical>
+                </notations>
+            </note>
+            <note default-x="310.98" default-y="-15.00">
+                <pitch>
+                    <step>C</step>
+                    <octave>5</octave>
+                </pitch>
+                <duration>1</duration>
+                <voice>1</voice>
+                <type>eighth</type>
+                <stem>down</stem>
+                <beam number="1">begin</beam>
+                <notations>
+                    <technical>
+                        <hole>
+                            <hole-type>thumb</hole-type>
+                            <hole-closed>no</hole-closed>
+                            <hole-shape>circle</hole-shape>
+                        </hole>
+                    </technical>
+                </notations>
+            </note>
+
+            <note default-x="426.11" default-y="-15.00">
+                <pitch>
+                    <step>C</step>
+                    <octave>5</octave>
+                </pitch>
+                <duration>1</duration>
+                <voice>1</voice>
+                <type>eighth</type>
+                <stem>down</stem>
+                <beam number="1">continue</beam>
+                <notations>
+                    <technical>
+                        <arrow placement="above">
+                            <arrow-direction>southeast</arrow-direction>
+                            <arrow-style>single</arrow-style>
+                        </arrow>
+                    </technical>
+                </notations>
+            </note>
+
+            <note default-x="483.67" default-y="-15.00">
+                <pitch>
+                    <step>C</step>
+                    <octave>5</octave>
+                </pitch>
+                <duration>1</duration>
+                <voice>1</voice>
+                <type>eighth</type>
+                <stem>down</stem>
+                <beam number="1">end</beam>
+
+                <notations>
+                    <technical>
+                        <harmon-mute placement="above">
+                            <harmon-closed>half</harmon-closed>
+                        </harmon-mute>
+                    </technical>
+                </notations>
+            </note>
+            <barline location="right">
+                <bar-style>light-heavy</bar-style>
+            </barline>
+        </measure>
+    </part>
+</score-partwise>

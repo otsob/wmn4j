@@ -82,20 +82,26 @@ public final class PointSet<T extends Point<T>> {
 			if (hasOnset(dur)) {
 				final double totalOffset = fullMeasuresOffset + offsetWithinMeasure;
 
-				if (dur instanceof Note) {
-					final int pitch = ((Note) dur).getPitch().toInt();
-					final Point2D vector = new Point2D(totalOffset, pitch);
-					noteEvents.add(vector);
-					positions.put(vector, pos);
-				} else {
-					final Chord chord = (Chord) dur;
-					for (int chordIndex = 0; chordIndex < chord.getNoteCount(); ++chordIndex) {
-						final int pitch = chord.getNote(chordIndex).getPitch().toInt();
-						Position positionInChord = new Position(pos.getPartIndex(), pos.getStaffNumber(),
-								pos.getMeasureNumber(), pos.getVoiceNumber(), pos.getIndexInVoice(), chordIndex);
+				if (dur.isNote()) {
+					final Note note = dur.toNote();
+					if (note.hasPitch()) {
+						final int pitch = dur.toNote().getPitch().get().toInt();
 						final Point2D vector = new Point2D(totalOffset, pitch);
 						noteEvents.add(vector);
-						positions.put(vector, positionInChord);
+						positions.put(vector, pos);
+					}
+				} else if (dur.isChord()) {
+					final Chord chord = dur.toChord();
+					for (int chordIndex = 0; chordIndex < chord.getNoteCount(); ++chordIndex) {
+						final Note note = chord.getNote(chordIndex);
+						if (note.hasPitch()) {
+							final int pitch = chord.getNote(chordIndex).getPitch().get().toInt();
+							Position positionInChord = new Position(pos.getPartIndex(), pos.getStaffNumber(),
+									pos.getMeasureNumber(), pos.getVoiceNumber(), pos.getIndexInVoice(), chordIndex);
+							final Point2D vector = new Point2D(totalOffset, pitch);
+							noteEvents.add(vector);
+							positions.put(vector, positionInChord);
+						}
 					}
 				}
 			}
@@ -114,9 +120,8 @@ public final class PointSet<T extends Point<T>> {
 			return false;
 		}
 
-		if (dur instanceof Note) {
-			final Note note = (Note) dur;
-			if (note.isTiedFromPrevious()) {
+		if (dur.isNote()) {
+			if (dur.toNote().isTiedFromPrevious()) {
 				return false;
 			}
 		}
