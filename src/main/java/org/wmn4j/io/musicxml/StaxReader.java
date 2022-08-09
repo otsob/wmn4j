@@ -15,6 +15,7 @@ import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.DurationalBuilder;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.GraceNoteBuilder;
+import org.wmn4j.notation.Lyric;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Ornament;
@@ -614,12 +615,14 @@ final class StaxReader implements MusicXmlReader {
 						skipElement();
 					}
 					break;
+				case Tags.LYRIC:
+					consumeLyricElement();
+					break;
 				// Fall through for elements that are currently not supported
 				case Tags.ACCIDENTAL:
 				case Tags.BEAM:
 				case Tags.CUE:
 				case Tags.INSTRUMENT:
-				case Tags.LYRIC:
 				case Tags.NOTEHEAD_TEXT:
 				case Tags.NOTEHEAD:
 				case Tags.STEM:
@@ -654,8 +657,9 @@ final class StaxReader implements MusicXmlReader {
 				if (partContext.hasGraceNotes()) {
 					partContext.addPreceedingOrnamentals(currentNoteBuilder);
 				}
-			} else if (currentConnectableBuilder instanceof GraceNoteBuilder) {
-				partContext.updateOrnamentalBuffer((GraceNoteBuilder) currentConnectableBuilder);
+			} else if (currentConnectableBuilder instanceof GraceNoteBuilder graceNoteBuilder) {
+				partContext.flushLyricBuffersTo(graceNoteBuilder);
+				partContext.updateOrnamentalBuffer(graceNoteBuilder);
 			}
 
 			notationResolver.endNotations(currentConnectableBuilder);
@@ -665,6 +669,37 @@ final class StaxReader implements MusicXmlReader {
 			partContext.updateChordBuffer(currentDurationalBuilder);
 			partContext.getMeasureBuilder().addToVoice(partContext.getVoice(), currentDurationalBuilder);
 		}
+	}
+
+	private void consumeLyricElement() throws XMLStreamException {
+		final String line = reader.getAttributeValue(null, Tags.NUMBER);
+		final int lineNumber = line == null ? 0 : Integer.parseInt(line);
+
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.SYLLABIC:
+					consumeText(text -> partContext.setLyricType(lineNumber, Transforms.syllabicToLyricType(text)));
+					break;
+				case Tags.ELISION:
+					partContext.setLyricType(lineNumber, Lyric.Type.ELIDED);
+					partContext.addLyricText(lineNumber, Lyric.ELISION_SEPARATOR);
+					break;
+				case Tags.TEXT:
+					consumeText(text -> partContext.addLyricText(lineNumber, text));
+					break;
+				case Tags.EXTEND:
+					String type = reader.getAttributeValue(null, Tags.TYPE);
+					if (type != null && (type.equals(Tags.CONTINUE) || type.equals(Tags.STOP))) {
+						partContext.setLyricType(lineNumber, Lyric.Type.EXTENSION);
+					} else {
+						partContext.setLyricType(lineNumber, Lyric.Type.EXTENDED);
+						partContext.startExtendedLyric(lineNumber);
+					}
+					break;
+				default:
+					skipElement();
+			}
+		}, Tags.LYRIC);
 	}
 
 	private void consumeNotationsElem() throws XMLStreamException {

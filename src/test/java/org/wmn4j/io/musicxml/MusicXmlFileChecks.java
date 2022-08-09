@@ -15,6 +15,7 @@ import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.GraceNote;
 import org.wmn4j.notation.GraceNoteChord;
 import org.wmn4j.notation.KeySignatures;
+import org.wmn4j.notation.Lyric;
 import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.MultiStaffPart;
 import org.wmn4j.notation.Notation;
@@ -1331,5 +1332,44 @@ class MusicXmlFileChecks {
 						Technique.AdditionalValue.ARROW_STYLE, "single"))));
 		assertTechniques(measure.get(1, 7), Set.of(Technique.of(Technique.Type.HARMON_MUTE,
 				Map.of(Technique.AdditionalValue.HARMON_MUTE_POSITION, Technique.Opening.HALF_OPEN))));
+	}
+
+	private static void assertLyrics(Durational durational, List<Lyric> expected) {
+		assertTrue(durational.isNote());
+		assertEquals(expected, durational.toNote().getLyrics());
+	}
+
+	/*
+	 * Expects the contents of "lyrics_test.musicxml"
+	 */
+	static void assertLyricsAreCorrect(Score score) {
+		assertEquals(1, score.getPartCount());
+		final Part part = score.getPart(0);
+		assertEquals(2, part.getStaffCount());
+
+		final Measure topMeasure = part.getMeasure(1, 1);
+		assertLyrics(topMeasure.get(1, 0), List.of(Lyric.of("Top", Lyric.Type.INDEPENDENT)));
+		assertLyrics(topMeasure.get(1, 1), List.of(Lyric.of("lyric", Lyric.Type.INDEPENDENT)));
+		assertLyrics(topMeasure.get(1, 2), List.of(Lyric.of("aa", Lyric.Type.EXTENDED)));
+		assertLyrics(topMeasure.get(1, 3), List.of(Lyric.of("aa", Lyric.Type.EXTENSION)));
+
+		assertLyrics(topMeasure.get(2, 0), List.of(Lyric.of("Wo", Lyric.Type.START)));
+		assertLyrics(topMeasure.get(2, 1), List.of(Lyric.of("rd", Lyric.Type.END)));
+
+		final GraceNote graceNote = topMeasure.get(2, 2).toNote().getOrnaments()
+				.stream()
+				.filter(ornament -> ornament.getType().equals(Ornament.Type.GRACE_NOTES))
+				.map(ornament -> (GraceNote) ornament.getOrnamentalNotes().get(0)).findFirst().orElseThrow();
+		assertEquals(List.of(Lyric.of("it", Lyric.Type.INDEPENDENT)), graceNote.getLyrics());
+
+		assertLyrics(topMeasure.get(2, 2), List.of(Lyric.of("it", Lyric.Type.INDEPENDENT)));
+		assertLyrics(topMeasure.get(2, 3), List.of(Lyric.of("is.", Lyric.Type.INDEPENDENT)));
+
+		final Measure bottomMeasure = part.getMeasure(2, 1);
+		assertLyrics(bottomMeasure.get(5, 0), List.of(Lyric.of("Word\uE550it", Lyric.Type.ELIDED),
+				Lyric.of("Another", Lyric.Type.INDEPENDENT)));
+		assertLyrics(bottomMeasure.get(5, 1), List.of(Lyric.of("is.", Lyric.Type.INDEPENDENT),
+				Lyric.of("line", Lyric.Type.INDEPENDENT)));
+
 	}
 }

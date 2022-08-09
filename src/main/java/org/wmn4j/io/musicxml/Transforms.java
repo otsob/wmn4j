@@ -12,6 +12,7 @@ import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.KeySignature;
 import org.wmn4j.notation.KeySignatures;
+import org.wmn4j.notation.Lyric;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Pitch;
@@ -632,6 +633,21 @@ final class Transforms {
 				return Tags.NO;
 			case HALF_OPEN:
 				return Tags.HALF;
+			default:
+				return null;
+		}
+	}
+
+	static Lyric.Type syllabicToLyricType(String tag) {
+		switch (tag) {
+			case Tags.BEGIN:
+				return Lyric.Type.START;
+			case Tags.END:
+				return Lyric.Type.END;
+			case Tags.MIDDLE:
+				return Lyric.Type.MIDDLE;
+			case Tags.SINGLE:
+				return Lyric.Type.INDEPENDENT;
 			default:
 				return null;
 		}
