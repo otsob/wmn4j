@@ -395,7 +395,8 @@ class NoteTest {
 				.of(Pitch.of(Pitch.Base.E, Pitch.Accidental.NATURAL, 5), null, Durations.EIGHTH,
 						Collections.emptySet(),
 						Collections.emptyList(), Arrays.asList(Ornament.of(Ornament.Type.MORDENT)),
-						Collections.emptySet());
+						Collections.emptySet(),
+						null);
 
 		assertTrue(ornamentedNote.hasOrnaments());
 		assertTrue(ornamentedNote.hasOrnament(Ornament.Type.MORDENT));
@@ -422,7 +423,7 @@ class NoteTest {
 						Collections.emptyList(), Collections.emptyList(), Collections.emptySet(),
 						Ornamental.Type.GRACE_NOTE,
 						Arrays.asList(Notation.Connection.of(slur, Note.of(
-								Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))));
+								Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), Durations.EIGHTH))), null);
 
 		Notation.Connection beginning = Notation.Connection.beginningOf(slur, middleGraceNote);
 		final GraceNote firstGraceNote = GraceNote
@@ -437,7 +438,8 @@ class NoteTest {
 				.of(Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 4), null, Durations.EIGHTH, Collections.emptySet(),
 						Arrays.asList(Notation.Connection.of(slur, graceNoteAfter)),
 						Arrays.asList(succeedingGraceNotes, graceNotes),
-						Collections.emptySet());
+						Collections.emptySet(),
+						null);
 
 		assertEquals(2, note.getOrnaments().size());
 		final Ornament graceNotesBefore = note.getOrnaments().stream()
@@ -475,7 +477,7 @@ class NoteTest {
 		final GraceNote fifth = GraceNote
 				.of(Pitch.of(Pitch.Base.G, Pitch.Accidental.NATURAL, 2), null, Durations.EIGHTH, Collections.emptySet(),
 						Arrays.asList(arpeggiationEnd, slurBegin), Collections.emptyList(), Collections.emptySet(),
-						Ornamental.Type.ACCIACCATURA, Arrays.asList(slurBegin));
+						Ornamental.Type.ACCIACCATURA, Arrays.asList(slurBegin), null);
 
 		final Notation.Connection arpeggiationMiddle = Notation.Connection.of(arpeggiate, fifth);
 		final GraceNote third = GraceNote
@@ -496,7 +498,8 @@ class NoteTest {
 						Collections.emptySet(),
 						Arrays.asList(Notation.Connection.endOf(slur)),
 						Arrays.asList(graceNotes),
-						Collections.emptySet());
+						Collections.emptySet(),
+						null);
 
 		assertEquals(1, note.getOrnaments().size());
 		assertTrue(note.hasOrnament(Ornament.Type.GRACE_NOTES));
@@ -532,7 +535,8 @@ class NoteTest {
 						Collections.emptySet(),
 						Collections.emptyList(),
 						Collections.emptyList(),
-						Collections.emptySet());
+						Collections.emptySet(),
+						null);
 
 		assertFalse(note.hasPitch());
 		assertTrue(note.getPitch().isEmpty());
@@ -546,7 +550,8 @@ class NoteTest {
 						Collections.emptySet(),
 						Collections.emptyList(),
 						Collections.emptyList(),
-						Collections.emptySet()));
+						Collections.emptySet(),
+						null));
 	}
 
 	@Test
@@ -557,7 +562,8 @@ class NoteTest {
 						Collections.emptySet(),
 						Collections.emptyList(),
 						Collections.emptyList(),
-						Collections.emptySet());
+						Collections.emptySet(),
+						null);
 
 		assertTrue(note.hasPitch());
 		assertTrue(note.getPitch().isPresent());

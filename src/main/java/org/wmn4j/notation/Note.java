@@ -35,6 +35,8 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 
 	private final Set<Technique> techniques;
 
+	private final List<Lyric> lyrics;
+
 	/**
 	 * Returns an instance with the given parameters.
 	 *
@@ -68,7 +70,7 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations) {
-		return new Note(pitch, null, duration, articulations, null, null, null);
+		return new Note(pitch, null, duration, articulations, null, null, null, null);
 	}
 
 	/**
@@ -82,7 +84,7 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections) {
-		return new Note(pitch, null, duration, articulations, notationConnections, null, null);
+		return new Note(pitch, null, duration, articulations, notationConnections, null, null, null);
 	}
 
 	/**
@@ -95,12 +97,14 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	 * @param notationConnections the notation connections for the note
 	 * @param ornaments           ornaments for the note
 	 * @param techniques          the playing techniques related to the note
+	 * @param lyrics              the lyrics associated with the note from top to bottom
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Pitch displayPitch, Duration duration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments,
-			Set<Technique> techniques) {
-		return new Note(pitch, displayPitch, duration, articulations, notationConnections, ornaments, techniques);
+			Set<Technique> techniques, List<Lyric> lyrics) {
+		return new Note(pitch, displayPitch, duration, articulations, notationConnections, ornaments, techniques,
+				lyrics);
 	}
 
 	/**
@@ -108,7 +112,7 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	 */
 	private Note(Pitch pitch, Pitch displayPitch, Duration duration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments,
-			Set<Technique> techniques) {
+			Set<Technique> techniques, List<Lyric> lyrics) {
 
 		this.pitch = pitch;
 		this.displayPitch = Objects.requireNonNull(displayPitch == null ? pitch : displayPitch,
@@ -137,6 +141,12 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 			this.techniques = Set.copyOf(techniques);
 		} else {
 			this.techniques = Collections.emptySet();
+		}
+
+		if (lyrics != null && !lyrics.isEmpty()) {
+			this.lyrics = List.copyOf(lyrics);
+		} else {
+			this.lyrics = Collections.emptyList();
 		}
 	}
 
@@ -565,6 +575,18 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	}
 
 	/**
+	 * Returns an unmodifiable view of the lyrics associated with this note.
+	 * <p>
+	 * The {@link Lyric} instances are ordered from the topmost lyric line to the bottommost one.
+	 * Returns an empty list of there are no lyrics associated with this note.
+	 *
+	 * @return an unmodifiable view of the lyrics associated with this note
+	 */
+	public List<Lyric> getLyrics() {
+		return lyrics;
+	}
+
+	/**
 	 * Returns true if this note is equal to the given object. Notes are equal if
 	 * they have the same pitch, duration, and set of articulations.
 	 *
@@ -600,6 +622,14 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 			return false;
 		}
 
+		if (!this.techniques.equals(other.techniques)) {
+			return false;
+		}
+
+		if (!this.lyrics.equals(other.lyrics)) {
+			return false;
+		}
+
 		return equalsInOrnaments(other);
 	}
 
@@ -620,6 +650,8 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 		hash = 79 * hash + Objects.hashCode(this.duration);
 		hash = 79 * hash + Objects.hashCode(this.articulations);
 		hash = 79 * hash + Objects.hashCode(getNotationConnectionTypes());
+		hash = 79 * hash + Objects.hashCode(this.techniques);
+		hash = 79 * hash + Objects.hashCode(this.lyrics);
 		return hash;
 	}
 

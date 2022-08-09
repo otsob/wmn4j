@@ -36,6 +36,8 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	private List<? extends OrnamentalBuilder> precedingGraceNotes = new ArrayList<>();
 	private List<? extends OrnamentalBuilder> succeedingGraceNotes = new ArrayList<>();
 
+	private List<Lyric> lyrics;
+
 	private Set<Technique> techniques = new HashSet<>();
 
 	private Note cachedNote;
@@ -288,6 +290,28 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 	}
 
 	/**
+	 * Sets the lyrics in this note builder.
+	 * <p>
+	 * The lyrics are expected to be ordered starting from top lyric line.
+	 *
+	 * @param lyrics the lyrics to set in this builder
+	 * @return reference to this
+	 */
+	public NoteBuilder setLyrics(List<Lyric> lyrics) {
+		this.lyrics = lyrics;
+		return this;
+	}
+
+	/**
+	 * Returns the lyrics set in this note builder.
+	 *
+	 * @return the lyrics set in this note builder
+	 */
+	public List<Lyric> getLyrics() {
+		return lyrics;
+	}
+
+	/**
 	 * Returns the NoteBuilder of the following tied note, if there is one.
 	 *
 	 * @return Optional containing the NoteBuilder of the following tied note if
@@ -480,7 +504,8 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 					.of(this.pitch, this.displayPitch, this.duration, this.articulations,
 							getResolvedNotationConnections(),
 							buildOrnaments(),
-							techniques);
+							techniques,
+							lyrics);
 
 			updateGraceNoteBuilders();
 
