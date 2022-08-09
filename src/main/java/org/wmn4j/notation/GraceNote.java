@@ -29,10 +29,10 @@ public final class GraceNote implements OptionallyPitched, Ornamental, Notation.
 	 *
 	 * @param pitch               the pitch of the grace note
 	 * @param displayableDuration the displayable duration of the grace note
-	 * @param articulations       a set of Articulations associated with the grace note
-	 * @param notationConnections connections to other elements through notations
-	 * @param ornaments           ornaments for the grace note
-	 * @param techniques          playing techniques of the grace note
+	 * @param articulations       (optional/nullable) a set of Articulations associated with the grace note
+	 * @param notationConnections (optional/nullable) connections to other elements through notations
+	 * @param ornaments           (optional/nullable) ornaments for the grace note
+	 * @param techniques          (optional/nullable) playing techniques of the grace note
 	 * @param type                the type of this grace note
 	 * @return an instance with the given parameters
 	 */
@@ -47,14 +47,15 @@ public final class GraceNote implements OptionallyPitched, Ornamental, Notation.
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch                    (optional/nullable) the pitch of the grace note
+	 * @param pitch                    (optional/nullable if displayPitch is given) the pitch of the grace note
+	 * @param displayPitch             the pitch that denotes the position of the grace note on a staff
 	 * @param displayableDuration      the displayable duration of the grace note
-	 * @param articulations            a set of Articulations associated with the grace note
-	 * @param notationConnections      connections to other elements through notations
-	 * @param ornaments                ornaments for the grace note
+	 * @param articulations            (optional/nullable) a set of Articulations associated with the grace note
+	 * @param notationConnections      (optional/nullable)  connections to other elements through notations
+	 * @param ornaments                (optional/nullable) ornaments for the grace note
 	 * @param type                     the type of this grace note
-	 * @param principalNoteConnections connections to principal note
-	 * @param lyrics                   the lyrics associated with this grace note
+	 * @param principalNoteConnections (optional/nullable) connections to principal note
+	 * @param lyrics                   (optional/nullable) the lyrics associated with this grace note
 	 * @return an instance with the given parameters
 	 */
 	static GraceNote of(Pitch pitch, Pitch displayPitch, Duration displayableDuration, Set<Articulation> articulations,

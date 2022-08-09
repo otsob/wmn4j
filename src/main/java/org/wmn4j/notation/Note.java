@@ -53,7 +53,7 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch    (optional) the pitch of the note
+	 * @param pitch    (optional/nullable) the pitch of the note
 	 * @param duration the duration of the note
 	 * @return an instance with the given parameters
 	 */
@@ -64,9 +64,9 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch         (optional) the pitch of the note
+	 * @param pitch         (optional/nullable) the pitch of the note
 	 * @param duration      the duration of the note
-	 * @param articulations a set of Articulations associated with the note
+	 * @param articulations (optional/nullable) a set of Articulations associated with the note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations) {
@@ -78,8 +78,8 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	 *
 	 * @param pitch               (optional/nullable) the pitch of the note
 	 * @param duration            the duration of the note
-	 * @param articulations       a set of Articulations associated with the note
-	 * @param notationConnections the notation connections for the note
+	 * @param articulations       (optional/nullable) a set of Articulations associated with the note
+	 * @param notationConnections (optional/nullable) the notation connections for the note
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Duration duration, Set<Articulation> articulations,
@@ -91,13 +91,14 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 	 * Returns an instance with the given parameters.
 	 *
 	 * @param pitch               (optional/nullable) the sounding pitch of the note
-	 * @param displayPitch        (optional/nullable) the written displayed pitch or staff position of the note
+	 * @param displayPitch        (optional/nullable if pitch is given) the written displayed pitch or staff position of
+	 *                            the note
 	 * @param duration            the duration of the note
-	 * @param articulations       a set of Articulations associated with the note
-	 * @param notationConnections the notation connections for the note
-	 * @param ornaments           ornaments for the note
-	 * @param techniques          the playing techniques related to the note
-	 * @param lyrics              the lyrics associated with the note from top to bottom
+	 * @param articulations       (optional/nullable) a set of Articulations associated with the note
+	 * @param notationConnections (optional/nullable)the notation connections for the note
+	 * @param ornaments           (optional/nullable) ornaments for the note
+	 * @param techniques          (optional/nullable) the playing techniques related to the note
+	 * @param lyrics              (optional/nullable) the lyrics associated with the note from top to bottom
 	 * @return an instance with the given parameters
 	 */
 	public static Note of(Pitch pitch, Pitch displayPitch, Duration duration, Set<Articulation> articulations,
