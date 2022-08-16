@@ -484,4 +484,11 @@ public class StaxWriterTest {
 		Score writtenScore = writeAndReadScore(score, false);
 		MusicXmlFileChecks.assertPlayingTechniquesAreCorrect(writtenScore);
 	}
+
+	@Test
+	void testGivenScoreWithLyricsThenLyricsAreCorrectlyWritten() {
+		Score score = readMusicXmlTestFile("lyrics_test.musicxml", false);
+		Score writtenScore = writeAndReadScore(score, false);
+		MusicXmlFileChecks.assertLyricsAreCorrect(writtenScore);
+	}
 }
