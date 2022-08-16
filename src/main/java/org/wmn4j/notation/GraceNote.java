@@ -8,6 +8,7 @@ import org.wmn4j.notation.techniques.Technique;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -28,10 +29,10 @@ public final class GraceNote implements OptionallyPitched, Ornamental, Notation.
 	 *
 	 * @param pitch               the pitch of the grace note
 	 * @param displayableDuration the displayable duration of the grace note
-	 * @param articulations       a set of Articulations associated with the grace note
-	 * @param notationConnections connections to other elements through notations
-	 * @param ornaments           ornaments for the grace note
-	 * @param techniques          playing techniques of the grace note
+	 * @param articulations       (optional/nullable) a set of Articulations associated with the grace note
+	 * @param notationConnections (optional/nullable) connections to other elements through notations
+	 * @param ornaments           (optional/nullable) ornaments for the grace note
+	 * @param techniques          (optional/nullable) playing techniques of the grace note
 	 * @param type                the type of this grace note
 	 * @return an instance with the given parameters
 	 */
@@ -40,29 +41,32 @@ public final class GraceNote implements OptionallyPitched, Ornamental, Notation.
 			Set<Technique> techniques, Ornamental.Type type) {
 		return new GraceNote(pitch, null, displayableDuration, articulations, notationConnections, ornaments,
 				techniques,
-				type, Collections.emptyList());
+				type, Collections.emptyList(), Collections.emptyList());
 	}
 
 	/**
 	 * Returns an instance with the given parameters.
 	 *
-	 * @param pitch                    (optional/nullable) the pitch of the grace note
+	 * @param pitch                    (optional/nullable if displayPitch is given) the pitch of the grace note
+	 * @param displayPitch             the pitch that denotes the position of the grace note on a staff
 	 * @param displayableDuration      the displayable duration of the grace note
-	 * @param articulations            a set of Articulations associated with the grace note
-	 * @param notationConnections      connections to other elements through notations
-	 * @param ornaments                ornaments for the grace note
+	 * @param articulations            (optional/nullable) a set of Articulations associated with the grace note
+	 * @param notationConnections      (optional/nullable)  connections to other elements through notations
+	 * @param ornaments                (optional/nullable) ornaments for the grace note
 	 * @param type                     the type of this grace note
-	 * @param principalNoteConnections connections to principal note
+	 * @param principalNoteConnections (optional/nullable) connections to principal note
+	 * @param lyrics                   (optional/nullable) the lyrics associated with this grace note
 	 * @return an instance with the given parameters
 	 */
 	static GraceNote of(Pitch pitch, Pitch displayPitch, Duration displayableDuration, Set<Articulation> articulations,
 			Collection<Notation.Connection> notationConnections, Collection<Ornament> ornaments,
 			Set<Technique> techniques,
 			Ornamental.Type type,
-			Collection<Notation.Connection> principalNoteConnections) {
+			Collection<Notation.Connection> principalNoteConnections,
+			List<Lyric> lyrics) {
 		return new GraceNote(pitch, displayPitch, displayableDuration, articulations, notationConnections,
 				ornaments, techniques,
-				type, principalNoteConnections);
+				type, principalNoteConnections, lyrics);
 	}
 
 	/**
@@ -73,9 +77,11 @@ public final class GraceNote implements OptionallyPitched, Ornamental, Notation.
 			Collection<Ornament> ornaments,
 			Set<Technique> techniques,
 			Ornamental.Type type,
-			Collection<Notation.Connection> principalNoteConnections) {
+			Collection<Notation.Connection> principalNoteConnections,
+			List<Lyric> lyrics) {
 
-		this.note = Note.of(pitch, displayPitch, duration, articulations, notationConnections, ornaments, techniques);
+		this.note = Note.of(pitch, displayPitch, duration, articulations, notationConnections, ornaments, techniques,
+				lyrics);
 		this.type = Objects.requireNonNull(type);
 		this.principalNoteConnections = Collections.unmodifiableList(new ArrayList<>(principalNoteConnections));
 	}
@@ -196,6 +202,18 @@ public final class GraceNote implements OptionallyPitched, Ornamental, Notation.
 	@Override
 	public String toString() {
 		return "[G: " + note.toString() + "]";
+	}
+
+	/**
+	 * Returns an unmodifiable view of the lyrics associated with this grace note.
+	 * <p>
+	 * The {@link Lyric} instances are ordered from the topmost lyric line to the bottommost one.
+	 * Returns an empty list of there are no lyrics associated with this note.
+	 *
+	 * @return an unmodifiable view of the lyrics associated with this grace note
+	 */
+	public List<Lyric> getLyrics() {
+		return note.getLyrics();
 	}
 
 	/**

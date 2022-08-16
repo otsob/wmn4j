@@ -5,6 +5,7 @@ package org.wmn4j.notation;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -243,6 +244,28 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 	}
 
 	/**
+	 * Sets the lyrics in this grace note builder.
+	 * <p>
+	 * The lyrics are expected to be ordered starting from top lyric line.
+	 *
+	 * @param lyrics the lyrics to set in this builder
+	 * @return reference to this
+	 */
+	public GraceNoteBuilder setLyrics(List<Lyric> lyrics) {
+		noteBuilder.setLyrics(lyrics);
+		return this;
+	}
+
+	/**
+	 * Returns the lyrics set in this grace note builder.
+	 *
+	 * @return the lyrics set in this grace note builder
+	 */
+	public List<Lyric> getLyrics() {
+		return noteBuilder.getLyrics();
+	}
+
+	/**
 	 * Removes the cached note that was built on the previous call of {@link #build
 	 * build}.
 	 */
@@ -279,7 +302,7 @@ public final class GraceNoteBuilder implements ConnectableBuilder, OrnamentalBui
 							noteBuilder.getArticulations(),
 							noteBuilder.getResolvedNotationConnections(), noteBuilder.getOrnaments(),
 							noteBuilder.getTechniques(), graceNoteType,
-							principalNoteConnections);
+							principalNoteConnections, noteBuilder.getLyrics());
 
 			isBuilding = false;
 		}

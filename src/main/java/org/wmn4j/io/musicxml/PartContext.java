@@ -9,6 +9,7 @@ import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.DurationalBuilder;
 import org.wmn4j.notation.GraceNoteBuilder;
+import org.wmn4j.notation.Lyric;
 import org.wmn4j.notation.MeasureBuilder;
 import org.wmn4j.notation.NoteBuilder;
 import org.wmn4j.notation.Ornamental;
@@ -27,8 +28,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 /**
  * Container class for keeping track of all the context dependent
@@ -61,6 +65,7 @@ final class PartContext {
 
 	// All map integer keys represent staff numbers within a single part.
 	private Map<Integer, ChordBuffer> chordBuffers = new HashMap<>();
+	private Map<Integer, LyricBuffer> lyricBuffers = new TreeMap<>();
 	private Map<Integer, MeasureBuilder> measureBuilders = new HashMap<>();
 	private Map<Integer, OrnamentalBuffer> ornamentalNoteBuffers = new HashMap<>();
 
@@ -132,6 +137,7 @@ final class PartContext {
 
 		if (builder.isNoteBuilder() && !isPrevArtificialHarmonicPitch) {
 			NoteBuilder noteBuilder = builder.toNoteBuilder();
+			flushLyricBuffersTo(noteBuilder);
 			buffer.addNote(noteBuilder, staff, voice);
 			if (!hasChordTag) {
 				offsetDurations.add(noteBuilder.getDuration());
@@ -141,6 +147,39 @@ final class PartContext {
 		} else if (builder.isRestBuilder()) {
 			offsetDurations.add(builder.getDuration());
 		}
+	}
+
+	private List<Lyric> flushBuffersToLyrics() {
+		final var lyrics = lyricBuffers.values().stream()
+				.map(lyricBuffer -> Lyric.of(lyricBuffer.getJoinedText(), lyricBuffer.getType()))
+				.collect(Collectors.toList());
+
+		// Clear out all entries that are not starts of extensions
+		// and set the extension entries to become the continuations of
+		// the started extensions.
+		lyricBuffers.entrySet().removeIf(entry -> !entry.getValue().startsExtension());
+		lyricBuffers.entrySet().forEach(entry -> {
+			entry.getValue().setStartsExtension(false);
+			// Older MusicXML only used extend tags on the lyrics that start the extended lyric,
+			// therefore the entries left for the continuations of extensions are by
+			// default set to EXTENSION type as they don't necessarily have the extend tag.
+			entry.getValue().setType(Lyric.Type.EXTENSION);
+		});
+		return lyrics;
+	}
+
+	void flushLyricBuffersTo(NoteBuilder noteBuilder) {
+		if (lyricBuffers.isEmpty()) {
+			return;
+		}
+		noteBuilder.setLyrics(flushBuffersToLyrics());
+	}
+
+	void flushLyricBuffersTo(GraceNoteBuilder noteBuilder) {
+		if (lyricBuffers.isEmpty()) {
+			return;
+		}
+		noteBuilder.setLyrics(flushBuffersToLyrics());
 	}
 
 	void updateOrnamentalBuffer(GraceNoteBuilder graceNoteBuilder) {
@@ -266,7 +305,7 @@ final class PartContext {
 		this.staff = staff;
 	}
 
-	public int getStaff() {
+	int getStaff() {
 		return staff;
 	}
 
@@ -376,11 +415,11 @@ final class PartContext {
 		return offset;
 	}
 
-	public void incrementMeasureNumber() {
+	void incrementMeasureNumber() {
 		++measureNumber;
 	}
 
-	public void setStaffLines(int lines) {
+	void setStaffLines(int lines) {
 		if (lines == 1) {
 			partBuilder.setStaffType(Staff.Type.SINGLE_LINE, staff);
 		} else {
@@ -388,21 +427,49 @@ final class PartContext {
 		}
 	}
 
-	public void setArtificialHarmonic() {
+	void setArtificialHarmonic() {
 		harmonicValues.put(Technique.AdditionalValue.IS_ARTIFICIAL_HARMONIC, Boolean.TRUE);
 	}
 
-	public void setArtificialHarmonicBasePitch(Pitch pitch) {
+	void setArtificialHarmonicBasePitch(Pitch pitch) {
 		harmonicValues.put(Technique.AdditionalValue.HARMONIC_BASE_PITCH, pitch);
 	}
 
-	public void setArtificialHarmonicTouchingPitch(Pitch pitch) {
+	void setArtificialHarmonicTouchingPitch(Pitch pitch) {
 		harmonicValues.put(Technique.AdditionalValue.HARMONIC_TOUCHING_PITCH, pitch);
 		isPrevArtificialHarmonicPitch = true;
 	}
 
-	public void setArtificialHarmonicSoundingPitch(Pitch pitch) {
+	void setArtificialHarmonicSoundingPitch(Pitch pitch) {
 		harmonicValues.put(Technique.AdditionalValue.HARMONIC_SOUNDING_PITCH, pitch);
 		isPrevArtificialHarmonicPitch = true;
+	}
+
+	void setLyricType(int lineNumber, Lyric.Type type) {
+		if (!lyricBuffers.containsKey(lineNumber)) {
+			lyricBuffers.put(lineNumber, new LyricBuffer());
+		}
+
+		// Do not override elided once it has been set.
+		final LyricBuffer lyricBuffer = lyricBuffers.get(lineNumber);
+		if (!Objects.equals(lyricBuffer.getType(), Lyric.Type.ELIDED)) {
+			lyricBuffer.setType(type);
+		}
+	}
+
+	void addLyricText(int lineNumber, String text) {
+		if (!lyricBuffers.containsKey(lineNumber)) {
+			lyricBuffers.put(lineNumber, new LyricBuffer());
+		}
+
+		lyricBuffers.get(lineNumber).addText(text);
+	}
+
+	void startExtendedLyric(int lineNumber) {
+		if (!lyricBuffers.containsKey(lineNumber)) {
+			lyricBuffers.put(lineNumber, new LyricBuffer());
+		}
+
+		lyricBuffers.get(lineNumber).setStartsExtension(true);
 	}
 }
