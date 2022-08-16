@@ -653,6 +653,21 @@ final class Transforms {
 		}
 	}
 
+	static String lyricTypeToSyllabic(Lyric.Type type) {
+		switch (type) {
+			case START:
+				return Tags.BEGIN;
+			case END:
+				return Tags.END;
+			case MIDDLE:
+				return Tags.MIDDLE;
+			case INDEPENDENT:
+				return Tags.SINGLE;
+			default:
+				return null;
+		}
+	}
+
 	private Transforms() {
 		throw new UnsupportedOperationException("Not meant to be instantiated");
 	}

@@ -16,6 +16,7 @@ import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Durations;
 import org.wmn4j.notation.GraceNote;
 import org.wmn4j.notation.GraceNoteChord;
+import org.wmn4j.notation.Lyric;
 import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.Notation;
 import org.wmn4j.notation.Note;
@@ -687,6 +688,7 @@ final class StaxWriter implements MusicXmlWriter {
 		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(note.getDuration(), writer);
 		writeStaff(staff);
 		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments(), note.getTechniques());
+		writeLyrics(note.getLyrics());
 
 		writer.writeEndElement();
 
@@ -696,6 +698,42 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 
 		writeGraceNotes(note, voice, staff, Ornament.Type.SUCCEEDING_GRACE_NOTES);
+	}
+
+	private void writeLyrics(List<Lyric> lyrics) throws XMLStreamException {
+		int lyricNumber = 1;
+		for (var lyric : lyrics) {
+			writer.writeStartElement(Tags.LYRIC);
+			writer.writeAttribute(Tags.NUMBER, Integer.toString(lyricNumber));
+
+			final var type = lyric.getType();
+			final var text = lyric.getText();
+
+			final var syllabic = Transforms.lyricTypeToSyllabic(type);
+			if (syllabic != null) {
+				writeValue(Tags.SYLLABIC, syllabic);
+				writeValue(Tags.TEXT, text);
+			} else if (type.equals(Lyric.Type.EXTENDED)) {
+				writeValue(Tags.TEXT, text);
+				writer.writeEmptyElement(Tags.EXTEND);
+				writer.writeAttribute(Tags.TYPE, Tags.START);
+			} else if (type.equals(Lyric.Type.EXTENSION)) {
+				writer.writeEmptyElement(Tags.EXTEND);
+				writer.writeAttribute(Tags.TYPE, Tags.CONTINUE);
+			} else if (type.equals(Lyric.Type.ELIDED)) {
+				final String[] parts = text.split(Lyric.ELISION_SEPARATOR);
+				writeValue(Tags.TEXT, parts[0]);
+
+				for (int i = 1; i < parts.length; ++i) {
+					writeValue(Tags.ELISION, Lyric.ELISION_SEPARATOR);
+					writeValue(Tags.TEXT, parts[i]);
+				}
+			}
+
+			writer.writeEndElement();
+			++lyricNumber;
+		}
+
 	}
 
 	private void writeArtificialHarmonicPitches(Duration baseNoteDuration, Integer voice, Integer staff)
@@ -779,6 +817,7 @@ final class StaxWriter implements MusicXmlWriter {
 		DurationAppearanceWriter.INSTANCE.writeAppearanceElements(note.getDisplayableDuration(), writer);
 		writeStaff(staff);
 		writeNotations(note, note.getArticulations(), note.getNotations(), note.getOrnaments(), note.getTechniques());
+		writeLyrics(note.getLyrics());
 
 		writer.writeEndElement();
 
