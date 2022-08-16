@@ -427,4 +427,10 @@ class StaxReaderTest {
 		Score score = readScore("techniques_test.musicxml", true);
 		MusicXmlFileChecks.assertPlayingTechniquesAreCorrect(score);
 	}
+
+	@Test
+	void testGivenScoreWithLyricsThenLyricsAreCorrectlyRead() {
+		Score score = readScore("lyrics_test.musicxml", true);
+		MusicXmlFileChecks.assertLyricsAreCorrect(score);
+	}
 }

@@ -33,8 +33,8 @@ final class Tags {
 	static final String BEAM = "beam";
 	static final String BEATS = "beats";
 	static final String BEAT_TYPE = "beat-type";
+	static final String BEGIN = "begin";
 	static final String BEND = "bend";
-
 	static final String BEND_ALTER = "bend-alter";
 	static final String BOTTOM = "bottom";
 	static final String BRASS_BEND = "brass-bend";
@@ -72,9 +72,12 @@ final class Tags {
 	static final String DOWN = "down";
 	static final String DOWN_BOW = "down-bow";
 	static final String DURATION = "duration";
+	static final String ELISION = "elision";
 	static final String ENCODING = "encoding";
 	static final String ENCODING_DATE = "encoding-date";
+	static final String END = "end";
 	static final String ENDING = "ending";
+	static final String EXTEND = "extend";
 	static final String F = "F";
 	static final String FALLOFF = "falloff";
 	static final String FERMATA = "fermata";
@@ -127,6 +130,7 @@ final class Tags {
 	static final String LYRIC = "lyric";
 	static final String MEASURE = "measure";
 	static final String MEASURE_STYLE = "measure-style";
+	static final String MIDDLE = "middle";
 	static final String MISCELLANEOUS = "miscellaneous";
 	static final String MODE = "mode";
 	static final String MORDENT = "mordent";
@@ -197,6 +201,7 @@ final class Tags {
 	static final String SEGNO = "segno";
 	static final String SENZA_MISURA = "senza-misura";
 	static final String SIGN = "sign";
+	static final String SINGLE = "single";
 	static final String SINGLE_NUMBER = "single-number";
 	static final String SLASH = "slash";
 	static final String SLIDE = "slide";
@@ -218,6 +223,7 @@ final class Tags {
 	static final String STEM = "stem";
 	static final String STEP = "step";
 	static final String STOP = "stop";
+	static final String SYLLABIC = "syllabic";
 	static final String STOPPED = "stopped";
 	static final String STRESS = "stress";
 	static final String STRING = "string";
@@ -226,6 +232,7 @@ final class Tags {
 	static final String TAP = "tap";
 	static final String TECHNICAL = "technical";
 	static final String TENUTO = "tenuto";
+	static final String TEXT = "text";
 	static final String THUMB_POSITION = "thumb-position";
 	static final String TIE = "tie";
 	static final String TIED = "tied";
