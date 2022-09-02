@@ -196,6 +196,15 @@ public final class Pitch implements Comparable<Pitch> {
 	}
 
 	/**
+	 * Returns the pitch name (the pitch spelling) of this pitch.
+	 *
+	 * @return the pitch name (the pitch spelling) of this pitch
+	 */
+	public PitchName getPitchName() {
+		return PitchName.of(pitchBase, accidental);
+	}
+
+	/**
 	 * Returns the pitch class number of this pitch.
 	 *
 	 * @return the pitch class number of this pitch
