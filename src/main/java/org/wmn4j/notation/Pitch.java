@@ -105,6 +105,21 @@ public final class Pitch implements Comparable<Pitch> {
 		public int getAlterationInt() {
 			return alter;
 		}
+
+		String prettyString() {
+			StringBuilder builder = new StringBuilder();
+			final int alter = getAlterationInt();
+			if (alter >= 0) {
+				for (int i = 0; i < alter; ++i) {
+					builder.append("#");
+				}
+			} else {
+				for (int i = 0; i > alter; --i) {
+					builder.append("b");
+				}
+			}
+			return builder.toString();
+		}
 	}
 
 	/**
@@ -227,20 +242,10 @@ public final class Pitch implements Comparable<Pitch> {
 
 	@Override
 	public String toString() {
-		String pitchName = this.pitchBase.toString();
-
-		final int alter = accidental.getAlterationInt();
-		if (alter >= 0) {
-			for (int i = 0; i < alter; ++i) {
-				pitchName += "#";
-			}
-		} else {
-			for (int i = 0; i > alter; --i) {
-				pitchName += "b";
-			}
-		}
-
-		return pitchName + octave;
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.pitchBase.toString());
+		builder.append(accidental.prettyString());
+		return builder.append(octave).toString();
 	}
 
 	/**
