@@ -5,6 +5,7 @@ package org.wmn4j.io.musicxml;
 
 import org.apache.commons.math3.fraction.Fraction;
 import org.wmn4j.notation.Barline;
+import org.wmn4j.notation.ChordSymbolBuilder;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.DurationalBuilder;
@@ -208,7 +209,9 @@ final class PartContext {
 		}
 
 		offsetDurations.clear();
-		offsetDurations.add(offsetDuration);
+		if (offsetDuration != null) {
+			offsetDurations.add(offsetDuration);
+		}
 
 		return offsetDuration;
 	}
@@ -471,5 +474,21 @@ final class PartContext {
 		}
 
 		lyricBuffers.get(lineNumber).setStartsExtension(true);
+	}
+
+	void addChordSymbol(ChordSymbolBuilder chordSymbolBuilder, Fraction offset) {
+		final var voiceOffset = getOffset();
+		Fraction offsetFraction = offset;
+
+		if (voiceOffset != null) {
+			offsetFraction = offsetFraction.add(new Fraction(voiceOffset.getNumerator(), voiceOffset.getDenominator()));
+		}
+
+		Duration chordOffset = null;
+		if (Fraction.ZERO.compareTo(offsetFraction) < 0) {
+			chordOffset = Duration.of(offsetFraction.getNumerator(), offsetFraction.getDenominator());
+		}
+
+		getMeasureBuilder().addChordSymbol(chordOffset, chordSymbolBuilder);
 	}
 }

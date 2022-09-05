@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.wmn4j.io.ParsingFailureException;
 import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
+import org.wmn4j.notation.ChordSymbol;
+import org.wmn4j.notation.ChordSymbolBuilder;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.ConnectableBuilder;
 import org.wmn4j.notation.Duration;
@@ -23,6 +25,7 @@ import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.PartBuilder;
 import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.PitchName;
 import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
@@ -107,6 +110,8 @@ final class StaxReader implements MusicXmlReader {
 
 	private Technique currentTechnique;
 	private String currentTechniqueText;
+	private int currentChordExtensionValue;
+	private String currentChordExtensionType;
 	private Map<Technique.AdditionalValue, Object> currentAdditionalTechValues;
 
 	private boolean isClosed;
@@ -503,8 +508,10 @@ final class StaxReader implements MusicXmlReader {
 				case Tags.BARLINE:
 					consumeBarlineElem();
 					break;
-				// Fall through for elements that are currently not supported
 				case Tags.HARMONY:
+					consumeHarmonyElem();
+					break;
+				// Fall through for elements that are currently not supported
 				case Tags.FIGURED_BASS:
 				default:
 					skipElement();
@@ -512,6 +519,99 @@ final class StaxReader implements MusicXmlReader {
 		}, Tags.MEASURE);
 
 		partContext.finishMeasureElement();
+	}
+
+	private void consumeHarmonyElem() throws XMLStreamException {
+		final ChordSymbolBuilder builder = new ChordSymbolBuilder();
+		final StringBuilder offsetString = new StringBuilder();
+
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.ROOT:
+					consumeUntil(
+							rootTag -> {
+								if (rootTag.equals(Tags.ROOT_STEP)) {
+									consumeText(text -> currentStep = text);
+								}
+								if (rootTag.equals(Tags.ROOT_ALTER)) {
+									consumeText(text -> currentAlter = Integer.parseInt(text));
+								}
+
+							}, Tags.ROOT);
+
+					builder.setRoot(PitchName.of(Transforms.stepToPitchBase(currentStep),
+							Transforms.alterToAccidental(currentAlter)));
+					break;
+				case Tags.BASS:
+					consumeUntil(
+							bassTag -> {
+								if (Tags.BASS_STEP.equals(bassTag)) {
+									consumeText(text -> currentStep = text);
+								}
+								if (Tags.BASS_ALTER.equals(bassTag)) {
+									consumeText(text -> currentAlter = Integer.parseInt(text));
+								}
+
+							}, Tags.BASS);
+
+					builder.setBass(PitchName.of(Transforms.stepToPitchBase(currentStep),
+							Transforms.alterToAccidental(currentAlter)));
+					break;
+				case Tags.KIND:
+					consumeChordKind(builder);
+					break;
+				case Tags.DEGREE:
+					consumeChordDegreeElem(builder);
+					break;
+				case Tags.OFFSET:
+					consumeText(text -> offsetString.append(text));
+					break;
+				case Tags.STAFF:
+					consumeText(text -> partContext.setStaff(Integer.parseInt(text)));
+					break;
+				default:
+					skipElement();
+					break;
+			}
+		}, Tags.HARMONY);
+
+		Fraction offset = Fraction.ZERO;
+		if (!offsetString.isEmpty()) {
+			offset = divisionsToFraction(offsetString.toString());
+		}
+
+		partContext.addChordSymbol(builder, offset);
+	}
+
+	private void consumeChordDegreeElem(final ChordSymbolBuilder builder) throws XMLStreamException {
+		consumeUntil(tag -> {
+			switch (tag) {
+				case Tags.DEGREE_VALUE:
+					consumeText(text -> currentChordExtensionValue = Integer.parseInt(text));
+					break;
+				case Tags.DEGREE_ALTER:
+					consumeText(text -> currentAlter = Integer.parseInt(text));
+					break;
+				case Tags.DEGREE_TYPE:
+					consumeText(text -> currentChordExtensionType = text);
+					break;
+				default:
+					break;
+			}
+		}, Tags.DEGREE);
+
+		final var extensionType = Transforms.chordDegreeTypeToExtensionType(currentChordExtensionType);
+		final var accidental = Transforms.alterToAccidental(currentAlter);
+		final var degree = currentChordExtensionValue;
+		builder.addExtension(ChordSymbol.extension(extensionType, accidental, degree));
+	}
+
+	private void consumeChordKind(final ChordSymbolBuilder builder) throws XMLStreamException {
+		final StringBuilder kindTextBuilder = new StringBuilder();
+		consumeText(text -> kindTextBuilder.append(text));
+		final var kindText = kindTextBuilder.toString();
+
+		Transforms.setKindToChordBuilder(builder, kindText);
 	}
 
 	private void consumeDirectionElem() throws XMLStreamException {

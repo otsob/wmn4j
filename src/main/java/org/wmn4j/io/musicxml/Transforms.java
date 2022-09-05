@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
+import org.wmn4j.notation.ChordSymbol;
+import org.wmn4j.notation.ChordSymbolBuilder;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durations;
@@ -663,6 +665,137 @@ final class Transforms {
 				return Tags.MIDDLE;
 			case INDEPENDENT:
 				return Tags.SINGLE;
+			default:
+				return null;
+		}
+	}
+
+	static void setKindToChordBuilder(ChordSymbolBuilder builder, String kindText) {
+		switch (kindText) {
+			case Tags.AUGMENTED:
+				builder.setBase(ChordSymbol.Base.AUGMENTED);
+				break;
+			case Tags.AUGMENTED_SEVENTH:
+				builder.setBase(ChordSymbol.Base.AUGMENTED);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.PLAIN, Pitch.Accidental.NATURAL, 7));
+				break;
+			case Tags.DIMINISHED:
+				builder.setBase(ChordSymbol.Base.DIMINISHED);
+				break;
+			case Tags.DIMINISHED_SEVENTH:
+				builder.setBase(ChordSymbol.Base.DIMINISHED);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.DIM, Pitch.Accidental.NATURAL, 7));
+				break;
+			case Tags.DOMINANT:
+				builder.setBase(ChordSymbol.Base.MAJOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.PLAIN, Pitch.Accidental.NATURAL, 7));
+				break;
+			case Tags.DOMINANT_ELEVENTH:
+				builder.setBase(ChordSymbol.Base.MAJOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.PLAIN, Pitch.Accidental.NATURAL, 11));
+				break;
+			case Tags.DOMINANT_THIRTEENTH:
+				builder.setBase(ChordSymbol.Base.MAJOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.PLAIN, Pitch.Accidental.NATURAL, 13));
+				break;
+			case Tags.DOMINANT_NINTH:
+				builder.setBase(ChordSymbol.Base.MAJOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.PLAIN, Pitch.Accidental.NATURAL, 9));
+				break;
+			case Tags.HALF_DIMINISHED:
+				builder.setBase(ChordSymbol.Base.DIMINISHED);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.MINOR, Pitch.Accidental.NATURAL, 7));
+				break;
+			case Tags.MAJOR:
+				builder.setBase(ChordSymbol.Base.MAJOR);
+				break;
+			case Tags.MAJOR_ELEVENTH:
+				builder.setBase(ChordSymbol.Base.MAJOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.MAJOR, Pitch.Accidental.NATURAL, 11));
+				break;
+			case Tags.MAJOR_THIRTEENTH:
+				builder.setBase(ChordSymbol.Base.MAJOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.MAJOR, Pitch.Accidental.NATURAL, 13));
+				break;
+			case Tags.MAJOR_MINOR:
+				builder.setBase(ChordSymbol.Base.MINOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.MAJOR, Pitch.Accidental.NATURAL, 7));
+				break;
+			case Tags.MAJOR_NINTH:
+				builder.setBase(ChordSymbol.Base.MAJOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.MAJOR, Pitch.Accidental.NATURAL, 9));
+				break;
+			case Tags.MAJOR_SEVENTH:
+				builder.setBase(ChordSymbol.Base.MAJOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.MAJOR, Pitch.Accidental.NATURAL, 7));
+				break;
+			case Tags.MAJOR_SIXTH:
+				builder.setBase(ChordSymbol.Base.MAJOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.MAJOR, Pitch.Accidental.NATURAL, 6));
+				break;
+			case Tags.MINOR:
+				builder.setBase(ChordSymbol.Base.MINOR);
+				break;
+			case Tags.MINOR_THIRTEENTH:
+				builder.setBase(ChordSymbol.Base.MINOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.MINOR, Pitch.Accidental.NATURAL, 13));
+				break;
+			case Tags.MINOR_ELEVENTH:
+				builder.setBase(ChordSymbol.Base.MINOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.MINOR, Pitch.Accidental.NATURAL, 11));
+				break;
+			case Tags.MINOR_NINTH:
+				builder.setBase(ChordSymbol.Base.MINOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.MINOR, Pitch.Accidental.NATURAL, 9));
+				break;
+			case Tags.MINOR_SEVENTH:
+				builder.setBase(ChordSymbol.Base.MINOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.MINOR, Pitch.Accidental.NATURAL, 7));
+				break;
+			case Tags.MINOR_SIXTH:
+				builder.setBase(ChordSymbol.Base.MINOR);
+				builder.addExtension(
+						ChordSymbol.extension(ChordSymbol.Extension.Type.MINOR, Pitch.Accidental.NATURAL, 6));
+				break;
+			case Tags.POWER:
+				builder.setBase(ChordSymbol.Base.POWER_CHORD);
+				break;
+			case Tags.SUSPENDED_FOURTH:
+				builder.setBase(ChordSymbol.Base.SUSPENDED_FOURTH);
+				break;
+			case Tags.SUSPENDED_SECOND:
+				builder.setBase(ChordSymbol.Base.SUSPENDED_SECOND);
+				break;
+			default:
+				break;
+		}
+	}
+
+	static ChordSymbol.Extension.Type chordDegreeTypeToExtensionType(String degreeType) {
+		switch (degreeType) {
+			case Tags.ADD:
+				return ChordSymbol.Extension.Type.PLAIN;
+			case Tags.SUBTRACT:
+				return ChordSymbol.Extension.Type.OMIT;
+			case Tags.ALTER:
+				return ChordSymbol.Extension.Type.ALTERED;
 			default:
 				return null;
 		}
