@@ -491,4 +491,11 @@ public class StaxWriterTest {
 		Score writtenScore = writeAndReadScore(score, false);
 		MusicXmlFileChecks.assertLyricsAreCorrect(writtenScore);
 	}
+
+	@Test
+	void testGivenScoreWithChordSymbolsThenChordSymbolsAreCorrectlyWritten() {
+		Score score = readMusicXmlTestFile("chord_symbol_test.musicxml", false);
+		Score writtenScore = writeAndReadScore(score, false);
+		MusicXmlFileChecks.assertChordSymbolsCorrect(writtenScore);
+	}
 }

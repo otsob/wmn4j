@@ -4,8 +4,11 @@
 package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
+import org.wmn4j.notation.access.Offset;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -189,7 +192,7 @@ class MeasureTest {
 
 		final MeasureAttributes attributes = MeasureAttributes
 				.of(TimeSignatures.FOUR_FOUR, keySig, Barline.SINGLE, Clefs.G);
-		final Measure fullMeasureRest = Measure.restMeasureOf(2, attributes);
+		final Measure fullMeasureRest = Measure.restMeasureOf(2, attributes, null);
 		assertTrue(fullMeasureRest.isFullMeasureRest());
 
 		try {
@@ -204,12 +207,53 @@ class MeasureTest {
 	void testPickUpMeasure() {
 		final MeasureAttributes attributes = MeasureAttributes
 				.of(TimeSignatures.FOUR_FOUR, keySig, Barline.SINGLE, Clefs.G);
-		final Measure pickupMeasure = Measure.pickupOf(this.multipleNoteVoices, attributes);
+		final Measure pickupMeasure = Measure.pickupOf(this.multipleNoteVoices, attributes, null);
 
 		assertTrue(pickupMeasure.isPickup());
 
-		final Measure nonPickup = Measure.of(1, this.multipleNoteVoices, attributes);
+		final Measure nonPickup = Measure.of(1, this.multipleNoteVoices, attributes, null);
 
 		assertFalse(nonPickup.isPickup());
+	}
+
+	@Test
+	void testMeasureWithChordSymbols() {
+		final MeasureAttributes attributes = MeasureAttributes
+				.of(TimeSignatures.FOUR_FOUR, keySig, Barline.SINGLE, Clefs.G);
+
+		final Collection<Offset<ChordSymbol>> chords = new ArrayList<>();
+		chords.add(new Offset<>(
+				ChordSymbol.of(ChordSymbol.Base.MAJOR, PitchName.of(Pitch.Base.C, Pitch.Accidental.NATURAL), null,
+						null), null));
+
+		chords.add(new Offset<>(
+				ChordSymbol.of(ChordSymbol.Base.MAJOR, PitchName.of(Pitch.Base.G, Pitch.Accidental.NATURAL),
+						null, Arrays.asList(
+								ChordSymbol.extension(ChordSymbol.Extension.Type.PLAIN, Pitch.Accidental.NATURAL, 7))),
+				Durations.HALF.addDot()));
+
+		chords.add(new Offset<>(
+				ChordSymbol.of(ChordSymbol.Base.MAJOR, PitchName.of(Pitch.Base.D, Pitch.Accidental.NATURAL),
+						PitchName.of(Pitch.Base.A, Pitch.Accidental.NATURAL),
+						null), Durations.HALF));
+
+		final Measure measure = Measure.pickupOf(this.multipleNoteVoices, attributes, chords);
+		assertTrue(measure.containsChordSymbols());
+		final var chordSymbols = measure.getChordSymbols();
+		assertEquals(3, chordSymbols.size());
+		assertTrue(chordSymbols.get(0).getDuration().isEmpty());
+		assertEquals(ChordSymbol.of(ChordSymbol.Base.MAJOR, PitchName.of(Pitch.Base.C, Pitch.Accidental.NATURAL), null,
+				null), chordSymbols.get(0).get());
+
+		assertEquals(Durations.HALF, chordSymbols.get(1).getDuration().get());
+		assertEquals(ChordSymbol.of(ChordSymbol.Base.MAJOR, PitchName.of(Pitch.Base.D, Pitch.Accidental.NATURAL),
+				PitchName.of(Pitch.Base.A, Pitch.Accidental.NATURAL),
+				null), chordSymbols.get(1).get());
+
+		assertEquals(Durations.HALF.addDot(), chordSymbols.get(2).getDuration().get());
+		assertEquals(ChordSymbol.of(ChordSymbol.Base.MAJOR, PitchName.of(Pitch.Base.G, Pitch.Accidental.NATURAL),
+						null,
+						Arrays.asList(ChordSymbol.extension(ChordSymbol.Extension.Type.PLAIN, Pitch.Accidental.NATURAL, 7))),
+				chordSymbols.get(2).get());
 	}
 }

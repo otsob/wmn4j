@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PitchTest {
@@ -24,6 +25,16 @@ class PitchTest {
 		assertEquals(PitchClass.C, Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5).getPitchClass());
 		assertEquals(PitchClass.GSHARP_AFLAT, Pitch.of(Pitch.Base.A, Pitch.Accidental.FLAT, 3).getPitchClass());
 		assertEquals(PitchClass.B, Pitch.of(Pitch.Base.B, Pitch.Accidental.NATURAL, 2).getPitchClass());
+	}
+
+	@Test
+	void testGetPitchName() {
+		assertEquals(PitchName.of(Pitch.Base.C, Pitch.Accidental.NATURAL),
+				Pitch.of(Pitch.Base.C, Pitch.Accidental.NATURAL, 5).getPitchName());
+		assertEquals(PitchName.of(Pitch.Base.A, Pitch.Accidental.FLAT),
+				Pitch.of(Pitch.Base.A, Pitch.Accidental.FLAT, 3).getPitchName());
+		assertNotEquals(PitchName.of(Pitch.Base.A, Pitch.Accidental.SHARP),
+				Pitch.of(Pitch.Base.B, Pitch.Accidental.FLAT, 2).getPitchName());
 	}
 
 	@Test

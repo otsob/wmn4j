@@ -8,6 +8,7 @@ import org.wmn4j.notation.access.Offset;
 import org.wmn4j.notation.directions.Direction;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,8 @@ public final class Measure implements Iterable<Durational> {
 	private final SortedMap<Integer, List<Durational>> voices;
 	private final MeasureAttributes measureAttr;
 
+	private final List<Offset<ChordSymbol>> chordSymbols;
+
 	/**
 	 * Returns a measure with the given values.
 	 *
@@ -44,7 +47,7 @@ public final class Measure implements Iterable<Durational> {
 	public static Measure of(int number, Map<Integer, List<Durational>> noteVoices, TimeSignature timeSig,
 			KeySignature keySig,
 			Barline rightBarLine, Clef clef) {
-		return new Measure(number, noteVoices, MeasureAttributes.of(timeSig, keySig, rightBarLine, clef));
+		return new Measure(number, noteVoices, MeasureAttributes.of(timeSig, keySig, rightBarLine, clef), null);
 	}
 
 	/**
@@ -60,19 +63,21 @@ public final class Measure implements Iterable<Durational> {
 	public static Measure of(int number, Map<Integer, List<Durational>> noteVoices, TimeSignature timeSig,
 			KeySignature keySig,
 			Clef clef) {
-		return new Measure(number, noteVoices, MeasureAttributes.of(timeSig, keySig, Barline.SINGLE, clef));
+		return new Measure(number, noteVoices, MeasureAttributes.of(timeSig, keySig, Barline.SINGLE, clef), null);
 	}
 
 	/**
 	 * Returns a measure with the given values.
 	 *
-	 * @param number      number of the measure
-	 * @param noteVoices  the notes on the different voices of the measure
-	 * @param measureAttr the attributes of the measure
+	 * @param number       number of the measure
+	 * @param noteVoices   the notes on the different voices of the measure
+	 * @param measureAttr  the attributes of the measure
+	 * @param chordSymbols the chord symbols in the measure (can be null for empty)
 	 * @return a measure with the given values
 	 */
-	public static Measure of(int number, Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttr) {
-		return new Measure(number, noteVoices, measureAttr);
+	public static Measure of(int number, Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttr,
+			List<Offset<ChordSymbol>> chordSymbols) {
+		return new Measure(number, noteVoices, measureAttr, chordSymbols);
 	}
 
 	/**
@@ -80,10 +85,12 @@ public final class Measure implements Iterable<Durational> {
 	 *
 	 * @param number            number of the measure
 	 * @param measureAttributes the attributes of the measure
+	 * @param chordSymbols      the chord symbols in the measure (can be null for empty)
 	 * @return a full measure rest with the given measure number and attributes
 	 */
-	public static Measure restMeasureOf(int number, MeasureAttributes measureAttributes) {
-		return new Measure(number, Collections.emptyMap(), measureAttributes);
+	public static Measure restMeasureOf(int number, MeasureAttributes measureAttributes,
+			Collection<Offset<ChordSymbol>> chordSymbols) {
+		return new Measure(number, Collections.emptyMap(), measureAttributes, chordSymbols);
 	}
 
 	/**
@@ -91,20 +98,24 @@ public final class Measure implements Iterable<Durational> {
 	 *
 	 * @param noteVoices        noteVoices  the notes on the different voices of the measure
 	 * @param measureAttributes the attributes of the measure
+	 * @param chordSymbols      the chord symbols in the measure (can be null for empty)
 	 * @return a pickup measure with the given contents and measure attributes
 	 */
-	public static Measure pickupOf(Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttributes) {
-		return new Measure(0, noteVoices, measureAttributes);
+	public static Measure pickupOf(Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttributes,
+			Collection<Offset<ChordSymbol>> chordSymbols) {
+		return new Measure(0, noteVoices, measureAttributes, chordSymbols);
 	}
 
 	/**
 	 * Constructor.
 	 *
-	 * @param number      number of the measure.
-	 * @param noteVoices  the notes on the different voices of the measure.
-	 * @param measureAttr the attributes of the measure.
+	 * @param number       number of the measure.
+	 * @param noteVoices   the notes on the different voices of the measure.
+	 * @param measureAttr  the attributes of the measure.
+	 * @param chordSymbols the chord symbols in the measure
 	 */
-	private Measure(int number, Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttr) {
+	private Measure(int number, Map<Integer, List<Durational>> noteVoices, MeasureAttributes measureAttr,
+			Collection<Offset<ChordSymbol>> chordSymbols) {
 		if (number < 0) {
 			throw new IllegalArgumentException("Measure number cannot be negative");
 		}
@@ -122,6 +133,14 @@ public final class Measure implements Iterable<Durational> {
 
 		if (this.number < 0) {
 			throw new IllegalArgumentException("Measure number must be at least 0");
+		}
+
+		if (chordSymbols == null || chordSymbols.isEmpty()) {
+			this.chordSymbols = Collections.emptyList();
+		} else {
+			var sorted = new ArrayList<>(chordSymbols);
+			Collections.sort(sorted);
+			this.chordSymbols = Collections.unmodifiableList(sorted);
 		}
 	}
 
@@ -263,6 +282,28 @@ public final class Measure implements Iterable<Durational> {
 	 */
 	public List<Offset<Direction>> getDirections() {
 		return measureAttr.getDirections();
+	}
+
+	/**
+	 * Returns an unmodifiable view of the chord symbols in this measure.
+	 * <p>
+	 * The offsets of the chord symbols are measured from the beginning of the measure.
+	 * For pickup measures, this is from the effective beginning of the measure (not the full length
+	 * denoted by the time signature).
+	 *
+	 * @return an unmodifiable view of the chord symbols in this measure
+	 */
+	public List<Offset<ChordSymbol>> getChordSymbols() {
+		return chordSymbols;
+	}
+
+	/**
+	 * Returns true if this measure contains chord symbols, false otherwise.
+	 *
+	 * @return true if this measure contains chord symbols, false otherwise
+	 */
+	public boolean containsChordSymbols() {
+		return !chordSymbols.isEmpty();
 	}
 
 	/**

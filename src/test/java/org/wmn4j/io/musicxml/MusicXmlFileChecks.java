@@ -7,6 +7,7 @@ import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.ChordBuilder;
+import org.wmn4j.notation.ChordSymbol;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Clefs;
 import org.wmn4j.notation.Duration;
@@ -25,6 +26,7 @@ import org.wmn4j.notation.Ornament;
 import org.wmn4j.notation.Ornamental;
 import org.wmn4j.notation.Part;
 import org.wmn4j.notation.Pitch;
+import org.wmn4j.notation.PitchName;
 import org.wmn4j.notation.Rest;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.SingleStaffPart;
@@ -1371,5 +1373,60 @@ class MusicXmlFileChecks {
 		assertLyrics(bottomMeasure.get(5, 1), List.of(Lyric.of("is.", Lyric.Type.INDEPENDENT),
 				Lyric.of("line", Lyric.Type.INDEPENDENT)));
 
+	}
+
+	/*
+	 * Expects the contents of "chord_symbol_test.musicxml"
+	 */
+	static void assertChordSymbolsCorrect(Score score) {
+		assertEquals(1, score.getPartCount());
+		final Part part = score.getPart(0);
+		assertEquals(2, part.getStaffCount());
+		final var firstTopMeasure = part.getMeasure(1, 1);
+		assertFalse(firstTopMeasure.containsChordSymbols());
+
+		final var secondTopMeasure = part.getMeasure(1, 2);
+		assertTrue(secondTopMeasure.containsChordSymbols());
+		final var secondTopChords = secondTopMeasure.getChordSymbols();
+		assertEquals(1, secondTopChords.size());
+		assertTrue(secondTopChords.get(0).getDuration().isEmpty());
+		assertEquals(ChordSymbol.of(ChordSymbol.Base.MAJOR, PitchName.of(Pitch.Base.G, Pitch.Accidental.NATURAL),
+						null, null),
+				secondTopChords.get(0).get());
+
+		final var firstBottomMeasure = part.getMeasure(2, 1);
+		assertTrue(firstBottomMeasure.containsChordSymbols());
+		final var firstBottomChords = firstBottomMeasure.getChordSymbols();
+		assertEquals(2, firstBottomChords.size());
+		assertTrue(firstBottomChords.get(0).getDuration().isEmpty());
+		assertEquals(ChordSymbol.of(ChordSymbol.Base.MAJOR, PitchName.of(Pitch.Base.C, Pitch.Accidental.NATURAL),
+						null, null),
+				firstBottomChords.get(0).get());
+
+		assertTrue(firstBottomChords.get(1).getDuration().isPresent());
+		assertEquals(Durations.HALF, firstBottomChords.get(1).getDuration().get());
+		assertEquals(ChordSymbol.of(ChordSymbol.Base.MINOR, PitchName.of(Pitch.Base.D, Pitch.Accidental.NATURAL),
+						null, null),
+				firstBottomChords.get(1).get());
+
+		final var secondBottomMeasure = part.getMeasure(2, 2);
+		assertTrue(secondBottomMeasure.containsChordSymbols());
+		final var secondBottomChords = secondBottomMeasure.getChordSymbols();
+		assertEquals(2, secondBottomChords.size());
+
+		assertTrue(secondBottomChords.get(0).getDuration().isEmpty());
+		assertEquals(ChordSymbol.of(ChordSymbol.Base.MAJOR, PitchName.of(Pitch.Base.G, Pitch.Accidental.NATURAL),
+						PitchName.of(Pitch.Base.D, Pitch.Accidental.NATURAL),
+						List.of(ChordSymbol.extension(ChordSymbol.Extension.Type.PLAIN, Pitch.Accidental.NATURAL, 7))),
+				secondBottomChords.get(0).get());
+
+		assertTrue(secondBottomChords.get(1).getDuration().isPresent());
+		assertEquals(Durations.HALF, secondBottomChords.get(1).getDuration().get());
+
+		assertEquals(ChordSymbol.of(ChordSymbol.Base.MAJOR, PitchName.of(Pitch.Base.E, Pitch.Accidental.FLAT),
+						null,
+						List.of(ChordSymbol.extension(ChordSymbol.Extension.Type.PLAIN, Pitch.Accidental.NATURAL, 7),
+								ChordSymbol.extension(ChordSymbol.Extension.Type.PLAIN, Pitch.Accidental.SHARP, 11))),
+				secondBottomChords.get(1).get());
 	}
 }

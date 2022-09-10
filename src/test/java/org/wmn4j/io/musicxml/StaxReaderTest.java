@@ -433,4 +433,10 @@ class StaxReaderTest {
 		Score score = readScore("lyrics_test.musicxml", true);
 		MusicXmlFileChecks.assertLyricsAreCorrect(score);
 	}
+
+	@Test
+	void testGivenScoreWithChordSymbolsThenSymbolsAreCorrectlyRead() {
+		Score score = readScore("chord_symbol_test.musicxml", true);
+		MusicXmlFileChecks.assertChordSymbolsCorrect(score);
+	}
 }
