@@ -174,7 +174,7 @@ class PatternsToScoreConverter {
 		MeasureAttributes attributes = MeasureAttributes
 				.of(DEFAULT_TIME_SIGNATURE, DEFAULT_KEY_SIGNATURE, rightBarline, clef);
 
-		return Measure.restMeasureOf(measureNumber, attributes);
+		return Measure.restMeasureOf(measureNumber, attributes, null);
 	}
 
 	private List<Measure> voiceToMeasureList(Iterator<Durational> voiceIterator, boolean useEndingBarline) {
@@ -239,7 +239,7 @@ class PatternsToScoreConverter {
 				.of(DEFAULT_TIME_SIGNATURE, DEFAULT_KEY_SIGNATURE, getBarline(isLastMeasureOfPattern),
 						findSuitableClef(measureContent));
 
-		return Measure.of(measureNumber, Collections.singletonMap(1, measureContent), attributes);
+		return Measure.of(measureNumber, Collections.singletonMap(1, measureContent), attributes, null);
 	}
 
 	private Clef findSuitableClef(List<Durational> voice) {

@@ -10,6 +10,7 @@ import org.wmn4j.notation.Articulation;
 import org.wmn4j.notation.Barline;
 import org.wmn4j.notation.Chord;
 import org.wmn4j.notation.ChordBuilder;
+import org.wmn4j.notation.ChordSymbol;
 import org.wmn4j.notation.Clef;
 import org.wmn4j.notation.Duration;
 import org.wmn4j.notation.Durational;
@@ -518,6 +519,7 @@ final class StaxWriter implements MusicXmlWriter {
 	private int writeMeasureContents(Measure measure, Integer staff, boolean isMultiStaff) throws XMLStreamException {
 
 		writeDirections(measure.getDirections(), staff);
+		writeChordSymbols(measure.getChordSymbols(), staff);
 
 		final List<Offset<Clef>> undealtClefChanges = new ArrayList<>(measure.getClefChanges());
 
@@ -558,6 +560,64 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 
 		return toDivisionCount(offset);
+	}
+
+	private void writeChordSymbols(List<Offset<ChordSymbol>> chordSymbols, Integer staff) throws XMLStreamException {
+		for (var offsetChordSymbol : chordSymbols) {
+			writer.writeStartElement(Tags.HARMONY);
+			final var chordSymbol = offsetChordSymbol.get();
+
+			writer.writeStartElement(Tags.ROOT);
+			final var root = chordSymbol.getRoot();
+			writeValue(Tags.ROOT_STEP, root.getBase().toString());
+			writeValue(Tags.ROOT_ALTER, Integer.toString(root.getAccidental().getAlterationInt()));
+			writer.writeEndElement();
+
+			List<ChordSymbol.Extension> unwrittenExtensions = new ArrayList<>(chordSymbol.getExtensions());
+			writeValue(Tags.KIND, Transforms.chordSymbolToKindValue(chordSymbol.getBase(),
+					unwrittenExtensions));
+
+			if (chordSymbol.isInversion()) {
+				writer.writeStartElement(Tags.BASS);
+				final var bass = chordSymbol.getBass();
+				writeValue(Tags.BASS_STEP, bass.getBase().toString());
+				writeValue(Tags.BASS_ALTER, Integer.toString(bass.getAccidental().getAlterationInt()));
+				writer.writeEndElement();
+			}
+
+			for (var extension : unwrittenExtensions) {
+				writeChordDegree(extension);
+			}
+
+			if (offsetChordSymbol.getDuration().isPresent()) {
+				writeValue(Tags.OFFSET, Integer.toString(toDivisionCount(offsetChordSymbol.getDuration().get())));
+			}
+
+			writeValue(Tags.STAFF, Integer.toString(staff));
+
+			writer.writeEndElement();
+		}
+	}
+
+	private void writeChordDegree(ChordSymbol.Extension extension) throws XMLStreamException {
+		if (extension.getNumber().isEmpty()) {
+			return;
+		}
+
+		writer.writeStartElement(Tags.DEGREE);
+		writeValue(Tags.DEGREE_VALUE, Integer.toString(extension.getNumber().getAsInt()));
+		writeValue(Tags.DEGREE_ALTER, Integer.toString(extension.getAccidental().getAlterationInt()));
+
+		ChordSymbol.Extension.Type type = extension.getType();
+		if (type.equals(ChordSymbol.Extension.Type.OMIT)) {
+			writeValue(Tags.DEGREE_TYPE, Tags.SUBTRACT);
+		} else if (extension.getType().equals(ChordSymbol.Extension.Type.ALTERED)) {
+			writeValue(Tags.DEGREE_TYPE, Tags.ALTER);
+		} else {
+			writeValue(Tags.DEGREE_TYPE, Tags.ADD);
+		}
+
+		writer.writeEndElement();
 	}
 
 	private void writeDirections(Iterable<Offset<Direction>> offsetDirections, Integer staffNumber)

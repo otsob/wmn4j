@@ -356,7 +356,33 @@ class MeasureBuilderTest {
 		final List<Offset<Direction>> directions = measure.getDirections();
 
 		assertEquals(2, directions.size());
-		assertEquals(new Offset<>(Direction.of(Direction.Type.TEXT, "Another text"), Durations.SIXTEENTH), directions.get(0));
+		assertEquals(new Offset<>(Direction.of(Direction.Type.TEXT, "Another text"), Durations.SIXTEENTH),
+				directions.get(0));
 		assertEquals(new Offset<>(Direction.of(Direction.Type.TEXT, "A text"), Durations.EIGHTH), directions.get(1));
+	}
+
+	@Test
+	void testBuildingWithChordSymbols() {
+		final MeasureBuilder builder = new MeasureBuilder(1);
+		builder.addChordSymbol(null, new ChordSymbolBuilder().setBase(ChordSymbol.Base.MAJOR).setRoot(PitchName.of(
+						Pitch.Base.C, Pitch.Accidental.SHARP)))
+				.addChordSymbol(Durations.QUARTER,
+						new ChordSymbolBuilder().setBase(ChordSymbol.Base.MINOR).setRoot(PitchName.of(
+								Pitch.Base.D, Pitch.Accidental.SHARP)));
+
+		final var measure = builder.build();
+		assertTrue(measure.containsChordSymbols());
+		List<Offset<ChordSymbol>> chordSymbols = measure.getChordSymbols();
+		assertEquals(2, chordSymbols.size());
+
+		assertTrue(chordSymbols.get(0).getDuration().isEmpty());
+		assertEquals(
+				ChordSymbol.of(ChordSymbol.Base.MAJOR, PitchName.of(Pitch.Base.C, Pitch.Accidental.SHARP), null, null),
+				chordSymbols.get(0).get());
+
+		assertEquals(Durations.QUARTER, chordSymbols.get(1).getDuration().get());
+		assertEquals(
+				ChordSymbol.of(ChordSymbol.Base.MINOR, PitchName.of(Pitch.Base.D, Pitch.Accidental.SHARP), null, null),
+				chordSymbols.get(1).get());
 	}
 }

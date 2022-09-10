@@ -10,6 +10,62 @@ import java.util.Set;
  */
 final class Tags {
 
+	static final String SUBTRACT = "subtract";
+	static final String ADD = "add";
+
+	static final String DEGREE_VALUE = "degree-value";
+	static final String DEGREE_ALTER = "degree-alter";
+
+	static final String DEGREE_TYPE = "degree-type";
+	static final String AUGMENTED = "augmented";
+
+	static final String AUGMENTED_SEVENTH = "augmented-seventh";
+
+	static final String DIMINISHED = "diminished";
+
+	static final String DIMINISHED_SEVENTH = "diminished-seventh";
+
+	static final String DOMINANT = "dominant";
+
+	static final String DOMINANT_ELEVENTH = "dominant-11th";
+
+	static final String DOMINANT_THIRTEENTH = "dominant-13th";
+
+	static final String DOMINANT_NINTH = "dominant-ninth";
+	static final String HALF_DIMINISHED = "half-diminished";
+
+	static final String MAJOR = "major";
+	static final String MAJOR_ELEVENTH = "major-11th";
+
+	static final String MAJOR_THIRTEENTH = "major-13th";
+
+	static final String MAJOR_MINOR = "major-minor";
+
+	static final String MAJOR_NINTH = "major-ninth";
+
+	static final String MAJOR_SEVENTH = "major-seventh";
+
+	static final String MAJOR_SIXTH = "major-sixth";
+
+	static final String MINOR = "minor";
+
+	static final String MINOR_THIRTEENTH = "minor-11th";
+
+	static final String MINOR_ELEVENTH = "minor-13th";
+
+	static final String MINOR_NINTH = "minor-ninth";
+
+	static final String MINOR_SEVENTH = "minor-seventh";
+
+	static final String MINOR_SIXTH = "minor-sixth";
+
+	static final String POWER = "power";
+
+	static final String SUSPENDED_FOURTH = "suspended-fourth";
+
+	static final String SUSPENDED_SECOND = "suspended-second";
+	static final String BASS_STEP = "bass-step";
+	static final String BASS_ALTER = "bass-alter";
 	static final String ABOVE = "above";
 	static final String ACCENT = "accent";
 	static final String ACCIDENTAL = "accidental";
@@ -195,6 +251,7 @@ final class Tags {
 	static final String REST = "rest";
 	static final String RIGHT = "right";
 	static final String RIGHTS = "rights";
+	static final String ROOT = "root";
 	static final String SCOOP = "scoop";
 	static final String SCORE_PART = "score-part";
 	static final String SCORE_PARTWISE = "score-partwise";
@@ -261,6 +318,11 @@ final class Tags {
 	static final String WORK_NUMBER = "work-number";
 	static final String WORK_TITLE = "work-title";
 	static final String YES = "yes";
+	static final String KIND = "kind";
+	static final String BASS = "bass";
+	static final String ROOT_STEP = "root-step";
+	static final String ROOT_ALTER = "root-alter";
+	static final String DEGREE = "degree";
 
 	static final Set<String> CONNECTED_NOTATIONS = Set.of(TIED, SLUR, GLISSANDO, SLIDE, ARPEGGIATE, NON_ARPEGGIATE);
 

@@ -30,6 +30,8 @@ public class MeasureBuilder {
 	private final MeasureAttributesBuilder attributesBuilder;
 	private final MeasureAttributes initialMeasureAttributes;
 
+	private final List<Offset<ChordSymbolBuilder>> chordSymbolBuilders;
+
 	/**
 	 * Returns a measure builder with the measure number and attributes of the given measure builder.
 	 *
@@ -47,6 +49,7 @@ public class MeasureBuilder {
 		this.voices = new HashMap<>();
 		this.attributesBuilder = new MeasureAttributesBuilder();
 		this.initialMeasureAttributes = null;
+		this.chordSymbolBuilders = new ArrayList<>();
 	}
 
 	/**
@@ -60,6 +63,7 @@ public class MeasureBuilder {
 		this.number = number;
 		this.attributesBuilder = new MeasureAttributesBuilder(measureAttributes);
 		this.initialMeasureAttributes = measureAttributes;
+		this.chordSymbolBuilders = new ArrayList<>();
 	}
 
 	/**
@@ -72,6 +76,7 @@ public class MeasureBuilder {
 		this.number = number;
 		this.attributesBuilder = new MeasureAttributesBuilder();
 		this.initialMeasureAttributes = null;
+		this.chordSymbolBuilders = new ArrayList<>();
 	}
 
 	/**
@@ -241,6 +246,19 @@ public class MeasureBuilder {
 	 */
 	public MeasureBuilder addDirection(Duration offset, Direction direction) {
 		attributesBuilder.directions.add(new Offset<>(direction, offset));
+		return this;
+	}
+
+	/**
+	 * Adds a chord symbol as a builder to this measure with the given offset.
+	 *
+	 * @param offset      the offset from the beginning of the measure for the chord symbol, can be null if chord symbol
+	 *                    is at the start of the measure
+	 * @param chordSymbol the chord symbol builder that is added
+	 * @return reference to this builder
+	 */
+	public MeasureBuilder addChordSymbol(Duration offset, ChordSymbolBuilder chordSymbol) {
+		chordSymbolBuilders.add(new Offset<>(chordSymbol, offset));
 		return this;
 	}
 
@@ -476,7 +494,12 @@ public class MeasureBuilder {
 			this.trim();
 		}
 
-		return Measure.of(this.number, this.buildVoices(padWithRests), getAttributes());
+		final List<Offset<ChordSymbol>> chordSymbols = new ArrayList<>(this.chordSymbolBuilders.size());
+		for (var offset : chordSymbolBuilders) {
+			chordSymbols.add(new Offset<>(offset.get().build(), offset.getDuration().orElse(null)));
+		}
+
+		return Measure.of(this.number, this.buildVoices(padWithRests), getAttributes(), chordSymbols);
 	}
 
 	private final class MeasureAttributesBuilder {
