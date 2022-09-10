@@ -22,6 +22,7 @@ import org.wmn4j.notation.Score;
 import org.wmn4j.notation.TimeSignature;
 import org.wmn4j.notation.techniques.Technique;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -799,6 +800,95 @@ final class Transforms {
 			default:
 				return null;
 		}
+	}
+
+	private static String extensionToSuffix(ChordSymbol.Extension extension) {
+		if (extension.getNumber().isPresent()) {
+			final var number = extension.getNumber().getAsInt();
+			switch (number) {
+				case 7:
+					return "seventh";
+				case 9:
+					return "ninth";
+				case 11:
+					return "11th";
+				case 13:
+					return "13th";
+			}
+		}
+
+		return "";
+	}
+
+	static String chordSymbolToKindValue(ChordSymbol.Base chordBase, List<ChordSymbol.Extension> extensions) {
+		final var builder = new StringBuilder();
+		boolean firstExtensionUsed = false;
+
+		switch (chordBase) {
+			case MAJOR:
+				if (!extensions.isEmpty()) {
+					final var firstExtension = extensions.get(0);
+					if (firstExtension.getType().equals(ChordSymbol.Extension.Type.PLAIN) && firstExtension.getNumber()
+							.isPresent()
+							&& firstExtension.getNumber().getAsInt() == 7) {
+						builder.append(Tags.DOMINANT);
+						extensions.remove(0);
+						firstExtensionUsed = true;
+					}
+				} else {
+					builder.append(Tags.MAJOR);
+				}
+				break;
+			case MINOR:
+				if (!extensions.isEmpty()) {
+					final var firstExtension = extensions.get(0);
+					if (firstExtension.getType().equals(ChordSymbol.Extension.Type.MAJOR) && firstExtension.getNumber()
+							.isPresent()
+							&& firstExtension.getNumber().getAsInt() == 7) {
+						builder.append(Tags.MAJOR_MINOR);
+						extensions.remove(0);
+						firstExtensionUsed = true;
+					}
+				} else {
+					builder.append(Tags.MINOR);
+				}
+				break;
+			case AUGMENTED:
+				builder.append(Tags.AUGMENTED);
+				break;
+			case DIMINISHED:
+				if (!extensions.isEmpty()) {
+					final var firstExtension = extensions.get(0);
+					if (firstExtension.getType().equals(ChordSymbol.Extension.Type.MINOR) && firstExtension.getNumber()
+							.isPresent()
+							&& firstExtension.getNumber().getAsInt() == 7) {
+						builder.append(Tags.HALF_DIMINISHED);
+						extensions.remove(0);
+						firstExtensionUsed = true;
+					}
+				} else {
+					builder.append(Tags.DIMINISHED);
+				}
+				break;
+			case POWER_CHORD:
+				builder.append(Tags.POWER);
+				break;
+			case SUSPENDED_FOURTH:
+				builder.append(Tags.SUSPENDED_FOURTH);
+				break;
+			case SUSPENDED_SECOND:
+				builder.append(Tags.SUSPENDED_SECOND);
+				break;
+			default:
+				break;
+		}
+
+		if (!extensions.isEmpty() && !firstExtensionUsed) {
+			builder.append("-").append(extensionToSuffix(extensions.get(0)));
+			extensions.remove(0);
+		}
+
+		return builder.toString();
 	}
 
 	private Transforms() {
