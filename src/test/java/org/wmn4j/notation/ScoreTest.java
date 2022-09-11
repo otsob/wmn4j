@@ -256,6 +256,19 @@ public class ScoreTest {
 	}
 
 	@Test
+	void testPartwiseEnumeration() {
+		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.musicxml");
+		assertTrue(score != null);
+
+		final PositionIterator iterator = score.partwiseIterator();
+		for (var positional : score.enumeratePartwise()) {
+			final Durational elem = positional.durational();
+			final Position position = positional.position();
+			assertEquals(elem, score.getAt(position));
+		}
+	}
+
+	@Test
 	void testGetAtPositionInChord() {
 		final Score score = TestHelper.readScore("musicxml/positionInChord.musicxml");
 		assertTrue(score != null);

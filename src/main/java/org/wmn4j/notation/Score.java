@@ -5,6 +5,8 @@ package org.wmn4j.notation;
 
 import org.wmn4j.notation.access.Position;
 import org.wmn4j.notation.access.PositionIterator;
+import org.wmn4j.notation.access.Positional;
+import org.wmn4j.notation.access.PositionalEnumerator;
 import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
@@ -228,6 +230,20 @@ public final class Score implements Iterable<Part> {
 	 */
 	public PositionIterator partwiseIterator() {
 		return new PartwisePositionIterator(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
+	}
+
+	/**
+	 * Returns an iterable pairing of durationals with their positions.
+	 * <p>
+	 * This behaves analogously to <code>enumerate</code> that in many
+	 * programming language pairs elements of a collection with their indices.
+	 * <p>
+	 * The durationals are iterated in partwise order similar to {@link Score#partwiseIterator}.
+	 *
+	 * @return an iterable pairing of durationals with their positions
+	 */
+	public Iterable<Positional> enumeratePartwise() {
+		return new PositionalEnumerator(partwiseIterator());
 	}
 
 	private int getFirstMeasureNumber() {
