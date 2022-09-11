@@ -231,4 +231,27 @@ class SelectionImplTest {
 
 		assertEquals(4 + 8, count);
 	}
+
+	@Test
+	void givenSubselectionByPartAndRangeThenCorrectNotesAreEnumerated() {
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount());
+
+		List<Integer> partIndices = new ArrayList<>();
+		partIndices.add(0);
+		final Selection subSelection = fullSelection.subSelection(partIndices).subSelection(2, 3);
+
+		final Set<Integer> measureNumbers = new HashSet<>();
+		int count = 0;
+
+		for (var positional : subSelection.enumeratePartwise()) {
+			measureNumbers.add(positional.position().getMeasureNumber());
+			++count;
+		}
+
+		assertEquals(2, measureNumbers.size());
+		assertTrue(measureNumbers.contains(2));
+		assertTrue(measureNumbers.contains(3));
+
+		assertEquals(4 + 8, count);
+	}
 }

@@ -75,4 +75,18 @@ public interface Selection extends Iterable<Durational> {
 	 * @return a selection or parts from this selection
 	 */
 	Selection subSelection(Collection<Integer> partIndices);
+
+	/**
+	 * Returns an enumeration of the durational elements in this selection.
+	 * <p>
+	 * The enumeration is similar to pairing indices with elements (e.g. enumerate in Python),
+	 * but instead of indices the positions are handled using {@link Position} types.
+	 * <p>
+	 * The contents of the selection are iterated in partwise order (see {@link Selection#partwiseIterator}).
+	 *
+	 * @return an enumeration of the durational elements in this selection
+	 */
+	default Iterable<Positional> enumeratePartwise() {
+		return new PositionalEnumerator(partwiseIterator());
+	}
 }
