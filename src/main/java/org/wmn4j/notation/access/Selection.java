@@ -57,7 +57,7 @@ public interface Selection extends Iterable<Durational> {
 	 *
 	 * @return an iterator that also provides access to the positions
 	 */
-	PositionalIterator partwiseIterator();
+	PositionIterator partwiseIterator();
 
 	/**
 	 * Returns a selection of measures from this selection.

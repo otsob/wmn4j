@@ -10,7 +10,7 @@ package org.wmn4j.notation;
 import org.wmn4j.notation.access.MeasureIterator;
 import org.wmn4j.notation.access.PartIterator;
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.PositionIterator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +25,7 @@ import java.util.NoSuchElementException;
  * <p>
  * Instances of this class are not thread-safe.
  */
-final class PartwisePositionalIterator implements PositionalIterator {
+final class PartwisePositionIterator implements PositionIterator {
 
 	private static final int NEXT_NOT_CALLED_INDEX = -1;
 	private final Score score;
@@ -46,7 +46,7 @@ final class PartwisePositionalIterator implements PositionalIterator {
 	private int prevVoice;
 	private int prevIndex;
 
-	PartwisePositionalIterator(Score score, int firstMeasure, int lastMeasure) {
+	PartwisePositionIterator(Score score, int firstMeasure, int lastMeasure) {
 		this(score, firstMeasure, lastMeasure, Collections.emptyList());
 	}
 
@@ -58,7 +58,7 @@ final class PartwisePositionalIterator implements PositionalIterator {
 	 * @param lastMeasure  the number of the last measure to be included in iteration
 	 * @param partIndices  the indices of the parts included in iteration
 	 */
-	PartwisePositionalIterator(Score score, int firstMeasure, int lastMeasure, List<Integer> partIndices) {
+	PartwisePositionIterator(Score score, int firstMeasure, int lastMeasure, List<Integer> partIndices) {
 		this.score = score;
 		this.firstMeasure = firstMeasure;
 		this.lastMeasure = lastMeasure;

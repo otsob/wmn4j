@@ -23,7 +23,7 @@ import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.RestBuilder;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
-import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.PositionIterator;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -111,7 +111,7 @@ public class StaxWriterTest {
 
 		Score writtenScore = writeAndReadScore(score, false);
 
-		PositionalIterator iterator = writtenScore.partwiseIterator();
+		PositionIterator iterator = writtenScore.partwiseIterator();
 
 		Note note = (Note) iterator.next();
 		assertEquals(Pitch.Base.C, note.getPitch().get().getBase());

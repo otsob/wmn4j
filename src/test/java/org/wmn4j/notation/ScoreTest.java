@@ -6,7 +6,7 @@ package org.wmn4j.notation;
 import org.junit.jupiter.api.Test;
 import org.wmn4j.TestHelper;
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.PositionIterator;
 import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
@@ -113,7 +113,7 @@ public class ScoreTest {
 		Set<Integer> iteratedParts = new HashSet<>();
 		Set<Integer> iteratedMeasures = new HashSet<>();
 
-		PositionalIterator iterator = selection.partwiseIterator();
+		PositionIterator iterator = selection.partwiseIterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			final Position position = iterator.getPositionOfPrevious();
@@ -144,7 +144,7 @@ public class ScoreTest {
 		Set<Integer> iteratedParts = new HashSet<>();
 		Set<Integer> iteratedMeasures = new HashSet<>();
 
-		PositionalIterator iterator = selection.partwiseIterator();
+		PositionIterator iterator = selection.partwiseIterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			final Position position = iterator.getPositionOfPrevious();
@@ -178,7 +178,7 @@ public class ScoreTest {
 		Set<Integer> iteratedParts = new HashSet<>();
 		Set<Integer> iteratedMeasures = new HashSet<>();
 
-		PositionalIterator iterator = selection.partwiseIterator();
+		PositionIterator iterator = selection.partwiseIterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			final Position position = iterator.getPositionOfPrevious();
@@ -247,7 +247,7 @@ public class ScoreTest {
 		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.musicxml");
 		assertTrue(score != null);
 
-		final PositionalIterator iterator = score.partwiseIterator();
+		final PositionIterator iterator = score.partwiseIterator();
 		while (iterator.hasNext()) {
 			final Durational elem = iterator.next();
 			final Position position = iterator.getPositionOfPrevious();

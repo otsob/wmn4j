@@ -10,7 +10,7 @@ import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.PositionIterator;
 import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public final class PointSet<T extends Point<T>> {
 	 * @return 2 dimensional point set created for the given selection
 	 */
 	public static PointSet<Point2D> from(Selection selection) {
-		final PositionalIterator positionalIterator = selection.partwiseIterator();
+		final PositionIterator positionIterator = selection.partwiseIterator();
 		Position prevPos = null;
 		double fullMeasuresOffset = 0.0;
 		double offsetWithinMeasure = 0.0;
@@ -57,9 +57,9 @@ public final class PointSet<T extends Point<T>> {
 		final HashMap<Point2D, Position> positions = new HashMap<>();
 		final List<Point2D> noteEvents = new ArrayList<>();
 
-		while (positionalIterator.hasNext()) {
-			final Durational dur = positionalIterator.next();
-			final Position pos = positionalIterator.getPositionOfPrevious();
+		while (positionIterator.hasNext()) {
+			final Durational dur = positionIterator.next();
+			final Position pos = positionIterator.getPositionOfPrevious();
 
 			// Part changes
 			if (prevPos != null && prevPos.getPartIndex() != pos.getPartIndex()) {
