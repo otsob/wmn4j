@@ -8,6 +8,8 @@ import org.wmn4j.notation.Part;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Represents a selection of notation objects from a score.
@@ -88,5 +90,23 @@ public interface Selection extends Iterable<Durational> {
 	 */
 	default Iterable<Positional> enumeratePartwise() {
 		return new PositionalEnumerator(partwiseIterator());
+	}
+
+	/**
+	 * Returns a stream of the durational elements in this selection.
+	 *
+	 * @return a stream of the durational elements in this selection
+	 */
+	default Stream<Durational> durationalStream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
+
+	/**
+	 * Returns a stream of positional for the elements in this selection.
+	 *
+	 * @return a stream of positional for the elements in this selection
+	 */
+	default Stream<Positional> positionalStream() {
+		return StreamSupport.stream(enumeratePartwise().spliterator(), false);
 	}
 }

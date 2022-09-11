@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -253,5 +254,19 @@ class SelectionImplTest {
 		assertTrue(measureNumbers.contains(3));
 
 		assertEquals(4 + 8, count);
+	}
+
+	@Test
+	void givenSelectionDurationalStreamThenAllElementsAreReceived() {
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount());
+		final var durationals = fullSelection.durationalStream().collect(Collectors.toList());
+		assertEquals(33, durationals.size());
+	}
+
+	@Test
+	void givenSelectionPositionalStreamThenAllElementsAreReceived() {
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount());
+		final var positionals = fullSelection.positionalStream().collect(Collectors.toList());
+		assertEquals(33, positionals.size());
 	}
 }
