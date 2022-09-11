@@ -12,7 +12,7 @@ import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Rest;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.PositionIterator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -148,7 +148,7 @@ public class PatternTest {
 		int part1Index = 0;
 		int part2Index = 0;
 
-		for (PositionalIterator iter = score.partwiseIterator(); iter.hasNext(); ) {
+		for (PositionIterator iter = score.partwiseIterator(); iter.hasNext(); ) {
 			Durational dur = iter.next();
 			Position pos = iter.getPositionOfPrevious();
 			if (pos.getPartIndex() == 0) {

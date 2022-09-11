@@ -8,6 +8,8 @@ import org.wmn4j.notation.Part;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Represents a selection of notation objects from a score.
@@ -57,7 +59,7 @@ public interface Selection extends Iterable<Durational> {
 	 *
 	 * @return an iterator that also provides access to the positions
 	 */
-	PositionalIterator partwiseIterator();
+	PositionIterator partwiseIterator();
 
 	/**
 	 * Returns a selection of measures from this selection.
@@ -75,4 +77,36 @@ public interface Selection extends Iterable<Durational> {
 	 * @return a selection or parts from this selection
 	 */
 	Selection subSelection(Collection<Integer> partIndices);
+
+	/**
+	 * Returns an enumeration of the durational elements in this selection.
+	 * <p>
+	 * The enumeration is similar to pairing indices with elements (e.g. enumerate in Python),
+	 * but instead of indices the positions are handled using {@link Position} types.
+	 * <p>
+	 * The contents of the selection are iterated in partwise order (see {@link Selection#partwiseIterator}).
+	 *
+	 * @return an enumeration of the durational elements in this selection
+	 */
+	default Iterable<Positional> enumeratePartwise() {
+		return new PositionalEnumerator(partwiseIterator());
+	}
+
+	/**
+	 * Returns a stream of the durational elements in this selection.
+	 *
+	 * @return a stream of the durational elements in this selection
+	 */
+	default Stream<Durational> durationalStream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
+
+	/**
+	 * Returns a stream of positional for the elements in this selection.
+	 *
+	 * @return a stream of positional for the elements in this selection
+	 */
+	default Stream<Positional> positionalStream() {
+		return StreamSupport.stream(enumeratePartwise().spliterator(), false);
+	}
 }

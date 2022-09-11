@@ -13,8 +13,7 @@ import java.util.Iterator;
  * <p>
  * Implementations of this interface are not guaranteed to be thread-safe.
  */
-public interface PositionalIterator extends Iterator<Durational> {
-
+public interface PositionIterator extends Iterator<Durational> {
 	/**
 	 * Returns the position of the {@link Durational} returned by the last call of
 	 * {@link #next() next}. This method should only be called after {@link #next()

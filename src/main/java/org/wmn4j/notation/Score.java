@@ -4,7 +4,9 @@
 package org.wmn4j.notation;
 
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.PositionIterator;
+import org.wmn4j.notation.access.Positional;
+import org.wmn4j.notation.access.PositionalEnumerator;
 import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Represents a score.
@@ -226,8 +229,40 @@ public final class Score implements Iterable<Part> {
 	 * @return an iterator that iterates the durational notation objects in
 	 * partwise order
 	 */
-	public PositionalIterator partwiseIterator() {
-		return new PartwisePositionalIterator(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
+	public PositionIterator partwiseIterator() {
+		return new PartwisePositionIterator(this, hasPickupMeasure() ? 0 : 1, getFullMeasureCount());
+	}
+
+	/**
+	 * Returns an iterable pairing of durationals with their positions.
+	 * <p>
+	 * This behaves analogously to <code>enumerate</code> that in many
+	 * programming language pairs elements of a collection with their indices.
+	 * <p>
+	 * The durationals are iterated in partwise order similar to {@link Score#partwiseIterator}.
+	 *
+	 * @return an iterable pairing of durationals with their positions
+	 */
+	public Iterable<Positional> enumeratePartwise() {
+		return new PositionalEnumerator(partwiseIterator());
+	}
+
+	/**
+	 * Returns a stream of the durational elements in this score.
+	 *
+	 * @return a stream of the durational elements in this score
+	 */
+	public Stream<Durational> durationalStream() {
+		return toSelection().durationalStream();
+	}
+
+	/**
+	 * Returns a stream of positional for the elements in this score.
+	 *
+	 * @return a stream of positional for the elements in this score
+	 */
+	public Stream<Positional> positionalStream() {
+		return toSelection().positionalStream();
 	}
 
 	private int getFirstMeasureNumber() {
