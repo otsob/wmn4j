@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Represents a score.
@@ -244,6 +245,24 @@ public final class Score implements Iterable<Part> {
 	 */
 	public Iterable<Positional> enumeratePartwise() {
 		return new PositionalEnumerator(partwiseIterator());
+	}
+
+	/**
+	 * Returns a stream of the durational elements in this score.
+	 *
+	 * @return a stream of the durational elements in this score
+	 */
+	public Stream<Durational> durationalStream() {
+		return toSelection().durationalStream();
+	}
+
+	/**
+	 * Returns a stream of positional for the elements in this score.
+	 *
+	 * @return a stream of positional for the elements in this score
+	 */
+	public Stream<Positional> positionalStream() {
+		return toSelection().positionalStream();
 	}
 
 	private int getFirstMeasureNumber() {

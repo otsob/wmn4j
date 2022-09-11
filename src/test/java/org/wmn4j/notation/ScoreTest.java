@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.wmn4j.TestHelper;
 import org.wmn4j.notation.access.Position;
 import org.wmn4j.notation.access.PositionIterator;
+import org.wmn4j.notation.access.Positional;
 import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -266,6 +268,38 @@ public class ScoreTest {
 			final Position position = positional.position();
 			assertEquals(elem, score.getAt(position));
 		}
+	}
+
+	@Test
+	void testDurationalStreamProvidesAllElements() {
+		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.musicxml");
+		final var allDurationals = score.durationalStream().collect(Collectors.toList());
+		assertEquals(6 + 9 + 13, allDurationals.size());
+
+		final var allRests = score.durationalStream().filter(Durational::isRest).collect(Collectors.toList());
+		assertEquals(5, allRests.size());
+
+		final var allNotes = score.durationalStream().filter(Durational::isNote).collect(Collectors.toList());
+		assertEquals(23, allNotes.size());
+	}
+
+	@Test
+	void testPositionalStreamProvidesAllElements() {
+		final Score score = TestHelper.readScore("musicxml/scoreIteratorTesting.musicxml");
+		final var allPositionals = score.positionalStream().collect(Collectors.toList());
+		assertEquals(6 + 9 + 13, allPositionals.size());
+
+		final var allRests = score.positionalStream()
+				.map(Positional::durational)
+				.filter(Durational::isRest)
+				.collect(Collectors.toList());
+		assertEquals(5, allRests.size());
+
+		final var allNotes = score.positionalStream()
+				.map(Positional::durational)
+				.filter(Durational::isNote)
+				.collect(Collectors.toList());
+		assertEquals(23, allNotes.size());
 	}
 
 	@Test
