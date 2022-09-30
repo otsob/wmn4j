@@ -9,6 +9,7 @@ import org.wmn4j.notation.access.Position;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -144,5 +145,22 @@ public final class PatternPosition {
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof PatternPosition)) {
+			return false;
+		}
+		PatternPosition that = (PatternPosition) o;
+		return Objects.equals(positionsPerPart, that.positionsPerPart);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(positionsPerPart);
 	}
 }
