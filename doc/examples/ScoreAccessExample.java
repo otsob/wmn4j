@@ -7,7 +7,7 @@ import org.wmn4j.io.musicxml.MusicXmlReader;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.PositionIterator;
 import org.wmn4j.notation.access.Selection;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 /**
  * This example shows how to access notation elements in a score.
  */
-public class ScoreAccessExample {
+final class ScoreAccessExample {
 
 	public static void main(String[] args) {
 		final Path inputPath = Paths.get(args[1]);
@@ -34,7 +34,7 @@ public class ScoreAccessExample {
 		// Scores can be iterated using iterators. Positional iterator
 		// also offers a method for getting the position of the durational
 		// notation element that was returned on the previous call of next.
-		PositionalIterator iter = score.partwiseIterator();
+		PositionIterator iter = score.partwiseIterator();
 		while (iter.hasNext()) {
 			Durational durational = iter.next();
 
@@ -56,5 +56,9 @@ public class ScoreAccessExample {
 		for (Durational durational : selection) {
 			System.out.println(durational);
 		}
+	}
+
+	private ScoreAccessExample() {
+		// Not meant to be instantiated.
 	}
 }

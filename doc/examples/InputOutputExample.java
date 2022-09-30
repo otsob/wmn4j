@@ -15,7 +15,7 @@ import java.nio.file.Paths;
  * This example shows how to read a {@link Score} from a MusicXML file and how to write a {@link Score}
  * to MusicXML.
  */
-class InputOutputExample {
+final class InputOutputExample {
 	public static void main(String[] args) {
 		final Path inputPath = Paths.get(args[1]);
 		final Path outputPath = Paths.get(args[2]);
@@ -37,5 +37,9 @@ class InputOutputExample {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private InputOutputExample() {
+		// Not meant to be instantiated.
 	}
 }
