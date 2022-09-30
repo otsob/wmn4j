@@ -10,10 +10,11 @@ import org.wmn4j.notation.Measure;
 import org.wmn4j.notation.Note;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.PositionIterator;
 import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +30,11 @@ import java.util.Optional;
  */
 public final class PointSet<T extends Point<T>> {
 
-	private final List<T> points;
-	private final Map<T, Position> positions;
+	private record PointPosition<T extends Point<T>>(T point, Position position) {
+	}
+
+	private final List<PointPosition<T>> pointPositions;
+	private final Map<T, Position> positionMap;
 
 	/**
 	 * Returns a 2 dimensional point set (with double components) created for the given score.
@@ -49,17 +53,16 @@ public final class PointSet<T extends Point<T>> {
 	 * @return 2 dimensional point set created for the given selection
 	 */
 	public static PointSet<Point2D> from(Selection selection) {
-		final PositionalIterator positionalIterator = selection.partwiseIterator();
+		final PositionIterator positionIterator = selection.partwiseIterator();
 		Position prevPos = null;
 		double fullMeasuresOffset = 0.0;
 		double offsetWithinMeasure = 0.0;
 
-		final HashMap<Point2D, Position> positions = new HashMap<>();
-		final List<Point2D> noteEvents = new ArrayList<>();
+		final List<PointPosition<Point2D>> pointPositions = new ArrayList<>();
 
-		while (positionalIterator.hasNext()) {
-			final Durational dur = positionalIterator.next();
-			final Position pos = positionalIterator.getPositionOfPrevious();
+		while (positionIterator.hasNext()) {
+			final Durational dur = positionIterator.next();
+			final Position pos = positionIterator.getPositionOfPrevious();
 
 			// Part changes
 			if (prevPos != null && prevPos.getPartIndex() != pos.getPartIndex()) {
@@ -87,8 +90,7 @@ public final class PointSet<T extends Point<T>> {
 					if (note.hasPitch()) {
 						final int pitch = dur.toNote().getPitch().get().toInt();
 						final Point2D vector = new Point2D(totalOffset, pitch);
-						noteEvents.add(vector);
-						positions.put(vector, pos);
+						pointPositions.add(new PointPosition<>(vector, pos));
 					}
 				} else if (dur.isChord()) {
 					final Chord chord = dur.toChord();
@@ -99,8 +101,7 @@ public final class PointSet<T extends Point<T>> {
 							Position positionInChord = new Position(pos.getPartIndex(), pos.getStaffNumber(),
 									pos.getMeasureNumber(), pos.getVoiceNumber(), pos.getIndexInVoice(), chordIndex);
 							final Point2D vector = new Point2D(totalOffset, pitch);
-							noteEvents.add(vector);
-							positions.put(vector, positionInChord);
+							pointPositions.add(new PointPosition<>(vector, positionInChord));
 						}
 					}
 				}
@@ -111,8 +112,8 @@ public final class PointSet<T extends Point<T>> {
 			prevPos = pos;
 		}
 
-		noteEvents.sort(Point2D::compareTo);
-		return new PointSet<>(noteEvents, positions);
+		pointPositions.sort(Comparator.comparing(a -> a.point));
+		return new PointSet<>(pointPositions);
 	}
 
 	private static boolean hasOnset(Durational dur) {
@@ -129,9 +130,15 @@ public final class PointSet<T extends Point<T>> {
 		return true;
 	}
 
-	PointSet(List<T> points, HashMap<T, Position> positions) {
-		this.points = points;
-		this.positions = positions;
+	PointSet(List<PointPosition<T>> pointPositions) {
+		this.pointPositions = pointPositions;
+
+		final Map<T, Position> positionMap = new HashMap<>();
+		for (var pointPosition : pointPositions) {
+			positionMap.put(pointPosition.point, pointPosition.position);
+		}
+
+		this.positionMap = positionMap;
 	}
 
 	/**
@@ -140,7 +147,7 @@ public final class PointSet<T extends Point<T>> {
 	 * @return the number of points in the point set
 	 */
 	public int size() {
-		return this.points.size();
+		return this.pointPositions.size();
 	}
 
 	/**
@@ -151,7 +158,17 @@ public final class PointSet<T extends Point<T>> {
 	 * @return the score position if the point exists in the point set
 	 */
 	public Optional<Position> getPosition(T point) {
-		return Optional.ofNullable(positions.getOrDefault(point, null));
+		return Optional.ofNullable(positionMap.getOrDefault(point, null));
+	}
+
+	/**
+	 * Returns the position corresponding to the point at the given index.
+	 *
+	 * @param index the index of the point show position is returned
+	 * @return the position corresponding to the point at the given index
+	 */
+	public Position getPosition(int index) {
+		return pointPositions.get(index).position;
 	}
 
 	/**
@@ -185,15 +202,15 @@ public final class PointSet<T extends Point<T>> {
 	 * @return the point in the given index
 	 */
 	public T get(int index) {
-		return this.points.get(index);
+		return this.pointPositions.get(index).point;
 	}
 
 	@Override
 	public String toString() {
 		final StringBuilder strBuilder = new StringBuilder();
 
-		for (T vec : this.points) {
-			strBuilder.append(vec).append("\n");
+		for (var pointPosition : this.pointPositions) {
+			strBuilder.append(pointPosition.point).append("\n");
 		}
 
 		return strBuilder.toString();

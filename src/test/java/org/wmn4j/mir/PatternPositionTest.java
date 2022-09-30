@@ -21,6 +21,7 @@ import java.util.SortedSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -211,6 +212,22 @@ class PatternPositionTest {
 		assertEquals(Chord.of(Note.of(Pitch.Base.D, Pitch.Accidental.NATURAL, 4, Durations.EIGHTH),
 						Note.of(Pitch.Base.F, Pitch.Accidental.NATURAL, 4, Durations.EIGHTH)),
 				patternWithinChord.get(withinChordVoiceNumber, 1));
+	}
+
+	@Test
+	void testGivenEqualPatternPositionsThenEqualsReturnsTrue() {
+		final var posA = new PatternPosition(Arrays.asList(new Position(0, 1, 1, 1, 1)));
+		final var posB = new PatternPosition(Arrays.asList(new Position(0, 1, 1, 1, 1)));
+		assertEquals(posA, posA);
+		assertEquals(posA, posB);
+		assertEquals(posA.hashCode(), posB.hashCode());
+	}
+
+	@Test
+	void testGivenInequalPatternPositionsThenEqualsReturnsFalse() {
+		final var posA = new PatternPosition(Arrays.asList(new Position(0, 1, 1, 1, 1)));
+		final var posB = new PatternPosition(Arrays.asList(new Position(0, 1, 1, 2, 1)));
+		assertNotEquals(posA, posB);
 	}
 
 	@Test

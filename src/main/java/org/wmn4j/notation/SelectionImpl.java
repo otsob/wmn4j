@@ -3,7 +3,7 @@
  */
 package org.wmn4j.notation;
 
-import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.PositionIterator;
 import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
@@ -102,8 +102,8 @@ final class SelectionImpl implements Selection {
 	}
 
 	@Override
-	public PositionalIterator partwiseIterator() {
-		return new PartwisePositionalIterator(this.score, this.first, this.last, this.partIndices);
+	public PositionIterator partwiseIterator() {
+		return new PartwisePositionIterator(this.score, this.first, this.last, this.partIndices);
 	}
 
 	@Override

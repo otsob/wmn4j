@@ -11,26 +11,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.wmn4j.TestHelper;
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.PositionIterator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class PartwisePositionalIteratorTest {
+class PartwisePositionIteratorTest {
 
 	private Score score = null;
-	private PartwisePositionalIterator iter = null;
+	private PartwisePositionIterator iter = null;
 
-	PartwisePositionalIteratorTest() {
+	PartwisePositionIteratorTest() {
 		this.score = TestHelper.readScore("musicxml/scoreIteratorTesting.musicxml");
 	}
 
 	@BeforeEach
 	void setUp() {
 		assertNotNull(score);
-		this.iter = new PartwisePositionalIterator(this.score, this.score.hasPickupMeasure() ? 0 : 1,
+		this.iter = new PartwisePositionIterator(this.score, this.score.hasPickupMeasure() ? 0 : 1,
 				this.score.getFullMeasureCount());
 	}
 
@@ -110,7 +110,7 @@ class PartwisePositionalIteratorTest {
 	void testIteratingEmptyMeasures() {
 		final Score score = TestHelper.readScore("musicxml/empty_measure_iteration_test.musicxml");
 
-		final PositionalIterator iter = new PartwisePositionalIterator(score, 1, 3);
+		final PositionIterator iter = new PartwisePositionIterator(score, 1, 3);
 
 		int noteCount = 0;
 		while (iter.hasNext()) {
