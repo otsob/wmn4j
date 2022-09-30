@@ -50,7 +50,8 @@ For pull requests target the `development` branch. The `master` branch is reserv
 
 * [Gradle](https://gradle.org)
 * [Apache Commons Math](https://commons.apache.org/proper/commons-math/)
-* [SLF4J](http://www.slf4j.org)
+* [SLF4J](http://www.slf4j.org). When using wmn4j, you
+  need [to bind to a compatible logger](https://www.slf4j.org/manual.html#swapping) implementation.
 
 ## Versioning
 
