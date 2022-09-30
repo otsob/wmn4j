@@ -7,7 +7,7 @@ import org.wmn4j.io.musicxml.MusicXmlReader;
 import org.wmn4j.notation.Durational;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.access.Position;
-import org.wmn4j.notation.access.PositionIterator;
+import org.wmn4j.notation.access.Positional;
 import org.wmn4j.notation.access.Selection;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 final class ScoreAccessExample {
 
 	public static void main(String[] args) {
-		final Path inputPath = Paths.get(args[1]);
+		final Path inputPath = Paths.get(args[0]);
 
 		Score score = null;
 		try (MusicXmlReader reader = MusicXmlReader.readerFor(inputPath)) {
@@ -31,17 +31,15 @@ final class ScoreAccessExample {
 
 		Position position = null;
 
-		// Scores can be iterated using iterators. Positional iterator
-		// also offers a method for getting the position of the durational
-		// notation element that was returned on the previous call of next.
-		PositionIterator iter = score.partwiseIterator();
-		while (iter.hasNext()) {
-			Durational durational = iter.next();
+		// Scores can be iterated multiple ways. This example shows how to
+		// enumerate the durational elements in a score along their positions.
+		for (Positional positional : score.enumeratePartwise()) {
+			Durational durational = positional.durational();
 
 			// Let's find the position of the first rest in the topmost part of
 			// the score.
 			if (durational.isRest()) {
-				position = iter.getPositionOfPrevious();
+				position = positional.position();
 				break;
 			}
 		}

@@ -17,8 +17,8 @@ import java.nio.file.Paths;
  */
 final class InputOutputExample {
 	public static void main(String[] args) {
-		final Path inputPath = Paths.get(args[1]);
-		final Path outputPath = Paths.get(args[2]);
+		final Path inputPath = Paths.get(args[0]);
+		final Path outputPath = Paths.get(args[1]);
 
 		Score score = null;
 
