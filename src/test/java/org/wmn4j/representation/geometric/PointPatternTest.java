@@ -17,6 +17,7 @@ import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Rest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -139,5 +140,21 @@ public class PointPatternTest {
 				Collections.singletonList(new Point2D(0.33, 50)));
 
 		assertEquals(0, singletonPattern.vectorized().size());
+	}
+
+	@Test
+	void testTranslation() {
+		List<Point2D> points = getTestPoints();
+		final PointPattern<Point2D> pattern = new PointPattern<>(points);
+		final var translated = pattern.translate(new Point2D(1.0, 1.0));
+
+		final var expected = new PointPattern(Arrays.asList(
+				new Point2D(1.33, 51),
+				new Point2D(6, 65),
+				new Point2D(28, 13),
+				new Point2D(40.125, 92),
+				new Point2D(30004, 4)));
+
+		assertEquals(expected, translated);
 	}
 }

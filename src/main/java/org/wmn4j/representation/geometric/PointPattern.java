@@ -124,6 +124,22 @@ public final class PointPattern<T extends Point<T>> implements Iterable<T> {
 		return new PointPattern<>(vecPoints);
 	}
 
+	/**
+	 * Return a copy of this translated by the given translator.
+	 *
+	 * @param translator the translator by which this is translated
+	 * @return a copy of this translated by the given translator
+	 */
+	public PointPattern<T> translate(T translator) {
+		final List<T> translated = new ArrayList<>(points.size());
+
+		for (var point : points) {
+			translated.add(point.add(translator));
+		}
+
+		return new PointPattern<>(translated);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) {
