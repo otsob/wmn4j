@@ -50,7 +50,7 @@ For pull requests target the `development` branch. The `master` branch is reserv
 
 ## Versioning
 
-Wmn4j is still in the beta phase. The released beta versions of wmn4j are available
+Wmn4j is still in the alpha phase. The released versions of wmn4j are available
 on [Maven central](https://search.maven.org/artifact/org.wmn4j/wmn4j).
 
 ## Authors
