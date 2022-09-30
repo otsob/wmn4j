@@ -22,7 +22,11 @@ See the [examples](./doc/examples) directory for simple examples of how to use w
 wmn4j is developed and built with OpenJDK 17. wmn4j uses Gradle and can be built by running Gradle build. With the
 current configuration the build consists of compilation, unit tests, and static analysis. It is recommended to delegate
 the building of the project to Gradle using the provided Gradle wrapper in the IDE to ensure all dependencies etc. are
-handled correctly.
+handled correctly. To build locally, run
+
+```
+./gradlew build
+```
 
 ## Contributing
 
