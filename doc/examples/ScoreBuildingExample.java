@@ -19,7 +19,7 @@ import org.wmn4j.notation.TimeSignature;
 /**
  * This example shows how to use the builder classes when building a {@link Score}.
  */
-public class ScoreBuildingExample {
+final class ScoreBuildingExample {
 	public static void main(String[] args) {
 		// ScoreBuilder is the class for building a score programmatically.
 		ScoreBuilder scoreBuilder = new ScoreBuilder();
@@ -60,5 +60,9 @@ public class ScoreBuildingExample {
 		// Turn the builder into an immutable Score.
 		Score score = scoreBuilder.build();
 		System.out.println(score);
+	}
+
+	private ScoreBuildingExample() {
+		// Not meant to be instantiated.
 	}
 }

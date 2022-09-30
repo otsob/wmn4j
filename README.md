@@ -15,7 +15,7 @@ few architectural design principles in wmn4j:
 * Builder classes are used for creating objects
 * Scores can be read using different types of iterators
 
-See the [examples](./examples) directory for simple examples of how to use wmn4j.
+See the [examples](./doc/examples) directory for simple examples of how to use wmn4j.
 
 ### Building wmn4j
 

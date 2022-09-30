@@ -5,13 +5,14 @@ package org.wmn4j.notation;
 
 import org.junit.jupiter.api.Test;
 import org.wmn4j.TestHelper;
-import org.wmn4j.notation.access.PositionalIterator;
+import org.wmn4j.notation.access.PositionIterator;
 import org.wmn4j.notation.access.Selection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -65,7 +66,7 @@ class SelectionImplTest {
 	@Test
 	void givenSelectionOfFullScoreAllPositionsAreIterated() {
 		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getMeasureCount());
-		final PositionalIterator iterator = fullSelection.partwiseIterator();
+		final PositionIterator iterator = fullSelection.partwiseIterator();
 		final Set<Integer> measureNumbers = new HashSet<>();
 		int count = 0;
 		while (iterator.hasNext()) {
@@ -88,7 +89,7 @@ class SelectionImplTest {
 	@Test
 	void givenRangeOfScoreAllPositionsAreIterated() {
 		final Selection fullSelection = new SelectionImpl(testScore, 3, 5);
-		final PositionalIterator iterator = fullSelection.partwiseIterator();
+		final PositionIterator iterator = fullSelection.partwiseIterator();
 		final Set<Integer> measureNumbers = new HashSet<>();
 		int count = 0;
 		while (iterator.hasNext()) {
@@ -111,7 +112,7 @@ class SelectionImplTest {
 		partIndices.add(1);
 
 		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount(), partIndices);
-		final PositionalIterator iterator = fullSelection.partwiseIterator();
+		final PositionIterator iterator = fullSelection.partwiseIterator();
 		final Set<Integer> measureNumbers = new HashSet<>();
 		int count = 0;
 		while (iterator.hasNext()) {
@@ -163,7 +164,7 @@ class SelectionImplTest {
 		assertEquals(2, subSelection.getFirst());
 		assertEquals(3, subSelection.getLast());
 
-		final PositionalIterator iterator = subSelection.partwiseIterator();
+		final PositionIterator iterator = subSelection.partwiseIterator();
 		final Set<Integer> measureNumbers = new HashSet<>();
 		int count = 0;
 		while (iterator.hasNext()) {
@@ -188,7 +189,7 @@ class SelectionImplTest {
 		partIndices.add(1);
 		final Selection subSelection = fullSelection.subSelection(partIndices);
 
-		final PositionalIterator iterator = subSelection.partwiseIterator();
+		final PositionIterator iterator = subSelection.partwiseIterator();
 		final Set<Integer> measureNumbers = new HashSet<>();
 		int count = 0;
 		while (iterator.hasNext()) {
@@ -216,7 +217,7 @@ class SelectionImplTest {
 		partIndices.add(0);
 		final Selection subSelection = fullSelection.subSelection(partIndices).subSelection(2, 3);
 
-		final PositionalIterator iterator = subSelection.partwiseIterator();
+		final PositionIterator iterator = subSelection.partwiseIterator();
 		final Set<Integer> measureNumbers = new HashSet<>();
 		int count = 0;
 		while (iterator.hasNext()) {
@@ -230,5 +231,42 @@ class SelectionImplTest {
 		assertTrue(measureNumbers.contains(3));
 
 		assertEquals(4 + 8, count);
+	}
+
+	@Test
+	void givenSubselectionByPartAndRangeThenCorrectNotesAreEnumerated() {
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount());
+
+		List<Integer> partIndices = new ArrayList<>();
+		partIndices.add(0);
+		final Selection subSelection = fullSelection.subSelection(partIndices).subSelection(2, 3);
+
+		final Set<Integer> measureNumbers = new HashSet<>();
+		int count = 0;
+
+		for (var positional : subSelection.enumeratePartwise()) {
+			measureNumbers.add(positional.position().getMeasureNumber());
+			++count;
+		}
+
+		assertEquals(2, measureNumbers.size());
+		assertTrue(measureNumbers.contains(2));
+		assertTrue(measureNumbers.contains(3));
+
+		assertEquals(4 + 8, count);
+	}
+
+	@Test
+	void givenSelectionDurationalStreamThenAllElementsAreReceived() {
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount());
+		final var durationals = fullSelection.durationalStream().collect(Collectors.toList());
+		assertEquals(33, durationals.size());
+	}
+
+	@Test
+	void givenSelectionPositionalStreamThenAllElementsAreReceived() {
+		final Selection fullSelection = new SelectionImpl(testScore, 1, testScore.getFullMeasureCount());
+		final var positionals = fullSelection.positionalStream().collect(Collectors.toList());
+		assertEquals(33, positionals.size());
 	}
 }

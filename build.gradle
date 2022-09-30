@@ -15,6 +15,9 @@ java {
     withSourcesJar()
 }
 
+
+sourceSets.main.java.srcDirs += ['doc/examples']
+
 checkstyle {
     getConfigDirectory().set(file("build-resources/checkstyle/"))
     checkstyleTest.enabled = false
@@ -46,6 +49,7 @@ test {
 }
 
 javadoc {
+    sourceSets.main.java.srcDirs -= ['doc/examples']
     options.encoding = 'UTF-8'
     options.header().setNoTimestamp(true)
 }
@@ -101,6 +105,7 @@ signing {
 afterReleaseBuild.dependsOn publish
 
 release {
+    sourceSets.main.java.srcDirs -= ['doc/examples']
     pushReleaseVersionBranch = 'master'
     git.requireBranch = 'development'
     tagTemplate = '$name-$version'
