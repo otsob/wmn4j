@@ -2,6 +2,7 @@
 
 ![pull_request](https://github.com/otsob/wmn4j/actions/workflows/pull_request.yaml/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.wmn4j/wmn4j/badge.svg)](https://search.maven.org/artifact/org.wmn4j/wmn4j)
 
 wmn4j is a Java library for handling western music notation. The main purpose of wmn4j is to enable easy and efficient
 analysis of scores and wmn4j is intended to also provide functionality for algorithmic composition by generating scores.
@@ -45,6 +46,10 @@ general guideline on code-of-conduct we follow the one outlined
 by [Contributor Covenant](https://www.contributor-covenant.org/version/1/4/code-of-conduct).
 
 For pull requests target the `development` branch. The `master` branch is reserved for releases.
+
+If you find a bug in wmn4j or want to propose a feature,
+please [open an issue](https://github.com/otsob/wmn4j/issues/new/choose)
+with the corresponding template.
 
 ## Built With
 
