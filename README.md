@@ -9,6 +9,7 @@ analysis of scores and wmn4j is intended to also provide functionality for algor
 
 ## The structure of wmn4j
 
+The structure of scores in wmn4j is described in a separate [document](./doc/structure.md).
 The [API Documentation](https://otsob.github.io/wmn4j) provides the Javadoc for the latest release of wmn4j. There are a
 few architectural design principles in wmn4j:
 
