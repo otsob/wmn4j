@@ -19,6 +19,8 @@ import org.wmn4j.notation.Score;
 import org.wmn4j.notation.SingleStaffPart;
 import org.wmn4j.notation.Staff;
 import org.wmn4j.notation.TimeSignature;
+import org.wmn4j.notation.access.Offset;
+import org.wmn4j.notation.directions.Direction;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,11 +45,9 @@ class PatternsToScoreConverter {
 	private static final Duration MEASURE_CUTOFF_DURATION = DEFAULT_TIME_SIGNATURE.getTotalDuration();
 
 	private int nextMeasureNumber = 1;
-	private final Map<Integer, String> annotations;
 	private final Collection<Pattern> patterns;
 
 	PatternsToScoreConverter(Collection<Pattern> patterns) {
-		this.annotations = new HashMap<>();
 		this.patterns = patterns;
 	}
 
@@ -72,10 +72,8 @@ class PatternsToScoreConverter {
 	private Part singleVoicePatternsToPart(Collection<Pattern> patterns) {
 		final List<Measure> allMeasures = new ArrayList<>();
 		for (Pattern pattern : patterns) {
-			List<Measure> measures = voiceToMeasureList(pattern.iterator(), true);
+			List<Measure> measures = voiceToMeasureList(pattern.iterator(), createPatternAnnotation(pattern), true);
 			allMeasures.addAll(measures);
-			final Integer firstMeasureNumber = measures.get(0).getNumber();
-			annotations.put(firstMeasureNumber, createPatternAnnotation(pattern));
 		}
 
 		return SingleStaffPart.of(VOICE_NAME + "-1", Staff.of(allMeasures));
@@ -101,16 +99,19 @@ class PatternsToScoreConverter {
 
 				Duration voiceDuration = getVoiceDuration(voice, pattern.getVoiceSize(voiceNumber));
 
+				String annotation = "";
+				if (voiceIndex == 0) {
+					annotation = createPatternAnnotation(pattern);
+				}
+
 				staveContents.get(voiceIndex)
-						.addAll(voiceToMeasureList(voice.iterator(), voiceDuration.equals(longestVoiceDuration)));
+						.addAll(voiceToMeasureList(voice.iterator(), annotation,
+								voiceDuration.equals(longestVoiceDuration)));
 
 				nextMeasureNumber = measureNumberBeforeStaffCreation;
 			}
 
 			evenOutMeasureListLengthsAndUpdateNextMeasureNumber(staveContents);
-
-			final Integer firstMeasureNumber = measureNumberBeforeStaffCreation;
-			annotations.put(firstMeasureNumber, createPatternAnnotation(pattern));
 		}
 
 		List<Part> parts = new ArrayList<>();
@@ -177,7 +178,8 @@ class PatternsToScoreConverter {
 		return Measure.restMeasureOf(measureNumber, attributes, null);
 	}
 
-	private List<Measure> voiceToMeasureList(Iterator<Durational> voiceIterator, boolean useEndingBarline) {
+	private List<Measure> voiceToMeasureList(Iterator<Durational> voiceIterator, String annotation,
+			boolean useEndingBarline) {
 		List<Measure> measures = new ArrayList<>();
 
 		List<Durational> voice = new ArrayList<>();
@@ -195,7 +197,8 @@ class PatternsToScoreConverter {
 			if (cumulatedDuration.isLongerThan(MEASURE_CUTOFF_DURATION) || cumulatedDuration
 					.equals(MEASURE_CUTOFF_DURATION)) {
 				measures.add(
-						createMeasure(voice, !voiceIterator.hasNext() && useEndingBarline, nextMeasureNumber));
+						createMeasure(voice, annotation, !voiceIterator.hasNext() && useEndingBarline,
+								nextMeasureNumber));
 				nextMeasureNumber++;
 				cumulatedDuration = null;
 				voice = new ArrayList<>();
@@ -203,7 +206,7 @@ class PatternsToScoreConverter {
 		}
 
 		if (!voice.isEmpty()) {
-			measures.add(createMeasure(voice, useEndingBarline, nextMeasureNumber));
+			measures.add(createMeasure(voice, annotation, useEndingBarline, nextMeasureNumber));
 			nextMeasureNumber++;
 		}
 
@@ -232,12 +235,17 @@ class PatternsToScoreConverter {
 		return isEndingMeasureOfPattern ? PATTERN_ENDING_BARLINE : PATTERN_SEPARATING_BARLINE;
 	}
 
-	private Measure createMeasure(List<Durational> measureContent, boolean isLastMeasureOfPattern,
+	private Measure createMeasure(List<Durational> measureContent, String annotation, boolean isLastMeasureOfPattern,
 			int measureNumber) {
 
+		final List<Offset<Direction>> directions = new ArrayList<>();
+		if (annotation != null && !annotation.isBlank()) {
+			directions.add(new Offset<>(Direction.of(Direction.Type.TEXT, annotation), null));
+		}
+
 		MeasureAttributes attributes = MeasureAttributes
-				.of(DEFAULT_TIME_SIGNATURE, DEFAULT_KEY_SIGNATURE, getBarline(isLastMeasureOfPattern),
-						findSuitableClef(measureContent));
+				.of(DEFAULT_TIME_SIGNATURE, DEFAULT_KEY_SIGNATURE, getBarline(isLastMeasureOfPattern), Barline.NONE,
+						findSuitableClef(measureContent), null, directions);
 
 		return Measure.of(measureNumber, Collections.singletonMap(1, measureContent), attributes, null);
 	}
