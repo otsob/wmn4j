@@ -340,6 +340,16 @@ class DurationTest {
 	}
 
 	@Test
+	void testSmallDurationWithLargeMax() {
+		final Duration dur = Duration.of(5, 16);
+		final Duration max = Duration.of(2, 1);
+
+		final var durations = dur.decompose(max);
+		assertTrue(durations.contains(Durations.QUARTER));
+		assertTrue(durations.contains(Durations.SIXTEENTH));
+	}
+
+	@Test
 	void testSum() {
 		List<Duration> durations = new ArrayList<>();
 		final int numOfQuarters = 4;

@@ -483,7 +483,7 @@ public final class Duration implements Comparable<Duration> {
 		final int originalDenominator = durationFraction.getDenominator();
 
 		// Simplify the fraction first by seeing if it can be expressed as a dotted
-		// duration ant what the required dot count is.
+		// duration and what the required dot count is.
 		Fraction dotlessFraction = durationFraction;
 		int dotCount = 0;
 
@@ -497,7 +497,8 @@ public final class Duration implements Comparable<Duration> {
 		// tuplet divisor.
 		final int dotlessDenominator = dotlessFraction.getDenominator();
 		int tupletDivisor = 1;
-		if (!isPowerOfTwo(dotlessDenominator)) {
+		final boolean isBasicDenominator = isPowerOfTwo(dotlessDenominator);
+		if (!isBasicDenominator) {
 			for (int divisor : COMMON_TUPLET_DIVISORS) {
 				int divided = dotlessDenominator / divisor;
 				boolean isEvenDivision = divided * divisor == dotlessDenominator;
@@ -522,13 +523,20 @@ public final class Duration implements Comparable<Duration> {
 			return create(durationFraction, dotCount, tupletDivisor);
 		}
 
-		// If the given fraction is not expressible as a duration with the given
-		// dot count and tuplet divisor, find the largest duration that can be fitted
-		// into the fraction with the tuplet information.
+		if (isBasicDenominator) {
+			final int largestFitNumerator = Math.max((originalNumerator / 2) * 2, 1);
+			return create(new Fraction(largestFitNumerator, durationFraction.getDenominator()), DEFAULT_DOT_COUNT,
+					DEFAULT_TUPLET_DIVISOR);
+		}
+
 		if (originalNumerator > tupletDivisor) {
+			// If the given fraction is not expressible as a duration with the given
+			// dot count and tuplet divisor, find the largest duration that can be fitted
+			// into the fraction with the tuplet information.
+
 			int coefficient = tupletDivisor != 1 ? tupletDivisor : Math.max(durationFraction.getDenominator() / 2, 1);
 
-			int largestFitNumerator = coefficient * (originalNumerator / coefficient);
+			int largestFitNumerator = Math.max(coefficient * (originalNumerator / coefficient), 1);
 			Fraction largestFit = new Fraction(largestFitNumerator, durationFraction.getDenominator());
 
 			return create(largestFit, DEFAULT_DOT_COUNT, DEFAULT_TUPLET_DIVISOR);
