@@ -106,7 +106,7 @@ afterReleaseBuild.dependsOn publish
 
 release {
     sourceSets.main.java.srcDirs -= ['doc/examples']
-    pushReleaseVersionBranch = 'master'
+    pushReleaseVersionBranch = 'main'
     git.requireBranch = 'development'
     tagTemplate = '$name-$version'
 }

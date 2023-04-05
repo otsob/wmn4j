@@ -46,7 +46,7 @@ Contributing to this project is supposed to be enjoyable, so behaving nicely and
 general guideline on code-of-conduct we follow the one outlined
 by [Contributor Covenant](https://www.contributor-covenant.org/version/1/4/code-of-conduct).
 
-For pull requests target the `development` branch. The `master` branch is reserved for releases.
+For pull requests target the `development` branch. The `main` branch is reserved for releases.
 
 If you find a bug in wmn4j or want to propose a feature,
 please [open an issue](https://github.com/otsob/wmn4j/issues/new/choose)
