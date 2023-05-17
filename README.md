@@ -75,3 +75,15 @@ project.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details
+
+## Citation
+
+If you use wmn4j for research, or need a reference to cite for other reasons, please use:
+```
+@inproceedings{wmn4j2022,
+   author = {Björklund, Otso},
+   title = {{Western Music Notation for Java: A library for music notation on the JVM}},
+   booktitle={Extended Abstracts for the Late-Breaking Demo Session of the 23rd International Society for Music Information Retrieval Conference},
+   year = {2022},
+}
+```
