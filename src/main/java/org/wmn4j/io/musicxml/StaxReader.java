@@ -246,6 +246,11 @@ final class StaxReader implements MusicXmlReader {
 
 	private XMLStreamReader createStreamReader(Path path) throws IOException, ParsingFailureException {
 		final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		// Disable using validation using the DTD references in the file as this
+		// could download DTD files which can be slow. Instead do validation using
+		// the DTD included in the resources.
+		xmlInputFactory.setProperty(XMLInputFactory.IS_VALIDATING, false);
+		xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
 		final String extension = getExtension(path);
 		if (validateInput && !VALID_EXTENSIONS.contains(extension)) {
 			throw new ParsingFailureException(
@@ -326,7 +331,8 @@ final class StaxReader implements MusicXmlReader {
 		return event == XMLStreamConstants.END_ELEMENT && Objects.equals(tag, reader.getLocalName());
 	}
 
-	@FunctionalInterface interface ElementConsumer {
+	@FunctionalInterface
+	interface ElementConsumer {
 		/**
 		 * Consumes an internal element of a containing element and stops the cursor
 		 * at the end tag of the consumed internal element.
