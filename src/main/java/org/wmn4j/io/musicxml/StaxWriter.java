@@ -688,8 +688,11 @@ final class StaxWriter implements MusicXmlWriter {
 		}
 	}
 
-	private void handleMidMeasureClefChanges(boolean isMultiStaff, List<Offset<Clef>> undealtClefChanges,
-			Duration cumulatedDuration, Integer staffNumber) throws XMLStreamException {
+	private void handleMidMeasureClefChanges(boolean isMultiStaff,
+											 List<Offset<Clef>> undealtClefChanges,
+											 Duration cumulatedDuration,
+											 Integer staffNumber)
+			throws XMLStreamException {
 
 		List<Offset<Clef>> handledClefChanges = new ArrayList<>();
 
@@ -967,8 +970,11 @@ final class StaxWriter implements MusicXmlWriter {
 		return false;
 	}
 
-	private void writeNotations(Notation.Connectable connectable, Set<Articulation> articulations,
-			Set<Notation> notations, Collection<Ornament> ornaments, Collection<Technique> techniques)
+	private void writeNotations(Notation.Connectable connectable,
+								Set<Articulation> articulations,
+								Set<Notation> notations,
+								Collection<Ornament> ornaments,
+								Collection<Technique> techniques)
 			throws XMLStreamException {
 
 		if (articulations.isEmpty() && techniques.isEmpty() && !hasWritableNotations(connectable, notations)
