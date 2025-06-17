@@ -48,7 +48,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -234,9 +233,8 @@ final class StaxReader implements MusicXmlReader {
 		inputStream.close();
 	}
 
-	private boolean isCompressed(Path path, String extension) throws IOException {
-		return Objects.equals(Files.probeContentType(path), CompressedMxl.COMPRESSED_CONTENT_TYPE) || Objects.equals(
-				COMPRESSED_EXTENSION, extension);
+	private boolean isCompressed(String extension) {
+		return Objects.equals(COMPRESSED_EXTENSION, extension);
 	}
 
 	private String getExtension(Path path) {
@@ -258,7 +256,7 @@ final class StaxReader implements MusicXmlReader {
 		}
 
 		try {
-			if (isCompressed(path, extension)) {
+			if (isCompressed(extension)) {
 				inputStream = getStreamToZipEntry(path);
 			} else {
 				inputStream = new FileInputStream(path.toFile());
