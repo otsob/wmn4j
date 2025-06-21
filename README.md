@@ -2,7 +2,7 @@
 
 ![pull_request](https://github.com/otsob/wmn4j/actions/workflows/pull_request.yaml/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.wmn4j/wmn4j/badge.svg)](https://search.maven.org/artifact/org.wmn4j/wmn4j)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.wmn4j/wmn4j/badge.svg)](https://central.sonatype.com/artifact/org.wmn4j/wmn4j)
 
 wmn4j is a Java library for handling western music notation. The main purpose of wmn4j is to enable easy and efficient
 analysis of scores and wmn4j is intended to also provide functionality for algorithmic composition by generating scores.
@@ -62,7 +62,7 @@ with the corresponding template.
 ## Versioning
 
 Wmn4j is still in the alpha phase. The released versions of wmn4j are available
-on [Maven central](https://search.maven.org/artifact/org.wmn4j/wmn4j).
+on [Maven central](https://central.sonatype.com/artifact/org.wmn4j/wmn4j).
 
 ## Authors
 
@@ -79,6 +79,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 ## Citation
 
 If you use wmn4j for research, or need a reference to cite for other reasons, please use:
+
 ```
 @inproceedings{wmn4j2022,
    author = {Björklund, Otso},

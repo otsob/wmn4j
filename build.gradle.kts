@@ -133,7 +133,7 @@ jreleaser {
     release {
         github {
             enabled = true
-            tagName = project.version.toString()
+            tagName = rootProject.name + "-" + project.version.toString()
             repoUrl = "https://github.com/otsob/wmn4j"
             branch = "main"
         }
@@ -149,7 +149,7 @@ jreleaser {
                     active = Active.RELEASE
                     url = "https://central.sonatype.com/api/v1/publisher"
                     stagingRepository("$buildDir/staging-deploy")
-                    retryDelay = 100
+                    retryDelay = 1800 // Publishing can easily take over 10 minutes.
                     maxRetries = 1
                 }
             }
