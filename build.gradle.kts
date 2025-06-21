@@ -8,7 +8,7 @@ group = "org.wmn4j"
 description = "A Java library for handling western music notation."
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
 
     sourceSets["main"].java {
         srcDir("doc/examples")
