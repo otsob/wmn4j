@@ -104,6 +104,8 @@ public final class TimeSignature {
 	}
 
 	/**
+	 * Returns the number of beats in this time signature.
+	 *
 	 * @return number of beats.
 	 */
 	public int getBeatCount() {
@@ -111,6 +113,8 @@ public final class TimeSignature {
 	}
 
 	/**
+	 * Returns the duration of a beat in this time signature.
+	 *
 	 * @return the Duration of beats.
 	 */
 	public Duration getBeatDuration() {

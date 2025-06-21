@@ -1,10 +1,6 @@
 /*
  * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
  */
-
-/*
- * Distributed under the MIT license (see LICENSE.txt or https://opensource.org/licenses/MIT).
- */
 package org.wmn4j.representation.geometric;
 
 import org.junit.jupiter.api.Test;
@@ -148,7 +144,7 @@ public class PointPatternTest {
 		final PointPattern<Point2D> pattern = new PointPattern<>(points);
 		final var translated = pattern.translate(new Point2D(1.0, 1.0));
 
-		final var expected = new PointPattern(Arrays.asList(
+		final var expected = new PointPattern<>(Arrays.asList(
 				new Point2D(1.33, 51),
 				new Point2D(6, 65),
 				new Point2D(28, 13),
