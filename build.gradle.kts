@@ -11,6 +11,7 @@ plugins {
 
 group = "org.wmn4j"
 description = "A Java library for handling western music notation."
+version = properties["version"].toString()
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -63,7 +64,7 @@ val buildDir = getLayout().buildDirectory.get().toString()
 val createProjectPropertiesFile by tasks.registering {
     dependsOn(tasks.processResources)
     doLast {
-        val versionNumber = project.version.toString()
+        val versionNumber = rootProject.version
         println("Creating properties file for ${project.name} version $versionNumber")
         val outputFile = file("$buildDir/resources/main/wmn4j.properties")
         outputFile.parentFile.mkdirs()
@@ -78,11 +79,14 @@ tasks.classes {
 publishing {
     publications {
         create<MavenPublication>(project.name) {
-            artifactId = project.name
+            artifactId = rootProject.name
             from(components["java"])
 
             pom {
-                name = project.name
+                name = rootProject.name
+                groupId = rootProject.group.toString()
+                version = rootProject.version.toString()
+
                 description = project.description
                 url = "http://www.wmn4j.org"
                 licenses {
@@ -115,33 +119,38 @@ publishing {
 
 jreleaser {
     project {
+        name = "wmn4j"
+        version = rootProject.version.toString()
         versionPattern = "SEMVER"
 
         snapshot {
             pattern = ".*-SNAPSHOT"
+            label = project.version.get() + "-SNAPSHOT"
+            fullChangelog = false
         }
-
     }
 
     release {
         github {
             enabled = true
-            tagName = project.name.get() + "-" + version
+            tagName = project.version.toString()
             repoUrl = "https://github.com/otsob/wmn4j"
             branch = "main"
         }
     }
     signing {
-        active = Active.ALWAYS
+        active = Active.RELEASE
         armored = true
     }
     deploy {
         maven {
             mavenCentral {
                 create("sonatype") {
-                    active = Active.ALWAYS
+                    active = Active.RELEASE
                     url = "https://central.sonatype.com/api/v1/publisher"
                     stagingRepository("$buildDir/staging-deploy")
+                    retryDelay = 100
+                    maxRetries = 1
                 }
             }
         }
