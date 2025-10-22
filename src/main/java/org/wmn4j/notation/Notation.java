@@ -28,7 +28,7 @@ public final class Notation {
 	 * Represents notation elements that can be connected to each other
 	 * through notations, like notes and grace notes.
 	 */
-	public interface Connectable {
+	public sealed interface Connectable permits GraceNote, Note {
 		/**
 		 * Returns the notation connection belonging to the given notation. If no notation connection for the notation
 		 * is
