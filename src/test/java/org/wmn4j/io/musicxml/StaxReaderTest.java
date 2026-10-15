@@ -6,13 +6,22 @@ package org.wmn4j.io.musicxml;
 import org.junit.jupiter.api.Test;
 import org.wmn4j.TestHelper;
 import org.wmn4j.io.ParsingFailureException;
+import org.wmn4j.notation.Pitch;
 import org.wmn4j.notation.Score;
 import org.wmn4j.notation.ScoreBuilder;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -438,5 +447,58 @@ class StaxReaderTest {
 	void testGivenScoreWithChordSymbolsThenSymbolsAreCorrectlyRead() {
 		Score score = readScore("chord_symbol_test.musicxml", true);
 		MusicXmlFileChecks.assertChordSymbolsCorrect(score);
+	}
+
+	@Test
+	void alterValuesAreConvertedToAccidentals() {
+		// Each entry matches the alter value of the note at the same index in the file:
+		// absent, 0, 1, 2, -1, -2, 0.4, -0.4, 0.5, -0.5, 0.6, -0.6, 1.4, -1.4, 1.5, -1.5
+		final List<Pitch.Accidental> expected = List.of(
+				Pitch.Accidental.NATURAL, Pitch.Accidental.NATURAL, Pitch.Accidental.SHARP,
+				Pitch.Accidental.DOUBLE_SHARP, Pitch.Accidental.FLAT, Pitch.Accidental.DOUBLE_FLAT,
+				Pitch.Accidental.NATURAL, Pitch.Accidental.NATURAL, Pitch.Accidental.SHARP,
+				Pitch.Accidental.FLAT, Pitch.Accidental.SHARP, Pitch.Accidental.FLAT,
+				Pitch.Accidental.SHARP, Pitch.Accidental.FLAT, Pitch.Accidental.DOUBLE_SHARP,
+				Pitch.Accidental.DOUBLE_FLAT);
+
+		// Each fractional alter value in the file is expected to cause one warning, in file order.
+		final List<String> expectedWarnings = List.of("0.4", "-0.4", "0.5", "-0.5", "0.6", "-0.6", "1.4", "-1.4",
+				"1.5", "-1.5").stream()
+				.map(alter -> "Fractional alter value " + alter + " found. Rounded to integer")
+				.collect(Collectors.toList());
+
+		final List<String> warnings = new ArrayList<>();
+		final Handler handler = new Handler() {
+			@Override
+			public void publish(LogRecord logRecord) {
+				if (logRecord.getLevel().equals(Level.WARNING)) {
+					warnings.add(logRecord.getMessage());
+				}
+			}
+
+			@Override
+			public void flush() {
+			}
+
+			@Override
+			public void close() {
+			}
+		};
+
+		final Logger transformsLogger = Logger.getLogger(Transforms.class.getName());
+		transformsLogger.addHandler(handler);
+		final List<Pitch.Accidental> actual;
+		try {
+			final Score score = readScore("pitch_alter_test.musicxml", false);
+			actual = score.durationalStream()
+					.map(durational -> durational.toNote().getPitch().orElseThrow().getAccidental())
+					.collect(Collectors.toList());
+		} finally {
+			transformsLogger.removeHandler(handler);
+		}
+
+		assertEquals(expected.size(), actual.size());
+		assertEquals(expected, actual);
+		assertEquals(expectedWarnings, warnings);
 	}
 }
