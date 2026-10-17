@@ -853,10 +853,9 @@ final class StaxWriter implements MusicXmlWriter {
 		if (graceNotes.isPresent()) {
 			final var ornamentalNotes = graceNotes.get().getOrnamentalNotes();
 			for (var ornamental : ornamentalNotes) {
-				if (ornamental instanceof GraceNote) {
-					writeGraceNote((GraceNote) ornamental, voice, staff, false);
-				} else if (ornamental instanceof GraceNoteChord) {
-					writeGraceNoteChord((GraceNoteChord) ornamental, voice, staff);
+				switch (ornamental) {
+					case GraceNote graceNote -> writeGraceNote(graceNote, voice, staff, false);
+					case GraceNoteChord graceNoteChord -> writeGraceNoteChord(graceNoteChord, voice, staff);
 				}
 			}
 		}

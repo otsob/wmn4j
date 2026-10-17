@@ -171,11 +171,10 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 
 		if (!ornamentals.isEmpty()) {
 			Ornamental last = ornamentals.get(ornamentals.size() - 1);
-			if (last instanceof GraceNote) {
-				return !((GraceNote) last).getPrincipalNoteConnections().isEmpty();
-			} else if (last instanceof GraceNoteChord) {
-				return ((GraceNoteChord) last).isConnectedToPrincipalNote();
-			}
+			return switch (last) {
+				case GraceNote graceNote -> !graceNote.getPrincipalNoteConnections().isEmpty();
+				case GraceNoteChord graceNoteChord -> graceNoteChord.isConnectedToPrincipalNote();
+			};
 		}
 
 		return false;
@@ -194,28 +193,29 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 
 		for (int i = indexOfLast; i >= 0; --i) {
 			Ornamental original = copiedOrnamentals.get(i);
-			if (original instanceof GraceNote) {
-				GraceNote originalGraceNote = (GraceNote) original;
-				GraceNote linkedCopy = createGraceNoteWithCorrectConnections(
-						originalGraceNote.getPrincipalNoteConnections(), target,
-						indexOfLast, i, originalGraceNote);
-				copiedOrnamentals.set(i, linkedCopy);
-				target = linkedCopy;
-			} else if (original instanceof GraceNoteChord) {
-				final GraceNoteChord originalGraceNoteChord = (GraceNoteChord) original;
-				List<GraceNote> copiedChordNotes = new ArrayList<>(originalGraceNoteChord.getNoteCount());
 
-				for (int chordIndex = originalGraceNoteChord.getNoteCount() - 1; chordIndex >= 0; --chordIndex) {
-					GraceNote originalGraceNote = originalGraceNoteChord.getNote(chordIndex);
+			switch (original) {
+				case GraceNote originalGraceNote -> {
 					GraceNote linkedCopy = createGraceNoteWithCorrectConnections(
 							originalGraceNote.getPrincipalNoteConnections(), target,
-							indexOfLast, i,
-							originalGraceNote);
-					copiedChordNotes.add(linkedCopy);
+							indexOfLast, i, originalGraceNote);
+					copiedOrnamentals.set(i, linkedCopy);
 					target = linkedCopy;
 				}
+				case GraceNoteChord originalGraceNoteChord -> {
+					List<GraceNote> copiedChordNotes = new ArrayList<>(originalGraceNoteChord.getNoteCount());
 
-				copiedOrnamentals.set(i, GraceNoteChord.of(copiedChordNotes));
+					for (int chordIndex = originalGraceNoteChord.getNoteCount() - 1; chordIndex >= 0; --chordIndex) {
+						GraceNote originalGraceNote = originalGraceNoteChord.getNote(chordIndex);
+						GraceNote linkedCopy = createGraceNoteWithCorrectConnections(
+								originalGraceNote.getPrincipalNoteConnections(), target,
+								indexOfLast, i,
+								originalGraceNote);
+						copiedChordNotes.add(linkedCopy);
+						target = linkedCopy;
+					}
+					copiedOrnamentals.set(i, GraceNoteChord.of(copiedChordNotes));
+				}
 			}
 		}
 
@@ -250,15 +250,16 @@ public final class Note implements Durational, OptionallyPitched, Notation.Conne
 		for (Notation.Connection connection : connections) {
 			if (!connection.isEnd()) {
 				Notation.Connection newConnection = connection;
-				if (target instanceof Note) {
-					Note targetNote = (Note) target;
-					if (isConnectedToSimilarTarget(targetNote, connection, Note.class)) {
-						newConnection = createConnectionToNote(connection, targetNote);
+				switch (target) {
+					case Note targetNote -> {
+						if (isConnectedToSimilarTarget(targetNote, connection, Note.class)) {
+							newConnection = createConnectionToNote(connection, targetNote);
+						}
 					}
-				} else if (target instanceof GraceNote) {
-					GraceNote targetNote = (GraceNote) target;
-					if (isConnectedToSimilarTarget(targetNote, connection, GraceNote.class)) {
-						newConnection = createConnectionToGraceNote(connection, targetNote);
+					case GraceNote targetNote -> {
+						if (isConnectedToSimilarTarget(targetNote, connection, GraceNote.class)) {
+							newConnection = createConnectionToGraceNote(connection, targetNote);
+						}
 					}
 				}
 

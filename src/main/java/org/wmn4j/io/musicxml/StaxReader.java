@@ -101,7 +101,7 @@ final class StaxReader implements MusicXmlReader {
 	private String repeatDirection;
 
 	private String currentStep;
-	private int currentAlter;
+	private double currentAlter;
 	private boolean isCurrentUnpitched;
 	private int currentOctave;
 
@@ -538,7 +538,7 @@ final class StaxReader implements MusicXmlReader {
 									consumeText(text -> currentStep = text);
 								}
 								if (rootTag.equals(Tags.ROOT_ALTER)) {
-									consumeText(text -> currentAlter = Integer.parseInt(text));
+									consumeText(text -> currentAlter = Double.parseDouble(text));
 								}
 
 							}, Tags.ROOT);
@@ -553,7 +553,7 @@ final class StaxReader implements MusicXmlReader {
 									consumeText(text -> currentStep = text);
 								}
 								if (Tags.BASS_ALTER.equals(bassTag)) {
-									consumeText(text -> currentAlter = Integer.parseInt(text));
+									consumeText(text -> currentAlter = Double.parseDouble(text));
 								}
 
 							}, Tags.BASS);
@@ -594,7 +594,7 @@ final class StaxReader implements MusicXmlReader {
 					consumeText(text -> currentChordExtensionValue = Integer.parseInt(text));
 					break;
 				case Tags.DEGREE_ALTER:
-					consumeText(text -> currentAlter = Integer.parseInt(text));
+					consumeText(text -> currentAlter = Double.parseDouble(text));
 					break;
 				case Tags.DEGREE_TYPE:
 					consumeText(text -> currentChordExtensionType = text);
@@ -1093,10 +1093,14 @@ final class StaxReader implements MusicXmlReader {
 					consumeText(text -> currentStep = text);
 					break;
 				case Tags.ALTER:
-					consumeText(text -> currentAlter = Integer.parseInt(text));
+					consumeText(text -> currentAlter = Double.parseDouble(text));
+					break;
 				case Tags.OCTAVE:
 				case Tags.DISPLAY_OCTAVE:
 					consumeText(text -> currentOctave = Integer.parseInt(text));
+					break;
+				default:
+					break;
 			}
 		}, pitchTag);
 

@@ -9,7 +9,7 @@ package org.wmn4j.notation;
  * <p>
  * All implementations of this interface should be immutable.
  */
-public interface Ornamental {
+public sealed interface Ornamental permits GraceNote, GraceNoteChord {
 
 	/**
 	 * Defines the type of the ornamental note.

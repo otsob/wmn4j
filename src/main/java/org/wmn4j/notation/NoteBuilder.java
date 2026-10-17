@@ -6,9 +6,7 @@ package org.wmn4j.notation;
 import org.wmn4j.notation.techniques.Technique;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -229,10 +227,9 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 
 	private void setPrincipalNoteForAll(List<? extends OrnamentalBuilder> ornamentalBuilders) {
 		for (OrnamentalBuilder builder : ornamentalBuilders) {
-			if (builder instanceof GraceNoteBuilder) {
-				((GraceNoteBuilder) builder).setPrincipalNote(this);
-			} else if (builder instanceof GraceNoteChordBuilder) {
-				((GraceNoteChordBuilder) builder).setPrincipalNote(this);
+			switch (builder) {
+				case GraceNoteBuilder graceNoteBuilder -> graceNoteBuilder.setPrincipalNote(this);
+				case GraceNoteChordBuilder graceNoteChordBuilder -> graceNoteChordBuilder.setPrincipalNote(this);
 			}
 		}
 	}
@@ -460,13 +457,14 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 
 	private Iterable<GraceNoteBuilder> getPrecedingGraceNoteBuilders() {
 		OrnamentalBuilder last = precedingGraceNotes.get(precedingGraceNotes.size() - 1);
-		if (last instanceof GraceNoteBuilder) {
-			return Arrays.asList((GraceNoteBuilder) last);
-		} else if (last instanceof GraceNoteChordBuilder) {
-			return (GraceNoteChordBuilder) last;
+		switch (last) {
+			case GraceNoteBuilder graceNoteBuilder -> {
+				return List.of(graceNoteBuilder);
+			}
+			case GraceNoteChordBuilder graceNoteChordBuilder -> {
+				return graceNoteChordBuilder;
+			}
 		}
-
-		return Collections.emptyList();
 	}
 
 	private Note createWithPitchAndDuration() {
@@ -541,10 +539,11 @@ public final class NoteBuilder implements DurationalBuilder, ConnectableBuilder 
 
 			for (int i = 0; i < ornamenalNotes.size(); ++i) {
 				OrnamentalBuilder builder = builders.get(i);
-				if (builder instanceof GraceNoteBuilder) {
-					((GraceNoteBuilder) builder).setCachedNote((GraceNote) ornamenalNotes.get(i));
-				} else if (builder instanceof GraceNoteChordBuilder) {
-					((GraceNoteChordBuilder) builder).setCachedChord((GraceNoteChord) ornamenalNotes.get(i));
+				switch (builder) {
+					case GraceNoteBuilder graceNoteBuilder ->
+							graceNoteBuilder.setCachedNote((GraceNote) ornamenalNotes.get(i));
+					case GraceNoteChordBuilder graceNoteChordBuilder ->
+							graceNoteChordBuilder.setCachedChord((GraceNoteChord) ornamenalNotes.get(i));
 				}
 			}
 		}

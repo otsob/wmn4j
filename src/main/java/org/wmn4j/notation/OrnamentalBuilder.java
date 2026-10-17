@@ -6,7 +6,7 @@ package org.wmn4j.notation;
 /**
  * Represents builders that can be used for building ornamental notes and ornamental chords.
  */
-public interface OrnamentalBuilder {
+public sealed interface OrnamentalBuilder permits GraceNoteBuilder, GraceNoteChordBuilder {
 
 	/**
 	 * Returns an ornamental note or chord from the contents of this builder.

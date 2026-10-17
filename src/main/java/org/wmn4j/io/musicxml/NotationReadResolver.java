@@ -184,10 +184,10 @@ class NotationReadResolver {
 			final int indexOfLast = connectedBuilders.size() - 1;
 			for (int i = 0; i < indexOfLast; ++i) {
 				ConnectableBuilder nextBuilder = connectedBuilders.get(i + 1);
-				if (nextBuilder instanceof NoteBuilder) {
-					connectedBuilders.get(i).connectWith(notation, (NoteBuilder) nextBuilder);
-				} else if (nextBuilder instanceof GraceNoteBuilder) {
-					connectedBuilders.get(i).connectWith(notation, (GraceNoteBuilder) nextBuilder);
+				switch (nextBuilder) {
+					case NoteBuilder noteBuilder -> connectedBuilders.get(i).connectWith(notation, noteBuilder);
+					case GraceNoteBuilder graceNoteBuilder ->
+						connectedBuilders.get(i).connectWith(notation, graceNoteBuilder);
 				}
 			}
 

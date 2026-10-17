@@ -6,7 +6,7 @@ package org.wmn4j.notation;
 /**
  * Represents builders that can be connected through {@link Notation} objects.
  */
-public interface ConnectableBuilder {
+public sealed interface ConnectableBuilder permits NoteBuilder, GraceNoteBuilder {
 	/**
 	 * Connects this builder to the given note builder with the specified notation.
 	 * <p>

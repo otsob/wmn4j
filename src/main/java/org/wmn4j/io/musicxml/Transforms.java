@@ -34,8 +34,23 @@ final class Transforms {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Transforms.class);
 
-	static Pitch.Accidental alterToAccidental(int alter) {
-		switch (alter) {
+	/**
+	 * Returns the accidental that corresponds to the given alter value.
+	 *
+	 * Currently only integer values are supported because microtonal accidentals
+	 * are not supported yet.
+	 *
+	 * @param alter the alter value to convert
+	 * @return the accidental that corresponds to the alter value
+	 */
+	static Pitch.Accidental alterToAccidental(double alter) {
+		final int alterInt = (int) (Math.signum(alter) * Math.round(Math.abs(alter)));
+
+		if (alter % 1 != 0.0) {
+			LOG.warn("Fractional alter value {} found. Rounded to integer", alter);
+		}
+
+		switch (alterInt) {
 			case 0:
 				return Pitch.Accidental.NATURAL;
 			case 1:

@@ -15,7 +15,7 @@ import java.util.Optional;
  * <p>
  * Implementations of this class are expected to be thread-safe.
  */
-public interface Part extends Iterable<Measure> {
+public sealed interface Part extends Iterable<Measure> permits SingleStaffPart, MultiStaffPart {
 
 	/**
 	 * The default staff number for the staff in a single staff part.
